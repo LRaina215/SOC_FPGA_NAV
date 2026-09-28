@@ -7,6 +7,7 @@
 
 #include "nav_task.h"
 #include "imu_parse.h"
+#include "pose_match.h"
 
 #define APP_PLAN_PERIOD_US   100000    /* 规划 10 Hz */
 #define APP_STATUS_PERIOD_US 200000    /* 状态回传 5 Hz */
@@ -17,6 +18,10 @@ typedef struct {
     uint32_t     t_plan, t_status;
     uint32_t     n_frames, n_msgs;
     bool         use_imu_yaw;           /* IMU 航向可信时置 1（磁干扰大时用里程计航向） */
+    pm_cfg_t     pm_cfg;
+    pm_stat_t    pm;
+    int32_t      zband_lo, zband_hi;
+    int32_t      anchor_gain;           /* 足迹高度锚定增益 /256（0 = 关闭） */    /* 保留点高度带（相对机器人，mm）：地面以下 / 机身以上的点不进地图 */
 } nav_app_t;
 
 extern nav_app_t g_app;

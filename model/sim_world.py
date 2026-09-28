@@ -95,7 +95,8 @@ def rotx(roll):
 class VirtualLidar:
     """虚拟 XT-M60：输出 H×W 原始深度（mm, uint16）与幅值。"""
 
-    def __init__(self, depth_def="z", intr=None, rng_min=0.1, rng_max=20.0, noise_mm=0.0, seed=0):
+    def __init__(self, depth_def="z", intr=None, rng_min=0.1, rng_max=20.0, noise_mm=0.0, seed=0, step=0.01):
+        self.step = step
         self.depth_def = depth_def
         self.dirs_body = lidar_lut.rays(intr=intr, depth_def="z")        # 前向分量 = 1
         self.unit = self.dirs_body / np.linalg.norm(self.dirs_body, axis=-1, keepdims=True)
@@ -107,7 +108,7 @@ class VirtualLidar:
         """R_ws/t_ws：雷达本体系 -> 世界系。返回 depth(uint16 H×W), amp(uint16 H×W)。"""
         h, w, _ = self.unit.shape
         d_w = (R_ws @ self.unit.reshape(-1, 3).T).T
-        r = world.raycast(np.asarray(t_ws, dtype=float), d_w, tmax=self.rng_max)
+        r = world.raycast(np.asarray(t_ws, dtype=float), d_w, tmax=self.rng_max, step=self.step)
         r = r.reshape(h, w)
         if self.depth_def == "z":
             val = r * self.unit[..., 0]                   # 光轴方向分量

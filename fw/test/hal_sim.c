@@ -238,7 +238,13 @@ bool hal_odom(int16_t *vx, int16_t *vy, int16_t *wz, uint32_t *t_us)
 }
 
 bool hal_lidar_waiting(uint32_t *t) { (void)t; return false; }
-void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int32_t cy) { (void)r; (void)t; (void)cx; (void)cy; }
+void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int32_t cy, int32_t zmin, int32_t zmax)
+{ (void)r; (void)t; (void)cx; (void)cy; (void)zmin; (void)zmax; }
+bool hal_match_eval(const int32_t r[3][3], const int32_t t[3], int32_t cx_mm, int32_t cy_mm,
+                    const hal_match_cand_t *c, int k, hal_match_res_t *res)
+{ (void)r; (void)t; (void)cx_mm; (void)cy_mm; (void)c; (void)k; (void)res; return false; }
+void hal_match_keyframe(int32_t z) { (void)z; }
+bool hal_map_height(int32_t x, int32_t y, int32_t *h) { (void)x; (void)y; (void)h; return false; }
 bool hal_imu_byte(uint8_t *b, bool *f, uint32_t *t) { (void)b; (void)f; (void)t; return false; }
 
 int hal_host_recv(uint8_t *buf, int maxlen, uint32_t *t_us)

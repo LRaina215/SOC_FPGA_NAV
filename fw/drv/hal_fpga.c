@@ -108,7 +108,24 @@ bool hal_lidar_waiting(uint32_t *frame_t_us)
     return true;
 }
 
-void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int32_t cy)
+bool hal_match_eval(const int32_t r[3][3], const int32_t t[3], int32_t cx_mm, int32_t cy_mm,
+                    const hal_match_cand_t *c, int k, hal_match_res_t *res)
+{
+    /* 匹配打分硬件（match_eval）尚未接入寄存器：暂不支持，固件使用纯里程计 */
+    (void)r; (void)t; (void)cx_mm; (void)cy_mm; (void)c; (void)k; (void)res;
+    return false;
+}
+
+void hal_match_keyframe(int32_t z_ref_mm) { (void)z_ref_mm; }
+
+bool hal_map_height(int32_t x_mm, int32_t y_mm, int32_t *h_mm)
+{
+    /* 高程读窗口尚未加入寄存器表：暂不支持（固件不做足迹高度锚定） */
+    (void)x_mm; (void)y_mm; (void)h_mm;
+    return false;
+}
+
+void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int32_t cy, int32_t zmin, int32_t zmax)
 {
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++) nav_wr(NAV_LIDAR_R00 + 4u * (3 * i + j), (uint32_t)(uint16_t)(int16_t)r[i][j]);
@@ -117,6 +134,9 @@ void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int
     nav_wr(NAV_LIDAR_TZ, (uint32_t)t[2]);
     nav_wr(NAV_MAP_CENTER_X, (uint32_t)cx);
     nav_wr(NAV_MAP_CENTER_Y, (uint32_t)cy);
+    zmin = nav_clamp32(zmin, -32768, 32767);
+    zmax = nav_clamp32(zmax, -32768, 32767);
+    nav_wr(NAV_LIDAR_ZBAND, ((uint32_t)(uint16_t)zmax << 16) | (uint16_t)zmin);
     nav_wr(NAV_LIDAR_POSE_COMMIT, 1);
 }
 

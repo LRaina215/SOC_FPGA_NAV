@@ -28,7 +28,8 @@ RK3588 --UDP--> 邮箱 -> 软核固件：定点导航(A*) / 目标跟踪 / 自�
 | `model/` | Python：XT 协议、虚拟场景与雷达、定点逐位参考模型（RTL 标准答案）、方向查找表生成 |
 | `sim/` | xsim 回归（`run.py`、`tests.py`、激励生成 `gen/`） |
 | `tools/` | `nav_uart.py` 串口调试、`fake_lidar.py` 伪雷达、`rk_host.py` RK3588 协议参考 |
-| `docs/` | `icd.md` 接口定义、`regmap.md` 寄存器表、`board_bringup.md` 上板步骤 |
+| `sim/closed_loop/` | 闭环仿真：场景 + 虚拟雷达 + FPGA 感知模型 + 固件动态库 + 机器人误差模型，出指标与快照图 |
+| `docs/` | `icd.md` 接口定义、`regmap.md` 寄存器表、`board_bringup.md` 上板步骤、`algorithms.md` 闭环仿真与算法改进记录 |
 
 ## 常用命令（Python 用 `D:\Anaconda\python.exe`）
 
@@ -38,6 +39,7 @@ python sim/run.py                   # 全部 RTL 回归（Vivado 2026.1 xsim）�
 python fw/test/build.py             # 固件主机测试（gcc），含与定点模型的交叉验证与闭环仿真
 python gowin/syn/syn.py             # 综合 nav_subsystem，资源与 Fmax
 python gowin/syn/syn.py --board     # 板级顶层：综合 + 布局布线 + 比特流
+python sim/closed_loop/run_cl.py --scene terrain --goal 9.3,2.8 --trav v2 --calib 4   # 闭环仿真
 ```
 
 ## 验证现状

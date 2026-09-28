@@ -1,4 +1,5 @@
 #include "pose.h"
+#include "hal.h"
 
 static void hist_push(pose_est_t *p)
 {
@@ -32,19 +33,40 @@ void pose_odom(pose_est_t *p, int16_t vx, int16_t vy, int16_t wz, uint32_t t_us)
         hist_push(p);
         return;
     }
+    /* 零速更新：轮速为零时角速度读数就是零偏（EMA，时间常数约 1 s） */
+    /* 轮子不转且角速度读数很小（< 3°/s，远大于零偏、远小于任何主动转向）才视为静止 */
+    if (p->cmd_still && vx == 0 && vy == 0 && wz > -50 && wz < 50) {
+        p->still_us += (uint32_t)dt;
+        if (p->still_us > 300000) {
+            int32_t w8 = (int32_t)wz * 256;
+            if (p->bias_n < 256) p->bias_n++;
+            /* 累计平均：第 n 个样本权重 1/n；满 256 后变为 1/256 的慢速跟踪（温漂） */
+            p->wz_bias_q8 += (w8 - p->wz_bias_q8) / (int32_t)p->bias_n;
+            p->bias_valid = true;
+        }
+    } else {
+        p->still_us = 0;
+    }
+    int32_t wzc = (int32_t)wz - (p->wz_bias_q8 + (p->wz_bias_q8 >= 0 ? 128 : -128)) / 256;
+    if (p->still_us > 300000) wzc = 0;            /* 静止时不积分航向 */
     /* 航向：没有 IMU 航向时用 wz 积分（mrad/s -> angle：65536 / (2pi*1000)） */
     if (!p->imu_att_valid || (uint32_t)(t_us - p->imu_t_us) > 100000) {
-        int64_t dth = (int64_t)wz * dt * 65536 / 6283185 / 1000;
+        int64_t dth = (int64_t)wzc * dt * 65536 / 6283185 / 1000;
         p->cur.yaw = (angle_t)(p->cur.yaw + (int32_t)dth);
     }
-    /* 机身速度转到里程计系，um 精度累加 */
+    /* 机身速度按俯仰分解：水平分量 vx·cos(pitch)，高度 -vx·sin(pitch)（pitch>0 为低头），um 精度累加 */
+    int64_t cp = fx_cos(p->cur.pitch), sp = fx_sin(p->cur.pitch);
+    int64_t vh = (int64_t)vx * cp / Q14;
     int64_t c = fx_cos(p->cur.yaw), s = fx_sin(p->cur.yaw);
-    int64_t dx_um = ((int64_t)vx * c - (int64_t)vy * s) * dt / Q14 / 1000;
-    int64_t dy_um = ((int64_t)vx * s + (int64_t)vy * c) * dt / Q14 / 1000;
+    int64_t dx_um = (vh * c - (int64_t)vy * s) * dt / Q14 / 1000;
+    int64_t dy_um = (vh * s + (int64_t)vy * c) * dt / Q14 / 1000;
+    int64_t dz_um = -(int64_t)vx * sp * dt / Q14 / 1000;
     p->x_um += dx_um;
     p->y_um += dy_um;
+    p->z_um += dz_um;
     p->cur.x = (int32_t)(p->x_um / 1000);
     p->cur.y = (int32_t)(p->y_um / 1000);
+    p->cur.z = (int32_t)(p->z_um / 1000);
     p->cur.t_us = t_us;
     hist_push(p);
 }
@@ -52,8 +74,14 @@ void pose_odom(pose_est_t *p, int16_t vx, int16_t vy, int16_t wz, uint32_t t_us)
 void pose_imu_att(pose_est_t *p, angle_t yaw, angle_t pitch, angle_t roll, bool yaw_valid, uint32_t t_us)
 {
     if (yaw_valid) p->cur.yaw = yaw;
-    p->cur.pitch = pitch;
-    p->cur.roll = roll;
+    /* 俯仰/横滚一阶低通（50 Hz 输入时时间常数约 0.16 s）：姿态噪声会让整帧点云整体倾斜，
+     * 远处地面高度逐帧跳动，在高程图里形成假台阶（闭环仿真中 0.3° 噪声使误报率升到 14%） */
+    int32_t pi = (int32_t)(int16_t)pitch * 16, ro = (int32_t)(int16_t)roll * 16;
+    if (p->att_n == 0) { p->pitch_f = pi; p->roll_f = ro; }
+    else { p->pitch_f += (pi - p->pitch_f) / 8; p->roll_f += (ro - p->roll_f) / 8; }
+    p->att_n++;
+    p->cur.pitch = (angle_t)(int16_t)(p->pitch_f / 16);
+    p->cur.roll = (angle_t)(int16_t)(p->roll_f / 16);
     p->imu_att_valid = yaw_valid;
     p->imu_t_us = t_us;
 }
@@ -65,6 +93,23 @@ void pose_correct(pose_est_t *p, int32_t x, int32_t y, angle_t yaw)
     p->cur.yaw = yaw;
     p->x_um = (int64_t)x * 1000;
     p->y_um = (int64_t)y * 1000;
+}
+
+
+void pose_correct_delta(pose_est_t *p, int32_t dx, int32_t dy, int32_t dz, int32_t dyaw)
+{
+    p->x_um += (int64_t)dx * 1000;
+    p->y_um += (int64_t)dy * 1000;
+    p->z_um += (int64_t)dz * 1000;
+    p->cur.x = (int32_t)(p->x_um / 1000);
+    p->cur.y = (int32_t)(p->y_um / 1000);
+    p->cur.z = (int32_t)(p->z_um / 1000);
+    p->cur.yaw = (angle_t)(p->cur.yaw + dyaw);
+    for (int i = 0; i < p->hist_n; i++) {
+        int idx = (p->hist_head - 1 - i + 2 * POSE_HIST) % POSE_HIST;
+        p->hist[idx].x += dx; p->hist[idx].y += dy; p->hist[idx].z += dz;
+        p->hist[idx].yaw = (angle_t)(p->hist[idx].yaw + dyaw);
+    }
 }
 
 void pose_at(const pose_est_t *p, uint32_t t_us, nav_pose_t *out)
@@ -82,6 +127,7 @@ void pose_at(const pose_est_t *p, uint32_t t_us, nav_pose_t *out)
             *out = *h;
             out->x = h->x + (int32_t)((int64_t)(newer.x - h->x) * k / 1024);
             out->y = h->y + (int32_t)((int64_t)(newer.y - h->y) * k / 1024);
+            out->z = h->z + (int32_t)((int64_t)(newer.z - h->z) * k / 1024);
             out->yaw = (angle_t)(h->yaw + fx_angle_diff(h->yaw, newer.yaw) * k / 1024);
             out->t_us = t_us;
             return;
@@ -103,6 +149,21 @@ void pose_lidar_tf(const pose_est_t *p, const nav_pose_t *at, int32_t r_q14[3][3
     t_mm[0] = at->x + tb[0];
     t_mm[1] = at->y + tb[1];
     t_mm[2] = at->z + tb[2];
+}
+
+void pose_anchor_z(pose_est_t *p, int32_t hl, int32_t hw, int32_t gain_q8)
+{
+    static const int8_t SX[4] = {1, 1, -1, -1}, SY[4] = {1, -1, 1, -1};
+    int32_t sum = 0, n = 0;
+    for (int i = 0; i < 4; i++) {
+        int32_t ox, oy, h;
+        pose_body_to_odom(&p->cur, SX[i] * hl, SY[i] * hw, &ox, &oy);
+        if (hal_map_height(ox, oy, &h)) { sum += h; n++; }
+    }
+    if (n < 3) return;
+    int32_t e = sum / n - p->cur.z;                 /* 地图说机器人应在的高度 - 估计高度 */
+    if (e > 150 || e < -150) return;                /* 离谱的差值：多半是轮下格被障碍占据，不用 */
+    pose_correct_delta(p, 0, 0, e * gain_q8 / 256, 0);
 }
 
 void pose_body_to_odom(const nav_pose_t *at, int32_t bx, int32_t by, int32_t *ox, int32_t *oy)

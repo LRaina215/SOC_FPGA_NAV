@@ -11,6 +11,11 @@ void nav_app_init(void)
     g_app.t_plan = now;
     g_app.t_status = now;
     g_app.use_imu_yaw = false;
+    pm_default_cfg(&g_app.pm_cfg);
+    g_app.pm_cfg.enable = false;            /* 匹配定位：实验功能，评测见 docs/algorithms.md，默认关闭 */
+    g_app.zband_lo = -600;
+    g_app.zband_hi = 1200;
+    g_app.anchor_gain = 64;
 }
 
 void nav_app_poll(void)
@@ -33,19 +38,25 @@ void nav_app_poll(void)
                          g_app.imu.att_t_us);
     }
 
-    /* 3. 雷达帧位姿握手：用帧到达时刻的位姿，窗口中心跟随机器人 */
+    /* 3. 雷达帧：预测位姿 -> 匹配修正（硬件打分）-> 用修正后的位姿融合，窗口中心跟随机器人 */
     uint32_t ft;
     if (hal_lidar_waiting(&ft)) {
         nav_pose_t at;
-        pose_at(&nt->pose, ft, &at);
         int32_t r[3][3], tt[3];
+        pose_at(&nt->pose, ft, &at);
         pose_lidar_tf(&nt->pose, &at, r, tt);
+        if (pose_match_run(&g_app.pm_cfg, &nt->pose, &at, r, tt, &g_app.pm)) {
+            pose_at(&nt->pose, ft, &at);                /* 历史已同步修正 */
+            pose_lidar_tf(&nt->pose, &at, r, tt);
+        }
         hal_map_info_t mi;
         hal_map_info(&mi);
         uint16_t inv = mi.inv_res ? mi.inv_res : 1311;
         int32_t cx = (int32_t)(((int64_t)at.x * inv) >> 16);
         int32_t cy = (int32_t)(((int64_t)at.y * inv) >> 16);
-        hal_lidar_commit(r, tt, cx, cy);
+        hal_lidar_commit(r, tt, cx, cy, at.z + g_app.zband_lo, at.z + g_app.zband_hi);
+        pose_match_after_commit(&g_app.pm_cfg, &at, &g_app.pm);
+        pose_anchor_z(&nt->pose, 200, 180, g_app.anchor_gain);
         g_app.n_frames++;
     }
 

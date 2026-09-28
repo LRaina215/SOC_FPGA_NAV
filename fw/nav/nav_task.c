@@ -216,6 +216,7 @@ void nav_task_step(nav_task_t *nt, uint32_t now)
 
     if (!nt->have_map && nt->mode != NAV_MODE_ESTOP) {
         nt->cmd = (nav_cmd_t){0, 0, 0, 0};
+        nt->pose.cmd_still = true;
         hal_send_cmd(&nt->cmd);
         return;
     }
@@ -274,6 +275,7 @@ void nav_task_step(nav_task_t *nt, uint32_t now)
         nt->state = ST_SEARCHING;
         break;
     }
+    nt->pose.cmd_still = (nt->cmd.vx == 0 && nt->cmd.vy == 0 && nt->cmd.wz == 0);
     hal_send_cmd(&nt->cmd);
 }
 
