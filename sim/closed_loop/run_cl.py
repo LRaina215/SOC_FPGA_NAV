@@ -156,7 +156,7 @@ def main():
         tag = (((iy >> 7) & 15) << 4) | ((ix >> 7) & 15)
         if em.cnt[a_] == 0 or em.tag[a_] != tag or em.zmax[a_] - em.zmin[a_] > 40:
             return 0
-        hp[0] = int(em.zmax[a_])
+        hp[0] = int(em.zmax[a_] + em.zmin[a_]) // 2      # 区间中点：zmax 偏高（噪声取最大），用它锚定会正反馈地往上漂
         return 1
     fw.py_set_h_cb(h_cb)
 
@@ -306,7 +306,7 @@ def main():
         np.savez(out / "final_maps.npz", cost=cost_window(fpga), lethal=fpga.last_lethal, V=V_, H=H_, RO=RO_,
                  cx=fpga.cx, cy=fpga.cy, gmap=gm_[0], gm_o=np.array(gm_[1:4]), path=gm_[4], state=np.array(list(st)),
                  true=np.array([bot.x, bot.y, bot.z, bot.yaw]), fp_pts=np.array(ERR_PTS["fp"]).reshape(-1, 3),
-                 fn_pts=np.array(ERR_PTS["fn"]).reshape(-1, 3))
+                 fn_pts=np.array(ERR_PTS["fn"]).reshape(-1, 3), match_log=np.array(match_log), tlog=np.array(tlog))
     if a.gif:
         from PIL import Image
         frames = [Image.open(p) for p in sorted(out.glob("snapshot_[0-9]*.png"))] + [Image.open(out / "snapshot_final.png")]

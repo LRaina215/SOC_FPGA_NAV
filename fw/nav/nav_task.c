@@ -26,6 +26,11 @@ void nav_task_init(nav_task_t *nt)
     nt->cfg.blocked_us = 3000000;
     nt->cfg.search_repick_us = 8000000;
     nt->cfg.track_hold_mm = 200;
+    nt->cfg.wp_tol_mm = 350;
+    nt->cfg.stall_us = 6000000;
+    nt->cfg.stall_mm = 150;
+    nt->cfg.near_goal_mm = 600;
+    nt->cfg.recover_us = 1500000;
     lp_default_cfg(&nt->lp_cfg);
     astar_default_cfg(&nt->as_cfg);
     astar_default_cfg(&nt->as_cfg_g);
@@ -48,6 +53,9 @@ void nav_task_set_mode(nav_task_t *nt, nav_mode_t mode)
     nt->path_valid = false;
     nt->search_goal_valid = false;
     nt->last_ok_us = hal_time_us();
+    nt->prog_t_us = hal_time_us();
+    nt->prog_x = nt->pose.cur.x; nt->prog_y = nt->pose.cur.y;
+    nt->recovering = false;
     switch (mode) {
     case NAV_MODE_IDLE:   nt->state = ST_IDLE; break;
     case NAV_MODE_GOTO:   nt->state = ST_MOVING; break;
@@ -217,11 +225,47 @@ static bool pick_lookahead(nav_task_t *nt, const nav_pose_t *p, int32_t gx, int3
 }
 
 /* 朝 (gx, gy) 行进一个周期；返回是否已到达（距离 < tol） */
+/* 身后 len_mm 的直线在代价图上是否可走（倒车脱困前检查） */
+static bool back_clear(const nav_task_t *nt, const nav_pose_t *p, int32_t len_mm)
+{
+    int32_t bx, by;
+    int rx, ry, tx, ty;
+    pose_body_to_odom(p, -len_mm, 0, &bx, &by);
+    nav_mm_to_win(&nt->mi, p->x, p->y, &rx, &ry);
+    nav_mm_to_win(&nt->mi, bx, by, &tx, &ty);
+    return line_clear(nt->map, rx, ry, tx, ty, NP_COST_LETHAL);
+}
+
 static bool drive_to(nav_task_t *nt, uint32_t now, int32_t gx, int32_t gy, int32_t tol)
 {
     const nav_pose_t *p = &nt->pose.cur;
     nt->cmd = (nav_cmd_t){0, 0, 0, 0};
-    if (fx_dist(gx - p->x, gy - p->y) < tol) return true;
+    int32_t dgoal = fx_dist(gx - p->x, gy - p->y);
+    if (dgoal < tol) return true;
+    /* 卡住检测：stall_us 内位移不到 stall_mm */
+    if (fx_dist(p->x - nt->prog_x, p->y - nt->prog_y) > nt->cfg.stall_mm) {
+        nt->prog_x = p->x; nt->prog_y = p->y; nt->prog_t_us = now;
+    } else if (!nt->recovering && (uint32_t)(now - nt->prog_t_us) > nt->cfg.stall_us) {
+        nt->prog_t_us = now;
+        if (dgoal < nt->cfg.near_goal_mm) return true;         /* 已到目标附近但进不去：接受 */
+        nt->recovering = true;
+        nt->recover_until_us = now + nt->cfg.recover_us;
+        nt->recover_dir = (int8_t)(back_clear(nt, p, 400) ? 1 : 0);
+        nt->path_valid = false;
+        nt->turning = false;
+        nt->n_recover++;
+    }
+    if (nt->recovering) {
+        if ((int32_t)(now - nt->recover_until_us) >= 0) {
+            nt->recovering = false;
+        } else {
+            /* 倒车（身后可走）或原地转半圈，打破局部规划的来回摆动 */
+            if (nt->recover_dir) nt->cmd.vx = (int16_t)-nt->lp_cfg.v_back;
+            else nt->cmd.wz = (int16_t)(nt->lp_cfg.w_max / 2);
+            nt->last_ok_us = now;
+            return false;
+        }
+    }
     int32_t lx = gx, ly = gy;
     if (!pick_lookahead(nt, p, gx, gy, &lx, &ly)) { lx = gx; ly = gy; }
     nt->look_x = lx; nt->look_y = ly;
@@ -278,12 +322,14 @@ void nav_task_step(nav_task_t *nt, uint32_t now)
         break;
 
     case NAV_MODE_GOTO:
-        if (drive_to(nt, now, nt->goal_x, nt->goal_y, nt->lp_cfg.goal_tol_mm)) {
+        if (drive_to(nt, now, nt->goal_x, nt->goal_y,
+                     (nt->wp_n > 0 && (nt->wp_i + 1 < nt->wp_n || nt->wp_loop)) ? nt->cfg.wp_tol_mm : nt->lp_cfg.goal_tol_mm)) {
             if (nt->wp_n > 0 && (nt->wp_i + 1 < nt->wp_n || nt->wp_loop)) {
                 nt->wp_i = (nt->wp_i + 1) % nt->wp_n;
                 nt->goal_x = nt->wp_x[nt->wp_i];
                 nt->goal_y = nt->wp_y[nt->wp_i];
                 nt->path_valid = false;
+                nt->prog_t_us = now;
             } else {
                 nt->mode = NAV_MODE_IDLE;
                 nt->state = ST_ARRIVED;

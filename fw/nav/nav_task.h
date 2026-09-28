@@ -23,6 +23,11 @@ typedef struct {
     uint32_t blocked_us;         /* 持续无可行候选多久判为受阻 */
     uint32_t search_repick_us;   /* 探索点最长保持时间 */
     int32_t  track_hold_mm;      /* 跟踪：到达站位点后原地保持的容差 */
+    int32_t  wp_tol_mm;          /* 中间路径点的到达容差（比终点宽：只是途经） */
+    uint32_t stall_us;           /* 这么久位移不到 stall_mm 视为卡住，执行脱困动作 */
+    int32_t  stall_mm;
+    int32_t  near_goal_mm;       /* 卡住时离目标已不到此距离：视为到达（目标多半落在障碍/膨胀区里） */
+    uint32_t recover_us;         /* 脱困动作时长 */
 } nav_task_cfg_t;
 
 typedef struct {
@@ -60,6 +65,12 @@ typedef struct {
     bool           search_goal_valid;
     int32_t        look_x, look_y;   /* 当前前视点（调试/显示） */
     bool           turning;          /* 原地转向对准前视点中 */
+    int32_t        prog_x, prog_y;   /* 卡住检测参考点 */
+    uint32_t       prog_t_us;
+    uint32_t       recover_until_us;
+    bool           recovering;
+    int8_t         recover_dir;      /* 1 = 倒车，0 = 原地转 */
+    uint32_t       n_recover;
 } nav_task_t;
 
 void nav_task_init(nav_task_t *nt);

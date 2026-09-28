@@ -15,6 +15,7 @@ import nav_fast as fast  # noqa: E402
 import nav_fixed as nf  # noqa: E402
 import trav_v2  # noqa: E402
 import trav_v3  # noqa: E402
+import slf_match as slf  # noqa: E402
 
 N = nf.N
 SIN = np.array(nf.SIN, dtype=np.int64)
@@ -28,7 +29,7 @@ M_STRIDE = 4      # 点抽样步长（硬件每 4 个点取 1 个）
 
 
 class FpgaModel:
-    def __init__(self, trav="v1", inv_res=1311, cfg=None):
+    def __init__(self, trav="v1", inv_res=1311, cfg=None, match="slf", mount_z=200):
         self.lut = np.array(lidar_lut.lut_entries(), dtype=np.int64)
         self.em = nf.ElevMap()
         self.inv_res = inv_res
@@ -46,6 +47,10 @@ class FpgaModel:
         self.last_lethal = None
         self.view = None
         self.kf = None          # (cx, cy, valid, zmin, zmax, rough) 窗口坐标，z 已按 8 位 1 cm 量化还原
+        self.match = match
+        self.mount_z = mount_z
+        self.smap = slf.StructMap(inv_res)
+        self.n_struct_pts = 0
 
     # ---------------------------------------------------------------- 帧
     def frame(self, depth):
@@ -61,8 +66,20 @@ class FpgaModel:
         self.kf = (self.cx, self.cy, V.copy(), zmin, zmax, zmax - zmin)
 
     # ---------------------------------------------------------------- 匹配遍
+    def struct_points(self, rt):
+        R = np.array(rt[:9], dtype=np.int64).reshape(3, 3)
+        t = np.array(rt[9:12], dtype=np.int64)
+        p = fast.pc_transform(self.xyz, R, t)
+        m = slf.structure_mask(p, self.pv, int(t[2]) - self.mount_z)
+        idx = slf.subsample(np.nonzero(m)[0])
+        return p[idx]
+
     def match_eval(self, rt, cx_mm, cy_mm, cands):
         """rt: R[9] + t[3]；cands: (K,3) dx dy dyaw。返回 (K,4) n_valid cost n_in sum_dz"""
+        if self.match == "slf":
+            q = self.struct_points(rt)
+            self.n_struct_pts = len(q)
+            return self.smap.score(q[:, 0], q[:, 1], cands, cx_mm, cy_mm)
         R = np.array(rt[:9], dtype=np.int64).reshape(3, 3)
         t = np.array(rt[9:12], dtype=np.int64)
         idx = np.nonzero(self.pv)[0][::M_STRIDE]
@@ -74,7 +91,7 @@ class FpgaModel:
         out = np.zeros((len(cands), 4), dtype=np.int64)
         px, py, pz = p[:, 0] - cx_mm, p[:, 1] - cy_mm, p[:, 2]
         for k, (dx, dy, da) in enumerate(cands):
-            i = (int(da) & 0xFFFF) >> 6
+            i = ((int(da) + 32) & 0xFFFF) >> 6          # 四舍五入到正弦表格点（向下取整会让负角候选多转一格）
             s, c = SIN[i], SIN[(i + 256) & 1023]
             x = cx_mm + ((px * c - py * s) >> 14) + dx
             y = cy_mm + ((px * s + py * c) >> 14) + dy
@@ -108,4 +125,8 @@ class FpgaModel:
             self.cost, self.last_lethal, self.view = trav_v3.trav_v3(self.em, cx, cy, self.cfg)
         self.cx, self.cy = cx, cy
         self.seq = (self.seq + 1) & 0xFFFF
+        if self.match == "slf" and zmin <= zmax:
+            q = self.struct_points(rt)
+            self.smap.update(q[:, :2])
+            self.smap.build_lf(cx, cy)
         return p

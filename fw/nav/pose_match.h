@@ -1,4 +1,9 @@
-/* 匹配定位：高程区间一致性匹配（Elevation-Interval Consistency Matching, EICM）。
+/* 匹配定位框架：候选增量由固件生成、硬件打分（hal_match_eval），固件取最优并做抛物线亚步长拟合与退化判定。
+ * 打分后端两种（FPGA 侧选择）：
+ *   SLF（默认）：结构似然场——竖直结构点到结构图的截断距离和，见 model/slf_match.py；
+ *   EICM：高程区间一致性（下述），实测有系统偏差，保留作对照。
+ *
+ * EICM：高程区间一致性匹配（Elevation-Interval Consistency Matching）。
  *
  * 思路：局部高程图每格存了 [zmin, zmax]。位姿正确时，新一帧的点应落在各自栅格的高度区间内；
  * 位姿有偏差时，墙面/箱体侧面/台阶立面上的点会落到"地面格"（区间很窄）里，产生大的高度残差。
@@ -20,17 +25,21 @@
 #include "hal.h"
 #include "pose.h"
 
-#define PM_MAX_CAND 128
+#define PM_MAX_CAND 256
 
 typedef struct {
     bool     enable;
     int32_t  step_mm;          /* 粗搜索平移步长 */
     int32_t  step_ang;         /* 粗搜索角度步长（angle） */
-    int      half;             /* 粗搜索半宽（-half..half） */
+    int      half;             /* 平移搜索半宽（-half..half） */
+    int      half_ang;         /* 角度搜索半宽 */
+    bool     use_kf;           /* EICM 需要关键帧；SLF 的结构图由硬件在每次提交时自动累积 */
+    int32_t  out_pen;          /* 落到图外/未观测的点的代价（EICM 75；SLF 0，硬件已按截断距离计） */
     int32_t  gain_q8;          /* 修正增益 /256 */
     int32_t  gain_z_q8;
     uint32_t min_valid;        /* 参与匹配的最少有效点数 */
-    int32_t  min_curv;         /* 每轴代价曲率下限（低于视为退化，不修正该轴） */
+    int32_t  min_curv;         /* 平移 Hessian 特征值下限（每千点，低于视为该方向退化，不修正） */
+    int32_t  min_curv_ang;     /* 角度轴曲率下限（每千点） */
     int32_t  kf_dist_mm;       /* 离上一关键帧超过此距离 -> 新关键帧 */
     int32_t  kf_ang;           /* 或转角超过此值（angle） */
     uint32_t kf_min_valid;     /* 或有效点数低于此值 */
