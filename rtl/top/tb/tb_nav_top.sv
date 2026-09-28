@@ -18,6 +18,7 @@ module tb_nav_top;
     logic [7:0]  cexp [0:16384*4-1];
     logic [31:0] trj  [0:1023];
     logic [31:0] gexp [0:63];
+    logic [31:0] elx [0:47];          // 高程读期望：{槽地址, 低 32 位, 高 20 位} × 16
     int n_ethl, n_frm, n_ethh, n_gexp;
     int c_valid, c_thr0, c_thr1, c_w, c_infl, c_zband;
 
@@ -132,6 +133,7 @@ module tb_nav_top;
         $readmemh("eth_l.hex", ethl);
         $readmemh("eth_h.hex", ethh);
         $readmemh("pose.hex", pose);
+        $readmemh("elev_exp.hex", elx);
         $readmemh("cost_exp.hex", cexp);
         $readmemh("traj.hex", trj);
         $readmemh("goal_exp.hex", gexp);
@@ -188,6 +190,16 @@ module tb_nav_top;
                 if (bad) begin errs += bad; $display("帧%0d 代价图不一致 %0d", k, bad); end
                 else $display("帧%0d 代价图经总线读出一致", k);
             end
+        end
+        // ---------- 高程图读口 ----------
+        for (int i = 0; i < 16; i++) begin
+            int tries = 0;
+            wr(RA_MAP_ELEV_ADDR, elx[3*i]);
+            wr(RA_MAP_ELEV_CMD, 1);
+            do begin rd(RA_MAP_ELEV_Q1, d); tries++; end while (!d[31] && tries < 100);
+            chk($sformatf("ELEV 槽%0d 高位", elx[3*i]), d[19:0], elx[3*i+2][19:0]);
+            rd(RA_MAP_ELEV_Q0, d);
+            chk($sformatf("ELEV 槽%0d 低位", elx[3*i]), d, elx[3*i+1]);
         end
         rd(RA_LIDAR_STAT_FRAMES, d); chk("LIDAR.STAT_FRAMES", d, n_frm);
         rd(RA_LIDAR_STAT_BAD, d);    chk("LIDAR.STAT_BAD", d, 0);

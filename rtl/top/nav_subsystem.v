@@ -251,6 +251,10 @@ module nav_subsystem #(
     wire [15:0] map_seq;
     wire signed [31:0] map_lcx, map_lcy;
     wire [7:0]  map_fc;
+    reg         el_req, el_done;
+    reg  [51:0] el_word;
+    wire        el_ack;
+    wire [51:0] el_q;
     map_subsys u_map (
         .clk(clk), .rst(rst), .cfg_enable(r_MAP_CTRL[0]), .cfg_auto_sweep(r_MAP_CTRL[2]),
         .cmd_sweep(p_MAP_CMD & wd_q[0]), .cmd_clear(p_MAP_CMD & wd_q[1]),
@@ -266,10 +270,19 @@ module nav_subsystem #(
         .s_eof(pf_eof), .s_cx(pf_cx), .s_cy(pf_cy),
         .a_re(cm_a_re), .a_addr(cm_a_addr), .a_q(cm_a_q),
         .b_req(cm_b_req), .b_addr(cm_b_addr), .b_ack(cm_b_ack), .b_q(cm_b_q),
+        .e_req(el_req), .e_addr(r_MAP_ELEV_ADDR[13:0]), .e_ack(el_ack), .e_q(el_q),
         .busy(map_busy), .front(map_front), .seq(map_seq), .lat_cx(map_lcx), .lat_cy(map_lcy),
         .frame_cnt(map_fc), .map_ready(map_ready)
     );
     assign i_MAP_STAT      = {map_seq, 14'd0, map_front, map_busy};
+    // 高程图读：ELEV_CMD.READ 发起，完成后锁存到 ELEV_Q0/Q1 并置 DONE
+    always @(posedge clk) begin
+        if (rst) begin el_req <= 1'b0; el_done <= 1'b0; el_word <= 52'd0; end
+        else if (p_MAP_ELEV_CMD & wd_q[0]) begin el_req <= 1'b1; el_done <= 1'b0; end
+        else if (el_ack) begin el_req <= 1'b0; el_done <= 1'b1; el_word <= el_q; end
+    end
+    assign i_MAP_ELEV_Q0 = el_word[31:0];
+    assign i_MAP_ELEV_Q1 = {el_done, 11'd0, el_word[51:32]};
     assign i_MAP_LAT_CX    = map_lcx;
     assign i_MAP_LAT_CY    = map_lcy;
     assign i_MAP_FRAME_CNT = {24'd0, map_fc};

@@ -52,17 +52,18 @@ void hal_lidar_commit(const int32_t r_q14[3][3], const int32_t t_mm[3], int32_t 
 /* ---- 匹配定位（硬件并行打分）----
  * 对等待中的这一帧点云（按预测位姿 R/t 变换后）施加每个候选位姿增量：
  *   p' = Rz(dyaw)·(p - c) + c + (dx, dy)，c = 机器人位置
- * 与"本帧融合之前"的局部高程图比较：落在已观测栅格的点，求 z 到栅格高度区间 [zmin-TOL, zmax+TOL] 的距离 e，
- *   cost += min(e, EMAX)；e < EIN 的点累加有符号残差（用于高度修正）。
- * 返回 false 表示硬件不支持（固件退回纯里程计）。 */
+ * SLF 后端（默认，model/slf_match.py）：只用竖直结构点，与结构图比较；
+ *   n_valid = 参与打分的点数，cost = Σ 点到结构线法向距离（1/16 格，截断），n_in = 近邻命中点数，sum_dz = 0。
+ * EICM 后端（对照）：与"本帧融合之前"的高程图区间 [zmin-TOL, zmax+TOL] 比较，cost += min(e, EMAX)。
+ * 返回 false 表示硬件不支持（固件退回纯航位推算）。 */
 typedef struct { int32_t dx, dy; int32_t dyaw; } hal_match_cand_t;       /* mm, mm, angle */
 typedef struct { uint32_t n_valid, cost, n_in; int32_t sum_dz; } hal_match_res_t;
 bool hal_match_eval(const int32_t r_q14[3][3], const int32_t t_mm[3], int32_t cx_mm, int32_t cy_mm,
                     const hal_match_cand_t *c, int k, hal_match_res_t *res);
-/* 关键帧：把当前高程图压缩快照为匹配参考（每格 zmin/zmax 各 8 位，相对快照时机器人高度，1 cm 量化）。
- * 匹配始终以最近的关键帧为参考，漂移只在关键帧切换时累积。 */
+/* 关键帧（仅 EICM 打分后端使用；SLF 的结构图由硬件在每次提交时自动累积，不需要）。 */
 void hal_match_keyframe(int32_t z_ref_mm);
-/* 读高程图某点（里程计系 mm）所在栅格的地面高度（zmax）。栅格有效返回 true */
+/* 读高程图某点（里程计系 mm）所在栅格的地面高度：[zmin, zmax] 区间中点（格内高差 > 40 mm 视为非地面）。
+ * 栅格有效返回 true。上板实现走 MAP.ELEV_ADDR/ELEV_CMD/ELEV_Q0/Q1 */
 bool hal_map_height(int32_t x_mm, int32_t y_mm, int32_t *h_mm);
 
 /* ---- IMU 原始字节 ---- */

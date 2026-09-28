@@ -54,6 +54,11 @@ module map_subsys #(
     input  wire [2*LOG2N-1:0] b_addr,
     output reg         b_ack,
     output reg  [7:0]  b_q,
+    // 高程图读口（软核）：req 保持到 ack
+    input  wire        e_req,
+    input  wire [2*LOG2N-1:0] e_addr,
+    output wire        e_ack,
+    output wire [51:0] e_q,
 
     output wire        busy,
     output reg         front,
@@ -86,8 +91,10 @@ module map_subsys #(
         .s_upd(s_upd), .s_addr(s_addr), .s_tag(s_tag), .s_z(s_z), .s_eof(s_eof),
         .fc(frame_cnt), .frame_done(frame_done), .busy(em_busy),
         .swp_sel(swp_busy), .swp_re(em_re), .swp_raddr(em_raddr), .swp_rdata(em_q),
-        .swp_we(em_we), .swp_waddr(em_waddr), .swp_wdata(em_wdata)
+        .swp_we(em_we), .swp_waddr(em_waddr), .swp_wdata(em_wdata),
+        .cpu_req(e_req), .cpu_raddr(e_addr), .cpu_ack(e_ack)
     );
+    assign e_q = em_q;
     assign s_ready = (em_s_ready & ~sweep_pend) | ~cfg_enable;   // 关闭时丢弃输入
 
     trav_v3 #(.LOG2N(LOG2N), .TAGB(TAGB)) u_tv (

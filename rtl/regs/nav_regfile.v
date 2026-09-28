@@ -119,6 +119,10 @@ module nav_regfile (
     input  wire [31:0] i_MAP_FRAME_CNT,
     output reg  [31:0] r_MAP_DROP,
     output reg  [31:0] r_MAP_FILL,
+    output reg  [31:0] r_MAP_ELEV_ADDR,
+    output wire        p_MAP_ELEV_CMD,
+    input  wire [31:0] i_MAP_ELEV_Q0,
+    input  wire [31:0] i_MAP_ELEV_Q1,
     output wire        p_TRAJ_CMD,
     input  wire [31:0] i_TRAJ_STAT,
     output reg  [31:0] r_TRAJ_CFG,
@@ -173,6 +177,7 @@ module nav_regfile (
     assign p_LIDAR_LUT_XY = wr && (addr == 16'h2084);
     assign p_LIDAR_LUT_Z = wr && (addr == 16'h2088);
     assign p_MAP_CMD = wr && (addr == 16'h3004);
+    assign p_MAP_ELEV_CMD = wr && (addr == 16'h304C);
     assign p_TRAJ_CMD = wr && (addr == 16'h4000);
     assign p_IMU_RX_DATA = rd && (addr == 16'h6004);
     assign p_IMU_RX_TS = rd && (addr == 16'h600C);
@@ -231,6 +236,7 @@ module nav_regfile (
             r_MAP_INFL <= 32'h00000005;
             r_MAP_DROP <= 32'h00000410;
             r_MAP_FILL <= 32'h00281E05;
+            r_MAP_ELEV_ADDR <= 32'h00000000;
             r_TRAJ_CFG <= 32'h00002010;
             r_TRAJ_X0 <= 32'h00000000;
             r_TRAJ_Y0 <= 32'h00000000;
@@ -301,6 +307,7 @@ module nav_regfile (
             16'h3024: r_MAP_INFL <= wdata;
             16'h3040: r_MAP_DROP <= wdata;
             16'h3044: r_MAP_FILL <= wdata;
+            16'h3048: r_MAP_ELEV_ADDR <= wdata;
             16'h4008: r_TRAJ_CFG <= wdata;
             16'h400C: r_TRAJ_X0 <= wdata;
             16'h4010: r_TRAJ_Y0 <= wdata;
@@ -417,6 +424,10 @@ module nav_regfile (
         16'h303C: rdata = i_MAP_FRAME_CNT;
         16'h3040: rdata = r_MAP_DROP;
         16'h3044: rdata = r_MAP_FILL;
+        16'h3048: rdata = r_MAP_ELEV_ADDR;
+        16'h304C: rdata = 32'h0;
+        16'h3050: rdata = i_MAP_ELEV_Q0;
+        16'h3054: rdata = i_MAP_ELEV_Q1;
         16'h4000: rdata = 32'h0;
         16'h4004: rdata = i_TRAJ_STAT;
         16'h4008: rdata = r_TRAJ_CFG;

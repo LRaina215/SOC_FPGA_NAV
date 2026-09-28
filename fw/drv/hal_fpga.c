@@ -120,9 +120,23 @@ void hal_match_keyframe(int32_t z_ref_mm) { (void)z_ref_mm; }
 
 bool hal_map_height(int32_t x_mm, int32_t y_mm, int32_t *h_mm)
 {
-    /* 高程读窗口尚未加入寄存器表：暂不支持（固件不做足迹高度锚定） */
-    (void)x_mm; (void)y_mm; (void)h_mm;
-    return false;
+    const int32_t N = HAL_MAP_N, LOG2N = NP_MAP_LOG2N;
+    uint32_t inv = nav_rd(NAV_MAP_INV_RES) & 0xFFFFu;
+    int32_t ix = (int32_t)(((int64_t)x_mm * inv) >> 16);
+    int32_t iy = (int32_t)(((int64_t)y_mm * inv) >> 16);
+    uint32_t slot = ((uint32_t)(iy & (N - 1)) << LOG2N) | (uint32_t)(ix & (N - 1));
+    uint32_t tag = ((uint32_t)((iy >> LOG2N) & 15) << 4) | (uint32_t)((ix >> LOG2N) & 15);
+    nav_wr(NAV_MAP_ELEV_ADDR, slot);
+    nav_wr(NAV_MAP_ELEV_CMD, NAV_MAP_ELEV_CMD_READ_MASK);
+    uint32_t q1 = 0;
+    for (int i = 0; i < 64 && !((q1 = nav_rd(NAV_MAP_ELEV_Q1)) & NAV_MAP_ELEV_Q1_DONE_MASK); i++) { }
+    if (!(q1 & NAV_MAP_ELEV_Q1_DONE_MASK)) return false;          /* 地图正忙（扫描中） */
+    if (FIELD(q1, MAP_ELEV_Q1, CNT) == 0 || FIELD(q1, MAP_ELEV_Q1, TAG) != tag) return false;
+    uint32_t q0 = nav_rd(NAV_MAP_ELEV_Q0);
+    int32_t zmax = (int16_t)(q0 & 0xFFFFu), zmin = (int16_t)(q0 >> 16);
+    if (zmax - zmin > 40) return false;                           /* 格内有高差（障碍/台阶边沿），不作地面 */
+    *h_mm = (zmax + zmin) / 2;                                    /* 区间中点：zmax 含正噪声，用它锚定会向上漂 */
+    return true;
 }
 
 void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int32_t cy, int32_t zmin, int32_t zmax)

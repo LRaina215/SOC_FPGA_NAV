@@ -253,6 +253,20 @@ blocks:
         reset: 0x00281E05
         desc: "空洞填补：最少已观测邻居数、邻居高差极差上限 mm、填补代价"
         fields: {FILL_MIN: [3,0], FILL_TOL: [15,8], FILL_COST: [23,16]}
+      - {name: ELEV_ADDR, off: 0x48, acc: rw, reset: 0, desc: "高程图读：槽地址 [13:0]（= (iy&127)<<7 | (ix&127)）"}
+      - name: ELEV_CMD
+        off: 0x4C
+        acc: w1p
+        reset: 0
+        desc: "高程图读命令（地图更新/扫描空闲时服务，通常数拍内完成）"
+        fields: {READ: [0,0]}
+      - {name: ELEV_Q0, off: 0x50, acc: ro, reset: 0, desc: "读出槽字 [31:0] = {zmin[15:0], zmax[15:0]}"}
+      - name: ELEV_Q1
+        off: 0x54
+        acc: ro
+        reset: 0
+        desc: "读出槽字高位与完成标志"
+        fields: {CNT: [3,0], TAG: [11,4], STAMP: [19,12], DONE: [31,31]}
 
   - name: TRAJ
     base: 0x4000

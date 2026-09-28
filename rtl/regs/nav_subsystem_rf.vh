@@ -110,6 +110,10 @@
     wire [31:0] i_MAP_FRAME_CNT;
     wire [31:0] r_MAP_DROP;
     wire [31:0] r_MAP_FILL;
+    wire [31:0] r_MAP_ELEV_ADDR;
+    wire        p_MAP_ELEV_CMD;
+    wire [31:0] i_MAP_ELEV_Q0;
+    wire [31:0] i_MAP_ELEV_Q1;
     wire        p_TRAJ_CMD;
     wire [31:0] i_TRAJ_STAT;
     wire [31:0] r_TRAJ_CFG;
@@ -257,6 +261,10 @@
         .i_MAP_FRAME_CNT(i_MAP_FRAME_CNT),
         .r_MAP_DROP(r_MAP_DROP),
         .r_MAP_FILL(r_MAP_FILL),
+        .r_MAP_ELEV_ADDR(r_MAP_ELEV_ADDR),
+        .p_MAP_ELEV_CMD(p_MAP_ELEV_CMD),
+        .i_MAP_ELEV_Q0(i_MAP_ELEV_Q0),
+        .i_MAP_ELEV_Q1(i_MAP_ELEV_Q1),
         .p_TRAJ_CMD(p_TRAJ_CMD),
         .i_TRAJ_STAT(i_TRAJ_STAT),
         .r_TRAJ_CFG(r_TRAJ_CFG),

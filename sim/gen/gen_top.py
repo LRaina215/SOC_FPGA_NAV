@@ -74,6 +74,15 @@ def main(out):
         last_cost, last_c = cost, (cx, cy, x, y, yaw)
         print(f"帧{k}: 更新 {sum(q[0] for q in upd)} 可通行 {int((cost <= 200).sum())}")
 
+    # 高程图读口：最后一帧扫描后的若干槽（含已观测与空槽）
+    occ = [a for a in range(nf.N * nf.N) if em.cnt[a]][::97][:12]
+    emp = [a for a in range(nf.N * nf.N) if not em.cnt[a]][::1013][:4]
+    el = []
+    for a in occ + emp:
+        wd = em.word(a)
+        w32(el, a); w32(el, wd & 0xFFFFFFFF); w32(el, wd >> 32)
+    (out / "elev_exp.hex").write_text("\n".join(el) + "\n")
+
     # 轨迹评估：从最后一帧位置出发的一扇形候选
     cx, cy, x, y, yaw = last_c
     x0 = int(round(x * 1000 * INV_RES / 65536 * 256))

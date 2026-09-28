@@ -75,6 +75,7 @@ module tb_lidar_map;
         .s_valid(f_valid), .s_ready(f_ready), .s_upd(f_upd), .s_addr(f_addr), .s_tag(f_tag), .s_z(f_z),
         .s_eof(f_eof), .s_cx(f_cx), .s_cy(f_cy),
         .a_re(a_re), .a_addr(a_addr), .a_q(a_q), .b_req(1'b0), .b_addr(14'd0), .b_ack(), .b_q(),
+        .e_req(1'b0), .e_addr(14'd0), .e_ack(), .e_q(),
         .busy(busy), .front(), .seq(seq), .lat_cx(), .lat_cy(), .frame_cnt(), .map_ready(map_ready));
 
     int errs = 0, fi = 0, pi = 0, frame = 0;

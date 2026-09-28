@@ -31,7 +31,12 @@ module elev_map #(
     output wire [51:0] swp_rdata,
     input  wire        swp_we,
     input  wire [2*LOG2N-1:0] swp_waddr,
-    input  wire [51:0] swp_wdata
+    input  wire [51:0] swp_wdata,
+
+    // 软核读口：读口空闲（无扫描、本拍无点更新、非清除）时服务；req 保持到 ack，ack 拍 swp_rdata 即数据
+    input  wire        cpu_req,
+    input  wire [2*LOG2N-1:0] cpu_raddr,
+    output reg         cpu_ack
 );
     localparam integer AW = 2 * LOG2N;
 
@@ -77,8 +82,10 @@ module elev_map #(
     wire          ram_we    = clr_act ? 1'b1 : swp_sel ? swp_we : fw1_v;
     wire [AW-1:0] ram_waddr = clr_act ? clr_a : swp_sel ? swp_waddr : fw1_a;
     wire [51:0]   ram_wdata = clr_act ? 52'd0 : swp_sel ? swp_wdata : fw1_d;
-    wire          ram_re    = swp_sel ? swp_re : acc;
-    wire [AW-1:0] ram_raddr = swp_sel ? swp_raddr : s_addr;
+    reg           cpu_pend;
+    wire          cpu_go    = cpu_req & ~cpu_pend & ~cpu_ack & ~swp_sel & ~acc & ~clr_act;
+    wire          ram_re    = swp_sel ? swp_re : (acc | cpu_go);
+    wire [AW-1:0] ram_raddr = swp_sel ? swp_raddr : acc ? s_addr : cpu_raddr;
 
     nav_ram_sdp #(.DW(52), .AW(AW)) u_ram (
         .clk(clk), .we(ram_we), .waddr(ram_waddr), .wdata(ram_wdata),
@@ -86,6 +93,15 @@ module elev_map #(
     );
     assign swp_rdata = q;
     assign busy = clr_act | v1 | v2 | fw1_v;
+
+    always @(posedge clk) begin
+        cpu_ack <= 1'b0;
+        if (rst) cpu_pend <= 1'b0;
+        else begin
+            cpu_pend <= cpu_go;
+            if (cpu_pend) cpu_ack <= 1'b1;
+        end
+    end
 
     always @(posedge clk) begin
         frame_done <= 1'b0;
