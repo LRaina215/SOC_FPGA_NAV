@@ -12,7 +12,7 @@ void nav_app_init(void)
     g_app.t_status = now;
     g_app.use_imu_yaw = false;
     pm_default_cfg(&g_app.pm_cfg);
-    g_app.pm_cfg.enable = false;            /* 匹配定位：实验功能，评测见 docs/algorithms.md，默认关闭 */
+    g_app.pm_cfg.enable = true;             /* SLF 匹配定位（硬件打分不可用时 hal_match_eval 返回 false，自动退化为纯航位推算） */
     g_app.zband_lo = -600;
     g_app.zband_hi = 1200;
     g_app.anchor_gain = 64;

@@ -68,7 +68,7 @@ def main():
     ap.add_argument("--laps", type=int, default=1)
     ap.add_argument("--search")
     ap.add_argument("--trav", default="v3")
-    ap.add_argument("--match", default="off")
+    ap.add_argument("--match", default="on")
     ap.add_argument("--time", type=float, default=90.0)
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--fps", type=float, default=10.0)
