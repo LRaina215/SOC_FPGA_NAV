@@ -15,11 +15,16 @@
    代价 = 3×3 邻域结构格的最小点到线法向距离（上限 C_NEAR）；只用预测位置 GATE_D 以内有已知结构的点。
    选择这种形式的原因与被否决的做法见 docs/algorithms.md 第 6 节。
 """
+import math
+import os
+
 import numpy as np
 
 import nav_fixed as nf
 
-SN_LOG2 = 8
+# 实验开关（环境变量）：结构图边长、近邻形式（"3x3" 或 "2x2" = 点所在象限的 2×2 格，硬件 4 体交织一拍读完）
+SN_LOG2 = int(os.environ.get("SLF_SN_LOG2", "8"))
+NBR = os.environ.get("SLF_NBR", "3x3")
 SN = 1 << SN_LOG2            # 结构图边长
 TAGB = 4
 DZ_MIN = 20                  # mm：竖直段最小高差（抑制噪声）
@@ -27,8 +32,8 @@ SLOPE_K = 2                  # |Δz| > K·|Δxy|
 Z_LO, Z_HI = 60, 1500        # 相对机器人高度：只用离地 6 cm 以上、1.5 m 以下的点（去掉地面接缝与天花板）
 HIT_MIN = 2
 HIT_FREEZE = 4               # 质心累计平均的次数，之后冻结
+HIT_MAX = 7                  # 命中数 3 bit
 DMAX = 8                     # 截断距离（格）
-NDIR = 32                    # 法向量化方向数（180° 内）
 C_NEAR = 40                  # 近邻代价上限（1/16 格，2.5 格）
 W_FAR = 0                    # 近邻区以外代价为常数：远处的点不施加拉力（加梯度后闭环平均误差反而变大，见 algorithms.md）
 GATE_D = 6                   # 参与打分的点：预测位置的距离场 <= 2 格（更远的多是新看到的结构）
@@ -73,30 +78,26 @@ class StructMap:
         return (np.clip(v, -(1 << 25), (1 << 25) - 1) * self.inv_res) >> 16
 
     def update(self, pts_xy):
-        """pts_xy: (K,2) 里程计系 mm（修正后位姿下的结构点）。
-        每格：命中计数（每帧至多 +1）+ 格内亚格质心（1/16 格）"""
+        """pts_xy: (K,2) 里程计系 mm（修正后位姿下的结构点，按像素顺序）。
+        每格：命中数（3 bit，每帧至多 +1）+ 格内亚格质心（1/16 格）。一帧内同一格只取第一个点（流式硬件不必做帧内平均）；
+        质心：前 HIT_FREEZE 次观测累计平均，之后冻结"""
         if len(pts_xy) == 0:
             return
         fx, fy = self.cell16(pts_xy[:, 0]), self.cell16(pts_xy[:, 1])
         ix, iy = fx >> 4, fy >> 4
         a = ((iy & (SN - 1)) << SN_LOG2) | (ix & (SN - 1))
-        tg = (((iy >> SN_LOG2) & 15) << TAGB) | ((ix >> SN_LOG2) & 15)
-        u, first, inv, cnt = np.unique(a, return_index=True, return_inverse=True, return_counts=True)
-        mx = np.bincount(inv, weights=fx & 15) / cnt       # 本帧格内质心（硬件：累加器 / 计数，或只取首点）
-        my = np.bincount(inv, weights=fy & 15) / cnt
-        mx, my = np.floor(mx + 0.5).astype(np.int64), np.floor(my + 0.5).astype(np.int64)
-        tg = tg[first]
+        tg = (((iy >> SN_LOG2) & 3) << 2) | ((ix >> SN_LOG2) & 3)
+        u, first = np.unique(a, return_index=True)
+        mx, my, tg = (fx & 15)[first], (fy & 15)[first], tg[first]
         fresh = (self.tag[u] != tg) | (self.hit[u] == 0)
-        self.hit[u[fresh]] = 0
-        self.tag[u] = tg
-        # 质心：前 HIT_FREEZE 次观测取累计平均，之后冻结。用指数平均时，定位退化期间（沿墙走、打滑）
-        # 带偏差的帧会把地图"拖着走"，地图跟着位姿一起漂，就失去了绝对参照
         h0 = np.where(fresh, 0, self.hit[u])
         upd = h0 < HIT_FREEZE
         n1 = h0 + 1
+        # 累计平均：c += round((m - c) / n)（向下取整的除法，硬件用 n∈{2,3,4} 的常数除法）
         self.cxs[u] = np.where(fresh, mx, np.where(upd, self.cxs[u] + np.floor_divide(mx - self.cxs[u] + n1 // 2, n1), self.cxs[u]))
         self.cys[u] = np.where(fresh, my, np.where(upd, self.cys[u] + np.floor_divide(my - self.cys[u] + n1 // 2, n1), self.cys[u]))
-        self.hit[u] = np.minimum(self.hit[u] + 1, 15)
+        self.tag[u] = tg
+        self.hit[u] = np.minimum(h0 + 1, HIT_MAX)
 
     def build_lf(self, cx, cy):
         """以 (cx, cy)（高程图窗口中心格）为中心的 SN×SN 窗口：结构格 -> 截断切比雪夫距离"""
@@ -104,7 +105,7 @@ class StructMap:
         gx = cx - SN // 2 + w
         gy = cy - SN // 2 + w
         slot = ((gy[:, None] & (SN - 1)) << SN_LOG2) | (gx[None, :] & (SN - 1))
-        etag = (((gy[:, None] >> SN_LOG2) & 15) << TAGB) | ((gx[None, :] >> SN_LOG2) & 15)
+        etag = (((gy[:, None] >> SN_LOG2) & 3) << 2) | ((gx[None, :] >> SN_LOG2) & 3)
         occ = (self.tag[slot] == etag) & (self.hit[slot] >= HIT_MIN)
         self.n_struct = int(occ.sum())
         d = np.minimum(2 * chebyshev_dt(occ, DMAX) + taxicab_dt(occ, 3 * DMAX), 3 * DMAX)
@@ -126,12 +127,8 @@ class StructMap:
         near = np.zeros_like(core)
         near[core] = d3[wy0[core], wx0[core]] <= GATE_D
         px, py = px[near], py[near]
-        rx, ry = px - cx_mm, py - cy_mm
         for k, (dx, dy, da) in enumerate(cands):
-            i = ((int(da) + 32) & 0xFFFF) >> 6          # 四舍五入到正弦表格点（向下取整会让负角候选多转一格）
-            s, c = nf.SIN[i], nf.SIN[(i + 256) & 1023]
-            x = cx_mm + ((rx * c - ry * s) >> 14) + dx
-            y = cy_mm + ((rx * s + ry * c) >> 14) + dy
+            x, y = apply_delta(px, py, dx, dy, da, cx_mm, cy_mm)
             out[k] = (len(px),) + point_cost(self.cell16(x) - 16 * ox, self.cell16(y) - 16 * oy, occ, d3, cxs, cys,
                                              nx, ny, has)
         return out
@@ -140,15 +137,50 @@ class StructMap:
         return (np.clip(v, -(1 << 25), (1 << 25) - 1) * self.inv_res) >> 12
 
 
+def apply_delta(px, py, dx, dy, da, cx_mm, cy_mm):
+    """p' = Rz(da)·(p - c) + c + (dx, dy)（正弦表 1024 项，角度四舍五入到表格点：向下取整会让负角多转一格）"""
+    i = ((int(da) + 32) & 0xFFFF) >> 6
+    s, c = nf.SIN[i], nf.SIN[(i + 256) & 1023]
+    rx, ry = px - cx_mm, py - cy_mm
+    return cx_mm + ((rx * c - ry * s) >> 14) + dx, cy_mm + ((rx * s + ry * c) >> 14) + dy
+
+
+CORDIC_ATAN = [8192, 4836, 2555, 1297, 651, 326, 163, 81, 41, 20]
+NVEC = [(int(round(math.cos(q * math.pi / 32) * 128)), int(round(math.sin(q * math.pi / 32) * 128))) for q in range(32)]
+
+
+def sector32(X, Y):
+    """向量 (X, Y) 的方向量化为 32 个扇区（每扇区 11.25°，扇区 0 以 -180° 为中心）。
+    与硬件相同的整数 CORDIC：先整体右移到 17 位以内，再 10 次迭代；角度单位 65536/周。"""
+    X = X.astype(np.int64).copy()
+    Y = Y.astype(np.int64).copy()
+    m = np.maximum(np.abs(X), np.abs(Y))
+    sh = np.maximum(0, np.floor(np.log2(np.maximum(m, 1))).astype(np.int64) + 1 - 17)
+    X >>= sh
+    Y >>= sh
+    a = np.zeros_like(X)
+    neg = X < 0
+    X = np.where(neg, -X, X)
+    Y = np.where(neg, -Y, Y)
+    a = np.where(neg, 32768, 0)
+    for i, t in enumerate(CORDIC_ATAN):
+        up = Y > 0
+        nx = np.where(up, X + (Y >> i), X - (Y >> i))
+        ny = np.where(up, Y - (X >> i), Y + (X >> i))
+        a = np.where(up, a + t, a - t)
+        X, Y = nx, ny
+    return (((a + 32768 + 1024) & 0xFFFF) >> 11) & 31
+
+
 def cell_normals(occ, cxs, cys):
-    """每个结构格的法向：5×5 邻域内结构格质心的主方向（协方差矩阵），法向 = 主方向转 90°。
-    量化为 NDIR 个方向（Q7 单位向量）；邻域结构格少于 3 个或近似各向同性时 has=False（按点到质心距离计）。
-    硬件：建似然场的同一遍扫描里用 5×5 窗口累加 Σx Σy Σxx Σxy Σyy，CORDIC 求 atan2 后查表。"""
+    """每个结构格的法向：5×5 邻域内结构格质心的主方向，法向 = 主方向转 90°，量化为 32 个方向（Q7 单位向量）。
+    全整数：坐标取相对中心格的 1/16 格（16·dx + 质心），A = nΣxx − (Σx)²、B = nΣxy − ΣxΣy、C = nΣyy − (Σy)²（= n²·协方差），
+    主方向角 = ½·atan2(2B, A − C)，法向扇区 q = sector32(A − C, 2B)（法向角 = q·π/32）。
+    线状判定（主方向明显）：25·((A − C)² + 4B²) > 9·(A + C)²；邻域结构格 < 3 个时无法向（按点到质心 L1 计）。
+    硬件：建似然场的一遍扫描里 5×5 窗口累加，CORDIC 求扇区。"""
     n = occ.shape[0]
-    px = (np.arange(n)[None, :] * 16 + cxs).astype(np.float64)
-    py = (np.arange(n)[:, None] * 16 + cys).astype(np.float64)
-    o = occ.astype(np.float64)
-    S = {k: np.zeros((n, n)) for k in ("n", "x", "y", "xx", "xy", "yy")}
+    o = occ.astype(np.int64)
+    S = {k: np.zeros((n, n), dtype=np.int64) for k in ("n", "x", "y", "xx", "xy", "yy")}
     for dy in range(-2, 3):
         for dx in range(-2, 3):
             def sh(a):
@@ -158,23 +190,18 @@ def cell_normals(occ, cxs, cys):
                 out[ys, xs] = a[yd, xd]
                 return out
             w = sh(o)
-            X, Y = sh(px) * w, sh(py) * w
+            X = (16 * dx + sh(cxs)) * w
+            Y = (16 * dy + sh(cys)) * w
             S["n"] += w; S["x"] += X; S["y"] += Y
-            S["xx"] += X * sh(px); S["xy"] += X * sh(py); S["yy"] += Y * sh(py)
-    cnt = np.maximum(S["n"], 1)
-    mx, my = S["x"] / cnt, S["y"] / cnt
-    cxx = S["xx"] / cnt - mx * mx
-    cxy = S["xy"] / cnt - mx * my
-    cyy = S["yy"] / cnt - my * my
-    th = 0.5 * np.arctan2(2 * cxy, cxx - cyy)                 # 主方向
-    lam_d = np.sqrt(((cxx - cyy) / 2) ** 2 + cxy ** 2)
-    aniso = lam_d > 0.6 * (cxx + cyy) / 2                     # 线状（主方向明显）
-    q = np.round((th + np.pi / 2) / np.pi * NDIR).astype(np.int64) % NDIR
-    ang = q * np.pi / NDIR - np.pi / 2 + np.pi / 2            # 法向 = 主方向 + 90°
-    nxq = np.round(np.cos(ang) * 128).astype(np.int64)
-    nyq = np.round(np.sin(ang) * 128).astype(np.int64)
+            S["xx"] += X * X; S["xy"] += X * Y; S["yy"] += Y * Y
+    A = S["n"] * S["xx"] - S["x"] * S["x"]
+    B = S["n"] * S["xy"] - S["x"] * S["y"]
+    C = S["n"] * S["yy"] - S["y"] * S["y"]
+    aniso = 25 * ((A - C) ** 2 + 4 * B * B) > 9 * (A + C) ** 2
+    q = sector32(A - C, 2 * B)
+    nv = np.array(NVEC, dtype=np.int64)
     has = occ & (S["n"] >= 3) & aniso
-    return nxq, nyq, has
+    return nv[q, 0], nv[q, 1], has
 
 
 def point_cost(fx, fy, occ, d3, cxs, cys, nx=None, ny=None, has=None):
@@ -187,8 +214,16 @@ def point_cost(fx, fy, occ, d3, cxs, cys, nx=None, ny=None, has=None):
     wx, wy = fx >> 4, fy >> 4
     sx, sy = fx & 15, fy & 15
     best = np.full(fx.shape, 1 << 20, dtype=np.int64)
-    for oy_ in (-1, 0, 1):
-        for ox_ in (-1, 0, 1):
+    if NBR == "2x2":
+        qx = np.where(sx >= 8, 1, -1)
+        qy = np.where(sy >= 8, 1, -1)
+        offs = [(0, 0), (1, 0), (0, 1), (1, 1)]
+    else:
+        offs = [(a, b) for a in (-1, 0, 1) for b in (-1, 0, 1)]
+    for oy_s, ox_s in offs:
+        ox_ = ox_s * qx if NBR == "2x2" else ox_s
+        oy_ = oy_s * qy if NBR == "2x2" else oy_s
+        if True:
             kx, ky = np.clip(wx + ox_, 0, SN - 1), np.clip(wy + oy_, 0, SN - 1)
             o = occ[ky, kx]
             ex = 16 * ox_ + cxs[ky, kx] - sx

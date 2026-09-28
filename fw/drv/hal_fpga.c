@@ -108,15 +108,17 @@ bool hal_lidar_waiting(uint32_t *frame_t_us)
     return true;
 }
 
-bool hal_match_eval(const int32_t r[3][3], const int32_t t[3], int32_t cx_mm, int32_t cy_mm,
-                    const hal_match_cand_t *c, int k, hal_match_res_t *res)
+/* SLF 匹配硬件尚未接入寄存器：暂不支持，固件退回纯航位推算 */
+bool hal_match_ready(void) { return true; }
+bool hal_match_eval(int32_t cx_mm, int32_t cy_mm, const hal_match_cand_t *c, int k, hal_match_res_t *res)
 {
-    /* 匹配打分硬件（match_eval）尚未接入寄存器：暂不支持，固件使用纯里程计 */
-    (void)r; (void)t; (void)cx_mm; (void)cy_mm; (void)c; (void)k; (void)res;
+    (void)cx_mm; (void)cy_mm; (void)c; (void)k; (void)res;
     return false;
 }
-
-void hal_match_keyframe(int32_t z_ref_mm) { (void)z_ref_mm; }
+void hal_match_update(int32_t dx, int32_t dy, int32_t dyaw, int32_t cx_mm, int32_t cy_mm)
+{
+    (void)dx; (void)dy; (void)dyaw; (void)cx_mm; (void)cy_mm;
+}
 
 bool hal_map_height(int32_t x_mm, int32_t y_mm, int32_t *h_mm)
 {

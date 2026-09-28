@@ -1,22 +1,12 @@
-/* 匹配定位框架：候选增量由固件生成、硬件打分（hal_match_eval），固件取最优并做抛物线亚步长拟合与退化判定。
- * 打分后端两种（FPGA 侧选择）：
- *   SLF（默认）：结构似然场——竖直结构点到结构图的截断距离和，见 model/slf_match.py；
- *   EICM：高程区间一致性（下述），实测有系统偏差，保留作对照。
+/* 匹配定位（SLF：结构似然场，硬件打分见 model/slf_match.py 与 docs/algorithms.md 第 6 节）。
  *
- * EICM：高程区间一致性匹配（Elevation-Interval Consistency Matching）。
- *
- * 思路：局部高程图每格存了 [zmin, zmax]。位姿正确时，新一帧的点应落在各自栅格的高度区间内；
- * 位姿有偏差时，墙面/箱体侧面/台阶立面上的点会落到"地面格"（区间很窄）里，产生大的高度残差。
- * 于是对一组候选位姿增量逐一统计截断残差和，取最小者——这是在 2.5D 高程图上做的相关匹配。
- *
- * 为什么适合 FPGA：
- *   · 每个 (点, 候选) 只需 一次旋转（查表正余弦 + 4 次乘法）、一次查图、两次比较，没有迭代、没有 KD 树；
- *   · 候选之间完全独立，可按 K 路并行；地图就是已有的高程图存储，不增加存储；
- *   · 帧缓冲本来就是双缓冲，"先匹配、后融合"只需把同一帧读两遍。
- * 与只用里程计相比：航向漂移和打滑造成的位置误差被持续拉回；
- * 同时用地面点的有符号残差估计高度漂移（坡道上 z 积分误差）。
- *
- * 退化处理：沿某一轴代价曲面平坦（如长走廊、空旷平地）时，该轴不修正，只信里程计。
+ * 每帧流程（先融合、后匹配——帧只需流过一遍）：
+ *   1. 按预测位姿提交帧：高程图融合，同时硬件提取竖直结构点存入点缓冲；
+ *   2. hal_match_ready() 后，固件生成候选增量 (dx, dy, dyaw)，硬件对缓冲的结构点逐候选打分（hal_match_eval）；
+ *   3. 固件取最优：平移用 3×3 邻域二次曲面的 Hessian 特征分解，只沿约束足够的方向做牛顿步（沿墙方向不修正），
+ *      角度轴抛物线拟合；按增益修正位姿（含历史）；
+ *   4. hal_match_update(修正量)：硬件把缓冲点按修正量变换后并入结构图，重建法向/距离场。
+ * 为什么适合 FPGA：每个 (点, 候选) 只需查表旋转 + 一次 2×2 格读 + 4 次乘加，没有迭代、没有 KD 树；候选相互独立。
  */
 #ifndef NAV_POSE_MATCH_H
 #define NAV_POSE_MATCH_H
@@ -33,33 +23,21 @@ typedef struct {
     int32_t  step_ang;         /* 粗搜索角度步长（angle） */
     int      half;             /* 平移搜索半宽（-half..half） */
     int      half_ang;         /* 角度搜索半宽 */
-    bool     use_kf;           /* EICM 需要关键帧；SLF 的结构图由硬件在每次提交时自动累积 */
-    int32_t  out_pen;          /* 落到图外/未观测的点的代价（EICM 75；SLF 0，硬件已按截断距离计） */
     int32_t  gain_q8;          /* 修正增益 /256 */
-    int32_t  gain_z_q8;
     uint32_t min_valid;        /* 参与匹配的最少有效点数 */
     int32_t  min_curv;         /* 平移 Hessian 特征值下限（每千点，低于视为该方向退化，不修正） */
     int32_t  min_curv_ang;     /* 角度轴曲率下限（每千点） */
-    int32_t  kf_dist_mm;       /* 离上一关键帧超过此距离 -> 新关键帧 */
-    int32_t  kf_ang;           /* 或转角超过此值（angle） */
-    uint32_t kf_min_valid;     /* 或有效点数低于此值 */
 } pm_cfg_t;
 
 typedef struct {
-    int32_t  dx, dy, dz, dyaw;       /* 本次采用的修正 */
+    int32_t  dx, dy, dyaw;           /* 本次采用的修正 */
     uint32_t n_valid, cost0, cost_best;
     bool     applied, degen_x, degen_y, degen_yaw;
-    uint32_t n_runs, n_applied, n_kf;
-    bool     have_kf;
-    int32_t  kf_x, kf_y;
-    angle_t  kf_yaw;
+    uint32_t n_runs, n_applied;
 } pm_stat_t;
 
 void pm_default_cfg(pm_cfg_t *c);
-/* at：帧时刻的预测位姿；r/t：由 at 合成的雷达变换。成功时修正 pe（当前位姿与历史） */
-/* 帧融合之后调用：满足条件时让硬件抓取新关键帧 */
-void pose_match_after_commit(const pm_cfg_t *c, const nav_pose_t *at, pm_stat_t *st);
-bool pose_match_run(const pm_cfg_t *c, pose_est_t *pe, const nav_pose_t *at,
-                    const int32_t r_q14[3][3], const int32_t t_mm[3], pm_stat_t *st);
+/* at：帧时刻的预测位姿（即提交帧时用的位姿）。成功时修正 pe（当前位姿与历史），返回是否修正 */
+bool pose_match_run(const pm_cfg_t *c, pose_est_t *pe, const nav_pose_t *at, pm_stat_t *st);
 
 #endif

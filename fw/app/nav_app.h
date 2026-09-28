@@ -20,8 +20,10 @@ typedef struct {
     bool         use_imu_yaw;           /* IMU 航向可信时置 1（磁干扰大时用里程计航向） */
     pm_cfg_t     pm_cfg;
     pm_stat_t    pm;
-    int32_t      zband_lo, zband_hi;
-    int32_t      anchor_gain;           /* 足迹高度锚定增益 /256（0 = 关闭） */    /* 保留点高度带（相对机器人，mm）：地面以下 / 机身以上的点不进地图 */
+    bool         pm_pend;               /* 已提交、待匹配的帧 */
+    nav_pose_t   pm_at;                 /* 该帧提交时的位姿 */
+    int32_t      zband_lo, zband_hi;    /* 保留点高度带（相对机器人，mm）：地面以下 / 机身以上的点不进地图 */
+    int32_t      anchor_gain;           /* 足迹高度锚定增益 /256（0 = 关闭） */
 } nav_app_t;
 
 extern nav_app_t g_app;

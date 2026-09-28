@@ -33,11 +33,17 @@ typedef int (*h_cb_t)(int32_t x, int32_t y, int32_t *h);
 static h_cb_t s_h_cb;
 EXPORT void py_set_h_cb(h_cb_t cb) { s_h_cb = cb; }
 bool hal_map_height(int32_t x, int32_t y, int32_t *h) { return s_h_cb ? s_h_cb(x, y, h) != 0 : false; }
-typedef void (*kf_cb_t)(int32_t z_ref);
-static kf_cb_t s_kf_cb;
-EXPORT void py_set_kf_cb(kf_cb_t cb) { s_kf_cb = cb; }
-void hal_match_keyframe(int32_t z) { if (s_kf_cb) s_kf_cb(z); }
-typedef void (*match_cb_t)(const int32_t *rt, int32_t cx_mm, int32_t cy_mm, const int32_t *cand, int k, uint32_t *out);
+typedef void (*mu_cb_t)(int32_t dx, int32_t dy, int32_t dyaw, int32_t cx_mm, int32_t cy_mm);
+static mu_cb_t s_mu_cb;
+EXPORT void py_set_mu_cb(mu_cb_t cb) { s_mu_cb = cb; }
+static bool s_match_ready;
+bool hal_match_ready(void) { return s_match_ready; }
+void hal_match_update(int32_t dx, int32_t dy, int32_t dyaw, int32_t cx_mm, int32_t cy_mm)
+{
+    s_match_ready = false;
+    if (s_mu_cb) s_mu_cb(dx, dy, dyaw, cx_mm, cy_mm);
+}
+typedef void (*match_cb_t)(int32_t cx_mm, int32_t cy_mm, const int32_t *cand, int k, uint32_t *out);
 static match_cb_t s_match_cb;
 
 static uint8_t  s_hin[16][300];
@@ -52,6 +58,7 @@ EXPORT void py_set_time(uint32_t t) { s_now = t; }
 EXPORT void py_set_map(const uint8_t *slot, int32_t cx, int32_t cy, uint16_t seq, uint16_t inv_res)
 {
     memcpy(s_slot, slot, sizeof s_slot);
+    s_match_ready = true;                  /* 帧已提交处理完：结构点缓冲就绪 */
     s_mi.cx = cx; s_mi.cy = cy; s_mi.seq = seq; s_mi.inv_res = inv_res;
     s_mi.res_mm = inv_res ? 65536 / inv_res : 50;
 }
@@ -100,11 +107,11 @@ EXPORT void py_get_state(int32_t *v)
     v[6] = nt->mode; v[7] = nt->state; v[8] = nt->goal_x; v[9] = nt->goal_y;
     v[10] = nt->look_x; v[11] = nt->look_y;
 }
-/* v: applied dx dy dz dyaw n_valid cost0 cost_best degen_x degen_y degen_yaw n_applied */
+/* v: applied dx dy 0 dyaw n_valid cost0 cost_best degen_x degen_y degen_yaw n_applied */
 EXPORT void py_get_match(int32_t *v)
 {
     const pm_stat_t *s = &g_app.pm;
-    v[0] = s->applied; v[1] = s->dx; v[2] = s->dy; v[3] = s->dz; v[4] = s->dyaw; v[5] = (int32_t)s->n_valid;
+    v[0] = s->applied; v[1] = s->dx; v[2] = s->dy; v[3] = 0; v[4] = s->dyaw; v[5] = (int32_t)s->n_valid;
     v[6] = (int32_t)s->cost0; v[7] = (int32_t)s->cost_best; v[8] = s->degen_x; v[9] = s->degen_y; v[10] = s->degen_yaw;
     v[11] = (int32_t)s->n_applied;
 }
@@ -120,7 +127,6 @@ EXPORT int py_get_gmap(uint8_t *grid, int32_t *v, int16_t *path)
 }
 EXPORT void py_set_gmap_enable(int en) { g_app.nt.use_gmap = en != 0; }
 EXPORT void py_set_anchor(int g) { g_app.anchor_gain = g; }
-EXPORT int py_get_nkf(void) { return (int)g_app.pm.n_kf; }
 EXPORT void py_set_match_enable(int en) { g_app.pm_cfg.enable = en != 0; }
 EXPORT void py_set_caps(int holonomic, int vx_max, int wz_max, int radius)
 {
@@ -172,21 +178,14 @@ void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int
     s_commit = true;
     s_lw = false;
 }
-bool hal_match_eval(const int32_t r[3][3], const int32_t t[3], int32_t cx_mm, int32_t cy_mm,
-                    const hal_match_cand_t *c, int k, hal_match_res_t *res)
+bool hal_match_eval(int32_t cx_mm, int32_t cy_mm, const hal_match_cand_t *c, int k, hal_match_res_t *res)
 {
     if (!s_match_cb) return false;
-    int32_t rt[12];
-    for (int i = 0; i < 9; i++) rt[i] = r[i / 3][i % 3];
-    rt[9] = t[0]; rt[10] = t[1]; rt[11] = t[2];
     static int32_t cand[3 * 256];
     static uint32_t out[4 * 256];
     for (int i = 0; i < k; i++) { cand[3 * i] = c[i].dx; cand[3 * i + 1] = c[i].dy; cand[3 * i + 2] = c[i].dyaw; }
-    s_match_cb(rt, cx_mm, cy_mm, cand, k, out);
-    for (int i = 0; i < k; i++) {
-        res[i].n_valid = out[4 * i]; res[i].cost = out[4 * i + 1];
-        res[i].n_in = out[4 * i + 2]; res[i].sum_dz = (int32_t)out[4 * i + 3];
-    }
+    s_match_cb(cx_mm, cy_mm, cand, k, out);
+    for (int i = 0; i < k; i++) { res[i].n_valid = out[4 * i]; res[i].cost = out[4 * i + 1]; res[i].n_in = out[4 * i + 2]; }
     return true;
 }
 bool hal_imu_byte(uint8_t *b, bool *first, uint32_t *t)

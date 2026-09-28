@@ -38,7 +38,7 @@ void nav_app_poll(void)
                          g_app.imu.att_t_us);
     }
 
-    /* 3. 雷达帧：预测位姿 -> 匹配修正（硬件打分）-> 用修正后的位姿融合，窗口中心跟随机器人 */
+    /* 3. 雷达帧：按预测位姿提交（融合 + 提取结构点），窗口中心跟随机器人 */
     uint32_t ft;
     /* 等到帧时刻之后的姿态已到达（IMU 50 Hz，最多等 100 ms）再处理：否则帧时刻恰逢姿态突变时，
      * 突变还没被检测到，这一帧就会带着旧姿态融合 */
@@ -50,26 +50,31 @@ void nav_app_poll(void)
         int32_t r[3][3], tt[3];
         pose_at(&nt->pose, ft, &at);
         pose_lidar_tf(&nt->pose, &at, r, tt);
-        if (pose_match_run(&g_app.pm_cfg, &nt->pose, &at, r, tt, &g_app.pm)) {
-            pose_at(&nt->pose, ft, &at);                /* 历史已同步修正 */
-            pose_lidar_tf(&nt->pose, &at, r, tt);
-        }
         hal_map_info_t mi;
         hal_map_info(&mi);
         uint16_t inv = mi.inv_res ? mi.inv_res : 1311;
         int32_t cx = (int32_t)(((int64_t)at.x * inv) >> 16);
         int32_t cy = (int32_t)(((int64_t)at.y * inv) >> 16);
         /* 姿态突变前后 200 ms 的帧：点云整体倾斜未知，融合会在远处造成大片假台阶。
-         * 提交空高度带（zmin > zmax）——帧被消费、不写图，地形扫描照常进行 */
-        if (pose_att_unsettled(&nt->pose, now, 200000)) {
+         * 提交空高度带（zmin > zmax）——帧被消费、不写图、不提结构点，地形扫描照常进行 */
+        bool skip = pose_att_unsettled(&nt->pose, now, 200000);
+        if (skip) {
             hal_lidar_commit(r, tt, cx, cy, 1, 0);
             g_app.n_skip++;
         } else {
             hal_lidar_commit(r, tt, cx, cy, at.z + g_app.zband_lo, at.z + g_app.zband_hi);
         }
-        pose_match_after_commit(&g_app.pm_cfg, &at, &g_app.pm);
+        g_app.pm_pend = !skip && g_app.pm_cfg.enable;
+        g_app.pm_at = at;
         pose_anchor_z(&nt->pose, 200, 180, g_app.anchor_gain);
         g_app.n_frames++;
+    }
+    /* 匹配（先融合后匹配）：结构点就绪后打分、修正位姿，再把结构点按修正量并入结构图 */
+    if (g_app.pm_pend && hal_match_ready()) {
+        g_app.pm_pend = false;
+        bool ok = pose_match_run(&g_app.pm_cfg, &nt->pose, &g_app.pm_at, &g_app.pm);
+        hal_match_update(ok ? g_app.pm.dx : 0, ok ? g_app.pm.dy : 0, ok ? g_app.pm.dyaw : 0,
+                         g_app.pm_at.x, g_app.pm_at.y);
     }
 
     /* 4. 主机报文 */

@@ -1,8 +1,9 @@
-"""FPGA 侧模型：感知链路（与 RTL 逐位一致的 nav_fast）+ 匹配打分（EICM，将来的 match_eval 硬件）。
+"""FPGA 侧模型：感知链路（nav_fast / trav_v3，与 RTL 逐位一致）+ SLF 匹配（model/slf_match.py，尚无 RTL）。
 
-帧处理两遍（与硬件双缓冲帧一致）：
-  1. 匹配遍：按固件给的预测位姿把点变换到里程计系，对每个候选增量统计与"本帧融合前"高程图的区间一致性；
-  2. 融合遍：固件修正位姿后提交，点云写入高程图，扫描生成代价图。
+每帧（与固件 nav_app 的顺序一致，帧只流过一遍）：
+  commit：按预测位姿变换 -> 高程图融合 -> 地形扫描；同时提取竖直结构点存入点缓冲；
+  match_eval：对缓冲点逐候选增量打分（结构图为此前各帧累积）；
+  match_update：缓冲点按固件最终采用的修正量变换后并入结构图，重建法向/距离场。
 """
 import sys
 from pathlib import Path
@@ -20,16 +21,8 @@ import slf_match as slf  # noqa: E402
 N = nf.N
 SIN = np.array(nf.SIN, dtype=np.int64)
 
-# 匹配参数（硬件寄存器）
-M_TOL = 30        # 区间两侧容差 mm
-M_EMAX = 150      # 截断残差 mm
-M_EIN = 100       # 高度修正内点门限 mm
-M_GROUND_ROUGH = 40
-M_STRIDE = 4      # 点抽样步长（硬件每 4 个点取 1 个）
-
-
 class FpgaModel:
-    def __init__(self, trav="v1", inv_res=1311, cfg=None, match="slf", mount_z=200):
+    def __init__(self, trav="v3", inv_res=1311, cfg=None, mount_z=200):
         self.lut = np.array(lidar_lut.lut_entries(), dtype=np.int64)
         self.em = nf.ElevMap()
         self.inv_res = inv_res
@@ -46,26 +39,15 @@ class FpgaModel:
         self.pv = None
         self.last_lethal = None
         self.view = None
-        self.kf = None          # (cx, cy, valid, zmin, zmax, rough) 窗口坐标，z 已按 8 位 1 cm 量化还原
-        self.match = match
         self.mount_z = mount_z
         self.smap = slf.StructMap(inv_res)
-        self.n_struct_pts = 0
+        self.spts = np.zeros((0, 3), dtype=np.int64)     # 本帧结构点缓冲（提交时的位姿下）
 
     # ---------------------------------------------------------------- 帧
     def frame(self, depth):
         self.xyz, self.pv = fast.pc_project(depth, self.lut)
 
-    # ---------------------------------------------------------------- 关键帧
-    def keyframe(self, z_ref):
-        slot, V, H, RO = fast.window_view(self.em, self.cx, self.cy, dict(trav_v3.DEFAULT_V3, **self.cfg), kill=False)
-        def q8(z):     # 相对 z_ref、1 cm 量化、8 位饱和（硬件存储格式），还原为 mm
-            return np.clip(np.round((z - z_ref) / 10), -128, 127).astype(np.int64) * 10 + z_ref
-        zmin = q8(self.em.zmin[slot].astype(np.int64))
-        zmax = q8(self.em.zmax[slot].astype(np.int64))
-        self.kf = (self.cx, self.cy, V.copy(), zmin, zmax, zmax - zmin)
-
-    # ---------------------------------------------------------------- 匹配遍
+    # ---------------------------------------------------------------- 结构点
     def struct_points(self, rt):
         R = np.array(rt[:9], dtype=np.int64).reshape(3, 3)
         t = np.array(rt[9:12], dtype=np.int64)
@@ -74,41 +56,16 @@ class FpgaModel:
         idx = slf.subsample(np.nonzero(m)[0])
         return p[idx]
 
-    def match_eval(self, rt, cx_mm, cy_mm, cands):
-        """rt: R[9] + t[3]；cands: (K,3) dx dy dyaw。返回 (K,4) n_valid cost n_in sum_dz"""
-        if self.match == "slf":
-            q = self.struct_points(rt)
-            self.n_struct_pts = len(q)
-            return self.smap.score(q[:, 0], q[:, 1], cands, cx_mm, cy_mm)
-        R = np.array(rt[:9], dtype=np.int64).reshape(3, 3)
-        t = np.array(rt[9:12], dtype=np.int64)
-        idx = np.nonzero(self.pv)[0][::M_STRIDE]
-        p = fast.pc_transform(self.xyz[idx], R, t)
-        # 与融合遍同一高度带（机器人附近地面以下/机身以上的点不参与）
-        if self.kf is None:
-            return np.zeros((len(cands), 4), dtype=np.int64)
-        kcx, kcy, V, zmin, zmax, RO = self.kf
-        out = np.zeros((len(cands), 4), dtype=np.int64)
-        px, py, pz = p[:, 0] - cx_mm, p[:, 1] - cy_mm, p[:, 2]
-        for k, (dx, dy, da) in enumerate(cands):
-            i = ((int(da) + 32) & 0xFFFF) >> 6          # 四舍五入到正弦表格点（向下取整会让负角候选多转一格）
-            s, c = SIN[i], SIN[(i + 256) & 1023]
-            x = cx_mm + ((px * c - py * s) >> 14) + dx
-            y = cy_mm + ((px * s + py * c) >> 14) + dy
-            wx = fast.world_cell(x, self.inv_res) - (kcx - N // 2)
-            wy = fast.world_cell(y, self.inv_res) - (kcy - N // 2)
-            inw = (wx >= 0) & (wx < N) & (wy >= 0) & (wy < N)
-            wxc, wyc = np.clip(wx, 0, N - 1), np.clip(wy, 0, N - 1)
-            ok = inw & V[wyc, wxc]
-            lo = zmin[wyc, wxc] - M_TOL
-            hi = zmax[wyc, wxc] + M_TOL
-            e = np.where(pz < lo, lo - pz, np.where(pz > hi, pz - hi, 0))
-            cost = np.minimum(e, M_EMAX)
-            ground = ok & (RO[wyc, wxc] < M_GROUND_ROUGH)
-            r = pz - zmax[wyc, wxc]
-            inl = ground & (np.abs(r) < M_EIN)
-            out[k] = (int(ok.sum()), int(cost[ok].sum()), int(inl.sum()), int(r[inl].sum()))
-        return out
+    def match_eval(self, cx_mm, cy_mm, cands):
+        """cands: (K,3) dx dy dyaw。返回 (K,4) n_valid cost n_in 0"""
+        return self.smap.score(self.spts[:, 0], self.spts[:, 1], cands, cx_mm, cy_mm)
+
+    def match_update(self, dx, dy, dyaw, cx_mm, cy_mm):
+        if len(self.spts):
+            x, y = slf.apply_delta(self.spts[:, 0], self.spts[:, 1], dx, dy, dyaw, cx_mm, cy_mm)
+            self.smap.update(np.stack([x, y], axis=1))
+        self.smap.build_lf(self.cx, self.cy)
+        self.spts = self.spts[:0]
 
     # ---------------------------------------------------------------- 融合遍
     def commit(self, rt, cx, cy, zmin, zmax):
@@ -125,8 +82,5 @@ class FpgaModel:
             self.cost, self.last_lethal, self.view = trav_v3.trav_v3(self.em, cx, cy, self.cfg)
         self.cx, self.cy = cx, cy
         self.seq = (self.seq + 1) & 0xFFFF
-        if self.match == "slf" and zmin <= zmax:
-            q = self.struct_points(rt)
-            self.smap.update(q[:, :2])
-            self.smap.build_lf(cx, cy)
+        self.spts = self.struct_points(rt) if zmin <= zmax else self.spts[:0]
         return p

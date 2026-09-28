@@ -46,8 +46,9 @@ def build_dll():
     subprocess.run(cmd, check=True)
 
 
-MATCH_CB = ctypes.CFUNCTYPE(None, ctypes.POINTER(ctypes.c_int32), ctypes.c_int32, ctypes.c_int32,
-                            ctypes.POINTER(ctypes.c_int32), ctypes.c_int, ctypes.POINTER(ctypes.c_uint32))
+MATCH_CB = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_int32, ctypes.POINTER(ctypes.c_int32), ctypes.c_int,
+                            ctypes.POINTER(ctypes.c_uint32))
+MU_CB = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_int32, ctypes.c_int32, ctypes.c_int32, ctypes.c_int32)
 
 
 class Firmware:
@@ -129,20 +130,18 @@ def main():
         return sx + c0 * x - s0 * y, sy + s0 * x + c0 * y
 
     @MATCH_CB
-    def match_cb(rt, cxm, cym, cand, k, res):
-        r = [rt[i] for i in range(12)]
+    def match_cb(cxm, cym, cand, k, res):
         cs = np.array([[cand[3 * i], cand[3 * i + 1], cand[3 * i + 2]] for i in range(k)], dtype=np.int64)
-        o = fpga.match_eval(r, cxm, cym, cs)
+        o = fpga.match_eval(cxm, cym, cs)
         for i in range(k):
             for j in range(4):
                 res[4 * i + j] = int(o[i, j]) & 0xFFFFFFFF
     fw.py_set_match_cb(match_cb)
-    KF_CB = ctypes.CFUNCTYPE(None, ctypes.c_int32)
 
-    @KF_CB
-    def kf_cb(z):
-        fpga.keyframe(z)
-    fw.py_set_kf_cb(kf_cb)
+    @MU_CB
+    def mu_cb(dx, dy, da, cxm, cym):
+        fpga.match_update(dx, dy, da, cxm, cym)
+    fw.py_set_mu_cb(mu_cb)
     H_CB = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_int32, ctypes.c_int32, ctypes.POINTER(ctypes.c_int32))
 
     @H_CB
@@ -335,7 +334,6 @@ def main():
         "loc_err_z_max_m": round(float(le[:, 1].max()), 3),
         "loc_err_yaw_final_deg": round(float(le[-1, 2]), 2),
         "match_applied": int(ml[-1, 11]),
-        "keyframes": int(fw.py_get_nkf()),
         "trav_lethal_recall": round(tp / max(1, tp + fn), 3),
         "trav_false_lethal_rate": round(fp / max(1, fp + tn), 4),
         "trav_cells": {"tp": tp, "fn": fn, "fp": fp, "tn": tn},
