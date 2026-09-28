@@ -24,7 +24,7 @@ void nav_task_init(nav_task_t *nt)
     nt->cfg.lookahead_mm = 800;
     nt->cfg.replan_us = 500000;
     nt->cfg.blocked_us = 3000000;
-    nt->cfg.search_repick_us = 8000000;
+    nt->cfg.search_repick_us = 12000000;
     nt->cfg.track_hold_mm = 200;
     nt->cfg.wp_tol_mm = 350;
     nt->cfg.stall_us = 6000000;
@@ -358,14 +358,22 @@ void nav_task_step(nav_task_t *nt, uint32_t now)
 
     case NAV_MODE_SEARCH:
         if (target_alive(&nt->tgt, now)) { nav_task_set_mode(nt, NAV_MODE_TRACK); break; }
-        if (!nt->search_goal_valid || (uint32_t)(now - nt->search_t_us) > nt->cfg.search_repick_us) {
-            nt->search_goal_valid = explore_pick(&nt->exp, &nt->ex_cfg, nt->map, &nt->mi, p, &nt->goal_x, &nt->goal_y);
+        if (nt->search_goal_valid && (uint32_t)(now - nt->search_t_us) > nt->cfg.search_repick_us) {
+            /* 超时没到：这个目标够不着，拉黑后重选 */
+            explore_blacklist(&nt->exp, nt->goal_x, nt->goal_y);
+            nt->search_goal_valid = false;
+        }
+        if (!nt->search_goal_valid) {
+            nt->search_goal_valid = nt->use_gmap &&
+                explore_frontier(&nt->exp, &nt->ex_cfg, &nt->gm, &nt->mi, p, &nt->goal_x, &nt->goal_y);
+            if (!nt->search_goal_valid)
+                nt->search_goal_valid = explore_pick(&nt->exp, &nt->ex_cfg, nt->map, &nt->mi, p, &nt->goal_x, &nt->goal_y);
             nt->search_t_us = now;
             nt->path_valid = false;
         }
         if (!nt->search_goal_valid) {
             nt->cmd = (nav_cmd_t){0, 0, (int16_t)(nt->lp_cfg.w_max / 2), 0};     /* 原地转一圈找路 */
-        } else if (drive_to(nt, now, nt->goal_x, nt->goal_y, 300)) {
+        } else if (drive_to(nt, now, nt->goal_x, nt->goal_y, 700)) {     /* 边界点：走近到能看清即可 */
             nt->search_goal_valid = false;
         }
         nt->state = ST_SEARCHING;

@@ -1,5 +1,6 @@
 #include "explore.h"
 #include "fixmath.h"
+#include "nav_params.h"
 
 void explore_default_cfg(explore_cfg_t *c)
 {
@@ -11,6 +12,7 @@ void explore_default_cfg(explore_cfg_t *c)
     c->max_range_cells = 40;
     c->block = 253;
     c->min_goal_mm = 600;
+    c->frontier_min_mm = 1000;
 }
 
 void explore_init(explore_t *e)
@@ -81,5 +83,73 @@ bool explore_pick(explore_t *e, const explore_cfg_t *c, const uint8_t *map, cons
     if (dist_mm < c->min_goal_mm) dist_mm = c->min_goal_mm;
     *gx = pose->x + (int32_t)((int64_t)fx_cos(a) * dist_mm / Q14);
     *gy = pose->y + (int32_t)((int64_t)fx_sin(a) * dist_mm / Q14);
+    return true;
+}
+
+void explore_blacklist(explore_t *e, int32_t x, int32_t y)
+{
+    e->bl_x[e->bl_i] = x;
+    e->bl_y[e->bl_i] = y;
+    e->bl_i = (e->bl_i + 1) % EXP_BL;
+    if (e->bl_n < EXP_BL) e->bl_n++;
+}
+
+static uint16_t s_bd[GM_N * GM_N];         /* 广度优先距离（格），0xFFFF = 未到达 */
+static uint16_t s_bq[GM_N * GM_N];
+
+bool explore_frontier(explore_t *e, const explore_cfg_t *c, const gmap_t *gm, const hal_map_info_t *mi,
+                      const nav_pose_t *pose, int32_t *gx, int32_t *gy)
+{
+    static const int8_t DX4[4] = {1, -1, 0, 0}, DY4[4] = {0, 0, 1, -1};
+    int rx, ry;
+    gmap_mm_to_cell(gm, mi, pose->x, pose->y, &rx, &ry);
+    e->n_frontier = 0;
+    if (rx < 0 || ry < 0 || rx >= GM_N || ry >= GM_N) return false;
+    for (int i = 0; i < GM_N * GM_N; i++) s_bd[i] = 0xFFFF;
+    int qh = 0, qt = 0;
+    s_bd[ry * GM_N + rx] = 0;
+    s_bq[qt++] = (uint16_t)(ry * GM_N + rx);
+    int best = -1;
+    int32_t best_cost = INT32_MAX;
+    /* 目标至少离开 min_goal（格） */
+    int32_t cell_mm = (int32_t)((int64_t)GM_DS * 65536 / (mi->inv_res ? mi->inv_res : 1311));
+    int32_t min_cells = c->min_goal_mm / cell_mm + 1;
+    while (qh < qt) {
+        int i = s_bq[qh++];
+        int x = i % GM_N, y = i / GM_N;
+        uint16_t d = s_bd[i];
+        /* 是否边界格 */
+        bool frontier = false;
+        for (int k = 0; k < 4; k++) {
+            int nx = x + DX4[k], ny = y + DY4[k];
+            if (nx < 0 || ny < 0 || nx >= GM_N || ny >= GM_N) continue;
+            uint8_t v = gm->grid[ny * GM_N + nx];
+            if (v == 255) { frontier = true; continue; }
+            if (v >= NP_COST_LETHAL || s_bd[ny * GM_N + nx] != 0xFFFF) continue;
+            s_bd[ny * GM_N + nx] = (uint16_t)(d + 1);
+            s_bq[qt++] = (uint16_t)(ny * GM_N + nx);
+        }
+        if (!frontier || d < min_cells) continue;
+        /* 紧挨致命格的边界（平台/坡道侧沿外被遮挡的一侧）多半下不去，不选 */
+        bool near_leth = false;
+        for (int yy = y - 1; yy <= y + 1 && !near_leth; yy++)
+            for (int xx = x - 1; xx <= x + 1; xx++)
+                if (xx >= 0 && yy >= 0 && xx < GM_N && yy < GM_N && gm->grid[yy * GM_N + xx] == NP_COST_LETHAL) {
+                    near_leth = true; break;
+                }
+        if (near_leth) continue;
+        e->n_frontier++;
+        int32_t fx, fy;
+        gmap_cell_to_mm(gm, mi, x, y, &fx, &fy);
+        if (fx_dist(fx - pose->x, fy - pose->y) < c->frontier_min_mm) continue;   /* 直线距离也要够远（否则一选就"到达"） */
+        bool bl = false;
+        for (int b = 0; b < e->bl_n; b++)
+            if (fx_dist(fx - e->bl_x[b], fy - e->bl_y[b]) < 1000) { bl = true; break; }
+        if (bl) continue;
+        int32_t cost = (int32_t)d * 10 + c->w_visited * e->visited[vis_idx(fx, fy)];
+        if (cost < best_cost) { best_cost = cost; best = i; }
+    }
+    if (best < 0) return false;
+    gmap_cell_to_mm(gm, mi, best % GM_N, best / GM_N, gx, gy);
     return true;
 }

@@ -22,11 +22,13 @@ CASES = {
     "terrain_a": "--scene terrain --goal 9.3,2.8 --time 120",
     # 终点在路沿后、陡坡旁：必须绕到路沿缺口
     "terrain_b": "--scene terrain --goal 8.0,-3.0 --time 150",
+    # 搜索模式：边界探索找到路沿后的目标（模拟 RK3588 视野 70°/4 m），再跟踪接近
+    "search": "--scene terrain --search 8.0,-3.0 --time 200",
     # 回环跑道两圈：长距离定位漂移
     "loop": "--scene loop --waypoints 6.6,-2.6,6.8,2.3,0.2,2.0,0.0,-2.2 --laps 2 --time 200",
 }
 
-KEYS = ["arrived", "time_s", "collisions", "goal_err_m", "loc_err_xy_rms_m", "loc_err_xy_final_m",
+KEYS = ["arrived", "time_s", "found_s", "collisions", "goal_err_m", "loc_err_xy_rms_m", "loc_err_xy_final_m",
         "loc_err_yaw_final_deg", "loc_err_z_max_m", "trav_lethal_recall", "trav_false_lethal_rate"]
 
 
