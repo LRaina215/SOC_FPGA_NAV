@@ -29,6 +29,15 @@ TESTS["tb_lidar_map"] = {
     "top": "tb_lidar_map",
 }
 
+MATCH = ["rtl/match/slf_extract.v", "rtl/match/slf_lf.v", "rtl/match/slf_match.v"]
+
+TESTS["tb_slf"] = {
+    "pre": ["sim/gen/gen_slf.py"],
+    "copy": ["rtl/plan/sin_lut.hex"],
+    "src": COMMON + MATCH + ["rtl/match/tb/tb_slf.sv"],
+    "top": "tb_slf",
+}
+
 PLAN = ["rtl/plan/traj_eval.v", "rtl/plan/safety_guard.v"]
 
 TESTS["tb_traj_eval"] = {

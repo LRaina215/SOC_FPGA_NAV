@@ -38,6 +38,7 @@ C_NEAR = 40                  # 近邻代价上限（1/16 格，2.5 格）
 W_FAR = 0                    # 近邻区以外代价为常数：远处的点不施加拉力（加梯度后闭环平均误差反而变大，见 algorithms.md）
 GATE_D = 6                   # 参与打分的点：预测位置的距离场 <= 2 格（更远的多是新看到的结构）
 MARGIN = 8                   # 格：窗口边缘保留带（> 搜索范围 + 1）
+PB_MAX = 4096                # 点缓冲容量
 MAX_PTS = 1024               # 每帧参与匹配的结构点上限（均匀抽样）
 W = 160
 
@@ -58,6 +59,8 @@ def structure_mask(p, pv, z_ref):
 
 
 def subsample(idx, n=MAX_PTS):
+    """硬件：点缓冲最多存 PB_MAX 个结构点（按像素顺序，多余的丢弃），打分/并图时按步长 ceil(存量/n) 取点"""
+    idx = idx[:PB_MAX]
     if len(idx) <= n:
         return idx
     step = (len(idx) + n - 1) // n
@@ -69,10 +72,22 @@ class StructMap:
         self.inv_res = inv_res
         self.hit = np.zeros(SN * SN, dtype=np.int64)
         self.tag = np.zeros(SN * SN, dtype=np.int64)
-        self.cxs = np.full(SN * SN, 8, dtype=np.int64)   # 格内质心（1/16 格）
-        self.cys = np.full(SN * SN, 8, dtype=np.int64)
+        self.cxs = np.zeros(SN * SN, dtype=np.int64)     # 格内质心（1/16 格）
+        self.cys = np.zeros(SN * SN, dtype=np.int64)
         self.lf = None           # (ox, oy, occ, d3, cxs, cys) 窗口视图
         self.n_struct = 0
+
+    def words(self):
+        """硬件结构图槽字（23 位）：{tag, hit, cx, cy, occ, q, has, gate}；窗口外的槽只有前 15 位有意义（返回 mask）"""
+        w = (self.tag << 19) | (self.hit << 16) | (self.cxs << 12) | (self.cys << 8)
+        mask = np.full(SN * SN, 0x7FFF00, dtype=np.int64)
+        if self.lf is not None:
+            ox, oy, occ, d3, cxs, cys, nx, ny, has = self.lf
+            s = self.lf_slot.reshape(-1)
+            lo = (occ.astype(np.int64) << 7) | (self.lf_q << 2) | (has.astype(np.int64) << 1) | (d3 <= GATE_D)
+            w[s] |= lo.reshape(-1)
+            mask[s] = 0x7FFFFF
+        return w, mask
 
     def cell(self, v):
         return (np.clip(v, -(1 << 25), (1 << 25) - 1) * self.inv_res) >> 16
@@ -110,8 +125,10 @@ class StructMap:
         self.n_struct = int(occ.sum())
         d = np.minimum(2 * chebyshev_dt(occ, DMAX) + taxicab_dt(occ, 3 * DMAX), 3 * DMAX)
         cxs, cys = self.cxs[slot], self.cys[slot]
-        nx, ny, has = cell_normals(occ, cxs, cys)
+        nx, ny, has, q = cell_normals(occ, cxs, cys)
         self.lf = (cx - SN // 2, cy - SN // 2, occ, d, cxs, cys, nx, ny, has)
+        self.lf_q = q
+        self.lf_slot = slot
 
     def score(self, px, py, cands, cx_mm, cy_mm):
         """px, py: 结构点（预测位姿下，mm）；cands: (K,3) dx dy dyaw。返回 (K,4) n_valid cost n_in 0"""
@@ -201,7 +218,7 @@ def cell_normals(occ, cxs, cys):
     q = sector32(A - C, 2 * B)
     nv = np.array(NVEC, dtype=np.int64)
     has = occ & (S["n"] >= 3) & aniso
-    return nv[q, 0], nv[q, 1], has
+    return nv[q, 0], nv[q, 1], has, q
 
 
 def point_cost(fx, fy, occ, d3, cxs, cys, nx=None, ny=None, has=None):
