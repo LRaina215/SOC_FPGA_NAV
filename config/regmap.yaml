@@ -1,0 +1,353 @@
+# 导航子系统寄存器表（唯一来源）
+# 生成: python tools/gen_config.py
+#   -> rtl/regs/nav_regs_map.vh   (模块内 `include，localparam)
+#   -> fw/include/nav_regs_map.h  (C 宏，地址为相对 NAV_BASE 的字节偏移)
+#   -> model/nav_regs_map.py
+#   -> docs/regmap.md
+#
+# 总线：32 位数据，16 位字节地址，按字访问。
+# acc: rw 读写 / ro 只读 / wo 只写 / w1p 写 1 产生脉冲 / w1c 写 1 清零 / rop 读取即弹出
+#      rwe 写入值由硬件采用，读回硬件当前生效值（对端地址：写 PEER_PORT 时一次性生效）
+# fields: 名字: [msb, lsb]
+
+blocks:
+  - name: SYS
+    base: 0x0000
+    desc: 系统信息、时间基准、中断
+    regs:
+      - {name: ID,         off: 0x00, acc: ro,  reset: 0x4E415630, desc: "固定值 'NAV0'"}
+      - {name: VERSION,    off: 0x04, acc: ro,  reset: 0x00010000, desc: "版本号 major[31:16] minor[15:0]"}
+      - {name: TIME_US,    off: 0x08, acc: ro,  reset: 0, desc: "全局微秒计数器（所有时间戳的时基）"}
+      - {name: SCRATCH,    off: 0x0C, acc: rw,  reset: 0, desc: "读写测试"}
+      - name: IRQ_STATUS
+        off: 0x10
+        acc: w1c
+        reset: 0
+        desc: "中断状态（写 1 清零）"
+        fields: {LIDAR_FRAME: [0,0], MAP_READY: [1,1], TRAJ_DONE: [2,2], HOST_RX: [3,3], IMU_RX: [4,4], WDOG: [5,5], LIDAR_DROP: [6,6]}
+      - {name: IRQ_ENABLE, off: 0x14, acc: rw,  reset: 0, desc: "中断使能，位定义同 IRQ_STATUS"}
+
+  - name: NETL
+    base: 0x1000
+    desc: 雷达侧网口（RJ45 / RGMII 百兆）UDP 协议栈
+    regs:
+      - {name: MAC_LO,   off: 0x00, acc: rw, reset: 0x56000001, desc: "本机 MAC 低 32 位"}
+      - {name: MAC_HI,   off: 0x04, acc: rw, reset: 0x0000024E, desc: "本机 MAC 高 16 位"}
+      - {name: IP,       off: 0x08, acc: rw, reset: 0xC0A80164, desc: "本机 IPv4（默认 192.168.1.100）"}
+      - {name: UDP_PORT, off: 0x0C, acc: rw, reset: 7687, desc: "本口接收的 UDP 目的端口"}
+      - name: CTRL
+        off: 0x10
+        acc: rw
+        reset: 0x0000000D
+        desc: "控制"
+        fields: {ENABLE: [0,0], ANY_IP: [1,1], ARP_EN: [2,2], LEARN_PEER: [3,3]}
+      - {name: STAT_RX_FRAMES, off: 0x14, acc: ro, reset: 0, desc: "收到的以太网帧数"}
+      - {name: STAT_RX_UDP,    off: 0x18, acc: ro, reset: 0, desc: "交付的 UDP 报文数"}
+      - {name: STAT_RX_ERR,    off: 0x1C, acc: ro, reset: 0, desc: "错误帧数（MAC 错误/IP 校验和/截断/溢出）"}
+      - {name: STAT_ARP,       off: 0x20, acc: ro, reset: 0, desc: "已应答的 ARP 请求数"}
+      - {name: STAT_TX_FRAMES, off: 0x24, acc: ro, reset: 0, desc: "发送帧数"}
+      - {name: PEER_IP,        off: 0x28, acc: rwe, reset: 0, desc: "对端 IP（LEARN_PEER=1 时由收包自动更新）"}
+      - {name: PEER_MAC_LO,    off: 0x2C, acc: rwe, reset: 0, desc: "对端 MAC 低 32 位"}
+      - {name: PEER_MAC_HI,    off: 0x30, acc: rwe, reset: 0, desc: "对端 MAC 高 16 位"}
+      - {name: PEER_PORT,      off: 0x34, acc: rwe, reset: 0, desc: "发送目的端口 [15:0]"}
+
+  - name: NETH
+    base: 0x1100
+    desc: 主机侧网口（SFP / 1000BASE-X，接 RK3588）UDP 协议栈
+    regs:
+      - {name: MAC_LO,   off: 0x00, acc: rw, reset: 0x56000002, desc: "本机 MAC 低 32 位"}
+      - {name: MAC_HI,   off: 0x04, acc: rw, reset: 0x0000024E, desc: "本机 MAC 高 16 位"}
+      - {name: IP,       off: 0x08, acc: rw, reset: 0xC0A80264, desc: "本机 IPv4（默认 192.168.2.100）"}
+      - {name: UDP_PORT, off: 0x0C, acc: rw, reset: 9000, desc: "本口接收的 UDP 目的端口"}
+      - name: CTRL
+        off: 0x10
+        acc: rw
+        reset: 0x0000000D
+        desc: "控制"
+        fields: {ENABLE: [0,0], ANY_IP: [1,1], ARP_EN: [2,2], LEARN_PEER: [3,3]}
+      - {name: STAT_RX_FRAMES, off: 0x14, acc: ro, reset: 0, desc: "收到的以太网帧数"}
+      - {name: STAT_RX_UDP,    off: 0x18, acc: ro, reset: 0, desc: "交付的 UDP 报文数"}
+      - {name: STAT_RX_ERR,    off: 0x1C, acc: ro, reset: 0, desc: "错误帧数"}
+      - {name: STAT_ARP,       off: 0x20, acc: ro, reset: 0, desc: "已应答的 ARP 请求数"}
+      - {name: STAT_TX_FRAMES, off: 0x24, acc: ro, reset: 0, desc: "发送帧数"}
+      - {name: PEER_IP,        off: 0x28, acc: rwe, reset: 0, desc: "对端 IP"}
+      - {name: PEER_MAC_LO,    off: 0x2C, acc: rwe, reset: 0, desc: "对端 MAC 低 32 位"}
+      - {name: PEER_MAC_HI,    off: 0x30, acc: rwe, reset: 0, desc: "对端 MAC 高 16 位"}
+      - {name: PEER_PORT,      off: 0x34, acc: rwe, reset: 9001, desc: "发送目的端口 [15:0]"}
+
+  - name: MBX
+    base: 0x1200
+    desc: 主机报文邮箱（NETH 收到的 UDP 负载 / 软核待发的 UDP 负载）
+    regs:
+      - name: RX_STAT
+        off: 0x00
+        acc: ro
+        reset: 0
+        desc: "接收队列状态"
+        fields: {LEN: [15,0], PKTS: [23,16], AVAIL: [31,31]}
+      - {name: RX_DATA,   off: 0x04, acc: rop, reset: 0, desc: "读取当前报文的下 4 字节（小端打包）"}
+      - {name: RX_POP,    off: 0x08, acc: w1p, reset: 0, desc: "丢弃当前报文剩余部分，切到下一报文"}
+      - {name: RX_TS,     off: 0x0C, acc: ro,  reset: 0, desc: "当前报文到达时间 (us)"}
+      - {name: RX_SRC_IP, off: 0x10, acc: ro,  reset: 0, desc: "当前报文源 IP"}
+      - {name: RX_SRC_PORT, off: 0x14, acc: ro, reset: 0, desc: "当前报文源端口 [15:0]"}
+      - {name: TX_DATA,   off: 0x20, acc: wo,  reset: 0, desc: "写入待发负载 4 字节（小端）"}
+      - {name: TX_LEN,    off: 0x24, acc: rw,  reset: 0, desc: "待发负载字节数"}
+      - {name: TX_GO,     off: 0x28, acc: w1p, reset: 0, desc: "发送（目的地址取 NETH.PEER_*）"}
+      - name: TX_STAT
+        off: 0x2C
+        acc: ro
+        reset: 0
+        desc: "发送状态"
+        fields: {BUSY: [0,0], WORDS: [15,4]}
+
+  - name: LIDAR
+    base: 0x2000
+    desc: XT-M60 帧接收、深度转点云、坐标变换、过滤
+    regs:
+      - name: CTRL
+        off: 0x00
+        acc: rw
+        reset: 0x00000001
+        desc: "格式与流程控制；PIX_LAYOUT 0=逐像素交织 1=平面"
+        fields: {ENABLE: [0,0], HDR_LE: [1,1], PIX_LE: [2,2], WAIT_POSE: [3,3], PIX_LAYOUT: [5,4], AMP_FIRST: [6,6]}
+      - {name: UDP_SKIP,   off: 0x04, acc: rw, reset: 20, desc: "每个 UDP 负载开头跳过的字节数（XT 分包头）"}
+      - name: DEPTH_CFG
+        off: 0x08
+        acc: rw
+        reset: 0x00000100
+        desc: "深度换算"
+        fields: {DEPTH_MUL: [15,0], SIZE_ADJ: [31,16]}
+      - name: RANGE
+        off: 0x0C
+        acc: rw
+        reset: 0x4E200064
+        desc: "有效距离 mm"
+        fields: {MIN_MM: [15,0], MAX_MM: [31,16]}
+      - name: VALID_CFG
+        off: 0x10
+        acc: rw
+        reset: 0x00000000
+        desc: "有效性判定"
+        fields: {AMP_MIN: [15,0], RAW_INV: [31,16]}
+      - name: ROI_OFS
+        off: 0x14
+        acc: rw
+        reset: 0
+        desc: "ROI 起点（查表偏移）"
+        fields: {X0: [7,0], Y0: [15,8]}
+      - {name: STAT_FRAMES,  off: 0x18, acc: ro, reset: 0, desc: "成功接收的帧数"}
+      - {name: STAT_BAD,     off: 0x1C, acc: ro, reset: 0, desc: "格式错误/不完整的帧数"}
+      - name: LAST_FRAME
+        off: 0x20
+        acc: ro
+        reset: 0
+        desc: "最近成功帧信息"
+        fields: {SN: [15,0], DEVSTATE: [23,16], PROTO: [31,24]}
+      - name: LAST_WH
+        off: 0x24
+        acc: ro
+        reset: 0
+        desc: "最近成功帧分辨率"
+        fields: {W: [15,0], H: [31,16]}
+      - {name: LAST_TS,     off: 0x28, acc: ro, reset: 0, desc: "最近成功帧的到达时间 (us)"}
+      - {name: STAT_POINTS, off: 0x2C, acc: ro, reset: 0, desc: "上一帧有效点数"}
+      - {name: STAT_DROP,   off: 0x30, acc: ro, reset: 0, desc: "因缓冲满丢弃的帧数"}
+      - {name: R00, off: 0x40, acc: rw, reset: 16384, desc: "雷达->里程计 旋转矩阵 Q1.14（[15:0] 有符号）"}
+      - {name: R01, off: 0x44, acc: rw, reset: 0, desc: ""}
+      - {name: R02, off: 0x48, acc: rw, reset: 0, desc: ""}
+      - {name: R10, off: 0x4C, acc: rw, reset: 0, desc: ""}
+      - {name: R11, off: 0x50, acc: rw, reset: 16384, desc: ""}
+      - {name: R12, off: 0x54, acc: rw, reset: 0, desc: ""}
+      - {name: R20, off: 0x58, acc: rw, reset: 0, desc: ""}
+      - {name: R21, off: 0x5C, acc: rw, reset: 0, desc: ""}
+      - {name: R22, off: 0x60, acc: rw, reset: 16384, desc: ""}
+      - {name: TX,  off: 0x64, acc: rw, reset: 0, desc: "平移 x (mm, int32)"}
+      - {name: TY,  off: 0x68, acc: rw, reset: 0, desc: "平移 y (mm, int32)"}
+      - {name: TZ,  off: 0x6C, acc: rw, reset: 0, desc: "平移 z (mm, int32)"}
+      - {name: POSE_COMMIT, off: 0x70, acc: w1p, reset: 0, desc: "WAIT_POSE=1 时：位姿已写好，放行当前帧"}
+      - name: POSE_STAT
+        off: 0x74
+        acc: ro
+        reset: 0
+        desc: "位姿握手状态"
+        fields: {WAITING: [0,0]}
+      - name: ZBAND
+        off: 0x78
+        acc: rw
+        reset: 0x07D0FC18
+        desc: "保留点的高度带（里程计系 mm）"
+        fields: {ZMIN: [15,0], ZMAX: [31,16]}
+      - {name: LUT_ADDR, off: 0x80, acc: rw, reset: 0, desc: "方向查找表写地址（像素序号，写 LUT_Z 后自增）"}
+      - {name: LUT_XY,   off: 0x84, acc: wo, reset: 0, desc: "[15:0] rx, [31:16] ry (Q2.13)"}
+      - {name: LUT_Z,    off: 0x88, acc: wo, reset: 0, desc: "[15:0] rz (Q2.13)，写入即提交一项"}
+
+  - name: MAP
+    base: 0x3000
+    desc: 滚动高程图与可通行性分析
+    regs:
+      - name: CTRL
+        off: 0x00
+        acc: rw
+        reset: 0x00000005
+        desc: "控制"
+        fields: {ENABLE: [0,0], AUTO_SWEEP: [2,2]}
+      - name: CMD
+        off: 0x04
+        acc: w1p
+        reset: 0
+        desc: "命令脉冲"
+        fields: {SWEEP: [0,0], CLEAR: [1,1]}
+      - {name: INV_RES,  off: 0x08, acc: rw, reset: 1311, desc: "65536/分辨率mm，[15:0]"}
+      - {name: CENTER_X, off: 0x0C, acc: rw, reset: 0, desc: "窗口中心世界栅格 x（int32），帧开始时锁存"}
+      - {name: CENTER_Y, off: 0x10, acc: rw, reset: 0, desc: "窗口中心世界栅格 y（int32）"}
+      - name: VALID_CFG
+        off: 0x14
+        acc: rw
+        reset: 0x0000013C
+        desc: "栅格有效性（默认年龄上限 60 帧、最少 1 点）"
+        fields: {AGE_MAX: [7,0], CNT_MIN: [11,8]}
+      - name: THR0
+        off: 0x18
+        acc: rw
+        reset: 0x00C8003C
+        desc: "致命阈值 mm"
+        fields: {STEP_MAX: [15,0], ROUGH_MAX: [31,16]}
+      - name: THR1
+        off: 0x1C
+        acc: rw
+        reset: 0x00000040
+        desc: "致命阈值：坡度（mm / 2 格，八边形范数）"
+        fields: {SLOPE_MAX: [15,0]}
+      - name: WEIGHT
+        off: 0x20
+        acc: rw
+        reset: 0x00202040
+        desc: "代价权重 (>>8)"
+        fields: {K_SLOPE: [7,0], K_STEP: [15,8], K_ROUGH: [23,16]}
+      - name: INFL
+        off: 0x24
+        acc: rw
+        reset: 3
+        desc: "膨胀半径（格，方形）"
+        fields: {RADIUS: [3,0]}
+      - name: STAT
+        off: 0x28
+        acc: ro
+        reset: 0
+        desc: "状态"
+        fields: {BUSY: [0,0], FRONT: [1,1], SEQ: [31,16]}
+      - {name: LAT_CX,    off: 0x2C, acc: ro, reset: 0, desc: "当前前台代价图对应的窗口中心 x"}
+      - {name: LAT_CY,    off: 0x30, acc: ro, reset: 0, desc: "当前前台代价图对应的窗口中心 y"}
+      - {name: STAT_UPD,  off: 0x34, acc: ro, reset: 0, desc: "上一帧写入的点数"}
+      - {name: STAT_DROP, off: 0x38, acc: ro, reset: 0, desc: "上一帧被窗口/高度带剔除的点数"}
+      - {name: FRAME_CNT, off: 0x3C, acc: ro, reset: 0, desc: "地图帧计数（栅格年龄基准）"}
+
+  - name: TRAJ
+    base: 0x4000
+    desc: 候选轨迹并行评估
+    regs:
+      - {name: CMD,  off: 0x00, acc: w1p, reset: 0, desc: "[0] 启动"}
+      - name: STAT
+        off: 0x04
+        acc: ro
+        reset: 0
+        desc: "状态"
+        fields: {BUSY: [0,0], DONE: [1,1], STALE: [2,2]}
+      - name: CFG
+        off: 0x08
+        acc: rw
+        reset: 0x00002010
+        desc: "规模"
+        fields: {K: [7,0], T: [15,8]}
+      - {name: X0,  off: 0x0C, acc: rw, reset: 0, desc: "起点世界栅格 x，Q24.8"}
+      - {name: Y0,  off: 0x10, acc: rw, reset: 0, desc: "起点世界栅格 y，Q24.8"}
+      - {name: TH0, off: 0x14, acc: rw, reset: 0, desc: "起点航向 [15:0]，65536 = 一周"}
+      - name: CMAX
+        off: 0x18
+        acc: rw
+        reset: 253
+        desc: "代价 >= CMAX 视为碰撞"
+        fields: {CMAX: [7,0]}
+
+  - name: SAFE
+    base: 0x5000
+    desc: 速度指令安全限幅、看门狗、底盘接口
+    regs:
+      - name: CTRL
+        off: 0x00
+        acc: rw
+        reset: 0
+        desc: "控制"
+        fields: {ENABLE: [0,0], HOLONOMIC: [1,1], ESTOP: [2,2]}
+      - name: LIM_V
+        off: 0x04
+        acc: rw
+        reset: 0x012C03E8
+        desc: "速度上限 mm/s"
+        fields: {VX_MAX: [15,0], VY_MAX: [31,16]}
+      - name: LIM_W
+        off: 0x08
+        acc: rw
+        reset: 1500
+        desc: "角速度上限 mrad/s [15:0]"
+      - name: LIM_A
+        off: 0x0C
+        acc: rw
+        reset: 0x00030002
+        desc: "每节拍最大变化量"
+        fields: {DV: [15,0], DW: [31,16]}
+      - {name: TICK_US, off: 0x10, acc: rw, reset: 1000, desc: "输出节拍周期 us"}
+      - {name: WD_US,   off: 0x14, acc: rw, reset: 200000, desc: "指令超时 us"}
+      - name: CMD_V
+        off: 0x18
+        acc: rw
+        reset: 0
+        desc: "期望速度 mm/s（有符号）"
+        fields: {VX: [15,0], VY: [31,16]}
+      - name: CMD_W
+        off: 0x1C
+        acc: rw
+        reset: 0
+        desc: "期望角速度与模式；写入即提交一条指令"
+        fields: {WZ: [15,0], MODE: [23,16]}
+      - {name: OUT_V, off: 0x20, acc: ro, reset: 0, desc: "当前输出 vx[15:0] vy[31:16]"}
+      - {name: OUT_W, off: 0x24, acc: ro, reset: 0, desc: "当前输出 wz[15:0] mode[23:16]"}
+      - name: STAT
+        off: 0x28
+        acc: ro
+        reset: 0
+        desc: "状态"
+        fields: {WDOG: [0,0], ESTOP: [1,1], EXT: [7,4], SEQ: [31,16]}
+      - {name: EXT_MASK, off: 0x2C, acc: rw, reset: 0, desc: "外部急停输入使能 [3:0]"}
+      - {name: ODO_V,  off: 0x30, acc: ro, reset: 0, desc: "底盘回传 vx[15:0] vy[31:16] mm/s"}
+      - {name: ODO_W,  off: 0x34, acc: ro, reset: 0, desc: "底盘回传 wz[15:0] mrad/s"}
+      - {name: ODO_TS, off: 0x38, acc: ro, reset: 0, desc: "底盘回传时间 us"}
+      - {name: ODO_CNT, off: 0x3C, acc: ro, reset: 0, desc: "底盘回传计数"}
+
+  - name: IMU
+    base: 0x6000
+    desc: IMU 串口（协议由固件解析）
+    regs:
+      - {name: BAUD_DIV, off: 0x00, acc: rw, reset: 868, desc: "时钟/波特率（100MHz/115200≈868）"}
+      - name: RX_DATA
+        off: 0x04
+        acc: rop
+        reset: 0
+        desc: "读取即弹出"
+        fields: {DATA: [7,0], FIRST: [8,8], VALID: [31,31]}
+      - {name: RX_COUNT, off: 0x08, acc: ro, reset: 0, desc: "接收缓冲字节数"}
+      - {name: RX_TS,    off: 0x0C, acc: rop, reset: 0, desc: "读取即弹出：每个突发首字节的到达时间"}
+      - {name: TX_DATA,  off: 0x10, acc: wo, reset: 0, desc: "发送 1 字节"}
+      - name: TX_STAT
+        off: 0x14
+        acc: ro
+        reset: 0
+        desc: "发送状态"
+        fields: {BUSY: [0,0], FULL: [1,1]}
+      - {name: IDLE_US,  off: 0x18, acc: rw, reset: 500, desc: "空闲多少 us 视为新突发"}
+      - {name: STAT_OVF, off: 0x1C, acc: ro, reset: 0, desc: "接收溢出字节数"}
+
+windows:
+  - {name: TRAJ_CAND, base: 0x4100, size: 0x0200, desc: "候选 k: +8k: [15:0]dvx [31:16]dvy (格 Q8/步); +8k+4: [15:0]dth (65536/周/步)"}
+  - {name: TRAJ_RES,  base: 0x4400, size: 0x0400, desc: "结果 k: +16k: [7:0]max_cost [15:8]n_unknown [23:16]coll_step [24]collide [25]left; +4 sum_cost; +8 end_x Q8; +12 end_y Q8"}
+  - {name: COSTMAP,   base: 0x8000, size: 0x4000, desc: "前台代价图，字节 (sy*128+sx)，sx/sy 为槽坐标 = 世界栅格 & 127；0..200 可通行代价，253 膨胀，254 致命，255 未知"}

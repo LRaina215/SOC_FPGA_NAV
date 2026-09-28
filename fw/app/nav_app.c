@@ -1,0 +1,79 @@
+#include "nav_app.h"
+#include "hal.h"
+
+nav_app_t g_app;
+
+void nav_app_init(void)
+{
+    nav_task_init(&g_app.nt);
+    imu_parser_init(&g_app.imu, IMU_PROTO_WIT55);
+    uint32_t now = hal_time_us();
+    g_app.t_plan = now;
+    g_app.t_status = now;
+    g_app.use_imu_yaw = false;
+}
+
+void nav_app_poll(void)
+{
+    nav_task_t *nt = &g_app.nt;
+    uint32_t now = hal_time_us();
+
+    /* 1. 底盘里程计 */
+    int16_t vx, vy, wz;
+    uint32_t t;
+    while (hal_odom(&vx, &vy, &wz, &t)) pose_odom(&nt->pose, vx, vy, wz, t);
+
+    /* 2. IMU 姿态 */
+    uint8_t b;
+    bool first;
+    uint32_t tb = 0;
+    for (int i = 0; i < 64 && hal_imu_byte(&b, &first, &tb); i++) {
+        if (imu_parser_feed(&g_app.imu, b, first, tb))
+            pose_imu_att(&nt->pose, g_app.imu.yaw, g_app.imu.pitch, g_app.imu.roll, g_app.use_imu_yaw,
+                         g_app.imu.att_t_us);
+    }
+
+    /* 3. 雷达帧位姿握手：用帧到达时刻的位姿，窗口中心跟随机器人 */
+    uint32_t ft;
+    if (hal_lidar_waiting(&ft)) {
+        nav_pose_t at;
+        pose_at(&nt->pose, ft, &at);
+        int32_t r[3][3], tt[3];
+        pose_lidar_tf(&nt->pose, &at, r, tt);
+        hal_map_info_t mi;
+        hal_map_info(&mi);
+        uint16_t inv = mi.inv_res ? mi.inv_res : 1311;
+        int32_t cx = (int32_t)(((int64_t)at.x * inv) >> 16);
+        int32_t cy = (int32_t)(((int64_t)at.y * inv) >> 16);
+        hal_lidar_commit(r, tt, cx, cy);
+        g_app.n_frames++;
+    }
+
+    /* 4. 主机报文 */
+    uint8_t buf[300];
+    uint32_t rx_us;
+    int len;
+    while ((len = hal_host_recv(buf, sizeof buf, &rx_us)) > 0) {
+        proto_msg_t m;
+        if (proto_parse(buf, len, &m)) {
+            nav_task_on_msg(nt, &m, rx_us);
+            g_app.n_msgs++;
+        }
+    }
+
+    /* 5. 规划 */
+    if ((uint32_t)(now - g_app.t_plan) >= APP_PLAN_PERIOD_US) {
+        g_app.t_plan += APP_PLAN_PERIOD_US;
+        if ((uint32_t)(now - g_app.t_plan) >= APP_PLAN_PERIOD_US) g_app.t_plan = now;   /* 落后太多：重新对齐 */
+        nav_task_step(nt, now);
+    }
+
+    /* 6. 状态回传 */
+    if ((uint32_t)(now - g_app.t_status) >= APP_STATUS_PERIOD_US) {
+        g_app.t_status = now;
+        proto_status_t s;
+        nav_task_status(nt, &s, now);
+        int n = proto_build_status(buf, &s);
+        hal_host_send(buf, n);
+    }
+}

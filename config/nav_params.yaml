@@ -1,0 +1,48 @@
+# 导航子系统编译期参数（唯一来源）
+# 修改后运行: python tools/gen_config.py
+# 生成: rtl/regs/nav_params.vh, fw/include/nav_params.h, model/nav_params.py
+#
+# 运行期可调的量（阈值、端口、格式）放在寄存器里，见 regmap.yaml；
+# 这里只放决定硬件结构（位宽、存储深度）的量。
+
+core:
+  CLK_HZ:        100000000   # 核心时钟
+  TIME_US_BITS:  32          # 全局微秒计数器位宽（约 71.6 分钟回绕，按模运算比较）
+
+lidar:                       # XT-M60 (Pro)
+  LIDAR_W:       160         # 像素列数
+  LIDAR_H:       60          # 像素行数
+  UV_BITS:       8           # 行/列坐标位宽
+  DEPTH_BITS:    16          # 原始深度字宽
+  LUT_FRAC:      13          # 方向查找表定点小数位 (signed16 Q2.13, 范围 ±4)
+  PT_BITS:       16          # 点坐标位宽 (int16, 单位 mm)
+
+pose:
+  ROT_FRAC:      14          # 旋转矩阵元素 signed16 Q1.14
+
+map:
+  MAP_LOG2N:     7           # 局部栅格边长 N = 2^7 = 128
+  MAP_RES_MM:    50          # 栅格分辨率（默认值，运行期经 MAP_INV_RES 可改）
+  H_BITS:        16          # 高度 int16 mm（里程计坐标系绝对高度）
+  CNT_BITS:      4           # 每格点数（饱和）
+  AGE_BITS:      8           # 每格未被观测的帧数
+  TAG_BITS:      4           # 每轴滚动标签位宽（窗口外旧数据识别）
+  COST_FREE_MAX: 200         # 可通行代价上限
+  COST_LETHAL:   254         # 不可通行
+  COST_UNKNOWN:  255         # 未观测
+  INFL_R_MAX:    8           # 膨胀半径上限（格）
+
+traj:
+  TRAJ_K_MAX:    64          # 候选轨迹数上限
+  TRAJ_T_MAX:    64          # 每条轨迹步数上限
+  TRAJ_FRAC:     8           # 轨迹位置定点小数位（单位：格, Q8）
+  SIN_LUT_LOG2:  10          # 正弦表 1024 项（覆盖一整圈）
+  SIN_FRAC:      14          # 正弦值 signed16 Q1.14
+
+net:
+  RX_FIFO_BYTES:  4096       # 主机报文接收缓冲
+  TX_BUF_BYTES:   2048       # 主机报文发送缓冲
+  LIDAR_FIFO_BYTES: 8192     # 雷达负载缓冲（地图处理期间吸收反压）
+
+io:
+  UART_FIFO_DEPTH: 256
