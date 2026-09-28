@@ -164,13 +164,20 @@ module trav_v3 #(
     reg signed [15:0] trh;
     reg [4:0]  trd;
     // 列向扫描寄存器（每列一组）
-    reg        ctv [0:N-1];
-    reg signed [15:0] cth [0:N-1];
-    reg [4:0]  ctd [0:N-1];
+    // 同步读 RAM：T1 按下一个中心的列号发读，T2 取数并写回同列（避免"同址读写"的单口推断，布局布线不支持）
+    reg        ct_we;
+    reg [LOG2N-1:0] ct_wa;
+    reg [21:0] ct_wd;
+    wire [21:0] ct_q;
+    wire        ct_re = v1 && (c1 >= 2) && (c1 < N + 2);
+    wire [LOG2N-1:0] ct_ra = c1[LOG2N-1:0] - 2'd2;
+    nav_ram_sdp #(.DW(22), .AW(LOG2N)) u_ct (
+        .clk(clk), .we(ct_we), .waddr(ct_wa), .wdata(ct_wd), .re(ct_re), .raddr(ct_ra), .rdata(ct_q)
+    );
     wire       e_rv = (wcc == 0) ? 1'b0 : trv;
-    wire       e_cv = (wcr == 0) ? 1'b0 : ctv[wcc];
-    wire signed [15:0] e_ch = cth[wcc];
-    wire [4:0] e_cd = ctd[wcc];
+    wire       e_cv = (wcr == 0) ? 1'b0 : ct_q[21];
+    wire signed [15:0] e_ch = ct_q[20:5];
+    wire [4:0] e_cd = ct_q[4:0];
     wire [4:0] trd_inc = (trd == 5'd31) ? 5'd31 : trd + 5'd1;
     wire [4:0] ctd_inc = (e_cd == 5'd31) ? 5'd31 : e_cd + 5'd1;
 
@@ -301,7 +308,7 @@ module trav_v3 #(
     wire [LOG2N+1:0] lim = (ph == P_D) ? (N - 1 + R) : (N + 1);
 
     always @(posedge clk) begin
-        em_we <= 1'b0; cm_we <= 1'b0; bm_we <= 1'b0; done <= 1'b0;
+        em_we <= 1'b0; cm_we <= 1'b0; bm_we <= 1'b0; done <= 1'b0; ct_we <= 1'b0;
         if (rst) begin
             ph <= P_IDLE; busy <= 1'b0; rev <= 1'b0;
             v1 <= 1'b0; wval <= 1'b0; s2 <= 1'b0; s3 <= 1'b0; s4 <= 1'b0; s5 <= 1'b0; s6 <= 1'b0;
@@ -374,8 +381,8 @@ module trav_v3 #(
                 else begin trv <= e_rv; trd <= trd_inc; end
                 // 列向
                 fcl2 <= e_cv && (e_cd <= cfg_drop_k); hcl2 <= e_ch; kcl2 <= e_cd; ncl2 <= su_v;
-                if (su_v) begin ctv[wcc] <= 1'b1; cth[wcc] <= su_h; ctd[wcc] <= 5'd2; end
-                else begin ctv[wcc] <= e_cv; ctd[wcc] <= ctd_inc; end
+                ct_we <= 1'b1; ct_wa <= wcc;
+                ct_wd <= su_v ? {1'b1, su_h, 5'd2} : {e_cv, e_ch, ctd_inc};
             end
             // ---------------- T3 ----------------
             s3 <= s2;
