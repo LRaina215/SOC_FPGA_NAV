@@ -21,7 +21,7 @@ TESTS = {
 }
 
 LIDAR = ["rtl/lidar/xt_frame_rx.v", "rtl/lidar/pc_project.v", "rtl/lidar/pc_transform.v", "rtl/lidar/pc_filter.v"]
-MAP = ["rtl/map/elev_map.v", "rtl/map/trav_analysis.v", "rtl/map/map_subsys.v"]
+MAP = ["rtl/map/elev_map.v", "rtl/map/trav_v3.v", "rtl/map/map_subsys.v"]
 
 TESTS["tb_lidar_map"] = {
     "pre": ["sim/gen/gen_map.py"],

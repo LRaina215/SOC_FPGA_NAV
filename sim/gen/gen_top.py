@@ -21,8 +21,8 @@ LIDAR_MAC, LIDAR_IP = 0x0CAFE0000060, "192.168.1.60"
 FPGA_H_MAC, FPGA_H_IP = 0x024E56000002, "192.168.2.100"
 RK_MAC, RK_IP = 0x0A1B2C3D4E5F, "192.168.2.10"
 INV_RES = 1311
-MAPCFG = dict(age_max=60, cnt_min=1, step_max=120, rough_max=120, slope_max=60,
-              k_slope=64, k_step=32, k_rough=32, infl_r=3)
+import trav_v3  # noqa: E402
+MAPCFG = dict(trav_v3.DEFAULT_V3)      # DROP/FILL 寄存器用复位值（与此相同）
 ZMIN, ZMAX = -500, 1500
 TRAJ = [(0.0, 0.0, 0, 0), (0.5, 0.2, 10, 2), (1.0, 0.4, 20, 0)]
 
@@ -69,7 +69,7 @@ def main(out):
                for v in range(60) for u in range(160)]
         upd = nf.pc_filter(nf.pc_transform(nf.pc_project(pix, lut), Rq, tq), INV_RES, cx, cy, ZMIN, ZMAX)
         em.update(upd)
-        cost, _ = nf.trav_analysis(em, cx, cy, MAPCFG)
+        cost, _, _ = trav_v3.trav_v3(em, cx, cy, MAPCFG)
         cost_lines += [f"{int(c):02x}" for c in cost]
         last_cost, last_c = cost, (cx, cy, x, y, yaw)
         print(f"帧{k}: 更新 {sum(q[0] for q in upd)} 可通行 {int((cost <= 200).sum())}")
@@ -114,7 +114,8 @@ def main(out):
     c = MAPCFG
     (out / "cfg.txt").write_text(" ".join(str(v) for v in [
         len(eth), len(TRAJ), len(hl), len(gw),
-        c["age_max"] | (c["cnt_min"] << 8), c["step_max"] | (c["rough_max"] << 16), c["slope_max"],
+        c["age_max"] | (c["cnt_min"] << 8) | (c["keep_r"] << 16), c["step_max"] | (c["rough_max"] << 16),
+        c["slope_rise"] | (c["jump"] << 16),
         c["k_slope"] | (c["k_step"] << 8) | (c["k_rough"] << 16), c["infl_r"],
         (ZMIN & 0xFFFF) | ((ZMAX & 0xFFFF) << 16)]) + "\n")
 

@@ -117,6 +117,8 @@ module nav_regfile (
     input  wire [31:0] i_MAP_STAT_UPD,
     input  wire [31:0] i_MAP_STAT_DROP,
     input  wire [31:0] i_MAP_FRAME_CNT,
+    output reg  [31:0] r_MAP_DROP,
+    output reg  [31:0] r_MAP_FILL,
     output wire        p_TRAJ_CMD,
     input  wire [31:0] i_TRAJ_STAT,
     output reg  [31:0] r_TRAJ_CFG,
@@ -222,11 +224,13 @@ module nav_regfile (
             r_MAP_INV_RES <= 32'h0000051F;
             r_MAP_CENTER_X <= 32'h00000000;
             r_MAP_CENTER_Y <= 32'h00000000;
-            r_MAP_VALID_CFG <= 32'h0000013C;
-            r_MAP_THR0 <= 32'h00C8003C;
-            r_MAP_THR1 <= 32'h00000040;
-            r_MAP_WEIGHT <= 32'h00202040;
-            r_MAP_INFL <= 32'h00000003;
+            r_MAP_VALID_CFG <= 32'h000C013C;
+            r_MAP_THR0 <= 32'h00640064;
+            r_MAP_THR1 <= 32'h00230049;
+            r_MAP_WEIGHT <= 32'h002030A0;
+            r_MAP_INFL <= 32'h00000005;
+            r_MAP_DROP <= 32'h00000410;
+            r_MAP_FILL <= 32'h00281E05;
             r_TRAJ_CFG <= 32'h00002010;
             r_TRAJ_X0 <= 32'h00000000;
             r_TRAJ_Y0 <= 32'h00000000;
@@ -295,6 +299,8 @@ module nav_regfile (
             16'h301C: r_MAP_THR1 <= wdata;
             16'h3020: r_MAP_WEIGHT <= wdata;
             16'h3024: r_MAP_INFL <= wdata;
+            16'h3040: r_MAP_DROP <= wdata;
+            16'h3044: r_MAP_FILL <= wdata;
             16'h4008: r_TRAJ_CFG <= wdata;
             16'h400C: r_TRAJ_X0 <= wdata;
             16'h4010: r_TRAJ_Y0 <= wdata;
@@ -409,6 +415,8 @@ module nav_regfile (
         16'h3034: rdata = i_MAP_STAT_UPD;
         16'h3038: rdata = i_MAP_STAT_DROP;
         16'h303C: rdata = i_MAP_FRAME_CNT;
+        16'h3040: rdata = r_MAP_DROP;
+        16'h3044: rdata = r_MAP_FILL;
         16'h4000: rdata = 32'h0;
         16'h4004: rdata = i_TRAJ_STAT;
         16'h4008: rdata = r_TRAJ_CFG;

@@ -108,6 +108,8 @@
     wire [31:0] i_MAP_STAT_UPD;
     wire [31:0] i_MAP_STAT_DROP;
     wire [31:0] i_MAP_FRAME_CNT;
+    wire [31:0] r_MAP_DROP;
+    wire [31:0] r_MAP_FILL;
     wire        p_TRAJ_CMD;
     wire [31:0] i_TRAJ_STAT;
     wire [31:0] r_TRAJ_CFG;
@@ -253,6 +255,8 @@
         .i_MAP_STAT_UPD(i_MAP_STAT_UPD),
         .i_MAP_STAT_DROP(i_MAP_STAT_DROP),
         .i_MAP_FRAME_CNT(i_MAP_FRAME_CNT),
+        .r_MAP_DROP(r_MAP_DROP),
+        .r_MAP_FILL(r_MAP_FILL),
         .p_TRAJ_CMD(p_TRAJ_CMD),
         .i_TRAJ_STAT(i_TRAJ_STAT),
         .r_TRAJ_CFG(r_TRAJ_CFG),
