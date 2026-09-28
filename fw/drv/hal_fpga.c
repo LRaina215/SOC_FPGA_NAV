@@ -108,16 +108,49 @@ bool hal_lidar_waiting(uint32_t *frame_t_us)
     return true;
 }
 
-/* SLF 匹配硬件尚未接入寄存器：暂不支持，固件退回纯航位推算 */
-bool hal_match_ready(void) { return true; }
-bool hal_match_eval(int32_t cx_mm, int32_t cy_mm, const hal_match_cand_t *c, int k, hal_match_res_t *res)
+/* SLF 匹配（MATCH 寄存器块）：提交帧时硬件已提取结构点；打分约 38 ms（245 候选 × 1024 点），并图 + 建似然场约 1 ms */
+bool hal_match_ready(void)
 {
-    (void)cx_mm; (void)cy_mm; (void)c; (void)k; (void)res;
-    return false;
+    return (nav_rd(NAV_MATCH_STAT) & NAV_MATCH_STAT_PTS_READY_MASK) != 0;
 }
+
+bool hal_match_start(int32_t cx_mm, int32_t cy_mm, const hal_match_cand_t *c, int k)
+{
+    if (!(nav_rd(NAV_MATCH_CTRL) & NAV_MATCH_CTRL_ENABLE_MASK) || k > 256) return false;
+    nav_wr(NAV_MATCH_CX_MM, (uint32_t)cx_mm);
+    nav_wr(NAV_MATCH_CY_MM, (uint32_t)cy_mm);
+    for (int i = 0; i < k; i++) {
+        nav_wr(NAV_WIN_MATCH_CAND_BASE + 8u * (uint32_t)i, ((uint32_t)(uint16_t)c[i].dy << 16) | (uint16_t)c[i].dx);
+        nav_wr(NAV_WIN_MATCH_CAND_BASE + 8u * (uint32_t)i + 4u, (uint16_t)c[i].dyaw);
+    }
+    nav_wr(NAV_MATCH_NCAND, (uint32_t)k);
+    nav_wr(NAV_MATCH_CMD, NAV_MATCH_CMD_EVAL_MASK);
+    return true;
+}
+
+bool hal_match_result(hal_match_res_t *res, int k)
+{
+    if (!(nav_rd(NAV_MATCH_STAT) & NAV_MATCH_STAT_EVAL_DONE_MASK)) return false;
+    for (int i = 0; i < k; i++) {
+        uint32_t w1 = nav_rd(NAV_WIN_MATCH_RES_BASE + 8u * (uint32_t)i + 4u);
+        res[i].cost = nav_rd(NAV_WIN_MATCH_RES_BASE + 8u * (uint32_t)i);
+        res[i].n_valid = w1 & 0xFFFFu;
+        res[i].n_in = w1 >> 16;
+    }
+    return true;
+}
+
 void hal_match_update(int32_t dx, int32_t dy, int32_t dyaw, int32_t cx_mm, int32_t cy_mm)
 {
-    (void)dx; (void)dy; (void)dyaw; (void)cx_mm; (void)cy_mm;
+    nav_wr(NAV_MATCH_CX_MM, (uint32_t)cx_mm);
+    nav_wr(NAV_MATCH_CY_MM, (uint32_t)cy_mm);
+    nav_wr(NAV_MATCH_UPD_DX, (uint32_t)dx);
+    nav_wr(NAV_MATCH_UPD_DY, (uint32_t)dy);
+    nav_wr(NAV_MATCH_UPD_DYAW, (uint32_t)(uint16_t)dyaw);
+    nav_wr(NAV_MATCH_CMD, NAV_MATCH_CMD_UPDATE_MASK);
+    /* 等并图与建似然场结束（约 1 ms），保证下一帧提取结构点前点缓冲已用完 */
+    uint32_t t0 = hal_time_us();
+    while ((nav_rd(NAV_MATCH_STAT) & NAV_MATCH_STAT_BUSY_MASK) && (uint32_t)(hal_time_us() - t0) < 5000) { }
 }
 
 bool hal_map_height(int32_t x_mm, int32_t y_mm, int32_t *h_mm)

@@ -241,8 +241,9 @@ bool hal_lidar_waiting(uint32_t *t) { (void)t; return false; }
 void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int32_t cy, int32_t zmin, int32_t zmax)
 { (void)r; (void)t; (void)cx; (void)cy; (void)zmin; (void)zmax; }
 bool hal_match_ready(void) { return true; }
-bool hal_match_eval(int32_t cx_mm, int32_t cy_mm, const hal_match_cand_t *c, int k, hal_match_res_t *res)
-{ (void)cx_mm; (void)cy_mm; (void)c; (void)k; (void)res; return false; }
+bool hal_match_start(int32_t cx_mm, int32_t cy_mm, const hal_match_cand_t *c, int k)
+{ (void)cx_mm; (void)cy_mm; (void)c; (void)k; return false; }
+bool hal_match_result(hal_match_res_t *res, int k) { (void)res; (void)k; return false; }
 void hal_match_update(int32_t dx, int32_t dy, int32_t dyaw, int32_t cx_mm, int32_t cy_mm)
 { (void)dx; (void)dy; (void)dyaw; (void)cx_mm; (void)cy_mm; }
 bool hal_map_height(int32_t x, int32_t y, int32_t *h) { (void)x; (void)y; (void)h; return false; }

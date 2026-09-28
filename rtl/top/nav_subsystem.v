@@ -287,6 +287,45 @@ module nav_subsystem #(
     assign i_MAP_LAT_CY    = map_lcy;
     assign i_MAP_FRAME_CNT = {24'd0, map_fc};
 
+    // ================================================================ SLF 匹配定位
+    wire        mt_busy, mt_ready, mt_eval_done, mt_dbg_ack;
+    wire [12:0] mt_npts;
+    wire [22:0] mt_dbg_q;
+    wire [31:0] mt_res_q;
+    reg         mt_res_re, mt_cand_we, mt_eval_st, mt_dbg_req, mt_dbg_done;
+    reg  [8:0]  mt_res_addr, mt_cand_addr;
+    reg  [22:0] mt_dbg_word;
+    wire signed [31:0] mt_zref = $signed(r_LIDAR_TZ) - $signed(r_MATCH_MOUNT_Z);
+    // 高度带无效（zmin > zmax，姿态突变跳帧）的帧不提取结构点
+    wire        mt_frame_en = r_MATCH_CTRL[0] && ($signed(r_LIDAR_ZBAND[15:0]) <= $signed(r_LIDAR_ZBAND[31:16]));
+    slf_match #(.SIN_INIT(SIN_INIT)) u_match (
+        .clk(clk), .rst(rst),
+        .s_fire(pt_valid & pt_ready), .s_x(pt_x), .s_y(pt_y), .s_z(pt_z), .s_pv(pt_pv), .s_sof(pt_sof), .s_eof(pt_eof),
+        .frame_en(mt_frame_en),
+        .cfg_zlo(mt_zref + {{16{r_MATCH_ZREL[15]}}, r_MATCH_ZREL[15:0]}),
+        .cfg_zhi(mt_zref + {{16{r_MATCH_ZREL[31]}}, r_MATCH_ZREL[31:16]}),
+        .cfg_tx(r_LIDAR_TX), .cfg_ty(r_LIDAR_TY), .cfg_inv_res(r_MAP_INV_RES[15:0]),
+        .cmd_eval(p_MATCH_CMD & wd_q[0]), .cmd_update(p_MATCH_CMD & wd_q[1]), .cmd_clear(p_MATCH_CMD & wd_q[2]),
+        .cfg_cx_mm(r_MATCH_CX_MM), .cfg_cy_mm(r_MATCH_CY_MM), .cfg_ncand(r_MATCH_NCAND[8:0]),
+        .upd_dx(r_MATCH_UPD_DX), .upd_dy(r_MATCH_UPD_DY), .upd_dyaw(r_MATCH_UPD_DYAW[15:0]),
+        .lf_cx(r_MAP_CENTER_X), .lf_cy(r_MAP_CENTER_Y),
+        .cand_we(mt_cand_we), .cand_waddr(mt_cand_addr), .cand_wdata(wd_q),
+        .res_re(mt_res_re), .res_raddr(mt_res_addr), .res_q(mt_res_q),
+        .dbg_req(mt_dbg_req), .dbg_addr(r_MATCH_DBG_ADDR[15:0]), .dbg_ack(mt_dbg_ack), .dbg_q(mt_dbg_q),
+        .busy(mt_busy), .pts_ready(mt_ready), .n_pts(mt_npts), .eval_done(mt_eval_done)
+    );
+    always @(posedge clk) begin
+        if (rst) begin mt_eval_st <= 1'b0; mt_dbg_req <= 1'b0; mt_dbg_done <= 1'b0; end
+        else begin
+            if (p_MATCH_CMD & wd_q[0]) mt_eval_st <= 1'b0;
+            else if (mt_eval_done) mt_eval_st <= 1'b1;
+            if (p_MATCH_DBG_CMD & wd_q[0]) begin mt_dbg_req <= 1'b1; mt_dbg_done <= 1'b0; end
+            else if (mt_dbg_ack) begin mt_dbg_req <= 1'b0; mt_dbg_done <= 1'b1; mt_dbg_word <= mt_dbg_q; end
+        end
+    end
+    assign i_MATCH_STAT  = {3'd0, mt_npts, 13'd0, mt_eval_st, mt_ready, mt_busy};
+    assign i_MATCH_DBG_Q = {mt_dbg_done, 8'd0, mt_dbg_word};
+
     // ================================================================ 轨迹评估
     wire        tr_busy, tr_done, tr_stale;
     reg         tr_res_re, tr_cand_we;
@@ -372,8 +411,9 @@ module nav_subsystem #(
     assign irq = |(r_SYS_IRQ_STATUS & r_SYS_IRQ_ENABLE);
 
     // ================================================================ 总线状态机
-    localparam [2:0] B_IDLE = 3'd0, B_RF = 3'd1, B_CM = 3'd2, B_TRR = 3'd3, B_MBX = 3'd4, B_END = 3'd5, B_TRR2 = 3'd6;
-    reg [2:0] bs;
+    localparam [3:0] B_IDLE = 4'd0, B_RF = 4'd1, B_CM = 4'd2, B_TRR = 4'd3, B_MBX = 4'd4, B_END = 4'd5, B_TRR2 = 4'd6,
+                     B_MRR = 4'd7, B_MRR2 = 4'd8;
+    reg [3:0] bs;
     reg [1:0] cm_i;
     wire in_cm   = (bus_addr >= RW_COSTMAP_BASE) && (bus_addr < RW_COSTMAP_BASE + RW_COSTMAP_SIZE);
     wire in_res  = (bus_addr >= RW_TRAJ_RES_BASE) && (bus_addr < RW_TRAJ_RES_BASE + RW_TRAJ_RES_SIZE);
@@ -382,9 +422,14 @@ module nav_subsystem #(
     wire [15:0] off_cm   = bus_addr - RW_COSTMAP_BASE;
     wire [15:0] off_res  = bus_addr - RW_TRAJ_RES_BASE;
     wire [15:0] off_cand = bus_addr - RW_TRAJ_CAND_BASE;
+    wire in_mres  = (bus_addr >= RW_MATCH_RES_BASE) && (bus_addr < RW_MATCH_RES_BASE + RW_MATCH_RES_SIZE);
+    wire in_mcand = (bus_addr >= RW_MATCH_CAND_BASE) && (bus_addr < RW_MATCH_CAND_BASE + RW_MATCH_CAND_SIZE);
+    wire [15:0] off_mres  = bus_addr - RW_MATCH_RES_BASE;
+    wire [15:0] off_mcand = bus_addr - RW_MATCH_CAND_BASE;
 
     always @(posedge clk) begin
         bus_ack <= 1'b0; rf_wr <= 1'b0; rf_rd <= 1'b0; tr_res_re <= 1'b0; tr_cand_we <= 1'b0; mb_rd <= 1'b0;
+        mt_res_re <= 1'b0; mt_cand_we <= 1'b0;
         if (rst) begin
             bs <= B_IDLE; cm_b_req <= 1'b0;
         end else begin
@@ -404,6 +449,12 @@ module nav_subsystem #(
                 end else if (in_cand) begin
                     if (bus_we) begin tr_cand_we <= 1'b1; tr_cand_addr <= off_cand[8:2]; end
                     bus_ack <= 1'b1; bus_rdata <= 32'd0; bs <= B_END;
+                end else if (in_mres) begin
+                    if (bus_we) begin bus_ack <= 1'b1; bus_rdata <= 32'd0; bs <= B_END; end
+                    else begin mt_res_re <= 1'b1; mt_res_addr <= off_mres[10:2]; bs <= B_MRR; end
+                end else if (in_mcand) begin
+                    if (bus_we) begin mt_cand_we <= 1'b1; mt_cand_addr <= off_mcand[10:2]; end
+                    bus_ack <= 1'b1; bus_rdata <= 32'd0; bs <= B_END;
                 end else if (!bus_we && {bus_addr[15:2], 2'b00} == RA_MBX_RX_DATA) begin
                     mb_rd <= 1'b1; bs <= B_MBX;
                 end else begin
@@ -421,6 +472,8 @@ module nav_subsystem #(
             end
             B_TRR: bs <= B_TRR2;
             B_TRR2: begin bus_rdata <= tr_res_q; bus_ack <= 1'b1; bs <= B_END; end
+            B_MRR: bs <= B_MRR2;
+            B_MRR2: begin bus_rdata <= mt_res_q; bus_ack <= 1'b1; bs <= B_END; end
             B_MBX: if (mb_rd_ack) begin bus_rdata <= mb_word; bus_ack <= 1'b1; bs <= B_END; end
             B_END: bs <= B_IDLE;       // 给主机撤销 req 的一拍
             default: bs <= B_IDLE;

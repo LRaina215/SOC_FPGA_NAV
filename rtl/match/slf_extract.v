@@ -62,12 +62,16 @@ module slf_extract #(
     assign rb_re = (act && s_fire) || (flushing && fu < W);
     assign rb_ra = flushing ? fu[UW-1:0] : u;
 
-    // S1：行缓存数据返回
-    wire         p_mark = rb_q[97];
-    wire         p_pv   = rb_q[96];
-    wire signed [31:0] p_z = rb_q[95:64];
-    wire signed [31:0] p_y = rb_q[63:32];
-    wire signed [31:0] p_x = rb_q[31:0];
+    // S1：行缓存数据返回并寄存（S1b 再求差）
+    reg          vb1, fb1, topb1, pvb1, lastb1;
+    reg [UW-1:0] ub1;
+    reg signed [31:0] xb1, yb1, zb1;
+    reg [RB-1:0] rbq1;
+    wire         p_mark = rbq1[97];
+    wire         p_pv   = rbq1[96];
+    wire signed [31:0] p_z = rbq1[95:64];
+    wire signed [31:0] p_y = rbq1[63:32];
+    wire signed [31:0] p_x = rbq1[31:0];
     function [32:0] absd32(input signed [31:0] a, input signed [31:0] b);
         reg signed [32:0] d;
         begin d = {a[31], a} - {b[31], b}; absd32 = d[32] ? -d : d; end
@@ -80,14 +84,20 @@ module slf_extract #(
     reg          last2;
     reg          last1;
     wire [32:0]  dxy2 = (dx2 > dy2) ? dx2 : dy2;
-    wire         vert2 = !f2 && top2 && pv2c && pvp2 && (dz2 >= DZ_MIN) && ({1'b0, dz2} > {dxy2, 1'b0});
+    // S3：竖直判定与高度带比较寄存；S4：写回行缓存、输出结构点
+    reg          v3, f3, last3, top3, pv3c, pvp3, markp3, inb3;
+    reg [32:0]   dz3, dxy3;
+    wire         vd3 = (dz3 >= DZ_MIN) && ({1'b0, dz3} > {dxy3, 1'b0});
+    reg [UW-1:0] u3;
+    reg signed [31:0] x3, y3, z3, px3, py3;
+    wire         vert3 = !f3 && top3 && pv3c && pvp3 && vd3;
     // 被输出的是上一行同列的点（冲出遍时是行缓存里的最后一行）
-    wire         emit2 = (f2 || top2) && pvp2 && (markp2 || vert2) && (pz2 >= zlo_l) && (pz2 <= zhi_l);
+    wire         emit3 = (f3 || top3) && pvp3 && (markp3 || vert3) && inb3;
 
     always @(posedge clk) begin
         rb_we <= 1'b0; pb_we <= 1'b0; done <= 1'b0;
         if (rst) begin
-            act <= 1'b0; flushing <= 1'b0; busy <= 1'b0; v1 <= 1'b0; v2 <= 1'b0; n_pts <= 0;
+            act <= 1'b0; flushing <= 1'b0; busy <= 1'b0; v1 <= 1'b0; vb1 <= 1'b0; v2 <= 1'b0; v3 <= 1'b0; n_pts <= 0;
         end else begin
             // ---------------- S0：像素到达 ----------------
             v1 <= 1'b0;
@@ -110,25 +120,39 @@ module slf_extract #(
                 fu <= fu + 1'b1;
             end
             // ---------------- S1 ----------------
-            v2 <= v1;
+            vb1 <= v1;
             if (v1) begin
-                f2 <= f1; u2 <= u1; top2 <= top1; last2 <= last1;
-                pv2c <= pv1; x2 <= x1; y2 <= y1; z2 <= z1;
-                pvp2 <= p_pv; markp2 <= p_mark; px2 <= p_x; py2 <= p_y; pz2 <= p_z;
-                dz2 <= absd32(z1, p_z); dx2 <= absd32(x1, p_x); dy2 <= absd32(y1, p_y);
+                fb1 <= f1; ub1 <= u1; topb1 <= top1; lastb1 <= last1; pvb1 <= pv1;
+                xb1 <= x1; yb1 <= y1; zb1 <= z1; rbq1 <= rb_q;
             end
-            // ---------------- S2：写回行缓存、输出结构点 ----------------
+            // ---------------- S1b ----------------
+            v2 <= vb1;
+            if (vb1) begin
+                f2 <= fb1; u2 <= ub1; top2 <= topb1; last2 <= lastb1;
+                pv2c <= pvb1; x2 <= xb1; y2 <= yb1; z2 <= zb1;
+                pvp2 <= p_pv; markp2 <= p_mark; px2 <= p_x; py2 <= p_y; pz2 <= p_z;
+                dz2 <= absd32(zb1, p_z); dx2 <= absd32(xb1, p_x); dy2 <= absd32(yb1, p_y);
+            end
+            // ---------------- S2：比较 ----------------
+            v3 <= v2;
             if (v2) begin
-                if (!f2) begin
-                    rb_we <= 1'b1; rb_wa <= u2; rb_wd <= {vert2, pv2c, z2, y2, x2};
+                f3 <= f2; last3 <= last2; top3 <= top2; pv3c <= pv2c; pvp3 <= pvp2; markp3 <= markp2; u3 <= u2;
+                x3 <= x2; y3 <= y2; z3 <= z2; px3 <= px2; py3 <= py2;
+                dz3 <= dz2; dxy3 <= dxy2;
+                inb3 <= (pz2 >= zlo_l) && (pz2 <= zhi_l);
+                if (!f2 && last2) begin flushing <= 1'b1; fu <= 0; end
+            end
+            // ---------------- S3：写回行缓存、输出结构点 ----------------
+            if (v3) begin
+                if (!f3) begin
+                    rb_we <= 1'b1; rb_wa <= u3; rb_wd <= {vert3, pv3c, z3, y3, x3};
                 end
-                if (emit2 && n_pts < PB_MAX) begin
+                if (emit3 && n_pts < PB_MAX) begin
                     pb_we <= 1'b1; pb_waddr <= n_pts[PB_AW-1:0];
-                    pb_wdata <= {py2[17:0] - ty_l[17:0], px2[17:0] - tx_l[17:0]};
+                    pb_wdata <= {py3[17:0] - ty_l[17:0], px3[17:0] - tx_l[17:0]};
                     n_pts <= n_pts + 1'b1;
                 end
-                if (!f2 && last2) begin flushing <= 1'b1; fu <= 0; end
-                if (f2 && last2) begin flushing <= 1'b0; busy <= 1'b0; done <= 1'b1; end
+                if (f3 && last3) begin flushing <= 1'b0; busy <= 1'b0; done <= 1'b1; end
             end
         end
     end

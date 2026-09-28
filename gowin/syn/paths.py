@@ -1,10 +1,11 @@
-"""打印综合报告中的时钟 Fmax 与最差路径（起点 -> 终点）。"""
+"""打印综合报告中的时钟 Fmax 与最差路径（起点 -> 终点）。用法: python gowin/syn/paths.py [顶层名]"""
 import html
 import re
 import sys
 from pathlib import Path
 
-rpt = Path(__file__).resolve().parent / "build/impl/gwsynthesis/nav_subsystem_syn.rpt.html"
+top = sys.argv[1] if len(sys.argv) > 1 else "nav_subsystem"
+rpt = Path(__file__).resolve().parent / f"build/impl/gwsynthesis/{top}_syn.rpt.html"
 t = html.unescape(re.sub(r"<[^>]+>", " | ", rpt.read_text(encoding="utf-8", errors="replace")))
 t = re.sub(r"(\s*\|\s*)+", " | ", t)
 i = t.find("Max Frequency Summary")

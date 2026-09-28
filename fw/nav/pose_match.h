@@ -2,7 +2,8 @@
  *
  * 每帧流程（先融合、后匹配——帧只需流过一遍）：
  *   1. 按预测位姿提交帧：高程图融合，同时硬件提取竖直结构点存入点缓冲；
- *   2. hal_match_ready() 后，固件生成候选增量 (dx, dy, dyaw)，硬件对缓冲的结构点逐候选打分（hal_match_eval）；
+ *   2. hal_match_ready() 后，固件生成候选增量 (dx, dy, dyaw)，硬件对缓冲的结构点逐候选打分
+ *      （hal_match_start 发起，约 40 ms，期间主循环照常运行；hal_match_result 取回）；
  *   3. 固件取最优：平移用 3×3 邻域二次曲面的 Hessian 特征分解，只沿约束足够的方向做牛顿步（沿墙方向不修正），
  *      角度轴抛物线拟合；按增益修正位姿（含历史）；
  *   4. hal_match_update(修正量)：硬件把缓冲点按修正量变换后并入结构图，重建法向/距离场。
@@ -37,7 +38,9 @@ typedef struct {
 } pm_stat_t;
 
 void pm_default_cfg(pm_cfg_t *c);
-/* at：帧时刻的预测位姿（即提交帧时用的位姿）。成功时修正 pe（当前位姿与历史），返回是否修正 */
-bool pose_match_run(const pm_cfg_t *c, pose_est_t *pe, const nav_pose_t *at, pm_stat_t *st);
+/* 生成候选网格（(2·half+1)² 平移 × (2·half_ang+1) 角度），返回个数；未启用返回 0 */
+int pose_match_cands(const pm_cfg_t *c, hal_match_cand_t *cand);
+/* 由打分结果求修正量并作用到 pe（当前位姿与历史，候选平移是绕帧时刻机器人位置旋转后的平移）；返回是否修正 */
+bool pose_match_solve(const pm_cfg_t *c, pose_est_t *pe, const hal_match_res_t *res, int k, pm_stat_t *st);
 
 #endif

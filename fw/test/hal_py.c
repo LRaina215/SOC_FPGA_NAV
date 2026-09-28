@@ -178,14 +178,27 @@ void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int
     s_commit = true;
     s_lw = false;
 }
-bool hal_match_eval(int32_t cx_mm, int32_t cy_mm, const hal_match_cand_t *c, int k, hal_match_res_t *res)
+static hal_match_res_t s_mres[256];
+static bool s_mdone;
+static uint32_t s_mdone_t;
+#define PY_MATCH_LAT_US 40000u      /* 硬件打分耗时（245 候选 × 1024 点 × 约 15 拍 @100 MHz） */
+bool hal_match_start(int32_t cx_mm, int32_t cy_mm, const hal_match_cand_t *c, int k)
 {
-    if (!s_match_cb) return false;
+    if (!s_match_cb || k > 256) return false;
     static int32_t cand[3 * 256];
     static uint32_t out[4 * 256];
     for (int i = 0; i < k; i++) { cand[3 * i] = c[i].dx; cand[3 * i + 1] = c[i].dy; cand[3 * i + 2] = c[i].dyaw; }
     s_match_cb(cx_mm, cy_mm, cand, k, out);
-    for (int i = 0; i < k; i++) { res[i].n_valid = out[4 * i]; res[i].cost = out[4 * i + 1]; res[i].n_in = out[4 * i + 2]; }
+    for (int i = 0; i < k; i++) { s_mres[i].n_valid = out[4 * i]; s_mres[i].cost = out[4 * i + 1]; s_mres[i].n_in = out[4 * i + 2]; }
+    s_mdone = true;
+    s_mdone_t = s_now + PY_MATCH_LAT_US;
+    return true;
+}
+bool hal_match_result(hal_match_res_t *res, int k)
+{
+    if (!s_mdone || (int32_t)(s_now - s_mdone_t) < 0) return false;
+    memcpy(res, s_mres, sizeof(hal_match_res_t) * (size_t)k);
+    s_mdone = false;
     return true;
 }
 bool hal_imu_byte(uint8_t *b, bool *first, uint32_t *t)

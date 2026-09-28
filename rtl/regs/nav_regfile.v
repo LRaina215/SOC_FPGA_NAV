@@ -155,7 +155,21 @@ module nav_regfile (
     output wire        p_IMU_TX_DATA,
     input  wire [31:0] i_IMU_TX_STAT,
     output reg  [31:0] r_IMU_IDLE_US,
-    input  wire [31:0] i_IMU_STAT_OVF
+    input  wire [31:0] i_IMU_STAT_OVF,
+    output reg  [31:0] r_MATCH_CTRL,
+    output reg  [31:0] r_MATCH_ZREL,
+    output reg  [31:0] r_MATCH_MOUNT_Z,
+    output wire        p_MATCH_CMD,
+    input  wire [31:0] i_MATCH_STAT,
+    output reg  [31:0] r_MATCH_CX_MM,
+    output reg  [31:0] r_MATCH_CY_MM,
+    output reg  [31:0] r_MATCH_NCAND,
+    output reg  [31:0] r_MATCH_UPD_DX,
+    output reg  [31:0] r_MATCH_UPD_DY,
+    output reg  [31:0] r_MATCH_UPD_DYAW,
+    output reg  [31:0] r_MATCH_DBG_ADDR,
+    output wire        p_MATCH_DBG_CMD,
+    input  wire [31:0] i_MATCH_DBG_Q
 );
     always @(posedge clk) begin
         if (rst) r_SYS_IRQ_STATUS <= 32'h0;
@@ -182,6 +196,8 @@ module nav_regfile (
     assign p_IMU_RX_DATA = rd && (addr == 16'h6004);
     assign p_IMU_RX_TS = rd && (addr == 16'h600C);
     assign p_IMU_TX_DATA = wr && (addr == 16'h6010);
+    assign p_MATCH_CMD = wr && (addr == 16'h700C);
+    assign p_MATCH_DBG_CMD = wr && (addr == 16'h7030);
     always @(posedge clk) begin
         if (rst) begin
             r_SYS_SCRATCH <= 32'h00000000;
@@ -253,6 +269,16 @@ module nav_regfile (
             r_SAFE_EXT_MASK <= 32'h00000000;
             r_IMU_BAUD_DIV <= 32'h00000364;
             r_IMU_IDLE_US <= 32'h000001F4;
+            r_MATCH_CTRL <= 32'h00000001;
+            r_MATCH_ZREL <= 32'h05DC003C;
+            r_MATCH_MOUNT_Z <= 32'h000000C8;
+            r_MATCH_CX_MM <= 32'h00000000;
+            r_MATCH_CY_MM <= 32'h00000000;
+            r_MATCH_NCAND <= 32'h000000F5;
+            r_MATCH_UPD_DX <= 32'h00000000;
+            r_MATCH_UPD_DY <= 32'h00000000;
+            r_MATCH_UPD_DYAW <= 32'h00000000;
+            r_MATCH_DBG_ADDR <= 32'h00000000;
         end else if (wr) begin
             case (addr)
             16'h000C: r_SYS_SCRATCH <= wdata;
@@ -324,6 +350,16 @@ module nav_regfile (
             16'h502C: r_SAFE_EXT_MASK <= wdata;
             16'h6000: r_IMU_BAUD_DIV <= wdata;
             16'h6018: r_IMU_IDLE_US <= wdata;
+            16'h7000: r_MATCH_CTRL <= wdata;
+            16'h7004: r_MATCH_ZREL <= wdata;
+            16'h7008: r_MATCH_MOUNT_Z <= wdata;
+            16'h7014: r_MATCH_CX_MM <= wdata;
+            16'h7018: r_MATCH_CY_MM <= wdata;
+            16'h701C: r_MATCH_NCAND <= wdata;
+            16'h7020: r_MATCH_UPD_DX <= wdata;
+            16'h7024: r_MATCH_UPD_DY <= wdata;
+            16'h7028: r_MATCH_UPD_DYAW <= wdata;
+            16'h702C: r_MATCH_DBG_ADDR <= wdata;
             default: ;
             endcase
         end
@@ -459,6 +495,20 @@ module nav_regfile (
         16'h6014: rdata = i_IMU_TX_STAT;
         16'h6018: rdata = r_IMU_IDLE_US;
         16'h601C: rdata = i_IMU_STAT_OVF;
+        16'h7000: rdata = r_MATCH_CTRL;
+        16'h7004: rdata = r_MATCH_ZREL;
+        16'h7008: rdata = r_MATCH_MOUNT_Z;
+        16'h700C: rdata = 32'h0;
+        16'h7010: rdata = i_MATCH_STAT;
+        16'h7014: rdata = r_MATCH_CX_MM;
+        16'h7018: rdata = r_MATCH_CY_MM;
+        16'h701C: rdata = r_MATCH_NCAND;
+        16'h7020: rdata = r_MATCH_UPD_DX;
+        16'h7024: rdata = r_MATCH_UPD_DY;
+        16'h7028: rdata = r_MATCH_UPD_DYAW;
+        16'h702C: rdata = r_MATCH_DBG_ADDR;
+        16'h7030: rdata = 32'h0;
+        16'h7034: rdata = i_MATCH_DBG_Q;
         default: begin rdata = 32'h0; hit = 1'b0; end
         endcase
     end

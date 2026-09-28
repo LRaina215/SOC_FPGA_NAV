@@ -63,7 +63,7 @@ TESTS["tb_net"] = {
 
 IO = ["rtl/io/imu_uart.v", "rtl/io/uart_bus_bridge.v", "rtl/io/nav_bus_arb.v"]
 TOP = ["rtl/regs/nav_regfile.v", "rtl/top/nav_subsystem.v"]
-ALL_RTL = COMMON + LIDAR + MAP + PLAN + NET + IO + TOP
+ALL_RTL = COMMON + LIDAR + MAP + MATCH + PLAN + NET + IO + TOP
 
 TESTS["tb_nav_top"] = {
     "pre": ["sim/gen/gen_top.py"],

@@ -153,13 +153,13 @@ module slf_match #(
     localparam [4:0] S_IDLE = 0, S_CLR = 1, S_EV0 = 2, S_CD0 = 3, S_CD1 = 4, S_CD2 = 5, S_LUT = 6,
                      S_T0 = 7, S_T1 = 8, S_T2 = 9, S_T3 = 10, S_T4 = 11, S_T5 = 12,
                      S_G0 = 13, S_G1 = 14, S_NB = 15, S_ACC = 16, S_RES = 17,
-                     S_U0 = 18, S_U1 = 19, S_UC0 = 20, S_UC1 = 21, S_LFW = 22, S_DBG = 23, S_RES2 = 24,
+                     S_U0 = 18, S_U1 = 19, S_U2 = 30, S_U3 = 31, S_UC0 = 20, S_UC1 = 21, S_LFW = 22, S_DBG = 23, S_RES2 = 24,
                      S_T0W = 25, S_LUTW = 26, S_DBG2 = 28, S_UC2 = 29;
     localparam [1:0] MD_GATE = 0, MD_SCORE = 1, MD_UPD = 2;
     localparam [7:0] CN = C_NEAR;
     localparam [2:0] HM = HIT_MAX;
     // 注：RAM 读使能/地址在状态机里寄存，读数据在发读后第 2 拍可用（各处都多一个等待态）
-    reg [4:0]  st;
+    reg [5:0]  st;
     reg [1:0]  md;
     reg [AW:0] clr_a;
     reg [PB_AW:0] nsnap;                    // 本次处理时的点数
@@ -178,6 +178,13 @@ module slf_match #(
     reg [15:0] cost_acc, near_acc, nval;
     reg [3:0]  nb;                          // 当前发读的邻格序号
     reg        nb_v1, nb_v; reg [3:0] nb_d1, nb_d;   // 读返回对应的邻格（发读后第 2 拍）
+    reg        nq_v, np_v;                           // 邻格流水：寄存槽字 -> 求点积 -> 取小
+    reg [3:0]  nq_d;
+    reg [22:0] nq_w;
+    reg        np_occ, np_has;
+    reg signed [17:0] np_dot;
+    reg [8:0]  np_l1;
+    reg [22:0] uw_q; reg utb_q;                      // 并图读回（寄存一拍再算）
     reg [7:0]  best; reg any;
     reg [10:0] ncl;                         // 已记录的槽数（<= 1024）
     reg [10:0] cli;
@@ -194,7 +201,6 @@ module slf_match #(
     wire        core = (wxw >= MARGIN) && (wxw < N - MARGIN) && (wyw >= MARGIN) && (wyw < N - MARGIN);
     // 邻格偏移
     wire signed [2:0] onx = (nb % 3) - 1, ony = (nb / 3) - 1;
-    wire signed [2:0] odx = (nb_d % 3) - 1, ody = (nb_d / 3) - 1;
     wire signed [31:0] nbx = wxa + onx, nby = wya + ony;
     // 邻格代价
     function signed [8:0] nvx(input [4:0] q);   // round(cos/sin(q·π/32)·128)，与 model/slf_match.py:NVEC 相同
@@ -271,34 +277,104 @@ module slf_match #(
             default: nvy = 9'sd0;
         endcase
     endfunction
-    wire        q_occ = sm_q[7], q_has = sm_q[1];
-    wire [4:0]  q_q = sm_q[6:2];
-    wire signed [7:0] ex_n = $signed({odx, 4'd0}) + $signed({4'd0, sm_q[15:12]}) - $signed({4'd0, sxf});
-    wire signed [7:0] ey_n = $signed({ody, 4'd0}) + $signed({4'd0, sm_q[11:8]}) - $signed({4'd0, syf});
+    wire [4:0]  q_q = nq_w[6:2];
+    wire signed [2:0] qdx = (nq_d % 3) - 1, qdy = (nq_d / 3) - 1;
+    wire signed [7:0] ex_n = $signed({qdx, 4'd0}) + $signed({4'd0, nq_w[15:12]}) - $signed({4'd0, sxf});
+    wire signed [7:0] ey_n = $signed({qdy, 4'd0}) + $signed({4'd0, nq_w[11:8]}) - $signed({4'd0, syf});
     wire signed [17:0] dot_n = ex_n * nvx(q_q) + ey_n * nvy(q_q);
-    wire [17:0] adot = dot_n[17] ? -dot_n : dot_n;
     wire [7:0]  aex = ex_n[7] ? -ex_n : ex_n, aey = ey_n[7] ? -ey_n : ey_n;
-    wire [10:0] dd_n = q_has ? {3'd0, adot[14:7]} : ({3'd0, aex} + {3'd0, aey});
+    wire [17:0] adot = np_dot[17] ? -np_dot : np_dot;
+    wire [10:0] dd_n = np_has ? {3'd0, adot[14:7]} : {2'd0, np_l1};
     wire [7:0]  dd_c = (dd_n > 11'd255) ? 8'd255 : dd_n[7:0];
     // 并图：新字
-    wire [3:0]  w_tag = sm_q[22:19];
-    wire [2:0]  w_hit = sm_q[18:16];
-    wire [3:0]  w_cx = sm_q[15:12], w_cy = sm_q[11:8];
-    wire        fresh = (w_tag != u_tag) || (w_hit == 0);
-    wire [2:0]  h0 = fresh ? 3'd0 : w_hit;
+    wire [3:0]  w_tag = uw_q[22:19];
+    wire [2:0]  w_hit = uw_q[18:16];
+    wire [3:0]  w_cx = uw_q[15:12], w_cy = uw_q[11:8];
+    wire        fresh_w = (w_tag != u_tag) || (w_hit == 0);
+    reg         fresh;                               // 并图：S_U2 寄存 fresh/h0，S_U3 求新字
+    reg  [2:0]  h0;
     wire        updc = (h0 < HIT_FREEZE);
     wire [2:0]  n1 = h0 + 3'd1;
-    function signed [5:0] fdiv(input signed [5:0] t, input [2:0] d);   // 向下取整除法，d ∈ {2,3,4}
-        begin
-            case (d)
-                3'd2: fdiv = t >>> 1;
-                3'd4: fdiv = t >>> 2;
-                default: fdiv = (t >= 0) ? (t / 3) : -((-t + 2) / 3);
-            endcase
-        end
+    // 向下取整除法 floor(t / d)，d ∈ {2,3,4}，t ∈ [-16, 31]（除以 3 查表）
+    function signed [5:0] fdiv3(input signed [5:0] t);
+        case (t)
+            -6'sd32: fdiv3 = -6'sd11;
+            -6'sd31: fdiv3 = -6'sd11;
+            -6'sd30: fdiv3 = -6'sd10;
+            -6'sd29: fdiv3 = -6'sd10;
+            -6'sd28: fdiv3 = -6'sd10;
+            -6'sd27: fdiv3 = -6'sd9;
+            -6'sd26: fdiv3 = -6'sd9;
+            -6'sd25: fdiv3 = -6'sd9;
+            -6'sd24: fdiv3 = -6'sd8;
+            -6'sd23: fdiv3 = -6'sd8;
+            -6'sd22: fdiv3 = -6'sd8;
+            -6'sd21: fdiv3 = -6'sd7;
+            -6'sd20: fdiv3 = -6'sd7;
+            -6'sd19: fdiv3 = -6'sd7;
+            -6'sd18: fdiv3 = -6'sd6;
+            -6'sd17: fdiv3 = -6'sd6;
+            -6'sd16: fdiv3 = -6'sd6;
+            -6'sd15: fdiv3 = -6'sd5;
+            -6'sd14: fdiv3 = -6'sd5;
+            -6'sd13: fdiv3 = -6'sd5;
+            -6'sd12: fdiv3 = -6'sd4;
+            -6'sd11: fdiv3 = -6'sd4;
+            -6'sd10: fdiv3 = -6'sd4;
+            -6'sd9: fdiv3 = -6'sd3;
+            -6'sd8: fdiv3 = -6'sd3;
+            -6'sd7: fdiv3 = -6'sd3;
+            -6'sd6: fdiv3 = -6'sd2;
+            -6'sd5: fdiv3 = -6'sd2;
+            -6'sd4: fdiv3 = -6'sd2;
+            -6'sd3: fdiv3 = -6'sd1;
+            -6'sd2: fdiv3 = -6'sd1;
+            -6'sd1: fdiv3 = -6'sd1;
+            6'sd0: fdiv3 = 6'sd0;
+            6'sd1: fdiv3 = 6'sd0;
+            6'sd2: fdiv3 = 6'sd0;
+            6'sd3: fdiv3 = 6'sd1;
+            6'sd4: fdiv3 = 6'sd1;
+            6'sd5: fdiv3 = 6'sd1;
+            6'sd6: fdiv3 = 6'sd2;
+            6'sd7: fdiv3 = 6'sd2;
+            6'sd8: fdiv3 = 6'sd2;
+            6'sd9: fdiv3 = 6'sd3;
+            6'sd10: fdiv3 = 6'sd3;
+            6'sd11: fdiv3 = 6'sd3;
+            6'sd12: fdiv3 = 6'sd4;
+            6'sd13: fdiv3 = 6'sd4;
+            6'sd14: fdiv3 = 6'sd4;
+            6'sd15: fdiv3 = 6'sd5;
+            6'sd16: fdiv3 = 6'sd5;
+            6'sd17: fdiv3 = 6'sd5;
+            6'sd18: fdiv3 = 6'sd6;
+            6'sd19: fdiv3 = 6'sd6;
+            6'sd20: fdiv3 = 6'sd6;
+            6'sd21: fdiv3 = 6'sd7;
+            6'sd22: fdiv3 = 6'sd7;
+            6'sd23: fdiv3 = 6'sd7;
+            6'sd24: fdiv3 = 6'sd8;
+            6'sd25: fdiv3 = 6'sd8;
+            6'sd26: fdiv3 = 6'sd8;
+            6'sd27: fdiv3 = 6'sd9;
+            6'sd28: fdiv3 = 6'sd9;
+            6'sd29: fdiv3 = 6'sd9;
+            6'sd30: fdiv3 = 6'sd10;
+            6'sd31: fdiv3 = 6'sd10;
+            default: fdiv3 = 6'sd0;
+        endcase
     endfunction
-    wire signed [5:0] tcx = $signed({2'd0, u_mx}) - $signed({2'd0, w_cx}) + $signed({3'd0, n1[2:1]});
-    wire signed [5:0] tcy = $signed({2'd0, u_my}) - $signed({2'd0, w_cy}) + $signed({3'd0, n1[2:1]});
+    function signed [5:0] fdiv(input signed [5:0] t, input [2:0] d);
+        case (d)
+            3'd2: fdiv = t >>> 1;
+            3'd4: fdiv = t >>> 2;
+            default: fdiv = fdiv3(t);
+        endcase
+    endfunction
+    reg  signed [5:0] dcx, dcy;                       // S_U2 寄存：m − c
+    wire signed [5:0] tcx = dcx + $signed({3'd0, n1[2:1]});
+    wire signed [5:0] tcy = dcy + $signed({3'd0, n1[2:1]});
     wire signed [5:0] ncx_s = $signed({2'd0, w_cx}) + fdiv(tcx, n1);
     wire signed [5:0] ncy_s = $signed({2'd0, w_cy}) + fdiv(tcy, n1);
     wire [3:0]  ncx = fresh ? u_mx : updc ? ncx_s[3:0] : w_cx;
@@ -322,14 +398,16 @@ module slf_match #(
         ac_we <= 1'b0; ac_re <= 1'b0; cd_re <= 1'b0; rs_we <= 1'b0; lut_re <= 1'b0; lf_start <= 1'b0;
         eval_done <= 1'b0; dbg_ack <= 1'b0;
         nb_v1 <= 1'b0; nb_v <= nb_v1; nb_d <= nb_d1;
+        nq_v <= nb_v; nq_d <= nb_d; nq_w <= sm_q;
+        np_v <= nq_v; np_occ <= nq_w[7]; np_has <= nq_w[1]; np_dot <= dot_n; np_l1 <= {1'b0, aex} + {1'b0, aey};
         if (rst) begin
             st <= S_CLR; clr_a <= 0; pts_ready <= 1'b0; lfo_x <= -(N/2); lfo_y <= -(N/2);
         end else begin
             if (s_fire && s_sof && frame_en) begin base_x <= cfg_tx; base_y <= cfg_ty; end
             if (ex_done) pts_ready <= 1'b1;
             // 邻格读返回（打分）
-            if (nb_v) begin
-                if (q_occ) begin any <= 1'b1; if (dd_c < best) best <= dd_c; end
+            if (np_v) begin
+                if (np_occ) begin any <= 1'b1; if (dd_c < best) best <= dd_c; end
             end
             case (st)
             S_IDLE: begin
@@ -433,7 +511,7 @@ module slf_match #(
                 if (nb == 4'd8) st <= S_ACC;
                 nb <= nb + 1'b1;
             end
-            S_ACC: if (!nb_v && !nb_v1) begin
+            S_ACC: if (!nb_v && !nb_v1 && !nq_v && !np_v) begin
                 cost_acc <= cost_acc + ((any && best < CN) ? best : CN);
                 near_acc <= near_acc + any;
                 j <= jn; jj <= jj + 1'b1; st <= S_T0;
@@ -444,11 +522,18 @@ module slf_match #(
             end
             // ---------------- 并图 ----------------
             S_U0: st <= S_U1;
-            S_U1: begin
-                if (!tb_q) begin
+            S_U1: begin uw_q <= sm_q; utb_q <= tb_q; st <= S_U2; end
+            S_U2: begin
+                fresh <= fresh_w; h0 <= fresh_w ? 3'd0 : w_hit;
+                dcx <= $signed({2'd0, u_mx}) - $signed({2'd0, w_cx});
+                dcy <= $signed({2'd0, u_my}) - $signed({2'd0, w_cy});
+                st <= S_U3;
+            end
+            S_U3: begin
+                if (!utb_q) begin
                     tb_we <= 1'b1; tb_wa <= u_slot; tb_wd <= 1'b1;
                     sl_we <= 1'b1; sl_wa <= ncl[9:0]; sl_wd <= u_slot; ncl <= ncl + 1'b1;
-                    sm_we_m <= 1'b1; sm_wa_m <= u_slot; sm_wd_m <= {u_tag, nhit, ncx, ncy, sm_q[7:0]};
+                    sm_we_m <= 1'b1; sm_wa_m <= u_slot; sm_wd_m <= {u_tag, nhit, ncx, ncy, uw_q[7:0]};
                 end
                 j <= jn; jj <= jj + 1'b1; st <= S_T0;
             end

@@ -21,6 +21,10 @@ typedef struct {
     pm_cfg_t     pm_cfg;
     pm_stat_t    pm;
     bool         pm_pend;               /* 已提交、待匹配的帧 */
+    bool         pm_run;                /* 打分进行中 */
+    int          pm_k;
+    hal_match_cand_t pm_cand[PM_MAX_CAND];
+    hal_match_res_t  pm_res[PM_MAX_CAND];
     nav_pose_t   pm_at;                 /* 该帧提交时的位姿 */
     int32_t      zband_lo, zband_hi;    /* 保留点高度带（相对机器人，mm）：地面以下 / 机身以上的点不进地图 */
     int32_t      anchor_gain;           /* 足迹高度锚定增益 /256（0 = 关闭） */

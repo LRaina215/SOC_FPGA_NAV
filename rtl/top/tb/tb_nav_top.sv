@@ -18,7 +18,8 @@ module tb_nav_top;
     logic [7:0]  cexp [0:16384*4-1];
     logic [31:0] trj  [0:1023];
     logic [31:0] gexp [0:63];
-    logic [31:0] elx [0:47];          // 高程读期望：{槽地址, 低 32 位, 高 20 位} × 16
+    logic [31:0] elx [0:47];
+    logic [31:0] slx [0:0];            // 最后一帧 SLF 结构点数          // 高程读期望：{槽地址, 低 32 位, 高 20 位} × 16
     int n_ethl, n_frm, n_ethh, n_gexp;
     int c_valid, c_thr0, c_thr1, c_w, c_infl, c_zband;
 
@@ -134,6 +135,7 @@ module tb_nav_top;
         $readmemh("eth_h.hex", ethh);
         $readmemh("pose.hex", pose);
         $readmemh("elev_exp.hex", elx);
+        $readmemh("slf_exp.hex", slx);
         $readmemh("cost_exp.hex", cexp);
         $readmemh("traj.hex", trj);
         $readmemh("goal_exp.hex", gexp);
@@ -190,6 +192,25 @@ module tb_nav_top;
                 if (bad) begin errs += bad; $display("帧%0d 代价图不一致 %0d", k, bad); end
                 else $display("帧%0d 代价图经总线读出一致", k);
             end
+        end
+        // ---------- SLF：最后一帧的结构点数、一次打分 + 并图走通 ----------
+        begin
+            int tries = 0;
+            do begin rd(RA_MATCH_STAT, d); tries++; end while (!d[1] && tries < 1000);
+            chk("MATCH.PTS_READY", d[1], 1);
+            chk("MATCH.NPTS", d[28:16], slx[0][12:0]);
+            wr(RW_MATCH_CAND_BASE, 32'h0000_0000); wr(RW_MATCH_CAND_BASE + 4, 32'h0);
+            wr(RW_MATCH_CAND_BASE + 8, 32'h0019_0000); wr(RW_MATCH_CAND_BASE + 12, 32'h80);
+            wr(RA_MATCH_NCAND, 2);
+            wr(RA_MATCH_CMD, 1);
+            tries = 0;
+            do begin rd(RA_MATCH_STAT, d); tries++; end while (!d[2] && tries < 100000);
+            chk("MATCH.EVAL_DONE", d[2], 1);
+            rd(RW_MATCH_RES_BASE + 4, d); chk("MATCH 结果（空结构图：无参与点）", d, 0);
+            wr(RA_MATCH_CMD, 2);
+            tries = 0;
+            do begin rd(RA_MATCH_STAT, d); tries++; end while (d[0] && tries < 100000);
+            chk("MATCH 并图后空闲", d[1:0], 0);
         end
         // ---------- 高程图读口 ----------
         for (int i = 0; i < 16; i++) begin

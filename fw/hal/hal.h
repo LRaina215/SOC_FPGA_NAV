@@ -52,14 +52,16 @@ void hal_lidar_commit(const int32_t r_q14[3][3], const int32_t t_mm[3], int32_t 
 /* ---- 匹配定位（SLF，硬件并行打分）----
  * 提交帧（hal_lidar_commit）时硬件同时提取竖直结构点存入点缓冲（按提交时的位姿变换）。
  * hal_match_ready：本帧结构点已就绪、可以打分。
- * hal_match_eval：对缓冲点施加每个候选增量 p' = Rz(dyaw)·(p - c) + c + (dx, dy)，c = (cx_mm, cy_mm)，
- *   与结构图比较：n_valid = 参与打分的点数，cost = Σ 点到结构线法向距离（1/16 格，截断），n_in = 近邻命中点数。
- *   返回 false 表示硬件不支持（固件退回纯航位推算）。
+ * hal_match_start：发起打分——对缓冲点施加每个候选增量 p' = Rz(dyaw)·(p - c) + c + (dx, dy)，c = (cx_mm, cy_mm)，
+ *   与结构图比较。返回 false 表示硬件不支持（固件退回纯航位推算）。
+ * hal_match_result：打分完成时返回 true 并填结果：n_valid = 参与打分的点数，
+ *   cost = Σ 点到结构线法向距离（1/16 格，截断），n_in = 近邻命中点数。
  * hal_match_update：把缓冲点按最终修正量（同样的变换形式）并入结构图（修正量为 0 也要调用）。 */
 typedef struct { int32_t dx, dy; int32_t dyaw; } hal_match_cand_t;       /* mm, mm, angle */
 typedef struct { uint32_t n_valid, cost, n_in; } hal_match_res_t;
 bool hal_match_ready(void);
-bool hal_match_eval(int32_t cx_mm, int32_t cy_mm, const hal_match_cand_t *c, int k, hal_match_res_t *res);
+bool hal_match_start(int32_t cx_mm, int32_t cy_mm, const hal_match_cand_t *c, int k);
+bool hal_match_result(hal_match_res_t *res, int k);
 void hal_match_update(int32_t dx, int32_t dy, int32_t dyaw, int32_t cx_mm, int32_t cy_mm);
 /* 读高程图某点（里程计系 mm）所在栅格的地面高度：[zmin, zmax] 区间中点（格内高差 > 40 mm 视为非地面）。
  * 栅格有效返回 true。上板实现走 MAP.ELEV_ADDR/ELEV_CMD/ELEV_Q0/Q1 */

@@ -43,7 +43,8 @@ void nav_app_poll(void)
     /* 等到帧时刻之后的姿态已到达（IMU 50 Hz，最多等 100 ms）再处理：否则帧时刻恰逢姿态突变时，
      * 突变还没被检测到，这一帧就会带着旧姿态融合 */
     bool att_ready = false;
-    if (hal_lidar_waiting(&ft))
+    /* 上一帧的匹配未结束时不提交新帧（点缓冲还在用） */
+    if (!g_app.pm_pend && !g_app.pm_run && hal_lidar_waiting(&ft))
         att_ready = !nt->pose.have_att || (int32_t)(nt->pose.imu_t_us - ft) >= 0 || (uint32_t)(now - ft) > 100000;
     if (att_ready) {
         nav_pose_t at;
@@ -69,10 +70,19 @@ void nav_app_poll(void)
         pose_anchor_z(&nt->pose, 200, 180, g_app.anchor_gain);
         g_app.n_frames++;
     }
-    /* 匹配（先融合后匹配）：结构点就绪后打分、修正位姿，再把结构点按修正量并入结构图 */
+    /* 匹配（先融合后匹配）：结构点就绪 -> 发起打分（硬件约 40 ms，主循环不等待）-> 取回结果、修正位姿
+     * -> 把结构点按修正量并入结构图 */
     if (g_app.pm_pend && hal_match_ready()) {
         g_app.pm_pend = false;
-        bool ok = pose_match_run(&g_app.pm_cfg, &nt->pose, &g_app.pm_at, &g_app.pm);
+        g_app.pm_k = pose_match_cands(&g_app.pm_cfg, g_app.pm_cand);
+        if (g_app.pm_k > 0 && hal_match_start(g_app.pm_at.x, g_app.pm_at.y, g_app.pm_cand, g_app.pm_k))
+            g_app.pm_run = true;
+        else
+            hal_match_update(0, 0, 0, g_app.pm_at.x, g_app.pm_at.y);
+    }
+    if (g_app.pm_run && hal_match_result(g_app.pm_res, g_app.pm_k)) {
+        g_app.pm_run = false;
+        bool ok = pose_match_solve(&g_app.pm_cfg, &nt->pose, g_app.pm_res, g_app.pm_k, &g_app.pm);
         hal_match_update(ok ? g_app.pm.dx : 0, ok ? g_app.pm.dy : 0, ok ? g_app.pm.dyaw : 0,
                          g_app.pm_at.x, g_app.pm_at.y);
     }

@@ -211,7 +211,7 @@ module trav_v3 #(
     // T5
     reg        s5;  reg [2:0] ph5; reg [AW-1:0] sl5, wi5;
     reg        cv5; reg signed [15:0] ch5; reg [15:0] cro5;
-    reg [16:0] step5;
+    reg [16:0] st5a, st5b;
     reg signed [18:0] sx5, sy5;
     reg        okx5, oky5;
     reg        fb5, fmv5;
@@ -279,8 +279,13 @@ module trav_v3 #(
     reg        p2va, hda, p2first_ra, p2outa, p2x_valida;
     reg [LOG2N:0] p2xa;
     reg [AW-1:0]  p2sla;
-    wire [4:0] vc_old = vc[p2xa[LOG2N-1:0]];
-    wire [4:0] vc_new = hda ? 5'd0 : (p2first_ra ? 5'd31 : ((vc_old == 5'd31) ? 5'd31 : vc_old + 5'd1));
+    wire [4:0] vc_rd = vc[p2xa[LOG2N-1:0]];
+    // 再寄存一拍：列计数读出 -> 计算/写回 -> 膨胀判定分开
+    reg        p2vb, hdb, p2first_rb, p2outb, p2x_validb;
+    reg [LOG2N:0] p2xb;
+    reg [AW-1:0]  p2slb;
+    reg [4:0]  vc_old;
+    wire [4:0] vc_new = hdb ? 5'd0 : (p2first_rb ? 5'd31 : ((vc_old == 5'd31) ? 5'd31 : vc_old + 5'd1));
     wire       infl1 = (vc_new <= two_r);
     reg        p2v2, infl2;
     reg [AW-1:0] p2sl2;
@@ -291,8 +296,8 @@ module trav_v3 #(
     assign em_raddr = {gy0[LOG2N-1:0], gx0[LOG2N-1:0]};
     assign bm_re    = ((ph == P_C) && inr0) || ((ph == P_D) && (r < N) && (c < N));
     assign bm_ra    = (ph == P_D) ? {r[LOG2N-1:0], c[LOG2N-1:0]} : {ty0, tx0};
-    assign cm_re    = p2va && p2outa;
-    assign cm_raddr = p2sla;
+    assign cm_re    = p2vb && p2outb;
+    assign cm_raddr = p2slb;
     wire [LOG2N+1:0] lim = (ph == P_D) ? (N - 1 + R) : (N + 1);
 
     always @(posedge clk) begin
@@ -300,7 +305,7 @@ module trav_v3 #(
         if (rst) begin
             ph <= P_IDLE; busy <= 1'b0; rev <= 1'b0;
             v1 <= 1'b0; wval <= 1'b0; s2 <= 1'b0; s3 <= 1'b0; s4 <= 1'b0; s5 <= 1'b0; s6 <= 1'b0;
-            s7 <= 1'b0; s8 <= 1'b0; p2v1 <= 1'b0; p2va <= 1'b0; p2v2 <= 1'b0;
+            s7 <= 1'b0; s8 <= 1'b0; p2v1 <= 1'b0; p2va <= 1'b0; p2vb <= 1'b0; p2v2 <= 1'b0;
         end else begin
             // ---------------- 扫描计数 ----------------
             case (ph)
@@ -413,7 +418,7 @@ module trav_v3 #(
             s5 <= s4;
             if (s4) begin
                 ph5 <= ph4; sl5 <= sl4; wi5 <= wi4; cv5 <= cv4; ch5 <= ch4; cro5 <= cro4;
-                step5 <= mx17(mx17(st4[0], st4[1]), mx17(st4[2], st4[3]));
+                st5a <= mx17(st4[0], st4[1]); st5b <= mx17(st4[2], st4[3]);
                 sx5 <= gx4[0] + gx4[1] + gx4[2] + gx4[3];
                 sy5 <= gy4[0] + gy4[1] + gy4[2] + gy4[3];
                 okx5 <= okx4; oky5 <= oky4;
@@ -427,7 +432,7 @@ module trav_v3 #(
             // ---------------- T6 ----------------
             s6 <= s5;
             if (s5) begin
-                ph6 <= ph5; sl6 <= sl5; wi6 <= wi5; cv6 <= cv5; ch6 <= ch5; cro6 <= cro5; step6 <= step5;
+                ph6 <= ph5; sl6 <= sl5; wi6 <= wi5; cv6 <= cv5; ch6 <= ch5; cro6 <= cro5; step6 <= mx17(st5a, st5b);
                 rx6 <= okx5 ? abs19(sx5) : 19'd0;
                 ry6 <= oky5 ? abs19(sy5) : 19'd0;
                 // 正序时扫描的"前方"是 -x/-y，倒序时是 +x/+y
@@ -493,11 +498,16 @@ module trav_v3 #(
                 hda <= hd; p2first_ra <= p2first_r1; p2outa <= p2out1; p2x_valida <= p2x1_valid;
                 p2xa <= p2x1; p2sla <= p2sl1;
             end
-            p2v2 <= 1'b0;
+            p2vb <= p2va;
             if (p2va) begin
-                if (p2x_valida) vc[p2xa[LOG2N-1:0]] <= vc_new;
-                if (p2outa) begin
-                    p2v2 <= 1'b1; p2sl2 <= p2sla; infl2 <= infl1;
+                hdb <= hda; p2first_rb <= p2first_ra; p2outb <= p2outa; p2x_validb <= p2x_valida;
+                p2xb <= p2xa; p2slb <= p2sla; vc_old <= vc_rd;
+            end
+            p2v2 <= 1'b0;
+            if (p2vb) begin
+                if (p2x_validb) vc[p2xb[LOG2N-1:0]] <= vc_new;
+                if (p2outb) begin
+                    p2v2 <= 1'b1; p2sl2 <= p2slb; infl2 <= infl1;
                 end
             end
             if (p2v2 && infl2 && cm_q < C_INS) begin

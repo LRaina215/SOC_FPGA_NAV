@@ -15,6 +15,8 @@ import nav_fixed as nf  # noqa: E402
 import netpkt as npk  # noqa: E402
 import sim_world as sw  # noqa: E402
 import xt_proto as xt  # noqa: E402
+import nav_fast as fast  # noqa: E402
+import slf_match as slf  # noqa: E402
 
 FPGA_L_MAC, FPGA_L_IP = 0x024E56000001, "192.168.1.100"
 LIDAR_MAC, LIDAR_IP = 0x0CAFE0000060, "192.168.1.60"
@@ -72,7 +74,12 @@ def main(out):
         cost, _, _ = trav_v3.trav_v3(em, cx, cy, MAPCFG)
         cost_lines += [f"{int(c):02x}" for c in cost]
         last_cost, last_c = cost, (cx, cy, x, y, yaw)
+        xyz, pv = fast.pc_project(depth, np.array(lut, dtype=np.int64))
+        pt = fast.pc_transform(xyz, np.array(Rq), np.array(tq))
+        n_struct = min(int(slf.structure_mask(pt, pv, int(tq[2]) - 200).sum()), slf.PB_MAX)
         print(f"帧{k}: 更新 {sum(q[0] for q in upd)} 可通行 {int((cost <= 200).sum())}")
+
+    (out / "slf_exp.hex").write_text(f"{n_struct:08x}\n")      # 最后一帧的结构点数
 
     # 高程图读口：最后一帧扫描后的若干槽（含已观测与空槽）
     occ = [a for a in range(nf.N * nf.N) if em.cnt[a]][::97][:12]

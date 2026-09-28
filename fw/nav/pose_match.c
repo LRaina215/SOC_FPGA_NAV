@@ -17,14 +17,10 @@ void pm_default_cfg(pm_cfg_t *c)
 
 static int64_t score(const hal_match_res_t *r) { return (int64_t)r->cost; }
 
-bool pose_match_run(const pm_cfg_t *c, pose_est_t *pe, const nav_pose_t *at, pm_stat_t *st)
+int pose_match_cands(const pm_cfg_t *c, hal_match_cand_t *cand)
 {
-    st->applied = false;
-    if (!c->enable) return false;
-    static hal_match_cand_t cand[PM_MAX_CAND];
-    static hal_match_res_t res[PM_MAX_CAND];
     const int h = c->half, w = 2 * h + 1, ha = c->half_ang, wa = 2 * ha + 1;
-    if (w * w * wa > PM_MAX_CAND) return false;
+    if (!c->enable || w * w * wa > PM_MAX_CAND) return 0;
     int k = 0;
     for (int ia = -ha; ia <= ha; ia++)
         for (int iy = -h; iy <= h; iy++)
@@ -34,7 +30,14 @@ bool pose_match_run(const pm_cfg_t *c, pose_est_t *pe, const nav_pose_t *at, pm_
                 cand[k].dyaw = ia * c->step_ang;
                 k++;
             }
-    if (!hal_match_eval(at->x, at->y, cand, k, res)) return false;
+    return k;
+}
+
+bool pose_match_solve(const pm_cfg_t *c, pose_est_t *pe, const hal_match_res_t *res, int k, pm_stat_t *st)
+{
+    st->applied = false;
+    const int h = c->half, w = 2 * h + 1, ha = c->half_ang, wa = 2 * ha + 1;
+    if (k != w * w * wa) return false;
     st->n_runs++;
 
     uint32_t nmax = 0;

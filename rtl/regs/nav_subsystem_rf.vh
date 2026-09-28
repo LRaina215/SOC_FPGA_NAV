@@ -147,6 +147,20 @@
     wire [31:0] i_IMU_TX_STAT;
     wire [31:0] r_IMU_IDLE_US;
     wire [31:0] i_IMU_STAT_OVF;
+    wire [31:0] r_MATCH_CTRL;
+    wire [31:0] r_MATCH_ZREL;
+    wire [31:0] r_MATCH_MOUNT_Z;
+    wire        p_MATCH_CMD;
+    wire [31:0] i_MATCH_STAT;
+    wire [31:0] r_MATCH_CX_MM;
+    wire [31:0] r_MATCH_CY_MM;
+    wire [31:0] r_MATCH_NCAND;
+    wire [31:0] r_MATCH_UPD_DX;
+    wire [31:0] r_MATCH_UPD_DY;
+    wire [31:0] r_MATCH_UPD_DYAW;
+    wire [31:0] r_MATCH_DBG_ADDR;
+    wire        p_MATCH_DBG_CMD;
+    wire [31:0] i_MATCH_DBG_Q;
     nav_regfile u_rf (
         .clk(clk), .rst(rst), .wr(rf_wr), .rd(rf_rd), .addr(a_q), .wdata(wd_q),
         .rdata(rf_rdata), .hit(rf_hit),
@@ -297,5 +311,19 @@
         .p_IMU_TX_DATA(p_IMU_TX_DATA),
         .i_IMU_TX_STAT(i_IMU_TX_STAT),
         .r_IMU_IDLE_US(r_IMU_IDLE_US),
-        .i_IMU_STAT_OVF(i_IMU_STAT_OVF)
+        .i_IMU_STAT_OVF(i_IMU_STAT_OVF),
+        .r_MATCH_CTRL(r_MATCH_CTRL),
+        .r_MATCH_ZREL(r_MATCH_ZREL),
+        .r_MATCH_MOUNT_Z(r_MATCH_MOUNT_Z),
+        .p_MATCH_CMD(p_MATCH_CMD),
+        .i_MATCH_STAT(i_MATCH_STAT),
+        .r_MATCH_CX_MM(r_MATCH_CX_MM),
+        .r_MATCH_CY_MM(r_MATCH_CY_MM),
+        .r_MATCH_NCAND(r_MATCH_NCAND),
+        .r_MATCH_UPD_DX(r_MATCH_UPD_DX),
+        .r_MATCH_UPD_DY(r_MATCH_UPD_DY),
+        .r_MATCH_UPD_DYAW(r_MATCH_UPD_DYAW),
+        .r_MATCH_DBG_ADDR(r_MATCH_DBG_ADDR),
+        .p_MATCH_DBG_CMD(p_MATCH_DBG_CMD),
+        .i_MATCH_DBG_Q(i_MATCH_DBG_Q)
     );

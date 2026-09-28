@@ -2,6 +2,7 @@
 
 用法:
   python gowin/syn/syn.py            只综合 nav_subsystem（可综合性、资源、Fmax 估计）
+  python gowin/syn/syn.py --top=slf_lf  只综合某个模块
   python gowin/syn/syn.py --board    板级顶层 nav_board_top：综合 + 布局布线 + 生成比特流（50 MHz，无 IP）
 结果: gowin/syn/build[_board]/impl/...
 """
@@ -30,6 +31,9 @@ def main():
         shutil.copy(ROOT / f, BUILD / Path(f).name)
     tcl = ["set_device -device_version B GW5AT-LV138PG484AC1/I0"]
     top = "nav_board_top" if board else "nav_subsystem"
+    for a in sys.argv[1:]:
+        if a.startswith("--top="):              # 单独综合某个模块（排查用）
+            top = a.split("=", 1)[1]
     files = list(ALL_RTL) + (["gowin/nav_board_top.v"] if board else [])
     for s in files:
         tcl.append(f"add_file -type verilog {{{(ROOT / s).as_posix()}}}")

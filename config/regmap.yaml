@@ -373,7 +373,58 @@ blocks:
       - {name: IDLE_US,  off: 0x18, acc: rw, reset: 500, desc: "空闲多少 us 视为新突发"}
       - {name: STAT_OVF, off: 0x1C, acc: ro, reset: 0, desc: "接收溢出字节数"}
 
+  - name: MATCH
+    base: 0x7000
+    desc: SLF 结构似然场匹配定位（结构点提取 / 打分 / 并图 / 似然场建图）
+    regs:
+      - name: CTRL
+        off: 0x00
+        acc: rw
+        reset: 1
+        desc: "控制"
+        fields: {ENABLE: [0,0]}
+      - name: ZREL
+        off: 0x04
+        acc: rw
+        reset: 0x05DC003C
+        desc: "结构点高度带（相对机器人足底 mm，= 帧平移 TZ − MOUNT_Z）"
+        fields: {ZLO: [15,0], ZHI: [31,16]}
+      - {name: MOUNT_Z, off: 0x08, acc: rw, reset: 200, desc: "雷达光心相对机器人足底的高度 mm"}
+      - name: CMD
+        off: 0x0C
+        acc: w1p
+        reset: 0
+        desc: "命令：打分 / 并图（并图后自动建似然场）/ 清空结构图"
+        fields: {EVAL: [0,0], UPDATE: [1,1], CLEAR: [2,2]}
+      - name: STAT
+        off: 0x10
+        acc: ro
+        reset: 0
+        desc: "状态"
+        fields: {BUSY: [0,0], PTS_READY: [1,1], EVAL_DONE: [2,2], NPTS: [28,16]}
+      - {name: CX_MM, off: 0x14, acc: rw, reset: 0, desc: "候选旋转中心 x（里程计系 mm，机器人位置）"}
+      - {name: CY_MM, off: 0x18, acc: rw, reset: 0, desc: "候选旋转中心 y"}
+      - {name: NCAND, off: 0x1C, acc: rw, reset: 245, desc: "候选数 [8:0]（<= 256）"}
+      - {name: UPD_DX, off: 0x20, acc: rw, reset: 0, desc: "并图修正量 dx mm（int32）"}
+      - {name: UPD_DY, off: 0x24, acc: rw, reset: 0, desc: "并图修正量 dy mm"}
+      - {name: UPD_DYAW, off: 0x28, acc: rw, reset: 0, desc: "并图修正量 dyaw [15:0]（65536/周）"}
+      - {name: DBG_ADDR, off: 0x2C, acc: rw, reset: 0, desc: "结构图调试读：槽地址 [15:0]"}
+      - name: DBG_CMD
+        off: 0x30
+        acc: w1p
+        reset: 0
+        desc: "结构图调试读命令"
+        fields: {READ: [0,0]}
+      - name: DBG_Q
+        off: 0x34
+        acc: ro
+        reset: 0
+        desc: "结构图槽字 {tag, hit, cx, cy, occ, q, has, gate} 与完成标志"
+        fields: {WORD: [22,0], DONE: [31,31]}
+
 windows:
   - {name: TRAJ_CAND, base: 0x4100, size: 0x0200, desc: "候选 k: +8k: [15:0]dvx [31:16]dvy (格 Q8/步); +8k+4: [15:0]dth (65536/周/步)"}
   - {name: TRAJ_RES,  base: 0x4400, size: 0x0400, desc: "结果 k: +16k: [7:0]max_cost [15:8]n_unknown [23:16]coll_step [24]collide [25]left; +4 sum_cost; +8 end_x Q8; +12 end_y Q8"}
+  - {name: MATCH_CAND, base: 0xC000, size: 0x0800, desc: "SLF 候选 k: +8k: [15:0]dx [31:16]dy (mm); +8k+4: [15:0]dyaw (65536/周)"}
+  - {name: MATCH_RES,  base: 0xC800, size: 0x0800, desc: "SLF 结果 k: +8k: 代价（1/16 格，截断法向距离和）; +8k+4: [15:0]参与点数 [31:16]近邻命中点数"}
   - {name: COSTMAP,   base: 0x8000, size: 0x4000, desc: "前台代价图，字节 (sy*128+sx)，sx/sy 为槽坐标 = 世界栅格 & 127；0..200 可通行代价，253 膨胀，254 致命，255 未知"}
