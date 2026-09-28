@@ -74,16 +74,39 @@ void pose_odom(pose_est_t *p, int16_t vx, int16_t vy, int16_t wz, uint32_t t_us)
 void pose_imu_att(pose_est_t *p, angle_t yaw, angle_t pitch, angle_t roll, bool yaw_valid, uint32_t t_us)
 {
     if (yaw_valid) p->cur.yaw = yaw;
-    /* 俯仰/横滚一阶低通（50 Hz 输入时时间常数约 0.16 s）：姿态噪声会让整帧点云整体倾斜，
-     * 远处地面高度逐帧跳动，在高程图里形成假台阶（闭环仿真中 0.3° 噪声使误报率升到 14%） */
+    /* 俯仰/横滚 α-β 滤波（α=1/4，β=1/32，按 50 Hz 采样）：姿态噪声会让整帧点云整体倾斜，远处地面高度逐帧跳动，
+     * 在高程图里形成假台阶；但一阶低通有滞后——原地转向时车体姿态以 10–20°/s 变化，0.16 s 的滞后就是 2–3°，
+     * 4 m 外的地面高差 15–20 cm（闭环仿真中理想传感器下误报率也到 12%）。α-β 同时估计角速度，匀速变化时无稳态滞后。 */
     int32_t pi = (int32_t)(int16_t)pitch * 16, ro = (int32_t)(int16_t)roll * 16;
-    if (p->att_n == 0) { p->pitch_f = pi; p->roll_f = ro; }
-    else { p->pitch_f += (pi - p->pitch_f) / 8; p->roll_f += (ro - p->roll_f) / 8; }
+    int32_t dt = (int32_t)(t_us - p->imu_t_us);
+    if (p->att_n == 0 || dt <= 0 || dt > 200000) {
+        p->pitch_f = pi; p->roll_f = ro; p->pitch_r = 0; p->roll_r = 0;
+    } else {
+        int32_t pp = p->pitch_f + (int32_t)((int64_t)p->pitch_r * dt / 20000);
+        int32_t pr = p->roll_f + (int32_t)((int64_t)p->roll_r * dt / 20000);
+        int32_t ep = pi - pp, er = ro - pr;
+        if (nav_abs32(ep) > POSE_ATT_JUMP || nav_abs32(er) > POSE_ATT_JUMP) {
+            /* 姿态突变（单侧轮/足登上台阶）：远超噪声，直接采用测量值，并记下时刻——
+             * 突变前后的雷达帧姿态不可靠，由上层决定是否融合 */
+            p->pitch_f = pi; p->roll_f = ro; p->pitch_r = 0; p->roll_r = 0;
+            p->att_jump_us = t_us;
+            p->att_jumped = true;
+        } else {
+            p->pitch_f = pp + ep / 4; p->roll_f = pr + er / 4;
+            p->pitch_r += ep / 32; p->roll_r += er / 32;
+        }
+    }
     p->att_n++;
     p->cur.pitch = (angle_t)(int16_t)(p->pitch_f / 16);
     p->cur.roll = (angle_t)(int16_t)(p->roll_f / 16);
     p->imu_att_valid = yaw_valid;
     p->imu_t_us = t_us;
+    p->have_att = true;
+}
+
+bool pose_att_unsettled(const pose_est_t *p, uint32_t t_us, uint32_t win_us)
+{
+    return p->att_jumped && (uint32_t)(t_us - p->att_jump_us) < win_us;
 }
 
 void pose_correct(pose_est_t *p, int32_t x, int32_t y, angle_t yaw)

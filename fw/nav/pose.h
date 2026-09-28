@@ -11,6 +11,7 @@
 #include "fixmath.h"
 
 #define POSE_HIST 64
+#define POSE_ATT_JUMP (16 * 273)     /* 姿态新息超过 1.5°（angle×16）视为突变 */
 
 typedef struct {
     nav_pose_t cur;
@@ -20,13 +21,17 @@ typedef struct {
     int32_t    wz_bias_q8;      /* mrad/s × 256 */
     uint32_t   still_us;
     bool       bias_valid;
-    uint32_t   bias_n;
-    int32_t    pitch_f, roll_f;  /* 俯仰/横滚低通状态（angle × 16）；att_n = 已收帧数 */
-    uint32_t   att_n;          /* 已用于零偏估计的样本数：前 256 个取累计平均，之后指数平均 */
+    uint32_t   bias_n;         /* 已用于零偏估计的样本数：前 256 个取累计平均，之后 1/256 指数平均 */
+    int32_t    pitch_f, roll_f;  /* 俯仰/横滚 α-β 滤波状态（angle × 16） */
+    int32_t    pitch_r, roll_r;  /* 角速度估计（angle × 16 / 20 ms） */
+    uint32_t   att_jump_us;      /* 最近一次姿态突变时刻 */
+    bool       att_jumped;
+    uint32_t   att_n;          /* 已收姿态帧数 */
     bool       cmd_still;       /* 当前下发的速度指令为零（由导航任务设置）：只有指令为零时才做零偏估计 */
     uint32_t   last_odo_us;
     bool       have_odo;
-    bool       imu_att_valid;
+    bool       imu_att_valid;   /* IMU 航向有效（用 IMU 航向代替陀螺积分） */
+    bool       have_att;        /* 收到过姿态 */
     uint32_t   imu_t_us;
     nav_pose_t hist[POSE_HIST];
     int        hist_head, hist_n;
@@ -40,6 +45,8 @@ void pose_init(pose_est_t *p, angle_t mount_pitch, int32_t mount_x_mm, int32_t m
 void pose_odom(pose_est_t *p, int16_t vx, int16_t vy, int16_t wz, uint32_t t_us);
 /* IMU 姿态（绝对航向可选）。yaw_valid=false 时只用俯仰横滚 */
 void pose_imu_att(pose_est_t *p, angle_t yaw, angle_t pitch, angle_t roll, bool yaw_valid, uint32_t t_us);
+/* t_us 之前 win_us 内发生过姿态突变 */
+bool pose_att_unsettled(const pose_est_t *p, uint32_t t_us, uint32_t win_us);
 /* 外部定位修正（预留） */
 void pose_correct(pose_est_t *p, int32_t x, int32_t y, angle_t yaw);
 /* 增量修正（匹配定位用），同时修正位姿历史，使随后的历史查询一致 */

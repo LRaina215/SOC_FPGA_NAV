@@ -36,6 +36,7 @@ typedef struct {
     int32_t  best_score;
     nav_cmd_t cmd;
     bool     blocked;               /* 所有候选都被淘汰 */
+    bool     escape;                /* 本次结果来自脱困遍（机器人在膨胀区内） */
     hal_traj_res_t res[LP_MAX_CAND];
     int16_t  cv[LP_MAX_CAND], cvy[LP_MAX_CAND], cw[LP_MAX_CAND];
     int16_t  prev_wz;               /* 上一周期输出（调用方保留） */

@@ -16,7 +16,7 @@ typedef struct {
     nav_task_t   nt;
     imu_parser_t imu;
     uint32_t     t_plan, t_status;
-    uint32_t     n_frames, n_msgs;
+    uint32_t     n_frames, n_msgs, n_skip;
     bool         use_imu_yaw;           /* IMU 航向可信时置 1（磁干扰大时用里程计航向） */
     pm_cfg_t     pm_cfg;
     pm_stat_t    pm;

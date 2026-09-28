@@ -28,6 +28,12 @@ void nav_task_init(nav_task_t *nt)
     nt->cfg.track_hold_mm = 200;
     lp_default_cfg(&nt->lp_cfg);
     astar_default_cfg(&nt->as_cfg);
+    astar_default_cfg(&nt->as_cfg_g);
+    nt->as_cfg_g.clear_cells = 3;          /* 20 cm 格：离障 1 格 +40、2 格 +20 */
+    nt->as_cfg_g.clear_cost = 20;
+    nt->use_gmap = true;
+    gmap_default_cfg(&nt->gm.cfg);
+    gmap_init(&nt->gm);
     explore_default_cfg(&nt->ex_cfg);
     pose_init(&nt->pose, ANGLE_FROM_CDEG(1000), 100, 200);
     target_init(&nt->tgt, 1500000, 700);
@@ -122,6 +128,45 @@ static bool line_clear(const uint8_t *map, int x0, int y0, int x1, int y1, uint8
     }
 }
 
+/* 路径点 i -> mm 与局部窗口坐标 */
+static void path_pt(const nav_task_t *nt, int i, int32_t *x, int32_t *y, int *wx, int *wy)
+{
+    if (nt->use_gmap) {
+        gmap_cell_to_mm(&nt->gm, &nt->mi, nt->path.wx[i], nt->path.wy[i], x, y);
+        nav_mm_to_win(&nt->mi, *x, *y, wx, wy);
+    } else {
+        *wx = nt->path.wx[i]; *wy = nt->path.wy[i];
+        nav_win_to_mm(&nt->mi, *wx, *wy, x, y);
+    }
+}
+
+static int plan_path(nav_task_t *nt, const nav_pose_t *p, int32_t gx, int32_t gy)
+{
+    if (nt->use_gmap) {
+        int rx, ry, tx, ty;
+        gmap_mm_to_cell(&nt->gm, &nt->mi, p->x, p->y, &rx, &ry);
+        gmap_mm_to_cell(&nt->gm, &nt->mi, gx, gy, &tx, &ty);
+        /* 目标在记忆栅格外：夹到边界（沿机器人->目标方向），clamp 按局部图尺寸写的，这里换算比例 */
+        if (tx < 1 || tx > GM_N - 2 || ty < 1 || ty > GM_N - 2) {
+            int32_t dx = tx - rx, dy = ty - ry, t = 1024;
+            if (dx > 0 && tx > GM_N - 2) t = nav_min32(t, (GM_N - 2 - rx) * 1024 / dx);
+            if (dx < 0 && tx < 1) t = nav_min32(t, (1 - rx) * 1024 / dx);
+            if (dy > 0 && ty > GM_N - 2) t = nav_min32(t, (GM_N - 2 - ry) * 1024 / dy);
+            if (dy < 0 && ty < 1) t = nav_min32(t, (1 - ry) * 1024 / dy);
+            if (t < 0) t = 0;
+            tx = rx + dx * t / 1024;
+            ty = ry + dy * t / 1024;
+        }
+        nt->path_shift = nt->gm.n_shift;
+        return astar_grid(&nt->as_cfg_g, nt->gm.grid, GM_N, rx, ry, tx, ty, &nt->path);
+    }
+    int rx, ry, tx, ty;
+    nav_mm_to_win(&nt->mi, p->x, p->y, &rx, &ry);
+    nav_mm_to_win(&nt->mi, gx, gy, &tx, &ty);
+    clamp_goal_to_window(rx, ry, &tx, &ty);
+    return astar_plan(&nt->as_cfg, nt->map, nav_clamp32(rx, 0, N - 1), nav_clamp32(ry, 0, N - 1), tx, ty, &nt->path);
+}
+
 /* 沿全局路径取前视点；返回 false 表示没有路径 */
 static bool pick_lookahead(nav_task_t *nt, const nav_pose_t *p, int32_t gx, int32_t gy, int32_t *lx, int32_t *ly)
 {
@@ -130,16 +175,17 @@ static bool pick_lookahead(nav_task_t *nt, const nav_pose_t *p, int32_t gx, int3
     nav_mm_to_win(&nt->mi, p->x, p->y, &rx, &ry);
     nav_mm_to_win(&nt->mi, gx, gy, &tx, &ty);
     bool goal_in = tx >= 1 && tx <= N - 2 && ty >= 1 && ty <= N - 2;
-    if (!nt->path_valid || (nt->path_seq != nt->mi.seq && (uint32_t)(now - nt->path_t_us) > nt->cfg.replan_us)) {
-        clamp_goal_to_window(rx, ry, &tx, &ty);
-        int rc = astar_plan(&nt->as_cfg, nt->map, nav_clamp32(rx, 0, N - 1), nav_clamp32(ry, 0, N - 1), tx, ty, &nt->path);
+    bool stale = nt->use_gmap && nt->path_shift != nt->gm.n_shift;
+    if (!nt->path_valid || stale ||
+        (nt->path_seq != nt->mi.seq && (uint32_t)(now - nt->path_t_us) > nt->cfg.replan_us)) {
+        int rc = plan_path(nt, p, gx, gy);
         nt->path_valid = (rc >= 0 && nt->path.n > 0);
         nt->path_seq = nt->mi.seq;
         nt->path_t_us = now;
         if (!nt->path_valid) return false;
     }
-    /* 目标在窗口内且比前视距离近：直接用目标 */
-    if (goal_in && fx_dist(gx - p->x, gy - p->y) <= nt->cfg.lookahead_mm) {
+    /* 目标比前视距离近：直接用目标 */
+    if (fx_dist(gx - p->x, gy - p->y) <= nt->cfg.lookahead_mm) {
         *lx = gx; *ly = gy;
         return true;
     }
@@ -148,7 +194,8 @@ static bool pick_lookahead(nav_task_t *nt, const nav_pose_t *p, int32_t gx, int3
     int32_t bd = INT32_MAX;
     for (int i = 0; i < nt->path.n; i++) {
         int32_t x, y;
-        nav_win_to_mm(&nt->mi, nt->path.wx[i], nt->path.wy[i], &x, &y);
+        int wx, wy;
+        path_pt(nt, i, &x, &y, &wx, &wy);
         int32_t d = fx_dist(x - p->x, y - p->y);
         if (d < bd) { bd = d; best = i; }
     }
@@ -156,13 +203,15 @@ static bool pick_lookahead(nav_task_t *nt, const nav_pose_t *p, int32_t gx, int3
     int pick = best;
     for (int i = best; i < nt->path.n; i++) {
         int32_t x, y;
-        nav_win_to_mm(&nt->mi, nt->path.wx[i], nt->path.wy[i], &x, &y);
-        if (i > best && !line_clear(nt->map, rx, ry, nt->path.wx[i], nt->path.wy[i], nt->as_cfg.block)) break;
+        int wx, wy;
+        path_pt(nt, i, &x, &y, &wx, &wy);
+        if (i > best && !line_clear(nt->map, rx, ry, wx, wy, nt->as_cfg.block)) break;
         pick = i;
         if (fx_dist(x - p->x, y - p->y) >= nt->cfg.lookahead_mm) break;
     }
     if (pick == best && pick + 1 < nt->path.n) pick++;       /* 至少向前一格 */
-    nav_win_to_mm(&nt->mi, nt->path.wx[pick], nt->path.wy[pick], lx, ly);
+    int wx, wy;
+    path_pt(nt, pick, lx, ly, &wx, &wy);
     if (pick == nt->path.n - 1 && goal_in) { *lx = gx; *ly = gy; }
     return true;
 }
@@ -210,6 +259,7 @@ void nav_task_step(nav_task_t *nt, uint32_t now)
     if (hal_map_info(&mi) && (!nt->have_map || mi.seq != nt->mi.seq)) {
         hal_map_copy(nt->map, &nt->mi);
         nt->have_map = true;
+        gmap_update(&nt->gm, nt->map, &nt->mi, nt->pose.cur.x, nt->pose.cur.y);
     }
     explore_mark(&nt->exp, &nt->pose.cur);
     const nav_pose_t *p = &nt->pose.cur;

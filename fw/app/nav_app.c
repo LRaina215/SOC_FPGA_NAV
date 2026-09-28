@@ -40,7 +40,12 @@ void nav_app_poll(void)
 
     /* 3. 雷达帧：预测位姿 -> 匹配修正（硬件打分）-> 用修正后的位姿融合，窗口中心跟随机器人 */
     uint32_t ft;
-    if (hal_lidar_waiting(&ft)) {
+    /* 等到帧时刻之后的姿态已到达（IMU 50 Hz，最多等 100 ms）再处理：否则帧时刻恰逢姿态突变时，
+     * 突变还没被检测到，这一帧就会带着旧姿态融合 */
+    bool att_ready = false;
+    if (hal_lidar_waiting(&ft))
+        att_ready = !nt->pose.have_att || (int32_t)(nt->pose.imu_t_us - ft) >= 0 || (uint32_t)(now - ft) > 100000;
+    if (att_ready) {
         nav_pose_t at;
         int32_t r[3][3], tt[3];
         pose_at(&nt->pose, ft, &at);
@@ -54,7 +59,14 @@ void nav_app_poll(void)
         uint16_t inv = mi.inv_res ? mi.inv_res : 1311;
         int32_t cx = (int32_t)(((int64_t)at.x * inv) >> 16);
         int32_t cy = (int32_t)(((int64_t)at.y * inv) >> 16);
-        hal_lidar_commit(r, tt, cx, cy, at.z + g_app.zband_lo, at.z + g_app.zband_hi);
+        /* 姿态突变前后 200 ms 的帧：点云整体倾斜未知，融合会在远处造成大片假台阶。
+         * 提交空高度带（zmin > zmax）——帧被消费、不写图，地形扫描照常进行 */
+        if (pose_att_unsettled(&nt->pose, now, 200000)) {
+            hal_lidar_commit(r, tt, cx, cy, 1, 0);
+            g_app.n_skip++;
+        } else {
+            hal_lidar_commit(r, tt, cx, cy, at.z + g_app.zband_lo, at.z + g_app.zband_hi);
+        }
         pose_match_after_commit(&g_app.pm_cfg, &at, &g_app.pm);
         pose_anchor_z(&nt->pose, 200, 180, g_app.anchor_gain);
         g_app.n_frames++;

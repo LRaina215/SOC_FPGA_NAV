@@ -1,10 +1,12 @@
 #include "astar.h"
 
 #define AN   ASTAR_N
-#define NC   (AN * AN)
+#define NC   (ASTAR_MAXN * ASTAR_MAXN)
 #define INF  0xFFFFu
 
-static uint8_t  s_cost[NC];      /* 粗栅格代价 */
+static uint8_t  s_cost[AN * AN]; /* 窗口粗栅格代价（astar_plan 用） */
+static const uint8_t *s_grid;    /* 当前搜索的栅格 */
+static int      s_n;             /* 当前栅格边长 */
 static uint16_t s_g[NC];
 static uint8_t  s_par[NC];       /* 0..7 = 来自的方向，0xFF = 未访问，0xFE = 起点 */
 static uint8_t  s_closed[NC / 8];
@@ -30,29 +32,30 @@ void astar_default_cfg(astar_cfg_t *c)
 /* 两遍扫描距离变换（8 邻接，单位粗格） */
 static void dist_transform(uint8_t block)
 {
-    for (int i = 0; i < NC; i++) {
-        uint8_t c = s_cost[i];
+    const int AN_ = s_n;
+    for (int i = 0; i < AN_ * AN_; i++) {
+        uint8_t c = s_grid[i];
         s_dist[i] = (c != 255 && c >= block) ? 0 : 250;
     }
-    for (int y = 0; y < AN; y++)
-        for (int x = 0; x < AN; x++) {
-            uint8_t *d = &s_dist[y * AN + x];
-            if (x > 0 && s_dist[y * AN + x - 1] + 1 < *d) *d = (uint8_t)(s_dist[y * AN + x - 1] + 1);
+    for (int y = 0; y < AN_; y++)
+        for (int x = 0; x < AN_; x++) {
+            uint8_t *d = &s_dist[y * AN_ + x];
+            if (x > 0 && s_dist[y * AN_ + x - 1] + 1 < *d) *d = (uint8_t)(s_dist[y * AN_ + x - 1] + 1);
             if (y > 0) {
                 for (int k = -1; k <= 1; k++) {
                     int xx = x + k;
-                    if (xx >= 0 && xx < AN && s_dist[(y - 1) * AN + xx] + 1 < *d) *d = (uint8_t)(s_dist[(y - 1) * AN + xx] + 1);
+                    if (xx >= 0 && xx < AN_ && s_dist[(y - 1) * AN_ + xx] + 1 < *d) *d = (uint8_t)(s_dist[(y - 1) * AN_ + xx] + 1);
                 }
             }
         }
-    for (int y = AN - 1; y >= 0; y--)
-        for (int x = AN - 1; x >= 0; x--) {
-            uint8_t *d = &s_dist[y * AN + x];
-            if (x < AN - 1 && s_dist[y * AN + x + 1] + 1 < *d) *d = (uint8_t)(s_dist[y * AN + x + 1] + 1);
-            if (y < AN - 1) {
+    for (int y = AN_ - 1; y >= 0; y--)
+        for (int x = AN_ - 1; x >= 0; x--) {
+            uint8_t *d = &s_dist[y * AN_ + x];
+            if (x < AN_ - 1 && s_dist[y * AN_ + x + 1] + 1 < *d) *d = (uint8_t)(s_dist[y * AN_ + x + 1] + 1);
+            if (y < AN_ - 1) {
                 for (int k = -1; k <= 1; k++) {
                     int xx = x + k;
-                    if (xx >= 0 && xx < AN && s_dist[(y + 1) * AN + xx] + 1 < *d) *d = (uint8_t)(s_dist[(y + 1) * AN + xx] + 1);
+                    if (xx >= 0 && xx < AN_ && s_dist[(y + 1) * AN_ + xx] + 1 < *d) *d = (uint8_t)(s_dist[(y + 1) * AN_ + xx] + 1);
                 }
             }
         }
@@ -116,21 +119,23 @@ static void downsample(const uint8_t *map)
         }
 }
 
-int astar_plan(const astar_cfg_t *cfg, const uint8_t *map, int sx, int sy, int gx, int gy, astar_path_t *out)
+int astar_grid(const astar_cfg_t *cfg, const uint8_t *grid, int n, int sx, int sy, int gx, int gy, astar_path_t *out)
 {
+    const int AN_ = n;
     out->n = 0;
-    downsample(map);
+    if (n > ASTAR_MAXN) return -1;
+    s_grid = grid;
+    s_n = n;
     dist_transform(cfg->block);
-    sx /= ASTAR_DS; sy /= ASTAR_DS; gx /= ASTAR_DS; gy /= ASTAR_DS;
-    sx = nav_clamp32(sx, 0, AN - 1); sy = nav_clamp32(sy, 0, AN - 1);
-    gx = nav_clamp32(gx, 0, AN - 1); gy = nav_clamp32(gy, 0, AN - 1);
+    sx = nav_clamp32(sx, 0, AN_ - 1); sy = nav_clamp32(sy, 0, AN_ - 1);
+    gx = nav_clamp32(gx, 0, AN_ - 1); gy = nav_clamp32(gy, 0, AN_ - 1);
 
-    for (int i = 0; i < NC; i++) { s_g[i] = INF; s_par[i] = 0xFF; }
-    for (int i = 0; i < NC / 8; i++) s_closed[i] = 0;
+    for (int i = 0; i < AN_ * AN_; i++) { s_g[i] = INF; s_par[i] = 0xFF; }
+    for (int i = 0; i < (AN_ * AN_ + 7) / 8; i++) s_closed[i] = 0;
     s_hn = 0;
     s_expanded = 0;
 
-    int start = sy * AN + sx, goal = gy * AN + gx;
+    int start = sy * AN_ + sx, goal = gy * AN_ + gx;
     s_g[start] = 0;
     s_par[start] = 0xFE;
     heap_push((uint16_t)start, heur(sx, sy, gx, gy));
@@ -138,20 +143,20 @@ int astar_plan(const astar_cfg_t *cfg, const uint8_t *map, int sx, int sy, int g
     uint16_t best_h = heur(sx, sy, gx, gy);
 
     while (s_hn > 0) {
-        hnode_t n = heap_pop();
-        int idx = n.idx;
+        hnode_t nd = heap_pop();
+        int idx = nd.idx;
         if (s_closed[idx >> 3] & (1 << (idx & 7))) continue;
         s_closed[idx >> 3] |= (uint8_t)(1 << (idx & 7));
         s_expanded++;
-        int x = idx % AN, y = idx / AN;
+        int x = idx % AN_, y = idx / AN_;
         uint16_t h = heur(x, y, gx, gy);
         if (h < best_h) { best_h = h; best = idx; }
         if (idx == goal) break;
         for (int d = 0; d < 8; d++) {
             int nx = x + DX[d], ny = y + DY[d];
-            if (nx < 0 || ny < 0 || nx >= AN || ny >= AN) continue;
-            int ni = ny * AN + nx;
-            uint8_t c = s_cost[ni];
+            if (nx < 0 || ny < 0 || nx >= AN_ || ny >= AN_) continue;
+            int ni = ny * AN_ + nx;
+            uint8_t c = grid[ni];
             uint32_t step = DC[d];
             if (c == 255) {
                 if (!cfg->allow_unknown) continue;
@@ -164,7 +169,7 @@ int astar_plan(const astar_cfg_t *cfg, const uint8_t *map, int sx, int sy, int g
             if (s_dist[ni] < cfg->clear_cells) step += (uint32_t)(cfg->clear_cells - s_dist[ni]) * cfg->clear_cost;
             /* 斜穿：两侧直邻都不可走时禁止切角 */
             if (d & 1) {
-                uint8_t c1 = s_cost[y * AN + nx], c2 = s_cost[ny * AN + x];
+                uint8_t c1 = grid[y * AN_ + nx], c2 = grid[ny * AN_ + x];
                 if (c1 != 255 && c1 >= cfg->block && c2 != 255 && c2 >= cfg->block) continue;
             }
             uint32_t ng = s_g[idx] + step;
@@ -180,21 +185,33 @@ int astar_plan(const astar_cfg_t *cfg, const uint8_t *map, int sx, int sy, int g
 
     int end = (s_par[goal] != 0xFF) ? goal : best;
     /* 回溯（反向），再翻转 */
-    int tmp[ASTAR_MAX_PATH];
-    int n = 0, cur = end;
-    while (n < ASTAR_MAX_PATH) {
-        tmp[n++] = cur;
+    static int tmp[ASTAR_MAX_PATH];
+    int np_ = 0, cur = end;
+    while (np_ < ASTAR_MAX_PATH) {
+        tmp[np_++] = cur;
         uint8_t p = s_par[cur];
         if (p == 0xFE || p == 0xFF) break;
-        int x = cur % AN - DX[p], y = cur / AN - DY[p];
-        cur = y * AN + x;
+        int x = cur % AN_ - DX[p], y = cur / AN_ - DY[p];
+        cur = y * AN_ + x;
     }
-    for (int i = 0; i < n; i++) {
-        int c = tmp[n - 1 - i];
-        out->wx[i] = (int16_t)((c % AN) * ASTAR_DS + ASTAR_DS / 2);
-        out->wy[i] = (int16_t)((c / AN) * ASTAR_DS + ASTAR_DS / 2);
+    /* 路径过长被截断时保留靠近起点的一段 */
+    for (int i = 0; i < np_; i++) {
+        int c = tmp[np_ - 1 - i];
+        out->wx[i] = (int16_t)(c % AN_);
+        out->wy[i] = (int16_t)(c / AN_);
     }
-    out->n = n;
+    out->n = np_;
     if (end == goal) return 0;
     return (end == start) ? -1 : 1;
+}
+
+int astar_plan(const astar_cfg_t *cfg, const uint8_t *map, int sx, int sy, int gx, int gy, astar_path_t *out)
+{
+    downsample(map);
+    int rc = astar_grid(cfg, s_cost, AN, sx / ASTAR_DS, sy / ASTAR_DS, gx / ASTAR_DS, gy / ASTAR_DS, out);
+    for (int i = 0; i < out->n; i++) {
+        out->wx[i] = (int16_t)(out->wx[i] * ASTAR_DS + ASTAR_DS / 2);
+        out->wy[i] = (int16_t)(out->wy[i] * ASTAR_DS + ASTAR_DS / 2);
+    }
+    return rc;
 }

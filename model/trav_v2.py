@@ -17,7 +17,9 @@ v2 的做法（全部是 3×3 窗口内的整数运算，与 v1 相同的流水�
      规则：已观测格 c 在 4 个方向之一上，紧邻的格未知，而沿该方向 DROP_K 格内第一个已观测格
      比 c 低 step_max 以上 -> c 判致命。只需每个方向一个"最近已观测格高度"的扫描寄存器，
      光栅扫描顺序可实现（左右方向行内、上下方向用列寄存器，与膨胀的实现方式相同）。
-  4. 参数按机器人能力给出：step_max = 可跨越高度，slope_max = 2·res·tan(最大坡度)。
+  4. 近区不过期（keep_r）：雷达最小量程 0.3 m、下俯视场，机器人周围约 0.4 m 看不见，
+     贴着障碍转向时障碍按时间过期就会"消失"。窗口中心 ±keep_r 格内的格子不做过期清除（只比较坐标，硬件代价极小）。
+  5. 参数按机器人能力给出：step_max = 可跨越高度，slope_max = 2·res·tan(最大坡度)。
 """
 import numpy as np
 
@@ -28,7 +30,7 @@ N = nf.N
 
 DEFAULT_V2 = dict(age_max=60, cnt_min=1, step_max=100, rough_max=100, slope_max=36,
                   k_slope=96, k_step=48, k_rough=32, infl_r=5,
-                  fill_min=5, fill_tol=30, fill_cost=40, jump=35, drop_k=8)
+                  fill_min=5, fill_tol=30, fill_cost=40, jump=35, drop_k=8, keep_r=12)
 
 
 def trav_v2(em, cx, cy, cfg):

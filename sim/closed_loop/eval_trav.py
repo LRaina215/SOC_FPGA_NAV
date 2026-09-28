@@ -1,5 +1,6 @@
 """地形可通行性算法单独评测（排除定位误差）：机器人按真值位姿沿路线采集，逐帧建图，
 按地形要素分区统计判定正确率。
+误报 = 真可通行格被判致命（254）；漏报 = 真致命格被判可走（< 253，膨胀区对机器人中心同样不可走，不算漏报）。
 
 用法: python sim/closed_loop/eval_trav.py [--trav v1 v2] [--set key=val ...]
 """
@@ -80,12 +81,13 @@ def evaluate(trav, cfg_over, verbose=True):
         lab = scene.gt_lookup(WX, WY)
         reg = regions(scene, WX, WY)
         use = obs & (lab != 2)
-        pl = cw >= 254
+        pl = cw >= 254          # 判致命（用于误报）
+        pb = cw >= 253          # 判不可走（含膨胀区，用于漏报：真致命格落在膨胀区里对机器人中心同样不可走）
         for r in set(reg[use].tolist()):
             m = use & (reg == r)
             s = stats.setdefault(r, np.zeros(4, dtype=np.int64))   # 真可通行&判可 / 真可&判致命 / 真致命&判可 / 真致命&判致命
             s += [int((m & (lab == 0) & ~pl).sum()), int((m & (lab == 0) & pl).sum()),
-                  int((m & (lab == 1) & ~pl).sum()), int((m & (lab == 1) & pl).sum())]
+                  int((m & (lab == 1) & ~pb).sum()), int((m & (lab == 1) & pb).sum())]
         # 未知格统计（真可通行区里还有多少未知）
         s = stats.setdefault("_unknown_free", np.zeros(4, dtype=np.int64))
         s += [int((inb & (lab == 0) & (cw == 255)).sum()), int((inb & (lab == 0)).sum()), 0, 0]

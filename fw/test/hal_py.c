@@ -108,6 +108,17 @@ EXPORT void py_get_match(int32_t *v)
     v[6] = (int32_t)s->cost0; v[7] = (int32_t)s->cost_best; v[8] = s->degen_x; v[9] = s->degen_y; v[10] = s->degen_yaw;
     v[11] = (int32_t)s->n_applied;
 }
+/* 全局记忆栅格：grid[GM_N*GM_N]，v: ox oy n ds；path: 当前 A* 路径（栅格坐标），返回点数 */
+EXPORT int py_get_gmap(uint8_t *grid, int32_t *v, int16_t *path)
+{
+    const nav_task_t *nt = &g_app.nt;
+    memcpy(grid, nt->gm.grid, sizeof nt->gm.grid);
+    v[0] = nt->gm.ox; v[1] = nt->gm.oy; v[2] = GM_N; v[3] = GM_DS;
+    int n = nt->path_valid ? nt->path.n : 0;
+    for (int i = 0; i < n; i++) { path[2 * i] = nt->path.wx[i]; path[2 * i + 1] = nt->path.wy[i]; }
+    return n;
+}
+EXPORT void py_set_gmap_enable(int en) { g_app.nt.use_gmap = en != 0; }
 EXPORT void py_set_anchor(int g) { g_app.anchor_gain = g; }
 EXPORT int py_get_nkf(void) { return (int)g_app.pm.n_kf; }
 EXPORT void py_set_match_enable(int en) { g_app.pm_cfg.enable = en != 0; }

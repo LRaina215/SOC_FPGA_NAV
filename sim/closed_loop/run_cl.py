@@ -67,8 +67,8 @@ def main():
     ap.add_argument("--waypoints")
     ap.add_argument("--laps", type=int, default=1)
     ap.add_argument("--search")
-    ap.add_argument("--trav", default="v2")
-    ap.add_argument("--match", default="on")
+    ap.add_argument("--trav", default="v3")
+    ap.add_argument("--match", default="off")
     ap.add_argument("--time", type=float, default=90.0)
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--fps", type=float, default=10.0)
@@ -78,6 +78,8 @@ def main():
     ap.add_argument("--gif", action="store_true", help="把快照合成动画 run.gif（未指定 --snap 时按 1 s 一帧）")
     ap.add_argument("--no-build", action="store_true")
     ap.add_argument("--anchor", type=int, default=64)
+    ap.add_argument("--tcfg", default="", help="覆盖地形参数，如 keep_r=0,age_max=100")
+    ap.add_argument("--gmap", default="on", help="A* 用全局记忆栅格（on）还是局部代价图（off）")
     ap.add_argument("--noise", default="", help="只开启部分误差源，逗号分隔：slip,gyro,att,scale")
     ap.add_argument("--ideal", action="store_true", help="理想传感器（无打滑/零偏/噪声），用于排查")
     ap.add_argument("--calib", type=float, default=2.0, help="任务下发前静止标定时间 s（陀螺零偏）")
@@ -107,10 +109,14 @@ def main():
     lid = sw.VirtualLidar(noise_mm=4.0, seed=a.seed + 7, rng_max=8.0, step=0.015)
     Rbs, tbs = sw.mount_pose(height=0.20, pitch_down_deg=10.0, x=0.10)
     fpga = fpga_model.FpgaModel(trav=a.trav)
+    for kv in filter(None, a.tcfg.split(",")):
+        k, v = kv.split("=")
+        fpga.cfg[k] = int(v)
     fw = Firmware()
     fw.py_set_match_enable(1 if a.match == "on" else 0)
     fw.py_set_caps(0, 500, 1200, 250)
     fw.py_set_anchor(a.anchor)
+    fw.py_set_gmap_enable(1 if a.gmap == "on" else 0)
 
     # 里程计系 = 世界系平移 (sx, sy)、旋转 syaw
     c0, s0 = math.cos(math.radians(syaw)), math.sin(math.radians(syaw))
@@ -180,6 +186,7 @@ def main():
 
     # 统计
     traj_true, traj_est, loc_err = [], [], []
+    tlog = []                                    # 逐 0.1 s：t, 真值 x y z yaw, 估计 x y z yaw, 指令 vx wz, 受阻
     conf = np.zeros((2, 2), dtype=np.int64)      # [真值 可通行/不可][预测 可通行/致命]
     n_obs_free = 0
     match_log = []
@@ -211,25 +218,30 @@ def main():
         return f
 
     def snapshot(tag):
-        save_snapshot(out / f"snapshot_{tag}.png", scene, fpga, traj_true, traj_est, goals_w, local_o2w(), w2o, a)
+        save_snapshot(out / f"snapshot_{tag}.png", scene, fpga, traj_true, traj_est, goals_w, local_o2w(), w2o, a,
+                      get_gmap(fw), o2w)
 
     ms = 0
     n_frames = 0
+    frame_pending = False
     while t < a.time:
         if pending and t >= a.calib:
             for b in pending:
                 send(b)
             pending = []
-        # 雷达帧
-        if t >= t_frame:
+        # 雷达帧：上一帧已提交（FPGA 双缓冲握手）才采集下一帧
+        if t >= t_frame and not frame_pending:
             t_frame += 1.0 / a.fps
             Rwb, twb = bot.body_pose()
             Rws, tws = sw.compose(Rwb, twb, Rbs, tbs)
             depth, _ = lid.capture(scene.w, Rws, tws)
             fpga.frame(depth)
             fw.py_set_lidar_waiting(ctypes.c_uint32(now_us))
+            frame_pending = True
+        if frame_pending:
             fw.py_poll()
             if fw.py_get_commit(commit_v):
+                frame_pending = False
                 v = list(commit_v)
                 fpga.commit(v[:12], v[12], v[13], v[14], v[15])
                 slot = (ctypes.c_uint8 * (128 * 128)).from_buffer_copy(np.clip(fpga.cost, 0, 255).astype(np.uint8).tobytes())
@@ -239,7 +251,7 @@ def main():
                 match_log.append(list(mv))
                 n_frames += 1
                 if n_frames % 5 == 0:
-                    stat_confusion(scene, fpga, local_o2w(), conf)
+                    stat_confusion(scene, fpga, local_o2w(), conf, t)
         # 里程计 50 Hz、IMU 50 Hz
         if t >= t_odo:
             t_odo += 0.02
@@ -271,6 +283,9 @@ def main():
             traj_est.append((ex, ey, st[2] / 1000))
             yaw_err = math.degrees(math.remainder(((st[3] & 0xFFFF) / 65536 * 2 * math.pi) + math.radians(syaw) - bot.yaw, 2 * math.pi))
             loc_err.append((math.hypot(ex - bot.x, ey - bot.y), abs(st[2] / 1000 - bot.z), abs(yaw_err)))
+            tlog.append((t, bot.x, bot.y, bot.z, math.degrees(bot.yaw), ex, ey, st[2] / 1000,
+                         math.degrees(bot.yaw) + yaw_err, cmdv[0], cmdv[2], int(bot.blocked),
+                         math.degrees(bot.pitch), st[4] * 360 / 65536, math.degrees(bot.roll), st[5] * 360 / 65536))
             if a.goal or a.waypoints:
                 if st[7] == 2 and arrived_t is None:
                     arrived_t = t
@@ -284,11 +299,25 @@ def main():
             snap_i += 1
             t_snap += a.snap
     snapshot("final")
+    if fpga.view is not None:
+        _, V_, H_, RO_ = fpga.view
+        gm_ = get_gmap(fw)
+        fw.py_get_state(st)
+        np.savez(out / "final_maps.npz", cost=cost_window(fpga), lethal=fpga.last_lethal, V=V_, H=H_, RO=RO_,
+                 cx=fpga.cx, cy=fpga.cy, gmap=gm_[0], gm_o=np.array(gm_[1:4]), path=gm_[4], state=np.array(list(st)),
+                 true=np.array([bot.x, bot.y, bot.z, bot.yaw]), fp_pts=np.array(ERR_PTS["fp"]).reshape(-1, 3),
+                 fn_pts=np.array(ERR_PTS["fn"]).reshape(-1, 3))
     if a.gif:
         from PIL import Image
         frames = [Image.open(p) for p in sorted(out.glob("snapshot_[0-9]*.png"))] + [Image.open(out / "snapshot_final.png")]
         frames[0].save(out / "run.gif", save_all=True, append_images=frames[1:], duration=250, loop=0)
 
+    save_err_plot(out / "trav_errors.png", scene, ERR_PTS, traj_true)
+    if tlog:
+        tl = np.array(tlog)
+        np.savetxt(out / "timeseries.csv", tl, delimiter=",", fmt="%.4f",
+                   header="t,x,y,z,yaw_deg,ex,ey,ez,eyaw_deg,cmd_vx,cmd_wz,blocked,pitch,epitch,roll,eroll", comments="")
+        save_timeseries_plot(out / "loc_error.png", tl)
     le = np.array(loc_err) if loc_err else np.zeros((1, 3))
     ml = np.array(match_log) if match_log else np.zeros((1, 12))
     tp, fn, fp, tn = int(conf[1, 1]), int(conf[1, 0]), int(conf[0, 1]), int(conf[0, 0])
@@ -317,6 +346,58 @@ def main():
     return 0
 
 
+def save_err_plot(path, scene, pts, traj_true):
+    """整个运行中地形判定错误的位置（世界系）：橙 = 误报致命，红 = 漏报；颜色深浅 = 时间"""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    plt.rcParams["font.sans-serif"] = ["Microsoft YaHei", "SimHei"]
+    fig, ax = plt.subplots(figsize=(12, 8))
+    x0, y0, x1, y1 = scene.bounds
+    X, Y = np.meshgrid(np.arange(x0, x1, 0.02), np.arange(y0, y1, 0.02))
+    ax.imshow(scene.height(X, Y), origin="lower", extent=(x0, x1, y0, y1), cmap="gray_r", vmin=-0.3, vmax=0.8)
+    for k, cm in (("fp", "Oranges"), ("fn", "Reds")):
+        if pts[k]:
+            p = np.array(pts[k])
+            ax.scatter(p[:, 0], p[:, 1], s=3, c=p[:, 2], cmap=cm, vmin=-20, vmax=max(1, p[:, 2].max()))
+    if traj_true:
+        tt = np.array(traj_true)
+        ax.plot(tt[:, 0], tt[:, 1], "b-", lw=1)
+    ax.set_title(f"地形判定错误位置：橙=误报 {len(pts['fp'])}，红=漏报 {len(pts['fn'])}（颜色越深越晚）")
+    ax.set_aspect("equal")
+    fig.savefig(path, dpi=80)
+    plt.close(fig)
+
+
+def save_timeseries_plot(path, tl):
+    """定位误差逐帧曲线：xy 误差分解到车体前向/侧向、航向误差、高度（真值与估计）、指令"""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    plt.rcParams["font.sans-serif"] = ["Microsoft YaHei", "SimHei"]
+    plt.rcParams["axes.unicode_minus"] = False
+    t = tl[:, 0]
+    dx, dy = tl[:, 5] - tl[:, 1], tl[:, 6] - tl[:, 2]
+    yw = np.radians(tl[:, 4])
+    along = dx * np.cos(yw) + dy * np.sin(yw)
+    cross = -dx * np.sin(yw) + dy * np.cos(yw)
+    fig, ax = plt.subplots(4, 1, figsize=(11, 10), sharex=True)
+    ax[0].plot(t, np.hypot(dx, dy), "k", label="|xy 误差|")
+    ax[0].plot(t, along, "b", lw=0.8, label="前向误差")
+    ax[0].plot(t, cross, "r", lw=0.8, label="侧向误差")
+    ax[0].set_ylabel("m"); ax[0].legend(fontsize=8); ax[0].grid(alpha=.3)
+    ax[1].plot(t, (tl[:, 8] - tl[:, 4] + 180) % 360 - 180, "m")
+    ax[1].set_ylabel("航向误差 °"); ax[1].grid(alpha=.3)
+    ax[2].plot(t, tl[:, 3], "r", label="真值 z"); ax[2].plot(t, tl[:, 7], "b--", label="估计 z")
+    ax[2].set_ylabel("m"); ax[2].legend(fontsize=8); ax[2].grid(alpha=.3)
+    ax[3].plot(t, tl[:, 9], "g", label="vx 指令 mm/s"); ax[3].plot(t, tl[:, 10], "c", label="wz 指令 mrad/s")
+    ax[3].fill_between(t, 0, tl[:, 11] * 500, color="r", alpha=.2, label="受阻")
+    ax[3].legend(fontsize=8); ax[3].grid(alpha=.3); ax[3].set_xlabel("t / s")
+    plt.tight_layout()
+    fig.savefig(path, dpi=80)
+    plt.close(fig)
+
+
 def target_visible(bot, scene, tx, ty, fov=math.radians(70), rng=4.0):
     dx, dy = tx - bot.x, ty - bot.y
     d = math.hypot(dx, dy)
@@ -332,7 +413,10 @@ def target_visible(bot, scene, tx, ty, fov=math.radians(70), rng=4.0):
     return True, c * dx + s * dy, -s * dx + c * dy
 
 
-def stat_confusion(scene, fpga, o2w, conf):
+ERR_PTS = {"fp": [], "fn": []}
+
+
+def stat_confusion(scene, fpga, o2w, conf, t=0.0):
     """当前窗口内：已观测（代价 != 255）栅格的预测（致命 = 254）与真值标签比较"""
     N = nf.N
     cw = cost_window(fpga)
@@ -350,11 +434,16 @@ def stat_confusion(scene, fpga, o2w, conf):
     lab = np.full(cw.shape, 2, dtype=np.int8)
     lab[obs] = scene.gt_lookup(WX[obs], WY[obs])
     use = obs & (lab != 2)
-    pred_leth = cw >= 254
+    pred_leth = cw >= 254            # 误报：真可通行判致命
+    pred_block = cw >= 253           # 漏报：真致命判可走（膨胀区对机器人中心同样不可走）
     conf[0, 0] += int((use & (lab == 0) & ~pred_leth).sum())
     conf[0, 1] += int((use & (lab == 0) & pred_leth).sum())
-    conf[1, 0] += int((use & (lab == 1) & ~pred_leth).sum())
-    conf[1, 1] += int((use & (lab == 1) & pred_leth).sum())
+    conf[1, 0] += int((use & (lab == 1) & ~pred_block).sum())
+    conf[1, 1] += int((use & (lab == 1) & pred_block).sum())
+    fp = use & (lab == 0) & pred_leth
+    fn = use & (lab == 1) & ~pred_block
+    ERR_PTS["fp"] += [(x, y, t) for x, y in zip(WX[fp], WY[fp])]
+    ERR_PTS["fn"] += [(x, y, t) for x, y in zip(WX[fn], WY[fn])]
 
 
 def cost_window(fpga):
@@ -362,14 +451,24 @@ def cost_window(fpga):
     return fast.cost_window(fpga.cost, fpga.cx, fpga.cy)
 
 
-def save_snapshot(path, scene, fpga, traj_true, traj_est, goals, o2w, w2o, a):
+def get_gmap(fw):
+    v = (ctypes.c_int32 * 4)()
+    grid = (ctypes.c_uint8 * (256 * 256))()
+    path = (ctypes.c_int16 * 512)()
+    n = fw.py_get_gmap(grid, v, path)
+    gn = v[2]
+    g = np.frombuffer(bytes(grid), dtype=np.uint8)[:gn * gn].reshape(gn, gn)
+    return g, v[0], v[1], v[3], np.array(path[:2 * n]).reshape(-1, 2)
+
+
+def save_snapshot(path, scene, fpga, traj_true, traj_est, goals, o2w, w2o, a, gm=None, o2w_est=None):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     plt.rcParams["font.sans-serif"] = ["Microsoft YaHei", "SimHei"]
     plt.rcParams["axes.unicode_minus"] = False
     N = nf.N
-    fig, ax = plt.subplots(1, 3, figsize=(17, 5.6))
+    fig, ax = plt.subplots(1, 4, figsize=(22, 5.6))
     x0, y0, x1, y1 = scene.bounds
     # 1. 场景高程 + 轨迹
     xs = np.arange(x0, x1, 0.02)
@@ -412,13 +511,32 @@ def save_snapshot(path, scene, fpga, traj_true, traj_est, goals, o2w, w2o, a):
     cmp[obs & (lab == 0) & (cw < 254)] = 0     # 正确可通行
     cmp[obs & (lab == 1) & (cw >= 254)] = 1    # 正确致命
     cmp[obs & (lab == 0) & (cw >= 254)] = 2    # 误报致命
-    cmp[obs & (lab == 1) & (cw < 254)] = 3     # 漏报
+    cmp[obs & (lab == 1) & (cw == 253)] = 1    # 真致命落在膨胀区：同样不可走
+    cmp[obs & (lab == 1) & (cw < 253)] = 3     # 漏报
     from matplotlib.colors import ListedColormap
     ax[2].imshow(cmp, origin="lower", extent=(wx0, wx0 + N * RES_MM / 1000, wy0, wy0 + N * RES_MM / 1000),
                  cmap=ListedColormap(["#9be39b", "#444444", "#ff9900", "#ff0000"]), vmin=0, vmax=3)
     ax[2].set_xlim(x0, x1)
     ax[2].set_ylim(y0, y1)
     ax[2].set_title("判定对比：绿=对可通行 灰=对致命 橙=误报 红=漏报")
+    # 4. 全局记忆栅格与 A* 路径（里程计系，按初始位姿换到世界系显示；不做漂移对齐）
+    if gm is not None:
+        g, gox, goy, ds, pth = gm
+        cell = ds * RES_MM / 1000
+        gx0, gy0 = o2w_est(gox * cell, goy * cell)
+        img = np.where(g == 255, np.nan, np.where(g >= 254, 254.0, g.astype(float)))
+        ax[3].imshow(img, origin="lower", extent=(gx0, gx0 + g.shape[1] * cell, gy0, gy0 + g.shape[0] * cell),
+                     cmap="magma_r", vmin=0, vmax=254)
+        if len(pth):
+            px, py = o2w_est((pth[:, 0] + gox + 0.5) * cell, (pth[:, 1] + goy + 0.5) * cell)
+            ax[3].plot(px, py, "g.-", lw=1, ms=3)
+        if traj_est:
+            ax[3].plot(te[:, 0], te[:, 1], "b--", lw=1)
+        for gg in goals:
+            ax[3].plot(gg[0], gg[1], "k*", ms=12)
+        ax[3].set_xlim(x0, x1)
+        ax[3].set_ylim(y0, y1)
+        ax[3].set_title("全局记忆栅格 + A* 路径（估计位姿系）")
     for x in ax:
         x.set_aspect("equal")
     plt.tight_layout()

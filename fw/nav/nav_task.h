@@ -12,6 +12,7 @@
 #include "pose.h"
 #include "target.h"
 #include "astar.h"
+#include "gmap.h"
 #include "local_planner.h"
 #include "explore.h"
 #include "proto.h"
@@ -27,7 +28,9 @@ typedef struct {
 typedef struct {
     nav_task_cfg_t cfg;
     lp_cfg_t       lp_cfg;
-    astar_cfg_t    as_cfg;
+    astar_cfg_t    as_cfg;       /* 局部图上的 A*（use_gmap=false 时） */
+    astar_cfg_t    as_cfg_g;     /* 全局记忆栅格上的 A* */
+    bool           use_gmap;
     explore_cfg_t  ex_cfg;
 
     nav_mode_t mode;
@@ -44,7 +47,9 @@ typedef struct {
     uint8_t        map[NP_MAP_N * NP_MAP_N];
     hal_map_info_t mi;
     bool           have_map;
-    astar_path_t   path;
+    gmap_t         gm;
+    astar_path_t   path;             /* use_gmap：gmap 栅格坐标；否则局部图窗口坐标 */
+    uint32_t       path_shift;       /* 规划时 gmap 的平移计数（平移后路径坐标失效） */
     uint16_t       path_seq;
     uint32_t       path_t_us;
     bool           path_valid;
