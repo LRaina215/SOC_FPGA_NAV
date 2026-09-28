@@ -75,6 +75,7 @@ def main():
     ap.add_argument("--slip", type=float, default=0.03)
     ap.add_argument("--out", default=str(ROOT / "sim" / "build" / "cl" / "run"))
     ap.add_argument("--snap", type=float, default=0, help="每隔多少秒存一张快照（0 = 只存结束时）")
+    ap.add_argument("--gif", action="store_true", help="把快照合成动画 run.gif（未指定 --snap 时按 1 s 一帧）")
     ap.add_argument("--no-build", action="store_true")
     ap.add_argument("--anchor", type=int, default=64)
     ap.add_argument("--noise", default="", help="只开启部分误差源，逗号分隔：slip,gyro,att,scale")
@@ -83,6 +84,10 @@ def main():
     a = ap.parse_args()
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
+    if a.gif and a.snap <= 0:
+        a.snap = 1.0
+    for old in out.glob("snapshot_*.png"):
+        old.unlink()
     if not a.no_build:
         build_dll()
 
@@ -275,10 +280,14 @@ def main():
                 arrived_t = t
                 break
         if t >= t_snap:
-            snapshot(f"{snap_i:03d}")
+            snapshot(f"{snap_i:03d}_t{t:05.1f}s")
             snap_i += 1
             t_snap += a.snap
     snapshot("final")
+    if a.gif:
+        from PIL import Image
+        frames = [Image.open(p) for p in sorted(out.glob("snapshot_[0-9]*.png"))] + [Image.open(out / "snapshot_final.png")]
+        frames[0].save(out / "run.gif", save_all=True, append_images=frames[1:], duration=250, loop=0)
 
     le = np.array(loc_err) if loc_err else np.zeros((1, 3))
     ml = np.array(match_log) if match_log else np.zeros((1, 12))
@@ -375,7 +384,7 @@ def save_snapshot(path, scene, fpga, traj_true, traj_est, goals, o2w, w2o, a):
         ax[0].plot(te[:, 0], te[:, 1], "b--", lw=1.2, label="估计")
     for g in goals:
         ax[0].plot(g[0], g[1], "k*", ms=12)
-    ax[0].set_title(f"场景高程与轨迹（{a.scene}）")
+    ax[0].set_title(f"场景高程与轨迹（{a.scene}，t={len(traj_true) / 10:.1f}s）红=真值 蓝=估计")
     ax[0].legend(loc="upper left", fontsize=8)
     # 2. 代价图（窗口，里程计系 -> 世界系坐标轴）
     cw = cost_window(fpga).astype(float)
