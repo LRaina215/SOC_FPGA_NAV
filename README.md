@@ -35,7 +35,9 @@ PC --UDP 或 USB 串口注入--^                                                
 | `rtl/io` | `imu_uart`、`uart_bus_bridge` 调试串口桥、`nav_bus_arb` |
 | `rtl/regs` | 生成的寄存器文件与常量 |
 | `rtl/top` | `nav_subsystem`：交付给整车顶层的唯一模块 |
+| `rtl/soc` | 软核 SoC：`nav_soc`（PicoRV32 + 片上 RAM + 导航总线主口 + 控制台 + 调试口），`third_party/picorv32.v`（开源，打了寄存器堆补丁） |
 | `gowin/` | 板级顶层 `nav_board_top.v`、约束 `nav_board.cst`、综合脚本 `syn/syn.py` |
+| `fw/bsp` | 软核启动代码、链接脚本、控制台 printf、自检程序、交叉编译脚本 `build_rv.py` |
 | `fw/` | 软核固件：`nav/` 算法（记忆栅格 + A*（含先验层）、局部规划、边界探索 / 有图搜索、目标跟踪、位姿、SLF 匹配求解、`loc` 有图定位管理（对准 / 质量 / 重定位）、`prior` 地图包接收、协议）、`drv/hal_fpga.c` 上板 HAL、`app/` 主循环、`test/` 主机仿真测试 |
 | `model/` | Python：XT 协议、虚拟场景与雷达、定点逐位参考模型（RTL 标准答案）、方向查找表生成、`prior_map.py` 先验地图包（点云 / 虚拟扫图 -> 定位图 + 代价图） |
 | `sim/` | xsim 回归（`run.py`、`tests.py`、激励生成 `gen/`） |
@@ -72,7 +74,10 @@ python tools/nav_host.py --link uart:COM5 map field.nvmp    # PC 下发地图；
   - 有图 6 用例（定点 ×2、搜索、回环、扫图后新增障碍、行驶中被撞）× 5 种子 30/30 到达，xy RMS 1.3–4.9 cm，
     初始位姿误差 ±0.4 m / ±8° 下对准 1.6 s，被撞 5/5 检出并在 1.6 s 内重定位，搜索平均 78 s。
   - 全部 0 碰撞，地形误报 ≤ 0.3%。
-- 综合（nav_subsystem）：逻辑 15%，BSRAM 82%（估计），核心时钟 Fmax 102.5 MHz；板级顶层 50 MHz 布局布线 0 违例（布线后 71 MHz），BSRAM 68%，已出比特流。
+- 综合（nav_subsystem）：逻辑 15%，BSRAM 82%（估计），核心时钟 Fmax 约 102 MHz。
+- **软核上板**：PicoRV32 SoC（`rtl/soc`）+ 导航固件在 ACX750 上运行（主循环约 5.7 万次/秒）；板级 50 MHz 布局布线 0 违例，BSRAM 306/340。
+  接上雷达 MAC 后 BSRAM 会超出，需要压缩（`docs/roadmap.md` 第 6 节）。
+- 5 m 场地 + 两轮自平衡模型（`docs/algorithms.md` 第 9 节）：10 用例 × 5 种子 49/50 到达，定位 xy RMS 1.0–4.2 cm。
 
 ## 未完成 / 需实机确认
 
