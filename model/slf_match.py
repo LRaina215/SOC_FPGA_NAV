@@ -9,7 +9,7 @@
    这就是 LeGO-LOAM 地面分割用的"相邻线束夹角"的反面，只需一行点的行缓存。
    10° 坡道、平台顶面是平的，不会被选中；平台侧面、墙、箱子、路沿立面会。
 2. 结构图（与高程图同样的滚动寻址，256×256、5 cm）：每格命中数（每帧至多 +1）+ 格内亚格质心
-   （1/16 格，前 HIT_FREEZE 次累计平均后冻结）。命中数 >= HIT_MIN 的格为结构格。建"似然场"时再算：
+   （18 位槽字：1/8 格，前 HIT_FREEZE 次按格号对称取整累计平均后冻结）。命中数 >= HIT_MIN 的格为结构格。建"似然场"时再算：
    距离场（八边形距离，只用于门控）与每格法向（5×5 邻域质心协方差的主方向转 90°）。
 3. 匹配打分：候选增量 (dx, dy, dyaw)（绕机器人位置旋转后平移），变换后的结构点取 1/16 格亚格坐标，
    代价 = 3×3 邻域结构格的最小点到线法向距离（上限 C_NEAR）；只用预测位置 GATE_D 以内有已知结构的点。
@@ -26,7 +26,14 @@ import nav_fixed as nf
 SN_LOG2 = int(os.environ.get("SLF_SN_LOG2", "8"))
 NBR = os.environ.get("SLF_NBR", "3x3")
 SN = 1 << SN_LOG2            # 结构图边长
-TAGB = 4
+# 槽字格式：18 位（缺省）= {标签 每轴 1 位, 命中数 2 位, 质心 x/y 各 3 位（1/8 格）, occ, q5, has, gate}；
+# 0 = 旧 23 位 {标签 每轴 2 位, 命中数 3 位, 质心 4 位（1/16 格）, ...}。18 位省 BSRAM（roadmap A2），
+# 标签每轴 1 位 = 25.6 m 才绕回（场地 <= 12.8 m 不会混淆）。模型里 cxs/cys 存 1/16 格的 2b+1（b = 1/8 格格号，法向按它算）；
+# 打分按 1/32 格、代表点 4b+1，与向下取整到 1/16 格的点对齐（point_cost）。
+W18 = os.environ.get("SLF_W18", "1") == "1"
+TAG_AX = 1 if W18 else 2     # 每轴标签位数
+TAGB = 2 * TAG_AX
+WORD_BITS = 18 if W18 else 23
 DZ_MIN = 20                  # mm：竖直段最小高差（抑制噪声）
 SLOPE_K = 2                  # |Δz| > K·|Δxy|
 Z_LO, Z_HI = int(os.environ.get("SLF_ZLO", "60")), 1500   # 相对机器人足底高度（去掉地面接缝与天花板）
@@ -35,8 +42,39 @@ Z_LO, Z_HI = int(os.environ.get("SLF_ZLO", "60")), 1500   # 相对机器人足�
 # 无图模式保持 +60（自建图时低处结构的收益不明显，批量评测互有胜负）。
 Z_LO_PRIOR = -300
 HIT_MIN = 2
-HIT_FREEZE = 4               # 质心累计平均的次数，之后冻结
-HIT_MAX = 7                  # 命中数 3 bit
+HIT_FREEZE = 3 if W18 else 4 # 质心累计平均的次数，之后冻结
+HIT_MAX = 3 if W18 else 7    # 命中数 2 bit（旧格式 3 bit）
+
+
+def cq(c):
+    """质心存储量化：1/16 格 -> 1/8 格（存 c >> 1，读回 (c >> 1) * 2 + 1 = 该 1/8 格的中点）"""
+    return ((np.asarray(c) >> 1) << 1) | 1 if W18 else c
+
+
+def rnd_div(d, n):
+    """d / n 四舍五入、恰好一半时向 0 取整（正负对称，累计平均不产生单向偏差）"""
+    d = np.asarray(d)
+    return np.sign(d) * ((2 * np.abs(d) + n - 1) // (2 * n))
+
+
+def pack_hi(tag, hit, cxs, cys):
+    """槽字高位（低 8 位 occ/q/has/gate 由似然场给出）"""
+    if W18:
+        return (tag << 16) | (hit << 14) | ((cxs >> 1) << 11) | ((cys >> 1) << 8)
+    return (tag << 19) | (hit << 16) | (cxs << 12) | (cys << 8)
+
+
+def unpack_hi(word):
+    """槽字 -> (tag, hit, cx, cy)，质心换回 1/16 格"""
+    word = np.asarray(word, dtype=np.int64)
+    if W18:
+        return (word >> 16) & 3, (word >> 14) & 3, (((word >> 11) & 7) << 1) | 1, (((word >> 8) & 7) << 1) | 1
+    return (word >> 19) & 15, (word >> 16) & 7, (word >> 12) & 15, (word >> 8) & 15
+
+
+def tag_of(gx, gy):
+    m = (1 << TAG_AX) - 1
+    return (((gy >> SN_LOG2) & m) << TAG_AX) | ((gx >> SN_LOG2) & m)
 DMAX = 8                     # 截断距离（格）
 C_NEAR = 40                  # 近邻代价上限（1/16 格，2.5 格）
 T_IN = 6                     # 内点门限（1/16 格，约 19 mm）：残差不超过它的点计为内点（定位质量 / 对准歧义判定）
@@ -85,15 +123,16 @@ class StructMap:
         self.n_struct = 0
 
     def words(self):
-        """硬件结构图槽字（23 位）：{tag, hit, cx, cy, occ, q, has, gate}；窗口外的槽只有前 15 位有意义（返回 mask）"""
-        w = (self.tag << 19) | (self.hit << 16) | (self.cxs << 12) | (self.cys << 8)
-        mask = np.full(SN * SN, 0x7FFF00, dtype=np.int64)
+        """硬件结构图槽字：{tag, hit, cx, cy, occ, q, has, gate}（WORD_BITS 位）；窗口外的槽只有高位有意义（返回 mask）"""
+        w = pack_hi(self.tag, self.hit, self.cxs, self.cys)
+        full = (1 << WORD_BITS) - 1
+        mask = np.full(SN * SN, full & ~0xFF, dtype=np.int64)
         if self.lf is not None:
             ox, oy, occ, d3, cxs, cys, nx, ny, has = self.lf
             s = self.lf_slot.reshape(-1)
             lo = (occ.astype(np.int64) << 7) | (self.lf_q << 2) | (has.astype(np.int64) << 1) | (d3 <= GATE_D)
             w[s] |= lo.reshape(-1)
-            mask[s] = 0x7FFFFF
+            mask[s] = full
         return w, mask
 
     def load_prior(self, ox, oy, slot, word):
@@ -104,10 +143,7 @@ class StructMap:
         self.cxs[:] = 0
         self.cys[:] = 0
         low = np.zeros(SN * SN, dtype=np.int64)
-        self.tag[slot] = (word >> 19) & 15
-        self.hit[slot] = (word >> 16) & 7
-        self.cxs[slot] = (word >> 12) & 15
-        self.cys[slot] = (word >> 8) & 15
+        self.tag[slot], self.hit[slot], self.cxs[slot], self.cys[slot] = unpack_hi(word)
         low[slot] = word & 0xFF
         w = np.arange(SN)
         gx, gy = ox + w, oy + w
@@ -140,16 +176,23 @@ class StructMap:
         fx, fy = self.cell16(pts_xy[:, 0]), self.cell16(pts_xy[:, 1])
         ix, iy = fx >> 4, fy >> 4
         a = ((iy & (SN - 1)) << SN_LOG2) | (ix & (SN - 1))
-        tg = (((iy >> SN_LOG2) & 3) << 2) | ((ix >> SN_LOG2) & 3)
+        tg = tag_of(ix, iy)
         u, first = np.unique(a, return_index=True)
         mx, my, tg = (fx & 15)[first], (fy & 15)[first], tg[first]
         fresh = (self.tag[u] != tg) | (self.hit[u] == 0)
         h0 = np.where(fresh, 0, self.hit[u])
         upd = h0 < HIT_FREEZE
         n1 = h0 + 1
-        # 累计平均：c += round((m - c) / n)（向下取整的除法，硬件用 n∈{2,3,4} 的常数除法）
-        self.cxs[u] = np.where(fresh, mx, np.where(upd, self.cxs[u] + np.floor_divide(mx - self.cxs[u] + n1 // 2, n1), self.cxs[u]))
-        self.cys[u] = np.where(fresh, my, np.where(upd, self.cys[u] + np.floor_divide(my - self.cys[u] + n1 // 2, n1), self.cys[u]))
+        if W18:
+            # 按 1/8 格的格号平均：b += rnd_div(m - b, n)。取整必须正负对称：旧的"加 n/2 再向下取整"在 1/8 格下
+            # 每次平局都往 +x/+y 偏半格，无图模式里结构图随机器人前进不断更新，偏差会累积成单向漂移
+            for c, m in ((self.cxs, mx), (self.cys, my)):
+                b, mb = c[u] >> 1, m >> 1
+                c[u] = 2 * np.where(fresh, mb, np.where(upd, b + rnd_div(mb - b, n1), b)) + 1
+        else:
+            # 累计平均：c += round((m - c) / n)（向下取整的除法，硬件用 n∈{2,3,4} 的常数除法）
+            self.cxs[u] = np.where(fresh, mx, np.where(upd, self.cxs[u] + np.floor_divide(mx - self.cxs[u] + n1 // 2, n1), self.cxs[u]))
+            self.cys[u] = np.where(fresh, my, np.where(upd, self.cys[u] + np.floor_divide(my - self.cys[u] + n1 // 2, n1), self.cys[u]))
         self.tag[u] = tg
         self.hit[u] = np.minimum(h0 + 1, HIT_MAX)
 
@@ -159,7 +202,7 @@ class StructMap:
         gx = cx - SN // 2 + w
         gy = cy - SN // 2 + w
         slot = ((gy[:, None] & (SN - 1)) << SN_LOG2) | (gx[None, :] & (SN - 1))
-        etag = (((gy[:, None] >> SN_LOG2) & 3) << 2) | ((gx[None, :] >> SN_LOG2) & 3)
+        etag = tag_of(gx[None, :], gy[:, None])
         occ = (self.tag[slot] == etag) & (self.hit[slot] >= HIT_MIN)
         self.n_struct = int(occ.sum())
         d = np.minimum(2 * chebyshev_dt(occ, DMAX) + taxicab_dt(occ, 3 * DMAX), 3 * DMAX)
@@ -288,11 +331,20 @@ def point_cost(fx, fy, occ, d3, cxs, cys, nx=None, ny=None, has=None, inwin=Fals
             o = occ[ky, kx]
             if inwin:           # 硬件：槽字标签 != 该格标签 -> 视为无结构
                 o = o & (ux >= 0) & (ux < SN) & (uy >= 0) & (uy < SN)
-            ex = 16 * ox_ + cxs[ky, kx] - sx
-            ey = 16 * oy_ + cys[ky, kx] - sy
-            dd = np.abs(ex) + np.abs(ey)
+            if W18:
+                # 1/32 格计算：1/8 格质心 b 的代表点取 4b+1（= 1/16 格下的 2b+0.5），与向下取整到 1/16 格的点对齐。
+                # 若按 1/16 格取 2b+1，结构图相对点整体偏 +1/32 格（约 1.6 mm），无图模式里会累积成往 +x/+y 的漂移
+                ex = 32 * ox_ + 2 * cxs[ky, kx] - 1 - 2 * sx
+                ey = 32 * oy_ + 2 * cys[ky, kx] - 1 - 2 * sy
+                dd = (np.abs(ex) + np.abs(ey)) >> 1
+                sh_n = 8
+            else:
+                ex = 16 * ox_ + cxs[ky, kx] - sx
+                ey = 16 * oy_ + cys[ky, kx] - sy
+                dd = np.abs(ex) + np.abs(ey)
+                sh_n = 7
             if has is not None:
-                dn = np.abs(ex * nx[ky, kx] + ey * ny[ky, kx]) >> 7
+                dn = np.abs(ex * nx[ky, kx] + ey * ny[ky, kx]) >> sh_n
                 dd = np.where(has[ky, kx], dn, dd)
             best = np.where(o, np.minimum(best, dd), best)
     near = best < (1 << 20)

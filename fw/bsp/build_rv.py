@@ -1,6 +1,6 @@
 """软核固件交叉编译（xPack riscv-none-elf-gcc，rv32imc）。
 
-用法: python fw/bsp/build_rv.py [--ram-kb 160]
+用法: python fw/bsp/build_rv.py [--ram-kb 128]
 输出: fw/build/rv/<app>/nav_fw.elf / .bin / .map，ram_b0..3.hex（按字节通道拆分，随比特流初始化片上 RAM），ram_w.hex（32 位字）
 """
 import argparse
@@ -17,8 +17,8 @@ OUT = ROOT / "build" / "rv"
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--ram-kb", type=int, default=160)
-    ap.add_argument("-O", default="2")
+    ap.add_argument("--ram-kb", type=int, default=128)
+    ap.add_argument("-O", default="s", help="优化级别（缺省 s：128 KB RAM 要靠 -Os 省出约 7 KB 代码）")
     ap.add_argument("--app", default="nav", choices=["nav", "selftest"], help="nav = 导航固件；selftest = 自检程序")
     ap.add_argument("--copy-to", help="把 RAM 初始化文件复制到该目录（xsim 测试用）")
     ap.add_argument("--grid", default="64,2", help="记忆栅格边长,每格含几个 5 cm 局部格（5 m 场地：64,2 = 10 cm 格、6.4 m）")

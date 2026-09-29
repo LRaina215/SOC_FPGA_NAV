@@ -128,7 +128,7 @@ def gen_regmap(r):
 
 
 def gen_tables(p):
-    """RTL 只读表：正弦表（traj_eval）、默认雷达方向查找表（pc_project）。"""
+    """RTL 只读表：正弦表（traj_eval）。雷达方向查找表由固件上电后写入（fw/nav/lidar_cal.c），不再预置。"""
     import math
     import sys
     n = 1 << p["traj"]["SIN_LUT_LOG2"]
@@ -143,9 +143,6 @@ def gen_tables(p):
         c.append("    " + ", ".join(str(v) for v in vals[i:i + 16]) + ",")
     c += ["};", "#endif"]
     (ROOT / "fw/include/nav_sin_lut.h").write_text("\n".join(c) + "\n", encoding="utf-8")
-    sys.path.insert(0, str(ROOT / "model"))
-    import lidar_lut
-    lidar_lut.write_hex(ROOT / "rtl/lidar/lut_default.hex", lidar_lut.lut_entries())
 
 
 def gen_regfile(r):

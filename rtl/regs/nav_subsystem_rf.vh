@@ -28,6 +28,8 @@
     wire [31:0] r_NETL_PEER_PORT;
     wire [31:0] i_NETL_PEER_PORT;
     wire        p_NETL_PEER_PORT;
+    wire [31:0] r_NETL_MCAST_IP;
+    wire [31:0] i_NETL_PHY_STAT;
     wire [31:0] r_NETH_MAC_LO;
     wire [31:0] r_NETH_MAC_HI;
     wire [31:0] r_NETH_IP;
@@ -50,6 +52,7 @@
     wire [31:0] r_NETH_PEER_PORT;
     wire [31:0] i_NETH_PEER_PORT;
     wire        p_NETH_PEER_PORT;
+    wire [31:0] r_NETH_MCAST_IP;
     wire [31:0] i_MBX_RX_STAT;
     wire [31:0] i_MBX_RX_DATA;
     wire        p_MBX_RX_DATA;
@@ -68,7 +71,7 @@
     wire [31:0] i_MBX_TXB_Q;
     wire [31:0] i_MBX_TX_SEQ;
     wire [31:0] r_LIDAR_CTRL;
-    wire [31:0] r_LIDAR_UDP_SKIP;
+    wire [31:0] r_LIDAR_SUBHDR;
     wire [31:0] r_LIDAR_DEPTH_CFG;
     wire [31:0] r_LIDAR_RANGE;
     wire [31:0] r_LIDAR_VALID_CFG;
@@ -80,6 +83,7 @@
     wire [31:0] i_LIDAR_LAST_TS;
     wire [31:0] i_LIDAR_STAT_POINTS;
     wire [31:0] i_LIDAR_STAT_DROP;
+    wire [31:0] i_LIDAR_STAT_SKIP;
     wire [31:0] r_LIDAR_R00;
     wire [31:0] r_LIDAR_R01;
     wire [31:0] r_LIDAR_R02;
@@ -98,6 +102,19 @@
     wire [31:0] r_LIDAR_LUT_ADDR;
     wire        p_LIDAR_LUT_XY;
     wire        p_LIDAR_LUT_Z;
+    wire [31:0] i_LIDAR_LENS0;
+    wire [31:0] i_LIDAR_LENS1;
+    wire [31:0] i_LIDAR_LENS2;
+    wire [31:0] i_LIDAR_LENS3;
+    wire [31:0] i_LIDAR_LENS4;
+    wire [31:0] i_LIDAR_LENS5;
+    wire [31:0] i_LIDAR_LENS6;
+    wire [31:0] i_LIDAR_LENS7;
+    wire [31:0] i_LIDAR_LENS8;
+    wire [31:0] i_LIDAR_INFO_CFG;
+    wire [31:0] i_LIDAR_INFO_SIZE;
+    wire [31:0] i_LIDAR_INFO_TEMP;
+    wire [31:0] i_LIDAR_INFO_SEQ;
     wire [31:0] r_MAP_CTRL;
     wire        p_MAP_CMD;
     wire [31:0] r_MAP_INV_RES;
@@ -203,6 +220,8 @@
         .r_NETL_PEER_PORT(r_NETL_PEER_PORT),
         .i_NETL_PEER_PORT(i_NETL_PEER_PORT),
         .p_NETL_PEER_PORT(p_NETL_PEER_PORT),
+        .r_NETL_MCAST_IP(r_NETL_MCAST_IP),
+        .i_NETL_PHY_STAT(i_NETL_PHY_STAT),
         .r_NETH_MAC_LO(r_NETH_MAC_LO),
         .r_NETH_MAC_HI(r_NETH_MAC_HI),
         .r_NETH_IP(r_NETH_IP),
@@ -225,6 +244,7 @@
         .r_NETH_PEER_PORT(r_NETH_PEER_PORT),
         .i_NETH_PEER_PORT(i_NETH_PEER_PORT),
         .p_NETH_PEER_PORT(p_NETH_PEER_PORT),
+        .r_NETH_MCAST_IP(r_NETH_MCAST_IP),
         .i_MBX_RX_STAT(i_MBX_RX_STAT),
         .i_MBX_RX_DATA(i_MBX_RX_DATA),
         .p_MBX_RX_DATA(p_MBX_RX_DATA),
@@ -243,7 +263,7 @@
         .i_MBX_TXB_Q(i_MBX_TXB_Q),
         .i_MBX_TX_SEQ(i_MBX_TX_SEQ),
         .r_LIDAR_CTRL(r_LIDAR_CTRL),
-        .r_LIDAR_UDP_SKIP(r_LIDAR_UDP_SKIP),
+        .r_LIDAR_SUBHDR(r_LIDAR_SUBHDR),
         .r_LIDAR_DEPTH_CFG(r_LIDAR_DEPTH_CFG),
         .r_LIDAR_RANGE(r_LIDAR_RANGE),
         .r_LIDAR_VALID_CFG(r_LIDAR_VALID_CFG),
@@ -255,6 +275,7 @@
         .i_LIDAR_LAST_TS(i_LIDAR_LAST_TS),
         .i_LIDAR_STAT_POINTS(i_LIDAR_STAT_POINTS),
         .i_LIDAR_STAT_DROP(i_LIDAR_STAT_DROP),
+        .i_LIDAR_STAT_SKIP(i_LIDAR_STAT_SKIP),
         .r_LIDAR_R00(r_LIDAR_R00),
         .r_LIDAR_R01(r_LIDAR_R01),
         .r_LIDAR_R02(r_LIDAR_R02),
@@ -273,6 +294,19 @@
         .r_LIDAR_LUT_ADDR(r_LIDAR_LUT_ADDR),
         .p_LIDAR_LUT_XY(p_LIDAR_LUT_XY),
         .p_LIDAR_LUT_Z(p_LIDAR_LUT_Z),
+        .i_LIDAR_LENS0(i_LIDAR_LENS0),
+        .i_LIDAR_LENS1(i_LIDAR_LENS1),
+        .i_LIDAR_LENS2(i_LIDAR_LENS2),
+        .i_LIDAR_LENS3(i_LIDAR_LENS3),
+        .i_LIDAR_LENS4(i_LIDAR_LENS4),
+        .i_LIDAR_LENS5(i_LIDAR_LENS5),
+        .i_LIDAR_LENS6(i_LIDAR_LENS6),
+        .i_LIDAR_LENS7(i_LIDAR_LENS7),
+        .i_LIDAR_LENS8(i_LIDAR_LENS8),
+        .i_LIDAR_INFO_CFG(i_LIDAR_INFO_CFG),
+        .i_LIDAR_INFO_SIZE(i_LIDAR_INFO_SIZE),
+        .i_LIDAR_INFO_TEMP(i_LIDAR_INFO_TEMP),
+        .i_LIDAR_INFO_SEQ(i_LIDAR_INFO_SEQ),
         .r_MAP_CTRL(r_MAP_CTRL),
         .p_MAP_CMD(p_MAP_CMD),
         .r_MAP_INV_RES(r_MAP_INV_RES),

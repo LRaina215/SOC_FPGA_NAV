@@ -238,6 +238,10 @@ bool hal_odom(int16_t *vx, int16_t *vy, int16_t *wz, uint32_t *t_us)
 }
 
 bool hal_lidar_waiting(uint32_t *t) { (void)t; return false; }
+void hal_lidar_init(void) { }
+uint32_t hal_lidar_info_seq(void) { return 0; }
+void hal_lidar_lens(uint32_t lens[9]) { for (int i = 0; i < 9; i++) lens[i] = 0; }
+void hal_lidar_lut_write(uint32_t idx, const int16_t *rxyz, int n) { (void)idx; (void)rxyz; (void)n; }
 void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int32_t cy, int32_t zmin, int32_t zmax)
 { (void)r; (void)t; (void)cx; (void)cy; (void)zmin; (void)zmax; }
 bool hal_match_ready(void) { return true; }

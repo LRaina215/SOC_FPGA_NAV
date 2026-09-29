@@ -15,6 +15,7 @@ module udp_rx (
     input  wire        cfg_enable,
     input  wire        cfg_any_ip,      // 不检查目的 IP
     input  wire        cfg_arp_en,
+    input  wire [31:0] cfg_mcast_ip,    // 另外接收的组播组（0 = 不收），组播 MAC = 01:00:5E + IP 低 23 位
 
     input  wire        s_valid,
     input  wire [7:0]  s_data,
@@ -73,8 +74,10 @@ module udp_rx (
     // 地址比较结果寄存：目的 MAC 在第 6 字节后、ARP 目标 IP 在第 42 字节后使用
     //（以太网最短帧 60 字节，不含 FCS，ARP 帧必有填充，末字节在 b>=59）
     reg  mac_ok, tpa_ok;
+    wire mc_on = (cfg_mcast_ip != 32'd0);
     always @(posedge clk) begin
-        mac_ok <= (dmac == my_mac) || (dmac == 48'hFFFFFFFFFFFF);
+        mac_ok <= (dmac == my_mac) || (dmac == 48'hFFFFFFFFFFFF) ||
+                  (mc_on && dmac == {24'h01005E, 1'b0, cfg_mcast_ip[22:0]});
         tpa_ok <= (a_tpa == my_ip);
     end
     // 16 位反码累加
@@ -131,7 +134,8 @@ module udp_rx (
                 if (b == uo7) begin
                     // 此时 IP 头已全部参与校验
                     deliver <= !bad && mac_ok && is_ip && (proto == 8'd17) &&
-                               (cfg_any_ip || dip == my_ip) && (csum[15:0] == 16'hFFFF) &&
+                               (cfg_any_ip || dip == my_ip || (mc_on && dip == cfg_mcast_ip)) &&
+                               (csum[15:0] == 16'hFFFF) &&
                                (dport == my_port) && (ulen >= 16'd8) &&
                                ({1'b0, ulen} + {1'b0, uoff_w} <= {1'b0, ip_tot} + 17'd14) &&
                                (ulen > 16'd8);

@@ -1,4 +1,5 @@
 #include "explore.h"
+#include "scratch.h"
 #include "fixmath.h"
 #include "nav_params.h"
 
@@ -128,8 +129,9 @@ void explore_blacklist(explore_t *e, int32_t x, int32_t y)
     if (e->bl_n < EXP_BL) e->bl_n++;
 }
 
-static uint16_t s_bd[GM_N * GM_N];         /* 广度优先距离（格），0xFFFF = 未到达 */
-static uint16_t s_bq[GM_N * GM_N];
+/* 广度优先距离（格，0xFFFF = 未到达）与队列：在 g_scratch 里，与 A* 共用（scratch.h） */
+#define s_bd (g_scratch.bfs.bd)
+#define s_bq (g_scratch.bfs.bq)
 
 bool explore_frontier(explore_t *e, const explore_cfg_t *c, const gmap_t *gm, const hal_map_info_t *mi,
                       const nav_pose_t *pose, bool seen_mode, int32_t *gx, int32_t *gy)

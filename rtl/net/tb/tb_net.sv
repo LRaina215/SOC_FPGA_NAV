@@ -36,7 +36,7 @@ module tb_net;
         .rx_mac_clk(mclk), .rx_mac_rst(mrst), .rx_mac_valid(rxv), .rx_mac_data(rxd), .rx_mac_last(rxl), .rx_mac_error(rxe),
         .tx_mac_clk(mclk), .tx_mac_rst(mrst), .tx_mac_valid(txv), .tx_mac_data(txd), .tx_mac_last(txl), .tx_mac_ready(txr),
         .cfg_mac(48'h024E56000002), .cfg_ip(32'hC0A80264), .cfg_port(16'd9000), .cfg_enable(1'b1),
-        .cfg_any_ip(1'b0), .cfg_arp_en(1'b1), .cfg_learn(1'b1),
+        .cfg_any_ip(1'b0), .cfg_arp_en(1'b1), .cfg_learn(1'b1), .cfg_mcast_ip(32'd0),
         .peer_we(1'b0), .peer_mac_w(48'd0), .peer_ip_w(32'd0), .peer_port_w(16'd0),
         .peer_mac(), .peer_ip(), .peer_port(),
         .u_valid(u_valid), .u_data(u_data), .u_last(u_last), .u_err(u_err), .u_src_mac(u_src_mac),

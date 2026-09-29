@@ -6,7 +6,8 @@
   python tools/nav_uart.py COM5 wr SAFE_CTRL 1        写
   python tools/nav_uart.py COM5 stat                  打印网口/雷达/地图统计
   python tools/nav_uart.py COM5 map out.png           读出前台代价图并保存为图片（需 matplotlib）
-  python tools/nav_uart.py COM5 lut rtl/lidar/lut_default.hex   经 LUT_ADDR/LUT_XY/LUT_Z 写入方向查找表
+  python tools/nav_uart.py COM5 lut lut.hex     经 LUT_ADDR/LUT_XY/LUT_Z 写入方向查找表（model/lidar_lut.py 生成；
+                                                固件上电后会按雷达内参自己写表，这条只用于调试）
   软核（nav_soc 调试口，地址 0xE000–0xFFFF）：
   python tools/nav_uart.py COM5 soc                  软核信息（RAM 大小、状态字、控制台字节数、是否保持复位）
   python tools/nav_uart.py COM5 con                  持续打印软核控制台输出（Ctrl-C 退出）
@@ -161,9 +162,9 @@ def main():
         lines = Path(sys.argv[3]).read_text().split()
         u.wr(rm.REGS["LIDAR_LUT_ADDR"], 0)
         for ln in lines:
-            v = int(ln, 16)
-            u.wr(rm.REGS["LIDAR_LUT_XY"], v & 0xFFFFFFFF)
-            u.wr(rm.REGS["LIDAR_LUT_Z"], (v >> 32) & 0xFFFF)
+            v = int(ln, 16)                                      # 36 位 {rz, ry, rx}，各 12 位
+            u.wr(rm.REGS["LIDAR_LUT_XY"], v & 0xFFFFFF)
+            u.wr(rm.REGS["LIDAR_LUT_Z"], (v >> 24) & 0xFFF)
         print(f"写入 {len(lines)} 项")
     else:
         print(__doc__)

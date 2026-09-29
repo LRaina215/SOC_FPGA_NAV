@@ -29,6 +29,11 @@ static uint32_t s_lw_t;
 static bool     s_commit;
 static int32_t  s_commit_v[16];
 
+/* 雷达方向查找表：固件写入的表（仿真的点云链路用 Python 模型自己的表，这里只供对比测试） */
+static int16_t  s_lut[3 * LCAL_NPIX];
+static uint32_t s_lut_writes;
+static uint32_t s_lens[9], s_info_seq;
+
 typedef int (*h_cb_t)(int32_t x, int32_t y, int32_t *h);
 static h_cb_t s_h_cb;
 EXPORT void py_set_h_cb(h_cb_t cb) { s_h_cb = cb; }
@@ -174,11 +179,32 @@ EXPORT void py_set_caps(int holonomic, int vx_max, int wz_max, int radius)
     g_app.nt.lp_cfg.w_max = (int16_t)wz_max;
     g_app.nt.lp_cfg.caps.radius_mm = radius;
 }
+EXPORT void py_set_lidar_info(const uint32_t *lens) { memcpy(s_lens, lens, sizeof s_lens); s_info_seq++; }
+EXPORT int py_astar_heap_max(void) { return astar_heap_max(); }
+EXPORT uint32_t py_get_lut(int16_t *out, int32_t *v)
+{
+    memcpy(out, s_lut, sizeof s_lut);
+    v[0] = lidar_cal_ready(&g_app.lcal); v[1] = (int32_t)g_app.lcal.n_gen; v[2] = g_app.lcal.from_dev;
+    return s_lut_writes;
+}
+/* 按给定内参（float32 原始位；全零 = 缺省）同步生成整张表 */
+EXPORT void py_lut_gen(const uint32_t *lens, int cut, int flip, int16_t *out)
+{
+    static lidar_cal_t lc;
+    lidar_cal_init(&lc);
+    lc.cut = (uint8_t)cut;
+    lc.flip_u = flip != 0;
+    lidar_cal_start(&lc, lens, true);
+    for (int i = 0; i < LCAL_NPIX; i++) lidar_cal_pixel(&lc, i, &out[3 * i]);
+}
+
 EXPORT void py_init(void)
 {
     s_now = 1000; memset(&s_mi, 0, sizeof s_mi); memset(s_slot, 255, sizeof s_slot);
     s_oh = s_ot = s_ih = s_it = s_hh = s_ht = 0; s_lw = s_commit = false; s_hout_len = 0; s_ncmd = 0;
+    memset(s_lut, 0, sizeof s_lut); s_lut_writes = 0; memset(s_lens, 0, sizeof s_lens); s_info_seq = 0;
     nav_app_init();
+    g_app.lcal_budget = LCAL_NPIX;          /* 仿真：第一次轮询就生成整张表 */
 }
 EXPORT void py_poll(void) { nav_app_poll(); }
 
@@ -209,6 +235,15 @@ bool hal_odom(int16_t *vx, int16_t *vy, int16_t *wz, uint32_t *t)
     return true;
 }
 bool hal_lidar_waiting(uint32_t *t) { if (!s_lw) return false; *t = s_lw_t; return true; }
+void hal_lidar_init(void) { }
+uint32_t hal_lidar_info_seq(void) { return s_info_seq; }
+void hal_lidar_lens(uint32_t lens[9]) { memcpy(lens, s_lens, sizeof s_lens); }
+void hal_lidar_lut_write(uint32_t idx, const int16_t *rxyz, int n)
+{
+    for (int i = 0; i < n && idx + (uint32_t)i < LCAL_NPIX; i++)
+        for (int j = 0; j < 3; j++) s_lut[3 * (idx + (uint32_t)i) + (uint32_t)j] = rxyz[3 * i + j];
+    s_lut_writes += (uint32_t)n;
+}
 void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int32_t cy, int32_t zmin, int32_t zmax)
 {
     for (int i = 0; i < 9; i++) s_commit_v[i] = r[i / 3][i % 3];

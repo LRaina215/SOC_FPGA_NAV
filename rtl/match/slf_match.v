@@ -20,8 +20,8 @@ module slf_match #(
     parameter integer PB_AW  = 12,
     parameter integer MARGIN = 8,
     parameter integer C_NEAR = 40,
-    parameter integer HIT_FREEZE = 4,
-    parameter integer HIT_MAX = 7,
+    parameter integer HIT_FREEZE = 3,
+    parameter integer HIT_MAX = 3,
     parameter integer T_IN = 6,
     parameter SIN_INIT = "sin_lut.hex"
 ) (
@@ -60,7 +60,7 @@ module slf_match #(
     input  wire signed [31:0] cfg_lfo_y,
     input  wire        pw_we,                // 先验槽字写（单拍；空闲时写入，否则挂起到空闲）
     input  wire [2*LOG2N-1:0] pw_addr,
-    input  wire [22:0] pw_data,
+    input  wire [17:0] pw_data,
     // 候选写口：地址 {k, w}，w=0: {dy[15:0], dx[15:0]}，w=1: {16'b0, dyaw}
     input  wire        cand_we,
     input  wire [8:0]  cand_waddr,
@@ -73,7 +73,7 @@ module slf_match #(
     input  wire        dbg_req,
     input  wire [2*LOG2N-1:0] dbg_addr,
     output reg         dbg_ack,
-    output reg  [22:0] dbg_q,
+    output reg  [17:0] dbg_q,
     // 状态
     output wire        busy,
     output reg         pts_ready,
@@ -104,17 +104,17 @@ module slf_match #(
     // ================================================================ 结构图、位图、候选、结果
     reg          sm_re_m, sm_we_m;
     reg [AW-1:0] sm_ra_m, sm_wa_m;
-    reg [22:0]   sm_wd_m;
+    reg [17:0]   sm_wd_m;
     wire         lf_re, lf_we, lf_busy, lf_done;
     wire [AW-1:0] lf_ra, lf_wa;
-    wire [22:0]  lf_wd;
-    wire [22:0]  sm_q;
+    wire [17:0]  lf_wd;
+    wire [17:0]  sm_q;
     wire         sm_we = lf_busy ? lf_we : sm_we_m;
     wire [AW-1:0] sm_wa = lf_busy ? lf_wa : sm_wa_m;
-    wire [22:0]  sm_wd = lf_busy ? lf_wd : sm_wd_m;
+    wire [17:0]  sm_wd = lf_busy ? lf_wd : sm_wd_m;
     wire         sm_re = lf_busy ? lf_re : sm_re_m;
     wire [AW-1:0] sm_ra = lf_busy ? lf_ra : sm_ra_m;
-    nav_ram_sdp #(.DW(23), .AW(AW)) u_sm (
+    nav_ram_sdp #(.DW(18), .AW(AW)) u_sm (
         .clk(clk), .we(sm_we), .waddr(sm_wa), .wdata(sm_wd), .re(sm_re), .raddr(sm_ra), .rdata(sm_q)
     );
     reg          lf_start;
@@ -172,7 +172,7 @@ module slf_match #(
                      S_T0W = 25, S_LUTW = 26, S_DBG2 = 28, S_UC2 = 29;
     localparam [1:0] MD_GATE = 0, MD_SCORE = 1, MD_UPD = 2;
     localparam [7:0] CN = C_NEAR;
-    localparam [2:0] HM = HIT_MAX;
+    localparam [1:0] HM = HIT_MAX;
     localparam [7:0] TI = T_IN;
     // 注：RAM 读使能/地址在状态机里寄存，读数据在发读后第 2 拍可用（各处都多一个等待态）
     reg [5:0]  st;
@@ -196,18 +196,18 @@ module slf_match #(
     reg        nb_v1, nb_v; reg [3:0] nb_d1, nb_d;   // 读返回对应的邻格（发读后第 2 拍）
     reg        nq_v, np_v;                           // 邻格流水：寄存槽字 -> 求点积 -> 取小
     reg [3:0]  nq_d;
-    reg [22:0] nq_w;
+    reg [17:0] nq_w;
     reg        np_occ, np_has;
     reg signed [17:0] np_dot;
     reg [8:0]  np_l1;
-    reg [22:0] uw_q; reg utb_q;                      // 并图读回（寄存一拍再算）
+    reg [17:0] uw_q; reg utb_q;                      // 并图读回（寄存一拍再算）
     reg [7:0]  best; reg any;
     reg [10:0] ncl;                         // 已记录的槽数（<= 1024）
     reg [10:0] cli;
-    reg [AW-1:0] u_slot; reg [3:0] u_tag, u_mx, u_my;
+    reg [AW-1:0] u_slot; reg [1:0] u_tag; reg [3:0] u_mx, u_my;
     reg          pw_pend;
     reg [AW-1:0] pw_a;
-    reg [22:0]   pw_d;
+    reg [17:0]   pw_d;
 
     assign busy = (st != S_IDLE) || lf_busy || ex_busy;
 
@@ -220,7 +220,7 @@ module slf_match #(
     wire signed [31:0] wxw = wxa - lox, wyw = wya - loy;
     wire signed [31:0] mg = cfg_prior ? 32'sd0 : MARGIN;
     wire        core = (wxw >= mg) && (wxw < N - mg) && (wyw >= mg) && (wyw < N - mg);
-    wire [3:0]  ptag = {wya[LOG2N+1:LOG2N], wxa[LOG2N+1:LOG2N]};      // 点所在格的标签
+    wire [1:0]  ptag = {wya[LOG2N], wxa[LOG2N]};      // 点所在格的标签（每轴 1 位）
     // 邻格偏移
     wire signed [2:0] onx = (nb % 3) - 1, ony = (nb / 3) - 1;
     wire signed [31:0] nbx = wxa + onx, nby = wya + ony;
@@ -302,108 +302,41 @@ module slf_match #(
     wire [4:0]  q_q = nq_w[6:2];
     wire signed [2:0] qdx = (nq_d % 3) - 1, qdy = (nq_d / 3) - 1;
     wire signed [31:0] qgx = wxa + qdx, qgy = wya + qdy;
-    wire        qtag_ok = !cfg_prior || (nq_w[22:19] == {qgy[LOG2N+1:LOG2N], qgx[LOG2N+1:LOG2N]});
-    wire signed [7:0] ex_n = $signed({qdx, 4'd0}) + $signed({4'd0, nq_w[15:12]}) - $signed({4'd0, sxf});
-    wire signed [7:0] ey_n = $signed({qdy, 4'd0}) + $signed({4'd0, nq_w[11:8]}) - $signed({4'd0, syf});
+    wire        qtag_ok = !cfg_prior || (nq_w[17:16] == {qgy[LOG2N], qgx[LOG2N]});
+    // 1/32 格计算：1/8 格质心 c 的代表点取 4c+1（= 1/16 格下的 2c+0.5），与向下取整到 1/16 格的点对齐
+    //（取 {c, 1} 会让结构图相对点整体偏 +1/32 格，无图模式里累积成单向漂移）；|ex|, |ey| <= 61
+    wire signed [7:0] ex_n = $signed({qdx, 5'd0}) + $signed({3'd0, nq_w[13:11], 2'b01}) - $signed({3'd0, sxf, 1'b0});
+    wire signed [7:0] ey_n = $signed({qdy, 5'd0}) + $signed({3'd0, nq_w[10:8], 2'b01}) - $signed({3'd0, syf, 1'b0});
     wire signed [17:0] dot_n = ex_n * nvx(q_q) + ey_n * nvy(q_q);
     wire [7:0]  aex = ex_n[7] ? -ex_n : ex_n, aey = ey_n[7] ? -ey_n : ey_n;
     wire [17:0] adot = np_dot[17] ? -np_dot : np_dot;
-    wire [10:0] dd_n = np_has ? {3'd0, adot[14:7]} : {2'd0, np_l1};
+    wire [10:0] dd_n = np_has ? {3'd0, adot[15:8]} : {3'd0, np_l1[8:1]};
     wire [7:0]  dd_c = (dd_n > 11'd255) ? 8'd255 : dd_n[7:0];
-    // 并图：新字
-    wire [3:0]  w_tag = uw_q[22:19];
-    wire [2:0]  w_hit = uw_q[18:16];
-    wire [3:0]  w_cx = uw_q[15:12], w_cy = uw_q[11:8];
+    // 并图：新字（质心按 1/8 格的格号累计平均）
+    wire [1:0]  w_tag = uw_q[17:16];
+    wire [1:0]  w_hit = uw_q[15:14];
+    wire [2:0]  w_bx = uw_q[13:11], w_by = uw_q[10:8];
     wire        fresh_w = (w_tag != u_tag) || (w_hit == 0);
-    reg         fresh;                               // 并图：S_U2 寄存 fresh/h0，S_U3 求新字
-    reg  [2:0]  h0;
+    reg         fresh;                               // 并图：S_U2 寄存 fresh/h0/差值，S_U3 求新字
+    reg  [1:0]  h0;
     wire        updc = (h0 < HIT_FREEZE);
-    wire [2:0]  n1 = h0 + 3'd1;
-    // 向下取整除法 floor(t / d)，d ∈ {2,3,4}，t ∈ [-16, 31]（除以 3 查表）
-    function signed [5:0] fdiv3(input signed [5:0] t);
-        case (t)
-            -6'sd32: fdiv3 = -6'sd11;
-            -6'sd31: fdiv3 = -6'sd11;
-            -6'sd30: fdiv3 = -6'sd10;
-            -6'sd29: fdiv3 = -6'sd10;
-            -6'sd28: fdiv3 = -6'sd10;
-            -6'sd27: fdiv3 = -6'sd9;
-            -6'sd26: fdiv3 = -6'sd9;
-            -6'sd25: fdiv3 = -6'sd9;
-            -6'sd24: fdiv3 = -6'sd8;
-            -6'sd23: fdiv3 = -6'sd8;
-            -6'sd22: fdiv3 = -6'sd8;
-            -6'sd21: fdiv3 = -6'sd7;
-            -6'sd20: fdiv3 = -6'sd7;
-            -6'sd19: fdiv3 = -6'sd7;
-            -6'sd18: fdiv3 = -6'sd6;
-            -6'sd17: fdiv3 = -6'sd6;
-            -6'sd16: fdiv3 = -6'sd6;
-            -6'sd15: fdiv3 = -6'sd5;
-            -6'sd14: fdiv3 = -6'sd5;
-            -6'sd13: fdiv3 = -6'sd5;
-            -6'sd12: fdiv3 = -6'sd4;
-            -6'sd11: fdiv3 = -6'sd4;
-            -6'sd10: fdiv3 = -6'sd4;
-            -6'sd9: fdiv3 = -6'sd3;
-            -6'sd8: fdiv3 = -6'sd3;
-            -6'sd7: fdiv3 = -6'sd3;
-            -6'sd6: fdiv3 = -6'sd2;
-            -6'sd5: fdiv3 = -6'sd2;
-            -6'sd4: fdiv3 = -6'sd2;
-            -6'sd3: fdiv3 = -6'sd1;
-            -6'sd2: fdiv3 = -6'sd1;
-            -6'sd1: fdiv3 = -6'sd1;
-            6'sd0: fdiv3 = 6'sd0;
-            6'sd1: fdiv3 = 6'sd0;
-            6'sd2: fdiv3 = 6'sd0;
-            6'sd3: fdiv3 = 6'sd1;
-            6'sd4: fdiv3 = 6'sd1;
-            6'sd5: fdiv3 = 6'sd1;
-            6'sd6: fdiv3 = 6'sd2;
-            6'sd7: fdiv3 = 6'sd2;
-            6'sd8: fdiv3 = 6'sd2;
-            6'sd9: fdiv3 = 6'sd3;
-            6'sd10: fdiv3 = 6'sd3;
-            6'sd11: fdiv3 = 6'sd3;
-            6'sd12: fdiv3 = 6'sd4;
-            6'sd13: fdiv3 = 6'sd4;
-            6'sd14: fdiv3 = 6'sd4;
-            6'sd15: fdiv3 = 6'sd5;
-            6'sd16: fdiv3 = 6'sd5;
-            6'sd17: fdiv3 = 6'sd5;
-            6'sd18: fdiv3 = 6'sd6;
-            6'sd19: fdiv3 = 6'sd6;
-            6'sd20: fdiv3 = 6'sd6;
-            6'sd21: fdiv3 = 6'sd7;
-            6'sd22: fdiv3 = 6'sd7;
-            6'sd23: fdiv3 = 6'sd7;
-            6'sd24: fdiv3 = 6'sd8;
-            6'sd25: fdiv3 = 6'sd8;
-            6'sd26: fdiv3 = 6'sd8;
-            6'sd27: fdiv3 = 6'sd9;
-            6'sd28: fdiv3 = 6'sd9;
-            6'sd29: fdiv3 = 6'sd9;
-            6'sd30: fdiv3 = 6'sd10;
-            6'sd31: fdiv3 = 6'sd10;
-            default: fdiv3 = 6'sd0;
+    wire [2:0]  n1 = {1'b0, h0} + 3'd1;
+    // |d| / n 四舍五入、恰好一半向 0 取整（正负对称，与 model/slf_match.py:rnd_div 相同），n ∈ {2,3,4}
+    function [2:0] rdiv_mag(input [2:0] a, input [2:0] n);
+        case (n)
+            3'd2:    rdiv_mag = a >> 1;
+            3'd4:    rdiv_mag = ({1'b0, a} + 4'd1) >> 2;
+            default: rdiv_mag = (a >= 3'd5) ? 3'd2 : (a >= 3'd2) ? 3'd1 : 3'd0;
         endcase
     endfunction
-    function signed [5:0] fdiv(input signed [5:0] t, input [2:0] d);
-        case (d)
-            3'd2: fdiv = t >>> 1;
-            3'd4: fdiv = t >>> 2;
-            default: fdiv = fdiv3(t);
-        endcase
-    endfunction
-    reg  signed [5:0] dcx, dcy;                       // S_U2 寄存：m − c
-    wire signed [5:0] tcx = dcx + $signed({3'd0, n1[2:1]});
-    wire signed [5:0] tcy = dcy + $signed({3'd0, n1[2:1]});
-    wire signed [5:0] ncx_s = $signed({2'd0, w_cx}) + fdiv(tcx, n1);
-    wire signed [5:0] ncy_s = $signed({2'd0, w_cy}) + fdiv(tcy, n1);
-    wire [3:0]  ncx = fresh ? u_mx : updc ? ncx_s[3:0] : w_cx;
-    wire [3:0]  ncy = fresh ? u_my : updc ? ncy_s[3:0] : w_cy;
-    wire [2:0]  nhit = (h0 == 3'd7 || h0 + 3'd1 > HM) ? HM : h0 + 3'd1;
+    reg  signed [3:0] dcx, dcy;                       // S_U2 寄存：点格号 − 质心格号（−7..7）
+    wire [3:0]  adx = dcx[3] ? -dcx : dcx, ady = dcy[3] ? -dcy : dcy;
+    wire [2:0]  mdx = rdiv_mag(adx[2:0], n1), mdy = rdiv_mag(ady[2:0], n1);
+    wire [2:0]  ncbx_s = dcx[3] ? w_bx - mdx : w_bx + mdx;
+    wire [2:0]  ncby_s = dcy[3] ? w_by - mdy : w_by + mdy;
+    wire [2:0]  ncbx = fresh ? u_mx[3:1] : updc ? ncbx_s : w_bx;
+    wire [2:0]  ncby = fresh ? u_my[3:1] : updc ? ncby_s : w_by;
+    wire [1:0]  nhit = (h0 >= HM) ? HM : h0 + 2'd1;
     // 定点坐标
     wire signed [35:0] rotx = pxc - pys;
     wire signed [35:0] roty = pxs + pyc;
@@ -417,7 +350,7 @@ module slf_match #(
     wire signed [31:0] rxw = pbx - cxm, ryw = pby - cym;
     wire [PB_AW:0] jn = j + stride;
     // 门控：窗口内且（不门控 或 槽字门控位为 1 且（在线模式 或 标签相符））
-    wire        gate_ok = acc_ok && (cfg_nogate || (sm_q[0] && (!cfg_prior || sm_q[22:19] == ptag)));
+    wire        gate_ok = acc_ok && (cfg_nogate || (sm_q[0] && (!cfg_prior || sm_q[17:16] == ptag)));
 
     always @(posedge clk) begin
         pb_re <= 1'b0; sm_re_m <= 1'b0; sm_we_m <= 1'b0; tb_we <= 1'b0; tb_re <= 1'b0; sl_we <= 1'b0; sl_re <= 1'b0;
@@ -463,7 +396,7 @@ module slf_match #(
             S_DBG:  st <= S_DBG2;
             S_DBG2: begin dbg_q <= sm_q; dbg_ack <= 1'b1; st <= S_IDLE; end
             S_CLR: begin
-                sm_we_m <= 1'b1; sm_wa_m <= clr_a[AW-1:0]; sm_wd_m <= 23'd0;
+                sm_we_m <= 1'b1; sm_wa_m <= clr_a[AW-1:0]; sm_wd_m <= 18'd0;
                 clr_a <= clr_a + 1'b1;
                 if (clr_a[AW-1:0] == {AW{1'b1}}) st <= S_IDLE;
             end
@@ -521,7 +454,7 @@ module slf_match #(
                 MD_SCORE: begin nb <= 0; best <= 8'd255; any <= 1'b0; st <= S_NB; end
                 default: begin
                     u_slot <= {wya[LOG2N-1:0], wxa[LOG2N-1:0]};
-                    u_tag <= {wya[LOG2N+1:LOG2N], wxa[LOG2N+1:LOG2N]};
+                    u_tag <= {wya[LOG2N], wxa[LOG2N]};
                     u_mx <= sxf; u_my <= syf;
                     sm_re_m <= 1'b1; sm_ra_m <= {wya[LOG2N-1:0], wxa[LOG2N-1:0]};
                     tb_re <= 1'b1; tb_ra <= {wya[LOG2N-1:0], wxa[LOG2N-1:0]};
@@ -556,16 +489,16 @@ module slf_match #(
             S_U0: st <= S_U1;
             S_U1: begin uw_q <= sm_q; utb_q <= tb_q; st <= S_U2; end
             S_U2: begin
-                fresh <= fresh_w; h0 <= fresh_w ? 3'd0 : w_hit;
-                dcx <= $signed({2'd0, u_mx}) - $signed({2'd0, w_cx});
-                dcy <= $signed({2'd0, u_my}) - $signed({2'd0, w_cy});
+                fresh <= fresh_w; h0 <= fresh_w ? 2'd0 : w_hit;
+                dcx <= $signed({1'b0, u_mx[3:1]}) - $signed({1'b0, w_bx});
+                dcy <= $signed({1'b0, u_my[3:1]}) - $signed({1'b0, w_by});
                 st <= S_U3;
             end
             S_U3: begin
                 if (!utb_q) begin
                     tb_we <= 1'b1; tb_wa <= u_slot; tb_wd <= 1'b1;
                     sl_we <= 1'b1; sl_wa <= ncl[9:0]; sl_wd <= u_slot; ncl <= ncl + 1'b1;
-                    sm_we_m <= 1'b1; sm_wa_m <= u_slot; sm_wd_m <= {u_tag, nhit, ncx, ncy, uw_q[7:0]};
+                    sm_we_m <= 1'b1; sm_wa_m <= u_slot; sm_wd_m <= {u_tag, nhit, ncbx, ncby, uw_q[7:0]};
                 end
                 j <= jn; jj <= jj + 1'b1; st <= S_T0;
             end

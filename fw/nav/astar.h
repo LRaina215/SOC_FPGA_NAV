@@ -43,5 +43,6 @@ int astar_plan(const astar_cfg_t *cfg, const uint8_t *map, int sx, int sy, int g
 int astar_grid(const astar_cfg_t *cfg, const uint8_t *grid, int n, int sx, int sy, int gx, int gy, astar_path_t *out);
 /* 统计：上一次展开的节点数 */
 int astar_last_expanded(void);
+int astar_heap_max(void);          /* 上电以来堆的最大占用（项） */
 
 #endif

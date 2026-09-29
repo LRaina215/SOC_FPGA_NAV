@@ -1,7 +1,8 @@
 // SLF 似然场建图遍：按窗口坐标扫描结构图，为每格计算"结构格 / 法向 / 门控"并写回同一槽字，
 // 与 model/slf_match.py 的 StructMap.build_lf + cell_normals 逐位一致。
 //
-// 槽字（23 位）：{tag[22:19], hit[18:16], cx[15:12], cy[11:8], occ[7], q[6:2], has[1], gate[0]}
+// 槽字（18 位）：{tag[17:16]（每轴 1 位）, hit[15:14], cx[13:11], cy[10:8]（1/8 格）, occ[7], q[6:2], has[1], gate[0]}
+//   质心在窗口里按 1/16 格计算：{cx, 1}（1/8 格的中点，只用来算法向；打分的代表点见 slf_match.v），与 model/slf_match.py unpack_hi 相同
 //   occ  = 标签符合当前窗口 且 hit >= HIT_MIN
 //   q    = 法向扇区（32 个方向），has = 线状结构（5×5 邻域质心协方差的主方向明显，且 >= 3 个结构格）
 //   gate = 3×3 邻域或正交方向 2 格处有结构格（= 八边形距离 2·切比雪夫+曼哈顿 <= 6）
@@ -20,15 +21,16 @@ module slf_lf #(
     output reg         done,
     output wire        sm_re,
     output wire [2*LOG2N-1:0] sm_raddr,
-    input  wire [22:0] sm_q,
+    input  wire [17:0] sm_q,
     output reg         sm_we,
     output reg  [2*LOG2N-1:0] sm_waddr,
-    output reg  [22:0] sm_wdata
+    output reg  [17:0] sm_wdata
 );
     localparam integer N  = 1 << LOG2N;
     localparam integer AW = 2 * LOG2N;
     localparam integer LB = N + 2;
-    localparam integer CW = 1 + 4 + 4 + 15;          // 窗口格 {occ, cx, cy, 原字高 15 位}
+    localparam integer HB = 10;                      // 槽字高位 {tag, hit, cx, cy}
+    localparam integer CW = 1 + 4 + 4 + HB;          // 窗口格 {occ, cx(1/16 格), cy, 原字高位}
 
     reg              run;
     reg [LOG2N+1:0]  r, c;
@@ -43,11 +45,11 @@ module slf_lf #(
     // ---------------------------------------------------------------- T1：解码、行缓存、窗口
     reg        v1, inr1;
     reg [LOG2N+1:0] r1, c1;
-    reg [3:0]  etag1;
-    wire [3:0] q_tag = sm_q[22:19];
-    wire [2:0] q_hit = sm_q[18:16];
+    reg [1:0]  etag1;
+    wire [1:0] q_tag = sm_q[17:16];
+    wire [1:0] q_hit = sm_q[15:14];
     wire       q_occ = inr1 && (q_tag == etag1) && (q_hit >= HIT_MIN);
-    wire [CW-1:0] cur = {q_occ, sm_q[15:12], sm_q[11:8], sm_q[22:8]};
+    wire [CW-1:0] cur = {q_occ, sm_q[13:11], 1'b1, sm_q[10:8], 1'b1, sm_q[17:8]};
     reg [CW-1:0] lb1 [0:LB-1];
     reg [CW-1:0] lb2 [0:LB-1];
     reg [CW-1:0] lb3 [0:LB-1];
@@ -61,7 +63,7 @@ module slf_lf #(
     assign ncol[4] = cur;
     // 窗口占用位（5×5）与中心原字
     reg [4:0]  wo [0:4];                  // wo[行][列]
-    reg [14:0] o2_2, o2_3, o2_4;          // 中心行的原字 {tag, hit, cx, cy}，列 2..4（列 2 为中心）
+    reg [HB-1:0] o2_2, o2_3, o2_4;        // 中心行的原字高位 {tag, hit, cx, cy}，列 2..4（列 2 为中心）
     // 列矩移位寄存器（列 0 最早，dx = 列号 - 2）
     reg [2:0]  m0 [0:4];
     reg signed [9:0]  mX [0:4];           // Σw·cx（0..75）
@@ -72,33 +74,33 @@ module slf_lf #(
     reg [CW-1:0] ncr [0:4];               // 寄存后的新列（切断 行缓存读 -> 列矩 的组合路径）
     // 新列的矩（组合，逐行展开）
     wire [3:0] ncx0, ncx1, ncx2, ncx3, ncx4;
-    wire       nw0 = ncr[0][23];
-    wire [3:0] ncxv0 = ncr[0][22:19];
-    wire signed [6:0] nyv0 = $signed(7'd96) + $signed({3'd0, ncr[0][18:15]});
+    wire       nw0 = ncr[0][CW-1];
+    wire [3:0] ncxv0 = ncr[0][CW-2:CW-5];
+    wire signed [6:0] nyv0 = $signed(7'd96) + $signed({3'd0, ncr[0][CW-6:CW-9]});
     wire signed [14:0] nyy0 = nyv0 * nyv0;
     wire [7:0]  nxx0 = ncxv0 * ncxv0;
     wire signed [12:0] nxy0 = $signed({1'b0, ncxv0}) * nyv0;
-    wire       nw1 = ncr[1][23];
-    wire [3:0] ncxv1 = ncr[1][22:19];
-    wire signed [6:0] nyv1 = $signed(7'd112) + $signed({3'd0, ncr[1][18:15]});
+    wire       nw1 = ncr[1][CW-1];
+    wire [3:0] ncxv1 = ncr[1][CW-2:CW-5];
+    wire signed [6:0] nyv1 = $signed(7'd112) + $signed({3'd0, ncr[1][CW-6:CW-9]});
     wire signed [14:0] nyy1 = nyv1 * nyv1;
     wire [7:0]  nxx1 = ncxv1 * ncxv1;
     wire signed [12:0] nxy1 = $signed({1'b0, ncxv1}) * nyv1;
-    wire       nw2 = ncr[2][23];
-    wire [3:0] ncxv2 = ncr[2][22:19];
-    wire signed [6:0] nyv2 = $signed(7'd0) + $signed({3'd0, ncr[2][18:15]});
+    wire       nw2 = ncr[2][CW-1];
+    wire [3:0] ncxv2 = ncr[2][CW-2:CW-5];
+    wire signed [6:0] nyv2 = $signed(7'd0) + $signed({3'd0, ncr[2][CW-6:CW-9]});
     wire signed [14:0] nyy2 = nyv2 * nyv2;
     wire [7:0]  nxx2 = ncxv2 * ncxv2;
     wire signed [12:0] nxy2 = $signed({1'b0, ncxv2}) * nyv2;
-    wire       nw3 = ncr[3][23];
-    wire [3:0] ncxv3 = ncr[3][22:19];
-    wire signed [6:0] nyv3 = $signed(7'd16) + $signed({3'd0, ncr[3][18:15]});
+    wire       nw3 = ncr[3][CW-1];
+    wire [3:0] ncxv3 = ncr[3][CW-2:CW-5];
+    wire signed [6:0] nyv3 = $signed(7'd16) + $signed({3'd0, ncr[3][CW-6:CW-9]});
     wire signed [14:0] nyy3 = nyv3 * nyv3;
     wire [7:0]  nxx3 = ncxv3 * ncxv3;
     wire signed [12:0] nxy3 = $signed({1'b0, ncxv3}) * nyv3;
-    wire       nw4 = ncr[4][23];
-    wire [3:0] ncxv4 = ncr[4][22:19];
-    wire signed [6:0] nyv4 = $signed(7'd32) + $signed({3'd0, ncr[4][18:15]});
+    wire       nw4 = ncr[4][CW-1];
+    wire [3:0] ncxv4 = ncr[4][CW-2:CW-5];
+    wire signed [6:0] nyv4 = $signed(7'd32) + $signed({3'd0, ncr[4][CW-6:CW-9]});
     wire signed [14:0] nyy4 = nyv4 * nyv4;
     wire [7:0]  nxx4 = ncxv4 * ncxv4;
     wire signed [12:0] nxy4 = $signed({1'b0, ncxv4}) * nyv4;
@@ -115,7 +117,7 @@ module slf_lf #(
     reg [LOG2N-1:0] wrow, wcol;
 
     // ---------------------------------------------------------------- T2：窗口矩
-    reg        s2; reg [AW-1:0] sl2; reg [14:0] ow2; reg occ2, gate2;
+    reg        s2; reg [AW-1:0] sl2; reg [HB-1:0] ow2; reg occ2, gate2;
     reg [4:0]  n2;
     reg signed [12:0] sx2, sy2;
     reg [16:0] sxx2, syy2;
@@ -139,7 +141,7 @@ module slf_lf #(
     wire signed [18:0] syy_pa = $signed({1'b0, mYY[0]}) + $signed({1'b0, mYY[1]});
     wire signed [18:0] syy_pb = $signed({1'b0, mYY[2]}) + $signed({1'b0, mYY[3]}) + $signed({1'b0, mYY[4]});
     reg  signed [18:0] syy_ra, syy_rb;
-    reg        s2a; reg [AW-1:0] sl2a; reg [14:0] ow2a; reg occ2a, gate2a;
+    reg        s2a; reg [AW-1:0] sl2a; reg [HB-1:0] ow2a; reg occ2a, gate2a;
     wire [4:0]  n_w = n_ra + n_rb;
     wire signed [12:0] sx_w = sx_ra + sx_rb;
     wire signed [12:0] sy_w = sy_ra + sy_rb;
@@ -151,18 +153,18 @@ module slf_lf #(
     wire gate_w = wo[1][1] | wo[1][2] | wo[1][3] | wo[2][1] | wo[2][2] | wo[2][3] | wo[3][1] | wo[3][2] | wo[3][3] |
                   wo[2][0] | wo[2][4] | wo[0][2] | wo[4][2];
     // ---------------------------------------------------------------- T3：A B C
-    reg        s3; reg [AW-1:0] sl3; reg [14:0] ow3; reg occ3, gate3, n3ok3;
+    reg        s3; reg [AW-1:0] sl3; reg [HB-1:0] ow3; reg occ3, gate3, n3ok3;
     reg signed [23:0] a3, b3, c3;
     // ---------------------------------------------------------------- T4：X Y
-    reg        s4; reg [AW-1:0] sl4; reg [14:0] ow4; reg occ4, gate4, n3ok4;
+    reg        s4; reg [AW-1:0] sl4; reg [HB-1:0] ow4; reg occ4, gate4, n3ok4;
     reg signed [24:0] x4, y4;
     reg signed [24:0] apc4;
     // ---------------------------------------------------------------- T5：线状判定、归一化
-    reg        s5; reg [AW-1:0] sl5; reg [14:0] ow5; reg occ5, gate5, has5;
+    reg        s5; reg [AW-1:0] sl5; reg [HB-1:0] ow5; reg occ5, gate5, has5;
     reg signed [24:0] x5, y5;
     reg [4:0]  shv5;
     // T5a：平方项与绝对值最大者寄存；T5：线状判定与归一化移位
-    reg        s5a; reg [AW-1:0] sl5a; reg [14:0] ow5a; reg occ5a, gate5a, n3ok5a;
+    reg        s5a; reg [AW-1:0] sl5a; reg [HB-1:0] ow5a; reg occ5a, gate5a, n3ok5a;
     reg signed [24:0] x5a, y5a;
     reg signed [49:0] sqd5a, sqs5a;
     reg [24:0] am5a;
@@ -180,27 +182,27 @@ module slf_lf #(
     wire [4:0]  bl5a = bitlen25(am5a);
     // CORDIC：10 次迭代，每拍 1 次（逐级展开为独立寄存器）
     localparam integer NIT = 10;
-    reg        cs0; reg [AW-1:0] csl0; reg [14:0] cow0; reg cocc0, cgate0, chas0;
+    reg        cs0; reg [AW-1:0] csl0; reg [HB-1:0] cow0; reg cocc0, cgate0, chas0;
     reg signed [18:0] cxr0, cyr0; reg [15:0] cang0;
-    reg        cs1; reg [AW-1:0] csl1; reg [14:0] cow1; reg cocc1, cgate1, chas1;
+    reg        cs1; reg [AW-1:0] csl1; reg [HB-1:0] cow1; reg cocc1, cgate1, chas1;
     reg signed [18:0] cxr1, cyr1; reg [15:0] cang1;
-    reg        cs2; reg [AW-1:0] csl2; reg [14:0] cow2; reg cocc2, cgate2, chas2;
+    reg        cs2; reg [AW-1:0] csl2; reg [HB-1:0] cow2; reg cocc2, cgate2, chas2;
     reg signed [18:0] cxr2, cyr2; reg [15:0] cang2;
-    reg        cs3; reg [AW-1:0] csl3; reg [14:0] cow3; reg cocc3, cgate3, chas3;
+    reg        cs3; reg [AW-1:0] csl3; reg [HB-1:0] cow3; reg cocc3, cgate3, chas3;
     reg signed [18:0] cxr3, cyr3; reg [15:0] cang3;
-    reg        cs4; reg [AW-1:0] csl4; reg [14:0] cow4; reg cocc4, cgate4, chas4;
+    reg        cs4; reg [AW-1:0] csl4; reg [HB-1:0] cow4; reg cocc4, cgate4, chas4;
     reg signed [18:0] cxr4, cyr4; reg [15:0] cang4;
-    reg        cs5; reg [AW-1:0] csl5; reg [14:0] cow5; reg cocc5, cgate5, chas5;
+    reg        cs5; reg [AW-1:0] csl5; reg [HB-1:0] cow5; reg cocc5, cgate5, chas5;
     reg signed [18:0] cxr5, cyr5; reg [15:0] cang5;
-    reg        cs6; reg [AW-1:0] csl6; reg [14:0] cow6; reg cocc6, cgate6, chas6;
+    reg        cs6; reg [AW-1:0] csl6; reg [HB-1:0] cow6; reg cocc6, cgate6, chas6;
     reg signed [18:0] cxr6, cyr6; reg [15:0] cang6;
-    reg        cs7; reg [AW-1:0] csl7; reg [14:0] cow7; reg cocc7, cgate7, chas7;
+    reg        cs7; reg [AW-1:0] csl7; reg [HB-1:0] cow7; reg cocc7, cgate7, chas7;
     reg signed [18:0] cxr7, cyr7; reg [15:0] cang7;
-    reg        cs8; reg [AW-1:0] csl8; reg [14:0] cow8; reg cocc8, cgate8, chas8;
+    reg        cs8; reg [AW-1:0] csl8; reg [HB-1:0] cow8; reg cocc8, cgate8, chas8;
     reg signed [18:0] cxr8, cyr8; reg [15:0] cang8;
-    reg        cs9; reg [AW-1:0] csl9; reg [14:0] cow9; reg cocc9, cgate9, chas9;
+    reg        cs9; reg [AW-1:0] csl9; reg [HB-1:0] cow9; reg cocc9, cgate9, chas9;
     reg signed [18:0] cxr9, cyr9; reg [15:0] cang9;
-    reg        cs10; reg [AW-1:0] csl10; reg [14:0] cow10; reg cocc10, cgate10, chas10;
+    reg        cs10; reg [AW-1:0] csl10; reg [HB-1:0] cow10; reg cocc10, cgate10, chas10;
     reg signed [18:0] cxr10, cyr10; reg [15:0] cang10;
     // 归一化右移（0..8 位，逐档选择）
     function signed [18:0] shr(input signed [24:0] v, input [4:0] n);
@@ -244,7 +246,7 @@ module slf_lf #(
             v1 <= run;
             if (run) begin
                 inr1 <= inr0; r1 <= r; c1 <= c;
-                etag1 <= {gy0[LOG2N+1:LOG2N], gx0[LOG2N+1:LOG2N]};
+                etag1 <= {gy0[LOG2N], gx0[LOG2N]};
             end
             // ---------------- T1：行缓存、寄存新列 ----------------
             vb <= v1;
@@ -258,14 +260,14 @@ module slf_lf #(
             if (vb) begin
                 for (i = 0; i < 5; i = i + 1) begin
                     for (j = 0; j < 4; j = j + 1) wo[i][j] <= wo[i][j+1];
-                    wo[i][4] <= ncr[i][23];
+                    wo[i][4] <= ncr[i][CW-1];
                 end
                 for (j = 0; j < 4; j = j + 1) begin
                     m0[j] <= m0[j+1]; mX[j] <= mX[j+1]; mY[j] <= mY[j+1];
                     mXX[j] <= mXX[j+1]; mXY[j] <= mXY[j+1]; mYY[j] <= mYY[j+1];
                 end
                 m0[4] <= n0_w; mX[4] <= nX_w; mY[4] <= nY_w; mXX[4] <= nXX_w; mXY[4] <= nXY_w; mYY[4] <= nYY_w;
-                o2_4 <= ncr[2][14:0]; o2_3 <= o2_4; o2_2 <= o2_3;
+                o2_4 <= ncr[2][HB-1:0]; o2_3 <= o2_4; o2_2 <= o2_3;
                 wrow <= r1b[LOG2N-1:0] - 2'd2; wcol <= c1b[LOG2N-1:0] - 2'd2;
             end
             // ---------------- T2a：部分和 ----------------

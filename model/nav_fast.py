@@ -17,12 +17,14 @@ def _sat16(a):
 
 
 # ------------------------------------------------------------------ 点云
-def pc_project(depth, lut, depth_mul=256, min_mm=100, max_mm=20000, lut_frac=13):
-    """depth: (H, W) 原始深度；lut: (H*W, 3) int。返回 xyz (M,3) int64、pv (M,) bool（行优先）。"""
+def pc_project(depth, lut, depth_mul=256, min_mm=100, max_mm=20000, lut_frac=11):
+    """depth: (H, W) 原始深度；lut: (H*W, 3) int（12 位 Q0.11，全零 = 无效像素）。
+    返回 xyz (M,3) int64、pv (M,) bool（行优先）。"""
     raw = depth.reshape(-1).astype(np.int64)
+    lut = lut.astype(np.int64)
     dmm = np.minimum((raw * depth_mul) >> 8, 32767)
-    pv = (raw != 0) & (dmm >= min_mm) & (dmm <= max_mm)
-    xyz = _sat16((dmm[:, None] * lut.astype(np.int64)) >> lut_frac)
+    pv = (raw != 0) & (dmm >= min_mm) & (dmm <= max_mm) & (lut != 0).any(axis=1)
+    xyz = _sat16((dmm[:, None] * lut) >> lut_frac)
     return xyz, pv
 
 

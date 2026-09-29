@@ -15,7 +15,7 @@ module tb_slf;
     logic [31:0] prior [0:2*65536-1];
     logic [31:0] pexp [0:1023];
     logic        cmd_clear = 0, cfg_prior = 0, cfg_nogate = 0, pw_we = 0;
-    logic [15:0] pw_addr; logic [22:0] pw_data;
+    logic [15:0] pw_addr; logic [17:0] pw_data;
 
     logic        s_fire = 0, s_pv = 0, s_sof = 0, s_eof = 0;
     logic signed [31:0] s_x = 0, s_y = 0, s_z = 0;
@@ -24,7 +24,7 @@ module tb_slf;
     logic        cmd_eval = 0, cmd_update = 0;
     logic        cand_we = 0; logic [8:0] cand_wa; logic [31:0] cand_wd;
     logic        res_re = 0; logic [8:0] res_ra; logic [31:0] res_q;
-    logic        dbg_req = 0; logic [15:0] dbg_addr; logic dbg_ack; logic [22:0] dbg_q;
+    logic        dbg_req = 0; logic [15:0] dbg_addr; logic dbg_ack; logic [17:0] dbg_q;
     logic        busy, pts_ready, eval_done;
     logic [12:0] n_pts;
 
@@ -122,7 +122,7 @@ module tb_slf;
         repeat (3) @(posedge clk);
         wait (!busy);
         for (int i = 0; i < n_prior; i++) begin
-            @(posedge clk); pw_we <= 1; pw_addr <= prior[2*i][15:0]; pw_data <= prior[2*i+1][22:0];
+            @(posedge clk); pw_we <= 1; pw_addr <= prior[2*i][15:0]; pw_data <= prior[2*i+1][17:0];
             @(posedge clk); pw_we <= 0;
             @(posedge clk);
         end
@@ -166,7 +166,7 @@ module tb_slf;
                 dbg_req <= 1; dbg_addr <= prior[2*i][15:0];
                 do begin @(posedge clk); #1; end while (!dbg_ack);
                 dbg_req <= 0;
-                if (dbg_q !== prior[2*i+1][22:0]) bad++;
+                if (dbg_q !== prior[2*i+1][17:0]) bad++;
             end
             if (bad) begin errs += bad; $display("先验槽字被改动 %0d", bad); end
             else $display("先验槽字保持不变");

@@ -9,7 +9,7 @@
 地面点（全部点）用于高程与可通行代价。
 
 包格式（小端）：
-  头 40 B：'NVMP' | u16 版本=1 | u16 标志 | i32 ox, oy（结构窗口原点，全局 5 cm 格，窗口 256×256）
+  头 40 B：'NVMP' | u16 版本=2（18 位槽字；1 = 旧 23 位）| u16 标志 | i32 ox, oy（结构窗口原点，全局 5 cm 格，窗口 256×256）
           | u32 n_struct | i32 gox, goy（代价图原点，全局 20 cm 格）| u16 gnx, gny | u32 body_crc32 | u32 body_len
   体：n_struct × {u16 槽地址, u24 槽字}，然后 gnx×gny 字节代价（行优先，0..200 可通行，254 致命，255 未知）
 """
@@ -27,6 +27,7 @@ INV_RES = 1311
 DS = 2                        # 代价图一格 = 2 个 5 cm 格（10 cm，与固件 GM_DS 一致）
 GM_MAX = 64                   # 固件记忆栅格边长（GM_N）
 MAGIC = b"NVMP"
+PKG_VER = 2 if slf.W18 else 1   # 2 = 18 位槽字（slf_match.W18）
 HDR_FMT = "<4sHHiiIiiHHII"
 HDR_LEN = struct.calcsize(HDR_FMT)
 
@@ -93,12 +94,12 @@ def prior_lf(occ, cxs, cys):
 
 
 def struct_words(ox, oy, occ, cxs, cys, q, has, gate):
-    """-> (槽地址, 23 位槽字) 列表（只含非零槽字）"""
+    """-> (槽地址, 槽字) 列表（只含非零槽字；槽字格式见 slf_match.pack_hi）"""
     wy, wx = np.mgrid[0:SN, 0:SN]
     gx, gy = wx + ox, wy + oy
-    tag = (((gy >> slf.SN_LOG2) & 3) << 2) | ((gx >> slf.SN_LOG2) & 3)
+    tag = slf.tag_of(gx, gy)
     hit = np.where(occ, slf.HIT_MAX, 0)
-    w = (tag << 19) | (hit << 16) | (cxs << 12) | (cys << 8) | (occ.astype(np.int64) << 7) | (q << 2) \
+    w = slf.pack_hi(tag, hit, cxs, cys) | (occ.astype(np.int64) << 7) | (q << 2) \
         | (has.astype(np.int64) << 1) | gate.astype(np.int64)
     w = np.where(occ | gate, w, 0)
     slot = ((gy & (SN - 1)) << slf.SN_LOG2) | (gx & (SN - 1))
@@ -171,6 +172,7 @@ def build_package(struct_xy, all_pts, bounds_mm=None, step_max=100, slope_max_de
     ox = c0x - (SN - (c1x - c0x + 1)) // 2
     oy = c0y - (SN - (c1y - c0y + 1)) // 2
     occ, cxs, cys, cnt = struct_cells_from_points(struct_xy, ox, oy, min_count=min_count)
+    cxs, cys = slf.cq(cxs), slf.cq(cys)          # 与板上存储精度一致（法向也按存储后的质心算）
     q, has, gate = prior_lf(occ, cxs, cys)
     slot, word = struct_words(ox, oy, occ, cxs, cys, q, has, gate)
     # 代价图：20 cm 格对齐全局 5 cm 格的 4 倍数
@@ -182,7 +184,7 @@ def build_package(struct_xy, all_pts, bounds_mm=None, step_max=100, slope_max_de
     cost5 = cost_from_elevation(h, step_max, slope_max_deg)
     gcost = coarse_cost(cost5)
     body = b"".join(struct.pack("<HI", int(s), int(w))[:5] for s, w in zip(slot, word)) + gcost.tobytes()
-    hdr = struct.pack(HDR_FMT, MAGIC, 1, 0, ox, oy, len(slot), gox, goy, gnx, gny, zlib.crc32(body), len(body))
+    hdr = struct.pack(HDR_FMT, MAGIC, PKG_VER, 0, ox, oy, len(slot), gox, goy, gnx, gny, zlib.crc32(body), len(body))
     info = dict(ox=ox, oy=oy, n_struct=int(occ.sum()), n_words=len(slot), gox=gox, goy=goy, gnx=gnx, gny=gny,
                 occ=occ, cxs=cxs, cys=cys, q=q, has=has, gate=gate, cnt=cnt, h=h, cost5=cost5, gcost=gcost)
     return hdr + body, info
@@ -192,8 +194,10 @@ def parse_package(b):
     """-> dict（与 build_package 的 info 同名字段：ox oy gox goy gnx gny slot word gcost）"""
     magic, ver, flags, ox, oy, n, gox, goy, gnx, gny, crc, blen = struct.unpack(HDR_FMT, b[:HDR_LEN])
     body = b[HDR_LEN:HDR_LEN + blen]
-    if magic != MAGIC or ver != 1 or len(body) != blen or zlib.crc32(body) != crc:
+    if magic != MAGIC or len(body) != blen or zlib.crc32(body) != crc:
         raise ValueError("地图包损坏")
+    if ver != PKG_VER:
+        raise ValueError(f"地图包版本 {ver}，当前槽字格式要求版本 {PKG_VER}（用 tools/map_tool.py 重新生成）")
     e = np.frombuffer(body[:5 * n], dtype=np.uint8).reshape(n, 5).astype(np.int64)
     slot = e[:, 0] | (e[:, 1] << 8)
     word = e[:, 2] | (e[:, 3] << 8) | (e[:, 4] << 16)

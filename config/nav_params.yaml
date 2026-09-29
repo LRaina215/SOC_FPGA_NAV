@@ -14,7 +14,7 @@ lidar:                       # XT-M60 (Pro)
   LIDAR_H:       60          # 像素行数
   UV_BITS:       8           # 行/列坐标位宽
   DEPTH_BITS:    16          # 原始深度字宽
-  LUT_FRAC:      13          # 方向查找表定点小数位 (signed16 Q2.13, 范围 ±4)
+  LUT_FRAC:      11          # 方向查找表定点小数位 (每分量 signed12 Q0.11 单位向量, 36 位一项)
   PT_BITS:       16          # 点坐标位宽 (int16, 单位 mm)
 
 pose:

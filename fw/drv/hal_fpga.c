@@ -108,6 +108,27 @@ bool hal_lidar_waiting(uint32_t *frame_t_us)
     return true;
 }
 
+void hal_lidar_init(void)
+{
+    nav_wr(NAV_LIDAR_CTRL, nav_rd(NAV_LIDAR_CTRL) | NAV_LIDAR_CTRL_WAIT_POSE_MASK);
+}
+
+uint32_t hal_lidar_info_seq(void) { return nav_rd(NAV_LIDAR_INFO_SEQ); }
+
+void hal_lidar_lens(uint32_t lens[9])
+{
+    for (uint32_t i = 0; i < 9; i++) lens[i] = nav_rd(NAV_LIDAR_LENS0 + 4u * i);
+}
+
+void hal_lidar_lut_write(uint32_t idx, const int16_t *rxyz, int n)
+{
+    nav_wr(NAV_LIDAR_LUT_ADDR, idx);
+    for (int i = 0; i < n; i++, rxyz += 3) {
+        nav_wr(NAV_LIDAR_LUT_XY, ((uint32_t)rxyz[0] & 0xFFFu) | (((uint32_t)rxyz[1] & 0xFFFu) << 12));
+        nav_wr(NAV_LIDAR_LUT_Z, (uint32_t)rxyz[2] & 0xFFFu);
+    }
+}
+
 /* SLF 匹配（MATCH 寄存器块）：提交帧时硬件已提取结构点；打分约 38 ms（245 候选 × 1024 点），并图 + 建似然场约 1 ms */
 bool hal_match_ready(void)
 {
@@ -180,7 +201,7 @@ void hal_prior_begin(void)
 void hal_prior_write(uint16_t slot, uint32_t word)
 {
     nav_wr(NAV_MATCH_SM_ADDR, slot);
-    nav_wr(NAV_MATCH_SM_WDATA, word & 0x7FFFFFu);
+    nav_wr(NAV_MATCH_SM_WDATA, word & 0x3FFFFu);
 }
 
 void hal_prior_enable(bool en, int32_t ox, int32_t oy)

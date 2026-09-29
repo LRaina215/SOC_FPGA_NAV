@@ -18,8 +18,8 @@ import xt_proto as xt  # noqa: E402
 import nav_fast as fast  # noqa: E402
 import slf_match as slf  # noqa: E402
 
-FPGA_L_MAC, FPGA_L_IP = 0x024E56000001, "192.168.1.100"
-LIDAR_MAC, LIDAR_IP = 0x0CAFE0000060, "192.168.1.60"
+FPGA_L_MAC, FPGA_L_IP = 0x024E56000001, "192.168.0.100"
+LIDAR_MAC, LIDAR_IP = 0x0CAFE0000060, xt.DEFAULT_LIDAR_IP
 FPGA_H_MAC, FPGA_H_IP = 0x024E56000002, "192.168.2.100"
 RK_MAC, RK_IP = 0x0A1B2C3D4E5F, "192.168.2.10"
 INV_RES = 1311
@@ -39,7 +39,8 @@ def main(out):
     lid = sw.VirtualLidar(noise_mm=3.0, seed=5)
     Rbs, tbs = sw.mount_pose()
     lut = lidar_lut.lut_entries()
-    lidar_lut.write_hex(out / "lut_default.hex", lut)
+    lidar_lut.write_hex(out / "lut.hex", lut)
+    n_imu = 0
 
     eth = []           # 雷达口字节 {last, data}
     pose = []
@@ -56,8 +57,11 @@ def main(out):
         Rwb = sw.rotz(math.radians(yaw)) @ sw.roty(math.radians(pitch))
         Rws, tws = sw.compose(Rwb, np.array([x, y, 0.0]), Rbs, tbs)
         depth, amp = lid.capture(world, Rws, tws)
-        fr = xt.build_frame(depth.tolist(), sn=100 + k, img_type=1)
-        for i, p in enumerate(xt.packetize(fr, udp_skip=20, sn=100 + k)):
+        fr = xt.build_frame(depth.tolist(), sn=100 + k)
+        sub = xt.packetize(fr, sn=100 + k, chunk=700 if k == 1 else xt.CHUNK)
+        sub.insert(5, xt.imu_subpacket(k))                     # 帧中间夹一条 IMU 消息（应跳过）
+        n_imu += 1
+        for i, p in enumerate(xt.datagrams(sub, per=2 if k == 1 else 1)):   # 第 2 帧两个分包装一个报文
             put(npk.udp_frame(FPGA_L_MAC, LIDAR_MAC, LIDAR_IP, FPGA_L_IP, 7687, 7687, p, ident=k * 100 + i))
         Rq, tq = sw.to_fixed_pose(Rws, tws)
         cx = nf.world_cell(int(round(x * 1000)), INV_RES)
@@ -80,6 +84,11 @@ def main(out):
         print(f"帧{k}: 更新 {sum(q[0] for q in upd)} 可通行 {int((cost <= 200).sum())}")
 
     (out / "slf_exp.hex").write_text(f"{n_struct:08x}\n")      # 最后一帧的结构点数
+    info = xt.parse_info(xt.frame_info(160, 60))
+    icfg = (info["roiy0"] << 24) | (info["roix0"] << 16) | (info["binning"] << 8) | info["unit_div"]
+    isz = (info["hdrmode"] << 24) | (info["imageflags"] << 16) | info["infosize"]
+    exp_inf = (n_imu, info["lens_raw"][0], info["lens_raw"][8], icfg, isz)
+    (out / "info_exp.hex").write_text("".join(f"{v:08x}\n" for v in exp_inf))
 
     # 高程图读口：最后一帧扫描后的若干槽（含已观测与空槽）
     occ = [a for a in range(nf.N * nf.N) if em.cnt[a]][::97][:12]

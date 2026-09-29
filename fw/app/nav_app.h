@@ -10,6 +10,7 @@
 #include "pose_match.h"
 #include "loc.h"
 #include "prior.h"
+#include "lidar_cal.h"
 
 #define APP_PLAN_PERIOD_US   100000    /* 规划 10 Hz */
 #define APP_STATUS_PERIOD_US 200000    /* 状态回传 5 Hz */
@@ -44,6 +45,10 @@ typedef struct {
     pm_cfg_t     pm_cfg_prior;          /* 有图跟踪用的匹配参数（先验图可信，增益更高） */
     uint32_t     turn_until;            /* 对准换视角：原地转到这个时刻（之后再稳定 300 ms） */
     bool         turning;
+    /* 雷达方向查找表（按雷达自带内参在板上生成；生成期间的帧丢弃） */
+    lidar_cal_t  lcal;
+    int          lcal_budget;           /* 每次主循环最多生成的像素数 */
+    uint32_t     n_lut_skip;            /* 因查找表未就绪丢弃的帧 */
 } nav_app_t;
 
 /* 先验地图已加载（有图模式） */

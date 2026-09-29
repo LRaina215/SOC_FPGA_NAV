@@ -39,7 +39,7 @@ static void body_bytes(prior_rx_t *r, gmap_t *g, const uint8_t *d, int n)
             r->ent[r->ent_n++] = d[i];
             if (r->ent_n == 5) {
                 uint32_t w = (uint32_t)r->ent[2] | ((uint32_t)r->ent[3] << 8) | ((uint32_t)r->ent[4] << 16);
-                hal_prior_write(rd16(r->ent), w & 0x7FFFFF);
+                hal_prior_write(rd16(r->ent), w & 0x3FFFF);
                 r->ent_n = 0;
                 r->n_words++;
             }
@@ -57,7 +57,7 @@ bool prior_rx_data(prior_rx_t *r, gmap_t *g, uint32_t offset, const uint8_t *d, 
     if (!r->hdr_ok && r->next == PRIOR_HDR_LEN) {
         r->hdr_ok = true;
         const uint8_t *h = r->hdr;
-        if (h[0] != 'N' || h[1] != 'V' || h[2] != 'M' || h[3] != 'P' || rd16(h + 4) != 1) { r->state = PRIOR_EFMT; return true; }
+        if (h[0] != 'N' || h[1] != 'V' || h[2] != 'M' || h[3] != 'P' || rd16(h + 4) != 2) { r->state = PRIOR_EFMT; return true; }   /* 版本 2 = 18 位槽字 */
         r->ox = (int32_t)rd32(h + 8); r->oy = (int32_t)rd32(h + 12);
         r->n_struct = rd32(h + 16);
         r->gox = (int32_t)rd32(h + 20); r->goy = (int32_t)rd32(h + 24);

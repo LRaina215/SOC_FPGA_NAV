@@ -9,7 +9,6 @@
 // 总线：bus_req 保持到 bus_ack（单拍）；ack 后一拍内可撤销 req。按字访问，addr 为字节地址。
 module nav_subsystem #(
     parameter integer CLK_HZ = 100000000,  // 核心时钟频率（须为 1 MHz 整数倍；串口分频等按此换算）
-    parameter LUT_INIT = "lut_default.hex",
     parameter SIN_INIT = "sin_lut.hex"
 ) (
     input  wire        clk,             // 核心时钟 100 MHz
@@ -29,6 +28,7 @@ module nav_subsystem #(
     input  wire        l_rx_valid, input wire [7:0] l_rx_data, input wire l_rx_last, input wire l_rx_error,
     input  wire        l_tx_clk, input wire l_tx_rst,
     output wire        l_tx_valid, output wire [7:0] l_tx_data, output wire l_tx_last, input wire l_tx_ready,
+    input  wire [31:0] l_phy_stat,      // 板级 MAC / PHY 状态（rgmii_mac100），寄存器 NETL.PHY_STAT
     // 主机网口 MAC 客户端（SFP / 1G Serial Ethernet）
     input  wire        h_rx_clk, input wire h_rx_rst,
     input  wire        h_rx_valid, input wire [7:0] h_rx_data, input wire h_rx_last, input wire h_rx_error,
@@ -84,6 +84,7 @@ module nav_subsystem #(
         .tx_mac_last(l_tx_last), .tx_mac_ready(l_tx_ready),
         .cfg_mac({r_NETL_MAC_HI[15:0], r_NETL_MAC_LO}), .cfg_ip(r_NETL_IP), .cfg_port(r_NETL_UDP_PORT[15:0]),
         .cfg_enable(r_NETL_CTRL[0]), .cfg_any_ip(r_NETL_CTRL[1]), .cfg_arp_en(r_NETL_CTRL[2]), .cfg_learn(r_NETL_CTRL[3]),
+        .cfg_mcast_ip(r_NETL_MCAST_IP),
         .peer_we(p_NETL_PEER_PORT), .peer_mac_w({r_NETL_PEER_MAC_HI[15:0], r_NETL_PEER_MAC_LO}),
         .peer_ip_w(r_NETL_PEER_IP), .peer_port_w(wd_q[15:0]),
         .peer_mac(netl_peer_mac), .peer_ip(netl_peer_ip), .peer_port(netl_peer_port),
@@ -97,6 +98,7 @@ module nav_subsystem #(
     assign i_NETL_PEER_MAC_LO = netl_peer_mac[31:0];
     assign i_NETL_PEER_MAC_HI = {16'd0, netl_peer_mac[47:32]};
     assign i_NETL_PEER_PORT   = {16'd0, netl_peer_port};
+    assign i_NETL_PHY_STAT    = l_phy_stat;
 
     // ================================================================ 主机网口 + 邮箱
     wire        hu_valid, hu_last, hu_err;
@@ -118,6 +120,7 @@ module nav_subsystem #(
         .tx_mac_last(h_tx_last), .tx_mac_ready(h_tx_ready),
         .cfg_mac({r_NETH_MAC_HI[15:0], r_NETH_MAC_LO}), .cfg_ip(r_NETH_IP), .cfg_port(r_NETH_UDP_PORT[15:0]),
         .cfg_enable(r_NETH_CTRL[0]), .cfg_any_ip(r_NETH_CTRL[1]), .cfg_arp_en(r_NETH_CTRL[2]), .cfg_learn(r_NETH_CTRL[3]),
+        .cfg_mcast_ip(r_NETH_MCAST_IP),
         .peer_we(p_NETH_PEER_PORT), .peer_mac_w({r_NETH_PEER_MAC_HI[15:0], r_NETH_PEER_MAC_LO}),
         .peer_ip_w(r_NETH_PEER_IP), .peer_port_w(wd_q[15:0]),
         .peer_mac(neth_peer_mac), .peer_ip(neth_peer_ip), .peer_port(neth_peer_port),
@@ -162,44 +165,68 @@ module nav_subsystem #(
     wire        x_valid, x_ready, x_sof, x_eof, frm_start, frm_ready, pose_wait;
     wire [7:0]  x_u, x_v;
     wire [15:0] x_depth, frm_sn, frm_w, frm_h;
-    wire [7:0]  frm_ds, frm_pv;
-    wire [31:0] frm_ts, xs_frames, xs_bad, xs_drop;
+    wire [7:0]  frm_ds, frm_pv, frm_unit, frm_roix, frm_roiy;
+    wire [1:0]  frm_bin;
+    wire        frm_iok;
+    wire [31:0] frm_ts, xs_frames, xs_bad, xs_drop, xs_skip;
+    wire [287:0] inf_lens;
     xt_frame_rx #(.CLK_HZ(CLK_HZ)) u_xt (
         .clk(clk), .rst(rst), .time_us(time_us),
         .cfg_enable(r_LIDAR_CTRL[0]), .cfg_hdr_le(r_LIDAR_CTRL[1]), .cfg_pix_le(r_LIDAR_CTRL[2]),
-        .cfg_layout(r_LIDAR_CTRL[5:4]), .cfg_amp_first(r_LIDAR_CTRL[6]), .cfg_udp_skip(r_LIDAR_UDP_SKIP[15:0]),
-        .cfg_size_adj(r_LIDAR_DEPTH_CFG[31:16]), .cfg_amp_min(r_LIDAR_VALID_CFG[15:0]),
+        .cfg_subhdr(r_LIDAR_SUBHDR[7:0]), .cfg_amp_min(r_LIDAR_VALID_CFG[15:0]),
         .cfg_raw_inv(r_LIDAR_VALID_CFG[31:16]), .cfg_wait_pose(r_LIDAR_CTRL[3]), .pose_commit(p_LIDAR_POSE_COMMIT),
         .s_valid(lu_valid), .s_data(lu_data), .s_last(lu_last), .s_err(lu_err),
         .m_valid(x_valid), .m_ready(x_ready), .m_u(x_u), .m_v(x_v), .m_depth(x_depth), .m_sof(x_sof), .m_eof(x_eof),
         .frm_sn(frm_sn), .frm_w(frm_w), .frm_h(frm_h), .frm_ts(frm_ts), .frm_devstate(frm_ds), .frm_proto(frm_pv),
+        .frm_iok(frm_iok), .frm_unit(frm_unit), .frm_bin(frm_bin), .frm_roix(frm_roix), .frm_roiy(frm_roiy),
         .pose_waiting(pose_wait), .frame_start(frm_start), .frame_ready(frm_ready),
-        .stat_frames(xs_frames), .stat_bad(xs_bad), .stat_drop(xs_drop)
+        .inf_lens(inf_lens), .inf_cfg(i_LIDAR_INFO_CFG), .inf_size(i_LIDAR_INFO_SIZE), .inf_temp(i_LIDAR_INFO_TEMP),
+        .inf_seq(i_LIDAR_INFO_SEQ),
+        .stat_frames(xs_frames), .stat_bad(xs_bad), .stat_drop(xs_drop), .stat_skip(xs_skip)
     );
     assign i_LIDAR_STAT_FRAMES = xs_frames;
     assign i_LIDAR_STAT_BAD    = xs_bad;
     assign i_LIDAR_STAT_DROP   = xs_drop;
+    assign i_LIDAR_STAT_SKIP   = xs_skip;
     assign i_LIDAR_LAST_FRAME  = {frm_pv, frm_ds, frm_sn};
     assign i_LIDAR_LAST_WH     = {frm_h, frm_w};
     assign i_LIDAR_LAST_TS     = frm_ts;
     assign i_LIDAR_POSE_STAT   = {31'd0, pose_wait};
+    assign i_LIDAR_LENS0 = inf_lens[31:0];    assign i_LIDAR_LENS1 = inf_lens[63:32];
+    assign i_LIDAR_LENS2 = inf_lens[95:64];   assign i_LIDAR_LENS3 = inf_lens[127:96];
+    assign i_LIDAR_LENS4 = inf_lens[159:128]; assign i_LIDAR_LENS5 = inf_lens[191:160];
+    assign i_LIDAR_LENS6 = inf_lens[223:192]; assign i_LIDAR_LENS7 = inf_lens[255:224];
+    assign i_LIDAR_LENS8 = inf_lens[287:256];
+
+    // 帧尾 FrameInfo 给出的深度单位、ROI、像素合并（AUTO_INFO=1 且本帧带有效 FrameInfo 时）优先于寄存器。
+    // 打一拍（切断到方向表地址 / 片选的长路径）：frm_* 在帧进入等位姿状态时更新，至少 2 拍后才出第一个像素
+    wire        use_inf = r_LIDAR_CTRL[4] && frm_iok;
+    reg  [15:0] pp_dmul;
+    reg  [7:0]  pp_roix, pp_roiy;
+    reg  [1:0]  pp_bin;
+    always @(posedge clk) begin
+        pp_dmul <= (use_inf && frm_unit != 8'd0) ? {frm_unit, 8'd0} : r_LIDAR_DEPTH_CFG[15:0];
+        pp_roix <= use_inf ? frm_roix : r_LIDAR_ROI_OFS[7:0];
+        pp_roiy <= use_inf ? frm_roiy : r_LIDAR_ROI_OFS[15:8];
+        pp_bin  <= use_inf ? frm_bin : 2'b00;
+    end
 
     // 查找表写口：LUT_ADDR 设起点，写 LUT_XY 暂存，写 LUT_Z 提交并自增
     reg [13:0] lut_ptr;
-    reg [31:0] lut_xy;
+    reg [23:0] lut_xy;
     always @(posedge clk) begin
         if (rst) lut_ptr <= 0;
         else if (rf_wr && a_q == RA_LIDAR_LUT_ADDR) lut_ptr <= wd_q[13:0];
         else if (p_LIDAR_LUT_Z) lut_ptr <= lut_ptr + 1'b1;
-        if (p_LIDAR_LUT_XY) lut_xy <= wd_q;
+        if (p_LIDAR_LUT_XY) lut_xy <= wd_q[23:0];
     end
 
     wire        pp_valid, pp_ready, pp_pv, pp_sof, pp_eof;
     wire signed [15:0] pp_x, pp_y, pp_z;
-    pc_project #(.LUT_INIT(LUT_INIT)) u_pp (
-        .clk(clk), .rst(rst), .cfg_depth_mul(r_LIDAR_DEPTH_CFG[15:0]), .cfg_min_mm(r_LIDAR_RANGE[15:0]),
-        .cfg_max_mm(r_LIDAR_RANGE[31:16]), .cfg_roi_x0(r_LIDAR_ROI_OFS[7:0]), .cfg_roi_y0(r_LIDAR_ROI_OFS[15:8]),
-        .lut_we(p_LIDAR_LUT_Z), .lut_waddr(lut_ptr), .lut_wdata({wd_q[15:0], lut_xy}),
+    pc_project u_pp (
+        .clk(clk), .rst(rst), .cfg_depth_mul(pp_dmul), .cfg_min_mm(r_LIDAR_RANGE[15:0]),
+        .cfg_max_mm(r_LIDAR_RANGE[31:16]), .cfg_roi_x0(pp_roix), .cfg_roi_y0(pp_roiy), .cfg_bin(pp_bin),
+        .lut_we(p_LIDAR_LUT_Z), .lut_waddr(lut_ptr), .lut_wdata({wd_q[11:0], lut_xy}),
         .s_valid(x_valid), .s_ready(x_ready), .s_u(x_u), .s_v(x_v), .s_depth(x_depth), .s_sof(x_sof), .s_eof(x_eof),
         .m_valid(pp_valid), .m_ready(pp_ready), .m_x(pp_x), .m_y(pp_y), .m_z(pp_z), .m_pv(pp_pv),
         .m_sof(pp_sof), .m_eof(pp_eof)
@@ -292,11 +319,11 @@ module nav_subsystem #(
     // ================================================================ SLF 匹配定位
     wire        mt_busy, mt_ready, mt_eval_done, mt_dbg_ack;
     wire [12:0] mt_npts;
-    wire [22:0] mt_dbg_q;
+    wire [17:0] mt_dbg_q;
     wire [31:0] mt_res_q;
     reg         mt_res_re, mt_cand_we, mt_eval_st, mt_dbg_req, mt_dbg_done;
     reg  [8:0]  mt_res_addr, mt_cand_addr;
-    reg  [22:0] mt_dbg_word;
+    reg  [17:0] mt_dbg_word;
     wire signed [31:0] mt_zref = $signed(r_LIDAR_TZ) - $signed(r_MATCH_MOUNT_Z);
     // 高度带无效（zmin > zmax，姿态突变跳帧）的帧不提取结构点
     wire        mt_frame_en = r_MATCH_CTRL[0] && ($signed(r_LIDAR_ZBAND[15:0]) <= $signed(r_LIDAR_ZBAND[31:16]));
@@ -312,7 +339,7 @@ module nav_subsystem #(
         .upd_dx(r_MATCH_UPD_DX), .upd_dy(r_MATCH_UPD_DY), .upd_dyaw(r_MATCH_UPD_DYAW[15:0]),
         .lf_cx(r_MAP_CENTER_X), .lf_cy(r_MAP_CENTER_Y),
         .cfg_prior(r_MATCH_CTRL[1]), .cfg_nogate(r_MATCH_CTRL[2]), .cfg_lfo_x(r_MATCH_LFO_X), .cfg_lfo_y(r_MATCH_LFO_Y),
-        .pw_we(p_MATCH_SM_WDATA), .pw_addr(r_MATCH_SM_ADDR[15:0]), .pw_data(wd_q[22:0]),
+        .pw_we(p_MATCH_SM_WDATA), .pw_addr(r_MATCH_SM_ADDR[15:0]), .pw_data(wd_q[17:0]),
         .cand_we(mt_cand_we), .cand_waddr(mt_cand_addr), .cand_wdata(wd_q),
         .res_re(mt_res_re), .res_raddr(mt_res_addr), .res_q(mt_res_q),
         .dbg_req(mt_dbg_req), .dbg_addr(r_MATCH_DBG_ADDR[15:0]), .dbg_ack(mt_dbg_ack), .dbg_q(mt_dbg_q),
@@ -328,7 +355,7 @@ module nav_subsystem #(
         end
     end
     assign i_MATCH_STAT  = {3'd0, mt_npts, 13'd0, mt_eval_st, mt_ready, mt_busy};
-    assign i_MATCH_DBG_Q = {mt_dbg_done, 8'd0, mt_dbg_word};
+    assign i_MATCH_DBG_Q = {mt_dbg_done, 13'd0, mt_dbg_word};
 
     // ================================================================ 轨迹评估
     wire        tr_busy, tr_done, tr_stale;

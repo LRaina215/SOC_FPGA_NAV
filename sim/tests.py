@@ -61,6 +61,12 @@ TESTS["tb_net"] = {
     "top": "tb_net",
 }
 
+TESTS["tb_rgmii_mac"] = {
+    "pre": ["sim/gen/gen_rgmii.py"],
+    "src": ["rtl/net/rgmii_mac100.v", "rtl/net/tb/tb_rgmii_mac.sv"],
+    "top": "tb_rgmii_mac",
+}
+
 IO = ["rtl/io/imu_uart.v", "rtl/io/uart_bus_bridge.v", "rtl/io/nav_bus_arb.v"]
 TOP = ["rtl/regs/nav_regfile.v", "rtl/top/nav_subsystem.v"]
 ALL_RTL = COMMON + LIDAR + MAP + MATCH + PLAN + NET + IO + TOP
@@ -76,7 +82,7 @@ SOC = ["rtl/common/nav_ram_sp.v", "rtl/soc/third_party/picorv32.v", "rtl/soc/nav
 
 TESTS["tb_soc"] = {
     "pre": ["fw/bsp/build_rv.py", "--app", "selftest", "--ram-kb", "16", "--copy-to"],
-    "copy": ["rtl/plan/sin_lut.hex", "rtl/lidar/lut_default.hex"],
+    "copy": ["rtl/plan/sin_lut.hex"],
     "src": ALL_RTL + SOC + ["rtl/soc/tb/tb_soc.sv"],
     "top": "tb_soc",
 }
@@ -86,7 +92,7 @@ TESTS["tb_uart_bridge"] = {
     "top": "tb_uart_bridge",
 }
 
-for scn in ("be_depth", "le_inter", "planar"):
+for scn in ("sdk_depth", "sdk_amp", "be_v2"):
     TESTS[f"tb_xt_rx_{scn}"] = {
         "pre": ["sim/gen/gen_xt_rx.py", scn],
         "src": COMMON + ["rtl/lidar/xt_frame_rx.v", "rtl/lidar/tb/tb_xt_frame_rx.sv"],

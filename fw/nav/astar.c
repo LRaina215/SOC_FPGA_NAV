@@ -1,19 +1,21 @@
 #include "astar.h"
+#include "scratch.h"
 
 #define AN   ASTAR_N
-#define NC   (ASTAR_MAXN * ASTAR_MAXN)
+#define NC   ASTAR_NC
 #define INF  0xFFFFu
 
-static uint8_t  s_cost[AN * AN]; /* 窗口粗栅格代价（astar_plan 用） */
+/* 大数组在 g_scratch（与探索 BFS 共用，见 scratch.h） */
+#define s_cost   (g_scratch.as.cost)
+#define s_g      (g_scratch.as.g)
+#define s_par    (g_scratch.as.par)
+#define s_closed (g_scratch.as.closed)
+#define s_dist   (g_scratch.as.dist)
+#define s_heap   (g_scratch.as.heap)
 static const uint8_t *s_grid;    /* 当前搜索的栅格 */
 static int      s_n;             /* 当前栅格边长 */
-static uint16_t s_g[NC];
-static uint8_t  s_par[NC];       /* 0..7 = 来自的方向，0xFF = 未访问，0xFE = 起点 */
-static uint8_t  s_closed[NC / 8];
-static uint8_t  s_dist[NC];      /* 到最近不可走粗格的距离（切比雪夫，饱和） */
-typedef struct { uint16_t idx; uint16_t f; } hnode_t;
-static hnode_t  s_heap[NC / 4 * 3];
-static int      s_hn, s_expanded;
+typedef astar_hnode_t hnode_t;
+static int      s_hn, s_expanded, s_hmax;
 
 static const int8_t DX[8] = {1, 1, 0, -1, -1, -1, 0, 1};
 static const int8_t DY[8] = {0, 1, 1, 1, 0, -1, -1, -1};
@@ -64,11 +66,13 @@ static void dist_transform(uint8_t block)
 }
 
 int astar_last_expanded(void) { return s_expanded; }
+int astar_heap_max(void) { return s_hmax; }
 
 static void heap_push(uint16_t idx, uint16_t f)
 {
     if (s_hn >= (int)(sizeof(s_heap) / sizeof(s_heap[0]))) return;   /* 堆满：丢弃（极端情况下路径次优） */
     int i = s_hn++;
+    if (s_hn > s_hmax) s_hmax = s_hn;
     while (i > 0) {
         int p = (i - 1) >> 1;
         if (s_heap[p].f <= f) break;
@@ -188,7 +192,7 @@ int astar_grid(const astar_cfg_t *cfg, const uint8_t *grid, int n, int sx, int s
 
     int end = (s_par[goal] != 0xFF) ? goal : best;
     /* 回溯（反向），再翻转 */
-    static int tmp[ASTAR_MAX_PATH];
+    int *tmp = g_scratch.as.path_tmp;
     int np_ = 0, cur = end;
     while (np_ < ASTAR_MAX_PATH) {
         tmp[np_++] = cur;

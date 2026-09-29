@@ -17,11 +17,11 @@ module tb_soc;
         .m0_req(m_req), .m0_we(m_we), .m0_addr(m_addr), .m0_wdata(m_wdata), .m0_ack(m_ack), .m0_rdata(m_rdata),
         .m1_req(1'b0), .m1_we(1'b0), .m1_addr(16'd0), .m1_wdata(32'd0), .m1_ack(), .m1_rdata(),
         .s_req(s_req), .s_we(s_we), .s_addr(s_addr), .s_wdata(s_wdata), .s_ack(s_ack), .s_rdata(s_rdata));
-    nav_subsystem #(.CLK_HZ(50000000), .LUT_INIT("lut_default.hex"), .SIN_INIT("sin_lut.hex")) u_nav (
+    nav_subsystem #(.CLK_HZ(50000000), .SIN_INIT("sin_lut.hex")) u_nav (
         .clk(clk), .rst(rst),
         .bus_req(s_req), .bus_we(s_we), .bus_addr(s_addr), .bus_wdata(s_wdata), .bus_ack(s_ack), .bus_rdata(s_rdata), .irq(),
         .l_rx_clk(clk), .l_rx_rst(rst), .l_rx_valid(1'b0), .l_rx_data(8'd0), .l_rx_last(1'b0), .l_rx_error(1'b0),
-        .l_tx_clk(clk), .l_tx_rst(rst), .l_tx_valid(), .l_tx_data(), .l_tx_last(), .l_tx_ready(1'b1),
+        .l_tx_clk(clk), .l_tx_rst(rst), .l_tx_valid(), .l_tx_data(), .l_tx_last(), .l_tx_ready(1'b1), .l_phy_stat(32'd0),
         .h_rx_clk(clk), .h_rx_rst(rst), .h_rx_valid(1'b0), .h_rx_data(8'd0), .h_rx_last(1'b0), .h_rx_error(1'b0),
         .h_tx_clk(clk), .h_tx_rst(rst), .h_tx_valid(), .h_tx_data(), .h_tx_last(), .h_tx_ready(1'b1),
         .imu_rx(1'b1), .imu_tx(),

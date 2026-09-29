@@ -73,7 +73,7 @@ class FpgaModel:
             self.smap = slf.StructMap(self.inv_res)
             self._pw = []
         elif op == 2:                                 # 写槽字
-            self._pw.append((a & 0xFFFF, b & 0x7FFFFF))
+            self._pw.append((a & 0xFFFF, b & 0x3FFFF))
         elif op == 3:                                 # 有图开关
             if a:
                 w = np.array(self._pw, dtype=np.int64).reshape(-1, 2)

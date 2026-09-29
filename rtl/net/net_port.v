@@ -35,6 +35,7 @@ module net_port #(
     input  wire        cfg_enable,
     input  wire        cfg_any_ip,
     input  wire        cfg_arp_en,
+    input  wire [31:0] cfg_mcast_ip,    // 另外接收的组播组（0 = 不收）
     input  wire        cfg_learn,
     // 对端地址（软核可写；学习开启时由收包更新）
     input  wire        peer_we,
@@ -102,7 +103,7 @@ module net_port #(
     wire [31:0] arp_spa;
     udp_rx u_rx (
         .clk(clk), .rst(rst), .time_us(time_us), .my_mac(cfg_mac), .my_ip(cfg_ip), .my_port(cfg_port),
-        .cfg_enable(cfg_enable), .cfg_any_ip(cfg_any_ip), .cfg_arp_en(cfg_arp_en),
+        .cfg_enable(cfg_enable), .cfg_any_ip(cfg_any_ip), .cfg_arp_en(cfg_arp_en), .cfg_mcast_ip(cfg_mcast_ip),
         .s_valid(rf_v), .s_data(rf_d[7:0]), .s_last(rf_d[8]), .s_err(rf_d[9]),
         .m_valid(u_valid), .m_data(u_data), .m_last(u_last), .m_err(u_err),
         .pkt_src_mac(u_src_mac), .pkt_src_ip(u_src_ip), .pkt_src_port(u_src_port), .pkt_len(u_len), .pkt_ts(u_ts),

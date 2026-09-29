@@ -413,6 +413,7 @@ def main():
         "trav_false_lethal_rate": round(fp / max(1, fp + tn), 4),
         "trav_cells": {"tp": tp, "fn": fn, "fp": fp, "tn": tn},
         "wall_s": round(time.time() - wall0, 1),
+        "astar_heap_max": int(fw.py_astar_heap_max()),
     }
     (out / "metrics.json").write_text(json.dumps(m, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps(m, ensure_ascii=False))

@@ -48,7 +48,7 @@ def main():
         return nh.parse(bytes(out[:n]))
 
     loc = (ctypes.c_int32 * 12)()
-    pkg = run_cl.get_prior("terrain", "auto")
+    pkg = run_cl.get_prior("field5", "auto")
     import prior_map
     info = prior_map.parse_package(pkg)
 

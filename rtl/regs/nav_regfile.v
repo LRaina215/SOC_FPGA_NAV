@@ -37,6 +37,8 @@ module nav_regfile (
     output reg  [31:0] r_NETL_PEER_PORT,
     output wire        p_NETL_PEER_PORT,
     input  wire [31:0] i_NETL_PEER_PORT,
+    output reg  [31:0] r_NETL_MCAST_IP,
+    input  wire [31:0] i_NETL_PHY_STAT,
     output reg  [31:0] r_NETH_MAC_LO,
     output reg  [31:0] r_NETH_MAC_HI,
     output reg  [31:0] r_NETH_IP,
@@ -59,6 +61,7 @@ module nav_regfile (
     output reg  [31:0] r_NETH_PEER_PORT,
     output wire        p_NETH_PEER_PORT,
     input  wire [31:0] i_NETH_PEER_PORT,
+    output reg  [31:0] r_NETH_MCAST_IP,
     input  wire [31:0] i_MBX_RX_STAT,
     input  wire [31:0] i_MBX_RX_DATA,
     output wire        p_MBX_RX_DATA,
@@ -77,7 +80,7 @@ module nav_regfile (
     input  wire [31:0] i_MBX_TXB_Q,
     input  wire [31:0] i_MBX_TX_SEQ,
     output reg  [31:0] r_LIDAR_CTRL,
-    output reg  [31:0] r_LIDAR_UDP_SKIP,
+    output reg  [31:0] r_LIDAR_SUBHDR,
     output reg  [31:0] r_LIDAR_DEPTH_CFG,
     output reg  [31:0] r_LIDAR_RANGE,
     output reg  [31:0] r_LIDAR_VALID_CFG,
@@ -89,6 +92,7 @@ module nav_regfile (
     input  wire [31:0] i_LIDAR_LAST_TS,
     input  wire [31:0] i_LIDAR_STAT_POINTS,
     input  wire [31:0] i_LIDAR_STAT_DROP,
+    input  wire [31:0] i_LIDAR_STAT_SKIP,
     output reg  [31:0] r_LIDAR_R00,
     output reg  [31:0] r_LIDAR_R01,
     output reg  [31:0] r_LIDAR_R02,
@@ -107,6 +111,19 @@ module nav_regfile (
     output reg  [31:0] r_LIDAR_LUT_ADDR,
     output wire        p_LIDAR_LUT_XY,
     output wire        p_LIDAR_LUT_Z,
+    input  wire [31:0] i_LIDAR_LENS0,
+    input  wire [31:0] i_LIDAR_LENS1,
+    input  wire [31:0] i_LIDAR_LENS2,
+    input  wire [31:0] i_LIDAR_LENS3,
+    input  wire [31:0] i_LIDAR_LENS4,
+    input  wire [31:0] i_LIDAR_LENS5,
+    input  wire [31:0] i_LIDAR_LENS6,
+    input  wire [31:0] i_LIDAR_LENS7,
+    input  wire [31:0] i_LIDAR_LENS8,
+    input  wire [31:0] i_LIDAR_INFO_CFG,
+    input  wire [31:0] i_LIDAR_INFO_SIZE,
+    input  wire [31:0] i_LIDAR_INFO_TEMP,
+    input  wire [31:0] i_LIDAR_INFO_SEQ,
     output reg  [31:0] r_MAP_CTRL,
     output wire        p_MAP_CMD,
     output reg  [31:0] r_MAP_INV_RES,
@@ -217,13 +234,14 @@ module nav_regfile (
             r_SYS_IRQ_ENABLE <= 32'h00000000;
             r_NETL_MAC_LO <= 32'h56000001;
             r_NETL_MAC_HI <= 32'h0000024E;
-            r_NETL_IP <= 32'hC0A80164;
+            r_NETL_IP <= 32'hC0A80064;
             r_NETL_UDP_PORT <= 32'h00001E07;
             r_NETL_CTRL <= 32'h0000000D;
             r_NETL_PEER_IP <= 32'h00000000;
             r_NETL_PEER_MAC_LO <= 32'h00000000;
             r_NETL_PEER_MAC_HI <= 32'h00000000;
             r_NETL_PEER_PORT <= 32'h00000000;
+            r_NETL_MCAST_IP <= 32'hEFFFFF4C;
             r_NETH_MAC_LO <= 32'h56000002;
             r_NETH_MAC_HI <= 32'h0000024E;
             r_NETH_IP <= 32'hC0A80264;
@@ -233,14 +251,15 @@ module nav_regfile (
             r_NETH_PEER_MAC_LO <= 32'h00000000;
             r_NETH_PEER_MAC_HI <= 32'h00000000;
             r_NETH_PEER_PORT <= 32'h00002329;
+            r_NETH_MCAST_IP <= 32'h00000000;
             r_MBX_TX_LEN <= 32'h00000000;
             r_MBX_INJ_LEN <= 32'h00000000;
             r_MBX_TXB_ADDR <= 32'h00000000;
-            r_LIDAR_CTRL <= 32'h00000001;
-            r_LIDAR_UDP_SKIP <= 32'h00000014;
+            r_LIDAR_CTRL <= 32'h00000017;
+            r_LIDAR_SUBHDR <= 32'h00000014;
             r_LIDAR_DEPTH_CFG <= 32'h00000100;
             r_LIDAR_RANGE <= 32'h4E200064;
-            r_LIDAR_VALID_CFG <= 32'h00000000;
+            r_LIDAR_VALID_CFG <= 32'hFA000000;
             r_LIDAR_ROI_OFS <= 32'h00000000;
             r_LIDAR_R00 <= 32'h00004000;
             r_LIDAR_R01 <= 32'h00000000;
@@ -310,6 +329,7 @@ module nav_regfile (
             16'h102C: r_NETL_PEER_MAC_LO <= wdata;
             16'h1030: r_NETL_PEER_MAC_HI <= wdata;
             16'h1034: r_NETL_PEER_PORT <= wdata;
+            16'h1038: r_NETL_MCAST_IP <= wdata;
             16'h1100: r_NETH_MAC_LO <= wdata;
             16'h1104: r_NETH_MAC_HI <= wdata;
             16'h1108: r_NETH_IP <= wdata;
@@ -319,11 +339,12 @@ module nav_regfile (
             16'h112C: r_NETH_PEER_MAC_LO <= wdata;
             16'h1130: r_NETH_PEER_MAC_HI <= wdata;
             16'h1134: r_NETH_PEER_PORT <= wdata;
+            16'h1138: r_NETH_MCAST_IP <= wdata;
             16'h1224: r_MBX_TX_LEN <= wdata;
             16'h1234: r_MBX_INJ_LEN <= wdata;
             16'h123C: r_MBX_TXB_ADDR <= wdata;
             16'h2000: r_LIDAR_CTRL <= wdata;
-            16'h2004: r_LIDAR_UDP_SKIP <= wdata;
+            16'h2004: r_LIDAR_SUBHDR <= wdata;
             16'h2008: r_LIDAR_DEPTH_CFG <= wdata;
             16'h200C: r_LIDAR_RANGE <= wdata;
             16'h2010: r_LIDAR_VALID_CFG <= wdata;
@@ -410,6 +431,8 @@ module nav_regfile (
         16'h102C: rdata = i_NETL_PEER_MAC_LO;
         16'h1030: rdata = i_NETL_PEER_MAC_HI;
         16'h1034: rdata = i_NETL_PEER_PORT;
+        16'h1038: rdata = r_NETL_MCAST_IP;
+        16'h103C: rdata = i_NETL_PHY_STAT;
         16'h1100: rdata = r_NETH_MAC_LO;
         16'h1104: rdata = r_NETH_MAC_HI;
         16'h1108: rdata = r_NETH_IP;
@@ -424,6 +447,7 @@ module nav_regfile (
         16'h112C: rdata = i_NETH_PEER_MAC_LO;
         16'h1130: rdata = i_NETH_PEER_MAC_HI;
         16'h1134: rdata = i_NETH_PEER_PORT;
+        16'h1138: rdata = r_NETH_MCAST_IP;
         16'h1200: rdata = i_MBX_RX_STAT;
         16'h1204: rdata = i_MBX_RX_DATA;
         16'h1208: rdata = 32'h0;
@@ -441,7 +465,7 @@ module nav_regfile (
         16'h1240: rdata = i_MBX_TXB_Q;
         16'h1244: rdata = i_MBX_TX_SEQ;
         16'h2000: rdata = r_LIDAR_CTRL;
-        16'h2004: rdata = r_LIDAR_UDP_SKIP;
+        16'h2004: rdata = r_LIDAR_SUBHDR;
         16'h2008: rdata = r_LIDAR_DEPTH_CFG;
         16'h200C: rdata = r_LIDAR_RANGE;
         16'h2010: rdata = r_LIDAR_VALID_CFG;
@@ -453,6 +477,7 @@ module nav_regfile (
         16'h2028: rdata = i_LIDAR_LAST_TS;
         16'h202C: rdata = i_LIDAR_STAT_POINTS;
         16'h2030: rdata = i_LIDAR_STAT_DROP;
+        16'h2034: rdata = i_LIDAR_STAT_SKIP;
         16'h2040: rdata = r_LIDAR_R00;
         16'h2044: rdata = r_LIDAR_R01;
         16'h2048: rdata = r_LIDAR_R02;
@@ -471,6 +496,19 @@ module nav_regfile (
         16'h2080: rdata = r_LIDAR_LUT_ADDR;
         16'h2084: rdata = 32'h0;
         16'h2088: rdata = 32'h0;
+        16'h2090: rdata = i_LIDAR_LENS0;
+        16'h2094: rdata = i_LIDAR_LENS1;
+        16'h2098: rdata = i_LIDAR_LENS2;
+        16'h209C: rdata = i_LIDAR_LENS3;
+        16'h20A0: rdata = i_LIDAR_LENS4;
+        16'h20A4: rdata = i_LIDAR_LENS5;
+        16'h20A8: rdata = i_LIDAR_LENS6;
+        16'h20AC: rdata = i_LIDAR_LENS7;
+        16'h20B0: rdata = i_LIDAR_LENS8;
+        16'h20B4: rdata = i_LIDAR_INFO_CFG;
+        16'h20B8: rdata = i_LIDAR_INFO_SIZE;
+        16'h20BC: rdata = i_LIDAR_INFO_TEMP;
+        16'h20C0: rdata = i_LIDAR_INFO_SEQ;
         16'h3000: rdata = r_MAP_CTRL;
         16'h3004: rdata = 32'h0;
         16'h3008: rdata = r_MAP_INV_RES;

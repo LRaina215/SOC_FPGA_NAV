@@ -1,15 +1,16 @@
 // 深度 -> 雷达坐标系三维点（X 前 Y 左 Z 上，mm）。
 //   depth_mm = (raw * DEPTH_MUL) >> 8，饱和到 32767
 //   p = (depth_mm * ray) >>> LUT_FRAC  （向下取整）
-// ray 为每像素方向向量（Q2.13），离线由内参 + 去畸变生成，已包含：
-//   坐标轴换算、深度定义（光轴 Z 距离 / 径向距离）。所以本模块与这两件事无关。
-// 查找表可由 INIT_FILE 初始化，也可运行期经 lut_we 口改写（软核从 Flash 载入）。
+// ray 为每像素视线单位向量（12 位有符号 Q0.11，36 位字 {rz, ry, rx}），由内参 + 去畸变生成：
+//   XT-M60 的深度是沿视线的径向距离（厂家 SDK 核实），所以点 = 距离 × 单位向量；坐标轴换算也已在表里。
+//   表在上电后由固件按雷达帧尾带来的内参写入（fw/nav/lidar_cal.c，经 lut_we 口）；全零项 = 该像素无效
+//   （四角切除、尚未写表）。
+// 查表地址 = ((v << 竖直合并) + ROI_Y0) * MAX_W + (u << 水平合并) + ROI_X0（同 SDK），越界的像素无效。
 // 每拍 1 像素；无效像素照常输出（pv=0），保证帧首尾标记完整。
 module pc_project #(
     parameter integer MAX_W    = 160,
     parameter integer MAX_H    = 60,
-    parameter integer LUT_FRAC = 13,
-    parameter LUT_INIT = ""
+    parameter integer LUT_FRAC = 11
 ) (
     input  wire        clk,
     input  wire        rst,
@@ -18,10 +19,11 @@ module pc_project #(
     input  wire [15:0] cfg_max_mm,
     input  wire [7:0]  cfg_roi_x0,
     input  wire [7:0]  cfg_roi_y0,
+    input  wire [1:0]  cfg_bin,       // [1] 水平合并 [0] 竖直合并
 
     input  wire        lut_we,
     input  wire [13:0] lut_waddr,
-    input  wire [47:0] lut_wdata,     // {rz, ry, rx}
+    input  wire [35:0] lut_wdata,     // {rz, ry, rx}
 
     input  wire        s_valid,
     output wire        s_ready,
@@ -46,32 +48,34 @@ module pc_project #(
     wire ce = ~m_valid | m_ready;
     assign s_ready = ce;
 
-    // S0 只做乘法；S1 饱和与有效判定，同时锁存查表结果
+    // S0：查表地址、深度换算
     reg        v0, sof0, eof0, nz0;
     reg [31:0] dprod0;
-    reg [47:0] ray1;
-
-    // S0：地址、深度换算
-    wire [7:0]  uu = s_u + cfg_roi_x0;
-    wire [7:0]  vv = s_v + cfg_roi_y0;
-    wire [AW-1:0] laddr = vv * MAX_W + uu;
+    wire [9:0]  uu = ({2'd0, s_u} << cfg_bin[1]) + {2'd0, cfg_roi_x0};
+    wire [9:0]  vv = ({2'd0, s_v} << cfg_bin[0]) + {2'd0, cfg_roi_y0};
+    wire        inr = (uu < MAX_W) && (vv < MAX_H);
+    wire [AW-1:0] vv_e = {{(AW-10){1'b0}}, vv};
+    wire [AW-1:0] uu_e = {{(AW-10){1'b0}}, uu};
+    wire [AW-1:0] laddr = inr ? (vv_e * MAX_W + uu_e) : {AW{1'b0}};
     wire [23:0] dmm_w = dprod0[31:8];
     wire [15:0] dmm   = (dmm_w > 24'd32767) ? 16'd32767 : dmm_w[15:0];
 
-    reg        v1, sof1, eof1, ok1;
+    // S1：有效判定，锁存查表结果
+    reg        v1, sof1, eof1, ok1, inr0;
     reg [15:0] d1;
-    wire [47:0] ray;
+    reg [35:0] ray1;
+    wire [35:0] ray;
 
-    nav_ram_sdp #(.DW(48), .AW(AW), .DEPTH(NPIX), .INIT_FILE(LUT_INIT)) u_lut (
+    nav_ram_banked #(.DW(36), .DEPTH(NPIX)) u_lut (
         .clk(clk), .we(lut_we), .waddr(lut_waddr[AW-1:0]), .wdata(lut_wdata),
         .re(ce), .raddr(laddr), .rdata(ray)
     );
 
-    // S1：乘法
+    // S2：乘法
     reg        v2, sof2, eof2, ok2;
     reg signed [31:0] px, py, pz;
     wire signed [16:0] ds = {1'b0, d1};
-    wire signed [15:0] rx = ray1[15:0], ry = ray1[31:16], rz = ray1[47:32];
+    wire signed [11:0] rx = ray1[11:0], ry = ray1[23:12], rz = ray1[35:24];
 
     always @(posedge clk) begin
         if (rst) begin
@@ -80,12 +84,13 @@ module pc_project #(
             v0     <= s_valid;
             sof0   <= s_sof; eof0 <= s_eof;
             nz0    <= (s_depth != 16'd0);
+            inr0   <= inr;
             dprod0 <= s_depth * cfg_depth_mul;
 
             v1   <= v0;
             sof1 <= sof0; eof1 <= eof0;
             d1   <= dmm;
-            ok1  <= nz0 && (dmm >= cfg_min_mm) && (dmm <= cfg_max_mm);
+            ok1  <= nz0 && inr0 && (ray != 36'd0) && (dmm >= cfg_min_mm) && (dmm <= cfg_max_mm);
             ray1 <= ray;
 
             v2   <= v1;

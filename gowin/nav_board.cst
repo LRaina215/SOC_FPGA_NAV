@@ -1,5 +1,5 @@
 // ACX750-GW5A138 导航子系统单板联调约束（引脚来自《ACX750-GW5A138开发板管脚信息表.xlsx》
-// 与厂家例程 eth_udp_lookback_rgmii.cst）。IMU 串口引脚为扩展口占位，按实际接线修改。
+// 与厂家例程 eth_udp_lookback_rgmii.cst）。IMU 串口放在 40 针扩展口 P11 的 GPIO0_0 / GPIO0_1，按实际接线修改。
 IO_LOC "clk50" W19;
 IO_PORT "clk50" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
 IO_LOC "key_rst_n" D21;
@@ -10,10 +10,11 @@ IO_PORT "uart_rxd" IO_TYPE=LVCMOS33 PULL_MODE=UP;
 IO_LOC "uart_txd" M21;
 IO_PORT "uart_txd" IO_TYPE=LVCMOS33 DRIVE=8;
 
-// IMU：占位（扩展口，待接线后确定）
-IO_LOC "imu_rxd" C20;
+// IMU：扩展口 P11，GPIO0_0 = C18（FPGA 收，接 IMU 的 TX）、GPIO0_1 = C19（FPGA 发，接 IMU 的 RX）。
+// C20 / D20 是拨码开关 SW7 / SW6，不能用。
+IO_LOC "imu_rxd" C18;
 IO_PORT "imu_rxd" IO_TYPE=LVCMOS33 PULL_MODE=UP;
-IO_LOC "imu_txd" D20;
+IO_LOC "imu_txd" C19;
 IO_PORT "imu_txd" IO_TYPE=LVCMOS33 DRIVE=8;
 
 IO_LOC "rgmii_rxc" Y18;
@@ -42,6 +43,11 @@ IO_PORT "rgmii_txd[2]" IO_TYPE=LVCMOS33 DRIVE=8;
 IO_PORT "rgmii_txd[3]" IO_TYPE=LVCMOS33 DRIVE=8;
 IO_LOC "eth_rst_n" P14;
 IO_PORT "eth_rst_n" IO_TYPE=LVCMOS33 DRIVE=8;
+// PHY 管理口（《开发板管脚信息表》ENET1_MDC / ENET1_MDIO）
+IO_LOC "eth_mdc" R14;
+IO_PORT "eth_mdc" IO_TYPE=LVCMOS33 DRIVE=8;
+IO_LOC "eth_mdio" U21;
+IO_PORT "eth_mdio" IO_TYPE=LVCMOS33 DRIVE=8 PULL_MODE=UP;
 
 IO_LOC "sfp1_tx_dis" R17;
 IO_PORT "sfp1_tx_dis" IO_TYPE=LVCMOS33 DRIVE=8;

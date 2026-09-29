@@ -2,12 +2,12 @@
 // 整车工程中请把 nav_subsystem 并入整车顶层，本文件可作连线参考。
 //
 // 时钟：板载 50 MHz（W19）。定义 NAV_USE_PLL 时经 Gowin_PLL_Nav 倍频到 100 MHz，否则核心直接跑 50 MHz。
-// 雷达网口：RJ45 / RTL8211F（RGMII）。定义 NAV_USE_TSE_MAC 时例化 IP "Gowin_TSE_MAC_Lidar"，否则 MAC 口悬空。
+// 雷达网口：RJ45 / RTL8211F（RGMII）。rtl/net/rgmii_mac100.v：百兆 MAC + PHY 复位 + MDIO 把自协商限制到百兆。
 // 主机网口：SFP1（收发器第 0 通道，参考时钟 MGT_CLK1 125 MHz）。定义 NAV_USE_SFP 时例化
 //           IP "Gowin_1GSERETH_Host"（1000BASE-X，开启 MAC 功能），否则悬空。
 // 调试：板载 USB 串口（L21/M21）接 uart_bus_bridge，PC 用 tools/nav_uart.py 读写全部寄存器；
 //       地址 0xE000–0xFFFF 转到软核调试口（装载程序、读控制台）。
-// 软核：nav_soc（PicoRV32，片上 RAM 160 KB，上电运行 fw/build/rv/nav 的镜像），经 nav_bus_arb m0 访问导航子系统。
+// 软核：nav_soc（PicoRV32，片上 RAM 128 KB，上电运行 fw/build/rv/nav 的镜像），经 nav_bus_arb m0 访问导航子系统。
 // IP 生成方法见 docs/board_bringup.md。
 `include "soc_cfg.vh"          // 构建脚本生成：`define NAV_SOC_RAM_KB（片上 RAM 大小）
 module nav_board_top (
@@ -27,6 +27,8 @@ module nav_board_top (
     output wire       rgmii_tx_ctl,   // AA19
     output wire [3:0] rgmii_txd,      // AB20 Y19 AB22 W20
     output wire       eth_rst_n,      // P14
+    output wire       eth_mdc,        // R14
+    inout  wire       eth_mdio,       // U21
     // SFP1 控制线（高速差分脚由 SerDes IP 约束）
     output wire       sfp1_tx_dis,    // R17
     input  wire       sfp1_los,       // P15
@@ -46,7 +48,6 @@ module nav_board_top (
 `endif
     wire rst;
     nav_rst_sync u_rs (.clk(clk), .arst(~key_rst_n | ~pll_lock), .rst(rst));
-    assign eth_rst_n   = ~rst;
     assign sfp1_tx_dis = 1'b0;
 
     // ---------------- 总线：调试串口桥（软核接入后接 m0） ----------------
@@ -83,31 +84,22 @@ module nav_board_top (
         .s_req(s_req), .s_we(s_we), .s_addr(s_addr), .s_wdata(s_wdata), .s_ack(s_ack), .s_rdata(s_rdata)
     );
 
-    // ---------------- 雷达口 MAC ----------------
+    // ---------------- 雷达口 MAC（自写百兆 RGMII MAC，不需要生成 IP） ----------------
     wire       l_rx_clk, l_rx_valid, l_rx_last, l_rx_err, l_tx_clk, l_tx_valid, l_tx_last, l_tx_ready;
     wire [7:0] l_rx_data, l_tx_data;
-`ifdef NAV_USE_TSE_MAC
-    // TSE_MAC：RGMII 接口，速率由 speedis1000/speedis10 选择；XT-M60 为百兆
-    Gowin_TSE_MAC_Lidar u_lmac (
+    wire [31:0] l_phy_stat;
+    wire       mdio_o, mdio_oe;
+    rgmii_mac100 #(.CLK_HZ(CLK_HZ)) u_lmac (
+        .clk(clk), .rst(rst),
         .rgmii_rxc(rgmii_rxc), .rgmii_rx_ctl(rgmii_rx_ctl), .rgmii_rxd(rgmii_rxd),
-        .gtx_clk(clk50),            // 百兆模式下 MAC 内部使用 rgmii_rxc 恢复的时钟；gtx 仅千兆需要
         .rgmii_txc(rgmii_txc), .rgmii_tx_ctl(rgmii_tx_ctl), .rgmii_txd(rgmii_txd),
-        .speedis1000(1'b0), .speedis10(1'b0), .duplex_status(1'b1),
-        .rstn(~rst),
-        .rx_mac_clk(l_rx_clk), .rx_mac_valid(l_rx_valid), .rx_mac_data(l_rx_data), .rx_mac_last(l_rx_last),
-        .rx_mac_error(l_rx_err), .rx_statistics_valid(), .rx_statistics_vector(),
-        .tx_mac_clk(l_tx_clk), .tx_mac_valid(l_tx_valid), .tx_mac_data(l_tx_data), .tx_mac_last(l_tx_last),
-        .tx_mac_error(1'b0), .tx_mac_ready(l_tx_ready), .tx_collision(), .tx_retransmit(),
-        .tx_statistics_valid(), .tx_statistics_vector(),
-        .rx_fcs_fwd_ena(1'b0), .rx_jumbo_ena(1'b0), .rx_pause_req(), .rx_pause_val(),
-        .tx_fcs_fwd_ena(1'b0), .tx_ifg_delay_ena(1'b0), .tx_ifg_delay(8'd12),
-        .tx_pause_req(1'b0), .tx_pause_val(16'd0), .tx_pause_source_addr(48'd0)
+        .phy_rst_n(eth_rst_n), .mdc(eth_mdc), .mdio_o(mdio_o), .mdio_oe(mdio_oe), .mdio_i(eth_mdio),
+        .rx_clk(l_rx_clk), .rx_valid(l_rx_valid), .rx_data(l_rx_data), .rx_last(l_rx_last), .rx_error(l_rx_err),
+        .tx_valid(l_tx_valid), .tx_data(l_tx_data), .tx_last(l_tx_last), .tx_ready(l_tx_ready),
+        .phy_stat(l_phy_stat)
     );
-`else
-    assign l_rx_clk = clk; assign l_rx_valid = 1'b0; assign l_rx_data = 8'd0; assign l_rx_last = 1'b0;
-    assign l_rx_err = 1'b0; assign l_tx_clk = clk; assign l_tx_ready = 1'b1;
-    assign rgmii_txc = 1'b0; assign rgmii_tx_ctl = 1'b0; assign rgmii_txd = 4'd0;
-`endif
+    assign eth_mdio = mdio_oe ? mdio_o : 1'bz;
+    assign l_tx_clk = clk;
     wire l_rx_rst, l_tx_rst;
     nav_rst_sync u_lrr (.clk(l_rx_clk), .arst(rst), .rst(l_rx_rst));
     nav_rst_sync u_ltr (.clk(l_tx_clk), .arst(rst), .rst(l_tx_rst));
@@ -134,14 +126,14 @@ module nav_board_top (
 
     // ---------------- 导航子系统 ----------------
     wire irq, ch_valid, ch_stop, ch_wdog;
-    nav_subsystem #(.CLK_HZ(CLK_HZ), .LUT_INIT("lut_default.hex"), .SIN_INIT("sin_lut.hex")) u_nav (
+    nav_subsystem #(.CLK_HZ(CLK_HZ), .SIN_INIT("sin_lut.hex")) u_nav (
         .clk(clk), .rst(rst),
         .bus_req(s_req), .bus_we(s_we), .bus_addr(s_addr), .bus_wdata(s_wdata), .bus_ack(s_ack), .bus_rdata(s_rdata),
         .irq(irq),
         .l_rx_clk(l_rx_clk), .l_rx_rst(l_rx_rst), .l_rx_valid(l_rx_valid), .l_rx_data(l_rx_data),
         .l_rx_last(l_rx_last), .l_rx_error(l_rx_err),
         .l_tx_clk(l_tx_clk), .l_tx_rst(l_tx_rst), .l_tx_valid(l_tx_valid), .l_tx_data(l_tx_data),
-        .l_tx_last(l_tx_last), .l_tx_ready(l_tx_ready),
+        .l_tx_last(l_tx_last), .l_tx_ready(l_tx_ready), .l_phy_stat(l_phy_stat),
         .h_rx_clk(h_rx_clk), .h_rx_rst(h_rx_rst), .h_rx_valid(h_rx_valid), .h_rx_data(h_rx_data),
         .h_rx_last(h_rx_last), .h_rx_error(h_rx_err),
         .h_tx_clk(h_tx_clk), .h_tx_rst(h_tx_rst), .h_tx_valid(h_tx_valid), .h_tx_data(h_tx_data),

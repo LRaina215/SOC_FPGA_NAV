@@ -7,7 +7,7 @@
 #define NP_LIDAR_H (60)
 #define NP_UV_BITS (8)
 #define NP_DEPTH_BITS (16)
-#define NP_LUT_FRAC (13)
+#define NP_LUT_FRAC (11)
 #define NP_PT_BITS (16)
 #define NP_ROT_FRAC (14)
 #define NP_MAP_LOG2N (7)

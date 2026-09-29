@@ -35,9 +35,13 @@ module tb_lidar_map;
     logic signed [15:0] f_z;
     logic signed [31:0] f_cx, f_cy;
 
-    pc_project #(.LUT_INIT("lut.hex")) u_pp (
+    logic [35:0] lut [0:9599];
+    logic        lut_we = 0;
+    logic [13:0] lut_wa = 0;
+    logic [35:0] lut_wd = 0;
+    pc_project u_pp (
         .clk(clk), .rst(rst), .cfg_depth_mul(16'd256), .cfg_min_mm(16'd100), .cfg_max_mm(16'd20000),
-        .cfg_roi_x0(8'd0), .cfg_roi_y0(8'd0), .lut_we(1'b0), .lut_waddr(14'd0), .lut_wdata(48'd0),
+        .cfg_roi_x0(8'd0), .cfg_roi_y0(8'd0), .cfg_bin(2'b00), .lut_we(lut_we), .lut_waddr(lut_wa), .lut_wdata(lut_wd),
         .s_valid(p_valid), .s_ready(p_ready), .s_u(p_cur[31:24]), .s_v(p_cur[23:16]), .s_depth(p_cur[15:0]),
         .s_sof(p_cur[33]), .s_eof(p_cur[32]),
         .m_valid(a_valid), .m_ready(a_ready), .m_x(a_x), .m_y(a_y), .m_z(a_z), .m_pv(a_pv),
@@ -136,8 +140,15 @@ module tb_lidar_map;
         $readmemh("flt_exp.hex", fexp);
         $readmemh("cost_exp.hex", cexp);
         $readmemh("mapcfg.hex", mcfg);
+        $readmemh("lut.hex", lut);
         repeat (20) @(posedge clk);
         rst = 0;
+        // 方向查找表经写口装入
+        for (int i = 0; i < 9600; i++) begin
+            lut_we <= 1; lut_wa <= i[13:0]; lut_wd <= lut[i];
+            @(posedge clk);
+        end
+        lut_we <= 0;
         wait (!busy);    // 上电清除
         for (int k = 0; k < n_frm; k++) begin
             for (int j = 0; j < 9; j++) cfg_r[16*j +: 16] = pose[k*14 + j][15:0];

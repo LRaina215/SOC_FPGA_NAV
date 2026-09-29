@@ -4,6 +4,11 @@
   python gowin/syn/syn.py            只综合 nav_subsystem（可综合性、资源、Fmax 估计）
   python gowin/syn/syn.py --top=slf_lf  只综合某个模块
   python gowin/syn/syn.py --board    板级顶层 nav_board_top：综合 + 布局布线 + 生成比特流（50 MHz，无 IP）
+  板级选项:
+    --app=nav|selftest --ram-kb=128   软核 RAM 初始镜像与大小
+    --define=NAV_USE_TSE_MAC          打开顶层中的 IP（可重复：NAV_USE_PLL、NAV_USE_SFP），写入 gowin/soc_cfg.vh
+    IP 源文件列在 gowin/ip/ip_files.txt（每行一个路径，相对 nav/ 或绝对路径；# 开头为注释），板级构建时自动加入
+    --tcl-only                        只生成 run.tcl，不调用 Gowin（检查文件列表用）
 结果: gowin/syn/build[_board]/impl/...
 """
 import os
@@ -27,9 +32,9 @@ def main():
     if board:
         BUILD = ROOT / "gowin" / "syn" / "build_board"
     BUILD.mkdir(parents=True, exist_ok=True)
-    for f in ("rtl/plan/sin_lut.hex", "rtl/lidar/lut_default.hex"):
+    for f in ("rtl/plan/sin_lut.hex",):
         shutil.copy(ROOT / f, BUILD / Path(f).name)
-    ram_kb, app = "160", "nav"
+    ram_kb, app = "128", "nav"
     for a in sys.argv[1:]:
         if a.startswith("--ram-kb="):
             ram_kb = a.split("=", 1)[1]
@@ -39,15 +44,29 @@ def main():
         rc = subprocess.run([sys.executable, str(ROOT / "fw/bsp/build_rv.py"), "--app", app, "--ram-kb", ram_kb, "--copy-to", str(BUILD)])
         if rc.returncode:
             return 1
-        (ROOT / "gowin" / "soc_cfg.vh").write_text(f"`define NAV_SOC_RAM_KB {ram_kb}" + chr(10))
+        defines = [a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--define=")]
+        (ROOT / "gowin" / "soc_cfg.vh").write_text(
+            "".join(f"`define {d}" + chr(10) for d in [f"NAV_SOC_RAM_KB {ram_kb}"] + defines))
     tcl = ["set_device -device_version B GW5AT-LV138PG484AC1/I0"]
     top = "nav_board_top" if board else "nav_subsystem"
     for a in sys.argv[1:]:
         if a.startswith("--top="):              # 单独综合某个模块（排查用）
             top = a.split("=", 1)[1]
-    files = list(ALL_RTL) + (SOC + ["gowin/nav_board_top.v"] if board else [])
+    files = list(ALL_RTL) + (SOC + ["rtl/net/rgmii_mac100.v", "gowin/nav_board_top.v"] if board else [])
     for s in files:
         tcl.append(f"add_file -type verilog {{{(ROOT / s).as_posix()}}}")
+    ip_list = ROOT / "gowin" / "ip" / "ip_files.txt"
+    if board and ip_list.exists():
+        for ln in ip_list.read_text(encoding="utf-8").splitlines():
+            ln = ln.strip()
+            if not ln or ln.startswith("#"):
+                continue
+            p = Path(ln) if Path(ln).is_absolute() else ROOT / ln
+            if not p.exists():
+                print(f"ip_files.txt 中的文件不存在: {p}")
+                return 1
+            kind = {".sdc": "sdc", ".cst": "cst"}.get(p.suffix.lower(), "verilog")
+            tcl.append(f"add_file -type {kind} {{{p.as_posix()}}}")
     if board:
         tcl.append(f"add_file -type cst {{{(ROOT / 'gowin/nav_board.cst').as_posix()}}}")
         (BUILD / "nav_board.sdc").write_text("create_clock -name clk50 -period 20 [get_ports {clk50}]\n")
@@ -74,6 +93,9 @@ def main():
         "run all" if board else "run syn",
     ]
     (BUILD / "run.tcl").write_text("\n".join(tcl) + "\n", encoding="utf-8")
+    if "--tcl-only" in sys.argv:
+        print(f"已生成 {BUILD / 'run.tcl'}")
+        return 0
     with open(BUILD / "gw_sh.log", "w", encoding="utf-8", errors="replace") as log:
         rc = subprocess.run([str(GW_SH), "run.tcl"], cwd=BUILD, stdout=log, stderr=subprocess.STDOUT).returncode
     text = (BUILD / "gw_sh.log").read_text(encoding="utf-8", errors="replace")

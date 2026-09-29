@@ -42,6 +42,15 @@ void hal_send_cmd(const nav_cmd_t *cmd);
 /* 读取底盘回传（里程计速度）。返回是否有新数据 */
 bool hal_odom(int16_t *vx, int16_t *vy, int16_t *wz, uint32_t *t_us);
 
+/* ---- 雷达：初始化、帧尾信息、方向查找表 ---- */
+/* 打开帧位姿握手（LIDAR.CTRL.WAIT_POSE），格式位保持复位缺省值（厂家 SDK 格式） */
+void     hal_lidar_init(void);
+/* FrameInfo 锁存次数（0 = 还没收到带 FrameInfo 的帧）；hal_lidar_lens 取最近一帧的内参（float32 原始位） */
+uint32_t hal_lidar_info_seq(void);
+void     hal_lidar_lens(uint32_t lens[9]);
+/* 从像素 idx 起写 n 项方向（每项 rx, ry, rz，12 位 Q0.11） */
+void     hal_lidar_lut_write(uint32_t idx, const int16_t *rxyz, int n);
+
 /* ---- 雷达帧位姿握手 ---- */
 /* 有一帧点云在等待位姿时返回 true，并给出该帧到达时间 */
 bool hal_lidar_waiting(uint32_t *frame_t_us);
@@ -71,7 +80,7 @@ void hal_map_clear(void);
 
 /* ---- 有图模式（先验定位图）----
  * hal_prior_begin：清空结构图、暂停在线并图（下载期间匹配不可用）。
- * hal_prior_write：写一个结构图槽字（23 位，格式见 model/slf_match.py StructMap.words）。
+ * hal_prior_write：写一个结构图槽字（18 位，格式见 model/slf_match.py pack_hi）。
  * hal_prior_enable(true, ox, oy)：进入有图模式——似然场窗口原点固定为 (ox, oy)（全局 5 cm 格），
  *   UPDATE 不再并图（只释放点缓冲），打分时槽字标签与点所在格不符视为无结构。false：清空并回到在线建图。
  * hal_match_gate(false)：打分不做门控（初始对准 / 重定位：位姿误差大时门控会挡掉正确的点）。 */

@@ -20,6 +20,8 @@ module tb_nav_top;
     logic [31:0] gexp [0:63];
     logic [31:0] elx [0:47];
     logic [31:0] slx [0:0];            // 最后一帧 SLF 结构点数          // 高程读期望：{槽地址, 低 32 位, 高 20 位} × 16
+    logic [35:0] lut [0:9599];         // 方向查找表 {rz, ry, rx}
+    logic [31:0] ifx [0:4];            // {跳过分包数, LENS0, LENS8, INFO_CFG, INFO_SIZE} 期望
     int n_ethl, n_frm, n_ethh, n_gexp;
     int c_valid, c_thr0, c_thr1, c_w, c_infl, c_zband;
 
@@ -37,12 +39,12 @@ module tb_nav_top;
     logic [7:0] ch_mode;
     logic ch_stop, ch_wdog, ch_valid;
 
-    nav_subsystem #(.LUT_INIT("lut_default.hex"), .SIN_INIT("sin_lut.hex")) dut (
+    nav_subsystem #(.SIN_INIT("sin_lut.hex")) dut (
         .clk(clk), .rst(rst),
         .bus_req(bus_req), .bus_we(bus_we), .bus_addr(bus_addr), .bus_wdata(bus_wdata),
         .bus_ack(bus_ack), .bus_rdata(bus_rdata), .irq(irq),
         .l_rx_clk(mclk), .l_rx_rst(rst), .l_rx_valid(lrv), .l_rx_data(lrd), .l_rx_last(lrl), .l_rx_error(1'b0),
-        .l_tx_clk(mclk), .l_tx_rst(rst), .l_tx_valid(ltv), .l_tx_data(ltd), .l_tx_last(ltl), .l_tx_ready(1'b1),
+        .l_tx_clk(mclk), .l_tx_rst(rst), .l_tx_valid(ltv), .l_tx_data(ltd), .l_tx_last(ltl), .l_tx_ready(1'b1), .l_phy_stat(32'd0),
         .h_rx_clk(mclk), .h_rx_rst(rst), .h_rx_valid(hrv), .h_rx_data(hrd), .h_rx_last(hrl), .h_rx_error(1'b0),
         .h_tx_clk(mclk), .h_tx_rst(rst), .h_tx_valid(htv), .h_tx_data(htd), .h_tx_last(htl), .h_tx_ready(1'b1),
         .imu_rx(imu_rx), .imu_tx(imu_tx),
@@ -139,6 +141,8 @@ module tb_nav_top;
         $readmemh("cost_exp.hex", cexp);
         $readmemh("traj.hex", trj);
         $readmemh("goal_exp.hex", gexp);
+        $readmemh("lut.hex", lut);
+        $readmemh("info_exp.hex", ifx);
         repeat (20) @(posedge clk);
         rst = 0;
         repeat (20000) @(posedge clk);     // 等地图上电清除
@@ -146,7 +150,14 @@ module tb_nav_top;
         // ---------- 配置 ----------
         rd(RA_SYS_ID, d); chk("SYS.ID", d, 32'h4E415630);
         wr(RA_SYS_SCRATCH, 32'h12345678); rd(RA_SYS_SCRATCH, d); chk("SCRATCH", d, 32'h12345678);
-        wr(RA_LIDAR_CTRL, 32'h9);            // ENABLE + WAIT_POSE，大端，仅深度
+        rd(RA_LIDAR_CTRL, d); chk("LIDAR.CTRL 复位值", d, RR_LIDAR_CTRL);
+        wr(RA_LIDAR_CTRL, RR_LIDAR_CTRL | 32'h8);   // 缺省格式（小端、帧尾信息）+ WAIT_POSE
+        // 方向查找表：经写口装入（上板由固件按雷达内参生成）
+        wr(RA_LIDAR_LUT_ADDR, 0);
+        for (int i = 0; i < 9600; i++) begin
+            wr(RA_LIDAR_LUT_XY, {8'd0, lut[i][23:0]});
+            wr(RA_LIDAR_LUT_Z, {20'd0, lut[i][35:24]});
+        end
         wr(RA_LIDAR_ZBAND, c_zband);
         wr(RA_MAP_VALID_CFG, c_valid);
         wr(RA_MAP_THR0, c_thr0);
@@ -224,6 +235,12 @@ module tb_nav_top;
         end
         rd(RA_LIDAR_STAT_FRAMES, d); chk("LIDAR.STAT_FRAMES", d, n_frm);
         rd(RA_LIDAR_STAT_BAD, d);    chk("LIDAR.STAT_BAD", d, 0);
+        rd(RA_LIDAR_STAT_SKIP, d);   chk("LIDAR.STAT_SKIP（IMU 分包）", d, ifx[0]);
+        rd(RA_LIDAR_INFO_SEQ, d);    chk("LIDAR.INFO_SEQ", d, n_frm);
+        rd(RA_LIDAR_LENS0, d);       chk("LIDAR.LENS0 (fx)", d, ifx[1]);
+        rd(RA_LIDAR_LENS8, d);       chk("LIDAR.LENS8 (p2)", d, ifx[2]);
+        rd(RA_LIDAR_INFO_CFG, d);    chk("LIDAR.INFO_CFG", d, ifx[3]);
+        rd(RA_LIDAR_INFO_SIZE, d);   chk("LIDAR.INFO_SIZE", d, ifx[4]);
         rd(RA_NETL_STAT_ARP, d);     chk("NETL.STAT_ARP", d, 1);
         if (l_tx_frames != 1) begin errs++; $display("雷达口 ARP 应答帧数 %0d", l_tx_frames); end
 

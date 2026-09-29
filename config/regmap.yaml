@@ -33,8 +33,8 @@ blocks:
     regs:
       - {name: MAC_LO,   off: 0x00, acc: rw, reset: 0x56000001, desc: "本机 MAC 低 32 位"}
       - {name: MAC_HI,   off: 0x04, acc: rw, reset: 0x0000024E, desc: "本机 MAC 高 16 位"}
-      - {name: IP,       off: 0x08, acc: rw, reset: 0xC0A80164, desc: "本机 IPv4（默认 192.168.1.100）"}
-      - {name: UDP_PORT, off: 0x0C, acc: rw, reset: 7687, desc: "本口接收的 UDP 目的端口"}
+      - {name: IP,       off: 0x08, acc: rw, reset: 0xC0A80064, desc: "本机 IPv4（默认 192.168.0.100，与 XT-M60 缺省 192.168.0.101/24 同网段）"}
+      - {name: UDP_PORT, off: 0x0C, acc: rw, reset: 7687, desc: "本口接收的 UDP 目的端口（XT-M60 缺省发往 7687）"}
       - name: CTRL
         off: 0x10
         acc: rw
@@ -50,6 +50,13 @@ blocks:
       - {name: PEER_MAC_LO,    off: 0x2C, acc: rwe, reset: 0, desc: "对端 MAC 低 32 位"}
       - {name: PEER_MAC_HI,    off: 0x30, acc: rwe, reset: 0, desc: "对端 MAC 高 16 位"}
       - {name: PEER_PORT,      off: 0x34, acc: rwe, reset: 0, desc: "发送目的端口 [15:0]"}
+      - {name: MCAST_IP,       off: 0x38, acc: rw, reset: 0xEFFFFF4C, desc: "另外接收的组播组（0 = 不收）；缺省 239.255.255.76 = 厂家 SDK 加入的组"}
+      - name: PHY_STAT
+        off: 0x3C
+        acc: ro
+        reset: 0
+        desc: "板级 RGMII MAC / PHY 状态（rgmii_mac100）：链路、MDIO 初始化、PHY 地址、RX 时钟测频（值 × 64 = kHz，百兆约 390）"
+        fields: {LINK: [0,0], INIT_DONE: [1,1], FOUND: [2,2], ADDR: [7,3], RXCLK: [31,16]}
 
   - name: NETH
     base: 0x1100
@@ -74,6 +81,7 @@ blocks:
       - {name: PEER_MAC_LO,    off: 0x2C, acc: rwe, reset: 0, desc: "对端 MAC 低 32 位"}
       - {name: PEER_MAC_HI,    off: 0x30, acc: rwe, reset: 0, desc: "对端 MAC 高 16 位"}
       - {name: PEER_PORT,      off: 0x34, acc: rwe, reset: 9001, desc: "发送目的端口 [15:0]"}
+      - {name: MCAST_IP,       off: 0x38, acc: rw, reset: 0, desc: "另外接收的组播组（0 = 不收）"}
 
   - name: MBX
     base: 0x1200
@@ -113,16 +121,16 @@ blocks:
       - name: CTRL
         off: 0x00
         acc: rw
-        reset: 0x00000001
-        desc: "格式与流程控制；PIX_LAYOUT 0=逐像素交织 1=平面"
-        fields: {ENABLE: [0,0], HDR_LE: [1,1], PIX_LE: [2,2], WAIT_POSE: [3,3], PIX_LAYOUT: [5,4], AMP_FIRST: [6,6]}
-      - {name: UDP_SKIP,   off: 0x04, acc: rw, reset: 20, desc: "每个 UDP 负载开头跳过的字节数（XT 分包头）"}
+        reset: 0x00000017
+        desc: "格式与流程控制（缺省按厂家 SDK：小端）；AUTO_INFO=1 时深度单位、ROI、像素合并取自帧尾 FrameInfo"
+        fields: {ENABLE: [0,0], HDR_LE: [1,1], PIX_LE: [2,2], WAIT_POSE: [3,3], AUTO_INFO: [4,4]}
+      - {name: SUBHDR,     off: 0x04, acc: rw, reset: 20, desc: "UDP 分包头字节数（SDK = 20，>= 16）"}
       - name: DEPTH_CFG
         off: 0x08
         acc: rw
         reset: 0x00000100
-        desc: "深度换算"
-        fields: {DEPTH_MUL: [15,0], SIZE_ADJ: [31,16]}
+        desc: "深度换算（帧无 FrameInfo 或 AUTO_INFO=0 时使用）"
+        fields: {DEPTH_MUL: [15,0]}
       - name: RANGE
         off: 0x0C
         acc: rw
@@ -132,14 +140,14 @@ blocks:
       - name: VALID_CFG
         off: 0x10
         acc: rw
-        reset: 0x00000000
-        desc: "有效性判定"
+        reset: 0xFA000000
+        desc: "有效性判定：深度为 0、深度或幅值 >= RAW_INV（设备无效码从 64000 起）、幅值 < AMP_MIN 的像素无效"
         fields: {AMP_MIN: [15,0], RAW_INV: [31,16]}
       - name: ROI_OFS
         off: 0x14
         acc: rw
         reset: 0
-        desc: "ROI 起点（查表偏移）"
+        desc: "ROI 起点（查表偏移；帧无 FrameInfo 或 AUTO_INFO=0 时使用）"
         fields: {X0: [7,0], Y0: [15,8]}
       - {name: STAT_FRAMES,  off: 0x18, acc: ro, reset: 0, desc: "成功接收的帧数"}
       - {name: STAT_BAD,     off: 0x1C, acc: ro, reset: 0, desc: "格式错误/不完整的帧数"}
@@ -158,6 +166,7 @@ blocks:
       - {name: LAST_TS,     off: 0x28, acc: ro, reset: 0, desc: "最近成功帧的到达时间 (us)"}
       - {name: STAT_POINTS, off: 0x2C, acc: ro, reset: 0, desc: "上一帧有效点数"}
       - {name: STAT_DROP,   off: 0x30, acc: ro, reset: 0, desc: "因缓冲满丢弃的帧数"}
+      - {name: STAT_SKIP,   off: 0x34, acc: ro, reset: 0, desc: "跳过的分包数（IMU 等非图像消息、不属于当前帧的零散分包）"}
       - {name: R00, off: 0x40, acc: rw, reset: 16384, desc: "雷达->里程计 旋转矩阵 Q1.14（[15:0] 有符号）"}
       - {name: R01, off: 0x44, acc: rw, reset: 0, desc: ""}
       - {name: R02, off: 0x48, acc: rw, reset: 0, desc: ""}
@@ -184,8 +193,36 @@ blocks:
         desc: "保留点的高度带（里程计系 mm）"
         fields: {ZMIN: [15,0], ZMAX: [31,16]}
       - {name: LUT_ADDR, off: 0x80, acc: rw, reset: 0, desc: "方向查找表写地址（像素序号，写 LUT_Z 后自增）"}
-      - {name: LUT_XY,   off: 0x84, acc: wo, reset: 0, desc: "[15:0] rx, [31:16] ry (Q2.13)"}
-      - {name: LUT_Z,    off: 0x88, acc: wo, reset: 0, desc: "[15:0] rz (Q2.13)，写入即提交一项"}
+      - {name: LUT_XY,   off: 0x84, acc: wo, reset: 0, desc: "[11:0] rx, [23:12] ry（单位向量分量，12 位有符号 Q0.11）"}
+      - {name: LUT_Z,    off: 0x88, acc: wo, reset: 0, desc: "[11:0] rz，写入即提交一项；全零项 = 该像素无效"}
+      - {name: LENS0,    off: 0x90, acc: ro, reset: 0, desc: "最近一帧 FrameInfo 内参 fx（float32 原始位）"}
+      - {name: LENS1,    off: 0x94, acc: ro, reset: 0, desc: "fy"}
+      - {name: LENS2,    off: 0x98, acc: ro, reset: 0, desc: "cx"}
+      - {name: LENS3,    off: 0x9C, acc: ro, reset: 0, desc: "cy"}
+      - {name: LENS4,    off: 0xA0, acc: ro, reset: 0, desc: "k1"}
+      - {name: LENS5,    off: 0xA4, acc: ro, reset: 0, desc: "k2"}
+      - {name: LENS6,    off: 0xA8, acc: ro, reset: 0, desc: "k3"}
+      - {name: LENS7,    off: 0xAC, acc: ro, reset: 0, desc: "p1"}
+      - {name: LENS8,    off: 0xB0, acc: ro, reset: 0, desc: "p2"}
+      - name: INFO_CFG
+        off: 0xB4
+        acc: ro
+        reset: 0
+        desc: "最近一帧 FrameInfo：深度单位（mm/LSB）、像素合并（bit1 水平 bit0 竖直）、ROI 起点"
+        fields: {UNIT_DIV: [7,0], BINNING: [15,8], ROI_X0: [23,16], ROI_Y0: [31,24]}
+      - name: INFO_SIZE
+        off: 0xB8
+        acc: ro
+        reset: 0
+        desc: "最近一帧 FrameInfo：结构体大小（应为 206）、图像标志、HDR 模式"
+        fields: {INFOSIZE: [15,0], IMG_FLAGS: [23,16], HDR: [31,24]}
+      - name: INFO_TEMP
+        off: 0xBC
+        acc: ro
+        reset: 0
+        desc: "最近一帧 FrameInfo：温度（int16，传感器 / 灯板）"
+        fields: {SENSOR: [15,0], VCSEL: [31,16]}
+      - {name: INFO_SEQ, off: 0xC0, acc: ro, reset: 0, desc: "FrameInfo 锁存次数（固件据此发现内参更新）"}
 
   - name: MAP
     base: 0x3000
@@ -425,12 +462,12 @@ blocks:
         off: 0x34
         acc: ro
         reset: 0
-        desc: "结构图槽字 {tag, hit, cx, cy, occ, q, has, gate} 与完成标志"
-        fields: {WORD: [22,0], DONE: [31,31]}
+        desc: "结构图槽字（18 位）{tag, hit, cx, cy, occ, q, has, gate} 与完成标志"
+        fields: {WORD: [17,0], DONE: [31,31]}
       - {name: LFO_X, off: 0x38, acc: rw, reset: 0, desc: "有图模式：似然场窗口原点 x（全局 5 cm 格，int32）"}
       - {name: LFO_Y, off: 0x3C, acc: rw, reset: 0, desc: "有图模式：似然场窗口原点 y"}
       - {name: SM_ADDR, off: 0x40, acc: rw, reset: 0, desc: "先验图写入：槽地址 [15:0]"}
-      - {name: SM_WDATA, off: 0x44, acc: wo, reset: 0, desc: "先验图写入：槽字 [22:0]，写入即写 RAM（写完 SM_ADDR 自增 1）"}
+      - {name: SM_WDATA, off: 0x44, acc: wo, reset: 0, desc: "先验图写入：槽字 [17:0]，写入即写 RAM（写完 SM_ADDR 自增 1）"}
 
 windows:
   - {name: TRAJ_CAND, base: 0x4100, size: 0x0200, desc: "候选 k: +8k: [15:0]dvx [31:16]dvy (格 Q8/步); +8k+4: [15:0]dth (65536/周/步)"}

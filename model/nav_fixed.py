@@ -25,13 +25,17 @@ def floor_shift(a, s):
 
 
 # ---------------------------------------------------------------- pc_project
-def pc_project(pix, lut, depth_mul=256, min_mm=100, max_mm=20000, roi=(0, 0), w=160, lut_frac=13):
-    """pix: [(u, v, raw, sof, eof)] -> [(x, y, z, pv, sof, eof)]；lut[i] = (rx, ry, rz)。"""
+def pc_project(pix, lut, depth_mul=256, min_mm=100, max_mm=20000, roi=(0, 0), w=160, h=60, lut_frac=11, binning=0):
+    """pix: [(u, v, raw, sof, eof)] -> [(x, y, z, pv, sof, eof)]；lut[i] = (rx, ry, rz)（12 位 Q0.11，全零 = 无效）。
+    binning: bit1 水平合并、bit0 竖直合并（查表坐标左移一位）。"""
     out = []
     for u, v, raw, sof, eof in pix:
         dmm = min((raw * depth_mul) >> 8, 32767)
-        ok = raw != 0 and min_mm <= dmm <= max_mm
-        rx, ry, rz = lut[(v + roi[1]) * w + (u + roi[0])]
+        uu = (u << ((binning >> 1) & 1)) + roi[0]
+        vv = (v << (binning & 1)) + roi[1]
+        inr = uu < w and vv < h
+        rx, ry, rz = lut[vv * w + uu] if inr else lut[0]
+        ok = raw != 0 and inr and (rx, ry, rz) != (0, 0, 0) and min_mm <= dmm <= max_mm
         out.append((sat16(floor_shift(dmm * rx, lut_frac)), sat16(floor_shift(dmm * ry, lut_frac)),
                     sat16(floor_shift(dmm * rz, lut_frac)), int(ok), sof, eof))
     return out

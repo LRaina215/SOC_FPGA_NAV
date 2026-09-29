@@ -28,6 +28,9 @@ void nav_app_init(void)
     prior_rx_init(&g_app.prx);
     loc_default_cfg(&g_app.loc.cfg);
     loc_init(&g_app.loc);
+    hal_lidar_init();
+    lidar_cal_init(&g_app.lcal);            /* 先按 M60 缺省内参生成，收到雷达自带内参后按需重算 */
+    g_app.lcal_budget = 8;                  /* 软核每像素约 0.1 ms：每轮 8 个，整张表约 1–2 s */
 }
 
 /* 位姿进入新坐标系（SET_POSE / 对准完成）：旧坐标系下的局部观测全部作废 */
@@ -118,6 +121,7 @@ void nav_app_poll(void)
     }
 
     /* 3. 雷达帧：按预测位姿提交（融合 + 提取结构点），窗口中心跟随机器人 */
+    lidar_cal_poll(&g_app.lcal, g_app.lcal_budget);
     uint32_t ft;
     /* 等到帧时刻之后的姿态已到达（IMU 50 Hz，最多等 100 ms）再处理：否则帧时刻恰逢姿态突变时，
      * 突变还没被检测到，这一帧就会带着旧姿态融合 */
@@ -138,9 +142,12 @@ void nav_app_poll(void)
         /* 姿态突变前后 200 ms 的帧：点云整体倾斜未知，融合会在远处造成大片假台阶。
          * 提交空高度带（zmin > zmax）——帧被消费、不写图、不提结构点，地形扫描照常进行 */
         bool skip = pose_att_unsettled(&nt->pose, now, 200000);
-        if (skip) {
+        bool no_lut = !lidar_cal_ready(&g_app.lcal);      /* 方向表只写了一部分：点的方向不可信 */
+        if (skip || no_lut) {
             hal_lidar_commit(r, tt, cx, cy, 1, 0);
-            g_app.n_skip++;
+            if (no_lut) g_app.n_lut_skip++;
+            else g_app.n_skip++;
+            skip = true;
         } else {
             hal_lidar_commit(r, tt, cx, cy, at.z + g_app.zband_lo, at.z + g_app.zband_hi);
         }

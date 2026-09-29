@@ -20,8 +20,8 @@
 |---|---|---|---|---|
 | 0x1000 | MAC_LO | rw | 0x56000001 | 本机 MAC 低 32 位 |
 | 0x1004 | MAC_HI | rw | 0x0000024E | 本机 MAC 高 16 位 |
-| 0x1008 | IP | rw | 0xC0A80164 | 本机 IPv4（默认 192.168.1.100） |
-| 0x100C | UDP_PORT | rw | 0x00001E07 | 本口接收的 UDP 目的端口 |
+| 0x1008 | IP | rw | 0xC0A80064 | 本机 IPv4（默认 192.168.0.100，与 XT-M60 缺省 192.168.0.101/24 同网段） |
+| 0x100C | UDP_PORT | rw | 0x00001E07 | 本口接收的 UDP 目的端口（XT-M60 缺省发往 7687） |
 | 0x1010 | CTRL | rw | 0x0000000D | 控制；ENABLE[0] ANY_IP[1] ARP_EN[2] LEARN_PEER[3] |
 | 0x1014 | STAT_RX_FRAMES | ro | 0x00000000 | 收到的以太网帧数 |
 | 0x1018 | STAT_RX_UDP | ro | 0x00000000 | 交付的 UDP 报文数 |
@@ -32,6 +32,8 @@
 | 0x102C | PEER_MAC_LO | rwe | 0x00000000 | 对端 MAC 低 32 位 |
 | 0x1030 | PEER_MAC_HI | rwe | 0x00000000 | 对端 MAC 高 16 位 |
 | 0x1034 | PEER_PORT | rwe | 0x00000000 | 发送目的端口 [15:0] |
+| 0x1038 | MCAST_IP | rw | 0xEFFFFF4C | 另外接收的组播组（0 = 不收）；缺省 239.255.255.76 = 厂家 SDK 加入的组 |
+| 0x103C | PHY_STAT | ro | 0x00000000 | 板级 RGMII MAC / PHY 状态（rgmii_mac100）：链路、MDIO 初始化、PHY 地址、RX 时钟测频（值 × 64 = kHz，百兆约 390）；LINK[0] INIT_DONE[1] FOUND[2] ADDR[7:3] RXCLK[31:16] |
 
 ## NETH（0x1100）主机侧网口（SFP / 1000BASE-X，接 RK3588）UDP 协议栈
 
@@ -51,6 +53,7 @@
 | 0x112C | PEER_MAC_LO | rwe | 0x00000000 | 对端 MAC 低 32 位 |
 | 0x1130 | PEER_MAC_HI | rwe | 0x00000000 | 对端 MAC 高 16 位 |
 | 0x1134 | PEER_PORT | rwe | 0x00002329 | 发送目的端口 [15:0] |
+| 0x1138 | MCAST_IP | rw | 0x00000000 | 另外接收的组播组（0 = 不收） |
 
 ## MBX（0x1200）主机报文邮箱（NETH 收到的 UDP 负载 / 软核待发的 UDP 负载）
 
@@ -77,12 +80,12 @@
 
 | 偏移 | 名称 | 访问 | 复位值 | 说明 |
 |---|---|---|---|---|
-| 0x2000 | CTRL | rw | 0x00000001 | 格式与流程控制；PIX_LAYOUT 0=逐像素交织 1=平面；ENABLE[0] HDR_LE[1] PIX_LE[2] WAIT_POSE[3] PIX_LAYOUT[5:4] AMP_FIRST[6] |
-| 0x2004 | UDP_SKIP | rw | 0x00000014 | 每个 UDP 负载开头跳过的字节数（XT 分包头） |
-| 0x2008 | DEPTH_CFG | rw | 0x00000100 | 深度换算；DEPTH_MUL[15:0] SIZE_ADJ[31:16] |
+| 0x2000 | CTRL | rw | 0x00000017 | 格式与流程控制（缺省按厂家 SDK：小端）；AUTO_INFO=1 时深度单位、ROI、像素合并取自帧尾 FrameInfo；ENABLE[0] HDR_LE[1] PIX_LE[2] WAIT_POSE[3] AUTO_INFO[4] |
+| 0x2004 | SUBHDR | rw | 0x00000014 | UDP 分包头字节数（SDK = 20，>= 16） |
+| 0x2008 | DEPTH_CFG | rw | 0x00000100 | 深度换算（帧无 FrameInfo 或 AUTO_INFO=0 时使用）；DEPTH_MUL[15:0] |
 | 0x200C | RANGE | rw | 0x4E200064 | 有效距离 mm；MIN_MM[15:0] MAX_MM[31:16] |
-| 0x2010 | VALID_CFG | rw | 0x00000000 | 有效性判定；AMP_MIN[15:0] RAW_INV[31:16] |
-| 0x2014 | ROI_OFS | rw | 0x00000000 | ROI 起点（查表偏移）；X0[7:0] Y0[15:8] |
+| 0x2010 | VALID_CFG | rw | 0xFA000000 | 有效性判定：深度为 0、深度或幅值 >= RAW_INV（设备无效码从 64000 起）、幅值 < AMP_MIN 的像素无效；AMP_MIN[15:0] RAW_INV[31:16] |
+| 0x2014 | ROI_OFS | rw | 0x00000000 | ROI 起点（查表偏移；帧无 FrameInfo 或 AUTO_INFO=0 时使用）；X0[7:0] Y0[15:8] |
 | 0x2018 | STAT_FRAMES | ro | 0x00000000 | 成功接收的帧数 |
 | 0x201C | STAT_BAD | ro | 0x00000000 | 格式错误/不完整的帧数 |
 | 0x2020 | LAST_FRAME | ro | 0x00000000 | 最近成功帧信息；SN[15:0] DEVSTATE[23:16] PROTO[31:24] |
@@ -90,6 +93,7 @@
 | 0x2028 | LAST_TS | ro | 0x00000000 | 最近成功帧的到达时间 (us) |
 | 0x202C | STAT_POINTS | ro | 0x00000000 | 上一帧有效点数 |
 | 0x2030 | STAT_DROP | ro | 0x00000000 | 因缓冲满丢弃的帧数 |
+| 0x2034 | STAT_SKIP | ro | 0x00000000 | 跳过的分包数（IMU 等非图像消息、不属于当前帧的零散分包） |
 | 0x2040 | R00 | rw | 0x00004000 | 雷达->里程计 旋转矩阵 Q1.14（[15:0] 有符号） |
 | 0x2044 | R01 | rw | 0x00000000 |  |
 | 0x2048 | R02 | rw | 0x00000000 |  |
@@ -106,8 +110,21 @@
 | 0x2074 | POSE_STAT | ro | 0x00000000 | 位姿握手状态；WAITING[0] |
 | 0x2078 | ZBAND | rw | 0x07D0FC18 | 保留点的高度带（里程计系 mm）；ZMIN[15:0] ZMAX[31:16] |
 | 0x2080 | LUT_ADDR | rw | 0x00000000 | 方向查找表写地址（像素序号，写 LUT_Z 后自增） |
-| 0x2084 | LUT_XY | wo | 0x00000000 | [15:0] rx, [31:16] ry (Q2.13) |
-| 0x2088 | LUT_Z | wo | 0x00000000 | [15:0] rz (Q2.13)，写入即提交一项 |
+| 0x2084 | LUT_XY | wo | 0x00000000 | [11:0] rx, [23:12] ry（单位向量分量，12 位有符号 Q0.11） |
+| 0x2088 | LUT_Z | wo | 0x00000000 | [11:0] rz，写入即提交一项；全零项 = 该像素无效 |
+| 0x2090 | LENS0 | ro | 0x00000000 | 最近一帧 FrameInfo 内参 fx（float32 原始位） |
+| 0x2094 | LENS1 | ro | 0x00000000 | fy |
+| 0x2098 | LENS2 | ro | 0x00000000 | cx |
+| 0x209C | LENS3 | ro | 0x00000000 | cy |
+| 0x20A0 | LENS4 | ro | 0x00000000 | k1 |
+| 0x20A4 | LENS5 | ro | 0x00000000 | k2 |
+| 0x20A8 | LENS6 | ro | 0x00000000 | k3 |
+| 0x20AC | LENS7 | ro | 0x00000000 | p1 |
+| 0x20B0 | LENS8 | ro | 0x00000000 | p2 |
+| 0x20B4 | INFO_CFG | ro | 0x00000000 | 最近一帧 FrameInfo：深度单位（mm/LSB）、像素合并（bit1 水平 bit0 竖直）、ROI 起点；UNIT_DIV[7:0] BINNING[15:8] ROI_X0[23:16] ROI_Y0[31:24] |
+| 0x20B8 | INFO_SIZE | ro | 0x00000000 | 最近一帧 FrameInfo：结构体大小（应为 206）、图像标志、HDR 模式；INFOSIZE[15:0] IMG_FLAGS[23:16] HDR[31:24] |
+| 0x20BC | INFO_TEMP | ro | 0x00000000 | 最近一帧 FrameInfo：温度（int16，传感器 / 灯板）；SENSOR[15:0] VCSEL[31:16] |
+| 0x20C0 | INFO_SEQ | ro | 0x00000000 | FrameInfo 锁存次数（固件据此发现内参更新） |
 
 ## MAP（0x3000）滚动高程图与可通行性分析
 
@@ -199,11 +216,11 @@
 | 0x7028 | UPD_DYAW | rw | 0x00000000 | 并图修正量 dyaw [15:0]（65536/周） |
 | 0x702C | DBG_ADDR | rw | 0x00000000 | 结构图调试读：槽地址 [15:0] |
 | 0x7030 | DBG_CMD | w1p | 0x00000000 | 结构图调试读命令；READ[0] |
-| 0x7034 | DBG_Q | ro | 0x00000000 | 结构图槽字 {tag, hit, cx, cy, occ, q, has, gate} 与完成标志；WORD[22:0] DONE[31] |
+| 0x7034 | DBG_Q | ro | 0x00000000 | 结构图槽字（18 位）{tag, hit, cx, cy, occ, q, has, gate} 与完成标志；WORD[17:0] DONE[31] |
 | 0x7038 | LFO_X | rw | 0x00000000 | 有图模式：似然场窗口原点 x（全局 5 cm 格，int32） |
 | 0x703C | LFO_Y | rw | 0x00000000 | 有图模式：似然场窗口原点 y |
 | 0x7040 | SM_ADDR | rw | 0x00000000 | 先验图写入：槽地址 [15:0] |
-| 0x7044 | SM_WDATA | wo | 0x00000000 | 先验图写入：槽字 [22:0]，写入即写 RAM（写完 SM_ADDR 自增 1） |
+| 0x7044 | SM_WDATA | wo | 0x00000000 | 先验图写入：槽字 [17:0]，写入即写 RAM（写完 SM_ADDR 自增 1） |
 
 ## 数据窗口
 
