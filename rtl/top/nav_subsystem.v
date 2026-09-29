@@ -140,8 +140,10 @@ module nav_subsystem #(
     reg         mb_rd;
     host_mbx #(.RX_AW(12), .DQ_AW(4), .TX_WAW(9)) u_mbx (
         .clk(clk), .rst(rst),
-        .u_valid(hu_valid), .u_data(hu_data), .u_last(hu_last), .u_err(hu_err), .u_src_ip(hu_src_ip),
-        .u_src_port(hu_src_port), .u_len(hu_len), .u_ts(hu_ts),
+        .e_valid(hu_valid), .e_data(hu_data), .e_last(hu_last), .e_err(hu_err), .e_src_ip(hu_src_ip),
+        .e_src_port(hu_src_port), .e_len(hu_len), .e_ts(hu_ts),
+        .inj_we(p_MBX_INJ_DATA), .inj_wdata(wd_q), .inj_go(p_MBX_INJ_GO), .inj_len(r_MBX_INJ_LEN[15:0]), .now_us(time_us),
+        .txb_re(1'b1), .txb_addr(r_MBX_TXB_ADDR[8:0]), .txb_q(i_MBX_TXB_Q), .tx_seq(i_MBX_TX_SEQ),
         .rx_avail(mb_avail), .rx_len(mb_len), .rx_pkts(mb_pkts), .rx_ts(mb_ts), .rx_src_ip(mb_src_ip),
         .rx_src_port(mb_src_port), .rx_rd(mb_rd), .rx_rd_ack(mb_rd_ack), .rx_word(mb_word),
         .rx_pop(p_MBX_RX_POP), .rx_irq(mb_irq), .st_drop(mb_drop),
@@ -309,6 +311,8 @@ module nav_subsystem #(
         .cfg_cx_mm(r_MATCH_CX_MM), .cfg_cy_mm(r_MATCH_CY_MM), .cfg_ncand(r_MATCH_NCAND[8:0]),
         .upd_dx(r_MATCH_UPD_DX), .upd_dy(r_MATCH_UPD_DY), .upd_dyaw(r_MATCH_UPD_DYAW[15:0]),
         .lf_cx(r_MAP_CENTER_X), .lf_cy(r_MAP_CENTER_Y),
+        .cfg_prior(r_MATCH_CTRL[1]), .cfg_nogate(r_MATCH_CTRL[2]), .cfg_lfo_x(r_MATCH_LFO_X), .cfg_lfo_y(r_MATCH_LFO_Y),
+        .pw_we(p_MATCH_SM_WDATA), .pw_addr(r_MATCH_SM_ADDR[15:0]), .pw_data(wd_q[22:0]),
         .cand_we(mt_cand_we), .cand_waddr(mt_cand_addr), .cand_wdata(wd_q),
         .res_re(mt_res_re), .res_raddr(mt_res_addr), .res_q(mt_res_q),
         .dbg_req(mt_dbg_req), .dbg_addr(r_MATCH_DBG_ADDR[15:0]), .dbg_ack(mt_dbg_ack), .dbg_q(mt_dbg_q),

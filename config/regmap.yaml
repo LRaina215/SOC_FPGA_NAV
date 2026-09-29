@@ -99,6 +99,12 @@ blocks:
         reset: 0
         desc: "发送状态"
         fields: {BUSY: [0,0], WORDS: [15,4]}
+      - {name: INJ_DATA,  off: 0x30, acc: wo,  reset: 0, desc: "串口注入：写入待注入报文的下 4 字节（小端）。PC 经 uart_bus_bridge 下发报文用，不依赖网口"}
+      - {name: INJ_LEN,   off: 0x34, acc: rw,  reset: 0, desc: "串口注入：报文字节数"}
+      - {name: INJ_GO,    off: 0x38, acc: w1p, reset: 0, desc: "串口注入：报文入接收队列（与网口收到的报文同样处理；源 IP 记 0）"}
+      - {name: TXB_ADDR,  off: 0x3C, acc: rw,  reset: 0, desc: "发送缓冲回读：字地址"}
+      - {name: TXB_Q,     off: 0x40, acc: ro,  reset: 0, desc: "发送缓冲回读：该字（最近一次发出的报文仍在缓冲里，PC 经串口读取状态/应答用）"}
+      - {name: TX_SEQ,    off: 0x44, acc: ro,  reset: 0, desc: "已发送报文计数（回读前后比较，判断读取期间是否被新报文覆盖）"}
 
   - name: LIDAR
     base: 0x2000
@@ -227,8 +233,8 @@ blocks:
       - name: INFL
         off: 0x24
         acc: rw
-        reset: 5
-        desc: "膨胀半径（格，方形；按底盘半径设置）"
+        reset: 3
+        desc: "膨胀半径（格，方形；按底盘外接圆半径设置：140 mm -> 3 格）"
         fields: {RADIUS: [3,0]}
       - name: STAT
         off: 0x28
@@ -381,8 +387,8 @@ blocks:
         off: 0x00
         acc: rw
         reset: 1
-        desc: "控制"
-        fields: {ENABLE: [0,0]}
+        desc: "控制：PRIOR=1 有图模式（窗口原点固定为 LFO_*，UPDATE 只释放点缓冲不并图，打分核对槽字标签）；NOGATE=1 打分不门控（对准）"
+        fields: {ENABLE: [0,0], PRIOR: [1,1], NOGATE: [2,2]}
       - name: ZREL
         off: 0x04
         acc: rw
@@ -421,6 +427,10 @@ blocks:
         reset: 0
         desc: "结构图槽字 {tag, hit, cx, cy, occ, q, has, gate} 与完成标志"
         fields: {WORD: [22,0], DONE: [31,31]}
+      - {name: LFO_X, off: 0x38, acc: rw, reset: 0, desc: "有图模式：似然场窗口原点 x（全局 5 cm 格，int32）"}
+      - {name: LFO_Y, off: 0x3C, acc: rw, reset: 0, desc: "有图模式：似然场窗口原点 y"}
+      - {name: SM_ADDR, off: 0x40, acc: rw, reset: 0, desc: "先验图写入：槽地址 [15:0]"}
+      - {name: SM_WDATA, off: 0x44, acc: wo, reset: 0, desc: "先验图写入：槽字 [22:0]，写入即写 RAM（写完 SM_ADDR 自增 1）"}
 
 windows:
   - {name: TRAJ_CAND, base: 0x4100, size: 0x0200, desc: "候选 k: +8k: [15:0]dvx [31:16]dvy (格 Q8/步); +8k+4: [15:0]dth (65536/周/步)"}

@@ -61,6 +61,12 @@
     wire [31:0] r_MBX_TX_LEN;
     wire        p_MBX_TX_GO;
     wire [31:0] i_MBX_TX_STAT;
+    wire        p_MBX_INJ_DATA;
+    wire [31:0] r_MBX_INJ_LEN;
+    wire        p_MBX_INJ_GO;
+    wire [31:0] r_MBX_TXB_ADDR;
+    wire [31:0] i_MBX_TXB_Q;
+    wire [31:0] i_MBX_TX_SEQ;
     wire [31:0] r_LIDAR_CTRL;
     wire [31:0] r_LIDAR_UDP_SKIP;
     wire [31:0] r_LIDAR_DEPTH_CFG;
@@ -161,6 +167,10 @@
     wire [31:0] r_MATCH_DBG_ADDR;
     wire        p_MATCH_DBG_CMD;
     wire [31:0] i_MATCH_DBG_Q;
+    wire [31:0] r_MATCH_LFO_X;
+    wire [31:0] r_MATCH_LFO_Y;
+    wire [31:0] r_MATCH_SM_ADDR;
+    wire        p_MATCH_SM_WDATA;
     nav_regfile u_rf (
         .clk(clk), .rst(rst), .wr(rf_wr), .rd(rf_rd), .addr(a_q), .wdata(wd_q),
         .rdata(rf_rdata), .hit(rf_hit),
@@ -226,6 +236,12 @@
         .r_MBX_TX_LEN(r_MBX_TX_LEN),
         .p_MBX_TX_GO(p_MBX_TX_GO),
         .i_MBX_TX_STAT(i_MBX_TX_STAT),
+        .p_MBX_INJ_DATA(p_MBX_INJ_DATA),
+        .r_MBX_INJ_LEN(r_MBX_INJ_LEN),
+        .p_MBX_INJ_GO(p_MBX_INJ_GO),
+        .r_MBX_TXB_ADDR(r_MBX_TXB_ADDR),
+        .i_MBX_TXB_Q(i_MBX_TXB_Q),
+        .i_MBX_TX_SEQ(i_MBX_TX_SEQ),
         .r_LIDAR_CTRL(r_LIDAR_CTRL),
         .r_LIDAR_UDP_SKIP(r_LIDAR_UDP_SKIP),
         .r_LIDAR_DEPTH_CFG(r_LIDAR_DEPTH_CFG),
@@ -325,5 +341,9 @@
         .r_MATCH_UPD_DYAW(r_MATCH_UPD_DYAW),
         .r_MATCH_DBG_ADDR(r_MATCH_DBG_ADDR),
         .p_MATCH_DBG_CMD(p_MATCH_DBG_CMD),
-        .i_MATCH_DBG_Q(i_MATCH_DBG_Q)
+        .i_MATCH_DBG_Q(i_MATCH_DBG_Q),
+        .r_MATCH_LFO_X(r_MATCH_LFO_X),
+        .r_MATCH_LFO_Y(r_MATCH_LFO_Y),
+        .r_MATCH_SM_ADDR(r_MATCH_SM_ADDR),
+        .p_MATCH_SM_WDATA(p_MATCH_SM_WDATA)
     );

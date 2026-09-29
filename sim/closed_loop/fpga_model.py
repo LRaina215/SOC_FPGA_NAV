@@ -30,7 +30,7 @@ class FpgaModel:
         if cfg is None:
             # v1 的参数即 RTL 寄存器默认值；v2/v3 用各自模块里按机器人能力给出的默认值
             cfg = dict(age_max=60, cnt_min=1, step_max=120, rough_max=120, slope_max=60,
-                       k_slope=64, k_step=32, k_rough=32, infl_r=5) if trav == "v1" else dict(infl_r=5)
+                       k_slope=64, k_step=32, k_rough=32, infl_r=5) if trav == "v1" else dict(infl_r=3)
         self.cfg = cfg
         self.cost = np.full(N * N, 255, dtype=np.int64)
         self.cx = self.cy = 0
@@ -41,6 +41,8 @@ class FpgaModel:
         self.view = None
         self.mount_z = mount_z
         self.smap = slf.StructMap(inv_res)
+        self._pw = []
+        self.zlo, self.zhi = slf.Z_LO, slf.Z_HI
         self.spts = np.zeros((0, 3), dtype=np.int64)     # 本帧结构点缓冲（提交时的位姿下）
 
     # ---------------------------------------------------------------- 帧
@@ -52,15 +54,42 @@ class FpgaModel:
         R = np.array(rt[:9], dtype=np.int64).reshape(3, 3)
         t = np.array(rt[9:12], dtype=np.int64)
         p = fast.pc_transform(self.xyz, R, t)
-        m = slf.structure_mask(p, self.pv, int(t[2]) - self.mount_z)
+        m = slf.structure_mask(p, self.pv, int(t[2]) - self.mount_z, self.zlo, self.zhi)
         idx = slf.subsample(np.nonzero(m)[0])
         return p[idx]
 
     def match_eval(self, cx_mm, cy_mm, cands):
-        """cands: (K,3) dx dy dyaw。返回 (K,4) n_valid cost n_in 0"""
-        return self.smap.score(self.spts[:, 0], self.spts[:, 1], cands, cx_mm, cy_mm)
+        """cands: (K,3) dx dy dyaw。返回 (K,4) n_valid cost n_in n_pts（抽样后的结构点总数）"""
+        o = self.smap.score(self.spts[:, 0], self.spts[:, 1], cands, cx_mm, cy_mm)
+        o[:, 3] = len(self.spts)
+        return o
+
+    # ---------------------------------------------------------------- 有图模式 / 控制（固件 hal_py 回调）
+    def ctl(self, op, a, b, c):
+        if op == 0:                                   # 清高程图
+            self.em = nf.ElevMap()
+            self.cost = np.full(N * N, 255, dtype=np.int64)
+        elif op == 1:                                 # 先验开始：清结构图
+            self.smap = slf.StructMap(self.inv_res)
+            self._pw = []
+        elif op == 2:                                 # 写槽字
+            self._pw.append((a & 0xFFFF, b & 0x7FFFFF))
+        elif op == 3:                                 # 有图开关
+            if a:
+                w = np.array(self._pw, dtype=np.int64).reshape(-1, 2)
+                self.smap.load_prior(b, c, w[:, 0], w[:, 1])
+            else:
+                self.smap = slf.StructMap(self.inv_res)
+            self._pw = []
+        elif op == 4:                                 # 门控
+            self.smap.nogate = not a
+        elif op == 5:                                 # 结构点高度带（相对足底）
+            self.zlo, self.zhi = a, b
 
     def match_update(self, dx, dy, dyaw, cx_mm, cy_mm):
+        if self.smap.prior:                           # 有图：结构图固定，只释放点缓冲
+            self.spts = self.spts[:0]
+            return
         if len(self.spts):
             x, y = slf.apply_delta(self.spts[:, 0], self.spts[:, 1], dx, dy, dyaw, cx_mm, cy_mm)
             self.smap.update(np.stack([x, y], axis=1))

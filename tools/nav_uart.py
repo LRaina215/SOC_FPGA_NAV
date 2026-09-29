@@ -28,6 +28,19 @@ class NavUart:
         if self.s.read(1) != b"K":
             raise IOError(f"写 0x{addr:04X} 无应答")
 
+    def wr_burst(self, items, depth=64):
+        """连续写（不逐条等应答，最多 depth 条在途）：串口往返延时远大于命令本身，逐条等待会慢 10 倍以上"""
+        pend = 0
+        for addr, val in items:
+            self.s.write(b"W" + struct.pack(">HI", addr, val & 0xFFFFFFFF))
+            pend += 1
+            if pend >= depth:
+                if self.s.read(pend) != b"K" * pend:
+                    raise IOError("连续写应答缺失")
+                pend = 0
+        if pend and self.s.read(pend) != b"K" * pend:
+            raise IOError("连续写应答缺失")
+
     def rd(self, addr):
         self.s.write(b"R" + struct.pack(">H", addr))
         r = self.s.read(5)

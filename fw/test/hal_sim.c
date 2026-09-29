@@ -247,6 +247,12 @@ bool hal_match_result(hal_match_res_t *res, int k) { (void)res; (void)k; return 
 void hal_match_update(int32_t dx, int32_t dy, int32_t dyaw, int32_t cx_mm, int32_t cy_mm)
 { (void)dx; (void)dy; (void)dyaw; (void)cx_mm; (void)cy_mm; }
 bool hal_map_height(int32_t x, int32_t y, int32_t *h) { (void)x; (void)y; (void)h; return false; }
+void hal_map_clear(void) { }
+void hal_prior_begin(void) { }
+void hal_prior_write(uint16_t slot, uint32_t word) { (void)slot; (void)word; }
+void hal_prior_enable(bool en, int32_t ox, int32_t oy) { (void)en; (void)ox; (void)oy; }
+void hal_match_gate(bool on) { (void)on; }
+void hal_match_zband(int32_t lo, int32_t hi) { (void)lo; (void)hi; }
 bool hal_imu_byte(uint8_t *b, bool *f, uint32_t *t) { (void)b; (void)f; (void)t; return false; }
 
 int hal_host_recv(uint8_t *buf, int maxlen, uint32_t *t_us)

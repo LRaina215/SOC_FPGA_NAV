@@ -5,6 +5,9 @@
   python sim/closed_loop/run_cl.py --scene terrain --goal 9.5,2.8 --trav v2 --match on --out sim/build/cl/run1
   python sim/closed_loop/run_cl.py --scene loop --waypoints 7,-2.5,7,2.5,-0.5,2.5,-0.5,-2.5 --laps 2
   python sim/closed_loop/run_cl.py --scene terrain --search 9.3,-3.3
+  有图模式（先验地图 + 地图系初始位姿对准）：
+  python sim/closed_loop/run_cl.py --scene terrain --goal 9.3,2.8 --prior auto --init-err 0.3,-0.2,8
+  python sim/closed_loop/run_cl.py --scene terrain --goal 9.3,2.8 --prior auto --perturb boxes --kidnap 20,0.3,0,5
 输出：metrics.json、snapshot_*.png（真值标签/代价图/高程/轨迹）
 """
 import argparse
@@ -29,7 +32,8 @@ import nav_fixed as nf  # noqa: E402
 import robot as rb  # noqa: E402
 import sim_world as sw  # noqa: E402
 import world as W  # noqa: E402
-import rk_host  # noqa: E402
+import nav_host as rk_host  # noqa: E402
+import prior_map  # noqa: E402
 
 DLL = ROOT / "sim" / "build" / "closed_loop" / "nav_fw.dll"
 INV_RES = 1311
@@ -84,6 +88,11 @@ def main():
     ap.add_argument("--noise", default="", help="只开启部分误差源，逗号分隔：slip,gyro,att,scale")
     ap.add_argument("--ideal", action="store_true", help="理想传感器（无打滑/零偏/噪声），用于排查")
     ap.add_argument("--calib", type=float, default=2.0, help="任务下发前静止标定时间 s（陀螺零偏）")
+    ap.add_argument("--prior", default="", help="有图模式：先验地图包路径，或 auto（按场景用虚拟扫图生成并缓存）")
+    ap.add_argument("--init-err", default="0.25,-0.2,6", help="有图：下发的初始位姿相对真值的误差 dx,dy(m),dyaw(°)")
+    ap.add_argument("--perturb", default="", help="有图：扫图之后场景的变化（先验图里没有）：boxes = 新增 3 个箱子")
+    ap.add_argument("--pmcfg", default="", help="有图跟踪匹配参数 gain_q8,min_curv,min_curv_ang（0 = 固件缺省）")
+    ap.add_argument("--kidnap", default="", help="t,dx,dy,dyaw：t 秒时把机器人真值位姿突然平移/旋转（模拟被撞/严重打滑）")
     a = ap.parse_args()
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -95,6 +104,11 @@ def main():
         build_dll()
 
     scene = W.SCENES[a.scene]()
+    pkg = None
+    if a.prior:
+        pkg = get_prior(a.scene, a.prior)
+        if a.perturb:
+            W.perturb(scene, a.scene, a.perturb)
     sx, sy, syaw = (float(v) for v in a.start.split(","))
     if a.ideal:
         bot = rb.RobotSim(scene, sx, sy, math.radians(syaw), seed=a.seed, slip_mean=0, slip_std=0,
@@ -108,26 +122,38 @@ def main():
     else:
         bot = rb.RobotSim(scene, sx, sy, math.radians(syaw), seed=a.seed, slip_mean=a.slip)
     lid = sw.VirtualLidar(noise_mm=4.0, seed=a.seed + 7, rng_max=8.0, step=0.015)
-    Rbs, tbs = sw.mount_pose(height=0.20, pitch_down_deg=10.0, x=0.10)
+    Rbs, tbs = sw.mount_pose(height=0.20, pitch_down_deg=10.0, x=0.08)
     fpga = fpga_model.FpgaModel(trav=a.trav)
     for kv in filter(None, a.tcfg.split(",")):
         k, v = kv.split("=")
         fpga.cfg[k] = int(v)
     fw = Firmware()
     fw.py_set_match_enable(1 if a.match == "on" else 0)
-    fw.py_set_caps(0, 500, 1200, 250)
+    fw.py_set_caps(0, 500, 1200, 140)
     fw.py_set_anchor(a.anchor)
     fw.py_set_gmap_enable(1 if a.gmap == "on" else 0)
+    if a.pmcfg:
+        fw.py_set_pm_prior(*(int(v) for v in a.pmcfg.split(",")))
+    CTL_CB = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_int32, ctypes.c_int32, ctypes.c_int32)
 
-    # 里程计系 = 世界系平移 (sx, sy)、旋转 syaw
+    @CTL_CB
+    def ctl_cb(op, x, y, z):
+        fpga.ctl(op, x, y, z)
+    fw.py_set_ctl_cb(ctl_cb)
+
+    # 里程计系 = 世界系平移 (sx, sy)、旋转 syaw；有图模式下固件在 SET_POSE 之后工作在地图系 = 世界系
     c0, s0 = math.cos(math.radians(syaw)), math.sin(math.radians(syaw))
+    if pkg is not None:
+        c0, s0, sx0, sy0 = 1.0, 0.0, 0.0, 0.0
+    else:
+        sx0, sy0 = sx, sy
 
     def w2o(x, y):
-        dx, dy = x - sx, y - sy
+        dx, dy = x - sx0, y - sy0
         return c0 * dx + s0 * dy, -s0 * dx + c0 * dy
 
     def o2w(x, y):
-        return sx + c0 * x - s0 * y, sy + s0 * x + c0 * y
+        return sx0 + c0 * x - s0 * y, sy0 + s0 * x + c0 * y
 
     @MATCH_CB
     def match_cb(cxm, cym, cand, k, res):
@@ -160,6 +186,11 @@ def main():
     fw.py_set_h_cb(h_cb)
 
     # 任务
+    upload = rk_host.map_messages(pkg) if pkg is not None else []
+    loc_v = (ctypes.c_int32 * 12)()
+    align_t = None
+    loc_hist = []
+
     def send(b):
         buf = (ctypes.c_uint8 * len(b)).from_buffer_copy(b)
         fw.py_push_host(buf, len(b), ctypes.c_uint32(now_us))
@@ -167,6 +198,14 @@ def main():
     fw.py_set_time(now_us)
     goals_w = []
     pending = []                      # 静止标定结束后再下发任务
+    if pkg is not None:
+        if a.init_err == "rand":             # 按种子随机：±0.4 m、±8°（人工摆放 + 目测朝向的误差量级）
+            r_ = np.random.default_rng(a.seed + 100)
+            ex_, ey_, ea_ = r_.uniform(-0.4, 0.4), r_.uniform(-0.4, 0.4), r_.uniform(-8, 8)
+        else:
+            ex_, ey_, ea_ = (float(v) for v in a.init_err.split(","))
+        pending.append(rk_host.set_pose(int((sx + ex_) * 1000), int((sy + ey_) * 1000), int(round((syaw + ea_) * 100))))
+    kid = [float(v) for v in a.kidnap.split(",")] if a.kidnap else None
     if a.goal:
         gx, gy = (float(v) for v in a.goal.split(","))
         goals_w = [(gx, gy)]
@@ -224,10 +263,20 @@ def main():
     n_frames = 0
     frame_pending = False
     while t < a.time:
-        if pending and t >= a.calib:
+        for _ in range(4):
+            if upload:
+                send(upload.pop(0))
+        if pending and t >= a.calib and not upload:
             for b in pending:
                 send(b)
             pending = []
+        if kid and t >= kid[0]:
+            c_, s_ = math.cos(bot.yaw), math.sin(bot.yaw)
+            bot.x += kid[1] * c_ - kid[2] * s_
+            bot.y += kid[1] * s_ + kid[2] * c_
+            bot.yaw += math.radians(kid[3])
+            bot.update_attitude()
+            kid = None
         # 雷达帧：上一帧已提交（FPGA 双缓冲握手）才采集下一帧
         if t >= t_frame and not frame_pending:
             t_frame += 1.0 / a.fps
@@ -275,12 +324,19 @@ def main():
         t = ms * dt_ctrl
         now_us += 1000
         fw.py_set_time(ctypes.c_uint32(now_us))
-        if ms % 100 == 0:
+        if ms % 100 == 0 and pkg is not None:
+            fw.py_get_loc(loc_v)
+            loc_hist.append((t, loc_v[0], loc_v[1], loc_v[2], loc_v[10], loc_v[11], loc_v[5]))
+            if align_t is None and loc_v[0] in (2, 3):
+                align_t = t
+        localized = pkg is None or (align_t is not None and loc_v[0] in (2, 3))
+        if ms % 100 == 0 and localized:
             fw.py_get_state(st)
             ex, ey = o2w(st[0] / 1000, st[1] / 1000)
             traj_true.append((bot.x, bot.y, bot.z))
             traj_est.append((ex, ey, st[2] / 1000))
-            yaw_err = math.degrees(math.remainder(((st[3] & 0xFFFF) / 65536 * 2 * math.pi) + math.radians(syaw) - bot.yaw, 2 * math.pi))
+            yaw0 = 0.0 if pkg is not None else math.radians(syaw)
+            yaw_err = math.degrees(math.remainder(((st[3] & 0xFFFF) / 65536 * 2 * math.pi) + yaw0 - bot.yaw, 2 * math.pi))
             loc_err.append((math.hypot(ex - bot.x, ey - bot.y), abs(st[2] / 1000 - bot.z), abs(yaw_err)))
             tlog.append((t, bot.x, bot.y, bot.z, math.degrees(bot.yaw), ex, ey, st[2] / 1000,
                          math.degrees(bot.yaw) + yaw_err, cmdv[0], cmdv[2], int(bot.blocked),
@@ -302,10 +358,11 @@ def main():
         _, V_, H_, RO_ = fpga.view
         gm_ = get_gmap(fw)
         fw.py_get_state(st)
-        np.savez(out / "final_maps.npz", cost=cost_window(fpga), lethal=fpga.last_lethal, V=V_, H=H_, RO=RO_,
+        np.savez(out / "final_maps.npz", cost=cost_window(fpga), lethal=fpga.last_lethal, V=V_, H=H_, RO=RO_, seen=gm_[5],
                  cx=fpga.cx, cy=fpga.cy, gmap=gm_[0], gm_o=np.array(gm_[1:4]), path=gm_[4], state=np.array(list(st)),
                  true=np.array([bot.x, bot.y, bot.z, bot.yaw]), fp_pts=np.array(ERR_PTS["fp"]).reshape(-1, 3),
-                 fn_pts=np.array(ERR_PTS["fn"]).reshape(-1, 3), match_log=np.array(match_log), tlog=np.array(tlog))
+                 fn_pts=np.array(ERR_PTS["fn"]).reshape(-1, 3), match_log=np.array(match_log), tlog=np.array(tlog),
+                 loc_hist=np.array(loc_hist).reshape(-1, 7))
     if a.gif:
         from PIL import Image
         frames = [Image.open(p) for p in sorted(out.glob("snapshot_[0-9]*.png"))] + [Image.open(out / "snapshot_final.png")]
@@ -334,6 +391,13 @@ def main():
         "loc_err_z_max_m": round(float(le[:, 1].max()), 3),
         "loc_err_yaw_final_deg": round(float(le[-1, 2]), 2),
         "match_applied": int(ml[-1, 11]),
+        "prior": bool(pkg is not None),
+        "align_s": round(align_t - a.calib, 2) if align_t is not None else None,
+        "loc_final": int(loc_v[0]) if pkg is not None else 0,
+        "n_align": int(loc_v[3]), "n_align_fail": int(loc_v[4]), "n_lost": int(loc_v[5]),
+        "align_q": [int(loc_v[6]), int(loc_v[7])],
+        "t_degraded_s": round(sum(1 for h in loc_hist if h[1] == 3) * 0.1, 1),
+        "t_lost_s": round(sum(0.1 for h in loc_hist if align_t is not None and h[0] > align_t and h[1] in (1, 4)), 1),
         "trav_lethal_recall": round(tp / max(1, tp + fn), 3),
         "trav_false_lethal_rate": round(fp / max(1, fp + tn), 4),
         "trav_cells": {"tp": tp, "fn": fn, "fp": fp, "tn": tn},
@@ -342,6 +406,23 @@ def main():
     (out / "metrics.json").write_text(json.dumps(m, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps(m, ensure_ascii=False))
     return 0
+
+
+def get_prior(scene_name, spec):
+    """先验地图包：spec 为文件路径，或 auto（虚拟扫图生成，缓存到 sim/build/prior/<场景>.nvmp）"""
+    if spec != "auto":
+        return Path(spec).read_bytes()
+    p = ROOT / "sim" / "build" / "prior" / f"{scene_name}.nvmp"
+    if p.exists():
+        return p.read_bytes()
+    sc = W.SCENES[scene_name]()
+    lid = sw.VirtualLidar(noise_mm=4.0, seed=11, rng_max=8.0, step=0.015)
+    sp, ap_, _ = prior_map.survey_scan(sc, lid, sw.mount_pose(height=0.20, pitch_down_deg=10.0, x=0.08))
+    x0, y0, x1, y1 = sc.bounds
+    pkg, _ = prior_map.build_package(sp, ap_, bounds_mm=(x0 * 1000 - 200, y0 * 1000 - 200, x1 * 1000 + 200, y1 * 1000 + 200))
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_bytes(pkg)
+    return pkg
 
 
 def save_err_plot(path, scene, pts, traj_true):
@@ -456,7 +537,9 @@ def get_gmap(fw):
     n = fw.py_get_gmap(grid, v, path)
     gn = v[2]
     g = np.frombuffer(bytes(grid), dtype=np.uint8)[:gn * gn].reshape(gn, gn)
-    return g, v[0], v[1], v[3], np.array(path[:2 * n]).reshape(-1, 2)
+    seen = (ctypes.c_uint8 * (gn * gn))()
+    fw.py_get_seen(seen)
+    return g, v[0], v[1], v[3], np.array(path[:2 * n]).reshape(-1, 2), np.frombuffer(bytes(seen), dtype=np.uint8).reshape(gn, gn)
 
 
 def save_snapshot(path, scene, fpga, traj_true, traj_est, goals, o2w, w2o, a, gm=None, o2w_est=None):
@@ -519,12 +602,14 @@ def save_snapshot(path, scene, fpga, traj_true, traj_est, goals, o2w, w2o, a, gm
     ax[2].set_title("判定对比：绿=对可通行 灰=对致命 橙=误报 红=漏报")
     # 4. 全局记忆栅格与 A* 路径（里程计系，按初始位姿换到世界系显示；不做漂移对齐）
     if gm is not None:
-        g, gox, goy, ds, pth = gm
+        g, gox, goy, ds, pth, seen = gm
         cell = ds * RES_MM / 1000
         gx0, gy0 = o2w_est(gox * cell, goy * cell)
         img = np.where(g == 255, np.nan, np.where(g >= 254, 254.0, g.astype(float)))
-        ax[3].imshow(img, origin="lower", extent=(gx0, gx0 + g.shape[1] * cell, gy0, gy0 + g.shape[0] * cell),
-                     cmap="magma_r", vmin=0, vmax=254)
+        ext = (gx0, gx0 + g.shape[1] * cell, gy0, gy0 + g.shape[0] * cell)
+        ax[3].imshow(img, origin="lower", extent=ext, cmap="magma_r", vmin=0, vmax=254)
+        if a.prior and a.search:
+            ax[3].imshow(np.where(seen > 0, 1.0, np.nan), origin="lower", extent=ext, cmap="winter", alpha=0.35, vmin=0, vmax=1)
         if len(pth):
             px, py = o2w_est((pth[:, 0] + gox + 0.5) * cell, (pth[:, 1] + goy + 0.5) * cell)
             ax[3].plot(px, py, "g.-", lw=1, ms=3)
@@ -534,7 +619,8 @@ def save_snapshot(path, scene, fpga, traj_true, traj_est, goals, o2w, w2o, a, gm
             ax[3].plot(gg[0], gg[1], "k*", ms=12)
         ax[3].set_xlim(x0, x1)
         ax[3].set_ylim(y0, y1)
-        ax[3].set_title("全局记忆栅格 + A* 路径（估计位姿系）")
+        ax[3].set_title("先验 + 观测记忆栅格、A* 路径（地图系）" + ("，青=相机已看过" if a.prior and a.search else "")
+                        if a.prior else "全局记忆栅格 + A* 路径（估计位姿系）")
     for x in ax:
         x.set_aspect("equal")
     plt.tight_layout()

@@ -130,8 +130,13 @@ bool hal_match_start(int32_t cx_mm, int32_t cy_mm, const hal_match_cand_t *c, in
 
 bool hal_match_result(hal_match_res_t *res, int k)
 {
-    if (!(nav_rd(NAV_MATCH_STAT) & NAV_MATCH_STAT_EVAL_DONE_MASK)) return false;
+    uint32_t st = nav_rd(NAV_MATCH_STAT);
+    if (!(st & NAV_MATCH_STAT_EVAL_DONE_MASK)) return false;
+    /* 抽样后的点数：步长 ceil(存量/1024)，与硬件抽样一致 */
+    uint32_t np = FIELD(st, MATCH_STAT, NPTS), stride = (np + 1023) / 1024;
+    uint32_t ns = stride ? (np + stride - 1) / stride : 0;
     for (int i = 0; i < k; i++) {
+        res[i].n_pts = ns;
         uint32_t w1 = nav_rd(NAV_WIN_MATCH_RES_BASE + 8u * (uint32_t)i + 4u);
         res[i].cost = nav_rd(NAV_WIN_MATCH_RES_BASE + 8u * (uint32_t)i);
         res[i].n_valid = w1 & 0xFFFFu;
@@ -151,6 +156,60 @@ void hal_match_update(int32_t dx, int32_t dy, int32_t dyaw, int32_t cx_mm, int32
     /* 等并图与建似然场结束（约 1 ms），保证下一帧提取结构点前点缓冲已用完 */
     uint32_t t0 = hal_time_us();
     while ((nav_rd(NAV_MATCH_STAT) & NAV_MATCH_STAT_BUSY_MASK) && (uint32_t)(hal_time_us() - t0) < 5000) { }
+}
+
+static void match_wait_idle(uint32_t max_us)
+{
+    uint32_t t0 = hal_time_us();
+    while ((nav_rd(NAV_MATCH_STAT) & NAV_MATCH_STAT_BUSY_MASK) && (uint32_t)(hal_time_us() - t0) < max_us) { }
+}
+
+static void match_ctrl(uint32_t set, uint32_t clr)
+{
+    nav_wr(NAV_MATCH_CTRL, (nav_rd(NAV_MATCH_CTRL) | set) & ~clr);
+}
+
+void hal_prior_begin(void)
+{
+    match_wait_idle(50000);
+    match_ctrl(0, NAV_MATCH_CTRL_PRIOR_MASK);
+    nav_wr(NAV_MATCH_CMD, NAV_MATCH_CMD_CLEAR_MASK);           /* 清结构图（64K 字，约 0.7 ms） */
+    match_wait_idle(5000);
+}
+
+void hal_prior_write(uint16_t slot, uint32_t word)
+{
+    nav_wr(NAV_MATCH_SM_ADDR, slot);
+    nav_wr(NAV_MATCH_SM_WDATA, word & 0x7FFFFFu);
+}
+
+void hal_prior_enable(bool en, int32_t ox, int32_t oy)
+{
+    match_wait_idle(50000);
+    if (en) {
+        nav_wr(NAV_MATCH_LFO_X, (uint32_t)ox);
+        nav_wr(NAV_MATCH_LFO_Y, (uint32_t)oy);
+        match_ctrl(NAV_MATCH_CTRL_PRIOR_MASK, 0);
+    } else {
+        match_ctrl(0, NAV_MATCH_CTRL_PRIOR_MASK);
+        nav_wr(NAV_MATCH_CMD, NAV_MATCH_CMD_CLEAR_MASK);
+        match_wait_idle(5000);
+    }
+}
+
+void hal_match_gate(bool on)
+{
+    match_ctrl(on ? 0 : NAV_MATCH_CTRL_NOGATE_MASK, on ? NAV_MATCH_CTRL_NOGATE_MASK : 0);
+}
+
+void hal_match_zband(int32_t lo, int32_t hi)
+{
+    nav_wr(NAV_MATCH_ZREL, ((uint32_t)(uint16_t)hi << 16) | (uint16_t)lo);
+}
+
+void hal_map_clear(void)
+{
+    nav_wr(NAV_MAP_CMD, NAV_MAP_CMD_CLEAR_MASK);
 }
 
 bool hal_map_height(int32_t x_mm, int32_t y_mm, int32_t *h_mm)

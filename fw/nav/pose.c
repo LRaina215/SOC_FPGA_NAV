@@ -119,6 +119,24 @@ void pose_correct(pose_est_t *p, int32_t x, int32_t y, angle_t yaw)
 }
 
 
+void pose_set(pose_est_t *p, int32_t x, int32_t y, angle_t yaw)
+{
+    int32_t da = fx_angle_diff(p->cur.yaw, yaw);
+    int64_t c = fx_cos((angle_t)da), s = fx_sin((angle_t)da);
+    int32_t cx = p->cur.x, cy = p->cur.y;
+    for (int i = 0; i < p->hist_n; i++) {
+        int idx = (p->hist_head - 1 - i + 2 * POSE_HIST) % POSE_HIST;
+        nav_pose_t *h = &p->hist[idx];
+        int64_t rx = h->x - cx, ry = h->y - cy;
+        h->x = x + (int32_t)((rx * c - ry * s) / Q14);
+        h->y = y + (int32_t)((rx * s + ry * c) / Q14);
+        h->yaw = (angle_t)(h->yaw + da);
+    }
+    p->cur.x = x; p->cur.y = y; p->cur.yaw = yaw;
+    p->x_um = (int64_t)x * 1000;
+    p->y_um = (int64_t)y * 1000;
+}
+
 void pose_correct_delta(pose_est_t *p, int32_t dx, int32_t dy, int32_t dz, int32_t dyaw)
 {
     p->x_um += (int64_t)dx * 1000;

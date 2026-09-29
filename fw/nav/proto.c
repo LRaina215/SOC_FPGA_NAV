@@ -35,6 +35,24 @@ bool proto_parse(const uint8_t *b, int len, proto_msg_t *m)
         if (n < 1) return false;
         m->u.mode.mode = p[0];
         return true;
+    case MSG_SET_POSE:
+        if (n < 20) return false;
+        m->u.pose.x = rd32(p); m->u.pose.y = rd32(p + 4); m->u.pose.yaw_cdeg = rd32(p + 8);
+        m->u.pose.flags = rd16(p + 12); m->u.pose.range_mm = rd16(p + 14); m->u.pose.range_cdeg = rd16(p + 16);
+        return true;
+    case MSG_MAP_BEGIN:
+        if (n < 4) return false;
+        m->u.map_begin.total = (uint32_t)rd32(p);
+        return true;
+    case MSG_MAP_DATA:
+        if (n < 4) return false;
+        m->u.map_data.offset = (uint32_t)rd32(p);
+        m->u.map_data.n = (uint16_t)(n - 4);
+        m->u.map_data.data = p + 4;
+        return true;
+    case MSG_MAP_END:
+    case MSG_MAP_CLEAR:
+        return true;
     default:
         return false;
     }
@@ -49,6 +67,15 @@ int proto_build_status(uint8_t *buf, const proto_status_t *s)
     p = wr16(p, (uint16_t)s->vx); p = wr16(p, (uint16_t)s->wz);
     p = wr16(p, s->flags); p = wr16(p, 0);
     p = wr32(p, s->t_us);
+    *p++ = s->loc_state; *p++ = s->loc_quality; p = wr16(p, 0);
+    return (int)(p - buf);
+}
+
+int proto_build_map_ack(uint8_t *buf, uint32_t next_offset, uint8_t state)
+{
+    uint8_t *p = hdr(buf, MSG_MAP_ACK);
+    p = wr32(p, next_offset);
+    *p++ = state; *p++ = 0; *p++ = 0; *p++ = 0;
     return (int)(p - buf);
 }
 

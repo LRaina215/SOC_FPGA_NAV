@@ -36,6 +36,8 @@ int pose_match_cands(const pm_cfg_t *c, hal_match_cand_t *cand)
 bool pose_match_solve(const pm_cfg_t *c, pose_est_t *pe, const hal_match_res_t *res, int k, pm_stat_t *st)
 {
     st->applied = false;
+    st->n_in_best = 0;
+    st->at_edge = false;
     const int h = c->half, w = 2 * h + 1, ha = c->half_ang, wa = 2 * ha + 1;
     if (k != w * w * wa) return false;
     st->n_runs++;
@@ -54,6 +56,7 @@ bool pose_match_solve(const pm_cfg_t *c, pose_est_t *pe, const hal_match_res_t *
         if (s < bs) { bs = s; best = i; }
     }
     st->cost0 = (uint32_t)score(&res[ic]);
+    st->n_in_best = res[best].n_in;
     st->cost_best = (uint32_t)bs;
 
     /* 亚步长与退化判定。
@@ -117,6 +120,7 @@ bool pose_match_solve(const pm_cfg_t *c, pose_est_t *pe, const hal_match_res_t *
             int64_t in = ax == 0 ? RES(bx - (cur > 0 ? 1 : -1), by, ba) : RES(bx, by - (cur > 0 ? 1 : -1), ba);
             degen[ax] = (in - bs) * 2 < thr;
             if (degen[ax]) off[ax] = 0;
+            else st->at_edge = true;        /* 约束充分的方向上最优落在边界：真实误差可能超出搜索范围 */
         }
     }
     {   /* 角度轴 */
@@ -127,6 +131,7 @@ bool pose_match_solve(const pm_cfg_t *c, pose_est_t *pe, const hal_match_res_t *
             int64_t in = (ba == -ha) ? sp : sm;
             degen[2] = (in - bs) * 2 < thr_a;
             off[2] = degen[2] ? 0 : ba * 256;
+            if (!degen[2]) st->at_edge = true;
         } else {
             int64_t curv = sm + sp - 2 * bs;
             degen[2] = curv < thr_a;

@@ -40,8 +40,22 @@
 
 1. 在 IP 生成器中生成软核（GowinGoRV32 / GowinPicoRV32 等），写一个总线桥接到 `nav_bus_arb` 的 m0 口。
 2. 固件：`fw/app/main.c` + `fw/app/nav_app.c` + `fw/nav/*.c` + `fw/drv/hal_fpga.c`，定义 `NAV_BASE`；启动代码、链接脚本放 `fw/bsp/`。
-3. 固件内存需求：代价图副本 16 KB + A* 约 28 KB + 其余约 10 KB。
+3. 固件内存需求：代价图副本 16 KB + A* 约 28 KB + 记忆栅格约 37 KB（含先验层 9 KB）+ 探索约 50 KB（BFS 37 KB、相机已看过 9 KB）+ 其余约 10 KB。
 
 ## 5. 底盘接入
 
 `ch_*` 接 RL 运动控制模块，`odo_*` 接底盘速度回传。按实测填写 `lp_cfg.caps`（能否横移、速度上限、半径），以及 `SAFE.CTRL.HOLONOMIC`、`SAFE.LIM_*`。
+
+## 6. 有图模式（先验地图）与 PC 单独操作
+
+不接 RK3588 也能完成全部操作：PC 经板载 USB 串口（或网线接 SFP 口）运行 `tools/nav_host.py`。
+
+1. 扫图：推着车在场地里走一圈（经过所有要去的地方，转角处多停留），录 XT-M60 + IMU088（+ 轮速）。
+   Linux 上用激光惯性 SLAM（FAST-LIO 等）建图，导出地图点云（地图系，单位 m，z 轴向上）。这个地图系就是之后目标点的坐标系。
+2. 转包：`python tools/map_tool.py build map.pcd -o field.nvmp`，打开同名 .png 检查：左图应能看到墙、箱体、路沿的轮廓，
+   右图黑色为不可通行。场地（含墙）须 ≤ 12.8 m × 12.8 m。
+3. 下发：`python tools/nav_host.py --link uart:COM5 map field.nvmp`，应答"已加载"。
+4. 初始位姿：把车放到大致已知的位置（误差 0.5 m / 10° 以内），`nav_host.py --link uart:COM5 pose <x_mm> <y_mm> <yaw_度>`。
+   板上对准约 1.6 s；`listen` 里 loc 变为"正常"后才会执行任务。视野里只有平行墙面时车会原地转 35° 再试。
+5. 任务：`goal x y`、`wp x1,y1 x2,y2 --loop`、`mode search`（有图搜索），坐标都是地图系 mm。
+6. `nav_host.py ... unmap` 回到无图模式。

@@ -70,6 +70,12 @@ module nav_regfile (
     output reg  [31:0] r_MBX_TX_LEN,
     output wire        p_MBX_TX_GO,
     input  wire [31:0] i_MBX_TX_STAT,
+    output wire        p_MBX_INJ_DATA,
+    output reg  [31:0] r_MBX_INJ_LEN,
+    output wire        p_MBX_INJ_GO,
+    output reg  [31:0] r_MBX_TXB_ADDR,
+    input  wire [31:0] i_MBX_TXB_Q,
+    input  wire [31:0] i_MBX_TX_SEQ,
     output reg  [31:0] r_LIDAR_CTRL,
     output reg  [31:0] r_LIDAR_UDP_SKIP,
     output reg  [31:0] r_LIDAR_DEPTH_CFG,
@@ -169,7 +175,11 @@ module nav_regfile (
     output reg  [31:0] r_MATCH_UPD_DYAW,
     output reg  [31:0] r_MATCH_DBG_ADDR,
     output wire        p_MATCH_DBG_CMD,
-    input  wire [31:0] i_MATCH_DBG_Q
+    input  wire [31:0] i_MATCH_DBG_Q,
+    output reg  [31:0] r_MATCH_LFO_X,
+    output reg  [31:0] r_MATCH_LFO_Y,
+    output reg  [31:0] r_MATCH_SM_ADDR,
+    output wire        p_MATCH_SM_WDATA
 );
     always @(posedge clk) begin
         if (rst) r_SYS_IRQ_STATUS <= 32'h0;
@@ -187,6 +197,8 @@ module nav_regfile (
     assign p_MBX_RX_POP = wr && (addr == 16'h1208);
     assign p_MBX_TX_DATA = wr && (addr == 16'h1220);
     assign p_MBX_TX_GO = wr && (addr == 16'h1228);
+    assign p_MBX_INJ_DATA = wr && (addr == 16'h1230);
+    assign p_MBX_INJ_GO = wr && (addr == 16'h1238);
     assign p_LIDAR_POSE_COMMIT = wr && (addr == 16'h2070);
     assign p_LIDAR_LUT_XY = wr && (addr == 16'h2084);
     assign p_LIDAR_LUT_Z = wr && (addr == 16'h2088);
@@ -198,6 +210,7 @@ module nav_regfile (
     assign p_IMU_TX_DATA = wr && (addr == 16'h6010);
     assign p_MATCH_CMD = wr && (addr == 16'h700C);
     assign p_MATCH_DBG_CMD = wr && (addr == 16'h7030);
+    assign p_MATCH_SM_WDATA = wr && (addr == 16'h7044);
     always @(posedge clk) begin
         if (rst) begin
             r_SYS_SCRATCH <= 32'h00000000;
@@ -221,6 +234,8 @@ module nav_regfile (
             r_NETH_PEER_MAC_HI <= 32'h00000000;
             r_NETH_PEER_PORT <= 32'h00002329;
             r_MBX_TX_LEN <= 32'h00000000;
+            r_MBX_INJ_LEN <= 32'h00000000;
+            r_MBX_TXB_ADDR <= 32'h00000000;
             r_LIDAR_CTRL <= 32'h00000001;
             r_LIDAR_UDP_SKIP <= 32'h00000014;
             r_LIDAR_DEPTH_CFG <= 32'h00000100;
@@ -249,7 +264,7 @@ module nav_regfile (
             r_MAP_THR0 <= 32'h00640064;
             r_MAP_THR1 <= 32'h00230049;
             r_MAP_WEIGHT <= 32'h002030A0;
-            r_MAP_INFL <= 32'h00000005;
+            r_MAP_INFL <= 32'h00000003;
             r_MAP_DROP <= 32'h00000410;
             r_MAP_FILL <= 32'h00281E05;
             r_MAP_ELEV_ADDR <= 32'h00000000;
@@ -279,6 +294,9 @@ module nav_regfile (
             r_MATCH_UPD_DY <= 32'h00000000;
             r_MATCH_UPD_DYAW <= 32'h00000000;
             r_MATCH_DBG_ADDR <= 32'h00000000;
+            r_MATCH_LFO_X <= 32'h00000000;
+            r_MATCH_LFO_Y <= 32'h00000000;
+            r_MATCH_SM_ADDR <= 32'h00000000;
         end else if (wr) begin
             case (addr)
             16'h000C: r_SYS_SCRATCH <= wdata;
@@ -302,6 +320,8 @@ module nav_regfile (
             16'h1130: r_NETH_PEER_MAC_HI <= wdata;
             16'h1134: r_NETH_PEER_PORT <= wdata;
             16'h1224: r_MBX_TX_LEN <= wdata;
+            16'h1234: r_MBX_INJ_LEN <= wdata;
+            16'h123C: r_MBX_TXB_ADDR <= wdata;
             16'h2000: r_LIDAR_CTRL <= wdata;
             16'h2004: r_LIDAR_UDP_SKIP <= wdata;
             16'h2008: r_LIDAR_DEPTH_CFG <= wdata;
@@ -360,6 +380,9 @@ module nav_regfile (
             16'h7024: r_MATCH_UPD_DY <= wdata;
             16'h7028: r_MATCH_UPD_DYAW <= wdata;
             16'h702C: r_MATCH_DBG_ADDR <= wdata;
+            16'h7038: r_MATCH_LFO_X <= wdata;
+            16'h703C: r_MATCH_LFO_Y <= wdata;
+            16'h7040: r_MATCH_SM_ADDR <= wdata;
             default: ;
             endcase
         end
@@ -411,6 +434,12 @@ module nav_regfile (
         16'h1224: rdata = r_MBX_TX_LEN;
         16'h1228: rdata = 32'h0;
         16'h122C: rdata = i_MBX_TX_STAT;
+        16'h1230: rdata = 32'h0;
+        16'h1234: rdata = r_MBX_INJ_LEN;
+        16'h1238: rdata = 32'h0;
+        16'h123C: rdata = r_MBX_TXB_ADDR;
+        16'h1240: rdata = i_MBX_TXB_Q;
+        16'h1244: rdata = i_MBX_TX_SEQ;
         16'h2000: rdata = r_LIDAR_CTRL;
         16'h2004: rdata = r_LIDAR_UDP_SKIP;
         16'h2008: rdata = r_LIDAR_DEPTH_CFG;
@@ -509,6 +538,10 @@ module nav_regfile (
         16'h702C: rdata = r_MATCH_DBG_ADDR;
         16'h7030: rdata = 32'h0;
         16'h7034: rdata = i_MATCH_DBG_Q;
+        16'h7038: rdata = r_MATCH_LFO_X;
+        16'h703C: rdata = r_MATCH_LFO_Y;
+        16'h7040: rdata = r_MATCH_SM_ADDR;
+        16'h7044: rdata = 32'h0;
         default: begin rdata = 32'h0; hit = 1'b0; end
         endcase
     end

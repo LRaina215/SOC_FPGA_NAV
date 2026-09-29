@@ -21,7 +21,59 @@ void gmap_init(gmap_t *g)
     gmap_cfg_t c = g->cfg;
     *g = (gmap_t){0};
     g->cfg = c;
-    for (int i = 0; i < GM_N * GM_N; i++) { g->occ[i] = UNSEEN; g->cost[i] = 0; g->grid[i] = 255; }
+    for (int i = 0; i < GM_N * GM_N; i++) { g->occ[i] = UNSEEN; g->cost[i] = 0; g->grid[i] = 255; g->prior[i] = 255; }
+}
+
+static void compose(gmap_t *g)
+{
+    const gmap_cfg_t *c = &g->cfg;
+    for (int i = 0; i < GM_N * GM_N; i++) {
+        int o = g->occ[i];
+        uint8_t obs = (o == UNSEEN) ? 255 : (o >= c->occ_thr) ? NP_COST_LETHAL : g->cost[i];
+        uint8_t pr = g->has_prior ? g->prior[i] : 255;
+        if (obs == 255) g->grid[i] = pr;
+        else if (pr == NP_COST_LETHAL && obs != NP_COST_LETHAL && o > c->occ_min + 1) g->grid[i] = pr;
+        else g->grid[i] = obs;
+    }
+}
+
+void gmap_clear_obs(gmap_t *g)
+{
+    for (int i = 0; i < GM_N * GM_N; i++) { g->occ[i] = UNSEEN; g->cost[i] = 0; }
+    if (!g->has_prior) g->init = false;
+    compose(g);
+    g->n_shift++;                   /* 已有路径失效 */
+}
+
+void gmap_prior_begin(gmap_t *g, int32_t gox, int32_t goy, int gnx, int gny)
+{
+    (void)gnx; (void)gny;
+    for (int i = 0; i < GM_N * GM_N; i++) g->prior[i] = 255;
+    g->has_prior = false;
+    g->pgnx = gnx;
+    g->pox = gox; g->poy = goy;
+}
+
+void gmap_prior_put(gmap_t *g, int i, uint8_t v)
+{
+    int x = i % g->pgnx, y = i / g->pgnx;
+    if (x < GM_N && y < GM_N) g->prior[y * GM_N + x] = v;
+}
+
+void gmap_prior_done(gmap_t *g)
+{
+    for (int i = 0; i < GM_N * GM_N; i++) { g->occ[i] = UNSEEN; g->cost[i] = 0; }
+    g->ox = g->pox; g->oy = g->poy;
+    g->init = true;
+    g->has_prior = true;
+    g->n_shift++;
+    compose(g);
+}
+
+void gmap_prior_drop(gmap_t *g)
+{
+    g->has_prior = false;
+    gmap_clear_obs(g);
 }
 
 static int32_t fine_idx(int32_t v_mm, uint16_t inv) { return (int32_t)(((int64_t)v_mm * inv) >> 16); }
@@ -72,7 +124,7 @@ void gmap_update(gmap_t *g, const uint8_t *map, const hal_map_info_t *mi, int32_
         g->ox = rcx - GM_N / 2;
         g->oy = rcy - GM_N / 2;
         g->init = true;
-    } else {
+    } else if (!g->has_prior) {
         int lx = rcx - g->ox, ly = rcy - g->oy;
         int sx = 0, sy = 0;
         if (lx < GM_N / 4 || lx >= GM_N - GM_N / 4) sx = lx - GM_N / 2;
@@ -110,9 +162,6 @@ void gmap_update(gmap_t *g, const uint8_t *map, const hal_map_info_t *mi, int32_
             g->cost[k] = (uint8_t)mc;
         }
     }
-    for (int i = 0; i < GM_N * GM_N; i++) {
-        int o = g->occ[i];
-        g->grid[i] = (o == UNSEEN) ? 255 : (o >= c->occ_thr) ? NP_COST_LETHAL : g->cost[i];
-    }
+    compose(g);
     g->n_upd++;
 }

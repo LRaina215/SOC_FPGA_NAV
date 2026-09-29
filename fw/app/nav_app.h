@@ -8,9 +8,15 @@
 #include "nav_task.h"
 #include "imu_parse.h"
 #include "pose_match.h"
+#include "loc.h"
+#include "prior.h"
 
 #define APP_PLAN_PERIOD_US   100000    /* 规划 10 Hz */
 #define APP_STATUS_PERIOD_US 200000    /* 状态回传 5 Hz */
+/* 结构点高度带（相对足底 mm）：无图 / 有图（有图放宽下限，见 model/slf_match.py Z_LO_PRIOR） */
+#define APP_ZLO_ODOM   60
+#define APP_ZLO_PRIOR  (-300)
+#define APP_ZHI        1500
 
 typedef struct {
     nav_task_t   nt;
@@ -28,7 +34,19 @@ typedef struct {
     nav_pose_t   pm_at;                 /* 该帧提交时的位姿 */
     int32_t      zband_lo, zband_hi;    /* 保留点高度带（相对机器人，mm）：地面以下 / 机身以上的点不进地图 */
     int32_t      anchor_gain;           /* 足迹高度锚定增益 /256（0 = 关闭） */
+    /* 有图模式 */
+    prior_rx_t   prx;                   /* 先验地图包接收 */
+    loc_t        loc;                   /* 对准 / 跟踪质量 / 重定位 */
+    bool         pm_align;              /* 当前打分属于对准搜索 */
+    bool         pm_stale;              /* 位姿已跳变：进行中的打分结果作废 */
+    uint32_t     t_lost;                /* 进入丢失的时刻（定期重试对准） */
+    pm_cfg_t     pm_cfg_prior;          /* 有图跟踪用的匹配参数（先验图可信，增益更高） */
+    uint32_t     turn_until;            /* 对准换视角：原地转到这个时刻（之后再稳定 300 ms） */
+    bool         turning;
 } nav_app_t;
+
+/* 先验地图已加载（有图模式） */
+bool nav_app_have_prior(void);
 
 extern nav_app_t g_app;
 

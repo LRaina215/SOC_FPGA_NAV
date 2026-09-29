@@ -265,6 +265,27 @@ module tb_nav_top;
         repeat (3000) @(posedge clk);
         if (h_udp_len != 12) begin errs++; $display("主机口未发出 12 字节 UDP（%0d 帧，长度 %0d）", h_tx_frames, h_udp_len); end
         rd(RA_NETH_PEER_PORT, d); chk("NETH.PEER_PORT（学习）", d, 9001);
+        // 发送缓冲回读（PC 经串口取状态）
+        rd(RA_MBX_TX_SEQ, d); chk("MBX.TX_SEQ", d, 1);
+        wr(RA_MBX_TXB_ADDR, 1); rd(RA_MBX_TXB_Q, d); chk("MBX.TXB 字1", d, 32'h11223344);
+        wr(RA_MBX_TXB_ADDR, 2); rd(RA_MBX_TXB_Q, d); chk("MBX.TXB 字2", d, 32'h55667788);
+        // 串口注入：7 字节报文 -> 接收队列（源 IP 0）
+        wr(RA_MBX_INJ_DATA, 32'h3001564E); wr(RA_MBX_INJ_DATA, 32'h00AABB03);
+        wr(RA_MBX_INJ_LEN, 7); wr(RA_MBX_INJ_GO, 1);
+        repeat (50) @(posedge clk);
+        rd(RA_MBX_RX_STAT, d);
+        chk("注入 AVAIL", d[31], 1);
+        chk("注入 LEN", d[15:0], 7);
+        rd(RA_MBX_RX_DATA, d); chk("注入 字0", d, 32'h3001564E);
+        rd(RA_MBX_RX_DATA, d); chk("注入 字1（只含 3 字节）", d, 32'h00AABB03);
+        rd(RA_MBX_RX_SRC_IP, d); chk("注入 源 IP", d, 0);
+        wr(RA_MBX_RX_POP, 1);
+        // 第二条注入（写指针已复位）
+        wr(RA_MBX_INJ_DATA, 32'hCAFEF00D); wr(RA_MBX_INJ_LEN, 4); wr(RA_MBX_INJ_GO, 1);
+        repeat (50) @(posedge clk);
+        rd(RA_MBX_RX_STAT, d); chk("注入2 LEN", d[15:0], 4);
+        rd(RA_MBX_RX_DATA, d); chk("注入2 字0", d, 32'hCAFEF00D);
+        wr(RA_MBX_RX_POP, 1);
 
         // ---------- 安全限幅 ----------
         wr(RA_SAFE_TICK_US, 10); wr(RA_SAFE_WD_US, 400); wr(RA_SAFE_LIM_A, (32'd10 << 16) | 32'd30);

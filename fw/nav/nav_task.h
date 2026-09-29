@@ -71,6 +71,11 @@ typedef struct {
     bool           recovering;
     int8_t         recover_dir;      /* 1 = 倒车，0 = 原地转 */
     uint32_t       n_recover;
+    bool           hold;             /* 定位未就绪：原地保持（速度为零、保持平衡），模式与目标不变 */
+    bool           slow;             /* 定位退化：限速一半 */
+    int16_t        hold_wz;          /* 保持期间的原地转向角速度（对准换视角），0 = 静止 */
+    bool           stale;            /* 位姿跳变后，seq 仍为 stale_seq 的代价图是旧坐标系下的，不用 */
+    uint16_t       stale_seq;
 } nav_task_t;
 
 void nav_task_init(nav_task_t *nt);

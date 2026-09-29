@@ -2,6 +2,9 @@
 //   接收：主机口收到的 UDP 负载按报文存入环形缓冲（坏报文回退、空间不足整包丢弃），
 //         软核按报文读取：RX_STAT 看当前报文，RX_DATA 每次取 4 字节（小端），RX_POP 切下一报文。
 //   发送：软核逐字写 TX_DATA，写 TX_LEN 后 TX_GO，由 net_port 组帧发出。
+//   串口注入：PC 经 uart_bus_bridge 逐字写 INJ_DATA、写 INJ_LEN 后 INJ_GO，报文按与网口相同的方式入队
+//         （网口报文不在途时开始；注入期间开始的网口报文整包丢弃并计数）——导航不依赖网口/RK3588。
+//   发送回读：发送缓冲的影子副本可按字读回（txb_*），tx_seq 为已发送报文数，PC 经串口取状态/应答用。
 // 报文内容（目标点、目标坐标、状态）的格式由固件定义，见 docs/icd.md。
 module host_mbx #(
     parameter integer RX_AW  = 12,     // 接收缓冲字节地址位宽
@@ -12,14 +15,26 @@ module host_mbx #(
     input  wire        rst,
 
     // 来自 net_port 的负载
-    input  wire        u_valid,
-    input  wire [7:0]  u_data,
-    input  wire        u_last,
-    input  wire        u_err,
-    input  wire [31:0] u_src_ip,
-    input  wire [15:0] u_src_port,
-    input  wire [15:0] u_len,
-    input  wire [31:0] u_ts,
+    input  wire        e_valid,
+    input  wire [7:0]  e_data,
+    input  wire        e_last,
+    input  wire        e_err,
+    input  wire [31:0] e_src_ip,
+    input  wire [15:0] e_src_port,
+    input  wire [15:0] e_len,
+    input  wire [31:0] e_ts,
+
+    // 串口注入（软核总线）
+    input  wire        inj_we,
+    input  wire [31:0] inj_wdata,
+    input  wire        inj_go,
+    input  wire [15:0] inj_len,
+    input  wire [31:0] now_us,
+    // 发送回读
+    input  wire        txb_re,
+    input  wire [TX_WAW-1:0] txb_addr,
+    output wire [31:0] txb_q,
+    output reg  [31:0] tx_seq,
 
     // 软核接口（接收）
     output wire        rx_avail,
@@ -51,6 +66,66 @@ module host_mbx #(
     output wire [7:0]          pl_q
 );
     localparam integer RXSZ = 1 << RX_AW;
+
+    // ================================================================ 串口注入：字缓冲 -> 字节流，与网口流合并
+    reg  [TX_WAW:0] iwp;                // 注入缓冲写指针（字）
+    reg             ig_pend, ia;        // 待注入 / 发读中
+    reg  [15:0]     ilen, ioff;
+    reg  [31:0]     its;
+    reg             e_pkt, e_drop;      // 网口报文在途 / 丢弃中
+    reg             i_re;
+    reg  [TX_WAW-1:0] i_ra;
+    wire [31:0]     iq;
+    reg             iv1, iv2, il1, il2; // 读流水：发读 -> RAM 采样 -> 数据
+    reg  [1:0]      ib1, ib2;
+    nav_ram_sdp #(.DW(32), .AW(TX_WAW)) u_injb (
+        .clk(clk), .we(inj_we & ~iwp[TX_WAW]), .waddr(iwp[TX_WAW-1:0]), .wdata(inj_wdata),
+        .re(i_re), .raddr(i_ra), .rdata(iq)
+    );
+    wire ibusy   = ia | iv1 | iv2;
+    wire e_first = e_valid & ~e_pkt;
+    wire e_pass  = e_valid & ~(e_first ? ibusy : e_drop);
+    always @(posedge clk) begin
+        i_re <= 1'b0; iv1 <= 1'b0;
+        iv2 <= iv1; ib2 <= ib1; il2 <= il1;
+        if (rst) begin
+            iwp <= 0; ig_pend <= 1'b0; ia <= 1'b0; e_pkt <= 1'b0; e_drop <= 1'b0; iv2 <= 1'b0;
+        end else begin
+            if (inj_we && !iwp[TX_WAW]) iwp <= iwp + 1'b1;
+            if (inj_go) begin ig_pend <= 1'b1; ilen <= inj_len; its <= now_us; end
+            if (e_valid) begin
+                e_pkt <= ~e_last;
+                if (e_first) e_drop <= ibusy;
+            end
+            // 网口报文不在途时开始注入
+            if (ig_pend && !ibusy && !e_pkt && !e_valid) begin
+                ig_pend <= 1'b0;
+                ioff <= 0;
+                if (ilen == 0) iwp <= 0; else ia <= 1'b1;
+            end
+            if (ia) begin
+                i_re <= 1'b1; i_ra <= ioff[TX_WAW+1:2];
+                iv1 <= 1'b1; ib1 <= ioff[1:0]; il1 <= (ioff + 1'b1 >= ilen);
+                ioff <= ioff + 1'b1;
+                if (ioff + 1'b1 >= ilen) begin ia <= 1'b0; iwp <= 0; end
+            end
+        end
+    end
+    // 合并后的流寄存一拍（切断 选择器 -> 空间判断 -> 写使能 的长路径）
+    reg         u_valid, u_last, u_err;
+    reg  [7:0]  u_data;
+    reg  [31:0] u_src_ip, u_ts;
+    reg  [15:0] u_src_port, u_len;
+    always @(posedge clk) begin
+        u_valid    <= ~rst & (iv2 | e_pass);
+        u_data     <= iv2 ? iq[8*ib2 +: 8] : e_data;
+        u_last     <= iv2 ? il2 : e_last;
+        u_err      <= iv2 ? 1'b0 : e_err;
+        u_src_ip   <= iv2 ? 32'd0 : e_src_ip;
+        u_src_port <= iv2 ? 16'd0 : e_src_port;
+        u_len      <= iv2 ? ilen : e_len;
+        u_ts       <= iv2 ? its : e_ts;
+    end
 
     // ================================================================ 接收写侧
     reg [RX_AW:0] wp_c, wp_t, rp;       // 已提交写指针、临时写指针、读基址
@@ -165,14 +240,19 @@ module host_mbx #(
     );
     always @(posedge clk) if (pl_re) pb <= pl_addr[1:0];
     assign pl_q = tq[8*pb +: 8];
+    nav_ram_sdp #(.DW(32), .AW(TX_WAW)) u_txs (          // 发送缓冲影子（总线回读）
+        .clk(clk), .we(tx_we & ~twp[TX_WAW]), .waddr(twp[TX_WAW-1:0]), .wdata(tx_wdata),
+        .re(txb_re), .raddr(txb_addr), .rdata(txb_q)
+    );
 
     always @(posedge clk) begin
         tx_go <= 1'b0;
-        if (rst) twp <= 0;
+        if (rst) begin twp <= 0; tx_seq <= 0; end
         else begin
             if (tx_we && !twp[TX_WAW]) twp <= twp + 1'b1;
             if (tx_go_in && !tx_busy) begin
                 tx_go <= 1'b1;
+                tx_seq <= tx_seq + 1'b1;
                 tx_len <= tx_len_in;
                 twp <= 0;
             end

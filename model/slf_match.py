@@ -29,12 +29,17 @@ SN = 1 << SN_LOG2            # 结构图边长
 TAGB = 4
 DZ_MIN = 20                  # mm：竖直段最小高差（抑制噪声）
 SLOPE_K = 2                  # |Δz| > K·|Δxy|
-Z_LO, Z_HI = 60, 1500        # 相对机器人高度：只用离地 6 cm 以上、1.5 m 以下的点（去掉地面接缝与天花板）
+Z_LO, Z_HI = int(os.environ.get("SLF_ZLO", "60")), 1500   # 相对机器人足底高度（去掉地面接缝与天花板）
+# 有图模式的下限：机器人在平台/坡顶上时，脚下的路沿、平台侧面也是可用的竖直结构（先验图里有），
+# 相对足底 +60 mm 的下限会把它们全部丢掉——闭环仿真中平台上沿行驶方向漂移 0.28 m；放到 -300 mm 后最大误差 7 cm。
+# 无图模式保持 +60（自建图时低处结构的收益不明显，批量评测互有胜负）。
+Z_LO_PRIOR = -300
 HIT_MIN = 2
 HIT_FREEZE = 4               # 质心累计平均的次数，之后冻结
 HIT_MAX = 7                  # 命中数 3 bit
 DMAX = 8                     # 截断距离（格）
 C_NEAR = 40                  # 近邻代价上限（1/16 格，2.5 格）
+T_IN = 6                     # 内点门限（1/16 格，约 19 mm）：残差不超过它的点计为内点（定位质量 / 对准歧义判定）
 W_FAR = 0                    # 近邻区以外代价为常数：远处的点不施加拉力（加梯度后闭环平均误差反而变大，见 algorithms.md）
 GATE_D = 6                   # 参与打分的点：预测位置的距离场 <= 2 格（更远的多是新看到的结构）
 MARGIN = 8                   # 格：窗口边缘保留带（> 搜索范围 + 1）
@@ -43,7 +48,7 @@ MAX_PTS = 1024               # 每帧参与匹配的结构点上限（均匀抽�
 W = 160
 
 
-def structure_mask(p, pv, z_ref):
+def structure_mask(p, pv, z_ref, z_lo=None, z_hi=None):
     """p: (M,3) 里程计系点（行优先 60×160），pv 有效标志。返回结构点布尔掩码"""
     m = p.shape[0]
     up, dn = np.arange(0, m - W), np.arange(W, m)
@@ -55,7 +60,9 @@ def structure_mask(p, pv, z_ref):
     s[up] |= vert
     s[dn] |= vert
     zr = p[:, 2] - z_ref
-    return s & pv & (zr >= Z_LO) & (zr <= Z_HI)
+    z_lo = Z_LO if z_lo is None else z_lo
+    z_hi = Z_HI if z_hi is None else z_hi
+    return s & pv & (zr >= z_lo) & (zr <= z_hi)
 
 
 def subsample(idx, n=MAX_PTS):
@@ -88,6 +95,38 @@ class StructMap:
             w[s] |= lo.reshape(-1)
             mask[s] = 0x7FFFFF
         return w, mask
+
+    def load_prior(self, ox, oy, slot, word):
+        """有图模式：先验定位图（槽字已含法向/门控，离线算好）直接写进结构图；窗口原点固定为 (ox, oy)。
+        之后 update / build_lf 不再改动结构图（硬件：MATCH.CTRL.PRIOR=1 时 UPDATE 只清点缓冲）"""
+        self.hit[:] = 0
+        self.tag[:] = 0
+        self.cxs[:] = 0
+        self.cys[:] = 0
+        low = np.zeros(SN * SN, dtype=np.int64)
+        self.tag[slot] = (word >> 19) & 15
+        self.hit[slot] = (word >> 16) & 7
+        self.cxs[slot] = (word >> 12) & 15
+        self.cys[slot] = (word >> 8) & 15
+        low[slot] = word & 0xFF
+        w = np.arange(SN)
+        gx, gy = ox + w, oy + w
+        s = ((gy[:, None] & (SN - 1)) << SN_LOG2) | (gx[None, :] & (SN - 1))
+        lo = low[s]
+        occ = (lo >> 7) & 1 == 1
+        q = (lo >> 2) & 31
+        has = (lo >> 1) & 1 == 1
+        gate = lo & 1 == 1
+        nv = np.array(NVEC, dtype=np.int64)
+        d3 = np.where(gate, 0, 3 * DMAX)
+        self.lf = (ox, oy, occ, d3, self.cxs[s], self.cys[s], nv[q, 0], nv[q, 1], has)
+        self.lf_q = q
+        self.lf_slot = s
+        self.n_struct = int(occ.sum())
+        self.prior = True
+
+    prior = False
+    nogate = False               # 初始对准/重定位：不做门控（位姿误差大时门控会把正确的点也挡掉）
 
     def cell(self, v):
         return (np.clip(v, -(1 << 25), (1 << 25) - 1) * self.inv_res) >> 16
@@ -138,16 +177,19 @@ class StructMap:
         ox, oy, occ, d3, cxs, cys, nx, ny, has = self.lf
         # 只用预测位置离窗口边界 >= MARGIN 格的点：否则候选平移会把窗外的点"移进"窗内而降低代价（边界偏差）
         wx0, wy0 = self.cell(px) - ox, self.cell(py) - oy
-        core = (wx0 >= MARGIN) & (wx0 < SN - MARGIN) & (wy0 >= MARGIN) & (wy0 < SN - MARGIN)
+        # 有图模式：窗口固定、槽字标签与点所在格比对（窗口外 = 无结构），不需要边缘保留带
+        mg = 0 if self.prior else MARGIN
+        core = (wx0 >= mg) & (wx0 < SN - mg) & (wy0 >= mg) & (wy0 < SN - mg)
         # 只用预测位置 GATE_D（1/3 格）以内已有结构的点：新看到的结构（面向前延伸的部分、新出现的物体）
-        # 离已知结构远，若参与打分会把位姿往"已知区"拉——沿运动方向的系统偏差（离线测试中稳定 -25 mm）
+        # 离已知结构远，若参与打分会把位姿往"已知区"拉——沿运动方向的系统偏差（离线测试中稳定 -25 mm）。
+        # 有图模式下它同时剔除先验图里没有的物体（临时箱子、行人）
         near = np.zeros_like(core)
-        near[core] = d3[wy0[core], wx0[core]] <= GATE_D
+        near[core] = True if self.nogate else d3[wy0[core], wx0[core]] <= GATE_D
         px, py = px[near], py[near]
         for k, (dx, dy, da) in enumerate(cands):
             x, y = apply_delta(px, py, dx, dy, da, cx_mm, cy_mm)
             out[k] = (len(px),) + point_cost(self.cell16(x) - 16 * ox, self.cell16(y) - 16 * oy, occ, d3, cxs, cys,
-                                             nx, ny, has)
+                                             nx, ny, has, inwin=self.prior)
         return out
 
     def cell16(self, v):
@@ -221,13 +263,13 @@ def cell_normals(occ, cxs, cys):
     return nv[q, 0], nv[q, 1], has, q
 
 
-def point_cost(fx, fy, occ, d3, cxs, cys, nx=None, ny=None, has=None):
+def point_cost(fx, fy, occ, d3, cxs, cys, nx=None, ny=None, has=None, inwin=False):
     """fx, fy: 点的窗口坐标（1/16 格）。代价（1/16 格）：
       3×3 邻域内有结构格 -> 到这些格的最小距离：有法向的格用点到"过质心、沿主方向的直线"的法向距离，
       否则用点到质心的 L1 距离（上限 C_NEAR）；
       否则 -> C_NEAR（常数：不对远处的点施加拉力）。
     法向距离去掉了"沿墙方向在相邻格质心之间跳"的量化噪声，沿墙方向的代价真正平坦，退化判定才干净。
-    返回 (总代价, 近邻命中点数, 0)"""
+    返回 (总代价, 内点数（残差 <= T_IN）, 0)"""
     wx, wy = fx >> 4, fy >> 4
     sx, sy = fx & 15, fy & 15
     best = np.full(fx.shape, 1 << 20, dtype=np.int64)
@@ -241,8 +283,11 @@ def point_cost(fx, fy, occ, d3, cxs, cys, nx=None, ny=None, has=None):
         ox_ = ox_s * qx if NBR == "2x2" else ox_s
         oy_ = oy_s * qy if NBR == "2x2" else oy_s
         if True:
-            kx, ky = np.clip(wx + ox_, 0, SN - 1), np.clip(wy + oy_, 0, SN - 1)
+            ux, uy = wx + ox_, wy + oy_
+            kx, ky = np.clip(ux, 0, SN - 1), np.clip(uy, 0, SN - 1)
             o = occ[ky, kx]
+            if inwin:           # 硬件：槽字标签 != 该格标签 -> 视为无结构
+                o = o & (ux >= 0) & (ux < SN) & (uy >= 0) & (uy < SN)
             ex = 16 * ox_ + cxs[ky, kx] - sx
             ey = 16 * oy_ + cys[ky, kx] - sy
             dd = np.abs(ex) + np.abs(ey)
@@ -253,7 +298,7 @@ def point_cost(fx, fy, occ, d3, cxs, cys, nx=None, ny=None, has=None):
     near = best < (1 << 20)
     far = C_NEAR + W_FAR * np.maximum(d3[np.clip(wy, 0, SN - 1), np.clip(wx, 0, SN - 1)] - 6, 0)
     cst = np.where(near, np.minimum(best, C_NEAR), far)
-    return int(cst.sum()), int(near.sum()), 0
+    return int(cst.sum()), int((near & (best <= T_IN)).sum()), 0
 
 
 def taxicab_dt(occ, dmax):

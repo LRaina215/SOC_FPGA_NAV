@@ -9,6 +9,12 @@
 //   3. UPDATE：每点按修正量变换后写入结构图（一帧内同格只取第一个点：用"本遍已写"位图，写完再按记录清零），
 //      然后启动似然场建图遍（slf_lf）。
 // 点按步长 ceil(存量/1024) 抽取。所有顺序处理，每 (点, 候选) 约 15 拍：245 候选 × 1024 点约 38 ms（100 MHz）。
+//
+// 有图模式（cfg_prior=1）：结构图由软核经 pw_* 写入先验定位图（槽字含离线算好的法向/门控），
+//   似然场窗口原点取 cfg_lfo_*（固定），UPDATE 只释放点缓冲（不并图、不建似然场），
+//   门控与邻格读都核对槽字标签与点所在格的标签（窗口外 = 无结构），不需要边缘保留带。
+// cfg_nogate=1：门控遍让窗口内所有点参与（初始对准 / 重定位）。
+// 结果的 n_in 为内点数：截断前残差 <= T_IN 的点。
 module slf_match #(
     parameter integer LOG2N  = 8,
     parameter integer PB_AW  = 12,
@@ -16,6 +22,7 @@ module slf_match #(
     parameter integer C_NEAR = 40,
     parameter integer HIT_FREEZE = 4,
     parameter integer HIT_MAX = 7,
+    parameter integer T_IN = 6,
     parameter SIN_INIT = "sin_lut.hex"
 ) (
     input  wire        clk,
@@ -46,6 +53,14 @@ module slf_match #(
     input  wire [15:0] upd_dyaw,
     input  wire signed [31:0] lf_cx,         // 似然场窗口中心（世界 5 cm 格）
     input  wire signed [31:0] lf_cy,
+    // 有图模式
+    input  wire        cfg_prior,
+    input  wire        cfg_nogate,
+    input  wire signed [31:0] cfg_lfo_x,     // 先验窗口原点（全局 5 cm 格）
+    input  wire signed [31:0] cfg_lfo_y,
+    input  wire        pw_we,                // 先验槽字写（单拍；空闲时写入，否则挂起到空闲）
+    input  wire [2*LOG2N-1:0] pw_addr,
+    input  wire [22:0] pw_data,
     // 候选写口：地址 {k, w}，w=0: {dy[15:0], dx[15:0]}，w=1: {16'b0, dyaw}
     input  wire        cand_we,
     input  wire [8:0]  cand_waddr,
@@ -158,6 +173,7 @@ module slf_match #(
     localparam [1:0] MD_GATE = 0, MD_SCORE = 1, MD_UPD = 2;
     localparam [7:0] CN = C_NEAR;
     localparam [2:0] HM = HIT_MAX;
+    localparam [7:0] TI = T_IN;
     // 注：RAM 读使能/地址在状态机里寄存，读数据在发读后第 2 拍可用（各处都多一个等待态）
     reg [5:0]  st;
     reg [1:0]  md;
@@ -189,6 +205,9 @@ module slf_match #(
     reg [10:0] ncl;                         // 已记录的槽数（<= 1024）
     reg [10:0] cli;
     reg [AW-1:0] u_slot; reg [3:0] u_tag, u_mx, u_my;
+    reg          pw_pend;
+    reg [AW-1:0] pw_a;
+    reg [22:0]   pw_d;
 
     assign busy = (st != S_IDLE) || lf_busy || ex_busy;
 
@@ -197,8 +216,11 @@ module slf_match #(
     // 窗口坐标
     wire signed [31:0] wxa = fxr >>> 4, wya = fyr >>> 4;
     wire [3:0]  sxf = fxr[3:0], syf = fyr[3:0];
-    wire signed [31:0] wxw = wxa - lfo_x, wyw = wya - lfo_y;
-    wire        core = (wxw >= MARGIN) && (wxw < N - MARGIN) && (wyw >= MARGIN) && (wyw < N - MARGIN);
+    wire signed [31:0] lox = cfg_prior ? cfg_lfo_x : lfo_x, loy = cfg_prior ? cfg_lfo_y : lfo_y;
+    wire signed [31:0] wxw = wxa - lox, wyw = wya - loy;
+    wire signed [31:0] mg = cfg_prior ? 32'sd0 : MARGIN;
+    wire        core = (wxw >= mg) && (wxw < N - mg) && (wyw >= mg) && (wyw < N - mg);
+    wire [3:0]  ptag = {wya[LOG2N+1:LOG2N], wxa[LOG2N+1:LOG2N]};      // 点所在格的标签
     // 邻格偏移
     wire signed [2:0] onx = (nb % 3) - 1, ony = (nb / 3) - 1;
     wire signed [31:0] nbx = wxa + onx, nby = wya + ony;
@@ -279,6 +301,8 @@ module slf_match #(
     endfunction
     wire [4:0]  q_q = nq_w[6:2];
     wire signed [2:0] qdx = (nq_d % 3) - 1, qdy = (nq_d / 3) - 1;
+    wire signed [31:0] qgx = wxa + qdx, qgy = wya + qdy;
+    wire        qtag_ok = !cfg_prior || (nq_w[22:19] == {qgy[LOG2N+1:LOG2N], qgx[LOG2N+1:LOG2N]});
     wire signed [7:0] ex_n = $signed({qdx, 4'd0}) + $signed({4'd0, nq_w[15:12]}) - $signed({4'd0, sxf});
     wire signed [7:0] ey_n = $signed({qdy, 4'd0}) + $signed({4'd0, nq_w[11:8]}) - $signed({4'd0, syf});
     wire signed [17:0] dot_n = ex_n * nvx(q_q) + ey_n * nvy(q_q);
@@ -392,6 +416,8 @@ module slf_match #(
     wire signed [31:0] pby = base_y + {{14{pb_q[35]}}, pb_q[35:18]};
     wire signed [31:0] rxw = pbx - cxm, ryw = pby - cym;
     wire [PB_AW:0] jn = j + stride;
+    // 门控：窗口内且（不门控 或 槽字门控位为 1 且（在线模式 或 标签相符））
+    wire        gate_ok = acc_ok && (cfg_nogate || (sm_q[0] && (!cfg_prior || sm_q[22:19] == ptag)));
 
     always @(posedge clk) begin
         pb_re <= 1'b0; sm_re_m <= 1'b0; sm_we_m <= 1'b0; tb_we <= 1'b0; tb_re <= 1'b0; sl_we <= 1'b0; sl_re <= 1'b0;
@@ -399,12 +425,13 @@ module slf_match #(
         eval_done <= 1'b0; dbg_ack <= 1'b0;
         nb_v1 <= 1'b0; nb_v <= nb_v1; nb_d <= nb_d1;
         nq_v <= nb_v; nq_d <= nb_d; nq_w <= sm_q;
-        np_v <= nq_v; np_occ <= nq_w[7]; np_has <= nq_w[1]; np_dot <= dot_n; np_l1 <= {1'b0, aex} + {1'b0, aey};
+        np_v <= nq_v; np_occ <= nq_w[7] & qtag_ok; np_has <= nq_w[1]; np_dot <= dot_n; np_l1 <= {1'b0, aex} + {1'b0, aey};
         if (rst) begin
-            st <= S_CLR; clr_a <= 0; pts_ready <= 1'b0; lfo_x <= -(N/2); lfo_y <= -(N/2);
+            st <= S_CLR; clr_a <= 0; pts_ready <= 1'b0; lfo_x <= -(N/2); lfo_y <= -(N/2); pw_pend <= 1'b0;
         end else begin
             if (s_fire && s_sof && frame_en) begin base_x <= cfg_tx; base_y <= cfg_ty; end
             if (ex_done) pts_ready <= 1'b1;
+            if (pw_we) begin pw_pend <= 1'b1; pw_a <= pw_addr; pw_d <= pw_data; end
             // 邻格读返回（打分）
             if (np_v) begin
                 if (np_occ) begin any <= 1'b1; if (dd_c < best) best <= dd_c; end
@@ -412,6 +439,11 @@ module slf_match #(
             case (st)
             S_IDLE: begin
                 if (cmd_clear) begin st <= S_CLR; clr_a <= 0; end
+                else if (pw_pend && !lf_busy) begin
+                    sm_we_m <= 1'b1; sm_wa_m <= pw_a; sm_wd_m <= pw_d;
+                    if (!pw_we) pw_pend <= 1'b0;
+                end
+                else if (cmd_update && cfg_prior) pts_ready <= 1'b0;        // 有图：只释放点缓冲
                 else if (cmd_eval || cmd_update) begin
                     nsnap <= n_pts;
                     stride <= (n_pts <= 1024) ? 3'd1 : (n_pts <= 2048) ? 3'd2 : (n_pts <= 3072) ? 3'd3 : 3'd4;
@@ -500,8 +532,8 @@ module slf_match #(
             // ---------------- 门控 ----------------
             S_G0: st <= S_G1;
             S_G1: begin
-                ac_we <= 1'b1; ac_wa <= jj; ac_wd <= acc_ok & sm_q[0];
-                if (acc_ok & sm_q[0]) nval <= nval + 1'b1;
+                ac_we <= 1'b1; ac_wa <= jj; ac_wd <= gate_ok;
+                if (gate_ok) nval <= nval + 1'b1;
                 j <= jn; jj <= jj + 1'b1; st <= S_T0;
             end
             // ---------------- 打分：9 个邻格 ----------------
@@ -513,7 +545,7 @@ module slf_match #(
             end
             S_ACC: if (!nb_v && !nb_v1 && !nq_v && !np_v) begin
                 cost_acc <= cost_acc + ((any && best < CN) ? best : CN);
-                near_acc <= near_acc + any;
+                near_acc <= near_acc + (any && best <= TI);
                 j <= jn; jj <= jj + 1'b1; st <= S_T0;
             end
             S_RES: begin

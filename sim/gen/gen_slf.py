@@ -10,7 +10,11 @@
   res.hex     每帧每候选 2 字：cost, {n_in, n_valid}（每帧补齐到 512 字）
   sm.hex      每帧并图后结构图 65536 个槽字
   smm.hex     对应比较掩码（窗口外的槽只比较前 15 位）
-  counts.txt  帧数 候选数
+  有图模式（在线帧之后）：由各帧结构点离线生成先验定位图（窗口原点故意偏开，使部分点落在窗口外），
+  写入结构图后，重放第 3、4 帧点流：第 3 帧不门控（对准）、第 4 帧门控，比较打分；UPDATE 只释放点缓冲。
+  prior.hex   先验槽字：每条 2 字 {槽地址, 槽字}
+  pres.hex    有图帧的期望打分（每帧 512 字）
+  counts.txt  帧数 候选数 先验条数 lfo_x lfo_y
 """
 import math
 import sys
@@ -26,6 +30,7 @@ import nav_fast as fast  # noqa: E402
 import nav_fixed as nf  # noqa: E402
 import sim_world as sw  # noqa: E402
 import slf_match as slf  # noqa: E402
+import prior_map  # noqa: E402
 
 INV_RES = 1311
 MOUNT_Z = 200
@@ -50,6 +55,7 @@ def main(out):
     smap = slf.StructMap(INV_RES)
     cands = [(ix * 25, iy * 25, ia * 128) for ia in range(-2, 3) for iy in range(-3, 4) for ix in range(-3, 4)]
     pts, frm, res, smw, smm = [], [], [], [], []
+    fr_sp = []
     for k, (x, y, yaw) in enumerate(TRAJ):
         bot.x, bot.y, bot.yaw = x, y, math.radians(yaw)
         bot.update_attitude()
@@ -68,6 +74,7 @@ def main(out):
         allidx = np.nonzero(m)[0]
         spts = p[slf.subsample(allidx)]
         cxm, cym = int(round(x * 1000)), int(round(y * 1000))
+        fr_sp.append((spts, cxm, cym))
         o = smap.score(spts[:, 0], spts[:, 1], np.array(cands, dtype=np.int64), cxm, cym)
         for c, n_in, nv in zip(o[:, 1], o[:, 2], o[:, 0]):
             res += [f"{s32(c):08x}", f"{((int(n_in) & 0xFFFF) << 16) | (int(nv) & 0xFFFF):08x}"]
@@ -91,7 +98,27 @@ def main(out):
     (out / "res.hex").write_text("\n".join(res) + "\n")
     (out / "sm.hex").write_text("\n".join(smw) + "\n")
     (out / "smm.hex").write_text("\n".join(smm) + "\n")
-    (out / "counts.txt").write_text(f"{len(TRAJ)} {len(cands)}\n")
+    # ---------------- 有图模式
+    allsp = np.concatenate([s for s, _, _ in fr_sp])[:, :2]
+    ox, oy = int(nf.world_cell(4000, INV_RES)), int(nf.world_cell(-6000, INV_RES))
+    occ, cxs, cys, _ = prior_map.struct_cells_from_points(allsp, ox, oy, min_count=1)
+    q, has, gate = prior_map.prior_lf(occ, cxs, cys)
+    slot, word = prior_map.struct_words(ox, oy, occ, cxs, cys, q, has, gate)
+    pmap = slf.StructMap(INV_RES)
+    pmap.load_prior(ox, oy, slot, word)
+    pres = []
+    for fi, ng in ((3, True), (4, False)):
+        spts, cxm, cym = fr_sp[fi]
+        pmap.nogate = ng
+        o = pmap.score(spts[:, 0], spts[:, 1], np.array(cands, dtype=np.int64), cxm, cym)
+        for c, n_in, nv in zip(o[:, 1], o[:, 2], o[:, 0]):
+            pres += [f"{s32(c):08x}", f"{((int(n_in) & 0xFFFF) << 16) | (int(nv) & 0xFFFF):08x}"]
+        pres += ["00000000"] * (512 - 2 * len(cands))
+        print(f"有图帧{fi}（{'不门控' if ng else '门控'}）：参与 {int(o[0, 0])} / {len(spts)}，"
+              f"最优 {cands[int(np.argmin(o[:, 1]))]}")
+    (out / "prior.hex").write_text("\n".join(f"{int(s):08x}\n{int(w):08x}" for s, w in zip(slot, word)) + "\n")
+    (out / "pres.hex").write_text("\n".join(pres) + "\n")
+    (out / "counts.txt").write_text(f"{len(TRAJ)} {len(cands)} {len(slot)} {ox} {oy}\n")
 
 
 if __name__ == "__main__":

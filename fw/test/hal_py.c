@@ -46,12 +46,24 @@ void hal_match_update(int32_t dx, int32_t dy, int32_t dyaw, int32_t cx_mm, int32
 typedef void (*match_cb_t)(int32_t cx_mm, int32_t cy_mm, const int32_t *cand, int k, uint32_t *out);
 static match_cb_t s_match_cb;
 
-static uint8_t  s_hin[16][300];
+static uint8_t  s_hin[16][PROTO_MAX_LEN];
 static int      s_hin_len[16], s_hh, s_ht;
 static uint32_t s_hin_t[16];
 static uint8_t  s_hout[300];
 static int      s_hout_len;
 static uint32_t s_hout_n;
+
+/* 有图模式 / 清图等控制：统一回调到 Python（op: 0 清高程图 1 先验开始 2 写槽字 3 有图开关 4 门控 5 结构点高度带） */
+typedef void (*ctl_cb_t)(int op, int32_t a, int32_t b, int32_t c);
+static ctl_cb_t s_ctl_cb;
+EXPORT void py_set_ctl_cb(ctl_cb_t cb) { s_ctl_cb = cb; }
+static void ctl(int op, int32_t a, int32_t b, int32_t c) { if (s_ctl_cb) s_ctl_cb(op, a, b, c); }
+void hal_map_clear(void) { ctl(0, 0, 0, 0); }
+void hal_prior_begin(void) { ctl(1, 0, 0, 0); }
+void hal_prior_write(uint16_t slot, uint32_t word) { ctl(2, slot, (int32_t)word, 0); }
+void hal_prior_enable(bool en, int32_t ox, int32_t oy) { ctl(3, en, ox, oy); }
+void hal_match_gate(bool on) { ctl(4, on, 0, 0); }
+void hal_match_zband(int32_t lo, int32_t hi) { ctl(5, lo, hi, 0); }
 
 /* ---------------------------------------------------------------- Python 接口 */
 EXPORT void py_set_time(uint32_t t) { s_now = t; }
@@ -91,7 +103,7 @@ EXPORT void py_set_match_cb(match_cb_t cb) { s_match_cb = cb; }
 EXPORT void py_push_host(const uint8_t *b, int n, uint32_t t)
 {
     int nx = (s_ht + 1) % 16;
-    if (nx == s_hh || n > 300) return;
+    if (nx == s_hh || n > PROTO_MAX_LEN) return;
     memcpy(s_hin[s_ht], b, (size_t)n);
     s_hin_len[s_ht] = n; s_hin_t[s_ht] = t;
     s_ht = nx;
@@ -106,6 +118,15 @@ EXPORT void py_get_state(int32_t *v)
     v[3] = nt->pose.cur.yaw; v[4] = (int16_t)nt->pose.cur.pitch; v[5] = (int16_t)nt->pose.cur.roll;
     v[6] = nt->mode; v[7] = nt->state; v[8] = nt->goal_x; v[9] = nt->goal_y;
     v[10] = nt->look_x; v[11] = nt->look_y;
+}
+/* 定位：v: loc_state quality q_last n_align n_align_fail n_lost res_q res_q2 prior_state prior_next edge_cnt n_valid */
+EXPORT void py_get_loc(int32_t *v)
+{
+    const loc_t *l = &g_app.loc;
+    v[0] = nav_app_have_prior() ? (int32_t)l->st : 0; v[1] = loc_quality(l); v[2] = l->q_last;
+    v[3] = (int32_t)l->n_align; v[4] = (int32_t)l->n_align_fail; v[5] = (int32_t)l->n_lost;
+    v[6] = l->res_q; v[7] = l->res_q2; v[8] = g_app.prx.state; v[9] = (int32_t)g_app.prx.next;
+    v[10] = l->edge_cnt; v[11] = (int32_t)g_app.pm.n_valid;
 }
 /* v: applied dx dy 0 dyaw n_valid cost0 cost_best degen_x degen_y degen_yaw n_applied */
 EXPORT void py_get_match(int32_t *v)
@@ -125,8 +146,15 @@ EXPORT int py_get_gmap(uint8_t *grid, int32_t *v, int16_t *path)
     for (int i = 0; i < n; i++) { path[2 * i] = nt->path.wx[i]; path[2 * i + 1] = nt->path.wy[i]; }
     return n;
 }
+EXPORT void py_get_seen(uint8_t *s) { memcpy(s, g_app.nt.exp.seen, sizeof g_app.nt.exp.seen); }
 EXPORT void py_set_gmap_enable(int en) { g_app.nt.use_gmap = en != 0; }
 EXPORT void py_set_anchor(int g) { g_app.anchor_gain = g; }
+EXPORT void py_set_pm_prior(int gain_q8, int min_curv, int min_curv_ang)
+{
+    if (gain_q8 > 0) g_app.pm_cfg_prior.gain_q8 = gain_q8;
+    if (min_curv > 0) g_app.pm_cfg_prior.min_curv = min_curv;
+    if (min_curv_ang > 0) g_app.pm_cfg_prior.min_curv_ang = min_curv_ang;
+}
 EXPORT void py_set_match_enable(int en) { g_app.pm_cfg.enable = en != 0; }
 EXPORT void py_set_caps(int holonomic, int vx_max, int wz_max, int radius)
 {
@@ -189,7 +217,7 @@ bool hal_match_start(int32_t cx_mm, int32_t cy_mm, const hal_match_cand_t *c, in
     static uint32_t out[4 * 256];
     for (int i = 0; i < k; i++) { cand[3 * i] = c[i].dx; cand[3 * i + 1] = c[i].dy; cand[3 * i + 2] = c[i].dyaw; }
     s_match_cb(cx_mm, cy_mm, cand, k, out);
-    for (int i = 0; i < k; i++) { s_mres[i].n_valid = out[4 * i]; s_mres[i].cost = out[4 * i + 1]; s_mres[i].n_in = out[4 * i + 2]; }
+    for (int i = 0; i < k; i++) { s_mres[i].n_valid = out[4 * i]; s_mres[i].cost = out[4 * i + 1]; s_mres[i].n_in = out[4 * i + 2]; s_mres[i].n_pts = out[4 * i + 3]; }
     s_mdone = true;
     s_mdone_t = s_now + PY_MATCH_LAT_US;
     return true;

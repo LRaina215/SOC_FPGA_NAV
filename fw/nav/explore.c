@@ -13,12 +13,46 @@ void explore_default_cfg(explore_cfg_t *c)
     c->block = 253;
     c->min_goal_mm = 600;
     c->frontier_min_mm = 1000;
+    c->cam_fov = 12743;             /* 70° */
+    c->cam_range_mm = 4000;
 }
 
 void explore_init(explore_t *e)
 {
     for (int i = 0; i < EXP_VIS_N * EXP_VIS_N; i++) e->visited[i] = 0;
     e->best = -1;
+    explore_seen_reset(e);
+}
+
+void explore_seen_reset(explore_t *e)
+{
+    for (int i = 0; i < GM_N * GM_N; i++) e->seen[i] = 0;
+    e->n_seen = 0;
+    e->n_seen_reset++;
+}
+
+/* 可被搜索的格：先验/观测已知且可走 */
+static bool searchable(uint8_t v) { return v <= NP_COST_FREE_MAX; }
+
+void explore_seen_mark(explore_t *e, const explore_cfg_t *c, const gmap_t *gm, const hal_map_info_t *mi,
+                       const nav_pose_t *pose)
+{
+    int32_t cell_mm = (int32_t)((int64_t)GM_DS * 65536 / (mi->inv_res ? mi->inv_res : 1311));
+    int steps = c->cam_range_mm / (cell_mm / 2);
+    const int NR = 24;
+    for (int r = 0; r <= NR; r++) {
+        angle_t a = (angle_t)(pose->yaw - c->cam_fov / 2 + (int32_t)((int64_t)c->cam_fov * r / NR));
+        int32_t ca = fx_cos(a), sa = fx_sin(a);
+        for (int s = 0; s <= steps; s++) {
+            int32_t d = s * (cell_mm / 2);
+            int gx, gy;
+            gmap_mm_to_cell(gm, mi, pose->x + (int32_t)((int64_t)ca * d / Q14), pose->y + (int32_t)((int64_t)sa * d / Q14), &gx, &gy);
+            if (gx < 0 || gy < 0 || gx >= GM_N || gy >= GM_N) break;
+            int i = gy * GM_N + gx;
+            if (!e->seen[i]) { e->seen[i] = 1; e->n_seen++; }
+            if (gm->grid[i] == NP_COST_LETHAL) break;          /* 视线被挡 */
+        }
+    }
 }
 
 static int vis_idx(int32_t x, int32_t y)
@@ -98,7 +132,7 @@ static uint16_t s_bd[GM_N * GM_N];         /* 广度优先距离（格），0xFF
 static uint16_t s_bq[GM_N * GM_N];
 
 bool explore_frontier(explore_t *e, const explore_cfg_t *c, const gmap_t *gm, const hal_map_info_t *mi,
-                      const nav_pose_t *pose, int32_t *gx, int32_t *gy)
+                      const nav_pose_t *pose, bool seen_mode, int32_t *gx, int32_t *gy)
 {
     static const int8_t DX4[4] = {1, -1, 0, 0}, DY4[4] = {0, 0, 1, -1};
     int rx, ry;
@@ -124,15 +158,19 @@ bool explore_frontier(explore_t *e, const explore_cfg_t *c, const gmap_t *gm, co
             int nx = x + DX4[k], ny = y + DY4[k];
             if (nx < 0 || ny < 0 || nx >= GM_N || ny >= GM_N) continue;
             uint8_t v = gm->grid[ny * GM_N + nx];
-            if (v == 255) { frontier = true; continue; }
+            if (seen_mode) {
+                if (searchable(v) && !e->seen[ny * GM_N + nx]) frontier = true;
+                if (v == 255) continue;
+            } else if (v == 255) { frontier = true; continue; }
             if (v >= NP_COST_LETHAL || s_bd[ny * GM_N + nx] != 0xFFFF) continue;
             s_bd[ny * GM_N + nx] = (uint16_t)(d + 1);
             s_bq[qt++] = (uint16_t)(ny * GM_N + nx);
         }
         if (!frontier || d < min_cells) continue;
-        /* 紧挨致命格的边界（平台/坡道侧沿外被遮挡的一侧）多半下不去，不选 */
+        /* 紧挨致命格的边界（平台/坡道侧沿外被遮挡的一侧）多半下不去，不选；
+         * 有图搜索的边界来自相机视场而不是遮挡，墙边的边界正常，不做这项过滤 */
         bool near_leth = false;
-        for (int yy = y - 1; yy <= y + 1 && !near_leth; yy++)
+        for (int yy = y - 1; !seen_mode && yy <= y + 1 && !near_leth; yy++)
             for (int xx = x - 1; xx <= x + 1; xx++)
                 if (xx >= 0 && yy >= 0 && xx < GM_N && yy < GM_N && gm->grid[yy * GM_N + xx] == NP_COST_LETHAL) {
                     near_leth = true; break;

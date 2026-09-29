@@ -40,7 +40,7 @@ void nav_task_init(nav_task_t *nt)
     gmap_default_cfg(&nt->gm.cfg);
     gmap_init(&nt->gm);
     explore_default_cfg(&nt->ex_cfg);
-    pose_init(&nt->pose, ANGLE_FROM_CDEG(1000), 100, 200);
+    pose_init(&nt->pose, ANGLE_FROM_CDEG(1000), 80, 200);
     target_init(&nt->tgt, 1500000, 700);
     explore_init(&nt->exp);
     nt->mode = NAV_MODE_IDLE;
@@ -300,17 +300,22 @@ void nav_task_step(nav_task_t *nt, uint32_t now)
 {
     /* 刷新代价图 */
     hal_map_info_t mi;
-    if (hal_map_info(&mi) && (!nt->have_map || mi.seq != nt->mi.seq)) {
+    bool fresh = hal_map_info(&mi) && !(nt->stale && mi.seq == nt->stale_seq);
+    if (fresh) nt->stale = false;
+    if (fresh && (!nt->have_map || mi.seq != nt->mi.seq)) {
         hal_map_copy(nt->map, &nt->mi);
         nt->have_map = true;
         gmap_update(&nt->gm, nt->map, &nt->mi, nt->pose.cur.x, nt->pose.cur.y);
     }
     explore_mark(&nt->exp, &nt->pose.cur);
+    if (nt->gm.has_prior && nt->have_map && !nt->hold) explore_seen_mark(&nt->exp, &nt->ex_cfg, &nt->gm, &nt->mi, &nt->pose.cur);
     const nav_pose_t *p = &nt->pose.cur;
 
-    if (!nt->have_map && nt->mode != NAV_MODE_ESTOP) {
-        nt->cmd = (nav_cmd_t){0, 0, 0, 0};
-        nt->pose.cmd_still = true;
+    if ((!nt->have_map || nt->hold) && nt->mode != NAV_MODE_ESTOP) {
+        nt->prog_t_us = now;             /* 保持期间不算卡住 */
+        nt->last_ok_us = now;
+        nt->cmd = (nav_cmd_t){0, 0, nt->hold ? nt->hold_wz : 0, 0};
+        nt->pose.cmd_still = nt->cmd.wz == 0;
         hal_send_cmd(&nt->cmd);
         return;
     }
@@ -364,8 +369,16 @@ void nav_task_step(nav_task_t *nt, uint32_t now)
             nt->search_goal_valid = false;
         }
         if (!nt->search_goal_valid) {
+            const bool seen_mode = nt->gm.has_prior;
             nt->search_goal_valid = nt->use_gmap &&
-                explore_frontier(&nt->exp, &nt->ex_cfg, &nt->gm, &nt->mi, p, &nt->goal_x, &nt->goal_y);
+                explore_frontier(&nt->exp, &nt->ex_cfg, &nt->gm, &nt->mi, p, seen_mode, &nt->goal_x, &nt->goal_y);
+            if (!nt->search_goal_valid && seen_mode && nt->exp.n_seen > 0) {
+                /* 地图里能看的地方都看过了：清空重来（目标可能刚走进来） */
+                explore_seen_reset(&nt->exp);
+                explore_seen_mark(&nt->exp, &nt->ex_cfg, &nt->gm, &nt->mi, p);
+                nt->search_goal_valid =
+                    explore_frontier(&nt->exp, &nt->ex_cfg, &nt->gm, &nt->mi, p, true, &nt->goal_x, &nt->goal_y);
+            }
             if (!nt->search_goal_valid)
                 nt->search_goal_valid = explore_pick(&nt->exp, &nt->ex_cfg, nt->map, &nt->mi, p, &nt->goal_x, &nt->goal_y);
             nt->search_t_us = now;
@@ -378,6 +391,10 @@ void nav_task_step(nav_task_t *nt, uint32_t now)
         }
         nt->state = ST_SEARCHING;
         break;
+    }
+    if (nt->slow) {
+        nt->cmd.vx = (int16_t)(nt->cmd.vx / 2);
+        nt->cmd.vy = (int16_t)(nt->cmd.vy / 2);
     }
     nt->pose.cmd_still = (nt->cmd.vx == 0 && nt->cmd.vy == 0 && nt->cmd.wz == 0);
     hal_send_cmd(&nt->cmd);

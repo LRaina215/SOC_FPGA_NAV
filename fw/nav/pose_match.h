@@ -34,6 +34,8 @@ typedef struct {
     int32_t  dx, dy, dyaw;           /* 本次采用的修正 */
     uint32_t n_valid, cost0, cost_best;
     bool     applied, degen_x, degen_y, degen_yaw;
+    uint32_t n_in_best;              /* 最优候选的近邻命中点数（定位质量用） */
+    bool     at_edge;                /* 最优候选在约束充分方向的搜索边界上（误差可能超出搜索范围） */
     uint32_t n_runs, n_applied;
 } pm_stat_t;
 

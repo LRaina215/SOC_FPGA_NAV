@@ -49,6 +49,8 @@ void pose_imu_att(pose_est_t *p, angle_t yaw, angle_t pitch, angle_t roll, bool 
 bool pose_att_unsettled(const pose_est_t *p, uint32_t t_us, uint32_t win_us);
 /* 外部定位修正（预留） */
 void pose_correct(pose_est_t *p, int32_t x, int32_t y, angle_t yaw);
+/* 把位姿（连同历史）整体刚体变换到 (x, y, yaw)：进入地图系 / 重置原点。z 不变 */
+void pose_set(pose_est_t *p, int32_t x, int32_t y, angle_t yaw);
 /* 增量修正（匹配定位用），同时修正位姿历史，使随后的历史查询一致 */
 void pose_correct_delta(pose_est_t *p, int32_t dx, int32_t dy, int32_t dz, int32_t dyaw);
 /* 查询 t_us 时刻的位姿（历史线性插值；超出范围取最近） */

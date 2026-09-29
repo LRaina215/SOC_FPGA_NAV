@@ -19,9 +19,10 @@ import sim_world as sw  # noqa: E402
 class Robot:
     step_climb = 0.10          # 可跨越台阶高度 m
     slope_max_deg = 20.0       # 可通行坡度
-    length = 0.40              # 轮距（前后）
-    width = 0.36               # 轮距（左右）
-    radius = 0.25              # 外接圆半径
+    # 实车：机身 宽 180 mm × 长 213 mm，并联腿 大腿 100 mm / 小腿 150 mm
+    length = 0.20              # 着地点前后间距
+    width = 0.17               # 着地点左右间距
+    radius = 0.14              # 机身外接圆半径（sqrt(106.5² + 90²) ≈ 139.5 mm）
 
 
 class Scene:
@@ -160,3 +161,19 @@ def scene_loop():
 
 
 SCENES = {"terrain": scene_terrain, "loop": scene_loop}
+
+
+def perturb(s, scene_name, kind):
+    """扫图之后场地的变化（先验图里没有）：boxes = 新增 3 个箱子（其中一个挡在常用路线上）"""
+    if kind != "boxes":
+        raise ValueError(kind)
+    if scene_name == "terrain":
+        s.box(0.3, 0.8, 0.8, 1.2, 0.40, "new1")
+        s.box(5.8, 1.6, 6.2, 2.4, 0.40, "new2")
+        s.box(7.6, -2.6, 8.0, -2.1, 0.40, "new3")
+    else:
+        s.box(6.8, -0.4, 7.3, 0.2, 0.40, "new1")
+        s.box(0.3, 1.6, 0.8, 2.0, 0.40, "new2")
+        s.box(3.0, -1.6, 3.4, -1.2, 0.40, "new3")
+    if hasattr(s, "_gt"):
+        del s._gt

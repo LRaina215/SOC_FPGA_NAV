@@ -7,7 +7,7 @@ void lp_default_cfg(lp_cfg_t *c)
     c->caps.vx_max = 600;
     c->caps.vy_max = 0;
     c->caps.wz_max = 1500;
-    c->caps.radius_mm = 250;
+    c->caps.radius_mm = 140;
     c->v_min = 0;
     c->v_max = 500;
     c->w_max = 1200;

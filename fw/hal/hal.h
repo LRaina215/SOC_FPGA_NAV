@@ -55,10 +55,10 @@ void hal_lidar_commit(const int32_t r_q14[3][3], const int32_t t_mm[3], int32_t 
  * hal_match_start：发起打分——对缓冲点施加每个候选增量 p' = Rz(dyaw)·(p - c) + c + (dx, dy)，c = (cx_mm, cy_mm)，
  *   与结构图比较。返回 false 表示硬件不支持（固件退回纯航位推算）。
  * hal_match_result：打分完成时返回 true 并填结果：n_valid = 参与打分的点数，
- *   cost = Σ 点到结构线法向距离（1/16 格，截断），n_in = 近邻命中点数。
+ *   cost = Σ 点到结构线法向距离（1/16 格，截断），n_in = 近邻命中点数，n_pts = 抽样后的结构点总数（门控前）。
  * hal_match_update：把缓冲点按最终修正量（同样的变换形式）并入结构图（修正量为 0 也要调用）。 */
 typedef struct { int32_t dx, dy; int32_t dyaw; } hal_match_cand_t;       /* mm, mm, angle */
-typedef struct { uint32_t n_valid, cost, n_in; } hal_match_res_t;
+typedef struct { uint32_t n_valid, cost, n_in, n_pts; } hal_match_res_t;   /* n_pts：本帧抽样后的结构点总数 */
 bool hal_match_ready(void);
 bool hal_match_start(int32_t cx_mm, int32_t cy_mm, const hal_match_cand_t *c, int k);
 bool hal_match_result(hal_match_res_t *res, int k);
@@ -66,12 +66,27 @@ void hal_match_update(int32_t dx, int32_t dy, int32_t dyaw, int32_t cx_mm, int32
 /* 读高程图某点（里程计系 mm）所在栅格的地面高度：[zmin, zmax] 区间中点（格内高差 > 40 mm 视为非地面）。
  * 栅格有效返回 true。上板实现走 MAP.ELEV_ADDR/ELEV_CMD/ELEV_Q0/Q1 */
 bool hal_map_height(int32_t x_mm, int32_t y_mm, int32_t *h_mm);
+/* 清空高程图（位姿跳变到地图系后，旧坐标系下融合的内容作废） */
+void hal_map_clear(void);
+
+/* ---- 有图模式（先验定位图）----
+ * hal_prior_begin：清空结构图、暂停在线并图（下载期间匹配不可用）。
+ * hal_prior_write：写一个结构图槽字（23 位，格式见 model/slf_match.py StructMap.words）。
+ * hal_prior_enable(true, ox, oy)：进入有图模式——似然场窗口原点固定为 (ox, oy)（全局 5 cm 格），
+ *   UPDATE 不再并图（只释放点缓冲），打分时槽字标签与点所在格不符视为无结构。false：清空并回到在线建图。
+ * hal_match_gate(false)：打分不做门控（初始对准 / 重定位：位姿误差大时门控会挡掉正确的点）。 */
+void hal_prior_begin(void);
+void hal_prior_write(uint16_t slot, uint32_t word);
+void hal_prior_enable(bool en, int32_t ox, int32_t oy);
+void hal_match_gate(bool on);
+/* 结构点高度带（相对机器人足底 mm）：有图模式放宽下限（脚下的路沿/平台侧面也在先验图里） */
+void hal_match_zband(int32_t lo, int32_t hi);
 
 /* ---- IMU 原始字节 ---- */
 /* 取一个字节；first 表示突发首字节，t_us 为其到达时间（仅 first 时有效）。无数据返回 false */
 bool hal_imu_byte(uint8_t *b, bool *first, uint32_t *t_us);
 
-/* ---- 主机（RK3588）报文 ---- */
+/* ---- 主机报文（RK3588 / PC，网口或串口注入，见 proto.h）---- */
 /* 取一个报文，返回长度（0 表示没有）；t_us 为到达时间 */
 int  hal_host_recv(uint8_t *buf, int maxlen, uint32_t *t_us);
 bool hal_host_send(const uint8_t *buf, int len);

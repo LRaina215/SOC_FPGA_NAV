@@ -51,8 +51,10 @@ module tb_net;
     logic [15:0] tx_len_in;
     host_mbx u_mbx (
         .clk(clk), .rst(rst),
-        .u_valid(u_valid), .u_data(u_data), .u_last(u_last), .u_err(u_err), .u_src_ip(u_src_ip),
-        .u_src_port(u_src_port), .u_len(u_len), .u_ts(u_ts),
+        .e_valid(u_valid), .e_data(u_data), .e_last(u_last), .e_err(u_err), .e_src_ip(u_src_ip),
+        .e_src_port(u_src_port), .e_len(u_len), .e_ts(u_ts),
+        .inj_we(1'b0), .inj_wdata(32'd0), .inj_go(1'b0), .inj_len(16'd0), .now_us(32'd0),
+        .txb_re(1'b0), .txb_addr(9'd0), .txb_q(), .tx_seq(),
         .rx_avail(rx_avail), .rx_len(rx_len), .rx_pkts(), .rx_ts(), .rx_src_ip(), .rx_src_port(),
         .rx_rd(rx_rd), .rx_rd_ack(rx_ack), .rx_word(rx_word), .rx_pop(rx_pop), .rx_irq(), .st_drop(),
         .tx_we(tx_we), .tx_wdata(tx_wdata), .tx_go_in(tx_go_in), .tx_len_in(tx_len_in), .tx_words(),
