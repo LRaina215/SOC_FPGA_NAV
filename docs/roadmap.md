@@ -14,8 +14,8 @@
     有图搜索（找相机没看过的区域）。
 - 主机工具 `tools/nav_host.py`（PC / RK3588 通用，UDP 或 USB 串口），导航不依赖 RK3588。
 - 车体参数按实车更新：180 × 213 mm，外接圆 140 mm，膨胀 3 格。
-- 闭环仿真 + 批量评测：无图 4 用例 20/20（xy RMS 0.20–0.41 m）；有图 6 用例 30/30（xy RMS 1.3–4.9 cm，
-  含扫图后新增障碍、行驶中被撞），全部 0 碰撞。
+- 闭环仿真 + 批量评测：无图 4 用例 20/20（xy RMS 0.20–0.34 m）；有图 6 用例 30/30（xy RMS 1.3–4.9 cm，
+  含扫图后新增障碍、行驶中被撞），全部 0 碰撞。数据见 algorithms.md 第 2、8 节。
 
 ## 已知问题 / 待定
 
@@ -24,6 +24,8 @@
 3. 有图对准在"视野里只有平行结构"时要原地转 1–3 次（每次约 3.4 s），初始摆放时车头尽量对着有转角的地方。
 4. 软核片上 RAM：板级 BSRAM 余量约 112 块（≈ 250 KB），GoRV32 / PicoRV32 选定后核算（固件新增：先验层 9 KB、相机已看过 9 KB）。
 5. 底盘能力（轮径、可跨台阶、坡度）未给，仿真沿用可跨 10 cm、坡度 20°；实车给出后改 `world.Robot` 与地形阈值。
+6. 比赛场地尺寸未确认（决定是否需要 DDR3，见第 1 条）。
+7. PC 经 USB 串口注入报文、读回状态的链路只在 RTL 仿真（`tb_nav_top`）中验证，未上板；网口链路与 RK3588 相同。
 
 ## 后续计划（按顺序）
 
@@ -44,4 +46,8 @@ $PY sim/closed_loop/batch.py --tag x                        # 无图闭环评测
 $PY sim/closed_loop/batch.py --tag y --cases p_terrain_a p_terrain_b p_search p_loop p_perturb p_kidnap   # 有图（约 25 分钟）
 $PY sim/closed_loop/test_prior.py                           # 有图固件单元测试
 $PY sim/closed_loop/run_cl.py --scene terrain --goal 9.3,2.8 --seed 2 --gif --out sim/build/cl/demo
+$PY sim/closed_loop/run_cl.py --scene terrain --search 8.0,-3.0 --prior auto --init-err rand --seed 2 --gif --out sim/build/cl/demo_prior_search
+$PY tools/map_tool.py build map.pcd -o field.nvmp            # 地图点云 -> 先验地图包 + 检查图
+$PY tools/nav_host.py --link uart:COM5 map field.nvmp        # PC 下发；pose / goal / wp / mode / listen
+$PY gowin/syn/syn.py && $PY gowin/syn/syn.py --board          # 综合 / 板级构建
 ```
