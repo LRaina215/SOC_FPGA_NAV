@@ -6,7 +6,7 @@
   python gowin/syn/syn.py --board    板级顶层 nav_board_top：综合 + 布局布线 + 生成比特流（50 MHz，无 IP）
   板级选项:
     --app=nav|selftest --ram-kb=128   软核 RAM 初始镜像与大小
-    --define=NAV_USE_TSE_MAC          打开顶层中的 IP（可重复：NAV_USE_PLL、NAV_USE_SFP），写入 gowin/soc_cfg.vh
+    --define=NAV_USE_SFP              打开顶层中的 IP（可重复：NAV_USE_PLL），写入 gowin/soc_cfg.vh；雷达口 MAC 已内置，不用 define
     IP 源文件列在 gowin/ip/ip_files.txt（每行一个路径，相对 nav/ 或绝对路径；# 开头为注释），板级构建时自动加入
     --tcl-only                        只生成 run.tcl，不调用 Gowin（检查文件列表用）
 结果: gowin/syn/build[_board]/impl/...

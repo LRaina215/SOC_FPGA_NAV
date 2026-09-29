@@ -110,6 +110,7 @@ def main():
         for n in ("NETL_STAT_RX_FRAMES", "NETL_STAT_RX_UDP", "NETL_STAT_RX_ERR", "NETL_STAT_ARP",
                   "NETH_STAT_RX_FRAMES", "NETH_STAT_RX_UDP", "LIDAR_STAT_FRAMES", "LIDAR_STAT_BAD",
                   "LIDAR_STAT_DROP", "LIDAR_STAT_POINTS", "LIDAR_LAST_FRAME", "LIDAR_LAST_WH",
+                  "NETL_PHY_STAT", "LIDAR_STAT_SKIP", "LIDAR_INFO_SEQ", "LIDAR_LENS0",
                   "MAP_STAT", "MAP_STAT_UPD", "MAP_STAT_DROP", "MAP_FRAME_CNT", "SAFE_STAT", "SAFE_OUT_V"):
             v = u.rd(rm.REGS[n])
             print(f"{n:22s} 0x{v:08X} {v}")

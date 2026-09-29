@@ -125,6 +125,14 @@ module tb_rgmii_mac;
             oi++;
         end
     end else half = 0;
+    // RGMII 下降沿采 TX_CTL = TX_EN ^ TX_ER（TX_ER 必须为 0）；百兆时 TXD 与上升沿相同
+    logic ctl_r = 0;
+    logic [3:0] txd_r = 0;
+    always @(posedge txc) begin ctl_r = tx_ctl; txd_r = txd; end
+    always @(negedge txc) if (!rst && (tx_ctl !== ctl_r || (ctl_r && txd !== txd_r))) begin
+        errs++;
+        if (errs < 10) $display("TXC 下降沿与上升沿不一致：TX_CTL %b -> %b，TXD %h -> %h", ctl_r, tx_ctl, txd_r, txd);
+    end
 
     initial begin
         int fd;

@@ -15,7 +15,13 @@
   板上 RJ45 用自写的百兆 RGMII MAC（不需要 IP）。
 - **RTL**：全链路与 Python 定点模型逐位一致，xsim 回归 13/13。
 - **板级**：软核（PicoRV32，RAM 128 KB）+ 导航固件 + 完整点云链路 + 百兆 MAC，BSRAM 布线后 320 / 340，50 MHz 0 违例；
-  已上板：方向表 1.6 s 生成，主循环约 4.3 万次/秒，MDIO 找到 PHY。PC 网口 -> 板子 RJ45 的收包还没测（当时没有网线）。
+  已上板：方向表 1.6 s 生成，主循环约 4.3 万次/秒。
+- **网口上板实测**（2026-09-30，电脑网线直连板子 RJ45，`fake_lidar.py` 发 50 帧 + IMU 消息）：
+  - 电脑 -> 板子**通过**：链路 100 Mbps（`NETL_PHY_STAT` = 0x01870007），UDP 750 个 / 错误 0，雷达帧 50 / 坏帧 0，IMU 分包 50 个全部跳过，
+    帧尾内参读到（`LENS0` = 78.21），每帧有效点 8819（= 9600 − 四角切除 781），固件处理 50 帧；代价图里两个箱子和台阶边沿
+    的位置与虚拟场景一致，左右正确。
+  - 板子 -> 电脑**不通**：板子应答了 ARP（`NETL_STAT_ARP` 增长），电脑一帧没收到，所以查不到板子的 MAC。上面的测试是在电脑上
+    加静态 ARP 绕过的。已改 TXC 相位（第 4 节第 13 条），仿真通过，**上板待验证**（第 8 节 B5）。
 - **仿真**（按实车：两轮自平衡、轮径 65 mm、机身 180 × 213 mm、5 m 场地 field5，虚拟雷达按 SDK 内参）：10 个用例 × 5 种子 50/50 到达，
   0 碰撞，定位 xy RMS 0.8–3.3 cm（algorithms.md 第 9 节）。旧的 12 m 大场地用例（terrain / loop）保留作回归。
 
@@ -28,6 +34,7 @@
 | xsim | Vivado 2026.1，`E:\2026.1\Vivado\bin`（`sim/run.py` 里的 `VIVADO_BIN`） |
 | 高云 | `D:\Gowin2\Gowin_V1.9.12.04_x64`：`IDE\bin\gw_sh.exe`（综合 / 布局布线）、`Programmer\bin\programmer_cli.exe`（下载） |
 | 板卡连接 | JTAG = FT232H（"Gowin USB Cable(FT2CH)"，同时出现 COM16，不用）；调试串口 = CH9102 **COM11**（921600） |
+| 电脑有线网卡 | Killer E2600（接口名"以太网"，ifIndex 26），192.168.0.10/24、无网关、速度自动协商（原为 192.168.1.100/24）；改 IP 要管理员权限 |
 | 器件 | `programmer_cli --scan` 识别 ID 0x0011081B，下载时 `--device GW5AT-138B` |
 | 写权限 | 本会话里 E: 盘根目录不可写，新装的东西放 D:\tools；**不要装到 C 盘**（用户要求） |
 | PDF | 内置阅读器误报 `嵌赛-FPGA-选题3.pdf` 加密，用 PyMuPDF 可读（`PYTHONPATH=D:/pytools`） |
@@ -74,6 +81,10 @@ $PY tools/nav_uart.py COM11 load fw/build/rv/nav/nav_fw.bin   # 换固件（不�
 11. **仿真动态库与模型文件**：批量评测运行中不要重新编译 `nav_fw.dll`（文件被占用会编译失败），也不要改 `model/*.py`
     （之后启动的用例会用到改了一半的模型）；xsim 回归运行中不要改 RTL。
 12. **有图单元测试的场景**：`test_prior.py` 用 field5（terrain 场景的代价图 128×88 超过固件记忆栅格 64×64）。
+13. **RGMII 发送时钟相位**：原来 TXC 和 TXD / TX_CTL 在同一个 clk 沿翻转（数据在 TXC 下降沿变）。RGMII 的 PHY 在 TXC 下降沿还要采
+    TX_CTL（= TX_EN ^ TX_ER），正好采在跳变上；上板表现为板子发的 ARP 应答电脑一帧都收不到（收方向正常）。
+    现在 TXC 由 clk 下降沿寄存器产生，比数据晚 1/4 周期，两个沿都落在数据中间；tb_rgmii_mac 加了"下降沿与上升沿一致"的检查。
+    这是推测的原因，还没上板确认。
 
 ## 5. 关键算法参数（当前缺省）
 
@@ -117,8 +128,11 @@ $PY tools/nav_uart.py COM11 load fw/build/rv/nav/nav_fw.bin   # 换固件（不�
 3. 无图模式探索新区域时的打滑漂移（大场地 0.2–0.5 m / 10 m，5 m 场地 1–3 cm）。
 4. 板级时序余量很小（当前 50.63 MHz / 50 MHz，最差路径是总线读数据选择），每次改 RTL 都可能变成负 slack。
 5. PC 经 USB 串口注入报文、读回状态只在 RTL 仿真（tb_nav_top）中验证，未上板实测。
-6. 待实物确认：雷达不连 TCP 时会不会自己发 UDP（决定 FPGA 要不要 TCP）、左右方向、深度定义；PC 网口 -> 板子 RJ45 收包；
+6. 待实物确认：雷达不连 TCP 时会不会自己发 UDP（决定 FPGA 要不要 TCP）、真雷达的左右方向与深度定义；
    IMU088 协议与轴向；底盘对地速度接口（整车顶层还没有，`ch_*` / `odo_*` 没接引脚）。
+7. 板子 -> 电脑发送不通（第 1 节），TXC 相位修复待上板验证。验证方法：下载新比特流，删掉电脑上的静态 ARP，
+   `fake_lidar.py 192.168.0.100 --frames 20` 后 `arp -a` 里出现 192.168.0.100、`LIDAR_STAT_FRAMES` 增长即通过。
+   删静态 ARP（管理员 PowerShell）：`Remove-NetNeighbor -InterfaceIndex 26 -IPAddress 192.168.0.100`（重启电脑也会清掉）。
 
 ## 8. 下一阶段任务
 
@@ -135,7 +149,7 @@ $PY tools/nav_uart.py COM11 load fw/build/rv/nav/nav_fw.bin   # 换固件（不�
 | B2 | `model/xt_proto.py`（含与 RTL 同检查点的参考收包模型）、`rtl/lidar/xt_frame_rx.v`（逐分包偏移校验、跳过 IMU / 非图像分包、FrameInfo 锁存）、寄存器缺省值、FPGA 地址 192.168.0.100 + 组播 | 完成 |
 | B3 | tb_xt_rx 三个场景（SDK 深度 / 深度 + 幅值 / 大端旧格式，含丢包、乱序、重复、截断、坏帧）、tb_nav_top 用新格式 | 完成 |
 | B4 | `tools/fake_lidar.py`（SDK 格式、pcap / pcapng / xbin 回放）、`tools/xt_config.py`（TCP 命令）；厂家上位机验证过格式 | 完成 |
-| B5 | 板上 RJ45：自写 `rgmii_mac100.v`（TSE IP 生成器只有图形界面，而且 BSRAM 不够），tb_rgmii_mac；上板 MDIO 正常 | 完成（收包待网线） |
+| B5 | 板上 RJ45：自写 `rgmii_mac100.v`（TSE IP 生成器只有图形界面，而且 BSRAM 不够），tb_rgmii_mac；上板收方向全链路通过（第 1 节） | 发方向（ARP 应答）修复待上板验证 |
 | B6 | 雷达到货：hardware_guide 6.3–6.5 节（上位机配置 -> 自动发 UDP 核对 -> 抓包回放 -> 直连板子 -> 左右 / 深度 / 安装角） | 等实物 |
 
 ### C. 之后（算法）

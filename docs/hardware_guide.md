@@ -101,7 +101,9 @@ $PRG --help | head -3              # 应打印 Programmer 版本号
 | B. 从源码构建 | 改了 RTL、约束、IP，或第一次在新电脑上 | 第 4.2 节，约 20 分钟 |
 | C. 只换固件 | 只改了 `fw/` 下的 C 代码 | 第 4.5 节，不用重新综合，约 10 秒 |
 
-注意：备份比特流是在修改 IMU 引脚（第 6.2 节）之前生成的，里面 IMU 串口还在拨码开关的引脚上。接 IMU 之前要用 B 重新生成。
+注意：`nav_fw_128k_mac.fs`（2026-09-30）已经是新的 IMU 引脚 C18/C19（第 6.2 节），可以直接接 IMU。
+`nav_fw_160k.fs` 和 `nav_selftest_32k.fs` 是 2026-09-29 的旧版：IMU 串口在拨码开关的引脚上、没有雷达网口、方向表格式也是旧的，
+只能用来做第 4.6 节的基本检查；需要自检版时按 4.2 重新生成。
 
 ### 4.2 从源码构建
 
@@ -181,7 +183,7 @@ $PY tools/board_init.py COM11 --no-safe --mount-z 200
 
 ## 6. 分阶段接入与测试
 
-顺序：6.1 串口主机链路 → 6.2 IMU → 6.3 雷达网口 IP → 6.4 雷达 → 6.5 雷达标定 → 6.6 底盘 → 6.7 无图导航 → 6.8 有图导航 →
+顺序：6.1 串口主机链路 → 6.2 IMU → 6.3 雷达网口检查 → 6.4 雷达 → 6.5 雷达标定 → 6.6 底盘 → 6.7 无图导航 → 6.8 有图导航 →
 6.9 RK3588。每一阶段只新接一样东西，出问题时范围最小。每一阶段的结果填进附录 B 的记录表。
 
 ### 6.1 PC 经 USB 串口下发任务、读状态（不接任何外设）
@@ -221,7 +223,8 @@ $PY tools/nav_host.py --link uart:COM11 mode idle
 | VCC | 按 IMU 要求：P11 第 29 针 3.3 V 或第 11 针 5 V，或单独供电 | — |
 
 - 只有 **3.3 V TTL** 可以直接接。5 V TTL 要加电平转换，RS232 要加 MAX3232 类转换板，否则会损坏 FPGA 引脚。
-- 这个引脚分配是本次改的（原来的 C20/D20 是拨码开关 SW7/SW6），必须用 4.2 节**重新生成的比特流**。
+- 这个引脚分配是 2026-09-30 改的（原来的 C20/D20 是拨码开关 SW7/SW6）。备份 `nav_fw_128k_mac.fs` 和之后从源码生成的比特流都已包含；
+  **不要用 `nav_fw_160k.fs` / `nav_selftest_32k.fs` 接 IMU**（第 4.1 节）。
 
 **第三步：上板验证**
 ```bash
@@ -472,12 +475,14 @@ N1–N3 先用 150 mm/s 跑通，再逐步把 `--v-max` 提到 300、500。每�
 | 控制台 `loop` 很小（< 1 万/s）或 `max` 很大（> 50 ms） | 固件卡在某处轮询 | 保存控制台，按第 8 节收集后分析 |
 | `nav_host.py listen` 无输出 | 串口注入 / 回读未上板验证过（第 0 节） | 按 6.1 节最后一段先判断是发送还是回读的问题 |
 | `NETL_STAT_ARP` = 0 | 链路没建立；网线、网卡 IP 网段不对；用了旧比特流 | 6.3 节看 `NETL_PHY_STAT`；电脑 IP 必须是 192.168.0.x（不能是 100、101） |
+| `NETL_STAT_ARP` 在涨，但电脑 `arp -a` 里没有 192.168.0.100 | 板子发送方向不通（2026-09-30 遇到过，见 roadmap 第 4 节第 13 条） | 确认用的是修复后的比特流；临时绕过：管理员 PowerShell `New-NetNeighbor -InterfaceIndex <网卡编号> -IPAddress 192.168.0.100 -LinkLayerAddress 02-4E-56-00-00-01 -PolicyStore ActiveStore` |
 | ARP 有，`NETL_STAT_RX_UDP` 不涨 | 目的端口不是 7687、电脑防火墙拦了发送 | 查雷达 / `fake_lidar` 的目的端口；防火墙放行 |
 | `NETL_STAT_RX_ERR` 增长 | 线缆 / RGMII 采样时序 | 换网线；记下 `NETL_PHY_STAT` 和 `NETL_STAT_RX_ERR` 的增长速度反馈给开发 |
 | `LIDAR_STAT_BAD` 增长 | 帧格式和 SDK 不一致（雷达固件版本不同） | 6.4 节第三步，抓包反馈 |
 | `LIDAR_STAT_FRAMES` 涨，`LIDAR_STAT_POINTS` 一直是 0 | 方向表没生成（控制台没有 `lidar LUT ready`）；深度全是无效码 | 看控制台；上位机看深度图是否正常 |
 | `LIDAR_STAT_DROP` 增长 | 地图处理跟不上帧率 | 雷达最大帧率降到 10 |
-| `LIDAR_STAT_FRAMES` 涨，但控制台 `frames` 一直是 0 | 没运行 `board_init.py`（WAIT_POSE 没开） | 第 5 节 |
+| `LIDAR_STAT_FRAMES` 涨，但控制台 `frames` 一直是 0 | `LIDAR_CTRL` 的 WAIT_POSE（位 3）被手动写掉了（`wr LIDAR_CTRL` 或 `--lidar-ctrl` 的值里没有 8）；或者跑的是自检版 | `rd LIDAR_CTRL` 应为 `0x1F`；不带 `--lidar-ctrl` 重新运行 `board_init.py` |
+| 控制台 `frames` 不涨，`LIDAR_STAT_DROP` 在涨 | 固件没有放行帧（卡在上一帧的匹配里） | 按第 8 节收集控制台和 `stat` 反馈 |
 | 地图里地面大片变成障碍 | 俯仰角 / 高度不准；IMU 轴向不对 | 6.5 节；车静止时对比 IMU 读数 |
 | 障碍位置左右颠倒 | 方向表列方向 | 6.5 节（`fw/nav/lidar_cal.c` 的 `flip_u`） |
 | IMU 无数据 / 乱码 | TX、RX 接反；波特率；电平；用了旧比特流 | 6.2 节；`board_init.py --imu-baud` |

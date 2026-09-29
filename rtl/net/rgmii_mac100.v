@@ -4,7 +4,7 @@
 // 接收（rgmii_rxc 域，PHY 恢复的 25 MHz）：上升沿采 RXD/RX_DV（百兆每拍一个半字节，低半字节在前），
 //   下降沿采 RX_CTL（= RX_DV ^ RX_ER）。去掉前导码与 SFD，输出含 FCS 的整帧字节，末字节给出错误标志
 //   （FCS 错、RX_ER、半字节数为奇数）。rx_clk = rgmii_rxc。
-// 发送（clk 域）：TXC = clk 分频到 25 MHz，数据在 TXC 下降沿更新（上升沿处居中）；加前导码 + SFD，
+// 发送（clk 域）：TXC = clk 分频到 25 MHz，比数据晚 1/4 周期（两个沿都在数据中间）；加前导码 + SFD，
 //   不足 60 字节补零，追加 FCS，帧间隔 12 字节。客户端接口：tx_valid & tx_ready 时传一个字节。
 // MDIO：上电拉低 PHY 复位 20 ms，释放后等 100 ms，扫描 PHY 地址（读 PHYID1），把自协商能力限制为
 //   100BASE-TX（ANAR = 0x0181、1000BASE-T 不通告），重启自协商；之后每 200 ms 读一次 BMSR 链路状态。
@@ -106,7 +106,24 @@ module rgmii_mac100 #(
     // ================================================================ 发送
     localparam integer HP = (CLK_HZ / 50000000) < 1 ? 1 : (CLK_HZ / 50000000);   // TXC 半周期（clk 拍）
     reg [$clog2(HP + 1):0] hcnt;
-    wire fall = (hcnt == HP - 1) && rgmii_txc;      // 本拍 TXC 由高变低：更新数据
+    reg        txp;                                 // TXC 相位参考：由高变低的那一拍更新数据
+    wire fall = (hcnt == HP - 1) && txp;
+    // 输出 TXC = ~txp 延后 1/4 周期：上升沿、下降沿都落在数据稳定区中间。RGMII 在下降沿还要采 TX_CTL
+    //（TX_EN ^ TX_ER），数据若在 TXC 沿上翻转，帧首尾会采到跳变中的值
+    generate
+        if (HP == 1) begin : g_txc_n
+            always @(negedge clk) rgmii_txc <= ~txp;
+        end else begin : g_txc_d
+            localparam integer D = HP / 2;
+            reg [D-1:0] dl;
+            integer k;
+            always @(posedge clk) begin
+                dl[0] <= ~txp;
+                for (k = 1; k < D; k = k + 1) dl[k] <= dl[k - 1];
+            end
+            always @* rgmii_txc = dl[D-1];
+        end
+    endgenerate
     localparam [2:0] T_IDLE = 3'd0, T_PRE = 3'd1, T_DATA = 3'd2, T_PAD = 3'd3, T_FCS = 3'd4, T_IFG = 3'd5;
     reg [2:0]  ts;
     reg [4:0]  tn;          // 前导码 / 帧间隔 半字节计数
@@ -119,10 +136,10 @@ module rgmii_mac100 #(
     always @(posedge clk) begin
         tx_ready <= 1'b0;
         if (rst) begin
-            rgmii_txc <= 1'b0; hcnt <= 0; ts <= T_IDLE; rgmii_tx_ctl <= 1'b0; rgmii_txd <= 4'd0;
+            txp <= 1'b0; hcnt <= 0; ts <= T_IDLE; rgmii_tx_ctl <= 1'b0; rgmii_txd <= 4'd0;
         end else begin
             hcnt <= (hcnt == HP - 1) ? 0 : hcnt + 1'b1;
-            if (hcnt == HP - 1) rgmii_txc <= ~rgmii_txc;
+            if (hcnt == HP - 1) txp <= ~txp;
             if (fall) begin
                 case (ts)
                 T_IDLE: begin
