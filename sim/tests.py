@@ -72,6 +72,15 @@ TESTS["tb_nav_top"] = {
     "top": "tb_nav_top",
 }
 
+SOC = ["rtl/common/nav_ram_sp.v", "rtl/soc/third_party/picorv32.v", "rtl/soc/nav_soc.v"]
+
+TESTS["tb_soc"] = {
+    "pre": ["fw/bsp/build_rv.py", "--app", "selftest", "--ram-kb", "16", "--copy-to"],
+    "copy": ["rtl/plan/sin_lut.hex", "rtl/lidar/lut_default.hex"],
+    "src": ALL_RTL + SOC + ["rtl/soc/tb/tb_soc.sv"],
+    "top": "tb_soc",
+}
+
 TESTS["tb_uart_bridge"] = {
     "src": COMMON + ["rtl/io/uart_bus_bridge.v", "rtl/io/tb/tb_uart_bridge.sv"],
     "top": "tb_uart_bridge",

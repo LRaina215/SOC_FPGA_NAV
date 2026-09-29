@@ -17,8 +17,9 @@ import sim_world as sw  # noqa: E402
 
 
 class Robot:
-    step_climb = 0.10          # 可跨越台阶高度 m
-    slope_max_deg = 20.0       # 可通行坡度
+    # 两轮自平衡轮腿（轮径 65 mm）；能力未实测，按估计（docs/platform.md）：只靠轮子能滚过约 2 cm，坡度 12°
+    step_climb = 0.02          # 可跨越台阶高度 m
+    slope_max_deg = 12.0       # 可通行坡度
     # 实车：机身 宽 180 mm × 长 213 mm，并联腿 大腿 100 mm / 小腿 150 mm
     length = 0.20              # 着地点前后间距
     width = 0.17               # 着地点左右间距
@@ -69,7 +70,7 @@ class Scene:
         H = self.w.h
         dxh = np.abs(np.diff(H, axis=1, append=H[:, -1:]))
         dyh = np.abs(np.diff(H, axis=0, append=H[-1:, :]))
-        jump = (dxh > 0.02) | (dyh > 0.02)
+        jump = (dxh > 0.008) | (dyh > 0.008)            # 1 cm 采样上 8 mm 以上算台阶（20° 坡每厘米只升 3.6 mm）
         gx = np.gradient(H, res, axis=1)
         gy = np.gradient(H, res, axis=0)
         g = np.hypot(gx, gy)
@@ -160,14 +161,41 @@ def scene_loop():
     return s
 
 
-SCENES = {"terrain": scene_terrain, "loop": scene_loop}
+def scene_field5():
+    """5 m × 5 m 自建场地（docs/platform.md 的搭建建议）：墙高 0.5 m、快递箱、40 cm 窄通道、
+    8° 上坡 + 平台 + 12° 下坡、1.5 cm 门槛条（可跨）、6 cm 路沿（不可跨）、20° 陡坡（不可通行）。"""
+    s = Scene(size=(5.0, 5.0), origin=(-0.5, -2.5))
+    s.walls(t=0.05, h=0.5)
+    s.box(1.6, 2.3, 2.1, 2.5, 0.5, "wall_bump")               # 墙面凸起，打破对称
+    s.box(4.3, -1.1, 4.5, -0.5, 0.5, "wall_bump2")
+    s.ramp(0.2, 0.8, 1.3, 1.9, 0.0, 0.084, "ramp8")             # 8°
+    s.box(0.8, 1.3, 1.2, 1.9, 0.084, "platform")
+    s.ramp(1.6, 1.2, 1.3, 1.9, 0.0, 0.084, "ramp12")            # 12°（反向）
+    s.box(0.8, -1.3, 1.2, -1.0, 0.30, "boxA")                  # 40×30×30 快递箱
+    s.box(2.6, 0.9, 2.9, 1.1, 0.20, "boxB")                    # 30×20×20
+    s.box(3.3, -1.9, 3.7, -1.6, 0.30, "boxC")
+    s.box(2.0, 1.4, 2.3, 1.7, 0.30, "boxD")
+    s.box(2.2, -0.7, 2.5, -0.3, 0.30, "gapL")                  # 两箱之间 40 cm 窄通道（y -0.3..0.1）
+    s.box(2.2, 0.1, 2.5, 0.5, 0.30, "gapR")
+    s.box(3.1, -0.3, 3.2, 0.6, 0.015, "sill15")                # 1.5 cm 门槛条（可跨）
+    s.box(1.4, -2.5, 1.5, -1.5, 0.06, "curb6")                 # 6 cm 路沿（不可跨，y > -1.5 可绕）
+    s.ramp(3.8, 4.3, 1.1, 1.7, 0.0, 0.18, "steep20")           # 19.8° 陡坡（不可通行）
+    s.box(4.3, 1.1, 4.5, 1.7, 0.18, "steep_top")
+    return s
+
+
+SCENES = {"terrain": scene_terrain, "loop": scene_loop, "field5": scene_field5}
 
 
 def perturb(s, scene_name, kind):
     """扫图之后场地的变化（先验图里没有）：boxes = 新增 3 个箱子（其中一个挡在常用路线上）"""
     if kind != "boxes":
         raise ValueError(kind)
-    if scene_name == "terrain":
+    if scene_name == "field5":
+        s.box(0.5, -0.4, 0.8, -0.1, 0.30, "new1")
+        s.box(3.5, 0.9, 3.8, 1.1, 0.20, "new2")
+        s.box(2.9, -1.2, 3.2, -0.9, 0.30, "new3")
+    elif scene_name == "terrain":
         s.box(0.3, 0.8, 0.8, 1.2, 0.40, "new1")
         s.box(5.8, 1.6, 6.2, 2.4, 0.40, "new2")
         s.box(7.6, -2.6, 8.0, -2.1, 0.40, "new3")

@@ -261,10 +261,10 @@ module nav_regfile (
             r_MAP_CENTER_X <= 32'h00000000;
             r_MAP_CENTER_Y <= 32'h00000000;
             r_MAP_VALID_CFG <= 32'h000C013C;
-            r_MAP_THR0 <= 32'h00640064;
-            r_MAP_THR1 <= 32'h00230049;
+            r_MAP_THR0 <= 32'h0032001E;
+            r_MAP_THR1 <= 32'h00190039;
             r_MAP_WEIGHT <= 32'h002030A0;
-            r_MAP_INFL <= 32'h00000003;
+            r_MAP_INFL <= 32'h00000013;
             r_MAP_DROP <= 32'h00000410;
             r_MAP_FILL <= 32'h00281E05;
             r_MAP_ELEV_ADDR <= 32'h00000000;

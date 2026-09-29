@@ -35,6 +35,7 @@ module trav_v3 #(
     input  wire [7:0]  cfg_fill_tol,
     input  wire [7:0]  cfg_fill_cost,
     input  wire [3:0]  cfg_infl_r,
+    input  wire        cfg_infl_disk,       // 1：圆形膨胀（半径 <= 4 时；否则方形）
     output reg         busy,
     output reg         done,
 
@@ -272,7 +273,11 @@ module trav_v3 #(
     wire [17:0] wsh = wsum8[25:8];
     wire [7:0]  cfree = (wsh > C_FREE_MAX) ? C_FREE_MAX : wsh[7:0];
 
-    // ---------------------------------------------------------------- 第 D 遍（膨胀，同 v1 第 2 遍）
+    // ---------------------------------------------------------------- 第 D 遍（膨胀）
+    // 方形：行向"距上个致命格的列数"计数 + 列向"距上个行命中的行数"计数（同 v1 第 2 遍）。
+    // 圆形（R <= 4）：行内 2R+1 位移位寄存器求输出列到最近致命格的水平距离 d（0..R，否则 7），
+    // 每列保存最近 2R 行的 d（8 × 3 位），第 k 行（相对输出行）满足 d <= w(R,|k|) 即膨胀，
+    // w = floor(sqrt(R² + 1 − k²))，与 model/nav_fast.py:dilate_disk 相同。
     reg        p2v1, p2in1, p2first_c1, p2first_r1, p2out1, p2x1_valid;
     reg [LOG2N:0] p2x1;
     reg [AW-1:0]  p2sl1;
@@ -296,6 +301,47 @@ module trav_v3 #(
     wire       infl1 = (vc_new <= two_r);
     reg        p2v2, infl2;
     reg [AW-1:0] p2sl2;
+    // 圆形膨胀
+    function [2:0] dwid(input [3:0] rr, input [2:0] ak);   // w(R, |k|)
+        case ({rr, ak})
+            {4'd1, 3'd0}, {4'd1, 3'd1}: dwid = 3'd1;
+            {4'd2, 3'd0}, {4'd2, 3'd1}: dwid = 3'd2;
+            {4'd2, 3'd2}: dwid = 3'd1;
+            {4'd3, 3'd0}, {4'd3, 3'd1}: dwid = 3'd3;
+            {4'd3, 3'd2}: dwid = 3'd2;
+            {4'd3, 3'd3}: dwid = 3'd1;
+            {4'd4, 3'd0}, {4'd4, 3'd1}: dwid = 3'd4;
+            {4'd4, 3'd2}: dwid = 3'd3;
+            {4'd4, 3'd3}: dwid = 3'd2;
+            {4'd4, 3'd4}: dwid = 3'd1;
+            default: dwid = 3'd0;
+        endcase
+    endfunction
+    wire       disk = cfg_infl_disk && (R != 4'd0) && (R <= 4'd4);
+    reg  [8:0] hsr;                                  // 行内最近 9 个输入格的致命位（位 i = 前 i 格）
+    wire [8:0] hsr_new = p2first_c1 ? {8'd0, b2} : {hsr[7:0], b2};
+    reg  [2:0] dh1;                                  // 输出列（= 当前列 − R）到最近致命格的水平距离
+    integer    di;
+    always @(*) begin
+        dh1 = 3'd7;
+        for (di = 8; di >= 0; di = di - 1)
+            if (di <= 2 * R && hsr_new[di] && ((di >= R ? di - R : R - di) < dh1)) dh1 = (di >= R ? di - R : R - di);
+    end
+    reg  [2:0]  dha, dhb;
+    reg  [23:0] dhist [0:N-1];                       // 每列最近 8 行的 d（位 [3j+2:3j] = 前 j+1 行）
+    wire [23:0] dhist_rd = dhist[p2xa[LOG2N-1:0]];
+    reg  [23:0] dh_old;
+    wire [23:0] dh_hist = p2first_rb ? 24'hFFFFFF : dh_old;
+    reg         dinfl;
+    integer     dk;
+    always @(*) begin
+        // 当前行（最新）对应 k = +R；前 j 行对应 k = R − j
+        dinfl = (dhb <= dwid(R, R[2:0]));
+        for (dk = 1; dk <= 8; dk = dk + 1)
+            if (dk <= 2 * R) begin
+                if (dh_hist[3*(dk-1) +: 3] <= dwid(R, (dk >= R) ? dk - R : R - dk)) dinfl = 1'b1;
+            end
+    end
     wire signed [31:0] dgx = cx_l - N/2 + $signed({1'b0, c});
     wire signed [31:0] dgy = cy_l - N/2 + $signed({1'b0, r});
 
@@ -502,6 +548,7 @@ module trav_v3 #(
             p2va <= p2v1;
             if (p2v1) begin
                 hc_cnt <= hc_new;
+                hsr <= hsr_new; dha <= dh1;
                 hda <= hd; p2first_ra <= p2first_r1; p2outa <= p2out1; p2x_valida <= p2x1_valid;
                 p2xa <= p2x1; p2sla <= p2sl1;
             end
@@ -509,12 +556,16 @@ module trav_v3 #(
             if (p2va) begin
                 hdb <= hda; p2first_rb <= p2first_ra; p2outb <= p2outa; p2x_validb <= p2x_valida;
                 p2xb <= p2xa; p2slb <= p2sla; vc_old <= vc_rd;
+                dhb <= dha; dh_old <= dhist_rd;
             end
             p2v2 <= 1'b0;
             if (p2vb) begin
-                if (p2x_validb) vc[p2xb[LOG2N-1:0]] <= vc_new;
+                if (p2x_validb) begin
+                    vc[p2xb[LOG2N-1:0]] <= vc_new;
+                    dhist[p2xb[LOG2N-1:0]] <= {dh_hist[20:0], dhb};
+                end
                 if (p2outb) begin
-                    p2v2 <= 1'b1; p2sl2 <= p2slb; infl2 <= infl1;
+                    p2v2 <= 1'b1; p2sl2 <= p2slb; infl2 <= disk ? dinfl : infl1;
                 end
             end
             if (p2v2 && infl2 && cm_q < C_INS) begin

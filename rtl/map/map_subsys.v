@@ -33,6 +33,7 @@ module map_subsys #(
     input  wire [7:0]  cfg_fill_tol,
     input  wire [7:0]  cfg_fill_cost,
     input  wire [3:0]  cfg_infl_r,
+    input  wire        cfg_infl_disk,
 
     // 点更新流（来自 pc_filter）
     input  wire        s_valid,
@@ -104,7 +105,7 @@ module map_subsys #(
         .cfg_jump(cfg_jump), .cfg_drop_k(cfg_drop_k), .cfg_drop_slope(cfg_drop_slope),
         .cfg_k_slope(cfg_k_slope), .cfg_k_step(cfg_k_step), .cfg_k_rough(cfg_k_rough),
         .cfg_fill_min(cfg_fill_min), .cfg_fill_tol(cfg_fill_tol), .cfg_fill_cost(cfg_fill_cost),
-        .cfg_infl_r(cfg_infl_r),
+        .cfg_infl_r(cfg_infl_r), .cfg_infl_disk(cfg_infl_disk),
         .busy(swp_busy), .done(tv_done),
         .em_re(em_re), .em_raddr(em_raddr), .em_q(em_q), .em_we(em_we), .em_waddr(em_waddr), .em_wdata(em_wdata),
         .cm_we(cm_we), .cm_waddr(cm_waddr), .cm_wdata(cm_wdata), .cm_re(cm_re), .cm_raddr(cm_raddr), .cm_q(cm_q_back)

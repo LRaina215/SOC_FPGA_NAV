@@ -107,6 +107,22 @@ def _shift(a, dy, dx, fill):
     return out
 
 
+def disk_widths(r):
+    """圆形膨胀每行的半宽：第 k 行（|k| <= r）取 dx² + k² <= r² + 1 的最大 dx（r=3：1 2 3 3 3 2 1）"""
+    return [int((r * r + 1 - k * k) ** 0.5 + 1e-9) for k in range(-r, r + 1)]
+
+
+def dilate_disk(m, r):
+    """圆形（近似欧氏）膨胀：方形膨胀在对角方向多出 √2 倍，斜向的窄缝会被堵死（闭环中两箱斜对角 42 cm 的缝车过不去）"""
+    if r <= 0:
+        return m.copy()
+    out = np.zeros_like(m)
+    for k, w in zip(range(-r, r + 1), disk_widths(r)):
+        for dx in range(-w, w + 1):
+            out |= _shift(m, k, dx, False)
+    return out
+
+
 def _dilate(m, r):
     if r <= 0:
         return m.copy()

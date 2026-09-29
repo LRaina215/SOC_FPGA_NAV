@@ -26,7 +26,9 @@ import trav_v2
 N = nf.N
 
 DEFAULT_V3 = dict(trav_v2.DEFAULT_V2)
-DEFAULT_V3.update(step_max=100, rough_max=100, drop_k=16, drop_slope=4, slope_b=4, slope_rise=73, jump=35, k_slope=160, k_step=48, k_rough=32)
+# 阈值按两轮自平衡小车（轮径 65 mm）的估计能力：可跨约 2 cm、坡度 12°。场地里可跨的门槛 1.5 cm、不可跨的路沿 ≥ 5 cm，
+# 阈值取在两者之间（30 mm）留出雷达噪声余量；坡度 8°/12° 可走、20° 不可走，阈值 16°（20 cm 基线净升高 57 mm）。
+DEFAULT_V3.update(step_max=30, rough_max=50, drop_k=16, drop_slope=4, slope_b=4, slope_rise=57, jump=25, k_slope=160, k_step=48, k_rough=32)
 
 
 def gated_rise(V, H, axis, B, jump, signed=False):
@@ -104,7 +106,8 @@ def trav_v3(em, cx, cy, cfg):
         nleth |= sh(lethal, dy, dx, False)
     fill = (~V) & (nval >= c["fill_min"]) & ((hmax - hmin) < c["fill_tol"]) & ~nleth
     raw = np.where(fill, c["fill_cost"], raw)
-    infl = fast._dilate(lethal, c["infl_r"])
+    disk = c.get("infl_disk", 1) and 0 < c["infl_r"] <= 4          # 硬件圆形膨胀支持半径 <= 4，更大时方形
+    infl = fast.dilate_disk(lethal, c["infl_r"]) if disk else fast._dilate(lethal, c["infl_r"])
     raw = np.where((raw < nf.COST_INSCRIBED) & infl, nf.COST_INSCRIBED, raw)
     cost = np.full(N * N, nf.COST_UNKNOWN, dtype=np.int64)
     cost[slot.reshape(-1)] = raw.reshape(-1)

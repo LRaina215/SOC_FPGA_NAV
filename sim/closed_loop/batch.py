@@ -36,7 +36,22 @@ CASES = {
     # 行驶中被撞：20 s 时真值突然平移 0.3 m、转 8°（检验丢失检测与自动重定位）
     "p_kidnap": "--scene terrain --goal 9.3,2.8 --time 150 --prior auto --init-err rand --kidnap 20,0.3,-0.15,8",
 }
+# ---- 5 m 场地（field5，两轮自平衡车模型、10 cm 记忆栅格，docs/platform.md）----
+F5 = "--scene field5 --start 0.0,-2.0,0"
+CASES.update({
+    "f5_goal": f"{F5} --goal 4.0,2.1 --time 120",
+    "f5_ramp": f"{F5} --goal 1.0,1.6 --time 120",                    # 8° 坡上平台
+    "f5_gap": "--scene field5 --start 1.4,-0.1,0 --goal 3.7,-0.1 --time 90",   # 40 cm 窄通道（或绕行）
+    "f5_loop": f"{F5} --waypoints 3.9,-2.1,4.0,0.3,3.0,2.1,0.2,0.4 --laps 2 --time 240",
+    "f5_search": "--scene field5 --start 0.0,1.0,0 --search 1.9,-2.2 --time 200",   # 目标在路沿后
+    "pf5_goal": f"{F5} --goal 4.0,2.1 --time 120 --prior auto --init-err rand",
+    "pf5_loop": f"{F5} --waypoints 3.9,-2.1,4.0,0.3,3.0,2.1,0.2,0.4 --laps 2 --time 240 --prior auto --init-err rand",
+    "pf5_search": "--scene field5 --start 0.0,1.0,0 --search 1.9,-2.2 --time 200 --prior auto --init-err rand",
+    "pf5_perturb": f"{F5} --goal 4.0,2.1 --time 150 --prior auto --init-err rand --perturb boxes",
+    "pf5_kidnap": f"{F5} --goal 4.0,2.1 --time 150 --prior auto --init-err rand --kidnap 15,0.25,-0.1,8",
+})
 NOMAP = ["terrain_a", "terrain_b", "search", "loop"]
+F5CASES = ["f5_goal", "f5_ramp", "f5_gap", "f5_loop", "f5_search", "pf5_goal", "pf5_loop", "pf5_search", "pf5_perturb", "pf5_kidnap"]
 
 KEYS = ["arrived", "time_s", "found_s", "collisions", "goal_err_m", "loc_err_xy_rms_m", "loc_err_xy_final_m",
         "loc_err_xy_max_m", "loc_err_yaw_final_deg", "loc_err_z_max_m", "trav_lethal_recall", "trav_false_lethal_rate",
@@ -57,7 +72,7 @@ def run_one(tag, case, seed, extra):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--tag", required=True)
-    ap.add_argument("--cases", nargs="*", default=NOMAP)
+    ap.add_argument("--cases", nargs="*", default=F5CASES)
     ap.add_argument("--seeds", nargs="*", type=int, default=[1, 2, 3, 4, 5])
     ap.add_argument("--extra", default="", help="附加给每次 run_cl.py 的参数")
     ap.add_argument("-j", type=int, default=10)

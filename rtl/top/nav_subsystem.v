@@ -267,7 +267,7 @@ module nav_subsystem #(
         .cfg_drop_k(r_MAP_DROP[4:0]), .cfg_drop_slope(r_MAP_DROP[15:8]),
         .cfg_k_slope(r_MAP_WEIGHT[7:0]), .cfg_k_step(r_MAP_WEIGHT[15:8]), .cfg_k_rough(r_MAP_WEIGHT[23:16]),
         .cfg_fill_min(r_MAP_FILL[3:0]), .cfg_fill_tol(r_MAP_FILL[15:8]), .cfg_fill_cost(r_MAP_FILL[23:16]),
-        .cfg_infl_r(r_MAP_INFL[3:0]),
+        .cfg_infl_r(r_MAP_INFL[3:0]), .cfg_infl_disk(r_MAP_INFL[4]),
         .s_valid(pf_valid), .s_ready(pf_ready), .s_upd(pf_upd), .s_addr(pf_addr), .s_tag(pf_tag), .s_z(pf_z),
         .s_eof(pf_eof), .s_cx(pf_cx), .s_cy(pf_cy),
         .a_re(cm_a_re), .a_addr(cm_a_addr), .a_q(cm_a_q),

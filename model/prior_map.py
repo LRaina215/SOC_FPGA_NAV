@@ -24,8 +24,8 @@ import slf_match as slf
 SN = slf.SN                   # 256
 RES_MM = 50
 INV_RES = 1311
-DS = 4                        # 代价图一格 = 4 个 5 cm 格
-GM_MAX = 96                   # 固件记忆栅格边长
+DS = 2                        # 代价图一格 = 2 个 5 cm 格（10 cm，与固件 GM_DS 一致）
+GM_MAX = 64                   # 固件记忆栅格边长（GM_N）
 MAGIC = b"NVMP"
 HDR_FMT = "<4sHHiiIiiHHII"
 HDR_LEN = struct.calcsize(HDR_FMT)
@@ -144,15 +144,15 @@ def cost_from_elevation(h, step_max=100, slope_max_deg=20.0, k_slope=200):
     return cost
 
 
-def coarse_cost(cost5, min_known=6):
-    """5 cm 代价 -> 20 cm（与固件记忆栅格同规则：16 格中 >= 2 格致命 -> 致命；已知格 < min_known -> 未知；否则取最大代价）"""
+def coarse_cost(cost5, min_known=2):
+    """5 cm 代价 -> 10 cm（与固件记忆栅格同规则：DS×DS 格中 >= 1 格致命 -> 致命；已知格 < min_known -> 未知；否则取最大代价）"""
     ny, nx = cost5.shape
     gny, gnx = ny // DS, nx // DS
     c = cost5[:gny * DS, :gnx * DS].reshape(gny, DS, gnx, DS).transpose(0, 2, 1, 3).reshape(gny, gnx, DS * DS)
     known = (c != 255).sum(-1)
     nl = (c == 254).sum(-1)
     free = np.where(c <= 200, c, -1).max(-1)
-    out = np.where(known < min_known, 255, np.where(nl >= 2, 254, np.maximum(free, 0)))
+    out = np.where(known < min_known, 255, np.where(nl >= (2 if DS * DS >= 16 else 1), 254, np.maximum(free, 0)))
     return out.astype(np.uint8)
 
 

@@ -71,6 +71,7 @@ typedef struct {
     bool           recovering;
     int8_t         recover_dir;      /* 1 = 倒车，0 = 原地转 */
     uint32_t       n_recover;
+    int32_t        stuck_x, stuck_y; /* 上一次卡住的位置 */
     bool           hold;             /* 定位未就绪：原地保持（速度为零、保持平衡），模式与目标不变 */
     bool           slow;             /* 定位退化：限速一半 */
     int16_t        hold_wz;          /* 保持期间的原地转向角速度（对准换视角），0 = 静止 */

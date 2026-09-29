@@ -132,7 +132,7 @@ def main(out):
         len(eth), len(TRAJ), len(hl), len(gw),
         c["age_max"] | (c["cnt_min"] << 8) | (c["keep_r"] << 16), c["step_max"] | (c["rough_max"] << 16),
         c["slope_rise"] | (c["jump"] << 16),
-        c["k_slope"] | (c["k_step"] << 8) | (c["k_rough"] << 16), c["infl_r"],
+        c["k_slope"] | (c["k_step"] << 8) | (c["k_rough"] << 16), c["infl_r"] | (c.get("infl_disk", 1) << 4),
         (ZMIN & 0xFFFF) | ((ZMAX & 0xFFFF) << 16)]) + "\n")
 
 

@@ -18,7 +18,7 @@ GW_SH = Path(os.environ.get("GW_SH", r"D:\Gowin2\Gowin_V1.9.12.04_x64\IDE\bin\gw
 BUILD = ROOT / "gowin" / "syn" / "build"
 
 sys.path.insert(0, str(ROOT / "sim"))
-from tests import ALL_RTL  # noqa: E402
+from tests import ALL_RTL, SOC  # noqa: E402
 
 
 def main():
@@ -29,12 +29,23 @@ def main():
     BUILD.mkdir(parents=True, exist_ok=True)
     for f in ("rtl/plan/sin_lut.hex", "rtl/lidar/lut_default.hex"):
         shutil.copy(ROOT / f, BUILD / Path(f).name)
+    ram_kb, app = "160", "nav"
+    for a in sys.argv[1:]:
+        if a.startswith("--ram-kb="):
+            ram_kb = a.split("=", 1)[1]
+        if a.startswith("--app="):
+            app = a.split("=", 1)[1]
+    if board:                                   # 软核 RAM 初始镜像（缺省导航固件；--app=selftest --ram-kb=32 为上板自检用的小镜像）
+        rc = subprocess.run([sys.executable, str(ROOT / "fw/bsp/build_rv.py"), "--app", app, "--ram-kb", ram_kb, "--copy-to", str(BUILD)])
+        if rc.returncode:
+            return 1
+        (ROOT / "gowin" / "soc_cfg.vh").write_text(f"`define NAV_SOC_RAM_KB {ram_kb}" + chr(10))
     tcl = ["set_device -device_version B GW5AT-LV138PG484AC1/I0"]
     top = "nav_board_top" if board else "nav_subsystem"
     for a in sys.argv[1:]:
         if a.startswith("--top="):              # 单独综合某个模块（排查用）
             top = a.split("=", 1)[1]
-    files = list(ALL_RTL) + (["gowin/nav_board_top.v"] if board else [])
+    files = list(ALL_RTL) + (SOC + ["gowin/nav_board_top.v"] if board else [])
     for s in files:
         tcl.append(f"add_file -type verilog {{{(ROOT / s).as_posix()}}}")
     if board:

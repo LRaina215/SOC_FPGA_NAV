@@ -20,7 +20,15 @@ bool imu_parser_feed(imu_parser_t *p, uint8_t b, bool first, uint32_t t_us)
     for (int i = 0; i < 10; i++) sum = (uint8_t)(sum + p->buf[i]);
     if (sum != p->buf[10]) { p->n_bad++; return false; }
     p->n_ok++;
-    if (p->buf[1] != 0x53) return false;         /* 只用角度帧 */
+    if (p->buf[1] == 0x52) {                      /* 角速度帧 */
+        p->gx = (int16_t)(p->buf[2] | (p->buf[3] << 8));
+        p->gy = (int16_t)(p->buf[4] | (p->buf[5] << 8));
+        p->gz = (int16_t)(p->buf[6] | (p->buf[7] << 8));
+        p->gyro_t_us = p->t_burst;
+        p->gyro_new = true;
+        return false;
+    }
+    if (p->buf[1] != 0x53) return false;
     p->roll  = wit_angle(p->buf[2], p->buf[3]);
     p->pitch = wit_angle(p->buf[4], p->buf[5]);
     p->yaw   = wit_angle(p->buf[6], p->buf[7]);

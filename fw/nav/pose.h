@@ -11,6 +11,7 @@
 #include "fixmath.h"
 
 #define POSE_HIST 64
+#define POSE_ATT_HIST 64           /* 姿态历史（按 IMU 频率，100 Hz 时 0.64 s）：雷达帧时刻的俯仰/横滚插值 */
 #define POSE_ATT_JUMP (16 * 273)     /* 姿态新息超过 1.5°（angle×16）视为突变 */
 
 typedef struct {
@@ -35,6 +36,13 @@ typedef struct {
     uint32_t   imu_t_us;
     nav_pose_t hist[POSE_HIST];
     int        hist_head, hist_n;
+    struct { uint32_t t_us; int16_t pitch, roll; } att_hist[POSE_ATT_HIST];
+    int        att_head, att_hn;
+    int32_t    gyro_pr, gyro_rr;  /* 陀螺俯仰/横滚角速度（angle × 16 / 20 ms） */
+    uint32_t   gyro_t_us;
+    bool       have_gyro;
+    bool       decomp_pitch;    /* 前进速度按 IMU 俯仰分解出高度变化：四轮 / 履带底盘为真；
+                                   两轮自平衡车机身俯仰是平衡姿态而不是坡度，为假（高度只靠地图锚定） */
     /* 雷达安装外参：机身系 */
     fx_mat3_t  r_bs;
     int32_t    t_bs[3];
@@ -45,6 +53,9 @@ void pose_init(pose_est_t *p, angle_t mount_pitch, int32_t mount_x_mm, int32_t m
 void pose_odom(pose_est_t *p, int16_t vx, int16_t vy, int16_t wz, uint32_t t_us);
 /* IMU 姿态（绝对航向可选）。yaw_valid=false 时只用俯仰横滚 */
 void pose_imu_att(pose_est_t *p, angle_t yaw, angle_t pitch, angle_t roll, bool yaw_valid, uint32_t t_us);
+/* IMU 角速度（原始 ×2000/32768 °/s，机身系）：有新鲜角速度时，俯仰/横滚用它做预测（陀螺辅助互补滤波），
+ * 自平衡车持续摆动时没有 α-β 的跟踪滞后 */
+void pose_imu_gyro(pose_est_t *p, int16_t gx, int16_t gy, uint32_t t_us);
 /* t_us 之前 win_us 内发生过姿态突变 */
 bool pose_att_unsettled(const pose_est_t *p, uint32_t t_us, uint32_t win_us);
 /* 外部定位修正（预留） */

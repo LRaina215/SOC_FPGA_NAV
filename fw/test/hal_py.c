@@ -147,6 +147,17 @@ EXPORT int py_get_gmap(uint8_t *grid, int32_t *v, int16_t *path)
     return n;
 }
 EXPORT void py_get_seen(uint8_t *s) { memcpy(s, g_app.nt.exp.seen, sizeof g_app.nt.exp.seen); }
+/* 调试：在给定栅格上用导航同一套参数跑 A*，返回 rc，path 写入栅格坐标 */
+EXPORT int py_astar(const uint8_t *grid, int n, int sx, int sy, int gx, int gy, int16_t *path, int *np, int *expanded)
+{
+    static astar_path_t pth;
+    int rc = astar_grid(&g_app.nt.as_cfg_g, grid, n, sx, sy, gx, gy, &pth);
+    for (int i = 0; i < pth.n; i++) { path[2 * i] = pth.wx[i]; path[2 * i + 1] = pth.wy[i]; }
+    *np = pth.n;
+    *expanded = astar_last_expanded();
+    return rc;
+}
+EXPORT void py_set_pose_decomp(int en) { g_app.nt.pose.decomp_pitch = en != 0; }
 EXPORT void py_set_gmap_enable(int en) { g_app.nt.use_gmap = en != 0; }
 EXPORT void py_set_anchor(int g) { g_app.anchor_gain = g; }
 EXPORT void py_set_pm_prior(int gain_q8, int min_curv, int min_curv_ang)

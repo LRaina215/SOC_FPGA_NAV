@@ -15,7 +15,7 @@
 #endif
 #define ASTAR_N (NP_MAP_N / ASTAR_DS)
 #ifndef ASTAR_MAXN
-#define ASTAR_MAXN 96
+#define ASTAR_MAXN 64
 #endif
 #define ASTAR_MAX_PATH 256
 
@@ -26,6 +26,8 @@ typedef struct {
     bool     allow_unknown;
     uint8_t  clear_cells;    /* 离障距离（粗格）小于此值时加罚，使路径远离墙边 */
     uint16_t clear_cost;     /* 每少 1 格距离的额外代价 */
+    uint8_t  near_cells;     /* 离障距离小于此值的格按"贴障"处理：额外代价 near_cost（很大，只在别无通路时走，如窄通道中心两侧） */
+    uint16_t near_cost;
 } astar_cfg_t;
 
 typedef struct {

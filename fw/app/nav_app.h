@@ -34,6 +34,7 @@ typedef struct {
     nav_pose_t   pm_at;                 /* 该帧提交时的位姿 */
     int32_t      zband_lo, zband_hi;    /* 保留点高度带（相对机器人，mm）：地面以下 / 机身以上的点不进地图 */
     int32_t      anchor_gain;           /* 足迹高度锚定增益 /256（0 = 关闭） */
+    int32_t      anchor_hl, anchor_hw;  /* 足迹采样点相对机身中心的前后 / 左右偏移 mm（应落在轮子着地处） */
     /* 有图模式 */
     prior_rx_t   prx;                   /* 先验地图包接收 */
     loc_t        loc;                   /* 对准 / 跟踪质量 / 重定位 */

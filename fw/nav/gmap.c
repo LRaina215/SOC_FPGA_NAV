@@ -13,7 +13,7 @@ void gmap_default_cfg(gmap_cfg_t *c)
     c->occ_max = 6;
     c->occ_min = -4;
     c->occ_thr = 2;
-    c->min_known = 6;
+    c->min_known = (GM_DS * GM_DS * 3 + 7) / 8;      /* 一格内至少 3/8 的局部格已知（4×4 时 6、2×2 时 2） */
 }
 
 void gmap_init(gmap_t *g)
@@ -35,6 +35,27 @@ static void compose(gmap_t *g)
         else if (pr == NP_COST_LETHAL && obs != NP_COST_LETHAL && o > c->occ_min + 1) g->grid[i] = pr;
         else g->grid[i] = obs;
     }
+    for (int k = 0; k < GM_VBLK; k++) {
+        if (!g->vblk[k].ttl) continue;
+        int r = g->vblk[k].r, bx = g->vblk[k].gx - g->ox, by = g->vblk[k].gy - g->oy;
+        for (int y = by - r; y <= by + r; y++)
+            for (int x = bx - r; x <= bx + r; x++)
+                if (x >= 0 && y >= 0 && x < GM_N && y < GM_N && (x - bx) * (x - bx) + (y - by) * (y - by) <= r * r + 1)
+                    g->grid[y * GM_N + x] = NP_COST_LETHAL;
+    }
+}
+
+void gmap_block_add(gmap_t *g, const hal_map_info_t *mi, int32_t x, int32_t y, int r, int ttl)
+{
+    int gx, gy;
+    gmap_mm_to_cell(g, mi, x, y, &gx, &gy);
+    int k = 0;
+    for (int i = 1; i < GM_VBLK; i++) if (g->vblk[i].ttl < g->vblk[k].ttl) k = i;     /* 替换剩余时间最短的 */
+    g->vblk[k].gx = (int16_t)(gx + g->ox); g->vblk[k].gy = (int16_t)(gy + g->oy);      /* 存绝对粗格坐标（栅格平移后仍有效） */
+    g->vblk[k].r = (uint8_t)r;
+    g->vblk[k].ttl = (uint16_t)ttl;
+    compose(g);
+    g->n_shift++;                   /* 路径失效，重规划 */
 }
 
 void gmap_clear_obs(gmap_t *g)
@@ -154,7 +175,7 @@ void gmap_update(gmap_t *g, const uint8_t *map, const hal_map_info_t *mi, int32_
             if (nk < c->min_known) continue;
             int k = gy * GM_N + gx;
             int o = g->occ[k];
-            int d = (nl >= 2) ? c->occ_hit : c->occ_miss;
+            int d = (nl >= (GM_DS * GM_DS >= 16 ? 2 : 1)) ? c->occ_hit : c->occ_miss;     /* 4×4 时 2 格致命、2×2 时 1 格 */
             o = (o == UNSEEN) ? d : o + d;
             if (o > c->occ_max) o = c->occ_max;
             if (o < c->occ_min) o = c->occ_min;
@@ -162,6 +183,7 @@ void gmap_update(gmap_t *g, const uint8_t *map, const hal_map_info_t *mi, int32_
             g->cost[k] = (uint8_t)mc;
         }
     }
+    for (int k = 0; k < GM_VBLK; k++) if (g->vblk[k].ttl) g->vblk[k].ttl--;
     compose(g);
     g->n_upd++;
 }

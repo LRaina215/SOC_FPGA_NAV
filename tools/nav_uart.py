@@ -7,6 +7,11 @@
   python tools/nav_uart.py COM5 stat                  打印网口/雷达/地图统计
   python tools/nav_uart.py COM5 map out.png           读出前台代价图并保存为图片（需 matplotlib）
   python tools/nav_uart.py COM5 lut rtl/lidar/lut_default.hex   经 LUT_ADDR/LUT_XY/LUT_Z 写入方向查找表
+  软核（nav_soc 调试口，地址 0xE000–0xFFFF）：
+  python tools/nav_uart.py COM5 soc                  软核信息（RAM 大小、状态字、控制台字节数、是否保持复位）
+  python tools/nav_uart.py COM5 con                  持续打印软核控制台输出（Ctrl-C 退出）
+  python tools/nav_uart.py COM5 load fw/build/rv/nav/nav_fw.bin   保持复位 -> 写入 RAM -> 抽查回读 -> 放开运行
+  python tools/nav_uart.py COM5 reset                软核复位重启（程序不变）
 依赖: pyserial
 """
 import struct
@@ -50,6 +55,38 @@ class NavUart:
 
     def reg(self, name):
         return rm.REGS[name]
+
+    # ---------------- 软核调试口
+    SOC_CTRL, SOC_RAM_ADDR, SOC_RAM_DATA, SOC_CON_WPTR, SOC_STATUS, SOC_INFO, SOC_CON =         0xF000, 0xF004, 0xF008, 0xF00C, 0xF010, 0xF014, 0xE000
+
+    def soc_load(self, img, verify_every=97):
+        self.wr(self.SOC_CTRL, 1)
+        self.wr(self.SOC_RAM_ADDR, 0)
+        words = [struct.unpack_from("<I", img + bytes(-len(img) % 4), i)[0] for i in range(0, len(img) + (-len(img) % 4), 4)]
+        self.wr_burst([(self.SOC_RAM_DATA, w) for w in words])
+        bad = 0
+        for i in range(0, len(words), verify_every):
+            self.wr(self.SOC_RAM_ADDR, i)
+            if self.rd(self.SOC_RAM_DATA) != words[i]:
+                bad += 1
+        self.wr(self.SOC_CTRL, 0)
+        return len(words), bad
+
+    def con_read(self, since):
+        """读出 since 之后的控制台字节，返回 (bytes, 新指针)"""
+        wp = self.rd(self.SOC_CON_WPTR)
+        if wp - since > 4096:
+            since = wp - 4096
+        out = bytearray()
+        i = since
+        while i < wp:
+            w = self.rd(self.SOC_CON + ((i & 4095) & ~3))
+            for b in range(i & 3, 4):
+                if i >= wp:
+                    break
+                out.append((w >> (8 * b)) & 0xFF)
+                i += 1
+        return bytes(out), wp
 
 
 def main():
@@ -96,6 +133,30 @@ def main():
         plt.colorbar(label="cost")
         plt.savefig(out, dpi=120)
         print("保存", out)
+    elif cmd == "soc":
+        info = u.rd(u.SOC_INFO)
+        print(f"RAM {info >> 16} KB  版本 {info & 0xFFFF}  状态字 0x{u.rd(u.SOC_STATUS):08X}  "
+              f"控制台 {u.rd(u.SOC_CON_WPTR)} 字节  保持复位 {u.rd(u.SOC_CTRL) & 1}")
+    elif cmd == "con":
+        wp = max(0, u.rd(u.SOC_CON_WPTR) - 2048)
+        try:
+            while True:
+                b, wp = u.con_read(wp)
+                if b:
+                    sys.stdout.write(b.decode("utf-8", "replace"))
+                    sys.stdout.flush()
+                time.sleep(0.05)
+        except KeyboardInterrupt:
+            pass
+    elif cmd == "load":
+        img = Path(sys.argv[3]).read_bytes()
+        t0 = time.time()
+        n, bad = u.soc_load(img)
+        print(f"写入 {n} 字（{len(img)} 字节），{time.time() - t0:.1f} s，抽查回读错误 {bad}")
+        return 1 if bad else 0
+    elif cmd == "reset":
+        u.wr(u.SOC_CTRL, 1)
+        u.wr(u.SOC_CTRL, 0)
     elif cmd == "lut":
         lines = Path(sys.argv[3]).read_text().split()
         u.wr(rm.REGS["LIDAR_LUT_ADDR"], 0)

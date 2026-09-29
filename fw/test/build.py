@@ -26,7 +26,7 @@ def main():
     r = subprocess.run([CC] + CFLAGS + ["-c", "-o", str(OUT / "hal_fpga.o"), str(FW / "drv" / "hal_fpga.c")])
     if r.returncode:
         return r.returncode
-    r = subprocess.run([CC] + CFLAGS + ["-c", "-o", str(OUT / "main.o"), str(FW / "app" / "main.c")])
+    r = subprocess.run([CC] + CFLAGS + [f"-I{FW / 'bsp'}", "-c", "-o", str(OUT / "main.o"), str(FW / "app" / "main.c")])
     if r.returncode:
         return r.returncode
     if "--no-run" in sys.argv:

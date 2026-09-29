@@ -1,6 +1,8 @@
 #include "pose.h"
 #include "hal.h"
 
+static void pose_at_xy(const pose_est_t *p, uint32_t t_us, nav_pose_t *out);
+
 static void hist_push(pose_est_t *p)
 {
     p->hist[p->hist_head] = p->cur;
@@ -11,6 +13,7 @@ static void hist_push(pose_est_t *p)
 void pose_init(pose_est_t *p, angle_t mount_pitch, int32_t mount_x_mm, int32_t mount_z_mm)
 {
     *p = (pose_est_t){0};
+    p->decomp_pitch = false;
     fx_rot_zyx(&p->r_bs, 0, mount_pitch, 0);
     p->t_bs[0] = mount_x_mm;
     p->t_bs[1] = 0;
@@ -55,7 +58,7 @@ void pose_odom(pose_est_t *p, int16_t vx, int16_t vy, int16_t wz, uint32_t t_us)
         p->cur.yaw = (angle_t)(p->cur.yaw + (int32_t)dth);
     }
     /* 机身速度按俯仰分解：水平分量 vx·cos(pitch)，高度 -vx·sin(pitch)（pitch>0 为低头），um 精度累加 */
-    int64_t cp = fx_cos(p->cur.pitch), sp = fx_sin(p->cur.pitch);
+    int64_t cp = p->decomp_pitch ? fx_cos(p->cur.pitch) : Q14, sp = p->decomp_pitch ? fx_sin(p->cur.pitch) : 0;
     int64_t vh = (int64_t)vx * cp / Q14;
     int64_t c = fx_cos(p->cur.yaw), s = fx_sin(p->cur.yaw);
     int64_t dx_um = (vh * c - (int64_t)vy * s) * dt / Q14 / 1000;
@@ -82,6 +85,9 @@ void pose_imu_att(pose_est_t *p, angle_t yaw, angle_t pitch, angle_t roll, bool 
     if (p->att_n == 0 || dt <= 0 || dt > 200000) {
         p->pitch_f = pi; p->roll_f = ro; p->pitch_r = 0; p->roll_r = 0;
     } else {
+        /* 有新鲜角速度（30 ms 内）：用它预测、小增益校正（互补滤波）；否则 α-β */
+        bool gyro = p->have_gyro && (uint32_t)(t_us - p->gyro_t_us) < 30000;
+        if (gyro) { p->pitch_r = p->gyro_pr; p->roll_r = p->gyro_rr; }
         int32_t pp = p->pitch_f + (int32_t)((int64_t)p->pitch_r * dt / 20000);
         int32_t pr = p->roll_f + (int32_t)((int64_t)p->roll_r * dt / 20000);
         int32_t ep = pi - pp, er = ro - pr;
@@ -91,6 +97,8 @@ void pose_imu_att(pose_est_t *p, angle_t yaw, angle_t pitch, angle_t roll, bool 
             p->pitch_f = pi; p->roll_f = ro; p->pitch_r = 0; p->roll_r = 0;
             p->att_jump_us = t_us;
             p->att_jumped = true;
+        } else if (gyro) {
+            p->pitch_f = pp + ep / 16; p->roll_f = pr + er / 16;
         } else {
             p->pitch_f = pp + ep / 4; p->roll_f = pr + er / 4;
             p->pitch_r += ep / 32; p->roll_r += er / 32;
@@ -99,9 +107,23 @@ void pose_imu_att(pose_est_t *p, angle_t yaw, angle_t pitch, angle_t roll, bool 
     p->att_n++;
     p->cur.pitch = (angle_t)(int16_t)(p->pitch_f / 16);
     p->cur.roll = (angle_t)(int16_t)(p->roll_f / 16);
+    p->att_hist[p->att_head].t_us = t_us;
+    p->att_hist[p->att_head].pitch = (int16_t)p->cur.pitch;
+    p->att_hist[p->att_head].roll = (int16_t)p->cur.roll;
+    p->att_head = (p->att_head + 1) % POSE_ATT_HIST;
+    if (p->att_hn < POSE_ATT_HIST) p->att_hn++;
     p->imu_att_valid = yaw_valid;
     p->imu_t_us = t_us;
     p->have_att = true;
+}
+
+void pose_imu_gyro(pose_est_t *p, int16_t gx, int16_t gy, uint32_t t_us)
+{
+    /* raw × 2000/32768 °/s × 65536/360 angle/° × 16 × 0.02 s = raw × 32/9 */
+    p->gyro_rr = (int32_t)gx * 32 / 9;
+    p->gyro_pr = (int32_t)gy * 32 / 9;
+    p->gyro_t_us = t_us;
+    p->have_gyro = true;
 }
 
 bool pose_att_unsettled(const pose_est_t *p, uint32_t t_us, uint32_t win_us)
@@ -153,7 +175,37 @@ void pose_correct_delta(pose_est_t *p, int32_t dx, int32_t dy, int32_t dz, int32
     }
 }
 
+/* 姿态历史插值：t_us 前后两个 IMU 样本线性插值（超出范围取最近） */
+static void att_at(const pose_est_t *p, uint32_t t_us, nav_pose_t *out)
+{
+    if (p->att_hn == 0) return;
+    int inew = (p->att_head - 1 + POSE_ATT_HIST) % POSE_ATT_HIST;
+    if ((int32_t)(t_us - p->att_hist[inew].t_us) >= 0) {
+        out->pitch = (angle_t)p->att_hist[inew].pitch; out->roll = (angle_t)p->att_hist[inew].roll;
+        return;
+    }
+    for (int i = 1; i < p->att_hn; i++) {
+        int io = (p->att_head - 1 - i + 2 * POSE_ATT_HIST) % POSE_ATT_HIST;
+        int in = (io + 1) % POSE_ATT_HIST;
+        if ((int32_t)(t_us - p->att_hist[io].t_us) >= 0) {
+            int32_t span = (int32_t)(p->att_hist[in].t_us - p->att_hist[io].t_us);
+            int32_t k = span > 0 ? (int32_t)((int64_t)(t_us - p->att_hist[io].t_us) * 1024 / span) : 0;
+            out->pitch = (angle_t)(int16_t)(p->att_hist[io].pitch + (p->att_hist[in].pitch - p->att_hist[io].pitch) * k / 1024);
+            out->roll = (angle_t)(int16_t)(p->att_hist[io].roll + (p->att_hist[in].roll - p->att_hist[io].roll) * k / 1024);
+            return;
+        }
+    }
+    int iold = (p->att_head - p->att_hn + POSE_ATT_HIST) % POSE_ATT_HIST;
+    out->pitch = (angle_t)p->att_hist[iold].pitch; out->roll = (angle_t)p->att_hist[iold].roll;
+}
+
 void pose_at(const pose_est_t *p, uint32_t t_us, nav_pose_t *out)
+{
+    pose_at_xy(p, t_us, out);
+    att_at(p, t_us, out);
+}
+
+static void pose_at_xy(const pose_est_t *p, uint32_t t_us, nav_pose_t *out)
 {
     if (p->hist_n == 0) { *out = p->cur; return; }
     /* 从新到旧找第一个时间 <= t_us 的样本 */

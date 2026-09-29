@@ -23,6 +23,8 @@ void nav_app_init(void)
     g_app.zband_lo = -600;
     g_app.zband_hi = 1200;
     g_app.anchor_gain = 64;
+    g_app.anchor_hl = 60;                   /* 足迹采样点：两轮自平衡车轮距 170 mm、轮子在车身中部（前后 ±60 mm） */
+    g_app.anchor_hw = 85;
     prior_rx_init(&g_app.prx);
     loc_default_cfg(&g_app.loc.cfg);
     loc_init(&g_app.loc);
@@ -109,6 +111,10 @@ void nav_app_poll(void)
         if (imu_parser_feed(&g_app.imu, b, first, tb))
             pose_imu_att(&nt->pose, g_app.imu.yaw, g_app.imu.pitch, g_app.imu.roll, g_app.use_imu_yaw,
                          g_app.imu.att_t_us);
+        if (g_app.imu.gyro_new) {
+            g_app.imu.gyro_new = false;
+            pose_imu_gyro(&nt->pose, g_app.imu.gx, g_app.imu.gy, g_app.imu.gyro_t_us);
+        }
     }
 
     /* 3. 雷达帧：按预测位姿提交（融合 + 提取结构点），窗口中心跟随机器人 */
@@ -141,7 +147,7 @@ void nav_app_poll(void)
         g_app.pm_pend = !skip && !receiving && (prior ? lc->st != LOC_ODOM : g_app.pm_cfg.enable);
         g_app.pm_at = at;
         g_app.pm_stale = false;
-        pose_anchor_z(&nt->pose, 200, 180, g_app.anchor_gain);
+        pose_anchor_z(&nt->pose, g_app.anchor_hl, g_app.anchor_hw, g_app.anchor_gain);
         g_app.n_frames++;
     }
     /* 匹配（先融合后匹配）：结构点就绪 -> 发起打分（硬件约 40 ms，主循环不等待）-> 取回结果、修正位姿

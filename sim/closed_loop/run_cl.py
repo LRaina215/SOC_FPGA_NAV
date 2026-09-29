@@ -91,6 +91,11 @@ def main():
     ap.add_argument("--prior", default="", help="有图模式：先验地图包路径，或 auto（按场景用虚拟扫图生成并缓存）")
     ap.add_argument("--init-err", default="0.25,-0.2,6", help="有图：下发的初始位姿相对真值的误差 dx,dy(m),dyaw(°)")
     ap.add_argument("--perturb", default="", help="有图：扫图之后场景的变化（先验图里没有）：boxes = 新增 3 个箱子")
+    ap.add_argument("--bot", default="balance", choices=["balance", "car"],
+                    help="balance = 两轮自平衡轮腿（机身持续摆动、越障后振荡，缺省）；car = 四点着地（旧模型）")
+    ap.add_argument("--osc", default="1.5,1.8,3.0", help="自平衡：持续摆动幅度°,频率Hz,每 1 cm 高差激起的摆动°")
+    ap.add_argument("--imu-hz", type=float, default=100.0, help="IMU 姿态输出频率")
+    ap.add_argument("--imu-gyro", type=int, default=1, help="IMU 同时输出角速度帧（固件用它做陀螺辅助姿态滤波）")
     ap.add_argument("--pmcfg", default="", help="有图跟踪匹配参数 gain_q8,min_curv,min_curv_ang（0 = 固件缺省）")
     ap.add_argument("--kidnap", default="", help="t,dx,dy,dyaw：t 秒时把机器人真值位姿突然平移/旋转（模拟被撞/严重打滑）")
     a = ap.parse_args()
@@ -110,17 +115,22 @@ def main():
         if a.perturb:
             W.perturb(scene, a.scene, a.perturb)
     sx, sy, syaw = (float(v) for v in a.start.split(","))
+    Bot = rb.BalanceBot if a.bot == "balance" else rb.RobotSim
+    bkw = {}
+    if a.bot == "balance":
+        o_ = [float(v) for v in a.osc.split(",")]
+        bkw = dict(osc_deg=o_[0], osc_hz=o_[1], kick_deg_per_cm=o_[2])
     if a.ideal:
-        bot = rb.RobotSim(scene, sx, sy, math.radians(syaw), seed=a.seed, slip_mean=0, slip_std=0,
-                          gyro_bias_dps=0, gyro_noise_dps=0, att_noise_deg=0, scale_err=0)
+        bot = Bot(scene, sx, sy, math.radians(syaw), seed=a.seed, slip_mean=0, slip_std=0,
+                  gyro_bias_dps=0, gyro_noise_dps=0, att_noise_deg=0, scale_err=0, **bkw)
     elif a.noise:
         on = set(a.noise.split(","))
-        bot = rb.RobotSim(scene, sx, sy, math.radians(syaw), seed=a.seed,
+        bot = Bot(scene, sx, sy, math.radians(syaw), seed=a.seed, **bkw,
                           slip_mean=a.slip if "slip" in on else 0, slip_std=0.02 if "slip" in on else 0,
                           gyro_bias_dps=0.3 if "gyro" in on else 0, gyro_noise_dps=0.3 if "gyro" in on else 0,
                           att_noise_deg=0.3 if "att" in on else 0, scale_err=0.01 if "scale" in on else 0)
     else:
-        bot = rb.RobotSim(scene, sx, sy, math.radians(syaw), seed=a.seed, slip_mean=a.slip)
+        bot = Bot(scene, sx, sy, math.radians(syaw), seed=a.seed, slip_mean=a.slip, **bkw)
     lid = sw.VirtualLidar(noise_mm=4.0, seed=a.seed + 7, rng_max=8.0, step=0.015)
     Rbs, tbs = sw.mount_pose(height=0.20, pitch_down_deg=10.0, x=0.08)
     fpga = fpga_model.FpgaModel(trav=a.trav)
@@ -132,6 +142,7 @@ def main():
     fw.py_set_caps(0, 500, 1200, 140)
     fw.py_set_anchor(a.anchor)
     fw.py_set_gmap_enable(1 if a.gmap == "on" else 0)
+    fw.py_set_pose_decomp(1 if a.bot == "car" else 0)
     if a.pmcfg:
         fw.py_set_pm_prior(*(int(v) for v in a.pmcfg.split(",")))
     CTL_CB = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_int32, ctypes.c_int32, ctypes.c_int32)
@@ -306,8 +317,8 @@ def main():
             vx, vy, wz = bot.odom()
             fw.py_push_odom(vx, vy, wz, ctypes.c_uint32(now_us))
         if t >= t_imu:
-            t_imu += 0.02
-            b = bot.imu_wit_frame()
+            t_imu += 1.0 / a.imu_hz
+            b = (bot.imu_wit_gyro_frame(1.0 / a.imu_hz) if a.imu_gyro else b"") + bot.imu_wit_frame()
             buf = (ctypes.c_uint8 * len(b)).from_buffer_copy(b)
             fw.py_push_imu(buf, len(b), ctypes.c_uint32(now_us))
         # 模拟 RK3588：目标可见时发 TARGET
@@ -412,7 +423,8 @@ def get_prior(scene_name, spec):
     """先验地图包：spec 为文件路径，或 auto（虚拟扫图生成，缓存到 sim/build/prior/<场景>.nvmp）"""
     if spec != "auto":
         return Path(spec).read_bytes()
-    p = ROOT / "sim" / "build" / "prior" / f"{scene_name}.nvmp"
+    import slf_match
+    p = ROOT / "sim" / "build" / "prior" / (f"{scene_name}.nvmp" if slf_match.SN == 256 else f"{scene_name}_sn{slf_match.SN}.nvmp")
     if p.exists():
         return p.read_bytes()
     sc = W.SCENES[scene_name]()

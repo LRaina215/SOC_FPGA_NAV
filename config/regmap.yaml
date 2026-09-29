@@ -215,14 +215,14 @@ blocks:
       - name: THR0
         off: 0x18
         acc: rw
-        reset: 0x00640064
-        desc: "致命阈值 mm：台阶（8 邻域最大高差，= 可跨越高度）、格内粗糙度"
+        reset: 0x0032001E
+        desc: "致命阈值 mm：台阶（8 邻域最大高差；30 = 可跨门槛 15 与不可跨路沿 50 之间）、格内粗糙度 50"
         fields: {STEP_MAX: [15,0], ROUGH_MAX: [31,16]}
       - name: THR1
         off: 0x1C
         acc: rw
-        reset: 0x00230049
-        desc: "坡度：4 格基线门控净升高阈值 mm（= 4·res·tan 最大坡度）；跳变门限 mm（单段超过它按台阶处理）"
+        reset: 0x00190039
+        desc: "坡度：4 格基线门控净升高阈值 mm（= 4·res·tan 最大坡度，57 ≈ 16°）；跳变门限 mm（单段超过它按台阶处理，25）"
         fields: {SLOPE_RISE: [15,0], JUMP: [23,16]}
       - name: WEIGHT
         off: 0x20
@@ -233,9 +233,9 @@ blocks:
       - name: INFL
         off: 0x24
         acc: rw
-        reset: 3
-        desc: "膨胀半径（格，方形；按底盘外接圆半径设置：140 mm -> 3 格）"
-        fields: {RADIUS: [3,0]}
+        reset: 0x13
+        desc: "膨胀半径（格，按底盘外接圆半径设置：140 mm -> 3 格）；DISK=1 圆形膨胀（半径 <= 4），否则方形（斜向多出 √2 倍，斜对角的窄缝会被堵死）"
+        fields: {RADIUS: [3,0], DISK: [4,4]}
       - name: STAT
         off: 0x28
         acc: ro

@@ -5,8 +5,11 @@
 // 雷达网口：RJ45 / RTL8211F（RGMII）。定义 NAV_USE_TSE_MAC 时例化 IP "Gowin_TSE_MAC_Lidar"，否则 MAC 口悬空。
 // 主机网口：SFP1（收发器第 0 通道，参考时钟 MGT_CLK1 125 MHz）。定义 NAV_USE_SFP 时例化
 //           IP "Gowin_1GSERETH_Host"（1000BASE-X，开启 MAC 功能），否则悬空。
-// 调试：板载 USB 串口（L21/M21）接 uart_bus_bridge，PC 用 tools/nav_uart.py 读写全部寄存器。
+// 调试：板载 USB 串口（L21/M21）接 uart_bus_bridge，PC 用 tools/nav_uart.py 读写全部寄存器；
+//       地址 0xE000–0xFFFF 转到软核调试口（装载程序、读控制台）。
+// 软核：nav_soc（PicoRV32，片上 RAM 160 KB，上电运行 fw/build/rv/nav 的镜像），经 nav_bus_arb m0 访问导航子系统。
 // IP 生成方法见 docs/board_bringup.md。
+`include "soc_cfg.vh"          // 构建脚本生成：`define NAV_SOC_RAM_KB（片上 RAM 大小）
 module nav_board_top (
     input  wire       clk50,          // W19
     input  wire       key_rst_n,      // S0 D21，按下复位
@@ -28,7 +31,9 @@ module nav_board_top (
     output wire       sfp1_tx_dis,    // R17
     input  wire       sfp1_los,       // P15
     // 状态灯
-    output wire [3:0] led             // U22 V22 W21 W22
+    output wire [3:0] led,            // U22 V22 W21 W22
+    output wire [3:0] led_cpu,        // Y21 Y22 N13 N17：软核写的 LED
+    output wire       led_trap        // P17：软核异常停机
 );
 `ifdef NAV_USE_PLL
     localparam integer CLK_HZ = 100000000;
@@ -53,13 +58,28 @@ module nav_board_top (
         .bus_req(u_req), .bus_we(u_we), .bus_addr(u_addr), .bus_wdata(u_wdata),
         .bus_ack(u_ack), .bus_rdata(u_rdata)
     );
+    // 串口桥地址 0xE000–0xFFFF -> 软核调试口，其余 -> 导航总线
+    wire        u_dbg = (u_addr[15:13] == 3'b111);
+    wire        ub_ack, d_ack;
+    wire [31:0] ub_rdata, d_rdata;
+    assign u_ack   = u_dbg ? d_ack : ub_ack;
+    assign u_rdata = u_dbg ? d_rdata : ub_rdata;
+    wire        c_req, c_we, c_ack;
+    wire [15:0] c_addr;
+    wire [31:0] c_wdata, c_rdata;
+    nav_soc #(.RAM_KB(`NAV_SOC_RAM_KB), .INIT_B0("ram_b0.hex"), .INIT_B1("ram_b1.hex"), .INIT_B2("ram_b2.hex"), .INIT_B3("ram_b3.hex")) u_soc (
+        .clk(clk), .rst(rst),
+        .m_req(c_req), .m_we(c_we), .m_addr(c_addr), .m_wdata(c_wdata), .m_ack(c_ack), .m_rdata(c_rdata),
+        .d_req(u_req & u_dbg), .d_we(u_we), .d_addr(u_addr), .d_wdata(u_wdata), .d_ack(d_ack), .d_rdata(d_rdata),
+        .led(led_cpu), .trap(led_trap)
+    );
     wire        s_req, s_we, s_ack;
     wire [15:0] s_addr;
     wire [31:0] s_wdata, s_rdata;
     nav_bus_arb u_arb (
         .clk(clk), .rst(rst),
-        .m0_req(1'b0), .m0_we(1'b0), .m0_addr(16'd0), .m0_wdata(32'd0), .m0_ack(), .m0_rdata(),
-        .m1_req(u_req), .m1_we(u_we), .m1_addr(u_addr), .m1_wdata(u_wdata), .m1_ack(u_ack), .m1_rdata(u_rdata),
+        .m0_req(c_req), .m0_we(c_we), .m0_addr(c_addr), .m0_wdata(c_wdata), .m0_ack(c_ack), .m0_rdata(c_rdata),
+        .m1_req(u_req & ~u_dbg), .m1_we(u_we), .m1_addr(u_addr), .m1_wdata(u_wdata), .m1_ack(ub_ack), .m1_rdata(ub_rdata),
         .s_req(s_req), .s_we(s_we), .s_addr(s_addr), .s_wdata(s_wdata), .s_ack(s_ack), .s_rdata(s_rdata)
     );
 

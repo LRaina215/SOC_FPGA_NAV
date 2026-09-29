@@ -101,7 +101,11 @@ class FpgaModel:
         R = np.array(rt[:9], dtype=np.int64).reshape(3, 3)
         t = np.array(rt[9:12], dtype=np.int64)
         p = fast.pc_transform(self.xyz, R, t)
-        a, tg, z = fast.pc_filter(p, self.pv, self.inv_res, cx, cy, max(-32768, zmin), min(32767, zmax))
+        pv = self.pv
+        if self.cfg.get("fuse_r", 0) > 0:            # 融合距离门限（水平距离，mm）：远处点的高度受姿态误差放大，只用于定位
+            r2 = (p[:, 0] - t[0]) ** 2 + (p[:, 1] - t[1]) ** 2
+            pv = pv & (r2 <= self.cfg["fuse_r"] ** 2)
+        a, tg, z = fast.pc_filter(p, pv, self.inv_res, cx, cy, max(-32768, zmin), min(32767, zmax))
         fast.elev_update(self.em, a, tg, z)
         if self.trav == "v1":
             self.cost, self.last_lethal, self.view = fast.trav_v1(self.em, cx, cy, self.cfg)

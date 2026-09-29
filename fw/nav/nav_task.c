@@ -34,8 +34,12 @@ void nav_task_init(nav_task_t *nt)
     lp_default_cfg(&nt->lp_cfg);
     astar_default_cfg(&nt->as_cfg);
     astar_default_cfg(&nt->as_cfg_g);
-    nt->as_cfg_g.clear_cells = 3;          /* 20 cm 格：离障 1 格 +40、2 格 +20 */
-    nt->as_cfg_g.clear_cost = 20;
+    /* 记忆栅格 10 cm 格（5 m 场地）：车身外接圆 140 mm，离致命格 1 格（障碍面约 5 cm）必撞 -> 贴障重罚；
+     * 2–3 格按距离加罚，路径尽量走通道中间 */
+    nt->as_cfg_g.clear_cells = 4;
+    nt->as_cfg_g.clear_cost = 15;
+    nt->as_cfg_g.near_cells = 2;
+    nt->as_cfg_g.near_cost = 150;
     nt->use_gmap = true;
     gmap_default_cfg(&nt->gm.cfg);
     gmap_init(&nt->gm);
@@ -248,6 +252,10 @@ static bool drive_to(nav_task_t *nt, uint32_t now, int32_t gx, int32_t gy, int32
     } else if (!nt->recovering && (uint32_t)(now - nt->prog_t_us) > nt->cfg.stall_us) {
         nt->prog_t_us = now;
         if (dgoal < nt->cfg.near_goal_mm) return true;         /* 已到目标附近但进不去：接受 */
+        /* 同一处第二次卡住：全局规划认为能过、局部规划过不去（窄缝、斜向缝隙的量化差异）——把前视点那里临时堵上 */
+        if (nt->use_gmap && fx_dist(p->x - nt->stuck_x, p->y - nt->stuck_y) < 300 && nt->n_recover > 0)
+            gmap_block_add(&nt->gm, &nt->mi, nt->look_x, nt->look_y, 2, 300);
+        nt->stuck_x = p->x; nt->stuck_y = p->y;
         nt->recovering = true;
         nt->recover_until_us = now + nt->cfg.recover_us;
         nt->recover_dir = (int8_t)(back_clear(nt, p, 400) ? 1 : 0);

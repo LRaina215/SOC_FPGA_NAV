@@ -26,7 +26,7 @@ import trav_v3  # noqa: E402
 
 INV_RES = 1311           # 50 mm
 # 地形 v3 默认参数；年龄上限取 2 帧，让过期清除与近区保持在 5 帧内就被覆盖到
-MAPCFG = dict(trav_v3.DEFAULT_V3, age_max=2, infl_r=5)
+MAPCFG = dict(trav_v3.DEFAULT_V3, age_max=2, infl_r=3, infl_disk=1)
 CFG_KEYS = ["age_max", "cnt_min", "keep_r", "step_max", "rough_max", "slope_rise", "jump", "drop_k", "drop_slope",
             "k_slope", "k_step", "k_rough", "fill_min", "fill_tol", "fill_cost", "infl_r"]
 ZMIN, ZMAX = -500, 1500    # 高度带（相对世界 0；平台高 0.2 m 仍在带内）
@@ -102,6 +102,7 @@ def main(out):
     (out / "cost_exp.hex").write_text("\n".join(cost_lines) + "\n")
     c = MAPCFG
     vals = [c[k] for k in CFG_KEYS] + [INV_RES, ZMIN & 0xFFFF, ZMAX & 0xFFFF]
+    vals[CFG_KEYS.index("infl_r")] |= c.get("infl_disk", 1) << 4          # INFL.DISK
     (out / "mapcfg.hex").write_text("\n".join(f"{v:04x}" for v in vals) + "\n")
     (out / "counts.txt").write_text(f"{len(pix_lines)} {len(flt_lines)} {len(TRAJ)}\n")
 

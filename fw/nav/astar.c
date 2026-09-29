@@ -27,6 +27,8 @@ void astar_default_cfg(astar_cfg_t *c)
     c->allow_unknown = true;
     c->clear_cells = 3;
     c->clear_cost = 12;
+    c->near_cells = 0;
+    c->near_cost = 0;
 }
 
 /* 两遍扫描距离变换（8 邻接，单位粗格） */
@@ -167,6 +169,7 @@ int astar_grid(const astar_cfg_t *cfg, const uint8_t *grid, int n, int sx, int s
                 step += (uint32_t)c * cfg->cost_scale / 64;
             }
             if (s_dist[ni] < cfg->clear_cells) step += (uint32_t)(cfg->clear_cells - s_dist[ni]) * cfg->clear_cost;
+            if (s_dist[ni] < cfg->near_cells) step += cfg->near_cost;
             /* 斜穿：两侧直邻都不可走时禁止切角 */
             if (d & 1) {
                 uint8_t c1 = grid[y * AN_ + nx], c2 = grid[ny * AN_ + x];
