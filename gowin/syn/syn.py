@@ -66,6 +66,11 @@ def main():
         "set_option -use_done_as_gpio 1",
         "set_option -use_i2c_as_gpio 1",
         "set_option -use_cpu_as_gpio 1",
+    ] + ([
+        # 软核 RAM 160 KB 时 BSRAM 86%：缺省算法布线阶段长时间不收敛；改为可布性优先的布局 + 快速布线
+        "set_option -place_option 1",
+        "set_option -route_option 0",
+    ] if board else []) + [
         "run all" if board else "run syn",
     ]
     (BUILD / "run.tcl").write_text("\n".join(tcl) + "\n", encoding="utf-8")

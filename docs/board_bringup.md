@@ -36,11 +36,24 @@
 3. TCP 命令 18 读内参，`python model/lidar_lut.py --out lut.hex --fx .. --fy .. --cx .. --cy .. --k1 ..`，再用 `nav_uart.py COMx lut lut.hex` 写入（或放进 `rtl/lidar/lut_default.hex` 重新综合）。
 4. 用厂家 SDK 对同一帧输出点云，与 `model/nav_fixed.py:pc_project` 的结果比较，确定 `--depth-def`（z 或 radial）和深度单位。
 
-## 4. 软核接入
+## 4. 软核（已上板）
 
-1. 在 IP 生成器中生成软核（GowinGoRV32 / GowinPicoRV32 等），写一个总线桥接到 `nav_bus_arb` 的 m0 口。
-2. 固件：`fw/app/main.c` + `fw/app/nav_app.c` + `fw/nav/*.c` + `fw/drv/hal_fpga.c`，定义 `NAV_BASE`；启动代码、链接脚本放 `fw/bsp/`。
-3. 固件内存需求：代价图副本 16 KB + A* 约 28 KB + 记忆栅格约 37 KB（含先验层 9 KB）+ 探索约 50 KB（BFS 37 KB、相机已看过 9 KB）+ 其余约 10 KB。
+软核用开源 PicoRV32（RV32IMC，`rtl/soc/third_party/picorv32.v`，ISC 许可）。高云 IP 库里的 GoRV32 / PicoRV32 是加密网表，
+配置只能走图形界面，所以没有用。SoC 在 `rtl/soc/nav_soc.v`：片上 RAM（代码 + 数据）、导航总线主口（接 `nav_bus_arb` m0）、
+控制台环形缓冲、调试口（串口桥地址 0xE000–0xFFFF：保持复位、装载程序、读控制台）。
+
+1. 工具链：xPack riscv-none-elf-gcc 15.2，装在 `D:\tools\xpack-riscv-none-elf-gcc-15.2.0-1`（环境变量 `RISCV_GCC` 可改路径）。
+2. 编译固件：`python fw/bsp/build_rv.py`（导航固件，约 35 KB 代码 + 106 KB 数据）；`--app selftest` 为自检程序（1 KB）。
+3. 比特流：`python gowin/syn/syn.py --board --app=nav --ram-kb=160`（RAM 初始内容 = 编译好的固件）；自检小镜像 `--app=selftest --ram-kb=32`。
+4. 下载到 SRAM（掉电即失，不动 Flash）：
+   `programmer_cli.exe --device GW5AT-138B --run 2 --fsFile gowin\syn\build_board\impl\pnr\nav_board_top.fs`
+5. 串口（板载 CH9102，本机 COM11）：`python tools/nav_uart.py COM11 soc`（软核信息）、`con`（控制台）、
+   `load fw/build/rv/nav/nav_fw.bin`（不重新综合，直接换固件）、`reset`。
+6. 实测（2026-09-29）：自检程序通过（导航寄存器读写、乘除法、计时）；导航固件主循环约 5.7 万次/秒、单次最长 0.17 ms（没有雷达输入时）。
+7. 注意：
+   - PicoRV32 的寄存器堆已强制为分布式 RAM：高云综合会把它推断成同步读 BSRAM，读写同址时取到旧值，上板后寄存器值错乱。
+   - RAM 160 KB 时 BSRAM 占用 90%，布线要用 `-place_option 1`（可布性优先），缺省选项在布线阶段长时间不收敛。
+   - 接上雷达 MAC 后，点云链路（方向表 48 块、帧缓冲 19 块）会恢复，BSRAM 总量超出 340 块，需要压缩（见 roadmap）。
 
 ## 5. 底盘接入
 
