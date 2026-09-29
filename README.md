@@ -27,35 +27,36 @@ PC --UDP 或 USB 串口注入--^                                                
 |---|---|
 | `config/` | **唯一参数来源**：`nav_params.yaml`（结构参数）、`regmap.yaml`（寄存器表）。改完运行 `python tools/gen_config.py` |
 | `rtl/common` | FIFO、异步 FIFO、RAM、跨时钟域、时基 |
-| `rtl/lidar` | `xt_frame_rx` 帧接收、`pc_project` 深度转点云、`pc_transform` 坐标变换、`pc_filter` 栅格化 |
+| `rtl/lidar` | `xt_frame_rx` 帧接收（厂家 SDK 格式：逐分包校验、跳过 IMU 消息、锁存帧尾 FrameInfo）、`pc_project` 深度（径向）转点云、`pc_transform` 坐标变换、`pc_filter` 栅格化 |
 | `rtl/map` | `elev_map` 滚动高程图、`trav_v3` 可通行性分析（`trav_analysis` 为旧版 v1，保留作对照）、`map_subsys` 双缓冲代价图 |
 | `rtl/match` | SLF 匹配定位：`slf_extract` 结构点提取、`slf_lf` 似然场建图、`slf_match` 打分/并图/控制（有图模式：先验槽字写口、固定窗口、不并图、不门控对准） |
 | `rtl/plan` | `traj_eval` 候选轨迹评估、`safety_guard` 限幅/看门狗/急停 |
-| `rtl/net` | `udp_rx`/`udp_tx`/`net_port` UDP+ARP 协议栈、`host_mbx` 主机邮箱（含串口注入与发送回读，PC 不经网口也能收发报文） |
+| `rtl/net` | `rgmii_mac100` 板上 RJ45 的百兆 RGMII MAC（含 MDIO 初始化）、`udp_rx`/`udp_tx`/`net_port` UDP+ARP 协议栈、`host_mbx` 主机邮箱（含串口注入与发送回读，PC 不经网口也能收发报文） |
 | `rtl/io` | `imu_uart`、`uart_bus_bridge` 调试串口桥、`nav_bus_arb` |
 | `rtl/regs` | 生成的寄存器文件与常量 |
 | `rtl/top` | `nav_subsystem`：交付给整车顶层的唯一模块 |
 | `rtl/soc` | 软核 SoC：`nav_soc`（PicoRV32 + 片上 RAM + 导航总线主口 + 控制台 + 调试口），`third_party/picorv32.v`（开源，打了寄存器堆补丁） |
 | `gowin/` | 板级顶层 `nav_board_top.v`、约束 `nav_board.cst`、综合脚本 `syn/syn.py` |
 | `fw/bsp` | 软核启动代码、链接脚本、控制台 printf、自检程序、交叉编译脚本 `build_rv.py` |
-| `fw/` | 软核固件：`nav/` 算法（记忆栅格 + A*（含先验层）、局部规划、边界探索 / 有图搜索、目标跟踪、位姿、SLF 匹配求解、`loc` 有图定位管理（对准 / 质量 / 重定位）、`prior` 地图包接收、协议）、`drv/hal_fpga.c` 上板 HAL、`app/` 主循环、`test/` 主机仿真测试 |
-| `model/` | Python：XT 协议、虚拟场景与雷达、定点逐位参考模型（RTL 标准答案）、方向查找表生成、`prior_map.py` 先验地图包（点云 / 虚拟扫图 -> 定位图 + 代价图） |
+| `fw/` | 软核固件：`nav/` 算法（记忆栅格 + A*（含先验层）、局部规划、边界探索 / 有图搜索、目标跟踪、位姿、SLF 匹配求解、`loc` 有图定位管理（对准 / 质量 / 重定位）、`prior` 地图包接收、协议）、`lidar_cal` 按雷达帧尾内参生成方向表、`drv/hal_fpga.c` 上板 HAL、`app/` 主循环、`test/` 主机仿真测试 |
+| `model/` | Python：`xt_proto.py` XT-M60 协议（按厂家 SDK，含参考收包模型）、虚拟场景与雷达、定点逐位参考模型（RTL 标准答案）、`lidar_lut.py` 方向表、`prior_map.py` 先验地图包（点云 / 虚拟扫图 -> 定位图 + 代价图） |
 | `sim/` | xsim 回归（`run.py`、`tests.py`、激励生成 `gen/`） |
-| `tools/` | `nav_host.py` 主机工具（PC / RK3588 通用：地图、初始位姿、目标点、路径点、模式、状态；UDP 或串口）、`map_tool.py` 点云 -> 先验地图包、`nav_uart.py` 串口寄存器调试、`fake_lidar.py` 伪雷达 |
+| `tools/` | `nav_host.py` 主机工具（PC / RK3588 通用：地图、初始位姿、目标点、路径点、模式、状态；UDP 或串口）、`map_tool.py` 点云 -> 先验地图包、`nav_uart.py` 串口寄存器调试、`board_init.py` 上电初始化、`fake_lidar.py` 伪雷达（SDK 格式、抓包 / 录制回放）、`xt_config.py` 雷达 TCP 配置 |
 | `sim/closed_loop/` | 闭环仿真：场景 + 虚拟雷达 + FPGA 感知模型 + 固件动态库 + 机器人误差模型，出指标与快照图；无图 / 有图两套批量用例，`test_prior.py` 有图固件单元测试 |
-| `docs/` | `icd.md` 接口定义（含主机报文与地图包）、`regmap.md` 寄存器表、`board_bringup.md` 上板步骤（含扫图与 PC 单独操作）、`algorithms.md` 闭环仿真与算法改进记录、`roadmap.md` 进度与后续计划、`platform.md` 机器人 / 传感器 / 场地参数（已知与假设） |
+| `docs/` | `icd.md` 接口定义（含主机报文与地图包）、`regmap.md` 寄存器表、`board_bringup.md` 上板步骤（含扫图与 PC 单独操作）、`algorithms.md` 闭环仿真与算法改进记录、`roadmap.md` 进度与后续计划、`platform.md` 机器人 / 传感器 / 场地参数（已知与假设）、`hardware_guide.md` 实物搭建与测试手册 |
 
 ## 常用命令（Python 用 `D:\Anaconda\python.exe`）
 
 ```bash
-python tools/gen_config.py          # 由 yaml 生成 .vh/.h/.py/.md、寄存器文件、正弦表、默认查找表
+python tools/gen_config.py          # 由 yaml 生成 .vh/.h/.py/.md、寄存器文件、正弦表
 python sim/run.py                   # 全部 RTL 回归（Vivado 2026.1 xsim）；python sim/run.py -l 列出
 python fw/test/build.py             # 固件主机测试（gcc），含与定点模型的交叉验证与闭环仿真
 python gowin/syn/syn.py             # 综合 nav_subsystem，资源与 Fmax
-python gowin/syn/syn.py --board     # 板级顶层：综合 + 布局布线 + 比特流
+python gowin/syn/syn.py --board --app=nav --ram-kb=128   # 板级：固件 + 综合 + 布局布线 + 比特流
 python sim/closed_loop/run_cl.py --scene terrain --goal 9.3,2.8 --seed 2 --gif --out sim/build/cl/demo   # 闭环仿真（动画）
-python sim/closed_loop/batch.py --tag x   # 批量闭环评测（无图 4 用例 × 5 种子）
-python sim/closed_loop/batch.py --tag y --cases p_terrain_a p_terrain_b p_search p_loop p_perturb p_kidnap   # 有图 6 用例
+python sim/closed_loop/batch.py --tag x -j 10   # 批量闭环评测（5 m 场地：无图 5 + 有图 5 用例 × 5 种子）
+python sim/closed_loop/batch.py --tag y --cases p_terrain_a p_terrain_b p_search p_loop p_perturb p_kidnap   # 旧 12 m 场地有图 6 用例
+python tools/fake_lidar.py 192.168.0.100 --fps 10     # PC 冒充雷达（SDK 格式）
 python sim/closed_loop/run_cl.py --scene terrain --goal 9.3,2.8 --prior auto --init-err 0.3,-0.2,8 --gif --out sim/build/cl/pdemo  # 有图
 python tools/map_tool.py build map.pcd -o field.nvmp        # 地图点云 -> 先验地图包（附检查图）
 python tools/nav_host.py --link uart:COM5 map field.nvmp    # PC 下发地图；pose / goal / wp / mode / listen 见 --help
@@ -63,22 +64,23 @@ python tools/nav_host.py --link uart:COM5 map field.nvmp    # PC 下发地图；
 
 ## 验证现状
 
-- RTL 回归 11 项全部通过，全部与 Python 定点模型逐位比较：公共库、XT 帧接收（3 种像素格式 + 丢包/坏帧/灰度帧）、
-  点云链路 + 地图（terrain 场景 8 帧，覆盖基线坡度/遮挡落差/空洞填补/近区保持）、SLF 匹配（5 帧在线：结构点数、245 候选打分、
-  整张结构图；有图 2 帧：先验槽字写入、不门控 / 门控打分、UPDATE 不改先验图）、轨迹评估、安全限幅、网口协议栈、串口桥、
-  `nav_subsystem` 端到端（以太网帧 → 代价图、高程读口、SLF、轨迹评估、邮箱、串口注入与发送回读、限幅、IMU）。
+- RTL 回归 13 项全部通过，全部与 Python 定点模型逐位比较：公共库、XT-M60 帧接收（厂家 SDK 格式：仅深度 / 深度 + 幅值 / 大端旧格式，
+  含丢包、乱序、重复、截断、坏帧、IMU 消息、灰度帧、FrameInfo 锁存）、点云链路 + 地图（terrain 场景 8 帧）、SLF 匹配（5 帧在线 +
+  2 帧有图）、轨迹评估、安全限幅、网口协议栈、百兆 RGMII MAC（含 MDIO）、串口桥、软核 SoC、`nav_subsystem` 端到端
+  （以太网帧 → 代价图、高程读口、SLF、轨迹评估、邮箱、串口注入与发送回读、限幅、IMU、方向表写口、FrameInfo 寄存器）。
 - 固件主机测试：定点数学、协议、位姿、A*、C 版轨迹评估与模型逐位一致、闭环（绕障、巡航、探索找目标并跟踪、急停）；
-  有图模式（`sim/closed_loop/test_prior.py`）：地图包分块下发、乱序重发、CRC 错、SET_POSE。
-- 闭环仿真（`docs/algorithms.md` 第 2、8 节，车体按实车 180 × 213 mm）：
-  - 无图 4 用例（定点 ×2、搜索、回环两圈）× 5 种子 20/20 到达，定位 xy RMS 0.20–0.34 m，搜索平均 99.8 s。
-  - 有图 6 用例（定点 ×2、搜索、回环、扫图后新增障碍、行驶中被撞）× 5 种子 30/30 到达，xy RMS 1.3–4.9 cm，
-    初始位姿误差 ±0.4 m / ±8° 下对准 1.6 s，被撞 5/5 检出并在 1.6 s 内重定位，搜索平均 78 s。
-  - 全部 0 碰撞，地形误报 ≤ 0.3%。
-- 综合（nav_subsystem）：逻辑 15%，BSRAM 82%（估计），核心时钟 Fmax 约 102 MHz。
-- **软核上板**：PicoRV32 SoC（`rtl/soc`）+ 导航固件在 ACX750 上运行（主循环约 5.7 万次/秒）；板级 50 MHz 布局布线 0 违例，BSRAM 306/340。
-  接上雷达 MAC 后 BSRAM 会超出，需要压缩（`docs/roadmap.md` 第 6 节）。
-- 5 m 场地 + 两轮自平衡模型（`docs/algorithms.md` 第 9 节）：10 用例 × 5 种子 49/50 到达，定位 xy RMS 1.0–4.2 cm。
+  有图模式（`test_prior.py`）：地图包分块下发、乱序重发、CRC 错、SET_POSE；方向表生成（`test_lidar_cal.py`）：与模型差 ≤ 1 LSB。
+- 雷达格式：厂家上位机能正确显示 `tools/fake_lidar.py` 发出的包。
+- 闭环仿真（5 m 场地 + 两轮自平衡模型 + 按 SDK 内参的虚拟雷达，`docs/algorithms.md` 第 9 节）：10 用例 × 5 种子 50/50 到达、0 碰撞，
+  定位 xy RMS 0.8–3.3 cm，地形误报均值 ≤ 1.9%。旧的 12 m 大场地用例（第 2、8 节）保留作回归。
+- **板级**（ACX750，50 MHz）：软核 PicoRV32（RAM 128 KB）+ 导航固件 + 完整点云链路 + 百兆 MAC，BSRAM 布线后 320 / 340，0 违例。
+  上板实测：导航固件运行、上电 1.6 s 按内参生成方向表、主循环约 4.3 万次/秒、MDIO 找到 PHY。
+
+## 实物到货后
+
+按 [docs/hardware_guide.md](docs/hardware_guide.md) 逐步搭建与测试（环境、烧录、上电初始化 `tools/board_init.py`、IMU / 雷达 / 底盘接入、实地测试、故障排查）。
 
 ## 未完成 / 需实机确认
 
-见 `docs/board_bringup.md`。主要是：三个 IP（PLL、TSE_MAC、1G Serial Ethernet）的生成与端口核对；XT-M60 帧格式细节与内参；软核（GoRV32 / PicoRV32）总线桥；底盘能力参数（轮径、可跨台阶、坡度）；IMU088 协议；实地扫图与 SLAM 点云导出。进度与计划见 `docs/roadmap.md`。
+见 `docs/roadmap.md` 第 7、8 节。主要是：PC 网口 → 板子 RJ45 的收包实测；XT-M60 实物确认（不连 TCP 时是否自己发 UDP、左右方向、
+深度定义、内参）；IMU088 协议；整车顶层与底盘接口（能力参数、对地速度）；SFP / RK3588（需 1G Serial Ethernet IP）；实地扫图与 SLAM 点云导出。

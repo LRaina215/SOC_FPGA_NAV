@@ -6,31 +6,65 @@
 
 | 项目 | 约定 |
 |---|---|
-| 坐标系 | 无图模式：里程计系，上电位置为原点。有图模式：地图系（先验地图的坐标系，SET_POSE 之后生效）。X 前 Y 左 Z 上；机身系同向；雷达本体系同向（相机模式的 Z前X左Y上 已在方向查找表中换算） |
+| 坐标系 | 无图模式：里程计系，上电位置为原点。有图模式：地图系（先验地图的坐标系，SET_POSE 之后生效）。X 前 Y 左 Z 上；机身系同向；雷达本体系同向（标定坐标系到本体系的换算已在方向查找表中完成） |
 | 长度 / 速度 | mm（int32）/ mm·s⁻¹（int16）；角速度 mrad·s⁻¹（int16） |
 | 角度 | 报文中为 0.01°（int32，cdeg）；寄存器与固件内部为 uint16，65536 = 一周 |
 | 时间 | FPGA 全局微秒计数（`SYS.TIME_US`，32 位回绕，按模比较）；所有到达时间戳都由 FPGA 打，不依赖对端时钟 |
 | 栅格 | 分辨率默认 50 mm（`MAP.INV_RES = 65536/50 = 1311`）；世界栅格 = floor(mm × INV_RES / 65536)；局部窗口 128×128（6.4 m） |
 | 代价 | 0–200 可通行（越大越难走），253 膨胀区，254 不可通行，255 未知 |
 
-## 2. 雷达（XT-M60 Pro）
+## 2. 雷达（XT-M60）
 
-- 链路：百兆以太网 → 板载 RJ45（RTL8211F，RGMII）→ TSE_MAC → `nav_subsystem.l_*`。
-- 雷达需预先配置（厂家上位机或 TCP 命令）：UDP 目标 IP = `NETL.IP`（默认 192.168.1.100），目标端口 = `NETL.UDP_PORT`（默认 7687），连续输出、仅深度（命令 1：type=1, continuous=2）。
-- FPGA 应答 ARP；不实现 TCP（控制命令由 PC 或以后的软核协议栈发送）。
-- 帧格式按手册 V2.0 第 7 章实现，下列未明确项做成寄存器，接实机后抓包确认：
+格式依据厂家公开的 SDK 源码 [XT-Toffuture/xtsdk_cpp](https://github.com/XT-Toffuture/xtsdk_cpp)（`communicationNet.cpp`、
+`xtdaemon.cpp`、`frame.cpp`、`cartesianTransform.cpp`、`cmdstructs.h`），并用厂家上位机 V2.11.6 的调试符号核对过结构体
+大小与字段偏移；手册 202510 版 7.4 节本身也写"详细见 SDK cmdstructs.h"。参考副本（不含二进制）放在本机 `D:\tools\xtsdk_ref`，
+仓库里不拷厂家代码（无许可证）。我们的实现：模型 `model/xt_proto.py`，RTL `rtl/lidar/xt_frame_rx.v`，发包 `tools/fake_lidar.py`。
+`fake_lidar.py` 发到本机时厂家上位机能正常解析（其日志出现 `reportImage: imageversion=3`）。
 
-| 待确认项 | 寄存器 | 默认 |
+- 链路：雷达网口（百兆）→ 板载 RJ45（RTL8211F，RGMII）→ `rtl/net/rgmii_mac100.v`（自写百兆 MAC；上电复位 PHY 并经 MDIO
+  把自协商限制到 100BASE-TX，所以接雷达或接电脑千兆网卡都工作在百兆）→ `nav_subsystem.l_*`。
+- 网络缺省：雷达 192.168.0.101/24，TCP 控制端口 7787，UDP 数据发往 7687；FPGA 雷达口 `NETL.IP` = 192.168.0.100（必须与雷达
+  同网段），`NETL.UDP_PORT` = 7687，另收组播 239.255.255.76（`NETL.MCAST_IP`，新版 SDK 加入的组）。FPGA 应答 ARP，不实现 TCP。
+- 雷达配置（一次，存进雷达）：厂家上位机，或 `tools/xt_config.py`（`udp-dest 192.168.0.100 7687`、`start dist`、`info`、`lens`）。
+  SDK 有"TCP 未连上但已收到 UDP 图像"的状态（`STATE_UDPIMGOK`），配置结构里有上电自动运行（`bautorun`），所以预期雷达上电后
+  无需 TCP 即可出流——**实物到货后第一件要确认的事**（断电重启是否自动出流、发往哪个地址、上位机断开后是否继续）。
+
+UDP 分包（一个 UDP 报文可连放多个分包，全部小端）：
+
+| 偏移 | 字段 | 说明 |
 |---|---|---|
-| 分包头长度 | `LIDAR.UDP_SKIP` | 20 |
-| 头部字段字节序 | `LIDAR.CTRL.HDR_LE` | 0（大端，手册"网络序"） |
-| 像素字节序 | `LIDAR.CTRL.PIX_LE` | 0 |
-| 深度+幅值排布 | `LIDAR.CTRL.PIX_LAYOUT` / `AMP_FIRST` | 逐像素交织、深度在前 |
-| size 字段与数据长度差 | `LIDAR.DEPTH_CFG.SIZE_ADJ` | 0 |
-| 深度单位 | `LIDAR.DEPTH_CFG.DEPTH_MUL`（Q8.8，mm/LSB） | 256（1 mm） |
-| 无效深度编码 | `LIDAR.VALID_CFG.RAW_INV`、`AMP_MIN` | 0 视为无效 |
-| 深度定义（Z / 径向） | 方向查找表生成参数 `--depth-def` | z |
-| 内参 fx fy cx cy k1 k2 k3 p1 p2 | 方向查找表（`model/lidar_lut.py`，经 `LIDAR.LUT_*` 写入） | 理想针孔 120°×45° |
+| 0 | u16 帧序号 | 同一帧的分包相同 |
+| 2 | u32 整帧字节数 | START 到 END 的总长；< 1000 的是 IMU 等非图像消息（FPGA 跳过，`LIDAR.STAT_SKIP`） |
+| 6 | u16 本包数据字节数 | ≤ 1400 |
+| 8 | u32 本包在帧内的偏移 | FPGA 要求连续：丢包 / 乱序 / 重复整帧丢弃（`LIDAR.STAT_BAD`）；偏移 0 = 新帧 |
+| 12 | 8 字节 | 未用 |
+| 20 | 帧数据 | |
+
+帧：`7E FF AA 55` | u32 len | 负载（len 字节）| `FF 7E 55 AA`（首尾标记按字节顺序发送）。负载：
+
+| 偏移 | 内容 |
+|---|---|
+| 0 | cmdid = 251（252 = IMU 消息） |
+| 1 | 类型：0 深度+幅值（逐像素交织、深度在前），1 深度，3 灰度（FPGA 忽略） |
+| 2 / 4 / 6 | u16 帧号 / 宽 / 高（M60 160 × 60；竖直合并时 160 × 30） |
+| 8 | 像素：u16 深度（mm × unit_div，沿视线的**径向距离**）[+ u16 幅值]；**≥ 64000 为无效码**（幅值过低、饱和、过曝、坏点、被滤） |
+| … | 可选附加平面（灰度、HDR 档位图）、IMU 块（按 FrameInfo 标志；FPGA 按长度跳过） |
+| 末 206 字节 | FrameInfo_t（V3）：偏移 53 起 9 个 float 内参 fx fy cx cy k1 k2 k3 p1 p2；93 imageflags；113/117 ROI 起点；124 合并（bit1 水平 bit0 竖直）；136 unit_div；141 温度；202 u16 结构体大小（= 206）；204 设备状态；205 协议版本 3 |
+
+FPGA 对帧尾的处理：内参、深度单位、ROI、合并方式锁存到 `LIDAR.LENS0..8` / `INFO_*`；`LIDAR.CTRL.AUTO_INFO=1`（缺省）时深度单位、
+ROI、合并直接用于本帧的点云换算（否则用 `DEPTH_CFG` / `ROI_OFS`）。固件（`fw/nav/lidar_cal.c`）按收到的内参在板上生成方向查找表
+（上电先用 SDK 的 M60 缺省内参，内参变化才重算，约 1–2 s，其间的帧丢弃），不再需要 PC 生成、烧写方向表。
+
+方向与坐标（`model/lidar_lut.py`，与 SDK `pcltransCamparm` 一致）：数据第 q 列对应标定坐标第 159−q 列；去畸变为 Brown-Conrady
+（固件与模型都用"4 次不动点迭代 + 3 步牛顿"，四角也收敛）；点 = 距离 × 单位向量（本体系 前 = z、左 = −x、上 = −y，标定坐标为
+OpenCV 约定）；厂家对 M60 默认切掉四角约 8% 像素（半径 30 像素的倒角），表中这些像素为零向量 = 无效。按缺省内参，视场约
+111° × 43°、光轴上方约 19° / 下方约 23°（手册标称 120° × 45°，以每帧自带的内参为准）。**左右正负、上下方向需实物核对一次**
+（在雷达左侧放一个箱子，看点云 Y 是否为正）。
+
+TCP 命令（`tools/xt_config.py`）：请求 `7E FF AA 55 | len | cmd | 数据 | 00 01 | FF 7E 55 AA`（len = 1 + 数据 + 2），应答
+`… | cmd | 数据 | 返回码 | 设备状态 | 03 | …`。常用：0 测试，1 开始（{1 深度 / 2 深度+幅值 / 3 灰度, 1 连续 / 0 单次}），2 停止，
+3 设 IP（IP、掩码、网关各 4 字节），4 设备信息（DevInfo_t，含当前 UDP 目标），5 配置（DevCfg_t，含 bautorun），9 最小幅值，
+10 HDR，13 重启（数据 "XINTAN"），18 内参（36 字节 float），19 UDP 目标（IP 4 字节 + u16 端口），56 最大帧率。
 
 ## 3. 主机报文（RK3588 或 PC）
 
@@ -62,7 +96,7 @@
 - TARGET 的 `latency_ms` = RK3588 采图到发出报文的时间。FPGA 用"到达时刻 − latency"查历史位姿，把目标换算到里程计系，所以两边时钟不需要同步。目标 1.5 s 未更新判为丢失（跟踪 → 探索）。
 - STATUS.state：0 空闲 1 行进 2 到达 3 受阻 4 跟踪 5 探索 6 急停；flags：bit0 目标有效，bit2 地图正常，bit3 里程计正常。
 - 有图模式流程：MAP_BEGIN → MAP_DATA… → MAP_END（map_state = 2）→ SET_POSE（大致位置与朝向，误差 0.5 m / 10° 以内）→ 板上对准（约 1.6 s；视野里只有平行结构时原地转 35° 再试）→ loc_state = 2 后才执行 GOAL / WAYPOINTS / 探索（坐标均为地图系）。定位丢失时原地保持、自动重定位。
-- 先验地图包 `.nvmp`：由 `tools/map_tool.py build <地图点云>` 生成（Linux SLAM 导出的点云，地图系，单位 m），格式见 `model/prior_map.py` 文件头：40 字节头 + 结构图条目 {u16 槽地址, u24 槽字} + 20 cm 代价图。场地不超过 12.8 m × 12.8 m。
+- 先验地图包 `.nvmp`：由 `tools/map_tool.py build <地图点云>` 生成（Linux SLAM 导出的点云，地图系，单位 m），格式见 `model/prior_map.py` 文件头：40 字节头（版本 2 = 18 位槽字，固件只收版本 2）+ 结构图条目 {u16 槽地址, u24 槽字} + 20 cm 代价图。场地不超过 12.8 m × 12.8 m。
 
 ## 4. 底盘（RL 运动控制）接口 —— FPGA 内部信号
 
