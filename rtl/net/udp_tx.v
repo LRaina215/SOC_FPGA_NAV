@@ -1,4 +1,4 @@
-// 以太网帧发送：ARP 应答（优先）与 UDP 报文（负载来自邮箱发送缓冲）。
+// 以太网帧发送：ARP 应答（优先）、UDP 报文（负载来自邮箱发送缓冲）、原始帧（软核写好的整帧，TCP 客户端等用）。
 // 输出为完整以太网帧字节流（不含前导码与 FCS，由 MAC 添加），不足 60 字节补零。
 // UDP 校验和填 0（IPv4 允许），IP 头置 DF，TTL=64。
 module udp_tx #(
@@ -21,6 +21,13 @@ module udp_tx #(
     input  wire [15:0] tx_len,            // 负载字节数（<= 1472）
     output wire        tx_busy,
 
+    input  wire        raw_go,            // 单拍：发送原始帧（整帧来自 rb_*，不含 FCS；不足 60 字节补零）
+    input  wire [7:0]  raw_len,           // 原始帧字节数（<= 128）
+    output wire        raw_busy,
+    output wire        rb_re,             // 原始帧缓冲读口（下一拍出数）
+    output wire [6:0]  rb_addr,
+    input  wire [7:0]  rb_q,
+
     output wire             pl_re,        // 负载缓冲读口（下一拍出数）
     output wire [PL_AW-1:0] pl_addr,
     input  wire [7:0]       pl_q,
@@ -39,12 +46,15 @@ module udp_tx #(
     reg [31:0] u_ip;
     reg [15:0] u_dport, u_sport, u_len;
 
-    reg        act, is_arp;
+    reg        act, is_arp, is_raw;
+    reg        raw_pend;
+    reg [7:0]  r_len;
     reg [10:0] i, flen;
     reg [15:0] ident;
     reg [15:0] ipcs;
 
-    assign tx_busy = udp_pend | (act & ~is_arp);
+    assign tx_busy  = udp_pend | (act & ~is_arp & ~is_raw);
+    assign raw_busy = raw_pend | (act & is_raw);
 
     // IP 头校验和
     wire [15:0] tot = 16'd28 + u_len;
@@ -77,6 +87,10 @@ module udp_tx #(
                 default: hb = 8'h00;
             endcase
         end else begin
+            if (is_raw) begin
+                hb  = 8'h00;
+                isp = ({3'd0, i} < {8'd0, r_len});
+            end else
             case (i)
                 0: hb = u_mac[47:40]; 1: hb = u_mac[39:32]; 2: hb = u_mac[31:24];
                 3: hb = u_mac[23:16]; 4: hb = u_mac[15:8];  5: hb = u_mac[7:0];
@@ -102,14 +116,16 @@ module udp_tx #(
     wire [5:0] lvl;
     wire [4:0] ffree;
     wire go1 = act && (ffree >= 5'd3);
-    assign pl_re   = go1 & isp;
+    assign pl_re   = go1 & isp & ~is_raw;
     assign pl_addr = i - 11'd42;
+    assign rb_re   = go1 & isp & is_raw;
+    assign rb_addr = i[6:0];
 
-    reg       v2, p2, l2;
+    reg       v2, p2, l2, r2;
     reg [7:0] h2;
 
     nav_fifo #(.DW(9), .AW(4)) u_ob (
-        .clk(clk), .rst(rst), .s_valid(v2), .s_data({l2, p2 ? pl_q : h2}), .s_ready(),
+        .clk(clk), .rst(rst), .s_valid(v2), .s_data({l2, p2 ? (r2 ? rb_q : pl_q) : h2}), .s_ready(),
         .m_valid(m_valid), .m_data({m_last, m_data}), .m_ready(m_ready), .level(lvl), .free(ffree)
     );
 
@@ -121,26 +137,30 @@ module udp_tx #(
         s0_r <= cp1 + cp2 + cp3;
         if (udp_pend && cs_age != 2'd3) cs_age <= cs_age + 1'b1;
         if (rst) begin
-            arp_pend <= 1'b0; udp_pend <= 1'b0; act <= 1'b0; ident <= 16'd0;
+            arp_pend <= 1'b0; udp_pend <= 1'b0; raw_pend <= 1'b0; act <= 1'b0; ident <= 16'd0; is_raw <= 1'b0;
         end else begin
             if (arp_req) begin arp_pend <= 1'b1; a_mac <= arp_sha; a_ip <= arp_spa; end
             if (tx_go && !udp_pend && !(act && !is_arp)) begin
                 udp_pend <= 1'b1; u_mac <= tx_dst_mac; u_ip <= tx_dst_ip; cs_age <= 2'd0;
                 u_dport <= tx_dst_port; u_sport <= tx_src_port; u_len <= tx_len;
             end
+            if (raw_go && !raw_pend && !(act && is_raw)) begin raw_pend <= 1'b1; r_len <= raw_len; end
             if (!act) begin
                 if (arp_pend && !arp_req) begin
-                    act <= 1'b1; is_arp <= 1'b1; i <= 0; flen <= 11'd60; arp_pend <= 1'b0;
+                    act <= 1'b1; is_arp <= 1'b1; is_raw <= 1'b0; i <= 0; flen <= 11'd60; arp_pend <= 1'b0;
                 end else if (udp_pend && !tx_go && cs_age == 2'd3) begin
-                    act <= 1'b1; is_arp <= 1'b0; i <= 0; udp_pend <= 1'b0;
+                    act <= 1'b1; is_arp <= 1'b0; is_raw <= 1'b0; i <= 0; udp_pend <= 1'b0;
                     flen <= (u_len + 16'd42 < 16'd60) ? 11'd60 : u_len[10:0] + 11'd42;
                     ipcs <= ~s2;
+                end else if (raw_pend && !raw_go) begin
+                    act <= 1'b1; is_arp <= 1'b0; is_raw <= 1'b1; i <= 0; raw_pend <= 1'b0;
+                    flen <= (r_len < 8'd60) ? 11'd60 : {3'd0, r_len};
                 end
             end else if (go1) begin
-                v2 <= 1'b1; p2 <= isp; h2 <= hb; l2 <= (i == flen - 1);
+                v2 <= 1'b1; p2 <= isp; r2 <= is_raw; h2 <= hb; l2 <= (i == flen - 1);
                 if (i == flen - 1) begin
                     act <= 1'b0; st_tx <= 1'b1;
-                    if (!is_arp) ident <= ident + 1'b1;
+                    if (!is_arp && !is_raw) ident <= ident + 1'b1;
                 end
                 i <= i + 1'b1;
             end

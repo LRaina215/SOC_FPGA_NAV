@@ -77,7 +77,15 @@ module nav_subsystem #(
     wire [47:0] netl_peer_mac;
     wire [31:0] netl_peer_ip;
     wire [15:0] netl_peer_port;
-    net_port #(.RX_AW(11), .TX_AW(11), .PL_AW(11)) u_netl (
+    // 雷达口原始帧通道（软核 TCP 客户端：ARP 请求、TCP 握手与开始命令）
+    reg         lr_tx_we;
+    reg  [4:0]  lr_tx_wa, lr_rx_ra;
+    wire [31:0] lr_rx_q;
+    wire        lr_tx_busy;
+    wire [2:0]  lr_rx_n;
+    wire [10:0] lr_rx_len;
+    wire [7:0]  lr_rx_drop;
+    net_port #(.RX_AW(11), .TX_AW(11), .PL_AW(11), .RAW(1)) u_netl (
         .clk(clk), .rst(rst), .time_us(time_us),
         .rx_mac_clk(l_rx_clk), .rx_mac_rst(l_rx_rst), .rx_mac_valid(l_rx_valid), .rx_mac_data(l_rx_data),
         .rx_mac_last(l_rx_last), .rx_mac_error(l_rx_error),
@@ -93,8 +101,13 @@ module nav_subsystem #(
         .u_src_mac(), .u_src_ip(), .u_src_port(), .u_len(), .u_ts(),
         .tx_go(1'b0), .tx_len(16'd0), .tx_busy(), .pl_re(), .pl_addr(), .pl_q(8'd0),
         .st_rx_frames(i_NETL_STAT_RX_FRAMES), .st_rx_udp(i_NETL_STAT_RX_UDP), .st_rx_err(i_NETL_STAT_RX_ERR),
-        .st_arp(i_NETL_STAT_ARP), .st_tx_frames(i_NETL_STAT_TX_FRAMES), .st_rx_drop()
+        .st_arp(i_NETL_STAT_ARP), .st_tx_frames(i_NETL_STAT_TX_FRAMES), .st_rx_drop(),
+        .raw_tx_we(lr_tx_we), .raw_tx_waddr(lr_tx_wa), .raw_tx_wdata(wd_q), .raw_tx_go(p_NETL_RAW_TX),
+        .raw_tx_len(wd_q[7:0]), .raw_tx_busy(lr_tx_busy), .raw_rx_en(r_NETL_CTRL[5]), .raw_rx_raddr(lr_rx_ra),
+        .raw_rx_rdata(lr_rx_q), .raw_rx_pop(p_NETL_RAW_POP), .raw_rx_n(lr_rx_n), .raw_rx_len(lr_rx_len),
+        .raw_rx_drop(lr_rx_drop)
     );
+    assign i_NETL_RAW_STAT    = {lr_rx_drop, 5'd0, lr_rx_len, 4'd0, lr_rx_n, lr_tx_busy};
     assign i_NETL_PEER_IP     = netl_peer_ip;
     assign i_NETL_PEER_MAC_LO = netl_peer_mac[31:0];
     assign i_NETL_PEER_MAC_HI = {16'd0, netl_peer_mac[47:32]};
@@ -130,7 +143,9 @@ module nav_subsystem #(
         .u_src_mac(), .u_src_ip(hu_src_ip), .u_src_port(hu_src_port), .u_len(hu_len), .u_ts(hu_ts),
         .tx_go(h_tx_go), .tx_len(h_tx_len), .tx_busy(h_tx_busy), .pl_re(h_pl_re), .pl_addr(h_pl_addr), .pl_q(h_pl_q),
         .st_rx_frames(i_NETH_STAT_RX_FRAMES), .st_rx_udp(i_NETH_STAT_RX_UDP), .st_rx_err(i_NETH_STAT_RX_ERR),
-        .st_arp(i_NETH_STAT_ARP), .st_tx_frames(i_NETH_STAT_TX_FRAMES), .st_rx_drop()
+        .st_arp(i_NETH_STAT_ARP), .st_tx_frames(i_NETH_STAT_TX_FRAMES), .st_rx_drop(),
+        .raw_tx_we(1'b0), .raw_tx_waddr(5'd0), .raw_tx_wdata(32'd0), .raw_tx_go(1'b0), .raw_tx_len(8'd0), .raw_tx_busy(),
+        .raw_rx_en(1'b0), .raw_rx_raddr(5'd0), .raw_rx_rdata(), .raw_rx_pop(1'b0), .raw_rx_n(), .raw_rx_len(), .raw_rx_drop()
     );
     assign i_NETH_PEER_IP     = neth_peer_ip;
     assign i_NETH_PEER_MAC_LO = neth_peer_mac[31:0];
@@ -445,7 +460,7 @@ module nav_subsystem #(
 
     // ================================================================ 总线状态机
     localparam [3:0] B_IDLE = 4'd0, B_RF = 4'd1, B_CM = 4'd2, B_TRR = 4'd3, B_MBX = 4'd4, B_END = 4'd5, B_TRR2 = 4'd6,
-                     B_MRR = 4'd7, B_MRR2 = 4'd8;
+                     B_MRR = 4'd7, B_MRR2 = 4'd8, B_LRR = 4'd9, B_LRR2 = 4'd10;
     reg [3:0] bs;
     reg [1:0] cm_i;
     wire in_cm   = (bus_addr >= RW_COSTMAP_BASE) && (bus_addr < RW_COSTMAP_BASE + RW_COSTMAP_SIZE);
@@ -459,10 +474,12 @@ module nav_subsystem #(
     wire in_mcand = (bus_addr >= RW_MATCH_CAND_BASE) && (bus_addr < RW_MATCH_CAND_BASE + RW_MATCH_CAND_SIZE);
     wire [15:0] off_mres  = bus_addr - RW_MATCH_RES_BASE;
     wire [15:0] off_mcand = bus_addr - RW_MATCH_CAND_BASE;
+    wire in_lrtx = (bus_addr >= RW_LRAW_TX_BASE) && (bus_addr < RW_LRAW_TX_BASE + RW_LRAW_TX_SIZE);
+    wire in_lrrx = (bus_addr >= RW_LRAW_RX_BASE) && (bus_addr < RW_LRAW_RX_BASE + RW_LRAW_RX_SIZE);
 
     always @(posedge clk) begin
         bus_ack <= 1'b0; rf_wr <= 1'b0; rf_rd <= 1'b0; tr_res_re <= 1'b0; tr_cand_we <= 1'b0; mb_rd <= 1'b0;
-        mt_res_re <= 1'b0; mt_cand_we <= 1'b0;
+        mt_res_re <= 1'b0; mt_cand_we <= 1'b0; lr_tx_we <= 1'b0;
         if (rst) begin
             bs <= B_IDLE; cm_b_req <= 1'b0;
         end else begin
@@ -488,6 +505,12 @@ module nav_subsystem #(
                 end else if (in_mcand) begin
                     if (bus_we) begin mt_cand_we <= 1'b1; mt_cand_addr <= off_mcand[10:2]; end
                     bus_ack <= 1'b1; bus_rdata <= 32'd0; bs <= B_END;
+                end else if (in_lrtx) begin
+                    if (bus_we) begin lr_tx_we <= 1'b1; lr_tx_wa <= bus_addr[6:2]; end
+                    bus_ack <= 1'b1; bus_rdata <= 32'd0; bs <= B_END;
+                end else if (in_lrrx) begin
+                    if (bus_we) begin bus_ack <= 1'b1; bus_rdata <= 32'd0; bs <= B_END; end
+                    else begin lr_rx_ra <= bus_addr[6:2]; bs <= B_LRR; end
                 end else if (!bus_we && {bus_addr[15:2], 2'b00} == RA_MBX_RX_DATA) begin
                     mb_rd <= 1'b1; bs <= B_MBX;
                 end else begin
@@ -508,6 +531,8 @@ module nav_subsystem #(
             B_MRR: bs <= B_MRR2;
             B_MRR2: begin bus_rdata <= mt_res_q; bus_ack <= 1'b1; bs <= B_END; end
             B_MBX: if (mb_rd_ack) begin bus_rdata <= mb_word; bus_ack <= 1'b1; bs <= B_END; end
+            B_LRR: bs <= B_LRR2;
+            B_LRR2: begin bus_rdata <= lr_rx_q; bus_ack <= 1'b1; bs <= B_END; end
             B_END: bs <= B_IDLE;       // 给主机撤销 req 的一拍
             default: bs <= B_IDLE;
             endcase

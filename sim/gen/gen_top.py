@@ -34,6 +34,11 @@ def w32(lines, v):
     lines.append(f"{v & 0xFFFFFFFF:08x}")
 
 
+def words(b):
+    b = bytes(b) + bytes(-len(b) % 4)
+    return [struct.unpack_from("<I", b, i)[0] for i in range(0, len(b), 4)]
+
+
 def main(out):
     out = Path(out)
     world = sw.default_scene()
@@ -130,6 +135,28 @@ def main(out):
     w32(gw, len(goal))
     for i in range(0, len(g), 4):
         w32(gw, struct.unpack("<I", g[i:i + 4])[0])
+
+    # 雷达口原始帧通道（软核 TCP 客户端）：主流程之后再注入；ARP 应答与发给本机的 TCP 段进格子，别的不进
+    n_main = len(eth)
+    lp = 49160
+    keep = [npk.arp_reply_frame(LIDAR_MAC, LIDAR_IP, FPGA_L_MAC, FPGA_L_IP),
+            npk.tcp_frame(FPGA_L_MAC, LIDAR_MAC, LIDAR_IP, FPGA_L_IP, 7787, lp, 7000, 1001, npk.TCP_SYN | npk.TCP_ACK,
+                          options=bytes([2, 4, 5, 0xB4])),
+            npk.tcp_frame(FPGA_L_MAC, LIDAR_MAC, LIDAR_IP, FPGA_L_IP, 7787, lp, 7001, 1018, npk.TCP_ACK | npk.TCP_PSH,
+                          bytes((7 * i + 1) & 255 for i in range(100)))]           # 154 字节：只存前 128
+    put(npk.udp_frame(FPGA_L_MAC, LIDAR_MAC, LIDAR_IP, FPGA_L_IP, 7687, 9999, b"not raw"))
+    put(keep[0])
+    put(npk.tcp_frame(FPGA_L_MAC, LIDAR_MAC, LIDAR_IP, "192.168.0.77", 7787, lp, 1, 1, npk.TCP_ACK))  # 不是本机 IP
+    put(keep[1])
+    put(npk.arp_reply_frame(LIDAR_MAC, LIDAR_IP, FPGA_L_MAC, "192.168.0.77"))                     # 不是给本机的
+    put(keep[2])
+    rl = [n_main, len(keep), int.from_bytes(npk.ip_bytes(LIDAR_IP), "big")]
+    for f in keep:
+        rl += [len(f), (min(len(f), 128) + 3) // 4] + words(f[:128])
+    (out / "raw_top.hex").write_text("".join(f"{v:08x}\n" for v in rl))
+    syn = npk.tcp_frame(LIDAR_MAC, FPGA_L_MAC, FPGA_L_IP, LIDAR_IP, lp, 7787, 1000, 0, npk.TCP_SYN,
+                        options=bytes([2, 4, 5, 0xB4]))
+    (out / "raw_top_tx.hex").write_text("".join(f"{v:08x}\n" for v in [len(syn)] + words(syn)))
 
     (out / "eth_l.hex").write_text("\n".join(eth) + "\n")
     (out / "pose.hex").write_text("\n".join(pose) + "\n")

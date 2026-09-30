@@ -14,7 +14,9 @@
   （[icd.md](icd.md) 第 2 节）；厂家上位机能正确显示 `tools/fake_lidar.py` 发的包；深度按径向距离，方向表由软核按帧尾内参在板上生成；
   板上 RJ45 用自写的百兆 RGMII MAC（不需要 IP）。
 - **RTL**：全链路与 Python 定点模型逐位一致，xsim 回归 15 项（含真雷达抓包 `tb_xt_rx_capture`）。
-- **板级**：软核（PicoRV32，RAM 128 KB）+ 导航固件 + 完整点云链路 + 百兆 MAC，BSRAM 布线后 320 / 340，50 MHz 0 违例；
+- **雷达启动（D1，2026-09-30）**：板上软核自己当 TCP 客户端启动 XT-M60（`fw/nav/xt_link.c` + 雷达口原始帧通道），不再需要电脑启动；
+  仿真、主机测试（假雷达 17 个场景）通过，板上已运行；对 PC 冒充的雷达和真雷达的板级联调待做（第 7 节第 9 条）。
+- **板级**：软核（PicoRV32，RAM 128 KB）+ 导航固件 + 完整点云链路 + 百兆 MAC，BSRAM 布线后 324 / 340，50 MHz 0 违例；
   已上板：方向表 1.6 s 生成，主循环约 4.3 万次/秒。
 - **网口上板实测**（2026-09-30，电脑网线直连板子 RJ45，`fake_lidar.py` 发 50 帧 + IMU 消息）：
   - 电脑 -> 板子**通过**：链路 100 Mbps（`NETL_PHY_STAT` = 0x01870007），UDP 750 个 / 错误 0，雷达帧 50 / 坏帧 0，IMU 分包 50 个全部跳过，
@@ -103,13 +105,17 @@ $PY tools/nav_uart.py COM11 load fw/build/rv/nav/nav_fw.bin   # 换固件（不�
     真雷达分包之间常有几毫秒间隔，95% 的帧被判坏（坏帧 9.5 帧/秒、跳过的零散分包约为坏帧的 5 倍、`NETL_STAT_RX_UDP` 正常）。
     已改 200 ms。仿真激励不带时间间隔，这类问题只能靠实物或带时间戳的抓包回放发现。
 15. **雷达的 TCP 行为**：同一时间只理一个 TCP 连接（厂家上位机开着时 `xt_config.py` 收不到应答，要先关掉上位机）；UDP 发给最近一次
-    连它 TCP 的主机，命令 19 返回 OK 但不生效；上电不自动出流。所以 FPGA 必须自己连 TCP 发开始命令（第 8 节 D1）。
+    连它 TCP 的主机，命令 19 返回 OK 但不生效；上电不自动出流。所以 FPGA 必须自己连 TCP 发开始命令（第 8 节 D1，已做）。
 16. **真雷达 UDP 源端口是 49154**（不是 7687）：按源端口过滤的抓包 / 回放一帧都拿不到，统一按目的端口 7687 过滤（`fake_lidar.py` 已改）。
 17. **RGMII 接收采样沿**：原来在 RXC 上升沿采 RXD / RX_CTL。百兆时 PHY 每周期只换一次数据、换在上升沿附近（RTL8211F 内部延时 2 ns），
     建立时间只有约 2 ns，板级 I/O 又没有时序约束，结果随布线变：构建 4 错误帧约 0.5%，只改了 `xt_frame_rx` 超时的构建 5 变成 100%
     （`NETL_STAT_RX_ERR` = `NETL_STAT_RX_FRAMES`）。改为下降沿采样（数据窗口中间；下降沿的 RX_CTL = DV ^ ER，按 DV 用，
     RX_ER 让帧提前结束、FCS 错而丢弃），`tb_rgmii_mac`（下降沿）/ `tb_rgmii_mac_pos`（上升沿）两种都测。
     教训：I/O 没有时序约束时，"上次布线能用"不代表下次还能用，接口采样点要放在数据窗口中间。
+18. **`NETL.LIDAR_IP` 复位值写错过**：第一版写成 0xC0A80165（= 192.168.1.101），上板控制台打印 `tcp -> 192.168.1.101` 才发现，
+    改为 0xC0A80065。现在 `test_xt_link.py` 的固件侧直接用寄存器复位值、假雷达用 `xt_proto.DEFAULT_LIDAR_IP`，`tb_nav_top` 也读回核对。
+19. **原始帧发送缓冲只有一份**：`hal_lraw_send` 先等 `RAW_STAT.TX_BUSY` 清零（最多 200 us）再写，否则连发两帧（确认 + FIN）时后一帧会
+    覆盖正在发的前一帧。主机测试的 HAL 是队列，测不出这一点。
 
 ## 5. 关键算法参数（当前缺省）
 
@@ -129,7 +135,7 @@ $PY tools/nav_uart.py COM11 load fw/build/rv/nav/nav_fw.bin   # 换固件（不�
 
 ## 6. BSRAM 预算（340 块 × 18 Kbit ≈ 765 KB；DSP 另算，只用了约 16%）
 
-板级构建（软核 RAM 128 KB + 雷达链路 + 百兆 MAC，18 位槽字）的综合报告，布线后 320 / 340（94%）：
+板级构建（软核 RAM 128 KB + 雷达链路 + 百兆 MAC + 雷达口原始帧通道，18 位槽字）的综合报告，布线后 324 / 340（96%）：
 
 | 模块 | 块数 | 说明 |
 |---|---|---|
@@ -142,8 +148,8 @@ $PY tools/nav_uart.py COM11 load fw/build/rv/nav/nav_fw.bin   # 换固件（不�
 | 雷达方向表 | 20 | 9600 × 36 位，10 块 1K × 36（原 48 位 48 块） |
 | 雷达帧缓冲 | 19 | 双缓冲 |
 | 轨迹评估 | 4 | |
-| 网口 / 邮箱 / IMU | 13 | |
-| **合计** | **297**（布线后 320） | 压缩前（160 KB、23 位、48 位方向表）约 358，超出 340 |
+| 网口 / 邮箱 / IMU | 15 | 含雷达口原始帧收发（D1，2 块） |
+| **合计** | **299**（布线后 324） | 压缩前（160 KB、23 位、48 位方向表）约 358，超出 340 |
 
 还能再压的（目前不需要）：结构图按 1K×18 分块（−8）、高程图按 1K×18 拼（−4）。结构图 256 -> 128 会让无图定位变差（仿真 xy 2 cm -> 15–30 cm），不做。
 
@@ -152,14 +158,16 @@ $PY tools/nav_uart.py COM11 load fw/build/rv/nav/nav_fw.bin   # 换固件（不�
 1. 被撞检测偶尔漏检；高速贴近箱角偶有擦碰（需要按离障距离限速）。
 2. 有图对准在"视野里只有平行结构"时要原地转 1–3 次（每次约 3.4 s），摆放时车头尽量对着有转角的地方。
 3. 无图模式探索新区域时的打滑漂移（大场地 0.2–0.5 m / 10 m，5 m 场地 1–3 cm）。
-4. 板级时序余量很小（当前 50.48 MHz / 50 MHz），每次改 RTL 都可能变成负 slack。
+4. 板级时序余量很小（D1 构建布线后 50.04 MHz / 50 MHz），每次改 RTL 都可能变成负 slack。
 5. PC 经 USB 串口注入报文、读回状态只在 RTL 仿真（tb_nav_top）中验证，未上板实测。
 6. 待实物确认：真雷达的左右方向与深度定义、安装位姿；IMU088 协议与轴向；底盘对地速度接口（整车顶层还没有，`ch_*` / `odo_*` 没接引脚）。
 7. 雷达流进板子后固件主循环单次最长约 38 ms（没有雷达时 0.2 ms），速度指令看门狗是 200 ms，目前够用；上车后若控制周期要求更高，
    要把每帧处理拆成几段。
 8. RGMII 接收采样沿（第 4 节第 17 条）：已改为 RXC 下降沿（`NETL.CTRL.RX_NEG` 缺省 1，可串口切回上升沿对比），构建 6 上板 0 错误。
    I/O 时序仍没有约束，改 RTL 重新布线后要再看一次 `NETL_STAT_RX_ERR`。
-9. 雷达要靠 FPGA 当 TCP 客户端才能上电自动出流、并把数据发给 FPGA（第 8 节 D1）；在此之前每次上电都要用电脑启动一次。
+9. 雷达启动 TCP 客户端（第 8 节 D1）只对过假雷达（仿真 / 主机测试），还没对真雷达：真雷达 TCP 栈的细节（SYN-ACK 选项、连上后是否
+   先发上报、关闭方式、只理一个连接时对新 SYN 的反应）可能不同。第一次接雷达看控制台 `lidar start ok`；不成功先用
+   `fake_lidar.py --tcp-server` 对照，再抓包。`NETL_CTRL` bit 6 写 0 关掉它，回到电脑手工启动（hardware_guide 6.4 节第四步旧办法）。
 10. 整车标定（CAD）的遗留：雷达支架下俯 20.3°，比建议的 10–12° 大，定位变差（仿真无图 xy RMS 均值 4.1 cm，10° 时 2.7 cm），
     请机械组评估能否改支架；站立腿长 L0 待底盘给出（现按 130 mm，离地 155 mm）；雷达正装 / 倒装模型里判断不了，实物核对。
     整车宽 332 mm：场地通道要 ≥ 55 cm（platform.md 第 3 节）。
@@ -182,7 +190,7 @@ $PY tools/nav_uart.py COM11 load fw/build/rv/nav/nav_fw.bin   # 换固件（不�
 | B5 | 板上 RJ45：自写 `rgmii_mac100.v`（TSE IP 生成器只有图形界面，而且 BSRAM 不够），tb_rgmii_mac / tb_rgmii_mac_pos；修了发送时钟相位与接收采样沿，收发都已上板确认 | 完成 |
 | B6 | 雷达到货：`xt_config.py` 读配置与内参、自动出流与 UDP 目标核对（不自动、只发 TCP 主机）、真实抓包进回归、直连板子（修了帧内超时） | 完成；安装位姿见 E1 |
 | E1 | 整车标定：`tools/robot_calib.py` 由机械组 URDF / STL 算雷达安装位姿、车体尺寸、轮距、轮半径，写进固件 / 寄存器 / 仿真，批量评测 50/50 | 完成；L0、正倒装、左右 / 深度待实车核对 |
-| D1 | **FPGA 最小 TCP 客户端**（下一步最优先）：上电后 ARP 找雷达、连 7787、发命令 1（开始测量），收到应答后断开，雷达随后把 UDP 发给 FPGA。需要雷达口加一条原始帧收发通道（TCP 段 / ARP 交给软核处理），或在 RTL 里做固定流程的状态机 | 未做 |
+| D1 | **FPGA 最小 TCP 客户端**：雷达口加原始帧收发通道（`udp_tx` 原始帧模式、`rtl/net/raw_cap.v` 4 格 × 128 字节接收，`NETL.RAW_*` 寄存器与 `LRAW_TX/RX` 窗口，+2 块 BSRAM），软核 `fw/nav/xt_link.c`：帧 2 s 不涨就 ARP → SYN → 命令 1 → 等应答 → FIN，帧再断就重来（icd.md 第 2 节"雷达启动"）。测试：`tb_net`、`tb_nav_top`（经总线收发）、`test_xt_link.py`（假雷达 17 个场景）、`fake_lidar.py --tcp-server`（PC 冒充雷达 TCP 端） | 仿真、主机测试完成；板上已运行（没接网线时按 7 s 周期重试 ARP）；接 PC / 真雷达的板级联调待做 |
 
 ### C. 之后（算法）
 按离障距离限速、内点率突变辅助被撞检测、多帧对准、有图模式动态障碍过期、终点朝向对准；IMU088（需角速度输出 >= 100 Hz）；
@@ -196,6 +204,7 @@ $PY sim/run.py                                   # RTL 回归（15 项，约 10 
 $PY fw/test/build.py                             # 固件主机测试（会重编 nav_fw.dll）
 $PY sim/closed_loop/test_prior.py                # 有图固件单元测试
 $PY sim/closed_loop/test_lidar_cal.py            # 板上方向表生成 vs 模型
+$PY sim/closed_loop/test_xt_link.py              # 雷达启动 TCP 客户端 vs 假雷达（17 个场景）
 $PY sim/closed_loop/batch.py --tag x -j 10       # 5 m 场地 10 用例 × 5 种子（缺省用例集，约 30 分钟）
 $PY sim/closed_loop/batch.py --tag y --cases terrain_a terrain_b search loop       # 旧大场地回归
 $PY sim/closed_loop/run_cl.py --scene field5 --start 0.0,-2.0,0 --goal 4.0,2.1 --gif --out sim/build/cl/demo
@@ -204,6 +213,7 @@ $PY sim/closed_loop/run_cl.py --scene field5 --start 0.0,-2.0,0 --goal 4.0,2.1 -
 $PY tools/map_tool.py build map.pcd -o field.nvmp            # 地图点云 -> 先验地图包 + 检查图
 $PY tools/nav_host.py --link uart:COM11 map field.nvmp       # PC 下发；pose / goal / wp / mode / listen
 $PY tools/fake_lidar.py 192.168.0.100 --fps 10 --imu         # PC 冒充雷达（SDK 格式）；--pcap / --xbin 回放
+$PY tools/fake_lidar.py --tcp-server --stream-for 20         # 连 TCP 启动也冒充（板子 NETL_LIDAR_IP 写电脑 IP）
 $PY tools/xt_config.py info | lens | udp-dest 192.168.0.100 7687 | start dist   # 雷达 TCP 配置
 $PY gowin/syn/syn.py                                         # 只综合 nav_subsystem（资源、Fmax）
 ```

@@ -11,6 +11,7 @@
 #include "loc.h"
 #include "prior.h"
 #include "lidar_cal.h"
+#include "xt_link.h"
 
 #define APP_PLAN_PERIOD_US   100000    /* 规划 10 Hz */
 #define APP_STATUS_PERIOD_US 200000    /* 状态回传 5 Hz */
@@ -49,6 +50,8 @@ typedef struct {
     lidar_cal_t  lcal;
     int          lcal_budget;           /* 每次主循环最多生成的像素数 */
     uint32_t     n_lut_skip;            /* 因查找表未就绪丢弃的帧 */
+    /* 雷达启动（收不到雷达帧时软核连 TCP 发开始命令） */
+    xt_link_t    xl;
 } nav_app_t;
 
 /* 先验地图已加载（有图模式） */

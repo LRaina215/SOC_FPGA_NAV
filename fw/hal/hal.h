@@ -51,6 +51,21 @@ void     hal_lidar_lens(uint32_t lens[9]);
 /* 从像素 idx 起写 n 项方向（每项 rx, ry, rz，12 位 Q0.11） */
 void     hal_lidar_lut_write(uint32_t idx, const int16_t *rxyz, int n);
 
+/* ---- 雷达口原始帧（软核 TCP 客户端启动雷达用，fw/nav/xt_link.c） ---- */
+typedef struct {
+    uint8_t  mac[6];        /* 本机（FPGA 雷达口） */
+    uint32_t ip;            /* 本机 IP */
+    uint32_t lidar_ip;      /* 雷达 IP（NETL.LIDAR_IP） */
+    bool     tcp_en;        /* NETL.CTRL.LIDAR_TCP：允许软核连 TCP 启动雷达 */
+} hal_netl_cfg_t;
+void     hal_netl_cfg(hal_netl_cfg_t *c);
+/* 发送整帧（以太网头起，不含 FCS，<= 128 字节）；发送通道忙时返回 false */
+bool     hal_lraw_send(const uint8_t *frame, int len);
+/* 取一帧（发给本机的 ARP 应答或 TCP 段），返回整帧字节数（含 FCS；只拷前 min(len, max, 128) 字节），没有返回 0 */
+int      hal_lraw_recv(uint8_t *buf, int max);
+/* 已成功接收的雷达帧数（LIDAR.STAT_FRAMES） */
+uint32_t hal_lidar_frames(void);
+
 /* ---- 雷达帧位姿握手 ---- */
 /* 有一帧点云在等待位姿时返回 true，并给出该帧到达时间 */
 bool hal_lidar_waiting(uint32_t *frame_t_us);

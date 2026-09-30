@@ -52,7 +52,7 @@ TESTS["tb_safety_guard"] = {
     "copy": ["rtl/plan/sin_lut.hex"],
 }
 
-NET = ["rtl/net/udp_rx.v", "rtl/net/udp_tx.v", "rtl/net/net_port.v", "rtl/net/host_mbx.v"]
+NET = ["rtl/net/udp_rx.v", "rtl/net/udp_tx.v", "rtl/net/raw_cap.v", "rtl/net/net_port.v", "rtl/net/host_mbx.v"]
 
 TESTS["tb_net"] = {
     "pre": ["sim/gen/gen_net.py"],

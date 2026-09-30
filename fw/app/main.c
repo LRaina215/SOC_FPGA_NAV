@@ -7,7 +7,7 @@ int main(void)
 {
     con_printf("\r\nnav fw " __DATE__ " " __TIME__ "  RAM %u KB\r\n", SOC_RAM_SIZE / 1024);
     nav_app_init();
-    uint32_t t_log = hal_time_us(), loops = 0, max_us = 0, t_prev = t_log, n_gen = 0;
+    uint32_t t_log = hal_time_us(), loops = 0, max_us = 0, t_prev = t_log, n_gen = 0, n_xs = 0, n_xok = 0;
     for (;;) {
         nav_app_poll();
         uint32_t now = hal_time_us(), d = now - t_prev;
@@ -19,6 +19,15 @@ int main(void)
             n_gen = g_app.lcal.n_gen;
             con_printf("lidar LUT ready (%s lens), %u ms\r\n", g_app.lcal.from_dev ? "device" : "M60 default",
                        g_app.lcal.gen_us / 1000u);
+        }
+        if (g_app.xl.n_start != n_xs) {
+            n_xs = g_app.xl.n_start;
+            con_printf("lidar start #%u (tcp -> %u.%u.%u.%u:7787)\r\n", n_xs, g_app.xl.net.lidar_ip >> 24,
+                       (g_app.xl.net.lidar_ip >> 16) & 255u, (g_app.xl.net.lidar_ip >> 8) & 255u, g_app.xl.net.lidar_ip & 255u);
+        }
+        if (g_app.xl.n_ok != n_xok) {
+            n_xok = g_app.xl.n_ok;
+            con_printf("lidar start ok (%u)\r\n", n_xok);
         }
         if ((uint32_t)(now - t_log) >= 1000000u) {
             t_log = now;

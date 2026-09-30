@@ -39,6 +39,10 @@ module nav_regfile (
     input  wire [31:0] i_NETL_PEER_PORT,
     output reg  [31:0] r_NETL_MCAST_IP,
     input  wire [31:0] i_NETL_PHY_STAT,
+    output wire        p_NETL_RAW_TX,
+    input  wire [31:0] i_NETL_RAW_STAT,
+    output wire        p_NETL_RAW_POP,
+    output reg  [31:0] r_NETL_LIDAR_IP,
     output reg  [31:0] r_NETH_MAC_LO,
     output reg  [31:0] r_NETH_MAC_HI,
     output reg  [31:0] r_NETH_IP,
@@ -206,6 +210,8 @@ module nav_regfile (
     assign p_NETL_PEER_MAC_LO = wr && (addr == 16'h102C);
     assign p_NETL_PEER_MAC_HI = wr && (addr == 16'h1030);
     assign p_NETL_PEER_PORT = wr && (addr == 16'h1034);
+    assign p_NETL_RAW_TX = wr && (addr == 16'h1040);
+    assign p_NETL_RAW_POP = wr && (addr == 16'h1048);
     assign p_NETH_PEER_IP = wr && (addr == 16'h1128);
     assign p_NETH_PEER_MAC_LO = wr && (addr == 16'h112C);
     assign p_NETH_PEER_MAC_HI = wr && (addr == 16'h1130);
@@ -236,12 +242,13 @@ module nav_regfile (
             r_NETL_MAC_HI <= 32'h0000024E;
             r_NETL_IP <= 32'hC0A80064;
             r_NETL_UDP_PORT <= 32'h00001E07;
-            r_NETL_CTRL <= 32'h0000001D;
+            r_NETL_CTRL <= 32'h0000007D;
             r_NETL_PEER_IP <= 32'h00000000;
             r_NETL_PEER_MAC_LO <= 32'h00000000;
             r_NETL_PEER_MAC_HI <= 32'h00000000;
             r_NETL_PEER_PORT <= 32'h00000000;
             r_NETL_MCAST_IP <= 32'hEFFFFF4C;
+            r_NETL_LIDAR_IP <= 32'hC0A80065;
             r_NETH_MAC_LO <= 32'h56000002;
             r_NETH_MAC_HI <= 32'h0000024E;
             r_NETH_IP <= 32'hC0A80264;
@@ -330,6 +337,7 @@ module nav_regfile (
             16'h1030: r_NETL_PEER_MAC_HI <= wdata;
             16'h1034: r_NETL_PEER_PORT <= wdata;
             16'h1038: r_NETL_MCAST_IP <= wdata;
+            16'h104C: r_NETL_LIDAR_IP <= wdata;
             16'h1100: r_NETH_MAC_LO <= wdata;
             16'h1104: r_NETH_MAC_HI <= wdata;
             16'h1108: r_NETH_IP <= wdata;
@@ -433,6 +441,10 @@ module nav_regfile (
         16'h1034: rdata = i_NETL_PEER_PORT;
         16'h1038: rdata = r_NETL_MCAST_IP;
         16'h103C: rdata = i_NETL_PHY_STAT;
+        16'h1040: rdata = 32'h0;
+        16'h1044: rdata = i_NETL_RAW_STAT;
+        16'h1048: rdata = 32'h0;
+        16'h104C: rdata = r_NETL_LIDAR_IP;
         16'h1100: rdata = r_NETH_MAC_LO;
         16'h1104: rdata = r_NETH_MAC_HI;
         16'h1108: rdata = r_NETH_IP;

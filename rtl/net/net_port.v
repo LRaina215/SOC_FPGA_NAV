@@ -7,7 +7,8 @@
 module net_port #(
     parameter integer RX_AW = 11,
     parameter integer TX_AW = 11,
-    parameter integer PL_AW = 11
+    parameter integer PL_AW = 11,
+    parameter integer RAW   = 0            // 1 = 带原始帧收发通道（雷达口 TCP 客户端用）
 ) (
     input  wire        clk,
     input  wire        rst,
@@ -70,7 +71,21 @@ module net_port #(
     output reg  [31:0] st_rx_err,
     output reg  [31:0] st_arp,
     output reg  [31:0] st_tx_frames,
-    output reg  [31:0] st_rx_drop      // 缓冲不足丢弃的帧（MAC 域计数，仅供调试）
+    output reg  [31:0] st_rx_drop,     // 缓冲不足丢弃的帧（MAC 域计数，仅供调试）
+    // 原始帧通道（RAW = 1）：发送缓冲 32 字 = 128 字节（小端打包），接收 4 格（ARP 应答、发给本机的 TCP 段）
+    input  wire        raw_tx_we,
+    input  wire [4:0]  raw_tx_waddr,
+    input  wire [31:0] raw_tx_wdata,
+    input  wire        raw_tx_go,
+    input  wire [7:0]  raw_tx_len,
+    output wire        raw_tx_busy,
+    input  wire        raw_rx_en,
+    input  wire [4:0]  raw_rx_raddr,
+    output wire [31:0] raw_rx_rdata,
+    input  wire        raw_rx_pop,
+    output wire [2:0]  raw_rx_n,
+    output wire [10:0] raw_rx_len,
+    output wire [7:0]  raw_rx_drop
 );
     // ------------------------------------------------ 接收：MAC 域整帧准入
     localparam integer MAXF = 1536;
@@ -111,6 +126,35 @@ module net_port #(
         .st_frame(s_frame), .st_udp(s_udp), .st_err(s_err)
     );
 
+    // 原始帧通道
+    wire       rb_re;
+    wire [6:0] rb_addr;
+    wire [7:0] rb_q;
+    generate
+        if (RAW) begin : g_raw
+            wire [31:0] rb_w;
+            reg  [1:0]  rb_lane;
+            nav_ram_sdp #(.DW(32), .AW(5)) u_rtx (
+                .clk(clk), .we(raw_tx_we), .waddr(raw_tx_waddr), .wdata(raw_tx_wdata),
+                .re(rb_re), .raddr(rb_addr[6:2]), .rdata(rb_w)
+            );
+            always @(posedge clk) if (rb_re) rb_lane <= rb_addr[1:0];
+            assign rb_q = rb_w[8 * rb_lane +: 8];
+            raw_cap u_rcap (
+                .clk(clk), .rst(rst), .cfg_enable(raw_rx_en), .my_mac(cfg_mac), .my_ip(cfg_ip),
+                .s_valid(rf_v), .s_data(rf_d[7:0]), .s_last(rf_d[8]), .s_err(rf_d[9]),
+                .rd_addr(raw_rx_raddr), .rd_q(raw_rx_rdata), .pop(raw_rx_pop),
+                .n_avail(raw_rx_n), .head_len(raw_rx_len), .st_drop(raw_rx_drop)
+            );
+        end else begin : g_noraw
+            assign rb_q = 8'd0;
+            assign raw_rx_rdata = 32'd0;
+            assign raw_rx_n = 3'd0;
+            assign raw_rx_len = 11'd0;
+            assign raw_rx_drop = 8'd0;
+        end
+    endgenerate
+
     // 对端学习
     always @(posedge clk) begin
         if (rst) begin
@@ -131,6 +175,8 @@ module net_port #(
         .arp_req(arp_req), .arp_sha(arp_sha), .arp_spa(arp_spa),
         .tx_go(tx_go), .tx_dst_mac(peer_mac), .tx_dst_ip(peer_ip), .tx_dst_port(peer_port),
         .tx_src_port(cfg_port), .tx_len(tx_len), .tx_busy(tx_busy),
+        .raw_go(raw_tx_go & (RAW != 0)), .raw_len(raw_tx_len), .raw_busy(raw_tx_busy),
+        .rb_re(rb_re), .rb_addr(rb_addr), .rb_q(rb_q),
         .pl_re(pl_re), .pl_addr(pl_addr), .pl_q(pl_q),
         .m_valid(t_v), .m_data(t_d), .m_last(t_l), .m_ready(t_r), .st_tx(s_tx)
     );

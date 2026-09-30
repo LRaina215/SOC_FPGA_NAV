@@ -1,6 +1,7 @@
 // 网口协议栈 + 主机邮箱测试（125 MHz MAC 域，100 MHz 核心域）。
 //   接收：ARP、各种合法/非法 UDP 帧 -> 检查邮箱内容与统计
-//   发送：ARP 应答 + 一个 UDP 报文 -> 写 tx_frames.hex，由 gen_net.py post 解析检查
+//   发送：ARP 应答 + 一个 UDP 报文 + 两个原始帧 -> 写 tx_frames.hex，由 gen_net.py post 解析检查
+//   原始帧接收：ARP 应答 / TCP 段进 4 格缓冲（过滤、FCS 错、格子满丢弃、只存前 128 字节）
 `timescale 1ns/1ps
 module tb_net;
     logic clk = 0, mclk = 0, rst = 1, mrst = 1;
@@ -10,7 +11,9 @@ module tb_net;
     logic [9:0]  rxs [0:65535];
     logic [31:0] mexp [0:65535];
     logic [31:0] txp [0:1023];
-    int n_rx, n_pkt, n_mexp, n_txp;
+    logic [31:0] rexp [0:1023];
+    logic [31:0] rtx [0:1023];
+    int n_rx, n_pkt, n_mexp, n_txp, n_rexp, n_rtx;
 
     logic [31:0] time_us = 0;
     always #1000 time_us++;
@@ -30,8 +33,14 @@ module tb_net;
     logic [10:0] pl_addr;
     logic [7:0] pl_q;
     logic [31:0] st_rxf, st_udp, st_err, st_arp, st_tx;
+    logic rt_we = 0, rt_go = 0, rt_busy, rr_pop = 0;
+    logic [4:0] rt_wa = 0, rr_ra = 0;
+    logic [31:0] rt_wd = 0, rr_q;
+    logic [7:0] rt_len = 0, rr_drop;
+    logic [2:0] rr_n;
+    logic [10:0] rr_len;
 
-    net_port dut (
+    net_port #(.RAW(1)) dut (
         .clk(clk), .rst(rst), .time_us(time_us),
         .rx_mac_clk(mclk), .rx_mac_rst(mrst), .rx_mac_valid(rxv), .rx_mac_data(rxd), .rx_mac_last(rxl), .rx_mac_error(rxe),
         .tx_mac_clk(mclk), .tx_mac_rst(mrst), .tx_mac_valid(txv), .tx_mac_data(txd), .tx_mac_last(txl), .tx_mac_ready(txr),
@@ -43,7 +52,10 @@ module tb_net;
         .u_src_ip(u_src_ip), .u_src_port(u_src_port), .u_len(u_len), .u_ts(u_ts),
         .tx_go(tx_go), .tx_len(tx_len), .tx_busy(tx_busy), .pl_re(pl_re), .pl_addr(pl_addr), .pl_q(pl_q),
         .st_rx_frames(st_rxf), .st_rx_udp(st_udp), .st_rx_err(st_err), .st_arp(st_arp), .st_tx_frames(st_tx),
-        .st_rx_drop());
+        .st_rx_drop(),
+        .raw_tx_we(rt_we), .raw_tx_waddr(rt_wa), .raw_tx_wdata(rt_wd), .raw_tx_go(rt_go), .raw_tx_len(rt_len),
+        .raw_tx_busy(rt_busy), .raw_rx_en(1'b1), .raw_rx_raddr(rr_ra), .raw_rx_rdata(rr_q), .raw_rx_pop(rr_pop),
+        .raw_rx_n(rr_n), .raw_rx_len(rr_len), .raw_rx_drop(rr_drop));
 
     logic rx_avail, rx_rd = 0, rx_ack, rx_pop = 0, tx_we = 0, tx_go_in = 0;
     logic [15:0] rx_len;
@@ -72,26 +84,29 @@ module tb_net;
 
     int errs = 0;
     initial begin
-        int fd, mi, len, gap;
+        int fd, mi, len, gap, flen = 0;
         fdo = $fopen("tx_frames.hex", "w");
         fd = $fopen("counts.txt", "r");
-        void'($fscanf(fd, "%d %d %d %d", n_rx, n_pkt, n_mexp, n_txp));
+        void'($fscanf(fd, "%d %d %d %d %d %d", n_rx, n_pkt, n_mexp, n_txp, n_rexp, n_rtx));
         $fclose(fd);
         $readmemh("rx.hex", rxs);
         $readmemh("mbx_exp.hex", mexp);
         $readmemh("tx_payload.hex", txp);
+        $readmemh("raw_exp.hex", rexp);
+        $readmemh("raw_tx.hex", rtx);
         repeat (10) @(posedge clk);
         rst = 0; mrst = 0;
         repeat (20) @(posedge mclk);
-        // 注入：帧内连续，帧间 12 拍
+        // 注入：帧内连续，帧间 12 拍 + 帧长 / 4（注入 125 MB/s、读出 100 MB/s，间隔太短接收缓冲会满、整帧被丢）
         for (int i = 0; i < n_rx; i++) begin
             @(posedge mclk);
             {rxe, rxl, rxd} <= rxs[i];
             rxv <= 1;
             if (rxs[i][8]) begin
                 @(posedge mclk); rxv <= 0; rxl <= 0; rxe <= 0;
-                repeat (12) @(posedge mclk);
-            end
+                repeat (12 + flen / 4) @(posedge mclk);
+                flen = 0;
+            end else flen++;
         end
         @(posedge mclk); rxv <= 0;
         repeat (3000) @(posedge clk);
@@ -119,6 +134,25 @@ module tb_net;
         if (rx_avail) begin errs++; $display("邮箱有多余报文"); end
         $display("统计 rx=%0d udp=%0d err=%0d arp=%0d", st_rxf, st_udp, st_err, st_arp);
         if (st_arp != 2) begin errs++; $display("ARP 应答数错误"); end
+        // 原始帧接收缓冲
+        mi = 1;
+        if (rr_n != rexp[0]) begin errs++; $display("原始帧格数 期望 %0d 实得 %0d", rexp[0], rr_n); end
+        if (rr_drop != 1) begin errs++; $display("原始帧丢弃计数 期望 1 实得 %0d", rr_drop); end
+        for (int k = 0; k < rexp[0]; k++) begin
+            if (rr_len != rexp[mi]) begin errs++; $display("原始帧 %0d 长度 期望 %0d 实得 %0d", k, rexp[mi], rr_len); end
+            for (int w = 0; w < rexp[mi + 1]; w++) begin
+                @(posedge clk) rr_ra <= w;
+                @(posedge clk); @(posedge clk); #1;
+                if (rr_q !== rexp[mi + 2 + w]) begin
+                    errs++; if (errs < 20) $display("原始帧 %0d 字 %0d 期望 %h 实得 %h", k, w, rexp[mi + 2 + w], rr_q);
+                end
+            end
+            mi += 2 + rexp[mi + 1];
+            @(posedge clk) rr_pop <= 1;
+            @(posedge clk) rr_pop <= 0;
+            @(posedge clk);
+        end
+        if (rr_n != 0) begin errs++; $display("原始帧缓冲未清空 %0d", rr_n); end
 
         // 发送
         for (int w = 1; w < n_txp; w++) begin
@@ -126,8 +160,22 @@ module tb_net;
         end
         @(posedge clk); tx_we <= 0; tx_len_in <= txp[0]; tx_go_in <= 1;
         @(posedge clk); tx_go_in <= 0;
+        // 原始帧发送（等上一帧发完再写缓冲）
+        mi = 1;
+        for (int k = 0; k < rtx[0]; k++) begin
+            len = rtx[mi]; mi++;
+            wait (!rt_busy && !tx_busy);
+            for (int w = 0; w < (len + 3) / 4; w++) begin
+                @(posedge clk); rt_we <= 1; rt_wa <= w; rt_wd <= rtx[mi]; mi++;
+            end
+            @(posedge clk); rt_we <= 0; rt_len <= len; rt_go <= 1;
+            @(posedge clk); rt_go <= 0;
+            repeat (2) @(posedge clk);
+            wait (!rt_busy);
+            repeat (400) @(posedge clk);
+        end
         fork
-            wait (n_txf == 3);
+            wait (n_txf == 3 + rtx[0]);
             begin repeat (200000) @(posedge clk); $display("发送超时 n=%0d", n_txf); errs++; end
         join_any
         repeat (100) @(posedge clk);

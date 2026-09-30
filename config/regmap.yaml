@@ -38,9 +38,9 @@ blocks:
       - name: CTRL
         off: 0x10
         acc: rw
-        reset: 0x0000001D
-        desc: "控制；RX_NEG=1（缺省）板级 RGMII 在 RXC 下降沿采数据（百兆时在数据窗口中间），0 = 上升沿（上板实测上升沿的错误率随布线在 0.5% 到 100% 之间变）"
-        fields: {ENABLE: [0,0], ANY_IP: [1,1], ARP_EN: [2,2], LEARN_PEER: [3,3], RX_NEG: [4,4]}
+        reset: 0x0000007D
+        desc: "控制；RX_NEG=1（缺省）板级 RGMII 在 RXC 下降沿采数据（百兆时在数据窗口中间），0 = 上升沿（上板实测上升沿的错误率随布线在 0.5% 到 100% 之间变）；RAW_EN=1 原始帧接收（ARP 应答、发给本机的 TCP 段交给软核）；LIDAR_TCP=1 软核在收不到雷达帧时自己连 TCP 启动雷达"
+        fields: {ENABLE: [0,0], ANY_IP: [1,1], ARP_EN: [2,2], LEARN_PEER: [3,3], RX_NEG: [4,4], RAW_EN: [5,5], LIDAR_TCP: [6,6]}
       - {name: STAT_RX_FRAMES, off: 0x14, acc: ro, reset: 0, desc: "收到的以太网帧数"}
       - {name: STAT_RX_UDP,    off: 0x18, acc: ro, reset: 0, desc: "交付的 UDP 报文数"}
       - {name: STAT_RX_ERR,    off: 0x1C, acc: ro, reset: 0, desc: "错误帧数（MAC 错误/IP 校验和/截断/溢出）"}
@@ -57,6 +57,15 @@ blocks:
         reset: 0
         desc: "板级 RGMII MAC / PHY 状态（rgmii_mac100）：链路、MDIO 初始化、PHY 地址、RX 时钟测频（值 × 64 = kHz，百兆约 390）"
         fields: {LINK: [0,0], INIT_DONE: [1,1], FOUND: [2,2], ADDR: [7,3], RXCLK: [31,16]}
+      - {name: RAW_TX, off: 0x40, acc: wo, reset: 0, desc: "写入字节数（<= 128）即发送 LRAW_TX 窗口里的整帧（以太网头起，不含 FCS，不足 60 字节补零）"}
+      - name: RAW_STAT
+        off: 0x44
+        acc: ro
+        reset: 0
+        desc: "原始帧通道状态：发送忙；接收格数（0–4）；当前格整帧字节数（含 FCS，窗口里只有前 128 字节）；接收丢弃计数（格子满）"
+        fields: {TX_BUSY: [0,0], RX_N: [3,1], RX_LEN: [18,8], RX_DROP: [31,24]}
+      - {name: RAW_POP, off: 0x48, acc: w1p, reset: 0, desc: "弹出当前接收格"}
+      - {name: LIDAR_IP, off: 0x4C, acc: rw, reset: 0xC0A80065, desc: "雷达 IP（软核 TCP 客户端连它的 7787 端口；缺省 192.168.0.101，PC 冒充雷达时改成电脑 IP）"}
 
   - name: NETH
     base: 0x1100
@@ -470,6 +479,8 @@ blocks:
       - {name: SM_WDATA, off: 0x44, acc: wo, reset: 0, desc: "先验图写入：槽字 [17:0]，写入即写 RAM（写完 SM_ADDR 自增 1）"}
 
 windows:
+  - {name: LRAW_TX, base: 0xD000, size: 0x0080, desc: "雷达口原始帧发送缓冲：字 k = 第 4k..4k+3 字节（小端），只写"}
+  - {name: LRAW_RX, base: 0xD100, size: 0x0080, desc: "雷达口原始帧接收当前格：字 k = 第 4k..4k+3 字节（小端），只读"}
   - {name: TRAJ_CAND, base: 0x4100, size: 0x0200, desc: "候选 k: +8k: [15:0]dvx [31:16]dvy (格 Q8/步); +8k+4: [15:0]dth (65536/周/步)"}
   - {name: TRAJ_RES,  base: 0x4400, size: 0x0400, desc: "结果 k: +16k: [7:0]max_cost [15:8]n_unknown [23:16]coll_step [24]collide [25]left; +4 sum_cost; +8 end_x Q8; +12 end_y Q8"}
   - {name: MATCH_CAND, base: 0xC000, size: 0x0800, desc: "SLF 候选 k: +8k: [15:0]dx [31:16]dy (mm); +8k+4: [15:0]dyaw (65536/周)"}

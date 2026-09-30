@@ -30,6 +30,10 @@
     wire        p_NETL_PEER_PORT;
     wire [31:0] r_NETL_MCAST_IP;
     wire [31:0] i_NETL_PHY_STAT;
+    wire        p_NETL_RAW_TX;
+    wire [31:0] i_NETL_RAW_STAT;
+    wire        p_NETL_RAW_POP;
+    wire [31:0] r_NETL_LIDAR_IP;
     wire [31:0] r_NETH_MAC_LO;
     wire [31:0] r_NETH_MAC_HI;
     wire [31:0] r_NETH_IP;
@@ -222,6 +226,10 @@
         .p_NETL_PEER_PORT(p_NETL_PEER_PORT),
         .r_NETL_MCAST_IP(r_NETL_MCAST_IP),
         .i_NETL_PHY_STAT(i_NETL_PHY_STAT),
+        .p_NETL_RAW_TX(p_NETL_RAW_TX),
+        .i_NETL_RAW_STAT(i_NETL_RAW_STAT),
+        .p_NETL_RAW_POP(p_NETL_RAW_POP),
+        .r_NETL_LIDAR_IP(r_NETL_LIDAR_IP),
         .r_NETH_MAC_LO(r_NETH_MAC_LO),
         .r_NETH_MAC_HI(r_NETH_MAC_HI),
         .r_NETH_IP(r_NETH_IP),

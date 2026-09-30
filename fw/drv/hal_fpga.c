@@ -113,6 +113,49 @@ void hal_lidar_init(void)
     nav_wr(NAV_LIDAR_CTRL, nav_rd(NAV_LIDAR_CTRL) | NAV_LIDAR_CTRL_WAIT_POSE_MASK);
 }
 
+uint32_t hal_lidar_frames(void) { return nav_rd(NAV_LIDAR_STAT_FRAMES); }
+
+void hal_netl_cfg(hal_netl_cfg_t *c)
+{
+    uint32_t lo = nav_rd(NAV_NETL_MAC_LO), hi = nav_rd(NAV_NETL_MAC_HI);
+    c->mac[0] = (uint8_t)(hi >> 8);  c->mac[1] = (uint8_t)hi;
+    c->mac[2] = (uint8_t)(lo >> 24); c->mac[3] = (uint8_t)(lo >> 16);
+    c->mac[4] = (uint8_t)(lo >> 8);  c->mac[5] = (uint8_t)lo;
+    c->ip = nav_rd(NAV_NETL_IP);
+    c->lidar_ip = nav_rd(NAV_NETL_LIDAR_IP);
+    c->tcp_en = (nav_rd(NAV_NETL_CTRL) & NAV_NETL_CTRL_LIDAR_TCP_MASK) != 0;
+}
+
+bool hal_lraw_send(const uint8_t *frame, int len)
+{
+    if (len <= 0 || len > (int)NAV_WIN_LRAW_TX_SIZE) return false;
+    uint32_t t0 = hal_time_us();                  /* 发送缓冲只有一份：等上一帧发完（128 字节约 12 us） */
+    while (nav_rd(NAV_NETL_RAW_STAT) & NAV_NETL_RAW_STAT_TX_BUSY_MASK)
+        if (hal_time_us() - t0 > 200u) return false;
+    for (int i = 0; i < len; i += 4) {
+        uint32_t w = 0;
+        for (int k = 0; k < 4 && i + k < len; k++) w |= (uint32_t)frame[i + k] << (8 * k);
+        nav_wr(NAV_WIN_LRAW_TX_BASE + (uint32_t)i, w);
+    }
+    nav_wr(NAV_NETL_RAW_TX, (uint32_t)len);
+    return true;
+}
+
+int hal_lraw_recv(uint8_t *buf, int max)
+{
+    uint32_t st = nav_rd(NAV_NETL_RAW_STAT);
+    if (!(st & NAV_NETL_RAW_STAT_RX_N_MASK)) return 0;
+    int len = (int)((st & NAV_NETL_RAW_STAT_RX_LEN_MASK) >> NAV_NETL_RAW_STAT_RX_LEN_SHIFT);
+    int n = len < max ? len : max;
+    if (n > (int)NAV_WIN_LRAW_RX_SIZE) n = (int)NAV_WIN_LRAW_RX_SIZE;
+    for (int i = 0; i < n; i += 4) {
+        uint32_t w = nav_rd(NAV_WIN_LRAW_RX_BASE + (uint32_t)i);
+        for (int k = 0; k < 4 && i + k < n; k++) buf[i + k] = (uint8_t)(w >> (8 * k));
+    }
+    nav_wr(NAV_NETL_RAW_POP, 1);
+    return len;
+}
+
 uint32_t hal_lidar_info_seq(void) { return nav_rd(NAV_LIDAR_INFO_SEQ); }
 
 void hal_lidar_lens(uint32_t lens[9])

@@ -22,7 +22,7 @@
 | 0x1004 | MAC_HI | rw | 0x0000024E | 本机 MAC 高 16 位 |
 | 0x1008 | IP | rw | 0xC0A80064 | 本机 IPv4（默认 192.168.0.100，与 XT-M60 缺省 192.168.0.101/24 同网段） |
 | 0x100C | UDP_PORT | rw | 0x00001E07 | 本口接收的 UDP 目的端口（XT-M60 缺省发往 7687） |
-| 0x1010 | CTRL | rw | 0x0000001D | 控制；RX_NEG=1（缺省）板级 RGMII 在 RXC 下降沿采数据（百兆时在数据窗口中间），0 = 上升沿（上板实测上升沿的错误率随布线在 0.5% 到 100% 之间变）；ENABLE[0] ANY_IP[1] ARP_EN[2] LEARN_PEER[3] RX_NEG[4] |
+| 0x1010 | CTRL | rw | 0x0000007D | 控制；RX_NEG=1（缺省）板级 RGMII 在 RXC 下降沿采数据（百兆时在数据窗口中间），0 = 上升沿（上板实测上升沿的错误率随布线在 0.5% 到 100% 之间变）；RAW_EN=1 原始帧接收（ARP 应答、发给本机的 TCP 段交给软核）；LIDAR_TCP=1 软核在收不到雷达帧时自己连 TCP 启动雷达；ENABLE[0] ANY_IP[1] ARP_EN[2] LEARN_PEER[3] RX_NEG[4] RAW_EN[5] LIDAR_TCP[6] |
 | 0x1014 | STAT_RX_FRAMES | ro | 0x00000000 | 收到的以太网帧数 |
 | 0x1018 | STAT_RX_UDP | ro | 0x00000000 | 交付的 UDP 报文数 |
 | 0x101C | STAT_RX_ERR | ro | 0x00000000 | 错误帧数（MAC 错误/IP 校验和/截断/溢出） |
@@ -34,6 +34,10 @@
 | 0x1034 | PEER_PORT | rwe | 0x00000000 | 发送目的端口 [15:0] |
 | 0x1038 | MCAST_IP | rw | 0xEFFFFF4C | 另外接收的组播组（0 = 不收）；缺省 239.255.255.76 = 厂家 SDK 加入的组 |
 | 0x103C | PHY_STAT | ro | 0x00000000 | 板级 RGMII MAC / PHY 状态（rgmii_mac100）：链路、MDIO 初始化、PHY 地址、RX 时钟测频（值 × 64 = kHz，百兆约 390）；LINK[0] INIT_DONE[1] FOUND[2] ADDR[7:3] RXCLK[31:16] |
+| 0x1040 | RAW_TX | wo | 0x00000000 | 写入字节数（<= 128）即发送 LRAW_TX 窗口里的整帧（以太网头起，不含 FCS，不足 60 字节补零） |
+| 0x1044 | RAW_STAT | ro | 0x00000000 | 原始帧通道状态：发送忙；接收格数（0–4）；当前格整帧字节数（含 FCS，窗口里只有前 128 字节）；接收丢弃计数（格子满）；TX_BUSY[0] RX_N[3:1] RX_LEN[18:8] RX_DROP[31:24] |
+| 0x1048 | RAW_POP | w1p | 0x00000000 | 弹出当前接收格 |
+| 0x104C | LIDAR_IP | rw | 0xC0A80065 | 雷达 IP（软核 TCP 客户端连它的 7787 端口；缺省 192.168.0.101，PC 冒充雷达时改成电脑 IP） |
 
 ## NETH（0x1100）主机侧网口（SFP / 1000BASE-X，接 RK3588）UDP 协议栈
 
@@ -226,6 +230,8 @@
 
 | 基址 | 大小 | 名称 | 说明 |
 |---|---|---|---|
+| 0xD000 | 0x0080 | LRAW_TX | 雷达口原始帧发送缓冲：字 k = 第 4k..4k+3 字节（小端），只写 |
+| 0xD100 | 0x0080 | LRAW_RX | 雷达口原始帧接收当前格：字 k = 第 4k..4k+3 字节（小端），只读 |
 | 0x4100 | 0x0200 | TRAJ_CAND | 候选 k: +8k: [15:0]dvx [31:16]dvy (格 Q8/步); +8k+4: [15:0]dth (65536/周/步) |
 | 0x4400 | 0x0400 | TRAJ_RES | 结果 k: +16k: [7:0]max_cost [15:8]n_unknown [23:16]coll_step [24]collide [25]left; +4 sum_cost; +8 end_x Q8; +12 end_y Q8 |
 | 0xC000 | 0x0800 | MATCH_CAND | SLF 候选 k: +8k: [15:0]dx [31:16]dy (mm); +8k+4: [15:0]dyaw (65536/周) |

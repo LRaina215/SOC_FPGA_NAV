@@ -207,11 +207,57 @@ EXPORT void py_lut_gen(const uint32_t *lens, int cut, int flip, int16_t *out)
     for (int i = 0; i < LCAL_NPIX; i++) lidar_cal_pixel(&lc, i, &out[3 * i]);
 }
 
+/* 雷达口原始帧通道（xt_link 测试）：发送队列给 Python 取；接收按硬件 4 槽 × 前 128 字节，满了整帧丢 */
+#define LRAW_B 128
+static hal_netl_cfg_t s_netl;               /* 缺省 tcp_en = false：闭环仿真里 xt_link 只监视 */
+static uint32_t s_lframes;
+static uint8_t  s_ltx[16][LRAW_B];
+static int      s_ltx_len[16], s_ltx_h, s_ltx_t;
+static uint8_t  s_lrx[4][LRAW_B];
+static int      s_lrx_len[4], s_lrx_h, s_lrx_n;
+static uint32_t s_lrx_drop;
+EXPORT void py_set_netl(const uint8_t *mac, uint32_t ip, uint32_t lidar_ip, int tcp_en)
+{
+    memcpy(s_netl.mac, mac, 6); s_netl.ip = ip; s_netl.lidar_ip = lidar_ip; s_netl.tcp_en = tcp_en != 0;
+}
+EXPORT void py_set_lidar_frames(uint32_t n) { s_lframes = n; }
+/* 固件发出的帧（不含 FCS、未补齐）；返回长度，0 = 没有 */
+EXPORT int py_lraw_pop_tx(uint8_t *b)
+{
+    if (s_ltx_h == s_ltx_t) return 0;
+    int n = s_ltx_len[s_ltx_h];
+    memcpy(b, s_ltx[s_ltx_h], (size_t)n);
+    s_ltx_h = (s_ltx_h + 1) % 16;
+    return n;
+}
+/* 收到的帧（含 FCS 的全长）；返回 0 = 槽满丢掉 */
+EXPORT int py_lraw_push_rx(const uint8_t *b, int len)
+{
+    if (s_lrx_n >= 4) { s_lrx_drop++; return 0; }
+    int k = (s_lrx_h + s_lrx_n) % 4;
+    memcpy(s_lrx[k], b, (size_t)(len < LRAW_B ? len : LRAW_B));
+    s_lrx_len[k] = len;
+    s_lrx_n++;
+    return 1;
+}
+EXPORT void py_xl_init(void) { xt_link_init(&g_app.xl, s_now); }
+EXPORT void py_xl_poll(void) { xt_link_poll(&g_app.xl, s_now); }
+EXPORT void py_xl_close_rst(int en) { g_app.xl.close_rst = en != 0; }
+/* v: st n_start n_ok n_fail n_rx n_tx last_resp lport tries rx_drop */
+EXPORT void py_xl_stat(int32_t *v)
+{
+    const xt_link_t *x = &g_app.xl;
+    v[0] = x->st; v[1] = (int32_t)x->n_start; v[2] = (int32_t)x->n_ok; v[3] = (int32_t)x->n_fail;
+    v[4] = (int32_t)x->n_rx; v[5] = (int32_t)x->n_tx; v[6] = x->last_resp; v[7] = x->lport; v[8] = x->tries;
+    v[9] = (int32_t)s_lrx_drop;
+}
+
 EXPORT void py_init(void)
 {
     s_now = 1000; memset(&s_mi, 0, sizeof s_mi); memset(s_slot, 255, sizeof s_slot);
     s_oh = s_ot = s_ih = s_it = s_hh = s_ht = 0; s_lw = s_commit = false; s_hout_len = 0; s_ncmd = 0;
     memset(s_lut, 0, sizeof s_lut); s_lut_writes = 0; memset(s_lens, 0, sizeof s_lens); s_info_seq = 0;
+    s_ltx_h = s_ltx_t = s_lrx_h = s_lrx_n = 0; s_lrx_drop = 0;
     nav_app_init();
     g_app.lcal_budget = LCAL_NPIX;          /* 仿真：第一次轮询就生成整张表 */
 }
@@ -244,6 +290,27 @@ bool hal_odom(int16_t *vx, int16_t *vy, int16_t *wz, uint32_t *t)
     return true;
 }
 bool hal_lidar_waiting(uint32_t *t) { if (!s_lw) return false; *t = s_lw_t; return true; }
+void hal_netl_cfg(hal_netl_cfg_t *c) { *c = s_netl; }
+uint32_t hal_lidar_frames(void) { return s_lframes; }
+bool hal_lraw_send(const uint8_t *frame, int len)
+{
+    int nx = (s_ltx_t + 1) % 16;
+    if (len <= 0 || len > LRAW_B || nx == s_ltx_h) return false;
+    memcpy(s_ltx[s_ltx_t], frame, (size_t)len);
+    s_ltx_len[s_ltx_t] = len;
+    s_ltx_t = nx;
+    return true;
+}
+int hal_lraw_recv(uint8_t *buf, int max)
+{
+    if (!s_lrx_n) return 0;
+    int len = s_lrx_len[s_lrx_h], n = len < max ? len : max;
+    if (n > LRAW_B) n = LRAW_B;
+    memcpy(buf, s_lrx[s_lrx_h], (size_t)n);
+    s_lrx_h = (s_lrx_h + 1) % 4;
+    s_lrx_n--;
+    return len;
+}
 void hal_lidar_init(void) { }
 uint32_t hal_lidar_info_seq(void) { return s_info_seq; }
 void hal_lidar_lens(uint32_t lens[9]) { memcpy(lens, s_lens, sizeof s_lens); }

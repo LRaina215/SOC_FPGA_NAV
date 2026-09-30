@@ -20,10 +20,11 @@
 |---|---|---|
 | 开发板 + 软核 + 导航固件 | **已上板实测**：寄存器读写、装载固件、控制台正常；软核 RAM 128 KB（原 160 KB） | 第 3–5 节可以直接做 |
 | PC 经 USB 串口下发报文 / 读状态（`nav_host.py --link uart`） | 只在 RTL 仿真中验证过 | 第 6.1 节是第一次实测 |
-| 雷达网口（RJ45） | **已在比特流里**：自写百兆 MAC（`rtl/net/rgmii_mac100.v`），不需要生成 IP。上板实测 MDIO 找到 PHY（地址 0）并完成初始化；还没接网线测收发 | 第 6.3 节只做检查 |
+| 雷达网口（RJ45） | **已上板实测收发**：自写百兆 MAC（`rtl/net/rgmii_mac100.v`），不需要生成 IP；接真雷达 10 帧/秒、坏帧 0 | 第 6.3 节只做检查 |
+| 雷达启动（软核 TCP 客户端） | 仿真与主机测试通过，板上在运行；还没对 PC 冒充的雷达 / 真雷达做过联调 | 第 6.4 节第一步第 3 条、第四步 |
 | 雷达方向表 | 固件上电后按内参自动生成（实测约 1.6 s，控制台打印 `lidar LUT ready`） | 不需要 PC 生成、烧写 |
 | XT-M60 帧格式 | 已按厂家 SDK 源码实现并测试（[icd.md](icd.md) 第 2 节）；厂家上位机能解析 `fake_lidar.py` 发的包 | 第 6.4 节接真雷达确认 |
-| 片上存储（BSRAM） | 雷达链路、百兆 MAC 都接上后布线后 320 / 340（94%），逐模块见 [roadmap.md](roadmap.md) 第 6 节 | 再加大模块要先压缩 |
+| 片上存储（BSRAM） | 雷达链路、百兆 MAC、雷达口原始帧通道都接上后布线后 324 / 340（96%），逐模块见 [roadmap.md](roadmap.md) 第 6 节 | 再加大模块要先压缩 |
 | IMU088 | 协议手册未到；固件按 WIT 0x55 帧解析 | 协议不同时要改 `fw/nav/imu_parse.c` |
 | 底盘 | 板级顶层里速度输出 `ch_*` / 里程计输入 `odo_*` **没有接到任何引脚** | 第 6.6 节需要先完成整车顶层 |
 | SFP 口 / RK3588 | IP 未生成 | 不影响基础导航，PC 用 USB 串口代替 |
@@ -158,7 +159,7 @@ $PY tools/nav_uart.py COM11 load fw/build/rv/nav/nav_fw.bin   # 保持软核复�
 | 软核 | LED4–LED7 / LED8 | LED4–7 每秒变化一次（固件主循环在跑）；LED8 灭（亮 = 软核异常停机） |
 | 寄存器通路 | `$PY tools/nav_uart.py COM11 id` | `ID=0x4E415630`，TIME_US 每次读都在增加 |
 | 软核信息 | `$PY tools/nav_uart.py COM11 soc` | `RAM 128 KB`（自检版为 32 KB），保持复位 0 |
-| 控制台 | `$PY tools/nav_uart.py COM11 con`（Ctrl-C 退出） | 上电后约 2 s 内出现 `lidar LUT ready (M60 default lens), 约 1600 ms`；之后每秒一行 `t=… loop 约 43000/s max 约 200 us frames 0 msgs 0 … lut 1` |
+| 控制台 | `$PY tools/nav_uart.py COM11 con`（Ctrl-C 退出） | 上电后约 2 s 内出现 `lidar LUT ready (M60 default lens), 约 1600 ms`；之后每秒一行 `t=… loop 约 32000–35000/s max 约 200 us frames 0 msgs 0 … lut 1`；没接雷达时约每 7 s 一行 `lidar start #n (tcp -> 192.168.0.101:7787)`（雷达启动客户端在重试，正常） |
 | 雷达网口 PHY | `$PY tools/nav_uart.py COM11 rd NETL_PHY_STAT` | 低 3 位 `110`（找到 PHY、初始化完成；接上网线后最低位变 1 = 链路建立）；高 16 位约 390（百兆）或约 39（没接网线时 PHY 输出 2.5 MHz） |
 
 自检版比特流的控制台应出现 `SELFTEST PASSED`，之后每秒一行 `alive`。LED1–LED3 分别是中断、急停、速度指令超时，
@@ -274,6 +275,16 @@ $PY tools/nav_uart.py COM11 rd NETL_PHY_STAT      # 先不接网线读一次，�
 `0x003C00A0`（160 × 60）；`LIDAR_INFO_SEQ` 随帧增长、`LIDAR_LENS0` = `0x429C6CD0`（fx = 78.21）；`fake.png` 里能看到虚拟场景的障碍。
 FPGA 不回 ping，ping 不通是正常的。
 
+3. 雷达启动（TCP 客户端）也冒充：电脑只在收到板子发来的"开始测量"后才出流，并且发给连它 TCP 的那个 IP（与实物一致）：
+   ```bash
+   $PY tools/nav_uart.py COM11 wr NETL_LIDAR_IP 0xC0A8000A      # "雷达 IP"改成电脑网卡的 IP（这里 192.168.0.10；掉电恢复 192.168.0.101）
+   $PY tools/fake_lidar.py --tcp-server --fps 10 --stream-for 20   # 每次启动后出流 20 s 就停，看板子会不会重新启动它
+   ```
+   通过标准：`fake_lidar.py` 打印 `TCP 连接 #1 来自 192.168.0.100`、`开始测量（数据 0101）`、`TCP 断开`，随后开始出流；板子串口
+   控制台（`$PY tools/nav_uart.py COM11 con`）打印 `lidar start #1 (tcp -> 192.168.0.10:7787)`、`lidar start ok (1)`；
+   每次停流约 2 s 后出现新的一次连接与启动。`nav_uart.py COM11 stat` 里 `NETL_RAW_STAT` 的 bit 31:24（接收格满丢帧）应为 0。
+   Windows 防火墙第一次会弹窗，允许 Python 在"专用网络"上通信。
+
 **第二步：雷达接电脑，确认雷达正常、读配置**（先不接开发板）
 1. 雷达接 12–25 V（≥ 3 A）电源，网线接电脑（USB 网卡也可以）。厂家说明：先插电源、再插网线。电脑网卡设 `192.168.0.x`
    （不能用 100、101；2026-09-30 实测用的是 192.168.0.2）。
@@ -290,7 +301,7 @@ FPGA 不回 ping，ping 不通是正常的。
 
 | 行为 | 结果 | 影响 |
 |---|---|---|
-| 上电自动运行（`config` 里的"上电自动运行"） | 0：上电后不出流，要有人发"开始测量" | 上车后需要 FPGA 自己当 TCP 客户端发开始命令（roadmap 第 8 节，未做） |
+| 上电自动运行（`config` 里的"上电自动运行"） | 0：上电后不出流，要有人发"开始测量" | 板上固件自己当 TCP 客户端发开始命令（`fw/nav/xt_link.c`，第四步） |
 | UDP 发往哪里 | 发给最近一次连 TCP 的主机 IP，端口 7687；**命令 19（`udp-dest`）返回 OK 但不生效**（重启后也不变） | 不能把目标改成 FPGA；FPGA 当 TCP 客户端后自然就是目标 |
 | TCP 断开后 | 继续出流 | 电脑发完"开始测量"就可以断开 |
 | 报文 | 源端口 49154（不是 7687）；一帧 14 个分包（13 × 1400 + 1226 字节），分包之间常有几毫秒间隔 | Wireshark 过滤用 `udp.dstport == 7687` |
@@ -306,7 +317,12 @@ FPGA 不回 ping，ping 不通是正常的。
    ```
 3. 通过标准同第一步；另外 `LIDAR_LENS0..8` 应等于第二步读到的内参，控制台出现 `lidar LUT ready (device lens)`。
 
-**第四步：雷达直连开发板**（FPGA 还没有 TCP 客户端之前的临时办法，2026-09-30 实测可用）
+**第四步：雷达直连开发板**
+雷达网线直接插板子 RJ45，雷达 IP 保持缺省 192.168.0.101（改过就写 `NETL_LIDAR_IP`）。板上固件发现没有帧就自己连雷达 TCP 发
+"开始测量"（icd.md 第 2 节"雷达启动"）：板子先上电时约 2 s 后开始尝试，雷达后上电时等它启动完（约 6 s）自动连上；雷达中途掉电重启，
+帧中断 2 s 后会重新启动它。控制台看到 `lidar start ok (1)` 后就有流。没接雷达时控制台约每 7 s 打印一次 `lidar start #n`（ARP 没人应答，退避后重试），属正常。
+
+旧的临时办法（固件没有 TCP 客户端时用，2026-09-30 实测可用；`NETL_CTRL` 的 bit 6 `LIDAR_TCP` 写 0 可关掉板子的启动客户端）：
 雷达只发给最后连它 TCP 的主机，所以让板子的雷达口**临时用电脑那个网口的 IP**（MAC 可选）：
 1. 雷达接电脑，`xt_config.py start dist`（第二步），确认电脑能收到数据。记下电脑这个网口的 IP 和 MAC
    （`ipconfig /all`，例如 `192.168.0.2`、`9C-69-D3-4B-D9-FB`）。

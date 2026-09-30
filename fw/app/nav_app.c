@@ -31,6 +31,7 @@ void nav_app_init(void)
     hal_lidar_init();
     lidar_cal_init(&g_app.lcal);            /* 先按 M60 缺省内参生成，收到雷达自带内参后按需重算 */
     g_app.lcal_budget = 8;                  /* 软核每像素约 0.1 ms：每轮 8 个，整张表约 1–2 s */
+    xt_link_init(&g_app.xl, hal_time_us());
 }
 
 /* 位姿进入新坐标系（SET_POSE / 对准完成）：旧坐标系下的局部观测全部作废 */
@@ -120,7 +121,8 @@ void nav_app_poll(void)
         }
     }
 
-    /* 3. 雷达帧：按预测位姿提交（融合 + 提取结构点），窗口中心跟随机器人 */
+    /* 3. 雷达帧：按预测位姿提交（融合 + 提取结构点），窗口中心跟随机器人；没有帧时启动雷达 */
+    xt_link_poll(&g_app.xl, now);
     lidar_cal_poll(&g_app.lcal, g_app.lcal_budget);
     uint32_t ft;
     /* 等到帧时刻之后的姿态已到达（IMU 50 Hz，最多等 100 ms）再处理：否则帧时刻恰逢姿态突变时，

@@ -22,7 +22,9 @@ module tb_nav_top;
     logic [31:0] slx [0:0];            // 最后一帧 SLF 结构点数          // 高程读期望：{槽地址, 低 32 位, 高 20 位} × 16
     logic [35:0] lut [0:9599];         // 方向查找表 {rz, ry, rx}
     logic [31:0] ifx [0:4];            // {跳过分包数, LENS0, LENS8, INFO_CFG, INFO_SIZE} 期望
-    int n_ethl, n_frm, n_ethh, n_gexp;
+    logic [31:0] rtop [0:127];         // 原始帧接收期望：{主流程字节数, 帧数, 雷达缺省 IP, 每帧 {长度, 字数, 字…}}
+    logic [31:0] rtxt [0:31];          // 原始帧发送：{长度, 字…}
+    int n_ethl, n_frm, n_ethh, n_gexp, n_lim;
     int c_valid, c_thr0, c_thr1, c_w, c_infl, c_zband;
 
     // 总线
@@ -84,7 +86,7 @@ module tb_nav_top;
     int gapc = 0;
     always @(posedge mclk) begin
         lrv <= 0; lrl <= 0;
-        if (lidar_go && li < n_ethl) begin
+        if (lidar_go && li < n_lim) begin
             // 百兆线速：125 MHz MAC 时钟下每 10 拍 1 字节，帧间隔 12 字节
             if (gapc > 0) gapc <= gapc - 1;
             else begin
@@ -94,17 +96,22 @@ module tb_nav_top;
         end
     end
 
-    // 雷达口发出的帧（应为 ARP 应答）
+    // 雷达口发出的帧（原始帧阶段之前应只有 ARP 应答）
     int l_tx_frames = 0;
+    bit raw_phase = 0;
     logic [7:0] ltbuf [0:127];
-    int ltn = 0;
+    logic [7:0] ltlast [0:127];
+    int ltn = 0, ltlast_n = 0;
     always @(posedge mclk) if (ltv) begin
-        ltbuf[ltn] = ltd; ltn++;
+        if (ltn < 128) ltbuf[ltn] = ltd;
+        ltn++;
         if (ltl) begin
             l_tx_frames++;
-            if (ltbuf[12] != 8'h08 || ltbuf[13] != 8'h06 || ltbuf[21] != 8'h02) begin
+            if (!raw_phase && (ltbuf[12] != 8'h08 || ltbuf[13] != 8'h06 || ltbuf[21] != 8'h02)) begin
                 errs++; $display("雷达口发出的不是 ARP 应答");
             end
+            for (int i = 0; i < 128; i++) ltlast[i] = ltbuf[i];
+            ltlast_n = ltn;
             ltn = 0;
         end
     end
@@ -143,6 +150,9 @@ module tb_nav_top;
         $readmemh("goal_exp.hex", gexp);
         $readmemh("lut.hex", lut);
         $readmemh("info_exp.hex", ifx);
+        $readmemh("raw_top.hex", rtop);
+        $readmemh("raw_top_tx.hex", rtxt);
+        n_lim = rtop[0];
         repeat (20) @(posedge clk);
         rst = 0;
         repeat (20000) @(posedge clk);     // 等地图上电清除
@@ -243,6 +253,54 @@ module tb_nav_top;
         rd(RA_LIDAR_INFO_SIZE, d);   chk("LIDAR.INFO_SIZE", d, ifx[4]);
         rd(RA_NETL_STAT_ARP, d);     chk("NETL.STAT_ARP", d, 1);
         if (l_tx_frames != 1) begin errs++; $display("雷达口 ARP 应答帧数 %0d", l_tx_frames); end
+
+        // ---------- 雷达口原始帧通道（软核上的雷达启动 TCP 客户端用） ----------
+        begin
+            logic [7:0] e;
+            logic [31:0] m;
+            int bad, p, flen, nw, tries;
+            rd(RA_NETL_LIDAR_IP, d);
+            chk("NETL.LIDAR_IP 复位值 = 雷达缺省 IP", d, rtop[2]);
+            rd(RA_NETL_RAW_STAT, d);
+            chk("RAW_STAT：雷达 UDP 流不进原始帧格", {d[31:24], d[3:0]}, 0);
+            raw_phase = 1;
+            for (int i = 0; i < (rtxt[0] + 3) / 4; i++) wr(RW_LRAW_TX_BASE + 4 * i, rtxt[1 + i]);
+            wr(RA_NETL_RAW_TX, rtxt[0]);
+            tries = 0;
+            while (l_tx_frames < 2 && tries < 20000) begin @(posedge clk); tries++; end
+            chk("原始帧发出", l_tx_frames, 2);
+            chk("原始帧长度（补到 60）", ltlast_n, (rtxt[0] < 60) ? 60 : rtxt[0]);
+            bad = 0;
+            for (int i = 0; i < ltlast_n && i < 128; i++) begin
+                e = (i < rtxt[0]) ? rtxt[1 + i / 4][8 * (i % 4) +: 8] : 8'h00;
+                if (ltlast[i] !== e) begin
+                    bad++;
+                    if (bad < 4) $display("原始帧字节 %0d 期望 %h 实得 %h", i, e, ltlast[i]);
+                end
+            end
+            errs += bad;
+            rd(RA_NETL_RAW_STAT, d); chk("RAW_STAT.TX_BUSY 发完", d[0], 0);
+            // 接收：再注入 6 帧（UDP 到别的端口、ARP 应答、非本机 IP 的 TCP、SYN-ACK、非本机的 ARP 应答、154 字节数据段）
+            n_lim = n_ethl;
+            wait (li == n_ethl);
+            repeat (3000) @(posedge clk);
+            p = 3;
+            for (int k = 0; k < rtop[1]; k++) begin
+                flen = rtop[p]; nw = rtop[p + 1];
+                rd(RA_NETL_RAW_STAT, d);
+                chk($sformatf("RAW 帧%0d 格数", k), d[3:1], rtop[1] - k);
+                chk($sformatf("RAW 帧%0d 长度", k), d[18:8], flen);
+                for (int w = 0; w < nw; w++) begin
+                    rd(RW_LRAW_RX_BASE + 4 * w, d);
+                    m = (4 * w + 4 <= flen) ? 32'hFFFFFFFF : ((32'h1 << (8 * (flen - 4 * w))) - 1);
+                    chk($sformatf("RAW 帧%0d 字%0d", k, w), d & m, rtop[p + 2 + w] & m);
+                end
+                wr(RA_NETL_RAW_POP, 1);
+                p += 2 + nw;
+            end
+            rd(RA_NETL_RAW_STAT, d); chk("RAW 全部弹出、无丢帧", {d[31:24], d[3:1]}, 0);
+            $display("雷达口原始帧通道：发 1 帧、收 %0d 帧检查完", rtop[1]);
+        end
 
         // ---------- 轨迹评估 ----------
         wr(RA_TRAJ_X0, trj[0]); wr(RA_TRAJ_Y0, trj[1]); wr(RA_TRAJ_TH0, trj[2]);

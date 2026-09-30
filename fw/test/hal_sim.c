@@ -244,6 +244,11 @@ void hal_lidar_lens(uint32_t lens[9]) { for (int i = 0; i < 9; i++) lens[i] = 0;
 void hal_lidar_lut_write(uint32_t idx, const int16_t *rxyz, int n) { (void)idx; (void)rxyz; (void)n; }
 void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int32_t cy, int32_t zmin, int32_t zmax)
 { (void)r; (void)t; (void)cx; (void)cy; (void)zmin; (void)zmax; }
+/* 雷达启动（TCP）：主机测试不接雷达口，tcp_en = false，xt_link 一直只做监视 */
+void hal_netl_cfg(hal_netl_cfg_t *c) { memset(c, 0, sizeof *c); }
+bool hal_lraw_send(const uint8_t *frame, int len) { (void)frame; (void)len; return true; }
+int hal_lraw_recv(uint8_t *buf, int max) { (void)buf; (void)max; return 0; }
+uint32_t hal_lidar_frames(void) { return 0; }
 bool hal_match_ready(void) { return true; }
 bool hal_match_start(int32_t cx_mm, int32_t cy_mm, const hal_match_cand_t *c, int k)
 { (void)cx_mm; (void)cy_mm; (void)c; (void)k; return false; }
