@@ -29,6 +29,7 @@ module rgmii_mac100 #(
     output reg        mdio_o,
     output reg        mdio_oe,
     input  wire       mdio_i,
+    input  wire       rx_neg,         // 1 = RXC 下降沿采样（clk 域，准静态）
     // MAC 客户端：接收（rx_clk 域）
     output wire       rx_clk,
     output reg        rx_valid,
@@ -56,39 +57,45 @@ module rgmii_mac100 #(
 
     // ================================================================ 接收
     assign rx_clk = rgmii_rxc;
-    reg [3:0] rxd_p;
+    // 采样沿：rx_neg=1 在 RXC 下降沿采 RXD / RX_CTL。百兆时 PHY 每个 RXC 周期只换一次数据、换在上升沿附近
+    //（RTL8211F 内部延时 2 ns），上升沿采样的建立时间只有约 2 ns、随布线变化（上板实测错误率 0.5%–100%），
+    // 下降沿在数据窗口中间。下降沿的 RX_CTL = RX_DV ^ RX_ER，按 RX_DV 用：RX_ER 会让帧提前结束、FCS 错而丢弃
+    reg [3:0] rxd_p, rxd_n;
     reg       dv_p, ctl_n;
-    always @(posedge rgmii_rxc) begin rxd_p <= rgmii_rxd; dv_p <= rgmii_rx_ctl; end
-    always @(negedge rgmii_rxc) ctl_n <= rgmii_rx_ctl;
+    reg [1:0] neg_s;
+    always @(posedge rgmii_rxc) begin rxd_p <= rgmii_rxd; dv_p <= rgmii_rx_ctl; neg_s <= {neg_s[0], rx_neg}; end
+    always @(negedge rgmii_rxc) begin rxd_n <= rgmii_rxd; ctl_n <= rgmii_rx_ctl; end
+    wire [3:0] rxd_s = neg_s[1] ? rxd_n : rxd_p;
+    wire       dv_s  = neg_s[1] ? ctl_n : dv_p;
     localparam [1:0] R_IDLE = 2'd0, R_PRE = 2'd1, R_DATA = 2'd2, R_BAD = 2'd3;
     reg [1:0]  rs;
     reg        nib, rerr, hold_v;
     reg [3:0]  lo;
     reg [7:0]  hold_d;
     reg [31:0] rcrc;
-    wire       rer = dv_p ^ ctl_n;                  // 同一拍：上升沿 RX_DV，下降沿 RX_DV ^ RX_ER
+    wire       rer = !neg_s[1] && (dv_p ^ ctl_n);   // 上升沿模式：同一拍上升沿 RX_DV、下降沿 RX_DV ^ RX_ER
     always @(posedge rgmii_rxc) begin
         rx_valid <= 1'b0;
         case (rs)
-        R_IDLE: if (dv_p) rs <= (rxd_p == 4'h5) ? R_PRE : R_BAD;
+        R_IDLE: if (dv_s) rs <= (rxd_s == 4'h5) ? R_PRE : R_BAD;
         R_PRE: begin
-            if (!dv_p) rs <= R_IDLE;
-            else if (rxd_p == 4'hD) begin
+            if (!dv_s) rs <= R_IDLE;
+            else if (rxd_s == 4'hD) begin
                 rs <= R_DATA; nib <= 1'b0; rerr <= 1'b0; hold_v <= 1'b0; rcrc <= 32'hFFFFFFFF;
-            end else if (rxd_p != 4'h5) rs <= R_BAD;
+            end else if (rxd_s != 4'h5) rs <= R_BAD;
         end
         R_DATA: begin
-            if (dv_p) begin
+            if (dv_s) begin
                 if (rer) rerr <= 1'b1;
                 if (!nib) begin
-                    lo <= rxd_p; nib <= 1'b1;
+                    lo <= rxd_s; nib <= 1'b1;
                 end else begin
                     nib <= 1'b0;
-                    rcrc <= crc8(rcrc, {rxd_p, lo});
+                    rcrc <= crc8(rcrc, {rxd_s, lo});
                     if (hold_v) begin
                         rx_valid <= 1'b1; rx_data <= hold_d; rx_last <= 1'b0; rx_error <= 1'b0;
                     end
-                    hold_v <= 1'b1; hold_d <= {rxd_p, lo};
+                    hold_v <= 1'b1; hold_d <= {rxd_s, lo};
                 end
             end else begin
                 rs <= R_IDLE;
@@ -98,10 +105,10 @@ module rgmii_mac100 #(
                 end
             end
         end
-        default: if (!dv_p) rs <= R_IDLE;
+        default: if (!dv_s) rs <= R_IDLE;
         endcase
     end
-    initial begin rs = R_IDLE; rx_valid = 1'b0; hold_v = 1'b0; end
+    initial begin rs = R_IDLE; rx_valid = 1'b0; hold_v = 1'b0; neg_s = 2'b00; end
 
     // ================================================================ 发送
     localparam integer HP = (CLK_HZ / 50000000) < 1 ? 1 : (CLK_HZ / 50000000);   // TXC 半周期（clk 拍）

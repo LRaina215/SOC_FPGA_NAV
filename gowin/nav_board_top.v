@@ -88,12 +88,13 @@ module nav_board_top (
     wire       l_rx_clk, l_rx_valid, l_rx_last, l_rx_err, l_tx_clk, l_tx_valid, l_tx_last, l_tx_ready;
     wire [7:0] l_rx_data, l_tx_data;
     wire [31:0] l_phy_stat;
+    wire       l_rx_neg;
     wire       mdio_o, mdio_oe;
     rgmii_mac100 #(.CLK_HZ(CLK_HZ)) u_lmac (
         .clk(clk), .rst(rst),
         .rgmii_rxc(rgmii_rxc), .rgmii_rx_ctl(rgmii_rx_ctl), .rgmii_rxd(rgmii_rxd),
         .rgmii_txc(rgmii_txc), .rgmii_tx_ctl(rgmii_tx_ctl), .rgmii_txd(rgmii_txd),
-        .phy_rst_n(eth_rst_n), .mdc(eth_mdc), .mdio_o(mdio_o), .mdio_oe(mdio_oe), .mdio_i(eth_mdio),
+        .phy_rst_n(eth_rst_n), .mdc(eth_mdc), .mdio_o(mdio_o), .mdio_oe(mdio_oe), .mdio_i(eth_mdio), .rx_neg(l_rx_neg),
         .rx_clk(l_rx_clk), .rx_valid(l_rx_valid), .rx_data(l_rx_data), .rx_last(l_rx_last), .rx_error(l_rx_err),
         .tx_valid(l_tx_valid), .tx_data(l_tx_data), .tx_last(l_tx_last), .tx_ready(l_tx_ready),
         .phy_stat(l_phy_stat)
@@ -133,7 +134,7 @@ module nav_board_top (
         .l_rx_clk(l_rx_clk), .l_rx_rst(l_rx_rst), .l_rx_valid(l_rx_valid), .l_rx_data(l_rx_data),
         .l_rx_last(l_rx_last), .l_rx_error(l_rx_err),
         .l_tx_clk(l_tx_clk), .l_tx_rst(l_tx_rst), .l_tx_valid(l_tx_valid), .l_tx_data(l_tx_data),
-        .l_tx_last(l_tx_last), .l_tx_ready(l_tx_ready), .l_phy_stat(l_phy_stat),
+        .l_tx_last(l_tx_last), .l_tx_ready(l_tx_ready), .l_phy_stat(l_phy_stat), .l_rx_neg(l_rx_neg),
         .h_rx_clk(h_rx_clk), .h_rx_rst(h_rx_rst), .h_rx_valid(h_rx_valid), .h_rx_data(h_rx_data),
         .h_rx_last(h_rx_last), .h_rx_error(h_rx_err),
         .h_tx_clk(h_tx_clk), .h_tx_rst(h_tx_rst), .h_tx_valid(h_tx_valid), .h_tx_data(h_tx_data),

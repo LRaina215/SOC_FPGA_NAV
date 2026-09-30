@@ -12,7 +12,9 @@ module xt_frame_rx #(
     parameter integer MAX_W      = 160,
     parameter integer MAX_H      = 60,
     parameter integer CLK_HZ     = 100000000,
-    parameter integer TIMEOUT_US = 3000       // 帧内字节间隔超过此值视为丢包，放弃当前帧
+    // 帧内字节间隔超过此值视为流中断，放弃当前帧。真雷达（固件 V2.34.2）一帧的分包之间常有几毫秒间隔，
+    // 原来的 3 ms 让约 95% 的帧超时作废；丢包时下一帧的首包本来就会顶掉未完成的帧，这里只兜底
+    parameter integer TIMEOUT_US = 200000
 ) (
     input  wire        clk,
     input  wire        rst,

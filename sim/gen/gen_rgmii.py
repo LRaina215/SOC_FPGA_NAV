@@ -1,7 +1,7 @@
 """rgmii_mac100 测试激励：接收帧（含坏 FCS、RX_ER、半字节数为奇数）、发送帧（含不足 60 字节的补零）。
 FCS 用 zlib.crc32 独立计算，不借用 RTL 的 CRC 实现。
 
-用法: gen_rgmii.py <输出目录>
+用法: gen_rgmii.py [neg|pos] <输出目录>   接收采样沿（rx_neg）：neg = RXC 下降沿（缺省），pos = 上升沿
   rx.hex      接收激励：每行 {er, dv, nibble}（25 MHz 一拍一个半字节）
   rx_exp.hex  期望接收输出：每行 {error, last, byte}
   tx.hex      发送激励（客户端）：每行 {last, byte}
@@ -17,8 +17,48 @@ def fcs(b):
     return zlib.crc32(bytes(b)).to_bytes(4, "little")
 
 
-def main(out):
+def mac_rx_model(rx, neg):
+    """与 rgmii_mac100 接收状态机逐拍一致的参考模型 -> [(error, last, byte)]。
+    neg：只用下降沿的 RX_CTL（= DV ^ ER）当 DV，RX_ER 让帧在该处结束；pos：DV 取上升沿，RX_ER 记为错误"""
+    out, st, nib, lo, rerr, hold, fb = [], "idle", 0, 0, False, None, []
+    for er, dv, n in rx:
+        d = (dv ^ er) if neg else dv
+        if st == "idle":
+            if d:
+                st = "pre" if n == 5 else "bad"
+        elif st == "pre":
+            if not d:
+                st = "idle"
+            elif n == 0xD:
+                st, nib, rerr, hold, fb = "data", 0, False, None, []
+            elif n != 5:
+                st = "bad"
+        elif st == "data":
+            if d:
+                if not neg and er:
+                    rerr = True
+                if not nib:
+                    lo, nib = n, 1
+                else:
+                    nib = 0
+                    b = (n << 4) | lo
+                    fb.append(b)
+                    if hold is not None:
+                        out.append((0, 0, hold))
+                    hold = b
+            else:
+                st = "idle"
+                if hold is not None:
+                    ok = zlib.crc32(bytes(fb)) == 0x2144DF1C          # 数据 + FCS 一起算的 CRC 余式
+                    out.append((int(rerr or nib or not ok), 1, hold))
+        elif not d:
+            st = "idle"
+    return out
+
+
+def main(mode, out):
     out = Path(out)
+    neg = mode == "neg"
     rng = random.Random(7)
     rx, rx_exp = [], []
 
@@ -39,10 +79,6 @@ def main(out):
         if odd:
             rx.append((0, 1, 0x3))
         idle(24)
-        err = bad_fcs or er_at is not None or odd
-        for i, b in enumerate(f):
-            last = i == len(f) - 1
-            rx_exp.append((int(err and last), int(last), b))
 
     idle(10)
     rx_frame([rng.randrange(256) for _ in range(60)])
@@ -51,6 +87,7 @@ def main(out):
     rx_frame([rng.randrange(256) for _ in range(70)], er_at=20)
     rx_frame([rng.randrange(256) for _ in range(64)], odd=True)
     rx_frame([rng.randrange(256) for _ in range(100)])
+    rx_exp = mac_rx_model(rx, neg)
 
     tx, tx_exp = [], []
     for n in (42, 60, 333):                   # ARP 应答长度（需补零）、恰好 60、较长
@@ -64,9 +101,12 @@ def main(out):
     (out / "rx_exp.hex").write_text("".join(f"{(e << 9) | (l << 8) | b:03x}\n" for e, l, b in rx_exp))
     (out / "tx.hex").write_text("".join(f"{(l << 8) | b:03x}\n" for l, b in tx))
     (out / "tx_exp.hex").write_text("".join(f"{b:02x}\n" for b in tx_exp))
-    (out / "counts.txt").write_text(f"{len(rx)} {len(rx_exp)} {len(tx)} {len(tx_exp)}\n")
+    (out / "counts.txt").write_text(f"{len(rx)} {len(rx_exp)} {len(tx)} {len(tx_exp)} {int(neg)}\n")
     print(f"rx 半字节 {len(rx)}，期望字节 {len(rx_exp)}；tx 字节 {len(tx)}，线上字节 {len(tx_exp)}")
 
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    if len(sys.argv) > 2:
+        main(sys.argv[1], sys.argv[2])
+    else:
+        main("neg", sys.argv[1])

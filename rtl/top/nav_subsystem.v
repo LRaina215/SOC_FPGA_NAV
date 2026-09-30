@@ -29,6 +29,7 @@ module nav_subsystem #(
     input  wire        l_tx_clk, input wire l_tx_rst,
     output wire        l_tx_valid, output wire [7:0] l_tx_data, output wire l_tx_last, input wire l_tx_ready,
     input  wire [31:0] l_phy_stat,      // 板级 MAC / PHY 状态（rgmii_mac100），寄存器 NETL.PHY_STAT
+    output wire        l_rx_neg,        // 板级 RGMII 接收采样沿（NETL.CTRL.RX_NEG），clk 域
     // 主机网口 MAC 客户端（SFP / 1G Serial Ethernet）
     input  wire        h_rx_clk, input wire h_rx_rst,
     input  wire        h_rx_valid, input wire [7:0] h_rx_data, input wire h_rx_last, input wire h_rx_error,
@@ -99,6 +100,7 @@ module nav_subsystem #(
     assign i_NETL_PEER_MAC_HI = {16'd0, netl_peer_mac[47:32]};
     assign i_NETL_PEER_PORT   = {16'd0, netl_peer_port};
     assign i_NETL_PHY_STAT    = l_phy_stat;
+    assign l_rx_neg           = r_NETL_CTRL[4];
 
     // ================================================================ 主机网口 + 邮箱
     wire        hu_valid, hu_last, hu_err;

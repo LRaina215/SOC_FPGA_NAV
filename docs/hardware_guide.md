@@ -274,43 +274,56 @@ $PY tools/nav_uart.py COM11 rd NETL_PHY_STAT      # 先不接网线读一次，�
 `0x003C00A0`（160 × 60）；`LIDAR_INFO_SEQ` 随帧增长、`LIDAR_LENS0` = `0x429C6CD0`（fx = 78.21）；`fake.png` 里能看到虚拟场景的障碍。
 FPGA 不回 ping，ping 不通是正常的。
 
-**第二步：雷达接电脑，确认雷达正常、配置 UDP 目标**（先不接开发板）
-1. 雷达接 12–25 V（≥ 3 A）电源，网线接电脑。厂家说明：先插电源、再插网线。电脑网卡仍为 `192.168.0.10`（雷达出厂 IP
-   `192.168.0.101`，电脑不能用 101）。
-2. 打开厂家上位机，连接后能看到深度图即雷达正常。记下雷达固件版本；最大帧率 10–15、最小信号强度室内 80 左右。
-3. 读设备信息与内参、把 UDP 目标改成 FPGA（厂家上位机里没有这一项时用我们的小工具）：
+**第二步：雷达接电脑，确认雷达正常、读配置**（先不接开发板）
+1. 雷达接 12–25 V（≥ 3 A）电源，网线接电脑（USB 网卡也可以）。厂家说明：先插电源、再插网线。电脑网卡设 `192.168.0.x`
+   （不能用 100、101；2026-09-30 实测用的是 192.168.0.2）。
+2. 打开厂家上位机，连接后能看到深度图即雷达正常。
+3. **关掉上位机**（雷达同一时间只理一个 TCP 连接，上位机连着时 `xt_config.py` 收不到应答），再读设备信息、配置、内参：
    ```bash
    $PY tools/xt_config.py info                     # SN、固件、IP、MAC、当前 UDP 目标
-   $PY tools/xt_config.py config                   # 输出类型、HDR、帧率、上电自动运行（bautorun）
-   $PY tools/xt_config.py lens                     # 内参（每帧帧尾也带，固件会自己用；这里截图留底）
-   $PY tools/xt_config.py udp-dest 192.168.0.100 7687
-   $PY tools/xt_config.py start dist               # 连续输出、只出深度
+   $PY tools/xt_config.py config                   # 输出类型、HDR、帧率、上电自动运行
+   $PY tools/xt_config.py lens                     # 内参（每帧帧尾也带，固件会自己用；这里留底）
+   $PY tools/xt_config.py start dist               # 开始连续输出、只出深度
    ```
-4. **最重要的一项实测**（决定 FPGA 是否需要 TCP）：关掉上位机、雷达断电再上电，**不连 TCP**，用 Wireshark 抓电脑网卡
-   （过滤 `udp.srcport == 7687`）看雷达会不会自己开始发、发往哪个 IP（192.168.0.100 单播 / 组播 239.255.255.76 / 别的）。
-   把结果记进附录 B。会自己发 = 直接做第四步；不会 = 反馈给开发（要在软核上补一个只发开始命令的最小 TCP 客户端）。
 
-**第三步：抓包回放**（雷达口接电脑，PC 冒充雷达回放真实数据）
-1. Wireshark 抓 10 秒左右（过滤 `udp.srcport == 7687`），保存为 `xt.pcapng`；或在厂家上位机里点 Record 录几十帧（`.xbin`，
-   默认在 `C:\xt-pcds`）。
-2. 回放给 FPGA：
+2026-09-30 用实物（SN XTM60B20250324000234，固件 XTFW-RT-V2.34.2）确认的行为，下面的步骤都以此为准：
+
+| 行为 | 结果 | 影响 |
+|---|---|---|
+| 上电自动运行（`config` 里的"上电自动运行"） | 0：上电后不出流，要有人发"开始测量" | 上车后需要 FPGA 自己当 TCP 客户端发开始命令（roadmap 第 8 节，未做） |
+| UDP 发往哪里 | 发给最近一次连 TCP 的主机 IP，端口 7687；**命令 19（`udp-dest`）返回 OK 但不生效**（重启后也不变） | 不能把目标改成 FPGA；FPGA 当 TCP 客户端后自然就是目标 |
+| TCP 断开后 | 继续出流 | 电脑发完"开始测量"就可以断开 |
+| 报文 | 源端口 49154（不是 7687）；一帧 14 个分包（13 × 1400 + 1226 字节），分包之间常有几毫秒间隔 | Wireshark 过滤用 `udp.dstport == 7687` |
+
+**第三步：抓包回放**（雷达接电脑，PC 冒充雷达回放真实数据）
+1. 电脑上抓几秒原始负载（关掉上位机、`xt_config.py start dist` 之后）：Wireshark 过滤 `udp.dstport == 7687`、保存为
+   `xt.pcapng`；或在厂家上位机里点 Record 录几十帧（`.xbin`，默认在 `C:\xt-pcds`）。
+2. 网线换到开发板、电脑用另一个网口接板子时，回放给 FPGA：
    ```bash
    $PY tools/fake_lidar.py 192.168.0.100 --pcap xt.pcapng           # 按原时间间隔
    $PY tools/fake_lidar.py 192.168.0.100 --xbin C:/xt-pcds/某次录制 --fps 10
    $PY tools/nav_uart.py COM11 stat
    ```
-3. 通过标准同第一步；另外 `LIDAR_LENS0..8` 应等于第二步读到的内参，控制台出现 `lidar LUT ready (device lens)`
-   （固件发现内参和缺省值不同，按雷达自己的内参重新生成了方向表）。
-4. `LIDAR_STAT_BAD` 在增长：把 `xt.pcapng` 和 `stat` 的输出交给开发（格式和 SDK 不一致的地方要改 `xt_frame_rx.v`）。
-   `LIDAR_STAT_SKIP` 很大而 `LIDAR_STAT_FRAMES` 不涨：分包的整帧字节数 < 1000 或帧序号不连续，同样反馈。
+3. 通过标准同第一步；另外 `LIDAR_LENS0..8` 应等于第二步读到的内参，控制台出现 `lidar LUT ready (device lens)`。
 
-**第四步：雷达直连开发板**
-1. 雷达网线从电脑拔下，接到开发板 RJ45；`NETL_PHY_STAT` 最低位为 1。
-2. `$PY tools/nav_uart.py COM11 stat` 隔几秒读两次，`$PY tools/nav_uart.py COM11 map lidar.png`。
+**第四步：雷达直连开发板**（FPGA 还没有 TCP 客户端之前的临时办法，2026-09-30 实测可用）
+雷达只发给最后连它 TCP 的主机，所以让板子的雷达口**临时用电脑那个网口的 IP**（MAC 可选）：
+1. 雷达接电脑，`xt_config.py start dist`（第二步），确认电脑能收到数据。记下电脑这个网口的 IP 和 MAC
+   （`ipconfig /all`，例如 `192.168.0.2`、`9C-69-D3-4B-D9-FB`）。
+2. 串口写板子雷达口（掉电恢复缺省）：
+   ```bash
+   $PY tools/nav_uart.py COM11 wr NETL_IP 0xC0A80002         # 192.168.0.2
+   # 可选：再写 MAC，换线后立刻出流；不写则要等雷达重新发 ARP（实测约 2–3 分钟），板子应答后自动改发给板子
+   $PY tools/nav_uart.py COM11 wr NETL_MAC_HI 0x00009C69     # MAC 前 2 字节
+   $PY tools/nav_uart.py COM11 wr NETL_MAC_LO 0xD34BD9FB     # MAC 后 4 字节
+   ```
+3. **雷达不断电**，网线从电脑拔下插到板子 RJ45；`NETL_PHY_STAT` 最低位为 1。
+4. `$PY tools/nav_uart.py COM11 stat` 隔几秒读两次，`$PY tools/nav_uart.py COM11 map lidar.png`。
 
-通过标准：`LIDAR_STAT_FRAMES` 按雷达帧率增长，`LIDAR_STAT_BAD` 与 `LIDAR_STAT_DROP` 不涨，`LIDAR_STAT_POINTS` 明显大于 0
-（上限 9600，四角切除约 800 个像素；雷达对着墙和地面时应占多数）；`lidar.png` 中雷达前方的地面为深色（低代价），墙 / 箱子为亮色
-（254 不可通行；没看到的区域 255 也是亮色，靠形状区分）。
+通过标准：`LIDAR_STAT_FRAMES` 约 10 帧/秒增长，`LIDAR_STAT_BAD` 与 `LIDAR_STAT_DROP` 基本不涨，`LIDAR_STAT_POINTS` 明显大于 0
+（上限 9600，四角切除 781 个像素），`LIDAR_LENS0..8` 等于 `xt_config.py lens` 的值；`lidar.png` 中雷达前方的地面为深色（低代价），
+墙 / 箱子为亮色（254 不可通行；没看到的区域 255 也是亮色，靠形状区分）。2026-09-30 实测：10 帧/秒、坏帧 0、`NETL_STAT_RX_ERR` 0。
+雷达还没按车上的位姿安装时（例如放在桌上），代价图会是一整片不可通行，这是正常的，先做 6.5 节的安装与标定。
 
 ### 6.5 雷达标定（方向、安装位姿）
 
@@ -477,8 +490,9 @@ N1–N3 先用 150 mm/s 跑通，再逐步把 `--v-max` 提到 300、500。每�
 | `NETL_STAT_ARP` = 0 | 链路没建立；网线、网卡 IP 网段不对；用了旧比特流 | 6.3 节看 `NETL_PHY_STAT`；电脑 IP 必须是 192.168.0.x（不能是 100、101） |
 | `NETL_STAT_ARP` 在涨，但电脑 `arp -a` 里没有 192.168.0.100 | 板子发送方向不通（2026-09-30 遇到过，见 roadmap 第 4 节第 13 条） | 确认用的是修复后的比特流；临时绕过：管理员 PowerShell `New-NetNeighbor -InterfaceIndex <网卡编号> -IPAddress 192.168.0.100 -LinkLayerAddress 02-4E-56-00-00-01 -PolicyStore ActiveStore` |
 | ARP 有，`NETL_STAT_RX_UDP` 不涨 | 目的端口不是 7687、电脑防火墙拦了发送 | 查雷达 / `fake_lidar` 的目的端口；防火墙放行 |
-| `NETL_STAT_RX_ERR` 增长 | 线缆 / RGMII 采样时序 | 换网线；记下 `NETL_PHY_STAT` 和 `NETL_STAT_RX_ERR` 的增长速度反馈给开发 |
-| `LIDAR_STAT_BAD` 增长 | 帧格式和 SDK 不一致（雷达固件版本不同） | 6.4 节第三步，抓包反馈 |
+| `NETL_STAT_RX_ERR` 增长（甚至等于 `NETL_STAT_RX_FRAMES`） | RGMII 接收采样时序（随布线变，见 roadmap 第 4 节第 17 条）；线缆 | 确认 `NETL_CTRL` 位 4（RX_NEG，下降沿采样）为 1；换网线；仍有错误时 `wr NETL_CTRL 0x0D` 切到上升沿对比，把两种的错误率反馈给开发 |
+| `LIDAR_STAT_BAD` 增长（`NETL_STAT_RX_UDP` 正常、`LIDAR_STAT_SKIP` 约为坏帧的 4–5 倍） | 旧比特流的帧内超时只有 3 ms，真雷达分包间隔更长（2026-09-30 实测 95% 的帧被判坏） | 用 2026-09-30 之后的比特流（超时 200 ms） |
+| `LIDAR_STAT_BAD` 增长（其他情况） | 帧格式和 SDK 不一致（雷达固件版本不同） | 6.4 节第三步，抓包反馈 |
 | `LIDAR_STAT_FRAMES` 涨，`LIDAR_STAT_POINTS` 一直是 0 | 方向表没生成（控制台没有 `lidar LUT ready`）；深度全是无效码 | 看控制台；上位机看深度图是否正常 |
 | `LIDAR_STAT_DROP` 增长 | 地图处理跟不上帧率 | 雷达最大帧率降到 10 |
 | `LIDAR_STAT_FRAMES` 涨，但控制台 `frames` 一直是 0 | `LIDAR_CTRL` 的 WAIT_POSE（位 3）被手动写掉了（`wr LIDAR_CTRL` 或 `--lidar-ctrl` 的值里没有 8）；或者跑的是自检版 | `rd LIDAR_CTRL` 应为 `0x1F`；不带 `--lidar-ctrl` 重新运行 `board_init.py` |
@@ -531,7 +545,7 @@ $PY model/lidar_lut.py --out lut.hex [--fx … …]               # 内参 -> �
 LED：LED0 心跳；LED1 中断；LED2 急停；LED3 速度指令超时；LED4–7 软核每秒计数；LED8 软核异常。
 
 网络缺省：FPGA 雷达口 `192.168.0.100`（UDP 7687，MAC `02:4E:56:00:00:01`，另收组播 239.255.255.76）；FPGA 主机口（SFP）`192.168.2.100`（UDP 9000）；
-雷达出厂 `192.168.0.101`（TCP 7787，UDP 源端口 7687）。
+雷达出厂 `192.168.0.101`（TCP 7787；UDP 发往连它 TCP 的主机的 7687 端口，源端口 49154）。
 
 ## 附录 B. 测试记录表（每次测试复制一份）
 

@@ -64,9 +64,9 @@ python tools/nav_host.py --link uart:COM5 map field.nvmp    # PC 下发地图；
 
 ## 验证现状
 
-- RTL 回归 13 项全部通过，全部与 Python 定点模型逐位比较：公共库、XT-M60 帧接收（厂家 SDK 格式：仅深度 / 深度 + 幅值 / 大端旧格式，
+- RTL 回归 15 项全部通过，全部与 Python 定点模型逐位比较：公共库、XT-M60 帧接收（厂家 SDK 格式：仅深度 / 深度 + 幅值 / 大端旧格式 / 真雷达抓包，
   含丢包、乱序、重复、截断、坏帧、IMU 消息、灰度帧、FrameInfo 锁存）、点云链路 + 地图（terrain 场景 8 帧）、SLF 匹配（5 帧在线 +
-  2 帧有图）、轨迹评估、安全限幅、网口协议栈、百兆 RGMII MAC（含 MDIO）、串口桥、软核 SoC、`nav_subsystem` 端到端
+  2 帧有图）、轨迹评估、安全限幅、网口协议栈、百兆 RGMII MAC（含 MDIO，上升沿 / 下降沿两种接收采样）、串口桥、软核 SoC、`nav_subsystem` 端到端
   （以太网帧 → 代价图、高程读口、SLF、轨迹评估、邮箱、串口注入与发送回读、限幅、IMU、方向表写口、FrameInfo 寄存器）。
 - 固件主机测试：定点数学、协议、位姿、A*、C 版轨迹评估与模型逐位一致、闭环（绕障、巡航、探索找目标并跟踪、急停）；
   有图模式（`test_prior.py`）：地图包分块下发、乱序重发、CRC 错、SET_POSE；方向表生成（`test_lidar_cal.py`）：与模型差 ≤ 1 LSB。
@@ -75,6 +75,8 @@ python tools/nav_host.py --link uart:COM5 map field.nvmp    # PC 下发地图；
   定位 xy RMS 0.8–3.3 cm，地形误报均值 ≤ 1.9%。旧的 12 m 大场地用例（第 2、8 节）保留作回归。
 - **板级**（ACX750，50 MHz）：软核 PicoRV32（RAM 128 KB）+ 导航固件 + 完整点云链路 + 百兆 MAC，BSRAM 布线后 320 / 340，0 违例。
   上板实测：导航固件运行、上电 1.6 s 按内参生成方向表、主循环约 4.3 万次/秒、MDIO 找到 PHY。
+- **真雷达 XT-M60 上板**：雷达直连板子 RJ45，10 帧/秒全部通过、坏帧 0、网口错误 0，帧尾内参每帧锁存、固件按本机内参重算方向表；
+  网口收发都已上板确认。雷达上电不自动出流、UDP 只发给连它 TCP 的主机，所以目前要用电脑启动一次（`tools/xt_config.py start dist`）。
 
 ## 实物到货后
 
@@ -82,5 +84,5 @@ python tools/nav_host.py --link uart:COM5 map field.nvmp    # PC 下发地图；
 
 ## 未完成 / 需实机确认
 
-见 `docs/roadmap.md` 第 7、8 节。主要是：PC 网口 → 板子 RJ45 的收包实测；XT-M60 实物确认（不连 TCP 时是否自己发 UDP、左右方向、
-深度定义、内参）；IMU088 协议；整车顶层与底盘接口（能力参数、对地速度）；SFP / RK3588（需 1G Serial Ethernet IP）；实地扫图与 SLAM 点云导出。
+见 `docs/roadmap.md` 第 7、8 节。主要是：FPGA 最小 TCP 客户端（XT-M60 上电不自动出流、UDP 只发给连它 TCP 的主机，实物已确认）；
+板子发送方向（ARP 应答）上板确认；真雷达左右方向、深度定义与安装位姿标定；IMU088 协议；整车顶层与底盘接口（能力参数、对地速度）；SFP / RK3588（需 1G Serial Ethernet IP）；实地扫图与 SLAM 点云导出。

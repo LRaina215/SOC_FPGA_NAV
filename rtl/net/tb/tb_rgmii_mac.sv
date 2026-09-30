@@ -1,5 +1,5 @@
 // rgmii_mac100 测试：PHY 行为模型（MDIO 从机，地址 3；RGMII 百兆收发），核对
-//   接收：去前导码 / SFD、FCS 检查、RX_ER、奇数半字节；发送：前导码、补零、FCS、帧间隔；
+//   接收（上升沿 / 下降沿两种采样，期望来自 gen_rgmii.py 的状态机模型）：去前导码 / SFD、FCS 检查、RX_ER、奇数半字节；发送：前导码、补零、FCS、帧间隔；
 //   MDIO：扫描到地址 3、自协商寄存器写入值、链路状态轮询；RX 时钟测频。
 `timescale 1ns/1ps
 module tb_rgmii_mac;
@@ -12,6 +12,7 @@ module tb_rgmii_mac;
     logic [8:0] tx_st  [0:4095];
     logic [7:0] tx_ex  [0:4095];
     int n_rx, n_rxe, n_tx, n_txe, errs = 0;
+    int rx_neg = 1;                // 接收采样沿（counts.txt 第 5 项）
 
     logic rx_ctl = 0;
     logic [3:0] rxd = 0;
@@ -29,7 +30,7 @@ module tb_rgmii_mac;
         .clk(clk), .rst(rst),
         .rgmii_rxc(rxc), .rgmii_rx_ctl(rx_ctl), .rgmii_rxd(rxd),
         .rgmii_txc(txc), .rgmii_tx_ctl(tx_ctl), .rgmii_txd(txd),
-        .phy_rst_n(phy_rst_n), .mdc(mdc), .mdio_o(mdio_o), .mdio_oe(mdio_oe), .mdio_i(mdio_line),
+        .phy_rst_n(phy_rst_n), .mdc(mdc), .mdio_o(mdio_o), .mdio_oe(mdio_oe), .mdio_i(mdio_line), .rx_neg(rx_neg[0]),
         .rx_clk(rx_clk), .rx_valid(rx_valid), .rx_data(rx_data), .rx_last(rx_last), .rx_error(rx_error),
         .tx_valid(tx_valid), .tx_data(tx_data), .tx_last(tx_last), .tx_ready(tx_ready),
         .phy_stat(phy_stat));
@@ -137,7 +138,7 @@ module tb_rgmii_mac;
     initial begin
         int fd;
         fd = $fopen("counts.txt", "r");
-        void'($fscanf(fd, "%d %d %d %d", n_rx, n_rxe, n_tx, n_txe));
+        void'($fscanf(fd, "%d %d %d %d %d", n_rx, n_rxe, n_tx, n_txe, rx_neg));
         $fclose(fd);
         $readmemh("rx.hex", rx_st);
         $readmemh("rx_exp.hex", rx_ex);

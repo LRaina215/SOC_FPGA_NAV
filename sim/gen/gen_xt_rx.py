@@ -6,6 +6,7 @@
       sdk_amp    SDK 格式、深度+幅值交织：幅值阈值、深度/幅值无效码；FrameInfo 锁存（单位、合并、ROI、温度）
       be_v2      旧版：大端头部、52 字节帧尾（不锁存 FrameInfo）
 """
+import os
 import random
 import sys
 from pathlib import Path
@@ -74,6 +75,11 @@ def main(scn, out):
         for k in range(2):
             fr = xt.build_frame(rand_img(rng, W, H), sn=20 + k, proto=2, hdr_le=False)
             send(xt.packetize(fr, 20 + k, hdr_le=False))
+    elif scn == "capture":
+        # 真雷达抓包（每行一个 UDP 负载，十六进制）：缺省用仓库里的 XT-M60 片段，环境变量 XT_CAPTURE 可换成别的文件
+        cap = Path(os.environ.get("XT_CAPTURE", Path(__file__).resolve().parents[1] / "data" / "xt_m60_capture.txt"))
+        for ln in cap.read_text().split():
+            dgrams.append((bytes.fromhex(ln), False))
     else:
         raise SystemExit(f"未知场景 {scn}")
 

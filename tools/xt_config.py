@@ -4,13 +4,15 @@
   请求 = 7E FF AA 55 | len u32 小端 (= 1 + 数据 + 2) | 命令号 | 数据 | 00 01 | FF 7E 55 AA
   应答 = 7E FF AA 55 | len u32 | 命令号 | 数据 | 返回码 | 设备状态 | 03 | FF 7E 55 AA
 雷达缺省 IP 192.168.0.101，TCP 端口 7787；电脑网卡需在 192.168.0.x（不能用 101）。
+雷达同一时间只理一个 TCP 连接：厂家上位机连着时本工具收不到应答，先关掉上位机（或在上位机里断开）。
 
 用法:
   python tools/xt_config.py [--ip 192.168.0.101] info          设备信息（SN、固件、IP、MAC、当前 UDP 目标）
   python tools/xt_config.py config                             当前配置（输出类型、HDR、帧率、上电自动运行等）
   python tools/xt_config.py lens                               镜头内参 fx fy cx cy k1 k2 k3 p1 p2
-  python tools/xt_config.py udp-dest 192.168.0.100 [7687]      UDP 目标改为 FPGA 雷达口（缺省 192.168.0.100:7687）
-  python tools/xt_config.py start [dist|amp|gray] [--once]     开始测量（缺省只出深度、连续）
+  python tools/xt_config.py udp-dest 192.168.0.100 [7687]      设置 UDP 目标（命令 19）。固件 V2.34.2 实测：返回 OK 但不生效，
+                                                             雷达总是发给最近连它 TCP 的主机
+  python tools/xt_config.py start [dist|amp|gray] [--once]     开始测量（缺省只出深度、连续）；数据发往本机，断开 TCP 后继续发
   python tools/xt_config.py stop
   python tools/xt_config.py maxfps 15 | minamp 80 | hdr 0|1 | reset | test
   python tools/xt_config.py raw 27 01020304                    发任意命令（十六进制数据），打印应答
@@ -114,9 +116,12 @@ def main():
     ap.add_argument("--ip", default="192.168.0.101")
     ap.add_argument("--port", type=int, default=7787)
     ap.add_argument("--once", action="store_true")
-    ap.add_argument("cmd")
-    ap.add_argument("args", nargs="*")
+    ap.add_argument("cmd", nargs="?")
+    ap.add_argument("args", nargs="*", default=[])
     a = ap.parse_args()
+    if not a.cmd:
+        print(__doc__)
+        return 1
     try:
         link = XtLink(a.ip, a.port)
     except OSError as e:
@@ -126,7 +131,7 @@ def main():
     def run(cid, data=b"", timeout=2.0):
         r = link.cmd(cid, data, timeout)
         if r is None:
-            print(f"命令 {cid} 无应答")
+            print(f"命令 {cid} 无应答：厂家上位机或别的程序还连着雷达时，雷达不理第二个 TCP 连接，先关掉上位机再试")
             sys.exit(1)
         code, st, body = r
         print(f"命令 {cid}: {RESP.get(code, code)}，设备状态 {DEVSTATE.get(st, st)}")
@@ -152,7 +157,7 @@ def main():
         ip = a.args[0] if a.args else "192.168.0.100"
         port = int(a.args[1]) if len(a.args) > 1 else 7687
         run(CMD["udp_dest"], bytes(int(x) for x in ip.split(".")) + struct.pack("<H", port))
-        print(f"UDP 目标已设为 {ip}:{port}（用 info 回读确认；是否掉电保存以实测为准）")
+        print(f"已发送 UDP 目标 {ip}:{port}。固件 V2.34.2 实测不生效（雷达发给最近连它 TCP 的主机），用 info 回读确认")
     elif c == "start":
         kind = {"dist": 1, "amp": 2, "gray": 3}[a.args[0] if a.args else "dist"]
         run(CMD["start"], bytes([kind, 0 if a.once else 1]))

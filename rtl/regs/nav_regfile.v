@@ -236,7 +236,7 @@ module nav_regfile (
             r_NETL_MAC_HI <= 32'h0000024E;
             r_NETL_IP <= 32'hC0A80064;
             r_NETL_UDP_PORT <= 32'h00001E07;
-            r_NETL_CTRL <= 32'h0000000D;
+            r_NETL_CTRL <= 32'h0000001D;
             r_NETL_PEER_IP <= 32'h00000000;
             r_NETL_PEER_MAC_LO <= 32'h00000000;
             r_NETL_PEER_MAC_HI <= 32'h00000000;

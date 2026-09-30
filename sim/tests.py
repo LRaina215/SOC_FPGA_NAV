@@ -61,11 +61,12 @@ TESTS["tb_net"] = {
     "top": "tb_net",
 }
 
-TESTS["tb_rgmii_mac"] = {
-    "pre": ["sim/gen/gen_rgmii.py"],
-    "src": ["rtl/net/rgmii_mac100.v", "rtl/net/tb/tb_rgmii_mac.sv"],
-    "top": "tb_rgmii_mac",
-}
+for mode, name in (("neg", "tb_rgmii_mac"), ("pos", "tb_rgmii_mac_pos")):
+    TESTS[name] = {
+        "pre": ["sim/gen/gen_rgmii.py", mode],
+        "src": ["rtl/net/rgmii_mac100.v", "rtl/net/tb/tb_rgmii_mac.sv"],
+        "top": "tb_rgmii_mac",
+    }
 
 IO = ["rtl/io/imu_uart.v", "rtl/io/uart_bus_bridge.v", "rtl/io/nav_bus_arb.v"]
 TOP = ["rtl/regs/nav_regfile.v", "rtl/top/nav_subsystem.v"]
@@ -92,7 +93,7 @@ TESTS["tb_uart_bridge"] = {
     "top": "tb_uart_bridge",
 }
 
-for scn in ("sdk_depth", "sdk_amp", "be_v2"):
+for scn in ("sdk_depth", "sdk_amp", "be_v2", "capture"):
     TESTS[f"tb_xt_rx_{scn}"] = {
         "pre": ["sim/gen/gen_xt_rx.py", scn],
         "src": COMMON + ["rtl/lidar/xt_frame_rx.v", "rtl/lidar/tb/tb_xt_frame_rx.sv"],

@@ -10,7 +10,7 @@
   python tools/fake_lidar.py 192.168.0.100 --xbin C:/xt-pcds/某次录制 [--fps 10] [--loop]
       回放厂家上位机录制的 .xbin（V3：4 字节版本号 + 原始帧），按 SDK 分包重新发送
   python tools/fake_lidar.py 192.168.0.100 --pcap xt.pcapng [--speed 1.0]
-      回放 Wireshark 抓包（源端口 7687 的 UDP 负载原样发送，按原时间间隔）
+      回放 Wireshark 抓包（目的端口 7687 的 UDP 负载原样发送，按原时间间隔；真雷达的源端口不是 7687）
   python tools/fake_lidar.py 192.168.0.100 --hex dump.txt      回放十六进制文本（每行一个 UDP 负载）
   --dump out.txt   另存本次发送的全部 UDP 负载（十六进制文本，可用 --hex 回放或做测试向量）
 注意：PC 有线网卡须与 FPGA 雷达口同网段（缺省 192.168.0.x，FPGA 为 192.168.0.100）；源端口按雷达缺省 7687。
@@ -30,7 +30,7 @@ import xt_proto as xt  # noqa: E402
 
 
 def read_pcap(path):
-    """经典 pcap 与 pcapng（以太网链路）-> [(时间 s, UDP 负载)]，只取源端口 7687 的 IPv4/UDP。"""
+    """经典 pcap 与 pcapng（以太网链路）-> [(时间 s, UDP 负载)]，只取目的端口 7687 的 IPv4/UDP"""
     data = Path(path).read_bytes()
     pkts = []
 
@@ -40,7 +40,7 @@ def read_pcap(path):
         ihl = (fr[14] & 0x0F) * 4
         u = 14 + ihl
         sport, dport, ulen = struct.unpack_from(">HHH", fr, u)
-        return fr[u + 8:u + ulen] if sport == xt.UDP_PORT else None
+        return fr[u + 8:u + ulen] if dport == xt.UDP_PORT else None
 
     magic = struct.unpack_from("<I", data, 0)[0]
     if magic in (0xA1B2C3D4, 0xA1B23C4D):

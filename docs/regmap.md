@@ -22,7 +22,7 @@
 | 0x1004 | MAC_HI | rw | 0x0000024E | 本机 MAC 高 16 位 |
 | 0x1008 | IP | rw | 0xC0A80064 | 本机 IPv4（默认 192.168.0.100，与 XT-M60 缺省 192.168.0.101/24 同网段） |
 | 0x100C | UDP_PORT | rw | 0x00001E07 | 本口接收的 UDP 目的端口（XT-M60 缺省发往 7687） |
-| 0x1010 | CTRL | rw | 0x0000000D | 控制；ENABLE[0] ANY_IP[1] ARP_EN[2] LEARN_PEER[3] |
+| 0x1010 | CTRL | rw | 0x0000001D | 控制；RX_NEG=1（缺省）板级 RGMII 在 RXC 下降沿采数据（百兆时在数据窗口中间），0 = 上升沿（上板实测上升沿的错误率随布线在 0.5% 到 100% 之间变）；ENABLE[0] ANY_IP[1] ARP_EN[2] LEARN_PEER[3] RX_NEG[4] |
 | 0x1014 | STAT_RX_FRAMES | ro | 0x00000000 | 收到的以太网帧数 |
 | 0x1018 | STAT_RX_UDP | ro | 0x00000000 | 交付的 UDP 报文数 |
 | 0x101C | STAT_RX_ERR | ro | 0x00000000 | 错误帧数（MAC 错误/IP 校验和/截断/溢出） |
