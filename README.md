@@ -43,7 +43,7 @@ PC --UDP 或 USB 串口注入--^                                                
 | `sim/` | xsim 回归（`run.py`、`tests.py`、激励生成 `gen/`） |
 | `tools/` | `nav_host.py` 主机工具（PC / RK3588 通用：地图、初始位姿、目标点、路径点、模式、状态；UDP 或串口）、`map_tool.py` 点云 -> 先验地图包、`nav_uart.py` 串口寄存器调试、`board_init.py` 上电初始化、`robot_calib.py` 由整车 URDF 标定雷达安装与车体尺寸、`fake_lidar.py` 伪雷达（SDK 格式、抓包 / 录制回放）、`xt_config.py` 雷达 TCP 配置 |
 | `sim/closed_loop/` | 闭环仿真：场景 + 虚拟雷达 + FPGA 感知模型 + 固件动态库 + 机器人误差模型，出指标与快照图；无图 / 有图两套批量用例，`test_prior.py` 有图固件单元测试 |
-| `docs/` | `icd.md` 接口定义（含主机报文与地图包）、`regmap.md` 寄存器表、`board_bringup.md` 上板步骤（含扫图与 PC 单独操作）、`algorithms.md` 闭环仿真与算法改进记录、`roadmap.md` 进度与后续计划、`platform.md` 机器人 / 传感器 / 场地参数（已知与假设）、`hardware_guide.md` 实物搭建与测试手册 |
+| `docs/` | `icd.md` 接口定义（含主机报文与地图包）、`regmap.md` 寄存器表、`board_bringup.md` 上板步骤（含扫图与 PC 单独操作）、`algorithms.md` 闭环仿真与算法改进记录、`roadmap.md` 进度与后续计划、`platform.md` 机器人 / 传感器 / 场地参数（已知与假设）、`hardware_guide.md` 实物搭建与测试手册、`chassis_integration.md` 底盘与 RL 接口架构及联调说明 |
 
 ## 常用命令（Python 用 `D:\Anaconda\python.exe`）
 

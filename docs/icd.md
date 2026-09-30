@@ -135,6 +135,8 @@ TCP 命令（`tools/xt_config.py`）：请求 `7E FF AA 55 | len | cmd | 数据 
 
 已限幅（`SAFE.LIM_V/LIM_W`）和限加速度（`SAFE.LIM_A`）。底盘回传：`odo_valid` 单拍 + `odo_vx/odo_vy/odo_wz`（同单位），导航用它积分位姿。底盘调好后需要提供：能否横移、速度/角速度上限、外接圆半径（填入 `lp_cfg.caps`）。
 
+底盘调试、RL 代码分层、外部控制器桥接、故障降级和架空 / 落地联调流程见 [chassis_integration.md](chassis_integration.md)。本文件与 `config/regmap.yaml` 是信号、位宽和寄存器语义的唯一真值；说明文档不得替代本文件。
+
 ## 5. IMU
 
 - 串口 8N1，波特率 = 核心时钟 / `IMU.BAUD_DIV`。硬件只收原始字节，并给每个"突发"（空闲 > `IMU.IDLE_US` 后的首字节）打到达时间戳；协议解析在 `fw/nav/imu_parse.c`。

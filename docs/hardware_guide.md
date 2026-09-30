@@ -382,6 +382,8 @@ FPGA 不回 ping，ping 不通是正常的。
 
 ### 6.6 底盘接入
 
+**架构和接口说明**：底盘 RL 代码分层、`ch_*` / `odo_*` / `ext_stop` 语义、外部控制器桥接及故障降级见 [chassis_integration.md](chassis_integration.md)。本节负责现场接线和测试步骤，接口真值以 [icd.md](icd.md) 第 4 节为准。
+
 **先要完成的开发工作**（本手册之外）：现在的 `gowin/nav_board_top.v` 里速度输出没有接出去、里程计输入接的是 0。
 需要一个整车顶层把 `nav_subsystem` 和运动控制连起来：
 - 运动控制（RL）也在这块 FPGA 里：`ch_vx / ch_wz / ch_valid / ch_stop` 直接接它的指令输入，它估计的**对地**速度接 `odo_valid / odo_vx / odo_wz`；
@@ -413,7 +415,7 @@ FPGA 不回 ping，ping 不通是正常的。
 | 限幅 | 指令 300 mm/s 时 `SAFE_OUT_V` 不超过 150 |
 | 里程计 | `SAFE_ODO_V` 符号与指令一致，稳定后与指令相差 < 10 % |
 | 看门狗 | 脚本结束后约 0.2 s 内输出按加速度限制降到 0，LED3 亮 |
-| 软件急停 | `wr SAFE_CTRL 5`（ENABLE + ESTOP）后输出立即为 0，LED2 亮；`wr SAFE_CTRL 1` 恢复 |
+| 软件急停 | `wr SAFE_CTRL 5`（ENABLE + ESTOP）后下一个安全输出节拍开始归零，LED2 亮；`wr SAFE_CTRL 1` 恢复 |
 | 物理急停 | 按下后输出为 0 |
 
 4. 恢复软核：`$PY tools/nav_uart.py COM11 reset`。
