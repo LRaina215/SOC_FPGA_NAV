@@ -41,7 +41,7 @@ F5 = "--scene field5 --start 0.0,-2.0,0"
 CASES.update({
     "f5_goal": f"{F5} --goal 4.0,2.1 --time 120",
     "f5_ramp": f"{F5} --goal 1.0,1.6 --time 120",                    # 8° 坡上平台
-    "f5_gap": "--scene field5 --start 1.4,-0.1,0 --goal 3.7,-0.1 --time 90",   # 40 cm 窄通道（或绕行）
+    "f5_gap": "--scene field5 --start 1.4,-0.1,0 --goal 3.7,-0.1 --time 90",   # 55 cm 窄通道（或绕行）
     "f5_loop": f"{F5} --waypoints 3.9,-2.1,4.0,0.3,3.0,2.1,0.2,0.4 --laps 2 --time 240",
     "f5_search": "--scene field5 --start 0.0,1.0,0 --search 1.9,-2.2 --time 200",   # 目标在路沿后
     "pf5_goal": f"{F5} --goal 4.0,2.1 --time 120 --prior auto --init-err rand",

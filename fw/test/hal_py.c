@@ -172,6 +172,15 @@ EXPORT void py_set_pm_prior(int gain_q8, int min_curv, int min_curv_ang)
     if (min_curv_ang > 0) g_app.pm_cfg_prior.min_curv_ang = min_curv_ang;
 }
 EXPORT void py_set_match_enable(int en) { g_app.pm_cfg.enable = en != 0; }
+/* 雷达安装位姿（下俯 1/100°、前伸 mm、离地 mm），覆盖 nav_task_init 里的标定值（安装方案对比用） */
+EXPORT void py_set_mount(int pitch_cdeg, int x_mm, int z_mm)
+{
+    pose_est_t *p = &g_app.nt.pose;
+    fx_rot_zyx(&p->r_bs, 0, ANGLE_FROM_CDEG(pitch_cdeg), 0);
+    p->t_bs[0] = x_mm;
+    p->t_bs[2] = z_mm;
+}
+
 EXPORT void py_set_caps(int holonomic, int vx_max, int wz_max, int radius)
 {
     g_app.nt.lp_cfg.caps.holonomic = holonomic != 0;

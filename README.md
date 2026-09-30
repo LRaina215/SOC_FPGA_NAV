@@ -41,7 +41,7 @@ PC --UDP 或 USB 串口注入--^                                                
 | `fw/` | 软核固件：`nav/` 算法（记忆栅格 + A*（含先验层）、局部规划、边界探索 / 有图搜索、目标跟踪、位姿、SLF 匹配求解、`loc` 有图定位管理（对准 / 质量 / 重定位）、`prior` 地图包接收、协议）、`lidar_cal` 按雷达帧尾内参生成方向表、`drv/hal_fpga.c` 上板 HAL、`app/` 主循环、`test/` 主机仿真测试 |
 | `model/` | Python：`xt_proto.py` XT-M60 协议（按厂家 SDK，含参考收包模型）、虚拟场景与雷达、定点逐位参考模型（RTL 标准答案）、`lidar_lut.py` 方向表、`prior_map.py` 先验地图包（点云 / 虚拟扫图 -> 定位图 + 代价图） |
 | `sim/` | xsim 回归（`run.py`、`tests.py`、激励生成 `gen/`） |
-| `tools/` | `nav_host.py` 主机工具（PC / RK3588 通用：地图、初始位姿、目标点、路径点、模式、状态；UDP 或串口）、`map_tool.py` 点云 -> 先验地图包、`nav_uart.py` 串口寄存器调试、`board_init.py` 上电初始化、`fake_lidar.py` 伪雷达（SDK 格式、抓包 / 录制回放）、`xt_config.py` 雷达 TCP 配置 |
+| `tools/` | `nav_host.py` 主机工具（PC / RK3588 通用：地图、初始位姿、目标点、路径点、模式、状态；UDP 或串口）、`map_tool.py` 点云 -> 先验地图包、`nav_uart.py` 串口寄存器调试、`board_init.py` 上电初始化、`robot_calib.py` 由整车 URDF 标定雷达安装与车体尺寸、`fake_lidar.py` 伪雷达（SDK 格式、抓包 / 录制回放）、`xt_config.py` 雷达 TCP 配置 |
 | `sim/closed_loop/` | 闭环仿真：场景 + 虚拟雷达 + FPGA 感知模型 + 固件动态库 + 机器人误差模型，出指标与快照图；无图 / 有图两套批量用例，`test_prior.py` 有图固件单元测试 |
 | `docs/` | `icd.md` 接口定义（含主机报文与地图包）、`regmap.md` 寄存器表、`board_bringup.md` 上板步骤（含扫图与 PC 单独操作）、`algorithms.md` 闭环仿真与算法改进记录、`roadmap.md` 进度与后续计划、`platform.md` 机器人 / 传感器 / 场地参数（已知与假设）、`hardware_guide.md` 实物搭建与测试手册 |
 
@@ -71,8 +71,8 @@ python tools/nav_host.py --link uart:COM5 map field.nvmp    # PC 下发地图；
 - 固件主机测试：定点数学、协议、位姿、A*、C 版轨迹评估与模型逐位一致、闭环（绕障、巡航、探索找目标并跟踪、急停）；
   有图模式（`test_prior.py`）：地图包分块下发、乱序重发、CRC 错、SET_POSE；方向表生成（`test_lidar_cal.py`）：与模型差 ≤ 1 LSB。
 - 雷达格式：厂家上位机能正确显示 `tools/fake_lidar.py` 发出的包。
-- 闭环仿真（5 m 场地 + 两轮自平衡模型 + 按 SDK 内参的虚拟雷达，`docs/algorithms.md` 第 9 节）：10 用例 × 5 种子 50/50 到达、0 碰撞，
-  定位 xy RMS 0.8–3.3 cm，地形误报均值 ≤ 1.9%。旧的 12 m 大场地用例（第 2、8 节）保留作回归。
+- 闭环仿真（5 m 场地 + 两轮自平衡模型 + 按 SDK 内参的虚拟雷达 + 由整车 URDF 标定的车体与雷达安装，`docs/algorithms.md` 第 10 节）：
+  10 用例 × 5 种子 50/50 到达，定位 xy RMS 2.0–7.2 cm，地形误报均值 ≤ 2.1%。旧的 12 m 大场地用例（第 2、8 节）保留作回归。
 - **板级**（ACX750，50 MHz）：软核 PicoRV32（RAM 128 KB）+ 导航固件 + 完整点云链路 + 百兆 MAC，BSRAM 布线后 320 / 340，0 违例。
   上板实测：导航固件运行、上电 1.6 s 按内参生成方向表、主循环约 4.3 万次/秒、MDIO 找到 PHY。
 - **真雷达 XT-M60 上板**：雷达直连板子 RJ45，10 帧/秒全部通过、坏帧 0、网口错误 0，帧尾内参每帧锁存、固件按本机内参重算方向表；

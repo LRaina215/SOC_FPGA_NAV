@@ -22,7 +22,7 @@ N = nf.N
 SIN = np.array(nf.SIN, dtype=np.int64)
 
 class FpgaModel:
-    def __init__(self, trav="v3", inv_res=1311, cfg=None, mount_z=200):
+    def __init__(self, trav="v3", inv_res=1311, cfg=None, mount_z=155):
         self.lut = np.array(lidar_lut.lut_entries(), dtype=np.int64)
         self.em = nf.ElevMap()
         self.inv_res = inv_res
@@ -30,7 +30,7 @@ class FpgaModel:
         if cfg is None:
             # v1 的参数即 RTL 寄存器默认值；v2/v3 用各自模块里按机器人能力给出的默认值
             cfg = dict(age_max=60, cnt_min=1, step_max=120, rough_max=120, slope_max=60,
-                       k_slope=64, k_step=32, k_rough=32, infl_r=5) if trav == "v1" else dict(infl_r=3)
+                       k_slope=64, k_step=32, k_rough=32, infl_r=5) if trav == "v1" else dict(infl_r=4)
         self.cfg = cfg
         self.cost = np.full(N * N, 255, dtype=np.int64)
         self.cx = self.cy = 0

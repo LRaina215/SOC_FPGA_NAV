@@ -97,6 +97,7 @@ def main():
     ap.add_argument("--imu-hz", type=float, default=100.0, help="IMU 姿态输出频率")
     ap.add_argument("--imu-gyro", type=int, default=1, help="IMU 同时输出角速度帧（固件用它做陀螺辅助姿态滤波）")
     ap.add_argument("--pmcfg", default="", help="有图跟踪匹配参数 gain_q8,min_curv,min_curv_ang（0 = 固件缺省）")
+    ap.add_argument("--mount", default="", help="俯角°,前伸 mm,离地 mm：覆盖标定的雷达安装位姿（安装方案对比）")
     ap.add_argument("--kidnap", default="", help="t,dx,dy,dyaw：t 秒时把机器人真值位姿突然平移/旋转（模拟被撞/严重打滑）")
     a = ap.parse_args()
     out = Path(a.out)
@@ -132,14 +133,16 @@ def main():
     else:
         bot = Bot(scene, sx, sy, math.radians(syaw), seed=a.seed, slip_mean=a.slip, **bkw)
     lid = sw.VirtualLidar(noise_mm=4.0, seed=a.seed + 7, rng_max=8.0, step=0.015)
-    Rbs, tbs = sw.mount_pose(height=0.20, pitch_down_deg=10.0, x=0.08)
-    fpga = fpga_model.FpgaModel(trav=a.trav)
+    mnt = [float(v) for v in a.mount.split(",")] if a.mount else [sw.MOUNT_PITCH_DEG, sw.MOUNT_X * 1000, sw.MOUNT_H * 1000]
+    Rbs, tbs = sw.mount_pose(height=mnt[2] / 1000, pitch_down_deg=mnt[0], x=mnt[1] / 1000)
+    fpga = fpga_model.FpgaModel(trav=a.trav, mount_z=int(round(mnt[2])))
     for kv in filter(None, a.tcfg.split(",")):
         k, v = kv.split("=")
         fpga.cfg[k] = int(v)
     fw = Firmware()
     fw.py_set_match_enable(1 if a.match == "on" else 0)
-    fw.py_set_caps(0, 500, 1200, 140)
+    fw.py_set_caps(0, 500, 1200, int(round(W.Robot.radius * 1000)))
+    fw.py_set_mount(int(round(mnt[0] * 100)), int(round(mnt[1])), int(round(mnt[2])))
     fw.py_set_anchor(a.anchor)
     fw.py_set_gmap_enable(1 if a.gmap == "on" else 0)
     fw.py_set_pose_decomp(1 if a.bot == "car" else 0)
@@ -430,7 +433,7 @@ def get_prior(scene_name, spec):
         return p.read_bytes()
     sc = W.SCENES[scene_name]()
     lid = sw.VirtualLidar(noise_mm=4.0, seed=11, rng_max=8.0, step=0.015)
-    sp, ap_, _ = prior_map.survey_scan(sc, lid, sw.mount_pose(height=0.20, pitch_down_deg=10.0, x=0.08))
+    sp, ap_, _ = prior_map.survey_scan(sc, lid, sw.mount_pose())
     x0, y0, x1, y1 = sc.bounds
     pkg, _ = prior_map.build_package(sp, ap_, bounds_mm=(x0 * 1000 - 200, y0 * 1000 - 200, x1 * 1000 + 200, y1 * 1000 + 200))
     p.parent.mkdir(parents=True, exist_ok=True)

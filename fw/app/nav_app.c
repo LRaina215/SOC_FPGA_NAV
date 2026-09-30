@@ -23,8 +23,8 @@ void nav_app_init(void)
     g_app.zband_lo = -600;
     g_app.zband_hi = 1200;
     g_app.anchor_gain = 64;
-    g_app.anchor_hl = 60;                   /* 足迹采样点：两轮自平衡车轮距 170 mm、轮子在车身中部（前后 ±60 mm） */
-    g_app.anchor_hw = 85;
+    g_app.anchor_hl = 60;                   /* 足迹采样点：轮子着地处前后 ±60 mm */
+    g_app.anchor_hw = 135;                  /* 轮距 270 mm（胎面中心，tools/robot_calib.py） */
     prior_rx_init(&g_app.prx);
     loc_default_cfg(&g_app.loc.cfg);
     loc_init(&g_app.loc);

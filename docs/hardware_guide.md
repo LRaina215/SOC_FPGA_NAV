@@ -167,12 +167,12 @@ $PY tools/nav_uart.py COM11 load fw/build/rv/nav/nav_fw.bin   # 保持软核复�
 ## 5. 每次上电后：运行期初始化（必须做）
 
 ```bash
-$PY tools/board_init.py COM11 --no-safe --mount-z 200
+$PY tools/board_init.py COM11 --no-safe --mount-z 155
 ```
 
 | 参数 | 含义 | 何时改 |
 |---|---|---|
-| `--mount-z` | 雷达光心离地高度 mm | 第 6.5 节实测后填实测值 |
+| `--mount-z` | 雷达光心离地高度 mm | 缺省 155（CAD，腿长 130 mm）；第 6.5 节量过后填实测值 |
 | `--imu-baud` | IMU 波特率（缺省 115200） | 按 IMU 实际设置 |
 | `--clk-mhz` | 核心时钟（缺省 50） | 以后打开 PLL（100 MHz）时改 |
 | `--v-max` / `--w-max` | 速度 mm/s / 角速度 mrad/s 上限（缺省 300 / 800） | 首次上车用 150 / 500 |
@@ -337,16 +337,17 @@ FPGA 不回 ping，ping 不通是正常的。
 **核对深度定义**：雷达正对一面平墙、距离约 1 m 且垂直。上位机里点墙中间和墙两端的像素看"距离"：两端比中间大（视场边缘约
 大 1.8 倍）= 径向距离，与 SDK 和我们的实现一致；两端和中间基本一样 = 沿光轴，与实现不符，记下来反馈给开发。
 
-**安装位姿**：雷达装到车上后，车放在平地上测量：
+**安装位姿**：已由整车 URDF / STL 标定（`$PY tools/robot_calib.py`，结果 `config/robot_calib.json`，[platform.md](platform.md)
+第 1、2 节），固件与仿真的缺省值就是标定值：
 
-| 量 | 怎么测 | 写到哪里 |
-|---|---|---|
-| 高度 z（mm） | 雷达镜头中心到地面 | `fw/nav/nav_task.c` 第 47 行 `pose_init` 第 3 个参数；`board_init.py --mount-z` |
-| 前伸 x（mm） | 镜头中心到车体中心（两轮轴线中点）的水平距离，向前为正 | `pose_init` 第 2 个参数 |
-| 俯仰（度） | 手机水平仪贴在雷达顶面，下俯为正 | `pose_init` 第 1 个参数 `ANGLE_FROM_CDEG(度 × 100)` |
+| 量 | CAD 标定值 | 写在哪里 | 实车要确认的 |
+|---|---|---|---|
+| 俯仰 | 相对机身下俯 20.3° | `fw/nav/nav_task.c` `pose_init` 第 1 个参数 `ANGLE_FROM_CDEG(2030)` | 支架是否按图纸装（手机水平仪贴雷达顶面，车体水平时应读 20° 左右） |
+| 前伸 x | 镜头在轮轴前 123 mm | `pose_init` 第 2 个参数 | — |
+| 高度 z | 腿长 L0 + 25 mm（L0 = 130 时 155 mm） | `pose_init` 第 3 个参数、`board_init.py --mount-z`、`MATCH.MOUNT_Z` 复位值 | **底盘站立时的 L0**：卷尺量镜头中心到地面，与 L0 + 25 差 1 cm 以上就改这三处 |
 
-现在的值是 `pose_init(&nt->pose, ANGLE_FROM_CDEG(1000), 80, 200);`（下俯 10°、前伸 80 mm、离地 200 mm）。改完按 4.5 节装固件，
-`--mount-z` 与第 3 个参数必须相同。建议下俯约 10°、不超过 12°（[platform.md](platform.md) 第 4 节：这台雷达光轴以上只有 19°）。
+腿长或支架改了：`$PY tools/robot_calib.py --leg <L0>` 打印要改的数，改完按 4.5 节装固件，`--mount-z` 与第 3 个参数必须相同。
+机械图纸改了：机械组重新导出 URDF 后再跑一次这个脚本。
 
 **验证**（导航固件、第 5 节初始化后，车静止放在场地里）：`$PY tools/nav_uart.py COM11 map calib.png`
 
@@ -374,7 +375,7 @@ FPGA 不回 ping，ping 不通是正常的。
 2. 暂停软核（否则固件会不停写速度指令，覆盖手动指令），打开速度输出，手动发指令：
    ```bash
    $PY tools/nav_uart.py COM11 wr 0xF000 1
-   $PY tools/board_init.py COM11 --v-max 150 --w-max 500 --mount-z 200     # 这次不加 --no-safe
+   $PY tools/board_init.py COM11 --v-max 150 --w-max 500 --mount-z 155     # 这次不加 --no-safe
    $PY -c "
    import sys, time; sys.path[:0] = ['tools', 'model']
    import nav_uart, nav_regs_map as m; u = nav_uart.NavUart('COM11'); R = m.REGS
@@ -462,7 +463,7 @@ N1–N3 先用 150 mm/s 跑通，再逐步把 `--v-max` 提到 300、500。每�
 | IP（`gowin/ip/`，目前只有 SFP 口需要） | 更新 `ip_files.txt`，核对端口 → 4.2（带 `--define`） | 重新构建、下载 |
 | 雷达格式寄存器（缺省即 SDK 格式，一般不用改） | 临时：`nav_uart.py wr` / `board_init.py --lidar-ctrl`；长期：改 `regmap.yaml` 复位值 | 同上一行 |
 | 方向查找表 | 不用管：固件按雷达帧尾的内参自动生成（6.5 节）；排查时 `nav_uart.py lut` 临时写入 | — |
-| 雷达安装位姿 | 改 `fw/nav/nav_task.c` 的 `pose_init`，`board_init.py --mount-z` 同步 | 4.5 |
+| 雷达安装位姿 / 腿长 | `tools/robot_calib.py --leg <L0>` 算出新值，改 `fw/nav/nav_task.c` 的 `pose_init`，`board_init.py --mount-z` 同步 | 4.5 |
 
 没有 Vivado 的电脑不能跑 `sim/run.py`；这时只改 `fw/` 和运行期寄存器，RTL 与 yaml 改动留到有仿真环境时做。
 
@@ -527,7 +528,7 @@ $PRG --device GW5AT-138B --run 2  --fsFile <路径>.fs           # 下载到 SRA
 $PRG --device GW5AT-138B --run 54 --fsFile <路径>.fs           # 固化到外部 Flash（先用图形界面确认一次）
 $PY tools/nav_uart.py COM11 load fw/build/rv/nav/nav_fw.bin    # 只换固件
 # 上电初始化
-$PY tools/board_init.py COM11 [--no-safe] [--mount-z 200] [--imu-baud 115200] [--lidar-ctrl 0x1F] [--v-max 300 --w-max 800]
+$PY tools/board_init.py COM11 [--no-safe] [--mount-z 155] [--imu-baud 115200] [--lidar-ctrl 0x1F] [--v-max 300 --w-max 800]
 # 调试
 $PY tools/nav_uart.py COM11 id | soc | con | stat | reset
 $PY tools/nav_uart.py COM11 rd <寄存器名>   /   wr <寄存器名> <值>        # 名字见 docs/regmap.md，写成 块_名，如 SAFE_CTRL

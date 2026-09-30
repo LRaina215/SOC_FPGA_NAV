@@ -17,6 +17,7 @@ import sim_world as sw  # noqa: E402
 import xt_proto as xt  # noqa: E402
 import nav_fast as fast  # noqa: E402
 import slf_match as slf  # noqa: E402
+import nav_regs_map as rm  # noqa: E402
 
 FPGA_L_MAC, FPGA_L_IP = 0x024E56000001, "192.168.0.100"
 LIDAR_MAC, LIDAR_IP = 0x0CAFE0000060, xt.DEFAULT_LIDAR_IP
@@ -80,7 +81,7 @@ def main(out):
         last_cost, last_c = cost, (cx, cy, x, y, yaw)
         xyz, pv = fast.pc_project(depth, np.array(lut, dtype=np.int64))
         pt = fast.pc_transform(xyz, np.array(Rq), np.array(tq))
-        n_struct = min(int(slf.structure_mask(pt, pv, int(tq[2]) - 200).sum()), slf.PB_MAX)
+        n_struct = min(int(slf.structure_mask(pt, pv, int(tq[2]) - rm.RESET["MATCH_MOUNT_Z"]).sum()), slf.PB_MAX)
         print(f"帧{k}: 更新 {sum(q[0] for q in upd)} 可通行 {int((cost <= 200).sum())}")
 
     (out / "slf_exp.hex").write_text(f"{n_struct:08x}\n")      # 最后一帧的结构点数

@@ -270,8 +270,8 @@ blocks:
       - name: INFL
         off: 0x24
         acc: rw
-        reset: 0x13
-        desc: "膨胀半径（格，按底盘外接圆半径设置：140 mm -> 3 格）；DISK=1 圆形膨胀（半径 <= 4），否则方形（斜向多出 √2 倍，斜对角的窄缝会被堵死）"
+        reset: 0x14
+        desc: "膨胀半径（格，按底盘外接圆半径设置：209 mm -> 4 格，tools/robot_calib.py）；DISK=1 圆形膨胀（半径 <= 4），否则方形（斜向多出 √2 倍，斜对角的窄缝会被堵死）"
         fields: {RADIUS: [3,0], DISK: [4,4]}
       - name: STAT
         off: 0x28
@@ -432,7 +432,7 @@ blocks:
         reset: 0x05DC003C
         desc: "结构点高度带（相对机器人足底 mm，= 帧平移 TZ − MOUNT_Z）"
         fields: {ZLO: [15,0], ZHI: [31,16]}
-      - {name: MOUNT_Z, off: 0x08, acc: rw, reset: 200, desc: "雷达光心相对机器人足底的高度 mm"}
+      - {name: MOUNT_Z, off: 0x08, acc: rw, reset: 155, desc: "雷达光心相对机器人足底的高度 mm（= 腿长 L0 + 25，tools/robot_calib.py；须与固件 pose_init 一致）"}
       - name: CMD
         off: 0x0C
         acc: w1p

@@ -38,13 +38,14 @@ void nav_task_init(nav_task_t *nt)
      * 2–3 格按距离加罚，路径尽量走通道中间 */
     nt->as_cfg_g.clear_cells = 4;
     nt->as_cfg_g.clear_cost = 15;
-    nt->as_cfg_g.near_cells = 2;
+    nt->as_cfg_g.near_cells = 3;              /* 车宽 332 mm（半宽 166 mm）：离致命格 2 格（20 cm）以内都重罚 */
     nt->as_cfg_g.near_cost = 150;
     nt->use_gmap = true;
     gmap_default_cfg(&nt->gm.cfg);
     gmap_init(&nt->gm);
     explore_default_cfg(&nt->ex_cfg);
-    pose_init(&nt->pose, ANGLE_FROM_CDEG(1000), 80, 200);
+    /* 雷达安装位姿（tools/robot_calib.py 由整车 URDF 标定）：下俯 20.3°、在轮轴前 123 mm、离地 = 腿长 L0 + 25 mm（L0 = 130） */
+    pose_init(&nt->pose, ANGLE_FROM_CDEG(2030), 123, 155);
     target_init(&nt->tgt, 1500000, 700);
     explore_init(&nt->exp);
     nt->mode = NAV_MODE_IDLE;

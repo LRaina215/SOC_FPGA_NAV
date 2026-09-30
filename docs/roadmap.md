@@ -32,8 +32,10 @@
   - 发送方向确认：板子只保留雷达的目标 IP、换回自己的 MAC 后流先断，约 150 s 后雷达重新发 ARP，收到板子的应答后改发给板子、恢复 10 帧/秒。
   - 代价图目前是一整片不可通行：雷达放在桌上，没按车上的安装位姿（离地 200 mm、下俯 10°）摆放和标定，地面不在模型以为的位置，属预期。
     静止时位姿有 2–3 cm 的漂移（没有 IMU / 里程计，安装位姿也不对），标定后再看。
-- **仿真**（按实车：两轮自平衡、轮径 65 mm、机身 180 × 213 mm、5 m 场地 field5，虚拟雷达按 SDK 内参）：10 个用例 × 5 种子 50/50 到达，
-  0 碰撞，定位 xy RMS 0.8–3.3 cm（algorithms.md 第 9 节）。旧的 12 m 大场地用例（terrain / loop）保留作回归。
+- **整车标定**（2026-09-30，`tools/robot_calib.py` 读机械组的 URDF / STL）：雷达相对机身下俯 20.3°、在轮轴前 123 mm、离地 = 腿长 L0 + 25 mm；
+  整车宽 332 mm（腿在轮子外侧）、外接圆半径 209 mm、轮半径 33.65 mm、轮距 270 mm。已写进固件、寄存器缺省值与仿真（platform.md 第 1、2 节）。
+- **仿真**（按实车：两轮自平衡、CAD 标定的外形与雷达安装、5 m 场地 field5，虚拟雷达按 SDK 内参）：10 个用例 × 5 种子 50/50 到达，
+  定位 xy RMS 2.0–7.2 cm（algorithms.md 第 10 节；雷达下俯 20.3° 比 10° 差，无图均值 4.1 对 2.7 cm）。旧的 12 m 大场地用例保留作回归。
 
 ## 2. 环境与工具（本机）
 
@@ -49,6 +51,7 @@
 | 写权限 | 本会话里 E: 盘根目录不可写，新装的东西放 D:\tools；**不要装到 C 盘**（用户要求） |
 | PDF | 内置阅读器误报 `嵌赛-FPGA-选题3.pdf` 加密，用 PyMuPDF 可读（`PYTHONPATH=D:/pytools`） |
 | 雷达厂家 SDK | 源码在 GitHub `XT-Toffuture/xtsdk_cpp`，本机参考副本 `D:\tools\xtsdk_ref`（含手册文字版）；上位机目录 `XT-M60技术资料\…\XT-Toffuture` 里只有可执行文件和调试符号。**没有许可证，只作参考，不要把代码拷进仓库** |
+| 整车模型 | 机械组 URDF / STL：`D:\Desktop\SOC FPGA\Structure\car\car`（SolidWorks 导出；每侧腿的五连杆闭环 URDF 表达不了） |
 | 雷达 | XT-M60，192.168.0.101，SN XTM60B20250324000234，固件 XTFW-RT-V2.34.2；真实抓包 `D:\tools\xt_capture\m60_dist_10fps.txt`（3 s，30 帧，每行一个 UDP 负载） |
 | GitHub | https://github.com/LRaina215/SOC_FPGA_NAV.git，推 main；网络时好时坏，失败就间隔 20–30 s 重试 |
 
@@ -113,15 +116,16 @@ $PY tools/nav_uart.py COM11 load fw/build/rv/nav/nav_fw.bin   # 换固件（不�
 | 项目 | 值 | 位置 |
 |---|---|---|
 | 地形阈值 | 台阶 30 mm、坡度 16°（20 cm 基线净升高 57 mm）、跳变 25 mm、粗糙度 50 mm | `model/trav_v3.py DEFAULT_V3`，`MAP.THR0/THR1` 复位值 |
-| 障碍膨胀 | 圆形 3 格（15 cm），RTL 支持半径 <= 4 | `MAP.INFL = 0x13` |
-| 记忆栅格 / A* | 10 cm × 64 格（6.4 m）；离致命 1 格罚 150，2–3 格按距离罚；同处卡两次放 30 s 虚拟障碍；A* 堆 1536 项（实测最大 469） | `gmap.h`、`astar.h`、`nav_task_init` |
+| 障碍膨胀 | 圆形 4 格（20 cm，按外接圆 209 mm；RTL 上限 4 格） | `MAP.INFL = 0x14` |
+| 记忆栅格 / A* | 10 cm × 64 格（6.4 m）；离致命 1–2 格罚 150（车半宽 166 mm），4 格内按距离罚；同处卡两次放 30 s 虚拟障碍；A* 堆 1536 项（实测最大 469） | `gmap.h`、`astar.h`、`nav_task_init` |
 | 姿态 | 有角速度：预测 + 1/16 校正；没有：α-β（1/4, 1/32）；帧时刻按姿态历史插值 | `pose.c` |
 | 高度锚定 | 轮子着地处 ±60 × ±85 mm，增益 64/256 | `nav_app_init` |
 | 结构点高度带 | 无图 +60..1500 mm、有图 −300..1500 mm（相对足底） | `APP_ZLO_*` |
 | 结构图槽字 | 18 位 {标签 每轴 1 位, 命中 2 位, 质心 3+3 位（1/8 格）, occ, 法向 5 位, has, gate}；前 3 次命中按格号对称取整平均后冻结 | `model/slf_match.py`、`rtl/match/` |
 | 有图匹配 | 增益 208/256、退化门限 200/千点；对准内点率 >= 40%、第二峰代价差 >= 0.3 | `nav_app_init`、`loc.c` |
 | 雷达 | SDK 缺省内参（fx 78.2、fy 79.1、cx 80.7、cy 26.8、k1 −0.30），有效视场约 111° × 43°（光轴上 19°、下 23°）；方向表 12 位 Q0.11 × 3，四角切除半径 30 像素 | `model/lidar_lut.py`、`fw/nav/lidar_cal.c` |
-| 雷达安装（仿真） | 离地 200 mm、下俯 10°、前伸 80 mm；实车建议下俯约 10°、不超过 12°（上视场只有 19°） | `run_cl.py mount_pose` |
+| 雷达安装 | CAD：下俯 20.3°、轮轴前 123 mm、离地 L0 + 25 = 155 mm（L0 暂按 130） | `pose_init`、`MATCH.MOUNT_Z`、`board_init.py`、`sim_world.MOUNT_*` |
+| 车体 | 宽 332 mm、外接圆 209 mm、轮距 270 mm、轮半径 33.65 mm | `world.Robot`、`lp_cfg.caps.radius_mm`、`anchor_hw` |
 
 ## 6. BSRAM 预算（340 块 × 18 Kbit ≈ 765 KB；DSP 另算，只用了约 16%）
 
@@ -156,6 +160,9 @@ $PY tools/nav_uart.py COM11 load fw/build/rv/nav/nav_fw.bin   # 换固件（不�
 8. RGMII 接收采样沿（第 4 节第 17 条）：已改为 RXC 下降沿（`NETL.CTRL.RX_NEG` 缺省 1，可串口切回上升沿对比），构建 6 上板 0 错误。
    I/O 时序仍没有约束，改 RTL 重新布线后要再看一次 `NETL_STAT_RX_ERR`。
 9. 雷达要靠 FPGA 当 TCP 客户端才能上电自动出流、并把数据发给 FPGA（第 8 节 D1）；在此之前每次上电都要用电脑启动一次。
+10. 整车标定（CAD）的遗留：雷达支架下俯 20.3°，比建议的 10–12° 大，定位变差（仿真无图 xy RMS 均值 4.1 cm，10° 时 2.7 cm），
+    请机械组评估能否改支架；站立腿长 L0 待底盘给出（现按 130 mm，离地 155 mm）；雷达正装 / 倒装模型里判断不了，实物核对。
+    整车宽 332 mm：场地通道要 ≥ 55 cm（platform.md 第 3 节）。
 
 ## 8. 下一阶段任务
 
@@ -173,7 +180,8 @@ $PY tools/nav_uart.py COM11 load fw/build/rv/nav/nav_fw.bin   # 换固件（不�
 | B3 | tb_xt_rx 三个场景（SDK 深度 / 深度 + 幅值 / 大端旧格式，含丢包、乱序、重复、截断、坏帧）、tb_nav_top 用新格式 | 完成 |
 | B4 | `tools/fake_lidar.py`（SDK 格式、pcap / pcapng / xbin 回放）、`tools/xt_config.py`（TCP 命令）；厂家上位机验证过格式 | 完成 |
 | B5 | 板上 RJ45：自写 `rgmii_mac100.v`（TSE IP 生成器只有图形界面，而且 BSRAM 不够），tb_rgmii_mac / tb_rgmii_mac_pos；修了发送时钟相位与接收采样沿，收发都已上板确认 | 完成 |
-| B6 | 雷达到货：`xt_config.py` 读配置与内参、自动出流与 UDP 目标核对（不自动、只发 TCP 主机）、真实抓包进回归、直连板子（修了帧内超时） | 部分完成：左右 / 深度 / 安装角标定未做 |
+| B6 | 雷达到货：`xt_config.py` 读配置与内参、自动出流与 UDP 目标核对（不自动、只发 TCP 主机）、真实抓包进回归、直连板子（修了帧内超时） | 完成；安装位姿见 E1 |
+| E1 | 整车标定：`tools/robot_calib.py` 由机械组 URDF / STL 算雷达安装位姿、车体尺寸、轮距、轮半径，写进固件 / 寄存器 / 仿真，批量评测 50/50 | 完成；L0、正倒装、左右 / 深度待实车核对 |
 | D1 | **FPGA 最小 TCP 客户端**（下一步最优先）：上电后 ARP 找雷达、连 7787、发命令 1（开始测量），收到应答后断开，雷达随后把 UDP 发给 FPGA。需要雷达口加一条原始帧收发通道（TCP 段 / ARP 交给软核处理），或在 RTL 里做固定流程的状态机 | 未做 |
 
 ### C. 之后（算法）

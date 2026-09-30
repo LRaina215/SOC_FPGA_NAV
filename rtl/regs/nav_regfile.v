@@ -283,7 +283,7 @@ module nav_regfile (
             r_MAP_THR0 <= 32'h0032001E;
             r_MAP_THR1 <= 32'h00190039;
             r_MAP_WEIGHT <= 32'h002030A0;
-            r_MAP_INFL <= 32'h00000013;
+            r_MAP_INFL <= 32'h00000014;
             r_MAP_DROP <= 32'h00000410;
             r_MAP_FILL <= 32'h00281E05;
             r_MAP_ELEV_ADDR <= 32'h00000000;
@@ -305,7 +305,7 @@ module nav_regfile (
             r_IMU_IDLE_US <= 32'h000001F4;
             r_MATCH_CTRL <= 32'h00000001;
             r_MATCH_ZREL <= 32'h05DC003C;
-            r_MATCH_MOUNT_Z <= 32'h000000C8;
+            r_MATCH_MOUNT_Z <= 32'h0000009B;
             r_MATCH_CX_MM <= 32'h00000000;
             r_MATCH_CY_MM <= 32'h00000000;
             r_MATCH_NCAND <= 32'h000000F5;

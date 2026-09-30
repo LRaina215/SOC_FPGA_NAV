@@ -3,7 +3,7 @@
 用法:
   python tools/board_init.py COM11                         缺省：50 MHz 核心时钟、IMU 115200、雷达离地 200 mm
   python tools/board_init.py COM11 --clk-mhz 100           板级打开 NAV_USE_PLL（100 MHz）时
-  python tools/board_init.py COM11 --imu-baud 460800 --mount-z 215
+  python tools/board_init.py COM11 --imu-baud 460800 --mount-z 165
   python tools/board_init.py COM11 --no-safe               只做感知测试：速度输出保持为 0
   python tools/board_init.py COM11 --dry-run               只打印要写的寄存器，不连板子
 
@@ -44,7 +44,7 @@ def main():
     ap.add_argument("port", nargs="?", default="")
     ap.add_argument("--clk-mhz", type=float, default=50.0, help="核心时钟 MHz（无 PLL = 50）")
     ap.add_argument("--imu-baud", type=int, default=115200)
-    ap.add_argument("--mount-z", type=int, default=200, help="雷达光心离地高度 mm")
+    ap.add_argument("--mount-z", type=int, default=155, help="雷达光心离地高度 mm（= 腿长 L0 + 25，tools/robot_calib.py）")
     ap.add_argument("--v-max", type=int, default=300, help="前进速度上限 mm/s（首次上车建议 150–300）")
     ap.add_argument("--vy-max", type=int, default=0, help="横移速度上限 mm/s（两轮车为 0）")
     ap.add_argument("--w-max", type=int, default=800, help="角速度上限 mrad/s")
