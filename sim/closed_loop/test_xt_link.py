@@ -225,7 +225,7 @@ def run(d, lid, T, tcp_en=True, close_rst=False, events=(), app=False, dt_us=100
             r["frames"] += 1
             t_next = t + 0.1
             d.py_set_lidar_frames(r["frames"])
-        d.py_set_time(t_us)
+        d.py_set_time(t_us & 0xFFFFFFFF)                   # 板上 TIME_US 是 32 位微秒，约 71.6 分钟回绕
         d.py_poll() if app else d.py_xl_poll()
         while True:
             n = d.py_lraw_pop_tx(buf)
@@ -270,8 +270,9 @@ def scenarios():
     def ok_once(t_lo, t_hi, starts=1, fails=0, closed=1):
         def chk(r, lid):
             s, bad = r["stat"], []
-            if (s["n_start"], s["n_ok"], s["n_fail"]) != (starts, 1, fails):
-                bad.append(f"启动/成功/失败 = {s['n_start']}/{s['n_ok']}/{s['n_fail']}，应为 {starts}/1/{fails}")
+            want = (s["n_start"] if starts is None else starts, 1, s["n_fail"] if fails is None else fails)
+            if (s["n_start"], s["n_ok"], s["n_fail"]) != want:
+                bad.append(f"启动/成功/失败 = {s['n_start']}/{s['n_ok']}/{s['n_fail']}，应为 {want[0]}/1/{want[2]}")
             if not r["t_ok"] or not near(r["t_ok"][0], t_lo, t_hi):
                 bad.append(f"成功时刻 {r['t_ok'][:1]} 不在 [{t_lo}, {t_hi}] s")
             if not lid.streaming or len(lid.cmds) != 1:
@@ -349,6 +350,9 @@ def scenarios():
         ("雷达先关连接", dict(fin_after=True), dict(T=15), ok_once(2.0, 2.1)),
         ("不应答但已出流", dict(resp="none"), dict(T=15), no_resp),
         ("雷达不在", dict(t_boot=1e9), dict(T=30), absent),
+        # 长时间没雷达后才接上：时间差超过 int32（约 36 min）、跨 32 位微秒回绕（约 71.6 min）后仍要能启动
+        ("40 分钟后才接雷达", dict(t_boot=2400.0), dict(T=2420, dt_us=10000), ok_once(2400.0, 2408.0, starts=None, fails=None)),
+        ("75 分钟后才接雷达", dict(t_boot=4500.0), dict(T=4520, dt_us=10000), ok_once(4500.0, 4508.0, starts=None, fails=None)),
         ("走 nav_app_poll", {}, dict(T=12, app=True), both(ok_once(2.0, 2.1), seq_is(base))),
     ]
 

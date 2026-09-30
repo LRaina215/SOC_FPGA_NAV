@@ -108,17 +108,20 @@ module uart_bus_bridge #(
             end
             P_BUS: begin
                 if (!bus_req) begin
-                    bus_req <= 1'b1;
-                    bus_we  <= is_w;
-                    bus_addr <= is_w ? args[47:32] : args[15:0];
-                    bus_wdata <= args[31:0];
+                    if (!tact && !tgo) begin
+                        bus_req <= 1'b1;
+                        bus_we  <= is_w;
+                        bus_addr <= is_w ? args[47:32] : args[15:0];
+                        bus_wdata <= args[31:0];
+                    end
                 end else if (bus_ack) begin
                     bus_req <= 1'b0;
                     rsp <= bus_rdata;
                     tbyte <= is_w ? "K" : "D";
                     tgo <= 1'b1;
                     rn <= is_w ? 3'd0 : 3'd4;
-                    ps <= P_RSP;
+                    // 写应答只有 1 字节（11 位时长）而连发时下一条命令的首字节 10 位就到：不能等应答发完再回去收
+                    ps <= is_w ? P_CMD : P_RSP;
                 end
             end
             P_RSP: if (!tact && !tgo) begin

@@ -251,7 +251,10 @@ void xt_link_poll(xt_link_t *x, uint32_t now)
         uint32_t fr = hal_lidar_frames();
         if (fr != x->frames_last) { x->frames_last = fr; x->t_frame = now; }
         hal_netl_cfg(&x->net);
-        if (x->net.tcp_en && (int32_t)(now - x->t_frame) > (int32_t)XL_STREAM_TMO_US) begin(x, now);
+        if ((int32_t)(now - x->t_frame) > (int32_t)XL_STREAM_TMO_US) {
+            x->t_frame = now - XL_STREAM_TMO_US - 1u;    /* 钳住：一直没帧时差值约 36 min 后超出 int32，会永远不再启动 */
+            if (x->net.tcp_en) begin(x, now);
+        }
         return;
     }
     while ((len = hal_lraw_recv(f, (int)sizeof f)) > 0 && x->st != XL_WATCH)

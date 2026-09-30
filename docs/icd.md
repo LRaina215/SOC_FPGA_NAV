@@ -47,9 +47,10 @@
   128 字节（`LRAW_RX` 窗口，`NETL.RAW_STAT` 看格数与长度，`NETL.RAW_POP` 弹出；满了整帧丢、`RAW_STAT.RX_DROP` 计数）。
   UDP 数据流不经过这里。
 - 串口日志：`lidar start #n (tcp -> 192.168.0.101:7787)`、`lidar start ok (n)`。
-- 测试：`sim/closed_loop/test_xt_link.py`（假雷达按实测行为建模：一次一个连接、断开后继续出流；17 个场景：丢 SYN、校验和错、
-  丢数据段、RST、应答前有上报、应答拆段、应答码失败、雷达重启、雷达不在等）；`tb_net` 覆盖 RTL 原始帧通道。
-  板级：`tools/fake_lidar.py --tcp-server` 让电脑冒充雷达的 TCP 端（hardware_guide 6.4 节第一步）。
+- 测试：`sim/closed_loop/test_xt_link.py`（假雷达按实测行为建模：一次一个连接、断开后继续出流；19 个场景：丢 SYN、校验和错、
+  丢数据段、RST、应答前有上报、应答拆段、应答码失败、雷达重启、雷达不在、开机 40 / 75 分钟后才接雷达等）；`tb_net`、`tb_nav_top`
+  覆盖 RTL 原始帧通道。排查用：`tools/fake_lidar.py --tcp-server` 让电脑冒充雷达的 TCP 端（hardware_guide 6.4 节第一步）。
+- 实物（2026-09-30，固件 V2.34.2）：雷达直连板子，上电约 3.3 s 启动成功、10 帧/秒；断流 2 s 后自动重新启动。
 
 UDP 分包（一个 UDP 报文可连放多个分包，全部小端）：
 

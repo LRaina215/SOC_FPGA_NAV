@@ -68,6 +68,21 @@ module tb_uart_bridge;
         rd32(RA_SYS_ID, d);        if (d != 32'h4E415630) begin errs++; $display("ID %h", d); end
         wr32(RA_SYS_SCRATCH, 32'hCAFEF00D);
         rd32(RA_SYS_SCRATCH, d);   if (d != 32'hCAFEF00D) begin errs++; $display("SCRATCH %h", d); end
+        // 连发 3 条写（字节之间没有间隔，PC 端 wr_burst 就是这样发的）：3 个 'K'，SCRATCH = 最后一条
+        begin
+            logic [7:0] c;
+            int nk;
+            nk = 0;
+            fork
+                for (int k = 1; k <= 3; k++) begin
+                    send("W"); send(RA_SYS_SCRATCH[15:8]); send(RA_SYS_SCRATCH[7:0]);
+                    send(8'h00); send(8'h00); send(8'h00); send(k[7:0]);
+                end
+                for (int k = 0; k < 3; k++) begin recv(c); if (c == "K") nk++; end
+            join
+            if (nk != 3) begin errs++; $display("连发写应答 %0d / 3", nk); end
+            rd32(RA_SYS_SCRATCH, d);   if (d != 32'd3) begin errs++; $display("连发后 SCRATCH %h", d); end
+        end
         send(8'h00); send(8'h55);  // 杂散字节应被忽略
         rd32(RA_SYS_TIME_US, t0);
         rd32(RA_SYS_TIME_US, t1);  if (t1 <= t0) begin errs++; $display("TIME 未递增"); end
