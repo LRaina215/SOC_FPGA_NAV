@@ -45,8 +45,9 @@ def xt_msg(body):
 
 class FakeLidar:
     def __init__(self, t_boot=0.0, streaming=False, drop_syn=0, rst_syn=0, drop_data=0, resp="normal", rc=0,
-                 fin_after=False, bad_synack=0):
+                 fin_after=False, bad_synack=0, warmup=0.0):
         self.t_boot, self.streaming = t_boot, streaming
+        self.warmup, self.stream_at = warmup, None       # 应答 OK 后过 warmup 秒才出第一帧（实测刚上电约 3 s）
         self.drop_syn, self.rst_syn, self.drop_data, self.bad_synack = drop_syn, rst_syn, drop_data, bad_synack
         self.resp, self.rc, self.fin_after = resp, rc, fin_after
         self.conn = None
@@ -60,7 +61,7 @@ class FakeLidar:
         return t >= self.t_boot
 
     def reboot(self, t, boot_s):
-        self.streaming, self.conn, self.t_boot, self.t_stream = False, None, t + boot_s, None
+        self.streaming, self.conn, self.t_boot, self.t_stream, self.stream_at = False, None, t + boot_s, None, None
 
     def seg(self, c, flags, payload=b"", options=b"", bad=False):
         self.out.append(np_.tcp_frame(FW_MAC, L_MAC, L_IP, FW_IP, 7787, c["cport"], c["snd"], c["rcv"], flags,
@@ -180,10 +181,8 @@ class FakeLidar:
             if not ok or body != bytes([1, 1, 1, 0, 1]):
                 self.err.append(f"命令不对 {body.hex()}")
                 continue
-            if self.rc == 0:
-                self.streaming = True
-                if self.t_stream is None:
-                    self.t_stream = t
+            if self.rc == 0 and not self.streaming and self.stream_at is None:
+                self.stream_at = t + self.warmup
             resp = xt_msg(bytes([1, self.rc, 2, 3]))
             log = xt_msg(bytes([0x2A]) + b"XT-M60 log: measure start" + bytes([0, 2, 3]))
             if self.resp == "normal":
@@ -221,6 +220,10 @@ def run(d, lid, T, tcp_en=True, close_rst=False, events=(), app=False, dt_us=100
             if not d.py_lraw_push_rx(f + struct.pack("<I", zlib.crc32(f) & 0xFFFFFFFF), len(f) + 4):
                 break
             lid.out.pop(0)
+        if lid.stream_at is not None and t >= lid.stream_at:
+            lid.streaming, lid.stream_at = True, None
+            if lid.t_stream is None:
+                lid.t_stream = t
         if lid.streaming and lid.up(t) and t >= t_next:
             r["frames"] += 1
             t_next = t + 0.1
@@ -299,7 +302,7 @@ def scenarios():
 
     def rc_recover(r, lid):
         s, bad = r["stat"], []
-        if s["n_ok"] != 1 or s["n_fail"] < 3 or not lid.streaming:
+        if s["n_ok"] != 1 or s["n_fail"] < 2 or not lid.streaming:
             bad.append(f"成功 {s['n_ok']} 失败 {s['n_fail']} 出流 {lid.streaming}")
         if not r["t_ok"] or not near(r["t_ok"][0], 10.0, 14.0):
             bad.append(f"恢复时刻 {r['t_ok'][:1]}")
@@ -345,6 +348,8 @@ def scenarios():
         ("上报 + 应答拆段", dict(resp="split"), dict(T=15), ok_once(2.0, 2.1)),
         ("应答码失败 10 s 后恢复", dict(rc=1), dict(T=25, events=[(10.0, lambda l, t: setattr(l, "rc", 0))]), rc_recover),
         ("出流中断（雷达重启 6 s）", {}, dict(T=30, events=[(10.0, lambda l, t: l.reboot(t, 6.0))]), reboot),
+        # 实测（2026-09-30）：雷达刚上电时应答 OK 后约 3 s 才出第一帧；不该因此再启动一次
+        ("应答后 3.5 s 才出流", dict(warmup=3.5), dict(T=20), both(ok_once(2.0, 2.1), seq_is(base))),
         ("RST 关闭", {}, dict(T=15, close_rst=True),
          both(ok_once(2.0, 2.1, closed=0), seq_is(["ARP", "S", "D", "A", "R"]))),
         ("雷达先关连接", dict(fin_after=True), dict(T=15), ok_once(2.0, 2.1)),

@@ -13,7 +13,7 @@
 #define XL_PORT          7787u
 #define XL_BOOT_WAIT_US  2000000u   /* 上电后先等这么久（别人已经把雷达启动了就不用连） */
 #define XL_STREAM_TMO_US 2000000u   /* 这么久没有新帧：重新启动雷达 */
-#define XL_GRACE_US      3000000u   /* 发完开始命令后给雷达出流的时间 */
+#define XL_GRACE_US      5000000u   /* 发完开始命令后给雷达出流的时间（实测刚上电的雷达应答 OK 后约 3 s 才出第一帧） */
 #define XL_ARP_RETRY_US  500000u
 #define XL_ARP_TRIES     10          /* 雷达重启后约 6 s 才应答：5 s 没回就退避后重来 */
 #define XL_SYN_RETRY_US  1000000u

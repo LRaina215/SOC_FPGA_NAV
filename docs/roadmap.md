@@ -172,8 +172,7 @@ $PY tools/nav_uart.py COM11 load fw/build/rv/nav/nav_fw.bin   # 换固件（不�
    要把每帧处理拆成几段。
 8. RGMII 接收采样沿（第 4 节第 17 条）：已改为 RXC 下降沿（`NETL.CTRL.RX_NEG` 缺省 1，可串口切回上升沿对比），构建 6 上板 0 错误。
    I/O 时序仍没有约束，改 RTL 重新布线后要再看一次 `NETL_STAT_RX_ERR`。
-9. 雷达启动 TCP 客户端（第 8 节 D1）已对真雷达上板通过（上电启动、断流后重启）。还没试过的：雷达掉电重启（约 6 s 才应答 ARP，
-   按设计会退避后重试）、板子与雷达之间隔一个交换机。不成功时看控制台 `lidar start #n` / `ok`，`NETL_CTRL` bit 6 写 0 可关掉它，
+9. 雷达启动 TCP 客户端（第 8 节 D1）已对真雷达上板通过：上电启动、断流后重启，并完成一次真实雷达掉电重启自动恢复验证。实测雷达重新出流前约 3 s 暖机，原 3 s 保护窗口在边界触发了重复启动；现已调整为 5 s，并由新增的 3.5 s 暖机仿真场景验证。新保护窗口对应的真实冷启动尚未再次强制复测。不成功时看控制台 `lidar start #n` / `ok`，`NETL_CTRL` bit 6 写 0 可关掉它，
    回到电脑手工启动（hardware_guide 6.4 节第四步旧办法）。
 10. 整车标定（CAD）的遗留：雷达支架下俯 20.3°，比建议的 10–12° 大，定位变差（仿真无图 xy RMS 均值 4.1 cm，10° 时 2.7 cm），
     请机械组评估能否改支架；站立腿长 L0 待底盘给出（现按 130 mm，离地 155 mm）；雷达正装 / 倒装模型里判断不了，实物核对。
@@ -197,7 +196,7 @@ $PY tools/nav_uart.py COM11 load fw/build/rv/nav/nav_fw.bin   # 换固件（不�
 | B5 | 板上 RJ45：自写 `rgmii_mac100.v`（TSE IP 生成器只有图形界面，而且 BSRAM 不够），tb_rgmii_mac / tb_rgmii_mac_pos；修了发送时钟相位与接收采样沿，收发都已上板确认 | 完成 |
 | B6 | 雷达到货：`xt_config.py` 读配置与内参、自动出流与 UDP 目标核对（不自动、只发 TCP 主机）、真实抓包进回归、直连板子（修了帧内超时） | 完成；安装位姿见 E1 |
 | E1 | 整车标定：`tools/robot_calib.py` 由机械组 URDF / STL 算雷达安装位姿、车体尺寸、轮距、轮半径，写进固件 / 寄存器 / 仿真，批量评测 50/50 | 完成；L0、正倒装、左右 / 深度待实车核对 |
-| D1 | **FPGA 最小 TCP 客户端**：雷达口加原始帧收发通道（`udp_tx` 原始帧模式、`rtl/net/raw_cap.v` 4 格 × 128 字节接收，`NETL.RAW_*` 寄存器与 `LRAW_TX/RX` 窗口，+2 块 BSRAM），软核 `fw/nav/xt_link.c`：帧 2 s 不涨就 ARP → SYN → 命令 1 → 等应答 → FIN，帧再断就重来（icd.md 第 2 节"雷达启动"）。测试：`tb_net`、`tb_nav_top`（经总线收发）、`test_xt_link.py`（假雷达 19 个场景）、`fake_lidar.py --tcp-server`（PC 冒充雷达 TCP 端） | 完成；真雷达上板通过（上电 3.3 s 出流、断流 2 s 后自动重启） |
+| D1 | **FPGA 最小 TCP 客户端**：雷达口加原始帧收发通道（`udp_tx` 原始帧模式、`rtl/net/raw_cap.v` 4 格 × 128 字节接收，`NETL.RAW_*` 寄存器与 `LRAW_TX/RX` 窗口，+2 块 BSRAM），软核 `fw/nav/xt_link.c`：帧 2 s 不涨就 ARP → SYN → 命令 1 → 等应答 → FIN，帧再断就重来（icd.md 第 2 节"雷达启动"）。测试：`tb_net`、`tb_nav_top`（经总线收发）、`test_xt_link.py`（假雷达 20 个场景，含 3.5 s 上电暖机）、`fake_lidar.py --tcp-server`（PC 冒充雷达 TCP 端） | 完成；真雷达上板通过，含一次掉电重启自动恢复；5 s 暖机保护已构建下载，新增真实冷启动复测待后续方便时确认 |
 
 ### C. 之后（算法）
 按离障距离限速、内点率突变辅助被撞检测、多帧对准、有图模式动态障碍过期、终点朝向对准；IMU088（需角速度输出 >= 100 Hz）；
@@ -211,7 +210,7 @@ $PY sim/run.py                                   # RTL 回归（15 项，约 10 
 $PY fw/test/build.py                             # 固件主机测试（会重编 nav_fw.dll）
 $PY sim/closed_loop/test_prior.py                # 有图固件单元测试
 $PY sim/closed_loop/test_lidar_cal.py            # 板上方向表生成 vs 模型
-$PY sim/closed_loop/test_xt_link.py              # 雷达启动 TCP 客户端 vs 假雷达（19 个场景）
+$PY sim/closed_loop/test_xt_link.py              # 雷达启动 TCP 客户端 vs 假雷达（20 个场景）
 $PY sim/closed_loop/batch.py --tag x -j 10       # 5 m 场地 10 用例 × 5 种子（缺省用例集，约 30 分钟）
 $PY sim/closed_loop/batch.py --tag y --cases terrain_a terrain_b search loop       # 旧大场地回归
 $PY sim/closed_loop/run_cl.py --scene field5 --start 0.0,-2.0,0 --goal 4.0,2.1 --gif --out sim/build/cl/demo
