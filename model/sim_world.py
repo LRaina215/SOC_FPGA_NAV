@@ -117,8 +117,8 @@ class VirtualLidar:
         return depth, amp
 
 
-# 实车安装位姿（tools/robot_calib.py 由整车 URDF 标定，腿长 L0 = 130 mm 时）
-MOUNT_H, MOUNT_PITCH_DEG, MOUNT_X = 0.155, 20.3, 0.123
+# 实车安装位姿：正常正装、下俯 10°；腿长 L0 = 130 mm 时
+MOUNT_H, MOUNT_PITCH_DEG, MOUNT_X = 0.155, 10.0, 0.123
 
 
 def mount_pose(height=MOUNT_H, pitch_down_deg=MOUNT_PITCH_DEG, x=MOUNT_X):

@@ -360,9 +360,9 @@ FPGA 不回 ping，ping 不通是正常的。
 **安装位姿**：已由整车 URDF / STL 标定（`$PY tools/robot_calib.py`，结果 `config/robot_calib.json`，[platform.md](platform.md)
 第 1、2 节），固件与仿真的缺省值就是标定值：
 
-| 量 | CAD 标定值 | 写在哪里 | 实车要确认的 |
+| 量 | 当前标定值 | 写在哪里 | 实车要确认的 |
 |---|---|---|---|
-| 俯仰 | 相对机身下俯 20.3° | `fw/nav/nav_task.c` `pose_init` 第 1 个参数 `ANGLE_FROM_CDEG(2030)` | 支架是否按图纸装（手机水平仪贴雷达顶面，车体水平时应读 20° 左右） |
+| 俯仰 | **正常正装、相对机身下俯 10°** | `fw/nav/nav_task.c` `pose_init` 第 1 个参数 `ANGLE_FROM_CDEG(1000)` | 已按实车支架修改；车体水平时仍可用手机水平仪复核约 10°；如支架再次调整，需同步固件和仿真 |
 | 前伸 x | 镜头在轮轴前 123 mm | `pose_init` 第 2 个参数 | — |
 | 高度 z | 腿长 L0 + 25 mm（L0 = 130 时 155 mm） | `pose_init` 第 3 个参数、`board_init.py --mount-z`、`MATCH.MOUNT_Z` 复位值 | **底盘站立时的 L0**：卷尺量镜头中心到地面，与 L0 + 25 差 1 cm 以上就改这三处 |
 
