@@ -1,7 +1,7 @@
 # 扫图与先验地图链路（设计与待办）
 
 有图模式的板上部分已经完成并通过闭环仿真：地图包 `.nvmp`（`model/prior_map.py`，版本 2，18 位槽字）、转换工具
-`tools/map_tool.py`、下发协议 MAP_*（[icd.md](icd.md) 第 3 节）、对准 / 跟踪 / 丢失重定位、有图搜索（[algorithms.md](algorithms.md) 第 8、10 节）。
+`tools/map_tool.py`、下发协议 MAP_*（[icd.md](../2_interface/icd.md) 第 3 节）、对准 / 跟踪 / 丢失重定位、有图搜索（[algorithms.md](../4_design/algorithms.md) 第 8、10 节）。
 **还缺的是"真实场地 → 地图点云"这一段**，以及用真实地图在板上跑一遍。本文给出两条路线、约定和任务分解。
 
 ## 1. 两条路线
@@ -20,7 +20,7 @@
 
 - 地图点云：地图系，X / Y 水平、Z 向上，单位 m，地面 z = 0；场地（含墙）≤ 12.8 m × 12.8 m（片上结构图），代价图 19.2 m 以内。
 - `map_tool.py build` 支持 `.pcd`（ascii / binary）、`.ply`、`.npy`、`.xyz`；`--bounds x0,y0,x1,y1` 裁掉场地外的点。
-- **能力参数要按当前车体传**：`--step 20 --slope 12`（可跨台阶 20 mm、可通行坡度 12°，[platform.md](platform.md) 第 1 节）。
+- **能力参数要按当前车体传**：`--step 20 --slope 12`（可跨台阶 20 mm、可通行坡度 12°，[platform.md](../4_design/platform.md) 第 1 节）。
   工具缺省 `--step 100 --slope 20` 是旧大车的值，直接用会把不可跨的台阶画成可走（板上在线地形分析看到后会改判，但规划会先往那里走）。
 - 初始位姿：比赛时把车放在地面标记好的起点，起点在地图系的位姿写进任务配置；`SET_POSE` 允许误差 ±0.5 m / ±10°。
 - 地图版本：文件名带日期与场地版本（如 `field_20261015_v2.nvmp`），同时保存源点云、场地照片和量测记录。
@@ -42,7 +42,7 @@
 ## 4. 路线 B：SLAM 扫图
 
 1. **录包机器**：PC 或 RK3588 直连雷达（或经交换机）；录包期间让 FPGA 不连雷达（不接网线，或 `NETL_CTRL` bit 6 写 0 关掉启动客户端）。
-   雷达只把 UDP 发给最近一次连它 TCP 的主机，两个主机同时连会互相抢流（[rk3588_design.md](rk3588_design.md) 第 3.4 节）。
+   雷达只把 UDP 发给最近一次连它 TCP 的主机，两个主机同时连会互相抢流（[rk3588_design.md](../5_teams/rk3588_design.md) 第 3.4 节）。
 2. **录什么**：原始 UDP 负载（Wireshark 过滤 `udp.dstport == 7687`，存 pcapng）——同一份数据既能离线建图，也能用
    `tools/fake_lidar.py --pcap` 回放给板子复现 FPGA 感知；另存厂家上位机 `.xbin`。
 3. **IMU**：XT-M60 帧里可带内置 IMU 消息（cmdid 252；厂家 SDK 提供 IMU 帧率 `getimufps()` 与 IMU→雷达外参 `getImuExtParamters()`），

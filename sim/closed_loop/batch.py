@@ -36,7 +36,7 @@ CASES = {
     # 行驶中被撞：20 s 时真值突然平移 0.3 m、转 8°（检验丢失检测与自动重定位）
     "p_kidnap": "--scene terrain --goal 9.3,2.8 --time 150 --prior auto --init-err rand --kidnap 20,0.3,-0.15,8",
 }
-# ---- 5 m 场地（field5，两轮自平衡车模型、10 cm 记忆栅格，docs/platform.md）----
+# ---- 5 m 场地（field5，两轮自平衡车模型、10 cm 记忆栅格，docs/4_design/platform.md）----
 F5 = "--scene field5 --start 0.0,-2.0,0"
 CASES.update({
     "f5_goal": f"{F5} --goal 4.0,2.1 --time 120",

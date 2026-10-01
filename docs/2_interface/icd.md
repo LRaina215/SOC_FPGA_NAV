@@ -5,7 +5,7 @@
 
 | 版本 | 日期 | 内容 |
 |---|---|---|
-| v0.9（当前） | 2026-10-01 | 雷达接口已按实物冻结；主机报文已定义（串口注入已上板通过）；底盘端口已定义但未接实物；IMU 确认为 BMI088（SPI），比特流里仍是过渡的串口通路。D2.1 阶段与底盘组冻结为 v1.0（拟增加的字段见 [chassis_review.md](chassis_review.md) 第 4 节） |
+| v0.9（当前） | 2026-10-01 | 雷达接口已按实物冻结；主机报文已定义（串口注入已上板通过）；底盘端口已定义但未接实物；IMU 确认为 BMI088（SPI），比特流里仍是过渡的串口通路。D2.1 阶段与底盘组冻结为 v1.0（拟增加的字段见 [chassis_review.md](../5_teams/chassis_review.md) 第 4 节） |
 
 版本规则：主版本号变 = 语义不兼容（坐标、单位、位宽、周期、急停语义）；次版本号变 = 只增加字段或报文。
 
@@ -105,7 +105,7 @@ TCP 命令（`tools/xt_config.py`）：请求 `7E FF AA 55 | len | cmd | 数据 
 | 链路 | 状态 | 用法 |
 |---|---|---|
 | 板载 USB 串口（uart_bus_bridge，921600） | 可用（2026-10-01 上板通过：状态、目标点、模式、地图包、TARGET） | PC 把报文逐字写 `MBX.INJ_DATA`，写 `MBX.INJ_LEN` 后 `MBX.INJ_GO`，报文进入与网口相同的接收队列（源 IP 记 0）；FPGA 发出的报文（状态、地图应答）留在发送缓冲，经 `MBX.TX_SEQ` / `MBX.TXB_ADDR` / `MBX.TXB_Q` 读回（只保留最新一条）。`nav_host.py --link uart:COM5`；RK3588 经 USB 也可这样用 |
-| 专用主机串口（P11 第 9 / 10 针） | 计划（[rk3588_design.md](rk3588_design.md) 方案 R1） | 链路层（帧定界 + CRC-16）实现时补进本节；报文内容不变 |
+| 专用主机串口（P11 第 9 / 10 针） | 计划（[rk3588_design.md](../5_teams/rk3588_design.md) 方案 R1） | 链路层（帧定界 + CRC-16）实现时补进本节；报文内容不变 |
 | 网口 UDP（SFP 口，1000BASE-X） | RTL 已有，**IP 未生成，目前不可用** | FPGA 地址 `NETH.IP`（默认 192.168.2.100），端口 `NETH.UDP_PORT`（9000）；FPGA 回发到最近一次收到合法报文的源地址/端口（`NETH.CTRL.LEARN_PEER`），也可写 `NETH.PEER_*` 固定。`nav_host.py --link udp:192.168.2.100` |
 
 - 负载小端。公共头 4 字节：`'N' 'V' 版本=1 类型`。
@@ -138,7 +138,7 @@ TCP 命令（`tools/xt_config.py`）：请求 `7E FF AA 55 | len | cmd | 数据 
 |---|---|
 | `ch_vx, ch_vy`（int16 mm/s） | 机身系期望速度；`SAFE.CTRL.HOLONOMIC=0` 时 vy 恒为 0 |
 | `ch_wz`（int16 mrad/s） | 期望角速度，正值 = 从上往下看逆时针（左转） |
-| `ch_mode`（8 位） | 固件当前只写两个值：0 = 正常；4 = 主机下发了 `mode estop`（此时速度指令为 0）。拟定编码：bit3:0 行为 / 地形模式（正常、坡道、粗糙、保持、导航急停、趴下、起立、跳跃预留），bit5:4 姿态请求（[chassis_review.md](chassis_review.md) 第 3.8 节、第 4 节），D2.1 冻结 |
+| `ch_mode`（8 位） | 固件当前只写两个值：0 = 正常；4 = 主机下发了 `mode estop`（此时速度指令为 0）。拟定编码：bit3:0 行为 / 地形模式（正常、坡道、粗糙、保持、导航急停、趴下、起立、跳跃预留），bit5:4 姿态请求（[chassis_review.md](../5_teams/chassis_review.md) 第 3.8 节、第 4 节），D2.1 冻结 |
 | `ch_stop` | 急停（`SAFE.CTRL.ESTOP` 或使能的 `ext_stop`）：**下一个输出节拍起速度直接为 0，不经斜坡**。含义为"速度归零、底盘保持平衡"，不是断电 |
 | `ch_wdog` | 超过 `SAFE.WD_US`（缺省 200 ms）未收到新指令：目标改为 0，**按加速度限制减到 0**；复位后、第一次指令前也为 1 |
 | `ch_valid` / `ch_seq` | 输出节拍单拍 / 16 位节拍序号（回绕） |
@@ -160,9 +160,9 @@ TCP 命令（`tools/xt_config.py`）：请求 `7E FF AA 55 | len | cmd | 数据 
 | 静止 | 导航指令为 0 且车不动时，`odo_vx = odo_vy = 0`（精确 0），`odo_wz` 绝对值 < 50 mrad/s | 持续 0.3 s 后把 `odo_wz` 当陀螺零偏估计并扣除 |
 
 固件每轮只读最新一组样本（不排队）。底盘调好后需要提供：能否横移、速度 / 角速度 / 加速度上限、外接圆半径（填入 `lp_cfg.caps` 与 `SAFE.LIM_*`），
-以及站立腿长 L0（雷达离地 = L0 + 25 mm）。拟在 v1.0 增加的底盘状态字、腿长回传和时间基准输出见 [chassis_review.md](chassis_review.md) 第 4 节。
+以及站立腿长 L0（雷达离地 = L0 + 25 mm）。拟在 v1.0 增加的底盘状态字、腿长回传和时间基准输出见 [chassis_review.md](../5_teams/chassis_review.md) 第 4 节。
 
-底盘调试、RL 代码分层、外部控制器桥接、故障降级和架空 / 落地联调流程见 [chassis_integration.md](chassis_integration.md)。本文件与 `config/regmap.yaml` 是信号、位宽和寄存器语义的唯一真值；说明文档不得替代本文件。
+底盘调试、RL 代码分层、外部控制器桥接、故障降级和架空 / 落地联调流程见 [chassis_integration.md](../5_teams/chassis_integration.md)。本文件与 `config/regmap.yaml` 是信号、位宽和寄存器语义的唯一真值；说明文档不得替代本文件。
 
 ## 5. IMU
 
@@ -175,7 +175,7 @@ IMU 确认为**博世 BMI088**（裸 6 轴芯片：加速度计与陀螺仪各�
   PS 脚接地选 SPI；VDD / VDDIO 接 3.3 V（[pinout.md](pinout.md) 第 5 节）。
 - `imu_bmi088`（RTL，导航组）：唯一的 SPI 主机，SPI 模式 3、5 MHz。初始化：陀螺软复位（0x14 ← 0xB6，等 30 ms）、读 ID（0x00 = 0x0F）；
   加速度计先拉一次 CSB1 做假读切到 SPI、软复位（0x7E ← 0xB6，等 1 ms）后再假读、读 ID（0x00 = 0x1E）、`ACC_PWR_CONF` 0x7C ← 0x00（等 5 ms）、
-  `ACC_PWR_CTRL` 0x7D ← 0x04（等 5 ms）；量程与输出率、数据就绪中断按 [chassis_review.md](chassis_review.md) 第 3.5 节的配置表。
+  `ACC_PWR_CTRL` 0x7D ← 0x04（等 5 ms）；量程与输出率、数据就绪中断按 [chassis_review.md](../5_teams/chassis_review.md) 第 3.5 节的配置表。
   按中断读数：陀螺从 0x02 连读 6 字节；加速度计从 0x12 连读 7 字节、丢掉第 1 个（dummy 字节）。每个样本用 `SYS.TIME_US` 打时间戳，并按安装方向换轴到机身系。
 - `imu_att`（RTL，导航组）：定点互补滤波（陀螺积分为主、加速度计低增益修正），上电静止 1–2 s 估计陀螺零偏；输出横滚、俯仰（65536 = 一周，pitch > 0 为低头）与三轴角速度。
 - 输出给底盘：每个陀螺样本（1000 Hz）一个 `imu_valid` 单拍 + 三轴角速度、最新三轴加速度、横滚、俯仰、时间戳（并行信号，同一时钟域）。
@@ -193,6 +193,6 @@ IMU 确认为**博世 BMI088**（裸 6 轴芯片：加速度计与陀螺仪各�
 - 32 位数据、16 位字节地址、按字访问；`bus_req` 保持到 `bus_ack`（单拍）。多数寄存器 2–3 拍完成，代价图窗口每字约 10 拍，邮箱读每字约 6 拍。
 - 主控两个：软核 PicoRV32（`rtl/soc/nav_soc.v`，m0）与调试串口桥（m1），经 `nav_bus_arb` 仲裁后接 `nav_subsystem`。
 - `nav_subsystem` 对地址空间内未定义的地址也应答（读回 0），所以导航之外的模块（底盘块 CHAS 等）要在整车顶层按地址译码分出去；
-  预留 `0xD800–0xDFFF` 给底盘（[dev_guide.md](dev_guide.md) 第 4 节）。
+  预留 `0xD800–0xDFFF` 给底盘（[dev_guide.md](../3_guide/dev_guide.md) 第 4 节）。
 - 调试：板级顶层把板载 USB 串口接到 `uart_bus_bridge`（协议：写 `'W' A1 A0 D3..D0` → `'K'`，读 `'R' A1 A0` → `'D' D3..D0`，大端），
   PC 用 `tools/nav_uart.py` 按寄存器名读写；`0xE000–0xFFFF` 转到软核调试口（保持复位、装载程序、读控制台）。

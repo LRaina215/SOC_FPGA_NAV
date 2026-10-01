@@ -1,7 +1,7 @@
 # RK3588 上位机设计与对接方案
 
 本文定义 RK3588 在整车里的职责、与 FPGA 的物理链路和报文用法、目标位置估计的要求、软件结构与联调步骤。
-报文格式的唯一真值是 [icd.md](icd.md) 第 3 节与 `fw/nav/proto.c`；本文只规定怎么用、以及链路和扩展的计划。
+报文格式的唯一真值是 [icd.md](../2_interface/icd.md) 第 3 节与 `fw/nav/proto.c`；本文只规定怎么用、以及链路和扩展的计划。
 
 ## 0. 结论
 
@@ -11,7 +11,7 @@
 - 链路分三步走：
   1. **R0（现在就能用，FPGA 零改动）**：RK3588 的 USB 口接开发板的 USB 串口（CH9102），在 RK3588 上运行
      `python3 tools/nav_host.py --link uart:/dev/ttyACM0 …`（设备名以 `ls /dev/tty*` 为准，CH9102 也可能是 `ttyCH343USB0`）。
-     这条路径 2026-10-01 已在板上用 PC 测通（[hardware_guide.md](hardware_guide.md) 6.1 节，本文第 3.2 节）。
+     这条路径 2026-10-01 已在板上用 PC 测通（[hardware_guide.md](../3_guide/hardware_guide.md) 6.1 节，本文第 3.2 节）。
   2. **R1（比赛用的正式链路，推荐）**：RK3588 40 针排针的 3.3 V 串口接 P11 第 9 / 10 针，FPGA 增加一个硬件主机串口模块直通邮箱。
      改动小、几乎不占 BSRAM、不碰已验证的雷达网口。
   3. **R2（只有确实要传视频 / 点云时）**：以太网——经交换机共用雷达 RJ45（要改雷达口协议栈），或 SFP1 + 高云 1G Serial Ethernet IP（要生成加密 IP、占资源、风险最高）。
@@ -27,7 +27,7 @@
 | 底盘速度、急停、看门狗 | FPGA + 底盘 RL | 不参与（可以发 `mode estop`，但它不是安全链的一部分） |
 | 语义任务（"找红色水瓶"） | 不参与 | VLM / 任务状态机，把任务翻译成 MODE / TARGET / GOAL |
 | 展示 | HDMI 本地显示（视频组） | 灵巡网页：视频、位姿、状态、任务 |
-| 扫图 | 不参与（运行时只定位不建图） | 可承担录包、SLAM、转地图包、下发（[mapping_plan.md](mapping_plan.md)） |
+| 扫图 | 不参与（运行时只定位不建图） | 可承担录包、SLAM、转地图包、下发（[mapping_plan.md](../1_plan/mapping_plan.md)） |
 
 ## 2. 现有报文怎么用（RK3588 侧规范）
 
@@ -64,7 +64,7 @@ RK3588 侧的报文编解码直接照 `tools/nav_host.py`（Python，可在 RK35
 
 - 接法：开发板 USB 串口口（CH9102，与 PC 调试用的是同一个口）→ RK3588 USB Host。921600 8N1。
 - 原理：主机把报文逐字写进 `MBX.INJ_DATA`，写 `INJ_LEN` 后 `INJ_GO`，报文进入与网口相同的接收队列；FPGA 发出的报文留在发送缓冲，
-  经 `MBX.TX_SEQ` / `MBX.TXB_ADDR` / `MBX.TXB_Q` 读回（[icd.md](icd.md) 第 3 节）。`nav_host.py` 的 `UartLink` 已实现。
+  经 `MBX.TX_SEQ` / `MBX.TXB_ADDR` / `MBX.TXB_Q` 读回（[icd.md](../2_interface/icd.md) 第 3 节）。`nav_host.py` 的 `UartLink` 已实现。
 - 代价：注入用流水写（`wr_burst`，不逐条等应答），一条 TARGET 约 1 ms；读回是逐字"写地址 + 读数据"，每次都有 USB 往返，
   一条 STATUS（44 字节、11 个字）约 25–50 ms。发送缓冲只保留最新一条报文，两次读之间 FPGA 连发多条时旧的会被覆盖
   （地图下发靠 `MAP_ACK.next_offset` 重新同步，不受影响）。所以 R0 适合 TARGET 10–15 Hz + 状态 5 Hz 的联调，不适合高频回传。
@@ -97,7 +97,7 @@ RK3588 UART RX <──P11-10 (D16)── host_uart: 邮箱发送缓冲 → 加�
   否则雷达改发给 RK3588，FPGA 断流后 2 s 会重新抢回来，两边来回抢。扫图时反过来：先关 FPGA 的启动客户端（`NETL_CTRL` bit 6 写 0）。
 - **R2b SFP**：RK3588 自身的千兆网口是 RGMII PHY，**不能插 SFP 模块**；做法是在 FPGA 板的 SFP1 笼里插一个电口 SFP 模块（1000BASE-T），
   用普通网线连到 RK3588 的 RJ45。电口模块的主机侧多数是带自协商的 SGMII，少数是 1000BASE-X，选型时确认，并在高云 IP 里选对应模式。
-  板上 SFP1 走收发器第 0 通道、参考时钟 MGT_CLK1（125 MHz）；IP 名 `Gowin_1GSERETH_Host`，生成步骤见 [board_bringup.md](board_bringup.md) 第 1 节。
+  板上 SFP1 走收发器第 0 通道、参考时钟 MGT_CLK1（125 MHz）；IP 名 `Gowin_1GSERETH_Host`，生成步骤见 [board_bringup.md](../3_guide/board_bringup.md) 第 1 节。
   FPGA 地址 `NETH.IP` = 192.168.2.100，UDP 9000。
 
 ## 4. TARGET：目标位置怎么算、怎么发
@@ -111,7 +111,7 @@ RK3588 必须保证：
 
 | 项目 | 要求 |
 |---|---|
-| 坐标系 | **机身系**：原点 = 两轮轴线中点在地面的投影，X 前、Y 左、Z 上，单位 mm（与 [icd.md](icd.md) 第 1 节一致）。z 目前不参与规划，可填目标中心高度 |
+| 坐标系 | **机身系**：原点 = 两轮轴线中点在地面的投影，X 前、Y 左、Z 上，单位 mm（与 [icd.md](../2_interface/icd.md) 第 1 节一致）。z 目前不参与规划，可填目标中心高度 |
 | 相机外参 | 标定相机到机身系的旋转与平移（相机光学系 z 前 / x 右 / y 下 → 机身系 x = z_c、y = −x_c、z = −y_c，再加安装旋转与平移）；外参写进 RK3588 配置文件并留底 |
 | 距离来源 | RGB-D 深度对齐到彩色图后，取检测框（或分割掩码）内深度的**稳健统计**（最近簇的中位数），不能取框内最小值；有效深度点太少时不发位置 |
 | `latency_ms` | 从**图像曝光 / 采集时间戳**到报文发出的时间（用相机驱动给的时间戳，含推理耗时）。位姿历史 64 项（里程计 50–100 Hz 时覆盖 0.6–1.3 s），所以必须 **< 500 ms**，建议 < 200 ms |
@@ -170,7 +170,7 @@ rk3588/
 
 ## 8. 扫图中的角色
 
-RK3588（aarch64，Ubuntu 20.04 以上，厂家 SDK 支持）可以承担录包、离线 SLAM、`tools/map_tool.py build` 和下发，详见 [mapping_plan.md](mapping_plan.md)。
+RK3588（aarch64，Ubuntu 20.04 以上，厂家 SDK 支持）可以承担录包、离线 SLAM、`tools/map_tool.py build` 和下发，详见 [mapping_plan.md](../1_plan/mapping_plan.md)。
 两条纪律：扫图时由录包的机器连雷达 TCP，先关 FPGA 的雷达启动客户端；导航时任何上位机都不能连雷达 TCP（第 3.4 节）。
 
 ## 9. 待决事项（团队决定后写回本文与 roadmap）
@@ -195,7 +195,7 @@ RK3588（aarch64，Ubuntu 20.04 以上，厂家 SDK 支持）可以承担录包�
 | K7 | 切到 R1 专用串口，重复 K1–K6；下发 100 KB 地图 | 结果一致；地图下发 < 3 s、0 校验错 |
 | K8 | 网页全流程（找物、巡检、定点） | 网页状态与 STATUS 一致，任务可启动、取消 |
 
-## 11. 导航组的配套待办（排期见 [roadmap.md](roadmap.md) 第 8 节）
+## 11. 导航组的配套待办（排期见 [roadmap.md](../1_plan/roadmap.md) 第 8 节）
 
 - R-N1：上板验证串口注入与回读（hardware_guide 6.1），这是 R0 的前提。
 - R-N2：`host_uart` 专用主机串口（RTL + testbench + 约束 E16 / D16 + `nav_host.py --link serial:`），完成 R1。

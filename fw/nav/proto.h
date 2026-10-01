@@ -1,5 +1,5 @@
 /* 主机 <-> FPGA 报文（小端）。主机可以是 RK3588（UDP，SFP 口）或 PC（UDP；或板载 USB 串口经
- * uart_bus_bridge 注入邮箱）——报文完全相同，导航不依赖 RK3588。完整定义见 docs/icd.md。
+ * uart_bus_bridge 注入邮箱）——报文完全相同，导航不依赖 RK3588。完整定义见 docs/2_interface/icd.md。
  *
  * 公共头 4 字节: 'N' 'V' | 版本(1) | 类型(1)
  * RK3588 -> FPGA

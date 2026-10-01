@@ -1,6 +1,6 @@
 # 底盘与 RL 运动控制联调说明
 
-本文面向负责轮腿底盘、强化学习（RL）策略和部署适配的团队。本文不重新定义导航寄存器；信号、位宽和协议的唯一真值仍是 [icd.md](icd.md)、[regmap.md](regmap.md) 和 `config/regmap.yaml`。本文说明代码边界、数据流、实现约束和联调顺序。
+本文面向负责轮腿底盘、强化学习（RL）策略和部署适配的团队。本文不重新定义导航寄存器；信号、位宽和协议的唯一真值仍是 [icd.md](../2_interface/icd.md)、[regmap.md](../2_interface/regmap.md) 和 `config/regmap.yaml`。本文说明代码边界、数据流、实现约束和联调顺序。
 
 ## 1. 当前状态与目标
 
@@ -23,9 +23,9 @@ odo_valid, odo_vx, odo_vy, odo_wz
 当前 `gowin/nav_board_top.v` 仍是占位连接：`ch_vx/ch_vy/ch_wz/ch_mode` 未接到底盘，`odo_*` 和 `ext_stop` 也未接真实信号。因此本阶段的第一件事是冻结接口和整车顶层方案，而不是直接把 RL 策略接到导航固件内部。
 
 导航组对底盘组《轮腿车强化学习与 FPGA 部署技术路线》（2026-10-01）的逐条审阅意见、需要调整的点和问题单见 [chassis_review.md](chassis_review.md)；
-引脚与电平见 [pinout.md](pinout.md)；整车联调顺序见 [integration_plan.md](integration_plan.md)。三条前提先记住：
+引脚与电平见 [pinout.md](../2_interface/pinout.md)；整车联调顺序见 [integration_plan.md](../1_plan/integration_plan.md)。三条前提先记住：
 
-- 导航与底盘在**同一块 FPGA、同一个比特流**里，底盘 RTL 进本仓库一起构建（[dev_guide.md](dev_guide.md) 第 3 节）；
+- 导航与底盘在**同一块 FPGA、同一个比特流**里，底盘 RTL 进本仓库一起构建（[dev_guide.md](../3_guide/dev_guide.md) 第 3 节）；
 - 实时控制（平衡、状态估计、推理、执行器）全部在 RTL，不依赖软核；
 - 只有一颗 IMU：博世 BMI088（裸 6 轴芯片，SPI 接 P11 第 1–7 针），由导航组的共享采集与姿态模块读取，同时给导航和底盘（[chassis_review.md](chassis_review.md) 第 3.5 节）。
 
@@ -113,7 +113,7 @@ nav_subsystem ↔ UART/CAN/其他桥接层 ↔ RL 控制器
 | `ch_seq` | 16 bit | — | 输出序号，用于检测丢周期、重复或回绕 |
 
 导航固件每 100 ms 提交一次新指令，节拍之间 `safety_guard` 按斜坡逼近；导航实际会发的范围（前进 ≤ 0.5 m/s、倒车 0.15 m/s、
-角速度 ≤ 1.2 rad/s、纯原地转向）见 [icd.md](icd.md) 第 4 节，RL 必须按这个分布训练。
+角速度 ≤ 1.2 rad/s、纯原地转向）见 [icd.md](../2_interface/icd.md) 第 4 节，RL 必须按这个分布训练。
 
 坐标约定：X 前、Y 左、Z 上。RL 机械坐标不同于此约定时，必须在 `interface/` 适配层显式换轴或取反，不得修改导航算法中的坐标定义。
 
@@ -130,7 +130,7 @@ nav_subsystem ↔ UART/CAN/其他桥接层 ↔ RL 控制器
 
 `odo_*` 必须是已经融合轮速、姿态和接触状态后的机身对地速度。以下内容不能直接作为 `odo_*`：电机转速、单个轮子的切向速度、未经车身俯仰补偿的轮速、导航下发的期望速度、重复发送的上一样本。
 
-导航固件的用法决定了三条硬要求（详见 [icd.md](icd.md) 第 4 节、[chassis_review.md](chassis_review.md) 第 3.6 节）：
+导航固件的用法决定了三条硬要求（详见 [icd.md](../2_interface/icd.md) 第 4 节、[chassis_review.md](chassis_review.md) 第 3.6 节）：
 
 - `odo_wz` 用 IMU 陀螺 z 轴角速度（导航用它积分航向，并在静止时估计零偏），不用左右轮速差；
 - `odo_valid` 固定 50–100 Hz：导航位姿历史 64 项、每个样本一项，1 kHz 时只能覆盖 64 ms，雷达帧与目标的时间补偿会失效；
@@ -178,7 +178,7 @@ SAFE 基址为 `0x5000`，完整定义以 `config/regmap.yaml` 为准：
 - `lp_cfg.caps`；
 - `SAFE.LIM_V/LIM_W/LIM_A`；
 - `config/nav_params.yaml` 或对应生成配置；
-- `docs/platform.md` 和测试记录。
+- `docs/4_design/platform.md` 和测试记录。
 
 ## 6. 安全边界与故障策略
 
@@ -204,7 +204,7 @@ RL 侧不得把未经导航安全接口处理的策略速度直接接到执行�
 
 物理急停必须独立接入 `ext_stop` 或底盘硬件安全回路，并配置 `SAFE.EXT_MASK`。不能把串口命令、软件 `ch_stop` 或 RL 自己的故障标志当作唯一急停。
 
-建议做法（[pinout.md](pinout.md) 第 6 节）：急停按钮直接断电机功率回路，另一组常闭触点接 P11 第 8 针 `ESTOP_N`（低有效、外部上拉，断线即急停），
+建议做法（[pinout.md](../2_interface/pinout.md) 第 6 节）：急停按钮直接断电机功率回路，另一组常闭触点接 P11 第 8 针 `ESTOP_N`（低有效、外部上拉，断线即急停），
 整车顶层同步去抖后接 `ext_stop[0]`，`board_init.py` 打开 `SAFE.EXT_MASK` bit0。驱动使能、电机 / 舵机电源使能用高有效 + 外部下拉，下载比特流和复位期间电机不动。
 
 注意：当前 `ext_stop` 在板级顶层仍为占位，真实按钮接入、极性、去抖和故障安全电平需要在整车顶层中明确并测试。
@@ -218,7 +218,7 @@ RL 侧不得把未经导航安全接口处理的策略速度直接接到执行�
 - `fw/test/hal_sim.c`：主机侧 HAL 和队列模型；
 - `sim/closed_loop/`：导航闭环场景和假雷达；
 - `rtl/plan/safety_guard.v` 及其 testbench；
-- `tools/nav_host.py` / `docs/icd.md`：任务和状态报文，不替代底盘实时接口。
+- `tools/nav_host.py` / `docs/2_interface/icd.md`：任务和状态报文，不替代底盘实时接口。
 
 导航组可以提供两样东西帮助训练与验证：闭环仿真里真实导航固件产生的指令序列（训练与回放的指令分布）；
 以及把底盘 MuJoCo 模型接进导航闭环仿真的适配（`run_cl.py --bot`，底盘侧给出"输入 (vx, wz)、输出真值位姿 / IMU 帧 / 里程计"的步进接口），
@@ -296,4 +296,4 @@ RK3588 经 USB 串口的台架联调（[rk3588_design.md](rk3588_design.md) 第 
 
 更细的交付项与问题单见 [chassis_review.md](chassis_review.md) 第 6、7 节。
 
-联调前必须把接口版本（[icd.md](icd.md) 开头的版本记录）写进双方日志和测试记录。任何改动坐标、单位、周期、超时或急停语义的提交，都要同步更新 ICD 和本说明，并重新跑接口回归。
+联调前必须把接口版本（[icd.md](../2_interface/icd.md) 开头的版本记录）写进双方日志和测试记录。任何改动坐标、单位、周期、超时或急停语义的提交，都要同步更新 ICD 和本说明，并重新跑接口回归。

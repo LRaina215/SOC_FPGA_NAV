@@ -39,22 +39,15 @@ RK3588 / PC --USB 串口（现在）/ P11 串口（计划）/ SFP（可选）-->
 
 ## 文档导航
 
-| 文档 | 给谁 | 内容 |
+文档按用途分在 `docs/` 的五个子目录里，完整目录见 [docs/README.md](docs/README.md)。
+
+| 目录 | 给谁 | 文档 |
 |---|---|---|
-| [docs/roadmap.md](docs/roadmap.md) | 接手开发的人（先读） | 进度、本机环境、踩过的坑、关键参数、BSRAM 预算、已知问题、后续计划 |
-| [docs/dev_guide.md](docs/dev_guide.md) | 要改代码或接入新模块的人 | 唯一真值在哪、改了什么要跑什么、新 RTL 模块接入、地址空间、固件约束、协作规范 |
-| [docs/integration_plan.md](docs/integration_plan.md) | 全体 | 系统组成、接口矩阵、FPGA 资源预算、联调里程碑 I0–I9、安全链、风险 |
-| [docs/icd.md](docs/icd.md) | 接口实现者 | 雷达、主机报文、底盘、IMU、软核总线的接口定义（唯一真值） |
-| [docs/regmap.md](docs/regmap.md) | RTL / 固件 | 寄存器表（由 `config/regmap.yaml` 生成） |
-| [docs/pinout.md](docs/pinout.md) | 硬件、底盘组 | 引脚、电平（P9 跳线）、P11 建议分配、安全电平设计 |
-| [docs/chassis_integration.md](docs/chassis_integration.md) | 底盘 / RL 组 | 接口契约、RL 代码分层、安全边界、联调顺序 |
-| [docs/chassis_review.md](docs/chassis_review.md) | 底盘 / RL 组 | 对《轮腿车强化学习与 FPGA 部署技术路线》的审阅意见、调整要求、问题单 |
-| [docs/rk3588_design.md](docs/rk3588_design.md) | RK3588 组 | 职责边界、链路方案、TARGET 规范、任务层、网页、联调步骤 |
-| [docs/mapping_plan.md](docs/mapping_plan.md) | 导航 / SLAM | 量测建图与 SLAM 扫图两条路线、约定、任务分解 |
-| [docs/platform.md](docs/platform.md) | 全体 | 机器人 / 传感器 / 场地参数（已知 / 假设 / 待测）与场地搭法 |
-| [docs/hardware_guide.md](docs/hardware_guide.md) | 硬件同学 | 实机搭建与测试手册：环境、烧录、初始化、逐个外设接入、实地测试、排障 |
-| [docs/board_bringup.md](docs/board_bringup.md) | 开发者 | 上板要点、IP 生成、有图模式与 PC 单独操作 |
-| [docs/algorithms.md](docs/algorithms.md) | 算法开发者 | 闭环仿真平台、算法改进记录、批量评测结果 |
+| `docs/1_plan/` 进度与计划 | 接手的人先读 roadmap | [roadmap](docs/1_plan/roadmap.md)、[integration_plan](docs/1_plan/integration_plan.md)（整车联调）、[mapping_plan](docs/1_plan/mapping_plan.md)（扫图） |
+| `docs/2_interface/` 接口（唯一真值） | 接口实现者 | [icd](docs/2_interface/icd.md)（接口定义）、[regmap](docs/2_interface/regmap.md)（寄存器表，自动生成）、[pinout](docs/2_interface/pinout.md)（引脚与接线） |
+| `docs/3_guide/` 操作手册 | 上板、改代码的人 | [hardware_guide](docs/3_guide/hardware_guide.md)（实机搭建与测试）、[board_bringup](docs/3_guide/board_bringup.md)（上板要点）、[dev_guide](docs/3_guide/dev_guide.md)（开发规范） |
+| `docs/4_design/` 设计与参数 | 算法开发者 | [algorithms](docs/4_design/algorithms.md)（仿真与算法记录）、[platform](docs/4_design/platform.md)（机器人 / 传感器 / 场地参数） |
+| `docs/5_teams/` 与其他组对接 | 底盘 / RL 组、RK3588 组 | [chassis_integration](docs/5_teams/chassis_integration.md)、[chassis_review](docs/5_teams/chassis_review.md)、[rk3588_design](docs/5_teams/rk3588_design.md)、`reference/`（其他组原始资料） |
 
 ## 目录
 
@@ -99,7 +92,7 @@ python tools/nav_host.py --link uart:COM5 map field.nvmp    # PC 下发地图；
   轨迹评估、安全限幅、网口协议栈、百兆 RGMII MAC（上升沿 / 下降沿两种接收采样）、串口桥、软核 SoC、`nav_subsystem` 端到端。
 - 固件主机测试：定点数学、协议、位姿、A*、C 版轨迹评估与模型逐位一致、闭环（绕障、巡航、探索找目标并跟踪、急停）；
   有图模式（`test_prior.py`）、方向表生成（`test_lidar_cal.py`，与模型差 ≤ 1 LSB）、雷达启动 TCP 客户端（`test_xt_link.py`，对假雷达 20 个场景）。
-- 闭环仿真（5 m 场地、两轮自平衡、整车标定的车体、雷达正装下俯 10°，2026-10-01，[docs/algorithms.md](docs/algorithms.md) 第 10 节）：
+- 闭环仿真（5 m 场地、两轮自平衡、整车标定的车体、雷达正装下俯 10°，2026-10-01，[docs/4_design/algorithms.md](docs/4_design/algorithms.md) 第 10 节）：
   10 用例 × 5 种子 50/50 到达、0 碰撞，无图定位 xy RMS 均值 2.7 cm、有图 2.2 cm，地形误报均值 ≤ 1.9%。
 - 板级（ACX750，50 MHz）：软核 + 导航固件 + 完整点云链路 + 百兆 MAC + 雷达口原始帧通道上板运行；真雷达直连 10 帧/秒、坏帧 0，
   软核自动启动雷达并在掉电重启后恢复。2026-10-01 用 10° 比特流补测：雷达冷启动复测 4 次、断流重启、PC 经 USB 串口下发报文 / 读状态（含地图包与 TARGET）、
@@ -107,9 +100,9 @@ python tools/nav_host.py --link uart:COM5 map field.nvmp    # PC 下发地图；
 
 ## 实物到货后
 
-按 [docs/hardware_guide.md](docs/hardware_guide.md) 逐步搭建与测试（环境、烧录、上电初始化 `tools/board_init.py`、IMU / 雷达 / 底盘接入、实地测试、故障排查）。
+按 [docs/3_guide/hardware_guide.md](docs/3_guide/hardware_guide.md) 逐步搭建与测试（环境、烧录、上电初始化 `tools/board_init.py`、IMU / 雷达 / 底盘接入、实地测试、故障排查）。
 
 ## 未完成 / 需实机确认
 
-见 [docs/roadmap.md](docs/roadmap.md) 第 7、8 节与 [docs/integration_plan.md](docs/integration_plan.md)。主要是：BMI088 的 SPI 采集与姿态估计；底盘整车顶层与接口冻结（第一版控制器要能转向）；
+见 [docs/1_plan/roadmap.md](docs/1_plan/roadmap.md) 第 7、8 节与 [docs/1_plan/integration_plan.md](docs/1_plan/integration_plan.md)。主要是：BMI088 的 SPI 采集与姿态估计；底盘整车顶层与接口冻结（第一版控制器要能转向）；
 雷达左右方向、深度定义与装车高度的板上核对；FPGA 资源（底盘、视频合入前要先压缩 BSRAM）；RK3588 链路；真实场地地图。

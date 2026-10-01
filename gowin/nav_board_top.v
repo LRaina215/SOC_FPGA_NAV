@@ -8,7 +8,7 @@
 // 调试：板载 USB 串口（L21/M21）接 uart_bus_bridge，PC 用 tools/nav_uart.py 读写全部寄存器；
 //       地址 0xE000–0xFFFF 转到软核调试口（装载程序、读控制台）。
 // 软核：nav_soc（PicoRV32，片上 RAM 128 KB，上电运行 fw/build/rv/nav 的镜像），经 nav_bus_arb m0 访问导航子系统。
-// IP 生成方法见 docs/board_bringup.md。
+// IP 生成方法见 docs/3_guide/board_bringup.md。
 `include "soc_cfg.vh"          // 构建脚本生成：`define NAV_SOC_RAM_KB（片上 RAM 大小）
 module nav_board_top (
     input  wire       clk50,          // W19

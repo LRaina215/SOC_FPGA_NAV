@@ -17,7 +17,7 @@ import sim_world as sw  # noqa: E402
 
 
 class Robot:
-    # 两轮自平衡轮腿（轮径 65 mm）；能力未实测，按估计（docs/platform.md）：只靠轮子能滚过约 2 cm，坡度 12°
+    # 两轮自平衡轮腿（轮径 65 mm）；能力未实测，按估计（docs/4_design/platform.md）：只靠轮子能滚过约 2 cm，坡度 12°
     step_climb = 0.02          # 可跨越台阶高度 m
     slope_max_deg = 12.0       # 可通行坡度
     # 实车（tools/robot_calib.py 由整车 URDF 标定）：宽 332 mm（腿在轮子外侧）、轮轴前 127 mm / 后 118 mm，
@@ -163,7 +163,7 @@ def scene_loop():
 
 
 def scene_field5():
-    """5 m × 5 m 自建场地（docs/platform.md 的搭建建议）：墙高 0.5 m、快递箱（相互间距 >= 50 cm，含斜向）、55 cm 窄通道（车宽 33 cm）、
+    """5 m × 5 m 自建场地（docs/4_design/platform.md 的搭建建议）：墙高 0.5 m、快递箱（相互间距 >= 50 cm，含斜向）、55 cm 窄通道（车宽 33 cm）、
     8° 上坡 + 平台 + 12° 下坡、1.5 cm 门槛条（可跨）、6 cm 路沿（不可跨）、20° 陡坡（不可通行）。"""
     s = Scene(size=(5.0, 5.0), origin=(-0.5, -2.5))
     s.walls(t=0.05, h=0.5)

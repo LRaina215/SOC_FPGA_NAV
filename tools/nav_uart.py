@@ -2,7 +2,7 @@
 
 用法:
   python tools/nav_uart.py COM5 id                    读 SYS.ID / VERSION / TIME_US
-  python tools/nav_uart.py COM5 rd MAP_STAT           按寄存器名读（名字见 docs/regmap.md，BLOCK_REG）
+  python tools/nav_uart.py COM5 rd MAP_STAT           按寄存器名读（名字见 docs/2_interface/regmap.md，BLOCK_REG）
   python tools/nav_uart.py COM5 wr SAFE_CTRL 1        写
   python tools/nav_uart.py COM5 stat                  打印网口/雷达/地图统计
   python tools/nav_uart.py COM5 map out.png           读出前台代价图并保存为图片（需 matplotlib）

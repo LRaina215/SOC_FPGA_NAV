@@ -1,7 +1,7 @@
 # 整车 FPGA 引脚、电平与连接器分配
 
 版本 v0.2（2026-10-01）。导航已用的引脚来自当前比特流的布线报告，是实测确认的；IMU、底盘、主机串口部分是**建议分配**，
-等底盘组确定驱动板与编码器接口后冻结（[chassis_review.md](chassis_review.md) 第 3.7 节）。任何改动先改本文件，再改约束文件。
+等底盘组确定驱动板与编码器接口后冻结（[chassis_review.md](../5_teams/chassis_review.md) 第 3.7 节）。任何改动先改本文件，再改约束文件。
 
 | 版本 | 改动 |
 |---|---|
@@ -58,7 +58,7 @@ P11（2×20 排针）的针号与 GPIO0 编号：1–10 针 = GPIO0_0..9，11 �
 | 6 | GPIO0_5 | F20 | 测试脚 CLKTEST | 导航（IMU） | `imu_int_gyr`：陀螺数据就绪 INT3 → FPGA（输入） |
 | 7 | GPIO0_6 | F18 | — | 导航（IMU） | `imu_cs_gyr_n`：陀螺片选 CSB2 |
 | 8 | GPIO0_7 | E18 | — | 整车安全 | **物理急停 `ESTOP_N`**（低有效，常闭触点接地，外部 10 kΩ 上拉到 3.3 V）→ `ext_stop[0]` |
-| 9 | GPIO0_8 | E16 | — | 导航预留 | 主机串口 RX：RK3588 TX → FPGA（[rk3588_design.md](rk3588_design.md) 方案 R1） |
+| 9 | GPIO0_8 | E16 | — | 导航预留 | 主机串口 RX：RK3588 TX → FPGA（[rk3588_design.md](../5_teams/rk3588_design.md) 方案 R1） |
 | 10 | GPIO0_9 | D16 | — | 导航预留 | 主机串口 TX：FPGA → RK3588 RX |
 | 11 | 5 V | — | — | 电源 | 小功率 5 V |
 | 12 | GND | — | — | 地 | |
@@ -133,9 +133,9 @@ BMI088 是两颗芯片（加速度计、陀螺仪）放在一个封装里：SCK�
 
 - 换别的小板时，引脚名可能不一样（SCL / SDA 也可能就是 SCK / SDI），以小板的原理图为准；没有引出 PS、或板上已把 PS 接到 VDDIO 的板子只能走 I2C，要先告诉导航组。
 - 线尽量短（建议 20 cm 以内）、和电机线分开走；SPI 5 MHz 在杜邦线上一般没问题，线长或干扰大时降到 2 MHz。
-- **当前比特流还是旧的 IMU 串口**（第 1 / 2 针 = `imu_rxd` / `imu_txd`，按 WIT 协议解析）。改成 SPI 要新写 RTL、改约束、改固件（[roadmap.md](roadmap.md) 第 8 节 N5），
+- **当前比特流还是旧的 IMU 串口**（第 1 / 2 针 = `imu_rxd` / `imu_txd`，按 WIT 协议解析）。改成 SPI 要新写 RTL、改约束、改固件（[roadmap.md](../1_plan/roadmap.md) 第 8 节 N5），
   在那之前 BMI088 接上也读不到数据。
-- 寄存器配置、初始化步骤、姿态估计与两路输出见 [chassis_review.md](chassis_review.md) 第 3.5 节与 [icd.md](icd.md) 第 5 节。
+- 寄存器配置、初始化步骤、姿态估计与两路输出见 [chassis_review.md](../5_teams/chassis_review.md) 第 3.5 节与 [icd.md](icd.md) 第 5 节。
 
 ## 6. 安全相关的电平设计
 
@@ -145,7 +145,7 @@ BMI088 是两颗芯片（加速度计、陀螺仪）放在一个封装里：SCK�
   - 舵机 PWM 线串 100–330 Ω 电阻并对地下拉；PWM / DIR 型驱动板要确认"使能无效时忽略 PWM"；
   - 驱动板故障输出用开漏 + 上拉，断线读到"故障"。
 - 物理急停：按钮直接断**电机功率回路**，同时另一组常闭触点接 P11 第 8 针（`ESTOP_N`）通知 FPGA；断线 = 急停（故障安全）。
-- 软件急停（`SAFE.CTRL.ESTOP`、主机 `mode estop`）只让速度归零、保持平衡，不能代替物理急停（[chassis_integration.md](chassis_integration.md) 第 6 节）。
+- 软件急停（`SAFE.CTRL.ESTOP`、主机 `mode estop`）只让速度归零、保持平衡，不能代替物理急停（[chassis_integration.md](../5_teams/chassis_integration.md) 第 6 节）。
 - 按 S0 复位整片逻辑：底盘模块也会复位，平衡中的车会倒。实车测试时只用 `nav_uart.py … reset`（只动软核），不按 S0。
 
 ## 7. 板上其他接口（导航不用，留给其他模块）
@@ -167,4 +167,4 @@ BMI088 是两颗芯片（加速度计、陀螺仪）放在一个封装里：SCK�
 2. 改约束文件（现为 `gowin/nav_board.cst`，整车顶层建立后为整车约束），端口名与顶层一致；
 3. `python gowin/syn/syn.py --board …` 后核对布线报告第 7 节：每个端口的管脚、Bank、方向、IO 类型；
 4. 上电前用万用表通断档核对线束，量 TP8 = 3.3 V；
-5. 同步 [hardware_guide.md](hardware_guide.md) 的接线表。
+5. 同步 [hardware_guide.md](../3_guide/hardware_guide.md) 的接线表。

@@ -1,4 +1,4 @@
-/* 匹配定位（SLF：结构似然场，硬件打分见 model/slf_match.py 与 docs/algorithms.md 第 6 节）。
+/* 匹配定位（SLF：结构似然场，硬件打分见 model/slf_match.py 与 docs/4_design/algorithms.md 第 6 节）。
  *
  * 每帧流程（先融合、后匹配——帧只需流过一遍）：
  *   1. 按预测位姿提交帧：高程图融合，同时硬件提取竖直结构点存入点缓冲；

@@ -5,7 +5,7 @@
 //   串口注入：PC 经 uart_bus_bridge 逐字写 INJ_DATA、写 INJ_LEN 后 INJ_GO，报文按与网口相同的方式入队
 //         （网口报文不在途时开始；注入期间开始的网口报文整包丢弃并计数）——导航不依赖网口/RK3588。
 //   发送回读：发送缓冲的影子副本可按字读回（txb_*），tx_seq 为已发送报文数，PC 经串口取状态/应答用。
-// 报文内容（目标点、目标坐标、状态）的格式由固件定义，见 docs/icd.md。
+// 报文内容（目标点、目标坐标、状态）的格式由固件定义，见 docs/2_interface/icd.md。
 module host_mbx #(
     parameter integer RX_AW  = 12,     // 接收缓冲字节地址位宽
     parameter integer DQ_AW  = 4,      // 描述符队列深度 2^DQ_AW

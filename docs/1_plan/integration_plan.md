@@ -1,8 +1,8 @@
 # 全系统联调计划与关键点
 
 本文是整车所有功能联调的总计划：每个模块谁负责、接口在哪份文档、FPGA 资源怎么分、按什么顺序联调、每一步怎样算通过、
-最容易出问题的地方在哪里。具体接口以 [icd.md](icd.md) 为准；底盘细节见 [chassis_integration.md](chassis_integration.md) 与
-[chassis_review.md](chassis_review.md)，RK3588 见 [rk3588_design.md](rk3588_design.md)，引脚见 [pinout.md](pinout.md)，扫图见 [mapping_plan.md](mapping_plan.md)。
+最容易出问题的地方在哪里。具体接口以 [icd.md](../2_interface/icd.md) 为准；底盘细节见 [chassis_integration.md](../5_teams/chassis_integration.md) 与
+[chassis_review.md](../5_teams/chassis_review.md)，RK3588 见 [rk3588_design.md](../5_teams/rk3588_design.md)，引脚见 [pinout.md](../2_interface/pinout.md)，扫图见 [mapping_plan.md](mapping_plan.md)。
 
 ## 1. 系统组成与现状（2026-10-01）
 
@@ -87,7 +87,7 @@ OV5640 ──摄像头口──>│ 视频：DDR3 帧缓冲 → HDMI（叠加姿
 
 ## 5. 联调顺序与里程碑
 
-每一步的前提是上一步通过；同一步里的子项可以并行。每一步的结果按 [hardware_guide.md](hardware_guide.md) 附录 B 记录。
+每一步的前提是上一步通过；同一步里的子项可以并行。每一步的结果按 [hardware_guide.md](../3_guide/hardware_guide.md) 附录 B 记录。
 
 | 里程碑 | 内容 | 通过标准 | 主要负责 |
 |---|---|---|---|
@@ -115,7 +115,7 @@ OV5640 ──摄像头口──>│ 视频：DDR3 帧缓冲 → HDMI（叠加姿
 
 ### 6.2 BMI088 ↔ FPGA（导航与底盘共用）
 
-前提：`imu_bmi088` / `imu_att` 已写好并上板（roadmap N5）；接线按 [pinout.md](pinout.md) 第 5 节。
+前提：`imu_bmi088` / `imu_att` 已写好并上板（roadmap N5）；接线按 [pinout.md](../2_interface/pinout.md) 第 5 节。
 
 | 检查 | 方法 | 通过标准 |
 |---|---|---|
@@ -131,7 +131,7 @@ OV5640 ──摄像头口──>│ 视频：DDR3 帧缓冲 → HDMI（叠加姿
 
 ### 6.3 导航 ↔ 底盘
 
-接口契约与 RL 代码分层见 [chassis_integration.md](chassis_integration.md)，对底盘组技术路线的具体调整要求见 [chassis_review.md](chassis_review.md)。联调时最容易出错的点：
+接口契约与 RL 代码分层见 [chassis_integration.md](../5_teams/chassis_integration.md)，对底盘组技术路线的具体调整要求见 [chassis_review.md](../5_teams/chassis_review.md)。联调时最容易出错的点：
 
 1. 符号：`vx > 0` 前进、`wz > 0` 从上往下看逆时针（左转）；`odo_*` 同一约定。架空先测方向，再测比例。
 2. 里程计口径：`odo_vx` 是**对地**速度（轮速已扣掉机身俯仰角速度），`odo_wz` 用陀螺 z 轴角速度；静止时 `odo_vx` 必须给精确的 0（导航用它估计陀螺零偏）。
@@ -144,7 +144,7 @@ OV5640 ──摄像头口──>│ 视频：DDR3 帧缓冲 → HDMI（叠加姿
 
 ### 6.4 导航 ↔ RK3588
 
-见 [rk3588_design.md](rk3588_design.md) 第 10 节 K0–K8。关键是：只发任务、不发速度；TARGET 用机身系、`latency_ms` < 200 ms；导航 STATUS 是网页唯一的位姿来源。
+见 [rk3588_design.md](../5_teams/rk3588_design.md) 第 10 节 K0–K8。关键是：只发任务、不发速度；TARGET 用机身系、`latency_ms` < 200 ms；导航 STATUS 是网页唯一的位姿来源。
 
 ### 6.5 视频 ↔ 导航
 
@@ -181,7 +181,7 @@ OV5640 ──摄像头口──>│ 视频：DDR3 帧缓冲 → HDMI（叠加姿
 - 接口版本号 `ICD vX.Y`：X 变 = 语义不兼容（坐标、单位、位宽、周期、急停语义），Y 变 = 只增字段。写在 icd.md 开头的版本记录里。
 - 比特流命名：`nav_<内容>_<日期>.fs`（例如 `nav_fw_128k_d1_10deg_20261001.fs`），并在 hardware_guide 4.1 节登记"是否已上板验证"。
 - 每个里程碑（第 5 节）通过时，在 roadmap 第 1 节写一行结论与日期，附测试记录路径。
-- 改动接口的提交必须同时改真值文档与相关说明文档（[dev_guide.md](dev_guide.md) 第 7 节）。
+- 改动接口的提交必须同时改真值文档与相关说明文档（[dev_guide.md](../3_guide/dev_guide.md) 第 7 节）。
 
 ## 10. 与赛题要求的对应
 

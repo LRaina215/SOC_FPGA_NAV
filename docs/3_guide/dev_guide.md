@@ -2,19 +2,19 @@
 
 本文写给要在本仓库里改代码或接入新模块的人（导航组新成员、底盘 / RL 组、视频组、RK3588 组）。
 它不重复接口细节，只说明：每样东西的唯一真值在哪里、改了什么要跑什么、新模块怎样接进同一个工程、哪些约束不能碰。
-环境安装见 [hardware_guide.md](hardware_guide.md) 第 2 节，本机工具路径见 [roadmap.md](roadmap.md) 第 2 节。
+环境安装见 [hardware_guide.md](hardware_guide.md) 第 2 节，本机工具路径见 [roadmap.md](../1_plan/roadmap.md) 第 2 节。
 
 ## 1. 先认清"唯一真值"
 
 | 内容 | 唯一来源 | 由它生成 / 引用它的 |
 |---|---|---|
-| 寄存器地址、字段、复位值 | `config/regmap.yaml` | `tools/gen_config.py` 生成 `rtl/regs/nav_regs_map.vh`、`rtl/regs/nav_subsystem_rf.vh`、`rtl/regs/nav_regfile.v`、`fw/include/nav_regs_map.h`、`model/nav_regs_map.py`、`docs/regmap.md` |
+| 寄存器地址、字段、复位值 | `config/regmap.yaml` | `tools/gen_config.py` 生成 `rtl/regs/nav_regs_map.vh`、`rtl/regs/nav_subsystem_rf.vh`、`rtl/regs/nav_regfile.v`、`fw/include/nav_regs_map.h`、`model/nav_regs_map.py`、`docs/2_interface/regmap.md` |
 | 结构参数（位宽、存储深度、时钟） | `config/nav_params.yaml` | 生成 `rtl/regs/nav_params.vh`、`fw/include/nav_params.h`、`model/nav_params.py`，以及正弦表 `rtl/plan/sin_lut.hex`、`fw/include/nav_sin_lut.h` |
-| 外部接口语义（雷达、主机报文、底盘、IMU） | [icd.md](icd.md) + `config/regmap.yaml` | 其他文档只能引用，不能另立定义 |
-| 实物参数（车体、传感器、安装、场地） | [platform.md](platform.md) | 固件 / 仿真里的对应常量（表的最后一列） |
-| 引脚与电平 | `gowin/nav_board.cst` + [pinout.md](pinout.md) | 板级顶层 `gowin/nav_board_top.v` |
+| 外部接口语义（雷达、主机报文、底盘、IMU） | [icd.md](../2_interface/icd.md) + `config/regmap.yaml` | 其他文档只能引用，不能另立定义 |
+| 实物参数（车体、传感器、安装、场地） | [platform.md](../4_design/platform.md) | 固件 / 仿真里的对应常量（表的最后一列） |
+| 引脚与电平 | `gowin/nav_board.cst` + [pinout.md](../2_interface/pinout.md) | 板级顶层 `gowin/nav_board_top.v` |
 | RTL 文件清单 | `sim/tests.py`（`ALL_RTL`、`SOC`） | `sim/run.py`（xsim 回归）与 `gowin/syn/syn.py`（综合）共用 |
-| 进度、已知问题、计划 | [roadmap.md](roadmap.md) | 其余规划文档（[integration_plan.md](integration_plan.md) 等）展开细节 |
+| 进度、已知问题、计划 | [roadmap.md](../1_plan/roadmap.md) | 其余规划文档（[integration_plan.md](../1_plan/integration_plan.md) 等）展开细节 |
 
 生成文件（上表第三列）**不要手改**，改 yaml 后运行 `python tools/gen_config.py`。
 
@@ -25,7 +25,7 @@
 | `config/*.yaml` | `gen_config.py` → `sim/run.py` → `fw/test/build.py` | 生成文件一并提交 |
 | `rtl/` | `sim/run.py`（15 项，约 10 分钟，需要 Vivado xsim）→ `gowin/syn/syn.py --board …` | 看布线后时序（当前余量只有约 0.1 MHz）与 BSRAM |
 | `fw/` | `fw/test/build.py`（主机测试，会重编 `nav_fw.dll`）→ `fw/bsp/build_rv.py` | 涉及雷达启动 / 有图 / 方向表时再跑对应的 `sim/closed_loop/test_*.py` |
-| `model/`、`sim/closed_loop/`、定位 / 规划参数 | `sim/closed_loop/batch.py --tag <名字> -j 10`（约 30 分钟） | 与上一次批量结果逐用例对比，结论记进 [algorithms.md](algorithms.md) |
+| `model/`、`sim/closed_loop/`、定位 / 规划参数 | `sim/closed_loop/batch.py --tag <名字> -j 10`（约 30 分钟） | 与上一次批量结果逐用例对比，结论记进 [algorithms.md](../4_design/algorithms.md) |
 | `gowin/*.cst`、板级顶层 | `syn.py --board` | 核对 `impl/pnr/nav_board_top.rpt.txt` 第 7 节（Pinout by Port Name）的管脚与 Bank |
 | 文档 | 无构建 | 涉及接口 / 参数的，先改真值文件再改说明文档 |
 
@@ -45,12 +45,12 @@
    - 厂家加密 IP（PLL、DDR3、1G Serial Ethernet 等）放 `gowin/ip/`，在 `gowin/ip/ip_files.txt` 登记，用顶层宏（`NAV_USE_*`）开关，没有 IP 时工程仍能构建。
 3. **登记文件清单**：在 `sim/tests.py` 里加到对应列表（综合脚本直接用 `ALL_RTL`，不在清单里的文件不会被综合），并加一个 `TESTS["tb_xxx"]` 条目。
 4. **逐位参考模型**：算法类模块（推理核、滤波、编码器测速）在 `model/` 写 Python 定点参考，`sim/gen/gen_xxx.py` 生成激励与期望值，testbench 逐位比较——这是本仓库所有 RTL 的验收方式。
-5. **资源先报预算**：接入前在 [integration_plan.md](integration_plan.md) 第 4 节登记 BSRAM / DSP / 逻辑 / 引脚 / 时钟需求。当前板级 BSRAM 已用 324 / 340。
+5. **资源先报预算**：接入前在 [integration_plan.md](../1_plan/integration_plan.md) 第 4 节登记 BSRAM / DSP / 逻辑 / 引脚 / 时钟需求。当前板级 BSRAM 已用 324 / 340。
 6. **跑 `python sim/run.py tb_xxx`**，再跑全量回归和 `syn.py --board`，确认导航原有 15 项回归不受影响、时序不出现负 slack。
 
 ## 4. 寄存器与地址空间
 
-软核与调试串口桥共用一条 32 位数据、16 位字节地址的总线（[icd.md](icd.md) 第 6 节）。当前占用：
+软核与调试串口桥共用一条 32 位数据、16 位字节地址的总线（[icd.md](../2_interface/icd.md) 第 6 节）。当前占用：
 
 | 地址 | 内容 | 地址 | 内容 |
 |---|---|---|---|
@@ -89,12 +89,12 @@
 - 仓库：`https://github.com/LRaina215/SOC_FPGA_NAV.git`，主分支 `main`。网络不稳时间隔 20–30 s 重试推送。
 - 提交说明：第一行写结果（中文），下面列改动要点与验证结果（回归几项通过、板级 BSRAM / 时序、实测数据）。
 - 不提交：构建输出（`fw/build/`、`gowin/syn/build*/`、`sim/build/`）、厂家 SDK 代码（没有许可证，参考副本放 `D:\tools\xtsdk_ref`）、授权文件。
-- **接口变更规则**：改坐标、单位、位宽、周期、超时、急停语义之一，必须同时改 [icd.md](icd.md)、`config/regmap.yaml`、
-  [chassis_integration.md](chassis_integration.md)（涉及底盘时）并重跑接口回归，提交说明里写明接口版本号（见 [integration_plan.md](integration_plan.md) 第 9 节）。
+- **接口变更规则**：改坐标、单位、位宽、周期、超时、急停语义之一，必须同时改 [icd.md](../2_interface/icd.md)、`config/regmap.yaml`、
+  [chassis_integration.md](../5_teams/chassis_integration.md)（涉及底盘时）并重跑接口回归，提交说明里写明接口版本号（见 [integration_plan.md](../1_plan/integration_plan.md) 第 9 节）。
 - Windows 上会看到 `CRLF will be replaced by LF` 警告，属换行格式提示，`.gitattributes` 已统一为 LF。
 
 ## 8. 遇到问题先查
 
-- [roadmap.md](roadmap.md) 第 4 节（踩过的坑，21 条）与第 7 节（已知问题）；
+- [roadmap.md](../1_plan/roadmap.md) 第 4 节（踩过的坑，21 条）与第 7 节（已知问题）；
 - [hardware_guide.md](hardware_guide.md) 第 9 节（上板故障排查表）；
-- [algorithms.md](algorithms.md)（每个算法参数为什么是现在的值）。
+- [algorithms.md](../4_design/algorithms.md)（每个算法参数为什么是现在的值）。

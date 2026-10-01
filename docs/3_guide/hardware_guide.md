@@ -1,8 +1,8 @@
 # 实机搭建与测试手册
 
 本手册给实物到货后的阶段用：从一台新电脑装环境开始，到烧录、逐个接入外设、实地导航测试。按章节顺序做，
-每一步都写了"通过标准"；不通过时先查第 9 节，不要跳到下一步。算法与接口细节分别见 [icd.md](icd.md)、[regmap.md](regmap.md)、
-[platform.md](platform.md)，进度见 [roadmap.md](roadmap.md)。
+每一步都写了"通过标准"；不通过时先查第 9 节，不要跳到下一步。算法与接口细节分别见 [icd.md](../2_interface/icd.md)、[regmap.md](../2_interface/regmap.md)、
+[platform.md](../4_design/platform.md)，进度见 [roadmap.md](../1_plan/roadmap.md)。
 
 约定：
 - 命令在 `nav/` 目录下用 Git Bash 执行。下面两个变量每次打开终端先设一次（路径按本机安装位置改）：
@@ -25,11 +25,11 @@
 | 雷达网口（RJ45） | **已上板实测收发**：自写百兆 MAC（`rtl/net/rgmii_mac100.v`），不需要生成 IP；接真雷达 10 帧/秒、坏帧 0 | 第 6.3 节只做检查 |
 | 雷达启动（软核 TCP 客户端） | **真雷达上板通过**：雷达直连板子，上电约 3.3 s 自动出流；雷达刚启动时应答 OK 后约 3.3 s 才出第一帧，客户端留 5 s 保护，2026-10-01 冷启动复测 4 次都只启动一次；断流 2 s 后自动重新启动 | 第 6.4 节第四步只需插线 |
 | 雷达方向表 | 固件上电后按内参自动生成（实测约 1.6 s，控制台打印 `lidar LUT ready`） | 不需要 PC 生成、烧写 |
-| XT-M60 帧格式 | 已按厂家 SDK 源码实现并测试（[icd.md](icd.md) 第 2 节）；厂家上位机能解析 `fake_lidar.py` 发的包 | 第 6.4 节接真雷达确认 |
-| 片上存储（BSRAM） | 雷达链路、百兆 MAC、雷达口原始帧通道都接上后布线后 324 / 340（96%），逐模块见 [roadmap.md](roadmap.md) 第 6 节 | 再加大模块要先压缩 |
-| IMU（博世 BMI088） | 型号已确认（SPI、只出原始数据）；SPI 采集与姿态模块还没写（[roadmap.md](roadmap.md) N5），比特流里还是过渡的串口 / WIT 通路 | 第 6.2 节要等 N5 完成；现在只能先按 pinout v0.2 接好线 |
-| 底盘 | 板级顶层里速度输出 `ch_*` / 里程计输入 `odo_*` **没有接到任何引脚**；底盘组技术路线已审阅（[chassis_review.md](chassis_review.md)） | 第 6.6 节需要先完成整车顶层 |
-| SFP 口 / RK3588 | SFP IP 未生成；RK3588 可先经板载 USB 串口联调（[rk3588_design.md](rk3588_design.md) 方案 R0） | 不影响基础导航，PC 用 USB 串口代替 |
+| XT-M60 帧格式 | 已按厂家 SDK 源码实现并测试（[icd.md](../2_interface/icd.md) 第 2 节）；厂家上位机能解析 `fake_lidar.py` 发的包 | 第 6.4 节接真雷达确认 |
+| 片上存储（BSRAM） | 雷达链路、百兆 MAC、雷达口原始帧通道都接上后布线后 324 / 340（96%），逐模块见 [roadmap.md](../1_plan/roadmap.md) 第 6 节 | 再加大模块要先压缩 |
+| IMU（博世 BMI088） | 型号已确认（SPI、只出原始数据）；SPI 采集与姿态模块还没写（[roadmap.md](../1_plan/roadmap.md) N5），比特流里还是过渡的串口 / WIT 通路 | 第 6.2 节要等 N5 完成；现在只能先按 pinout v0.2 接好线 |
+| 底盘 | 板级顶层里速度输出 `ch_*` / 里程计输入 `odo_*` **没有接到任何引脚**；底盘组技术路线已审阅（[chassis_review.md](../5_teams/chassis_review.md)） | 第 6.6 节需要先完成整车顶层 |
+| SFP 口 / RK3588 | SFP IP 未生成；RK3588 可先经板载 USB 串口联调（[rk3588_design.md](../5_teams/rk3588_design.md) 方案 R0） | 不影响基础导航，PC 用 USB 串口代替 |
 | 时钟 | 板级 50 MHz（未用 PLL），布线后时序余量很小 | 改 RTL 后注意看时序报告 |
 
 另外，**固件目前不会自己设置下面几个寄存器**，每次上电后要用 `tools/board_init.py` 写一次（第 5 节）：
@@ -48,7 +48,7 @@
 | 底盘 | 轮腿底盘、架空支架（轮子离地） | 首次通电动作必须架空 |
 | 安全 | 电机电源的物理急停开关 / 断电开关 | 实车测试时必须在手边 |
 | 测量 | 万用表、卷尺、手机水平仪 App | 测雷达安装高度与俯仰角 |
-| 场地 | 纸板 / 木板围墙、快递箱、可调坡道与台阶 | 搭法见 [platform.md](platform.md) 第 3 节 |
+| 场地 | 纸板 / 木板围墙、快递箱、可调坡道与台阶 | 搭法见 [platform.md](../4_design/platform.md) 第 3 节 |
 | 可选 | 电口 SFP 模块（1000BASE-X 主机侧、仅千兆）、RK3588 | 只在第 6.9 节用 |
 
 ## 2. 电脑环境（换电脑时从这里开始）
@@ -193,7 +193,7 @@ $PY tools/board_init.py COM11 --no-safe --mount-z 155
 按了复位键 S0 或者重新下载 / 断电后，都要重新运行一次。
 
 `board_init.py` 目前只写 `LIDAR_CTRL`、`IMU_BAUD_DIV`、`MATCH_MOUNT_Z`、`SAFE_LIM_V/W`、`SAFE_CTRL`。速度斜坡 `SAFE_LIM_A`、输出节拍 `SAFE_TICK_US`、
-看门狗 `SAFE_WD_US`、外部急停使能 `SAFE_EXT_MASK` 保持复位值（每节拍 2 mm/s / 3 mrad/s、1 ms、200 ms、全关）；底盘接入时要按底盘能力设置（[chassis_review.md](chassis_review.md) 第 3.4 节），
+看门狗 `SAFE_WD_US`、外部急停使能 `SAFE_EXT_MASK` 保持复位值（每节拍 2 mm/s / 3 mrad/s、1 ms、200 ms、全关）；底盘接入时要按底盘能力设置（[chassis_review.md](../5_teams/chassis_review.md) 第 3.4 节），
 在脚本补上之前用 `nav_uart.py COM11 wr SAFE_LIM_A <值>` 等手工写。
 
 ## 6. 分阶段接入与测试
@@ -230,7 +230,7 @@ IMU 是博世 **BMI088**：加速度计与陀螺仪两颗芯片在一个封装�
 **第一步：看小板。** 对照小板原理图或丝印确认：引出了 SCK / SDI / SDO1 / SDO2 / CSB1 / CSB2 / INT1 / INT3（不同厂家可能写成 SCL / SDA 等）；
 PS 脚接地（= SPI，接 VDDIO 就只能走 I2C）；SDO1 与 SDO2 是否已在板上并在一起；供电只能是 3.3 V。记下芯片在车上的安装方向（哪根轴朝前、朝左、朝上）。
 
-**第二步：接线**（扩展口 P11，pinout v0.2；针号已按底板原理图第 10 页核对，接线前仍看一眼丝印的第 1 针位置，完整对照见 [pinout.md](pinout.md) 第 5 节）：
+**第二步：接线**（扩展口 P11，pinout v0.2；针号已按底板原理图第 10 页核对，接线前仍看一眼丝印的第 1 针位置，完整对照见 [pinout.md](../2_interface/pinout.md) 第 5 节）：
 
 | BMI088 | 开发板 | FPGA 引脚 |
 |---|---|---|
@@ -244,13 +244,13 @@ PS 脚接地（= SPI，接 VDDIO 就只能走 I2C）；SDO1 与 SDO2 是否已�
 | VDD / VDDIO | P11 第 29 针（3.3 V） | — |
 | GND | P11 第 12 或 30 针 | — |
 
-- P11 在 FPGA Bank 2，供电由底板跳线 **P9** 选择：必须短接 **7–8**（3.3 V）。接线前用万用表量测试点 **TP8 对地 = 3.3 V**（[pinout.md](pinout.md) 第 2 节）。
+- P11 在 FPGA Bank 2，供电由底板跳线 **P9** 选择：必须短接 **7–8**（3.3 V）。接线前用万用表量测试点 **TP8 对地 = 3.3 V**（[pinout.md](../2_interface/pinout.md) 第 2 节）。
 - 线控制在 20 cm 以内，远离电机线；小板刚性固定在机身上（与雷达同一刚体），不要装在悬臂上。
 - 现在的比特流里第 1 / 2 针还是过渡的 IMU 串口，BMI088 接上也读不到数据，属正常。
 
 **第三步：上板验证**（N5 的比特流下载后）：读 IMU 寄存器块的初始化状态与两颗芯片的 ID（加速度计 0x1E、陀螺 0x0F）；
 隔 10 s 读两次样本计数（陀螺约 1000 个/秒、加速度约 800 个/秒，丢样本计数不涨）；车静止水平时俯仰 / 横滚接近 0、抬车头时俯仰为负、
-左转时 z 轴角速度为正。完整检查表见 [integration_plan.md](integration_plan.md) 第 6.2 节；N5 完成时把具体的寄存器名和命令补进这一步。
+左转时 z 轴角速度为正。完整检查表见 [integration_plan.md](../1_plan/integration_plan.md) 第 6.2 节；N5 完成时把具体的寄存器名和命令补进这一步。
 
 ### 6.3 雷达网口检查（RJ45）
 
@@ -271,7 +271,7 @@ $PY tools/nav_uart.py COM11 rd NETL_PHY_STAT      # 先不接网线读一次，�
 
 ### 6.4 雷达数据接入
 
-格式已按厂家 SDK 源码实现（[icd.md](icd.md) 第 2 节），寄存器缺省值就是雷达的格式，正常情况下不需要改任何格式寄存器。
+格式已按厂家 SDK 源码实现（[icd.md](../2_interface/icd.md) 第 2 节），寄存器缺省值就是雷达的格式，正常情况下不需要改任何格式寄存器。
 
 **第一步：PC 冒充雷达**（验证 FPGA 网口链路，不需要雷达）
 1. 电脑有线网卡设静态 IP `192.168.0.10`、掩码 `255.255.255.0`；网线直连板上 RJ45；Windows 防火墙允许 Python 通过（或临时关闭）。
@@ -371,7 +371,7 @@ FPGA 不回 ping，ping 不通是正常的。
 **核对深度定义**：雷达正对一面平墙、距离约 1 m 且垂直。上位机里点墙中间和墙两端的像素看"距离"：两端比中间大（视场边缘约
 大 1.8 倍）= 径向距离，与 SDK 和我们的实现一致；两端和中间基本一样 = 沿光轴，与实现不符，记下来反馈给开发。
 
-**安装位姿**：车体几何、前伸和高度基准来自整车 URDF / STL 标定（`$PY tools/robot_calib.py`，结果 `config/robot_calib.json`，[platform.md](platform.md) 第 1、2 节）；实车支架随后改为正常正装、下俯 10°，当前固件源码与仿真默认俯角已按实车覆盖。旧 URDF / JSON 仍记录约 20.3°，不是当前实车俯角；含 10° 固件的比特流 `nav_fw_128k_d1_10deg_20261001.fs` 已构建，尚未下载做板级复测（第 4.1 节）。
+**安装位姿**：车体几何、前伸和高度基准来自整车 URDF / STL 标定（`$PY tools/robot_calib.py`，结果 `config/robot_calib.json`，[platform.md](../4_design/platform.md) 第 1、2 节）；实车支架随后改为正常正装、下俯 10°，当前固件源码与仿真默认俯角已按实车覆盖。旧 URDF / JSON 仍记录约 20.3°，不是当前实车俯角；含 10° 固件的比特流 `nav_fw_128k_d1_10deg_20261001.fs` 已构建，尚未下载做板级复测（第 4.1 节）。
 
 | 量 | 当前标定值 | 写在哪里 | 实车要确认的 |
 |---|---|---|---|
@@ -395,15 +395,15 @@ FPGA 不回 ping，ping 不通是正常的。
 
 ### 6.6 底盘接入
 
-**架构和接口说明**：底盘 RL 代码分层、`ch_*` / `odo_*` / `ext_stop` 语义、外部控制器桥接及故障降级见 [chassis_integration.md](chassis_integration.md)；
-对底盘组技术路线的调整要求（转向、里程计口径与频率、IMU 共用、姿态与腿长、安全链）见 [chassis_review.md](chassis_review.md)；底盘信号的引脚分区见 [pinout.md](pinout.md) 第 4 节。
-本节负责现场接线和测试步骤，接口真值以 [icd.md](icd.md) 第 4 节为准。
+**架构和接口说明**：底盘 RL 代码分层、`ch_*` / `odo_*` / `ext_stop` 语义、外部控制器桥接及故障降级见 [chassis_integration.md](../5_teams/chassis_integration.md)；
+对底盘组技术路线的调整要求（转向、里程计口径与频率、IMU 共用、姿态与腿长、安全链）见 [chassis_review.md](../5_teams/chassis_review.md)；底盘信号的引脚分区见 [pinout.md](../2_interface/pinout.md) 第 4 节。
+本节负责现场接线和测试步骤，接口真值以 [icd.md](../2_interface/icd.md) 第 4 节为准。
 
 **先要完成的开发工作**（本手册之外）：现在的 `gowin/nav_board_top.v` 里速度输出没有接出去、里程计输入接的是 0。
 需要一个整车顶层把 `nav_subsystem` 和运动控制连起来：
 - 运动控制（RL）也在这块 FPGA 里：`ch_vx / ch_wz / ch_valid / ch_stop` 直接接它的指令输入，它估计的**对地**速度接 `odo_valid / odo_vx / odo_wz`；
 - 运动控制在别的控制器上：要加一个串口 / CAN 桥（仓库里还没有）。
-- 接口约定见 [icd.md](icd.md) 第 4 节：速度 mm/s、角速度 mrad/s；`ch_stop` 的含义是"速度归零、保持平衡"，不是断电。
+- 接口约定见 [icd.md](../2_interface/icd.md) 第 4 节：速度 mm/s、角速度 mrad/s；`ch_stop` 的含义是"速度归零、保持平衡"，不是断电。
   里程计回传固定 50–100 Hz、`odo_wz` 用陀螺、静止时 `odo_vx` 给精确 0。
 - 同时把一个物理急停按钮接到 `ext_stop`（建议 P11 第 8 针 `ESTOP_N`，常闭触点、断线即急停；按钮本身直接断电机电源），并用 `SAFE_EXT_MASK` 打开。
 
@@ -438,11 +438,11 @@ FPGA 不回 ping，ping 不通是正常的。
 5. 落地测里程计（导航固件运行，`--no-safe`，用手推车）：推直线 2 m，`nav_host.py … listen` 里 x 应为 2000 ± 60 mm；
    原地转一圈，yaw 回到起始值 ± 5°。
 6. 把实测能力填进 `fw/nav/local_planner.c` 开头的 `caps`（`vx_max`、`wz_max`、`radius_mm`；两轮车 `holonomic = false`）和
-   `v_max / w_max`，以及 [platform.md](platform.md)，按 4.5 节装固件。
+   `v_max / w_max`，以及 [platform.md](../4_design/platform.md)，按 4.5 节装固件。
 
 ### 6.7 实地导航：无图模式（上电缺省）
 
-准备：场地按 [platform.md](platform.md) 第 3 节搭好；车放在起点，车头方向就是 +x，左边是 +y，起点为原点（上电或
+准备：场地按 [platform.md](../4_design/platform.md) 第 3 节搭好；车放在起点，车头方向就是 +x，左边是 +y，起点为原点（上电或
 `nav_host.py … pose 0 0 0` 时重置）。每次测试前：第 5 节初始化（不加 `--no-safe`，首次 `--v-max 150 --w-max 500`）。
 一人看车、手放在急停上，一人操作电脑。
 
@@ -473,7 +473,7 @@ N1–N3 先用 150 mm/s 跑通，再逐步把 `--v-max` 提到 300、500。每�
    - 5 m 场地更简单的办法：用卷尺量出墙和箱子的位置，写成 `.xyz` 点云（每行 `x y z`，单位 m；墙面和箱子侧面每 2 cm 一个点、
      高度 0–0.5 m，地面每 5 cm 一个点、z = 0），再 `map_tool.py build`。需要一个小脚本生成点云。
 2. `$PY tools/map_tool.py build field.xyz -o field.nvmp --step 20 --slope 12`，打开 `field.png` 检查墙和箱子轮廓。
-   `--step` / `--slope` 按当前车体能力（可跨 20 mm、坡度 12°）传；工具缺省值 100 mm / 20° 是旧大车的。两条建图路线与待写工具见 [mapping_plan.md](mapping_plan.md)。
+   `--step` / `--slope` 按当前车体能力（可跨 20 mm、坡度 12°）传；工具缺省值 100 mm / 20° 是旧大车的。两条建图路线与待写工具见 [mapping_plan.md](../1_plan/mapping_plan.md)。
    地图包现在是版本 2（18 位槽字），2026-09-30 之前生成的 `.nvmp` 会被固件拒收（状态显示"格式错"），用同一命令重新生成即可。
 3. 下发与定位：
    ```bash
@@ -487,7 +487,7 @@ N1–N3 先用 150 mm/s 跑通，再逐步把 `--v-max` 提到 300、500。每�
 
 ### 6.9 RK3588（可选，不影响基础导航）
 
-方案与报文用法见 [rk3588_design.md](rk3588_design.md)。现在就能做的是 **R0：板载 USB 串口**（FPGA 不用改）：
+方案与报文用法见 [rk3588_design.md](../5_teams/rk3588_design.md)。现在就能做的是 **R0：板载 USB 串口**（FPGA 不用改）：
 
 1. 先在 PC 上完成 6.1 节（串口注入与回读第一次上板）。
 2. 开发板的 USB 串口线改插到 RK3588 的 USB 口；RK3588 上装 Python 3 与 pyserial，拷入本仓库的 `tools/` 与 `model/`。
@@ -563,7 +563,7 @@ N1–N3 先用 150 mm/s 跑通，再逐步把 `--v-max` 提到 300、500。每�
 - 雷达的使用与供电要求按 `XT-M60产品手册` 执行，不用不符合要求的电源或破损线缆。
 - 雷达、电机与开发板各自供电，只共地，不要把电源输出接在一起。
 - 改接线前先断电。扩展口只能接 3.3 V 信号（P9 跳线 7–8，TP8 = 3.3 V）。
-- 下载比特流的过程中和复位期间，FPGA 引脚不是受控状态：电机驱动使能、电机与舵机电源使能必须是高有效 + 外部下拉（[pinout.md](pinout.md) 第 6 节），
+- 下载比特流的过程中和复位期间，FPGA 引脚不是受控状态：电机驱动使能、电机与舵机电源使能必须是高有效 + 外部下拉（[pinout.md](../2_interface/pinout.md) 第 6 节），
   底盘平衡时不要按 S0、不要下载比特流，换固件前先把车架到支架上。
 
 ## 附录 A. 命令速查
@@ -581,7 +581,7 @@ $PY tools/nav_uart.py COM11 load fw/build/rv/nav/nav_fw.bin    # 只换固件
 $PY tools/board_init.py COM11 [--no-safe] [--mount-z 155] [--imu-baud 115200] [--lidar-ctrl 0x1F] [--v-max 300 --w-max 800]
 # 调试
 $PY tools/nav_uart.py COM11 id | soc | con | stat | reset
-$PY tools/nav_uart.py COM11 rd <寄存器名>   /   wr <寄存器名> <值>        # 名字见 docs/regmap.md，写成 块_名，如 SAFE_CTRL
+$PY tools/nav_uart.py COM11 rd <寄存器名>   /   wr <寄存器名> <值>        # 名字见 docs/2_interface/regmap.md，写成 块_名，如 SAFE_CTRL
 $PY tools/nav_uart.py COM11 map out.png                        # 代价图
 $PY tools/nav_uart.py COM11 wr 0xF000 1                        # 暂停软核（reset 恢复）
 # 任务

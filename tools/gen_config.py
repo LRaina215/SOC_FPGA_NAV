@@ -129,7 +129,7 @@ def gen_regmap(r):
     (ROOT / "rtl/regs/nav_regs_map.vh").write_text("\n".join(vh) + "\n", encoding="utf-8")
     (ROOT / "fw/include/nav_regs_map.h").write_text("\n".join(h) + "\n", encoding="utf-8")
     (ROOT / "model/nav_regs_map.py").write_text("\n".join(py) + "\n", encoding="utf-8")
-    (ROOT / "docs/regmap.md").write_text("\n".join(md) + "\n", encoding="utf-8")
+    (ROOT / "docs/2_interface/regmap.md").write_text("\n".join(md) + "\n", encoding="utf-8")
 
 
 def gen_tables(p):

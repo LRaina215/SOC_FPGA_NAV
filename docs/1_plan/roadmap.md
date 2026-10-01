@@ -1,9 +1,9 @@
 # 导航模块进度、交接要点与后续计划（接续工作请先读本文件）
 
-详细实验记录与数据见 [algorithms.md](algorithms.md)，实物参数（机器人 / 传感器 / 场地，已知与假设）见 [platform.md](platform.md)，
-上板步骤见 [board_bringup.md](board_bringup.md) 与 [hardware_guide.md](hardware_guide.md)（给硬件同学的逐步手册），接口见 [icd.md](icd.md)，引脚见 [pinout.md](pinout.md)。
-整车联调的总计划在 [integration_plan.md](integration_plan.md)；底盘见 [chassis_integration.md](chassis_integration.md) 与 [chassis_review.md](chassis_review.md)，
-RK3588 见 [rk3588_design.md](rk3588_design.md)，扫图见 [mapping_plan.md](mapping_plan.md)，改代码前先读 [dev_guide.md](dev_guide.md)。
+详细实验记录与数据见 [algorithms.md](../4_design/algorithms.md)，实物参数（机器人 / 传感器 / 场地，已知与假设）见 [platform.md](../4_design/platform.md)，
+上板步骤见 [board_bringup.md](../3_guide/board_bringup.md) 与 [hardware_guide.md](../3_guide/hardware_guide.md)（给硬件同学的逐步手册），接口见 [icd.md](../2_interface/icd.md)，引脚见 [pinout.md](../2_interface/pinout.md)。
+整车联调的总计划在 [integration_plan.md](integration_plan.md)；底盘见 [chassis_integration.md](../5_teams/chassis_integration.md) 与 [chassis_review.md](../5_teams/chassis_review.md)，
+RK3588 见 [rk3588_design.md](../5_teams/rk3588_design.md)，扫图见 [mapping_plan.md](mapping_plan.md)，改代码前先读 [dev_guide.md](../3_guide/dev_guide.md)。
 
 ## 1. 当前状态（2026-10-01）
 
@@ -19,7 +19,7 @@ RK3588 见 [rk3588_design.md](rk3588_design.md)，扫图见 [mapping_plan.md](ma
   观察到的变化：这台雷达现在帧尾 HDR = 1、图像标志 0x07，一帧 32 个 UDP 报文（09-30 是 14 个），FPGA 解析正常；
   雷达放在桌上（不是 10° / 155 mm 的装车姿态）时静止位姿几分钟内漂移 10–30 cm，装车标定后复查。日志在 `D:\tools\board_logs\20261001\`。
   测试中板子掉过一次配置（第 7 节第 17 条）。
-- **整车联调规划**（2026-10-01）：审阅了底盘组《轮腿车强化学习与 FPGA 部署技术路线》，结论与调整要求写成 [chassis_review.md](chassis_review.md)
+- **整车联调规划**（2026-10-01）：审阅了底盘组《轮腿车强化学习与 FPGA 部署技术路线》，结论与调整要求写成 [chassis_review.md](../5_teams/chassis_review.md)
   （最关键的三条：底盘与导航同一比特流且 BSRAM 只剩 16 块；第一版控制器必须能跟踪角速度；IMU 是 BMI088、两边共用，由导航组写 SPI 采集与姿态模块）；
   导航下发的指令按四层设计：连续运动只有前进 / 后退速度与角速度，另有地形模式、姿态请求，跳跃等底盘实测能跳后再加（chassis_review 第 3.8 节）；
   同时补了引脚分配、RK3588 方案、扫图方案、全系统联调计划和开发者指南。**导航侧没有改接口**，拟增加的字段在 D2.1 与底盘组一起冻结。
@@ -236,8 +236,8 @@ N（导航侧收尾与前置，不依赖底盘）、D2（底盘联调，主线�
 
 ### D2：整车底盘接口与 RL 联调（主线）
 
-D2 的目标是打通“导航期望速度 → RL 轮腿控制 → 对地里程计 → 导航位姿积分 → 安全停机”闭环。接口架构和代码边界见 [chassis_integration.md](chassis_integration.md)，
-对底盘组路线的调整要求见 [chassis_review.md](chassis_review.md)，信号和寄存器真值见 [icd.md](icd.md) 第 4 节。
+D2 的目标是打通“导航期望速度 → RL 轮腿控制 → 对地里程计 → 导航位姿积分 → 安全停机”闭环。接口架构和代码边界见 [chassis_integration.md](../5_teams/chassis_integration.md)，
+对底盘组路线的调整要求见 [chassis_review.md](../5_teams/chassis_review.md)，信号和寄存器真值见 [icd.md](../2_interface/icd.md) 第 4 节。
 
 | 阶段 | 工作 | 完成标准 |
 |---|---|---|
@@ -253,7 +253,7 @@ D2 的输入条件包括：BMI088 采集与姿态模块（N5）上板、轴向�
 雷达流下固件主循环最坏约 38 ms，默认 `SAFE.WD_US=200 ms` 暂有余量，但底盘实际控制周期和最坏延迟必须在 D2.2–D2.6 实测，不能仅凭仿真结论放行。
 底盘 RL 进度慢时，先用经典平衡 + 偏航角速度环（同一套接口）把 D2.2–D2.6 走通（chassis_review 第 5 节）。
 
-### R：RK3588（详见 [rk3588_design.md](rk3588_design.md)）
+### R：RK3588（详见 [rk3588_design.md](../5_teams/rk3588_design.md)）
 
 | 编号 | 工作 | 依赖 | 完成标准 |
 |---|---|---|---|

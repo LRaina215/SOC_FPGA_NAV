@@ -6,7 +6,7 @@
 前提：导航比特流已下载、雷达直连板子 RJ45 且正在出流（雷达 IP 用缺省 192.168.0.101）。
 
 用法: python tools/xt_reboot_test.py COM11 [次数]
-通过标准（docs/hardware_guide.md 6.4 节第四步）：每次只出现一次 lidar start ok，之后 10 帧/秒、坏帧 0；
+通过标准（docs/3_guide/hardware_guide.md 6.4 节第四步）：每次只出现一次 lidar start ok，之后 10 帧/秒、坏帧 0；
 雷达还在启动时第一次尝试会因 ARP 没有应答而失败，属正常。
 """
 import struct
