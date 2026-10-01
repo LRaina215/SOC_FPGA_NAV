@@ -34,9 +34,9 @@ URDF 在 `D:\Desktop\SOC FPGA\Structure\car`（SolidWorks 导出，机械组维�
 | 雷达安装位姿 | **正常正装、下俯 10°**（相对机身），镜头在轮轴前 123 mm、偏右 7 mm，**离地 = L0 + 25 mm**（L0 = 130 时 155 mm）；镜头按外壳正面中心计（±10 mm） | 实车已确认 / 当前配置 | 固件 `nav_task.c` `pose_init(1000, 123, 155)`、`MATCH.MOUNT_Z` = 155、`board_init.py --mount-z`、仿真 `sim_world.MOUNT_*`；原 CAD 20.3° 仅保留为历史标定结果 |
 | 雷达正装 / 倒装 | **正常正装**，防水接插件向下 | 实车已确认 | 方向表默认保持正常上下方向；左右和深度定义仍按 hardware_guide 6.5 做一次实测核对 |
 | 雷达实测数据 | 已到货并上板（icd.md 第 2 节）；本机内参与 SDK 缺省不同，帧尾自带 | 已知 | 噪声模型 `VirtualLidar(noise_mm=4)` |
-| IMU | IMU088：具体产品未确认（网上没有同名产品，可能是 BMI088 类模块，接口可能是 TTL 串口 / RS485 / CAN / SPI）；导航与底盘共用一颗 | 待给 | `imu_parse.c` 现按 WIT 0x55 帧；接 P11 第 1 / 2 针（C18 / C19）；仿真 100 Hz（`run_cl.py --imu-hz`） |
-| IMU 配置 | 角速度 + 角度（底盘另需加速度）、100 Hz（导航接收缓冲扩容前）、陀螺 ±2000°/s | 要求 | [icd.md](icd.md) 第 5 节 |
-| IMU 安装 | 须与雷达装在同一刚体（机身）上；轴向与零位在解析层统一换算到机身系 | 要求 | — |
+| IMU | 博世 **BMI088**（6 轴：加速度计 + 陀螺仪，SPI，只出原始数据、没有姿态解算）；导航与底盘共用一颗 | 已知 | SPI 接 P11 第 1–7 针（[pinout.md](pinout.md) 第 5 节）；采集与姿态模块 `imu_bmi088` / `imu_att` 待写（roadmap N5）；现在固件与仿真还是 WIT 串口帧（仿真 100 Hz，`run_cl.py --imu-hz`） |
+| IMU 配置 | 陀螺 ±2000°/s、1000 Hz（带宽 116 Hz）；加速度 ±6 g、800 Hz；数据就绪中断；导航取 200 Hz 降采样的姿态样本 | 建议（D2.1 确认） | [chassis_review.md](chassis_review.md) 第 3.5 节 |
+| IMU 安装 | 须与雷达装在同一刚体（机身）上、刚性固定、远离电机；轴向在 `imu_bmi088` 里换到机身系，零位在 `imu_att` 里扣除 | 要求 | 安装方向与零位实测后记在这里 |
 | 里程计 | 底盘回传机身**对地**速度 vx（轮速已扣俯仰角速度）与陀螺 wz，固定 50–100 Hz，静止时 vx 给精确 0 | 接口已定 | `odo_*`（[icd.md](icd.md) 第 4 节；本文第 4 节第 2 条）；仿真 50 Hz |
 | 相机（RK3588） | 仿真按视场 70°、4 m 内能识别目标 | 假设 | `run_cl.target_visible`、`explore_cfg.cam_*` |
 

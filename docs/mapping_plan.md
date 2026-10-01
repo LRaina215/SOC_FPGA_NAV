@@ -46,7 +46,7 @@
 2. **录什么**：原始 UDP 负载（Wireshark 过滤 `udp.dstport == 7687`，存 pcapng）——同一份数据既能离线建图，也能用
    `tools/fake_lidar.py --pcap` 回放给板子复现 FPGA 感知；另存厂家上位机 `.xbin`。
 3. **IMU**：XT-M60 帧里可带内置 IMU 消息（cmdid 252；厂家 SDK 提供 IMU 帧率 `getimufps()` 与 IMU→雷达外参 `getImuExtParamters()`），
-   与深度帧同一时钟，最适合激光惯性 SLAM。需要先实测这台雷达是否默认输出、频率多少。不用 IMU088 做扫图（它接在 FPGA 上，时间同步更麻烦）。
+   与深度帧同一时钟，最适合激光惯性 SLAM。需要先实测这台雷达是否默认输出、频率多少。不用 BMI088 做扫图（它接在 FPGA 上，和雷达数据的时间同步更麻烦）。
 4. **转点云**：按厂家 SDK 的几何（深度为径向距离、Brown-Conrady 去畸变、列号左右翻转、四角切除）把每帧深度转为雷达系点云，
    直接复用 `model/lidar_lut.py`（与板上方向表同一模型），帧尾内参每帧都有。待写 `tools/xt_to_cloud.py`。
 5. **SLAM**：FAST-LIO2 一类激光惯性里程计；Flash 雷达整帧同时曝光，逐点时间取帧时间。推车 ≤ 0.3 m/s，转角处停 2 s，首尾回到同一点。

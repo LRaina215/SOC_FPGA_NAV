@@ -1,7 +1,8 @@
 # 上板与实机接入步骤
 
 实物到货后的完整操作步骤（含通过标准与故障排查）见 [hardware_guide.md](hardware_guide.md)；本文件是开发侧的要点记录。
-IMU 串口引脚已从 C20/D20（拨码开关 SW7/SW6）改到扩展口 P11 的 C18/C19；雷达口 PHY 管理口 MDC R14、MDIO U21。全部引脚与电平见 [pinout.md](pinout.md)。
+过渡的 IMU 串口引脚已从 C20/D20（拨码开关 SW7/SW6）改到扩展口 P11 的 C18/C19；IMU 确认为 BMI088 后，P11 第 1–7 针改作它的 SPI 与中断（pinout v0.2）。
+雷达口 PHY 管理口 MDC R14、MDIO U21。全部引脚与电平见 [pinout.md](pinout.md)。
 
 ## 0. 当前可直接上板的内容
 
@@ -78,7 +79,7 @@ IMU 串口引脚已从 C20/D20（拨码开关 SW7/SW6）改到扩展口 P11 的 
 
 不接 RK3588 也能完成全部操作：PC 经板载 USB 串口（或网线接 SFP 口）运行 `tools/nav_host.py`。
 
-1. 扫图：推着车在场地里走一圈（经过所有要去的地方，转角处多停留），录 XT-M60 + IMU088（+ 轮速）。
+1. 扫图：推着车在场地里走一圈（经过所有要去的地方，转角处多停留），录 XT-M60（含雷达内置 IMU 消息；也可另录 BMI088 与轮速）。
    Linux 上用激光惯性 SLAM（FAST-LIO 等）建图，导出地图点云（地图系，单位 m，z 轴向上）。这个地图系就是之后目标点的坐标系。
 2. 转包：`python tools/map_tool.py build map.pcd -o field.nvmp --step 20 --slope 12`（按当前车体能力；缺省值是旧大车的），打开同名 .png 检查：
    左图应能看到墙、箱体、路沿的轮廓，右图黑色为不可通行。场地（含墙）须 ≤ 12.8 m × 12.8 m。5 m 场地也可以不扫图、用卷尺量测建图（[mapping_plan.md](mapping_plan.md)）。

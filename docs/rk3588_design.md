@@ -12,7 +12,7 @@
   1. **R0（现在就能用，FPGA 零改动）**：RK3588 的 USB 口接开发板的 USB 串口（CH9102），在 RK3588 上运行
      `python3 tools/nav_host.py --link uart:/dev/ttyACM0 …`（设备名以 `ls /dev/tty*` 为准，CH9102 也可能是 `ttyCH343USB0`）。
      这条路径 2026-10-01 已在板上用 PC 测通（[hardware_guide.md](hardware_guide.md) 6.1 节，本文第 3.2 节）。
-  2. **R1（比赛用的正式链路，推荐）**：RK3588 40 针排针的 3.3 V 串口接 P11 第 3 / 4 针，FPGA 增加一个硬件主机串口模块直通邮箱。
+  2. **R1（比赛用的正式链路，推荐）**：RK3588 40 针排针的 3.3 V 串口接 P11 第 9 / 10 针，FPGA 增加一个硬件主机串口模块直通邮箱。
      改动小、几乎不占 BSRAM、不碰已验证的雷达网口。
   3. **R2（只有确实要传视频 / 点云时）**：以太网——经交换机共用雷达 RJ45（要改雷达口协议栈），或 SFP1 + 高云 1G Serial Ethernet IP（要生成加密 IP、占资源、风险最高）。
 
@@ -53,7 +53,7 @@ RK3588 侧的报文编解码直接照 `tools/nav_host.py`（Python，可在 RK35
 | 方案 | FPGA 改动 | RK3588 侧 | 带宽（有效） | BSRAM | 风险 | 用途 |
 |---|---|---|---|---|---|---|
 | R0 板载 USB 串口（调试桥 + 邮箱注入） | 无 | USB 线，`nav_host.py --link uart:` | 下发约 10–20 KB/s；回读每条 25–50 ms | 0 | 占用调试口：PC 不能同时用 `nav_uart.py`（可 SSH 到 RK3588 上执行） | **立刻开始联调** |
-| R1 P11 第 3 / 4 针 3.3 V 串口（新增 `host_uart`） | 新 RTL 模块 + 约束 2 脚 | 40 针排针 UART，1.5–3 Mbps | 150–300 KB/s | 0–1 | 低：不碰雷达网口 | **比赛正式链路（推荐）** |
+| R1 P11 第 9 / 10 针 3.3 V 串口（新增 `host_uart`） | 新 RTL 模块 + 约束 2 脚 | 40 针排针 UART，1.5–3 Mbps | 150–300 KB/s | 0–1 | 低：不碰雷达网口 | **比赛正式链路（推荐）** |
 | R2a 交换机共用雷达 RJ45（百兆） | 雷达口协议栈增加主机 UDP 端口与邮箱分流 | 千兆网口 + 普通 UDP（`--link udp:192.168.0.100`） | 约 5 MB/s | 0–2 | 中：改动已验证的雷达链路；时序余量本来就小 | 想用以太网、或扫图时少插拔网线 |
 | R2b SFP1 + 1G Serial Ethernet IP | 生成加密 IP、`NAV_USE_SFP`（`nav_subsystem` 已有主机口 `h_*`） | 千兆网口 + 电口 SFP 模块 | 约 50 MB/s | IP 自身占用未知 | 高：IP 生成只有图形界面、授权要覆盖 `ge_pcs`、新增 125 MHz 时钟域 | 只有要把 FPGA 摄像头视频传给 RK3588 时 |
 
@@ -75,8 +75,8 @@ RK3588 侧的报文编解码直接照 `tools/nav_host.py`（Python，可在 RK35
 ### 3.3 R1：专用主机串口（推荐的正式链路）
 
 ```text
-RK3588 UART TX ──P11-3 (E19)──> host_uart: 字节流 → 帧同步 + CRC-16 校验 → 邮箱接收队列（与网口报文同一入口）
-RK3588 UART RX <──P11-4 (D19)── host_uart: 邮箱发送缓冲 → 加帧头与 CRC → 串口发送
+RK3588 UART TX ──P11-9 (E16)───> host_uart: 字节流 → 帧同步 + CRC-16 校验 → 邮箱接收队列（与网口报文同一入口）
+RK3588 UART RX <──P11-10 (D16)── host_uart: 邮箱发送缓冲 → 加帧头与 CRC → 串口发送
 ```
 
 - 帧格式（建议，实现时写进 icd.md）：`0x7E` 定界 + 字节填充（HDLC / SLIP 风格）或 COBS；帧内容 = 原有 `'N''V'` 报文 + CRC-16-CCITT。
@@ -198,7 +198,7 @@ RK3588（aarch64，Ubuntu 20.04 以上，厂家 SDK 支持）可以承担录包�
 ## 11. 导航组的配套待办（排期见 [roadmap.md](roadmap.md) 第 8 节）
 
 - R-N1：上板验证串口注入与回读（hardware_guide 6.1），这是 R0 的前提。
-- R-N2：`host_uart` 专用主机串口（RTL + testbench + 约束 E19 / D19 + `nav_host.py --link serial:`），完成 R1。
+- R-N2：`host_uart` 专用主机串口（RTL + testbench + 约束 E16 / D16 + `nav_host.py --link serial:`），完成 R1。
 - R-N3：按网页需要补 PATH 发送、定义并实现 COSTMAP_TILE；必要时扩展 STATUS（姿态角、底盘状态）。
 - R-N4：只有在第 9 节第 1 项决定"要视频"时，才启动 R2b（SFP IP）或 R2a（共用 RJ45）的评估与实现。
 
