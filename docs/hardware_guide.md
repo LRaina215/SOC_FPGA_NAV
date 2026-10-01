@@ -357,8 +357,7 @@ FPGA 不回 ping，ping 不通是正常的。
 **核对深度定义**：雷达正对一面平墙、距离约 1 m 且垂直。上位机里点墙中间和墙两端的像素看"距离"：两端比中间大（视场边缘约
 大 1.8 倍）= 径向距离，与 SDK 和我们的实现一致；两端和中间基本一样 = 沿光轴，与实现不符，记下来反馈给开发。
 
-**安装位姿**：已由整车 URDF / STL 标定（`$PY tools/robot_calib.py`，结果 `config/robot_calib.json`，[platform.md](platform.md)
-第 1、2 节），固件与仿真的缺省值就是标定值：
+**安装位姿**：车体几何、前伸和高度基准来自整车 URDF / STL 标定（`$PY tools/robot_calib.py`，结果 `config/robot_calib.json`，[platform.md](platform.md) 第 1、2 节）；实车支架随后改为正常正装、下俯 10°，当前固件源码与仿真默认俯角已按实车覆盖。旧 URDF / JSON 仍记录约 20.3°，不是当前实车俯角；本次 10°固件尚未重新构建、下载和板级复测。
 
 | 量 | 当前标定值 | 写在哪里 | 实车要确认的 |
 |---|---|---|---|
@@ -366,7 +365,7 @@ FPGA 不回 ping，ping 不通是正常的。
 | 前伸 x | 镜头在轮轴前 123 mm | `pose_init` 第 2 个参数 | — |
 | 高度 z | 腿长 L0 + 25 mm（L0 = 130 时 155 mm） | `pose_init` 第 3 个参数、`board_init.py --mount-z`、`MATCH.MOUNT_Z` 复位值 | **底盘站立时的 L0**：卷尺量镜头中心到地面，与 L0 + 25 差 1 cm 以上就改这三处 |
 
-腿长或支架改了：`$PY tools/robot_calib.py --leg <L0>` 打印要改的数，改完按 4.5 节装固件，`--mount-z` 与第 3 个参数必须相同。
+腿长改了：`$PY tools/robot_calib.py --leg <L0>` 打印 CAD 几何和高度参考值；旧 URDF 未更新前，不要把脚本输出的约 20.3°覆盖到当前实车 10°。支架改了则按实车复核俯角，并同步固件与仿真；改完按 4.5 节装固件，`--mount-z` 与第 3 个参数必须相同。
 机械图纸改了：机械组重新导出 URDF 后再跑一次这个脚本。
 
 **验证**（导航固件、第 5 节初始化后，车静止放在场地里）：`$PY tools/nav_uart.py COM11 map calib.png`
