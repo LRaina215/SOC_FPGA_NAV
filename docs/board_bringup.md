@@ -1,13 +1,14 @@
 # 上板与实机接入步骤
 
 实物到货后的完整操作步骤（含通过标准与故障排查）见 [hardware_guide.md](hardware_guide.md)；本文件是开发侧的要点记录。
-IMU 串口引脚已从 C20/D20（拨码开关 SW7/SW6）改到扩展口 P11 的 C18/C19；雷达口 PHY 管理口 MDC R14、MDIO U21。
+IMU 串口引脚已从 C20/D20（拨码开关 SW7/SW6）改到扩展口 P11 的 C18/C19；雷达口 PHY 管理口 MDC R14、MDIO U21。全部引脚与电平见 [pinout.md](pinout.md)。
 
 ## 0. 当前可直接上板的内容
 
 `python gowin/syn/syn.py --board --app=nav --ram-kb=128` 综合、布局布线并生成比特流
 `gowin/syn/build_board/impl/pnr/nav_board_top.fs`（50 MHz，0 违例）：软核 + 导航固件 + 雷达口百兆 MAC（自写，不需要 IP）+
-完整点云链路。下载后：LED0 心跳；PC 经板载 USB 串口（921600）运行 `python tools/nav_uart.py COMx id`，应读到 `ID=0x4E415630`。
+完整点云链路 + 雷达口原始帧通道（软核 TCP 客户端启动雷达）。下载后：LED0 心跳；PC 经板载 USB 串口（921600）运行 `python tools/nav_uart.py COMx id`，应读到 `ID=0x4E415630`。
+最近一次构建：2026-10-01（固件含 10° 安装参数），布线 BSRAM 324 / 340、逻辑 18%、DSP 67 / 298，Fmax 50.085 MHz；已另存为 `D:\tools\nav_fw_128k_d1_10deg_20261001.fs`，尚未上板。
 
 ## 1. 生成 IP（Gowin IDE → IP Core Generator），名字要和顶层一致
 
@@ -23,7 +24,7 @@ IMU 串口引脚已从 C20/D20（拨码开关 SW7/SW6）改到扩展口 P11 的 
 
 注意：
 - 底板 SFP1 接收发器通道 0，SFP2 接通道 1，PCIe 接通道 2（以管脚信息表为准）。
-- 电口 SFP 模块选"1000BASE-X 主机侧、仅千兆"的型号。
+- 电口 SFP 模块（1000BASE-T）的主机侧多数是带自协商的 SGMII，少数是 1000BASE-X：选型时确认，IP 里选对应模式。RK3588 自己不能插 SFP，用网线接这个电口模块（[rk3588_design.md](rk3588_design.md) 第 3.4 节）。
 - `ge_pcs.v` 为加密源码，能否综合取决于授权文件是否覆盖该 IP。
 
 ## 2. 雷达到货前：PC 冒充雷达（板级半实物）
@@ -38,8 +39,8 @@ IMU 串口引脚已从 C20/D20（拨码开关 SW7/SW6）改到扩展口 P11 的 
 ## 3. 雷达到货后
 
 1. 雷达接电脑（192.168.0.10），厂家上位机能出图即正常；`python tools/xt_config.py info / config / lens` 记下固件版本、配置、内参。
-2. `python tools/xt_config.py udp-dest 192.168.0.100 7687`、`start dist`；**断电重启、不连 TCP**，Wireshark 看雷达是否自己发 UDP
-   （SDK 里有"只收 UDP 也能出图"的状态，推测会；不会的话软核要补一个只发开始命令的最小 TCP 客户端）。
+2. 已在 2026-09-30 用实物确认（[icd.md](icd.md) 第 2 节）：雷达上电不自动出流、UDP 只发给最近一次连它 TCP 的主机、命令 19（`udp-dest`）返回 OK 但不生效。
+   因此板上软核自己当 TCP 客户端启动雷达（`fw/nav/xt_link.c`，D1，已上板通过），雷达直连板子即可，不需要电脑。
 3. Wireshark 抓包或上位机录 `.xbin`，用 `fake_lidar.py --pcap` / `--xbin` 回放给板子，确认 `LIDAR_STAT_BAD=0`、`LIDAR_LENS0..8` 等于内参、
    控制台出现 `lidar LUT ready (device lens)`。
 4. 左右方向：左前方放箱子，代价图里应在左侧（反了改 `fw/nav/lidar_cal.c` 的 `flip_u` 与 `model/lidar_lut.py` 的列翻转）；
@@ -52,7 +53,7 @@ IMU 串口引脚已从 C20/D20（拨码开关 SW7/SW6）改到扩展口 P11 的 
 控制台环形缓冲、调试口（串口桥地址 0xE000–0xFFFF：保持复位、装载程序、读控制台）。
 
 1. 工具链：xPack riscv-none-elf-gcc 15.2，装在 `D:\tools\xpack-riscv-none-elf-gcc-15.2.0-1`（环境变量 `RISCV_GCC` 可改路径）。
-2. 编译固件：`python fw/bsp/build_rv.py`（导航固件，-Os，约 32 KB 代码 + 83 KB 数据）；`--app selftest` 为自检程序（1 KB）。
+2. 编译固件：`python fw/bsp/build_rv.py`（导航固件，-Os，2026-10-01 为 36012 字节代码 + 85324 字节 `.bss`，另留 8 KB 栈，RAM 余量约 1.5 KB）；`--app selftest` 为自检程序（1 KB）。
 3. 比特流：`python gowin/syn/syn.py --board --app=nav --ram-kb=128`（RAM 初始内容 = 编译好的固件）；自检小镜像 `--app=selftest --ram-kb=32`。
 4. 下载到 SRAM（掉电即失，不动 Flash）：
    `programmer_cli.exe --device GW5AT-138B --run 2 --fsFile gowin\syn\build_board\impl\pnr\nav_board_top.fs`
@@ -70,6 +71,7 @@ IMU 串口引脚已从 C20/D20（拨码开关 SW7/SW6）改到扩展口 P11 的 
 ## 5. 底盘接入
 
 `ch_*` 接 RL 运动控制模块，`odo_*` 接底盘速度回传。按实测填写 `lp_cfg.caps`（能否横移、速度上限、半径），以及 `SAFE.CTRL.HOLONOMIC`、`SAFE.LIM_*`。
+整车顶层（导航 + 底盘同一比特流）的做法、接口扩展与联调顺序见 [chassis_integration.md](chassis_integration.md)、[chassis_review.md](chassis_review.md)、[integration_plan.md](integration_plan.md)。
 
 ## 6. 有图模式（先验地图）与 PC 单独操作
 
@@ -77,8 +79,8 @@ IMU 串口引脚已从 C20/D20（拨码开关 SW7/SW6）改到扩展口 P11 的 
 
 1. 扫图：推着车在场地里走一圈（经过所有要去的地方，转角处多停留），录 XT-M60 + IMU088（+ 轮速）。
    Linux 上用激光惯性 SLAM（FAST-LIO 等）建图，导出地图点云（地图系，单位 m，z 轴向上）。这个地图系就是之后目标点的坐标系。
-2. 转包：`python tools/map_tool.py build map.pcd -o field.nvmp`，打开同名 .png 检查：左图应能看到墙、箱体、路沿的轮廓，
-   右图黑色为不可通行。场地（含墙）须 ≤ 12.8 m × 12.8 m。
+2. 转包：`python tools/map_tool.py build map.pcd -o field.nvmp --step 20 --slope 12`（按当前车体能力；缺省值是旧大车的），打开同名 .png 检查：
+   左图应能看到墙、箱体、路沿的轮廓，右图黑色为不可通行。场地（含墙）须 ≤ 12.8 m × 12.8 m。5 m 场地也可以不扫图、用卷尺量测建图（[mapping_plan.md](mapping_plan.md)）。
 3. 下发：`python tools/nav_host.py --link uart:COM5 map field.nvmp`，应答"已加载"。
 4. 初始位姿：把车放到大致已知的位置（误差 0.5 m / 10° 以内），`nav_host.py --link uart:COM5 pose <x_mm> <y_mm> <yaw_度>`。
    板上对准约 1.6 s；`listen` 里 loc 变为"正常"后才会执行任务。视野里只有平行墙面时车会原地转 35° 再试。

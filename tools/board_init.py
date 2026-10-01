@@ -1,7 +1,7 @@
 """上板后的运行期初始化：把固件目前不会自己写、但实机必须设置的寄存器一次写好（掉电或按复位键后要重新运行）。
 
 用法:
-  python tools/board_init.py COM11                         缺省：50 MHz 核心时钟、IMU 115200、雷达离地 200 mm
+  python tools/board_init.py COM11                         缺省：50 MHz 核心时钟、IMU 115200、雷达离地 155 mm（L0 = 130 mm）
   python tools/board_init.py COM11 --clk-mhz 100           板级打开 NAV_USE_PLL（100 MHz）时
   python tools/board_init.py COM11 --imu-baud 460800 --mount-z 165
   python tools/board_init.py COM11 --no-safe               只做感知测试：速度输出保持为 0

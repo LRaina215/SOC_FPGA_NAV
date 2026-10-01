@@ -2,8 +2,9 @@
 报文格式见 docs/icd.md，与 fw/nav/proto.c 一一对应。导航不依赖 RK3588：PC 用下面任一链路即可完成全部操作。
 
 链路（--link）：
-  udp:IP[:端口]   网口（默认 192.168.2.100:9000；RK3588 走 SFP 口，PC 可接 SFP 口或经电口 SFP 模块）
-  uart:COM5       板载 USB 串口（uart_bus_bridge）：报文写入 MBX.INJ_* 注入接收队列，状态/应答从发送缓冲回读
+  udp:IP[:端口]   网口（默认 192.168.2.100:9000，SFP 主机口；需要先生成 1G Serial Ethernet IP，目前不可用）
+  uart:COM5       板载 USB 串口（uart_bus_bridge）：报文写入 MBX.INJ_* 注入接收队列，状态/应答从发送缓冲回读；
+                  RK3588 经 USB 接这个口时写成 uart:/dev/ttyACM0（docs/rk3588_design.md 方案 R0）
 
 用法:
   python tools/nav_host.py --link uart:COM5 map  sim/build/prior/terrain.nvmp    下发先验地图（.nvmp）

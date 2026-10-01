@@ -73,6 +73,11 @@ def field_mask(msb, lsb):
     return ((1 << (msb - lsb + 1)) - 1) << lsb
 
 
+def md_cell(s):
+    """说明文字里的 | 会被 Markdown 当成列分隔符"""
+    return str(s).replace("|", "\\|")
+
+
 def gen_regmap(r):
     vh = [f"// {HDR.format(src='regmap.yaml')}", "`ifndef NAV_REGS_MAP_VH", "`define NAV_REGS_MAP_VH"]
     h = [f"/* {HDR.format(src='regmap.yaml')} */", "#ifndef NAV_REGS_MAP_H", "#define NAV_REGS_MAP_H"]
@@ -109,7 +114,7 @@ def gen_regmap(r):
             desc = reg.get("desc", "")
             if fdesc:
                 desc = (desc + "；" if desc else "") + " ".join(fdesc)
-            md.append(f"| 0x{addr:04X} | {reg['name']} | {reg['acc']} | 0x{rst & 0xFFFFFFFF:08X} | {desc} |")
+            md.append(f"| 0x{addr:04X} | {reg['name']} | {reg['acc']} | 0x{rst & 0xFFFFFFFF:08X} | {md_cell(desc)} |")
         md.append("")
     md += ["## 数据窗口", "", "| 基址 | 大小 | 名称 | 说明 |", "|---|---|---|---|"]
     for w in r["windows"]:
@@ -118,7 +123,7 @@ def gen_regmap(r):
         h.append(f"#define NAV_WIN_{w['name']}_BASE 0x{w['base']:04X}u")
         h.append(f"#define NAV_WIN_{w['name']}_SIZE 0x{w['size']:04X}u")
         py.append(f"REGS['WIN_{w['name']}'] = 0x{w['base']:04X}")
-        md.append(f"| 0x{w['base']:04X} | 0x{w['size']:04X} | {w['name']} | {w['desc']} |")
+        md.append(f"| 0x{w['base']:04X} | 0x{w['size']:04X} | {w['name']} | {md_cell(w['desc'])} |")
     vh.append("`endif")
     h.append("#endif")
     (ROOT / "rtl/regs/nav_regs_map.vh").write_text("\n".join(vh) + "\n", encoding="utf-8")
