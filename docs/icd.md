@@ -103,7 +103,7 @@ TCP 命令（`tools/xt_config.py`）：请求 `7E FF AA 55 | len | cmd | 数据 
 
 | 链路 | 状态 | 用法 |
 |---|---|---|
-| 板载 USB 串口（uart_bus_bridge，921600） | 可用（RTL 仿真验证，上板见 hardware_guide 6.1） | PC 把报文逐字写 `MBX.INJ_DATA`，写 `MBX.INJ_LEN` 后 `MBX.INJ_GO`，报文进入与网口相同的接收队列（源 IP 记 0）；FPGA 发出的报文（状态、地图应答）留在发送缓冲，经 `MBX.TX_SEQ` / `MBX.TXB_ADDR` / `MBX.TXB_Q` 读回（只保留最新一条）。`nav_host.py --link uart:COM5`；RK3588 经 USB 也可这样用 |
+| 板载 USB 串口（uart_bus_bridge，921600） | 可用（2026-10-01 上板通过：状态、目标点、模式、地图包、TARGET） | PC 把报文逐字写 `MBX.INJ_DATA`，写 `MBX.INJ_LEN` 后 `MBX.INJ_GO`，报文进入与网口相同的接收队列（源 IP 记 0）；FPGA 发出的报文（状态、地图应答）留在发送缓冲，经 `MBX.TX_SEQ` / `MBX.TXB_ADDR` / `MBX.TXB_Q` 读回（只保留最新一条）。`nav_host.py --link uart:COM5`；RK3588 经 USB 也可这样用 |
 | 专用主机串口（P11 第 3 / 4 针） | 计划（[rk3588_design.md](rk3588_design.md) 方案 R1） | 链路层（帧定界 + CRC-16）实现时补进本节；报文内容不变 |
 | 网口 UDP（SFP 口，1000BASE-X） | RTL 已有，**IP 未生成，目前不可用** | FPGA 地址 `NETH.IP`（默认 192.168.2.100），端口 `NETH.UDP_PORT`（9000）；FPGA 回发到最近一次收到合法报文的源地址/端口（`NETH.CTRL.LEARN_PEER`），也可写 `NETH.PEER_*` 固定。`nav_host.py --link udp:192.168.2.100` |
 

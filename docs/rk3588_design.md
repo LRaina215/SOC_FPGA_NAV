@@ -11,7 +11,7 @@
 - 链路分三步走：
   1. **R0（现在就能用，FPGA 零改动）**：RK3588 的 USB 口接开发板的 USB 串口（CH9102），在 RK3588 上运行
      `python3 tools/nav_host.py --link uart:/dev/ttyACM0 …`（设备名以 `ls /dev/tty*` 为准，CH9102 也可能是 `ttyCH343USB0`）。
-     前提是先完成 [hardware_guide.md](hardware_guide.md) 6.1 节"串口注入第一次上板"。
+     这条路径 2026-10-01 已在板上用 PC 测通（[hardware_guide.md](hardware_guide.md) 6.1 节，本文第 3.2 节）。
   2. **R1（比赛用的正式链路，推荐）**：RK3588 40 针排针的 3.3 V 串口接 P11 第 3 / 4 针，FPGA 增加一个硬件主机串口模块直通邮箱。
      改动小、几乎不占 BSRAM、不碰已验证的雷达网口。
   3. **R2（只有确实要传视频 / 点云时）**：以太网——经交换机共用雷达 RJ45（要改雷达口协议栈），或 SFP1 + 高云 1G Serial Ethernet IP（要生成加密 IP、占资源、风险最高）。
@@ -68,7 +68,8 @@ RK3588 侧的报文编解码直接照 `tools/nav_host.py`（Python，可在 RK35
 - 代价：注入用流水写（`wr_burst`，不逐条等应答），一条 TARGET 约 1 ms；读回是逐字"写地址 + 读数据"，每次都有 USB 往返，
   一条 STATUS（44 字节、11 个字）约 25–50 ms。发送缓冲只保留最新一条报文，两次读之间 FPGA 连发多条时旧的会被覆盖
   （地图下发靠 `MAP_ACK.next_offset` 重新同步，不受影响）。所以 R0 适合 TARGET 10–15 Hz + 状态 5 Hz 的联调，不适合高频回传。
-- 注意：这条路径"串口注入与发送回读"目前只在 RTL 仿真（`tb_nav_top`）里验证过，第一次上板按 hardware_guide 6.1 节做。
+- 2026-10-01 已在板上用 PC 跑通这条路径（相当于 K0）：状态 5 Hz、目标点与模式生效、38964 字节地图包 1.7 s 下发"已加载"、
+  探索模式下 10 Hz 的 TARGET 让 FPGA 切到跟踪、停发后约 1.5 s 判丢失。RK3588 换成同一根 USB 线即可开始 K1。
 
 ### 3.3 R1：专用主机串口（推荐的正式链路）
 
@@ -183,7 +184,7 @@ RK3588（aarch64，Ubuntu 20.04 以上，厂家 SDK 支持）可以承担录包�
 
 | 步骤 | 内容 | 通过标准 |
 |---|---|---|
-| K0 | PC 先完成 hardware_guide 6.1（串口注入 / 回读第一次上板） | `listen` 5 Hz 有状态；`goal` / `mode` 生效 |
+| K0 | PC 先完成 hardware_guide 6.1（串口注入 / 回读第一次上板） | `listen` 5 Hz 有状态；`goal` / `mode` 生效。**2026-10-01 通过**（含地图包下发与假目标切跟踪） |
 | K1 | RK3588 经 USB 串口运行 `nav_host.py listen` | 与 PC 上现象一致，连续 10 分钟不丢链路 |
 | K2 | RK3588 发 GOAL / WAYPOINTS / MODE | STATUS 中 goal、state 随之变化 |
 | K3 | 假目标：RK3588 定时发"前方 1.5 m"的 TARGET，FPGA 在 SEARCH | 自动切 TRACK，STATUS goal 落在目标前 0.7 m；停发 1.5 s 后回到 SEARCH |
