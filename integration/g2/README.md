@@ -26,6 +26,8 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 `--fusion-norm-pipeline`由`control/tools/g2_fusion_pipeline.py`生成BMI模长寄存边界调整版，滤波、标定参数及所有外部周期保持；`test_fusion_equivalence.py`对照完整原融合模块和24位极值。有符号平方的carry-save/显式扩展加法两版均触发综合器内部错误，记录保留；当前恢复原绝对值平方表达式，只调整寄存边界；`measure_fusion_timing.py`原/新模块综合均成功，联合结果另验。原控制源不覆盖。
 
+`--gyro-sum-exact-widths`将三个原始16位陀螺仪绝对值之和精确限制到17位，显式零扩展回原32位消费者，保持live输入、参数比较、bias累计和周期。`test_fusion_equivalence.py --gyro-sum-exact-widths`增加786432组算术输入及组合版完整逐拍对照；`measure_fusion_timing.py --module fusion --gyro-sum-exact-widths`在模长候选上隔离此改动，双方有97位共同输入启动夹具，避免将未约束顶层输入当作已测路径。夹具不进产品；当前联合PNR不含此新标志。
+
 `--pose-predecode`在原总线捕获拍寄存位姿提交译码，替换帧接收和覆盖层的两个消费者；点流延迟、帧归属不变。`test_pose_predecode.py`在实际NAV总线状态机内与未改寄存器文件脉冲逐拍比较。
 
 `--action-map-exact-widths`保留原动作裁剪、四个私有增益、对称舍入和输出周期，只按可达范围缩短中间算术。生成器位于`control/tools/g2_action_map_widths.py`，原控制文件保留。`test_action_map_equivalence.py`覆盖每增益全部8193个裁剪值和完整模块逐拍输出；`measure_fusion_timing.py --module action-map`使用共同输入启动寄存器测量，寄存器仅属测试夹具，不进入产品。不能把未约束顶层输入时测出的反馈路径Fmax当作动作路径时序。
@@ -35,6 +37,8 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 存储优化保持原参数数值与推理调度，不量化、不跳MAC、不改训练。控制权重40个1K×16银行、ELU13bit精确常量尾、偏置26bit；导航仅改变大RAM物理分银行，容量、初始化、读前写、单拍读及保持语义不变。原始文件始终保留。
 
 `--packed-weight9`可叠加含控制存储的布局，按符号/低字节、六位打包与精确例外把权重ROM重排为35块原生9/8位模式。它不删权重位或增加读拍；模块综合40→35已测，联合节省仍需测量。`test_storage_equivalence.py --nav-layout directed --packed-weight9 --control-only --out <new-dir>`只重测改变的控制及全部地址；`measure_weight_rom9.py --variant both|bank16|packed9 --out <new-dir>`测真实ROM模块；`test_weight_rom_netlist.py --build <module-build/packed9> --out <new-dir>`验证实际综合网表的厂商INIT/使能/延迟。预检配置保存后显式exit并限时60s，完整综合/PNR没有该限时。
+
+`retry_frozen_synthesis.py <cancelled-SYN-build> --wait-pid <owned-PNR-wrapper-pid> --out <new-dir>`为单次串行重试：先复制冻结输入、重定位路径并实际回读选项，再等待已有构建退出；内存≥2GiB才开始，持续低于1GiB只取消自己的新子进程。新目录`job.json`给出阶段；成功后保存SYN摘要和存储清单。它不读取之后的工作区变更，不启动后续PNR、不编程；源目录和取消日志完整保留。
 
 当前结论与原始路径见`docs/4_design/g2_joint_resources_20261022.md`，唯一当前状态表在`docs/1_plan/system_integration_plan_20261021.md`。
 

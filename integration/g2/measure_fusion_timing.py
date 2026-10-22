@@ -8,22 +8,30 @@ ROOT=Path(__file__).resolve().parents[2]
 
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--out',type=Path,required=True)
-    ap.add_argument('--module',choices=['fusion','action-map','count-feedback'],default='fusion');a=ap.parse_args()
+    ap.add_argument('--module',choices=['fusion','action-map','count-feedback'],default='fusion')
+    ap.add_argument('--gyro-sum-exact-widths',action='store_true');a=ap.parse_args()
+    if a.gyro_sum_exact_widths and a.module!='fusion':ap.error('gyro sum comparison requires fusion')
     out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
     tool=Path('D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/bin/gw_sh.exe')
     module={'fusion':'imu_fusion','action-map':'policy_action_map','count-feedback':'nav_count_feedback'}[a.module]
     top={'fusion':module,'action-map':'action_map_timing','count-feedback':'count_feedback_timing'}[a.module]
+    if a.gyro_sum_exact_widths:top='fusion_gate_timing'
     if a.module!='count-feedback':
         generator_name='g2_fusion_pipeline.py' if a.module=='fusion' else 'g2_action_map_widths.py'
         spec=importlib.util.spec_from_file_location('controlgen',ROOT/'control/tools'/generator_name)
         generator=importlib.util.module_from_spec(spec);spec.loader.exec_module(generator)
     rows=[]
     variants=('observer',) if a.module=='count-feedback' else ('original','retimed' if a.module=='fusion' else 'exact_widths')
+    if a.gyro_sum_exact_widths:variants=('retimed','retimed_gyro_widths')
     for variant in variants:
         run=out/variant;run.mkdir();source=run/'fusion.v'
         if a.module=='count-feedback':shutil.copyfile(ROOT/'integration/g2/nav_count_feedback.v',source)
         elif variant=='original':shutil.copyfile(ROOT/'control/fpga/src'/(module+'.v'),source)
-        else:generator.generate(source)
+        else:
+            generator.generate(source)
+            if variant=='retimed_gyro_widths':
+                spec=importlib.util.spec_from_file_location('gyro_widths',ROOT/'control/tools/g2_gyro_sum_widths.py')
+                gyro=importlib.util.module_from_spec(spec);spec.loader.exec_module(gyro);gyro.generate(source)
         sources=[source]
         if a.module=='action-map':
             # These are launch registers for measurement, not a product change.
@@ -54,6 +62,24 @@ def main():
  endmodule
 ''')
             sources.append(wrapper)
+        elif a.gyro_sum_exact_widths:
+            # The target cone begins at live raw inputs.  Both candidates need
+            # identical timed launches; bare fusion inputs would be untimed.
+            wrapper=run/'launch_wrapper.v'
+            wrapper.write_text('''module fusion_gate_timing(
+ input clk,rst_n,sample_valid,input[95:0]sensor,
+ output[71:0]angular_velocity,gravity,output valid,calibrating,bias_suspect,accel_rejected);
+ reg[95:0]sensor_q;reg sample_q;
+ always@(posedge clk)begin sensor_q<=sensor;sample_q<=sample_valid;end
+ imu_fusion u_fusion(.clk(clk),.rst_n(rst_n),.sample_valid(sample_q),
+ .accel_x(sensor_q[15:0]),.accel_y(sensor_q[31:16]),.accel_z(sensor_q[47:32]),
+ .gyro_x(sensor_q[63:48]),.gyro_y(sensor_q[79:64]),.gyro_z(sensor_q[95:80]),
+ .ang_vel_x(angular_velocity[23:0]),.ang_vel_y(angular_velocity[47:24]),.ang_vel_z(angular_velocity[71:48]),
+ .gravity_x(gravity[23:0]),.gravity_y(gravity[47:24]),.gravity_z(gravity[71:48]),
+ .valid(valid),.calibrating(calibrating),.bias_suspect(bias_suspect),.accel_rejected(accel_rejected));
+ endmodule
+''')
+            sources.append(wrapper)
         for name in (('imu_isqrt.v','imu_recip.v') if a.module=='fusion' else ()):
             shutil.copyfile(ROOT/'control/fpga/src'/name,run/name);sources.append(run/name)
         (run/'clock.sdc').write_text('create_clock -name clk50 -period 20 [get_ports {clk}]\n')
@@ -64,7 +90,7 @@ def main():
             'set_option -global_freq 50','set_option -convert_sdp32_36_to_sdp16_18 0',
             'set_option -verilog_std v2001','set_option -looplimit 100000']
         effective=validate(tool,run,settings,50,0)
-        (run/'run.tcl').write_text('\n'.join(settings+['run syn'])+'\n')
+        (run/'run.tcl').write_text('\n'.join(settings+['run syn','exit'])+'\n')
         with (run/'gw_sh.log').open('w') as log:
             process=subprocess.run([str(tool),'run.tcl'],cwd=run,stdout=log,stderr=subprocess.STDOUT)
         text=(run/'gw_sh.log').read_text(encoding='utf-8',errors='replace')
@@ -80,7 +106,8 @@ def main():
             fields=cells(report.split('Path Summary:',1)[1].split('</table>',1)[0])
             row.update(estimated_fmax_mhz=float(values[3].replace('(MHz)','')),first_path=dict(zip(fields[::2],fields[1::2])))
         rows.append(row);print(json.dumps(row),flush=True)
-        (out/'result.json').write_text(json.dumps(dict(module=module,measurement_top=top,input_launch_registers=a.module!='fusion',runs=rows,programmed=False,
+        (out/'result.json').write_text(json.dumps(dict(module=module,measurement_top=top,input_launch_registers=a.module!='fusion' or a.gyro_sum_exact_widths,
+            gyro_sum_widths_comparison=a.gyro_sum_exact_widths,measurement_registers=97 if a.gyro_sum_exact_widths else None,runs=rows,programmed=False,
             scope='isolated control module synthesis diagnosis/estimates; not joint PNR or vehicle acceptance'),indent=2))
     return not all(row['synthesis_succeeded'] for row in rows)
 

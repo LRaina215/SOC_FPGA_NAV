@@ -1,0 +1,75 @@
+{
+  "module": "imu_fusion",
+  "measurement_top": "fusion_gate_timing",
+  "input_launch_registers": true,
+  "gyro_sum_widths_comparison": true,
+  "measurement_registers": 97,
+  "runs": [
+    {
+      "variant": "retimed",
+      "build": "F:\\nav_integration_g2_20261023\\fusion_gyro_widths_synthesis\\retimed",
+      "effective_options": {
+        "global_freq_mhz": 50.0,
+        "wide_split": 0,
+        "effective_options": "F:\\nav_integration_g2_20261023\\fusion_gyro_widths_synthesis\\retimed\\effective_options.tcl",
+        "extra_options": {}
+      },
+      "tool_exit": 0,
+      "errors": [],
+      "synthesis_succeeded": true,
+      "synthesis_resources": {
+        "name": "fusion_gate_timing",
+        "Register": "97",
+        "T_Register": "2156(97)",
+        "T_Alu": "1099(0)",
+        "T_Lut": "2630(0)",
+        "T_MULTALU27X18": "12(0)",
+        "T_MULT27X36": "18(0)"
+      },
+      "estimated_fmax_mhz": 78.356,
+      "first_path": {
+        "Slack": "7.238",
+        "Data Arrival Time": "12.752",
+        "Data Required Time": "19.990",
+        "From": "sensor_q_67_s0",
+        "To": "u_fusion/mult_3469_s1",
+        "Launch Clk": "clk[R]",
+        "Latch Clk": "clk[R]"
+      }
+    },
+    {
+      "variant": "retimed_gyro_widths",
+      "build": "F:\\nav_integration_g2_20261023\\fusion_gyro_widths_synthesis\\retimed_gyro_widths",
+      "effective_options": {
+        "global_freq_mhz": 50.0,
+        "wide_split": 0,
+        "effective_options": "F:\\nav_integration_g2_20261023\\fusion_gyro_widths_synthesis\\retimed_gyro_widths\\effective_options.tcl",
+        "extra_options": {}
+      },
+      "tool_exit": 0,
+      "errors": [],
+      "synthesis_succeeded": true,
+      "synthesis_resources": {
+        "name": "fusion_gate_timing",
+        "Register": "97",
+        "T_Register": "2156(97)",
+        "T_Alu": "1068(0)",
+        "T_Lut": "2620(0)",
+        "T_MULTALU27X18": "12(0)",
+        "T_MULT27X36": "18(0)"
+      },
+      "estimated_fmax_mhz": 81.999,
+      "first_path": {
+        "Slack": "7.805",
+        "Data Arrival Time": "12.185",
+        "Data Required Time": "19.990",
+        "From": "sensor_q_67_s0",
+        "To": "u_fusion/mult_3107_s1",
+        "Launch Clk": "clk[R]",
+        "Latch Clk": "clk[R]"
+      }
+    }
+  ],
+  "programmed": false,
+  "scope": "isolated control module synthesis diagnosis/estimates; not joint PNR or vehicle acceptance"
+}
