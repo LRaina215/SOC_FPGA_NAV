@@ -1,7 +1,7 @@
-"""Read-only reuse of the fixed 6443f56 control snapshot on Windows.
+"""Reuse of the in-repository control fork, imported from 6443f56, on Windows.
 
 Only asset paths in a generated MJCF copy are changed. Policy weights, source
-runtime, actuator law and observation/history contract remain in the snapshot.
+runtime, actuator law and observation/history contract come from the selected tree.
 """
 import importlib.util
 from pathlib import Path
@@ -9,7 +9,8 @@ import sys
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_REPO = ROOT.parent / "control_repo_snapshot_20261021"
+DEFAULT_REPO = ROOT / "control"
+FROZEN_REPO = ROOT.parent / "control_repo_snapshot_20261021"
 
 
 def reference_path(path, repo=DEFAULT_REPO):

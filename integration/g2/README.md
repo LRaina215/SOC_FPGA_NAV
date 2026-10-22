@@ -1,14 +1,16 @@
 # G2共同资源工程
 
-固定输入：控制`6443f56`的真实RTL/ROM，导航检查点`cd9b816`。不会烧录。原始控制源码与数值保存在`../control4500/original_src`；`control4500_core.v`只添加导航命令入口和实际反馈，保持真实策略、BMI、编码器、PID、舵机与可观察输出。
+固定输入：控制`6443f56`的真实RTL/ROM，导航检查点`cd9b816`。不会烧录。实际构建读取当前仓库`control/fpga/src`，由`prepare_control.py`应用`control_nav_adapter.patch`生成导航入口/反馈适配；补丁不匹配就停止，不静默使用旧副本。`../control4500/original_src`与本目录`control4500_core.v`仅保留6443基线对照。控制副本的来源与提交方式见`control/FORK.md`。
 
 ```powershell
 D:\Anaconda\python.exe -X utf8 integration/g2/build_g2.py --nav as --stage all --out F:/nav_integration_g2_20261022/example_as
-D:\Anaconda\python.exe -X utf8 integration/g2/build_g2.py --nav coverage --packing planes --command-lease --stage all --out F:/nav_integration_g2_20261022/example_planes_coverage
+D:\Anaconda\python.exe -X utf8 integration/g2/build_g2.py --nav coverage --packing directed --command-lease --stage all --out F:/nav_integration_g2_20261022/example_directed_coverage
 D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out F:/nav_integration_g2_20261022/example_equivalence
 ```
 
-输出目录必须不存在。`--packing none|nav|control|both|ssram|hybrid|planes`比较存储布局；`ssram`转两张完整代价图，`hybrid`还转完整帧缓冲/触碰位图，均已超限否决。`planes`只把高程格21位元数据转到分布式RAM，32位高度仍为BSRAM，保留原控制布局。`--stage syn|all`区分综合与完整构建。硬上限340块BSRAM、工作门槛336；只有综合数不构成通过。
+输出目录必须不存在。`--packing none|nav|control|both|ssram|hybrid|planes|directed`比较存储布局；`ssram`转两张完整代价图，`hybrid`还转完整帧缓冲/触碰位图。`planes`拆高程元数据；`directed`在导航/控制两侧显式区分大块存储和小分布式存储，避免自动提升小RAM消耗余量。旧失败报告使用开启宽RAM拆分的设置，已保留；不把相同布局在关闭拆分后的结果混写。`--stage syn|all`区分综合与完整构建。硬上限340块BSRAM、工作门槛336；只有综合数不构成通过。
+
+必须显式记录`--wide-split 0|1`（现默认0）。安装工具的旧实际PNR命令开启了32/36位存储拆分，八次构建的额外需求与宽叶子数量逐一相等。`pnr_from_netlist.py`可以固定已有网表，仅改该开关配对；`audit_netlist_memories.py`给出原语、位宽和层次归因。关闭拆分可避免重复占用，不改变算法/数据，但仍需实际资源和时序通过。
 
 `--command-lease`加入NAV唯一owner的命令年龄/有界减速/实测停稳监管原型；原4500继续维持平衡。入口RTL与24项CRC/坏帧/断线/切换等合同见`test_command_lease.py`，默认500ms停稳窗口在合同测试中缩放到10ms。外部旧UART协议没有序号/session，不能因此声称旧协议具备防重放。资源结论须归到带该标志的共同工程。
 

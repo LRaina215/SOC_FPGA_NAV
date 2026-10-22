@@ -1,0 +1,45 @@
+--- a/main.v
++++ b/main.v
+@@ -1,6 +1,7 @@
+ // model_4500 + BMI088 + servo IK/PWM + 520 velocity PID + OLED;50MHz.
+-module main #(
+-    parameter UART_SPEED_ENABLE=1'b1, // UART_RXD接收车体目标线速度/角速度，首个有效帧后接管两者
++module control4500_core #(
++    parameter NAV_INPUT_ENABLE=1'b1,
++    parameter UART_SPEED_ENABLE=1'b0, // UART_RXD接收车体目标线速度/角速度，首个有效帧后接管两者
+     parameter IR_ENABLE=1'b1, // 2/8前后、4/6转向、+/-升降、5急停
+     parameter real MODEL_WHEEL_SPEED_GAIN=1.0, // 原始4500模型轮速1倍
+     parameter MODEL_WHEEL_FILTER_ENABLE=1'b0, // 恢复4500原版参数：关闭新增轮速目标延迟/滤波
+@@ -37,6 +38,9 @@
+     parameter SERVO_APPLY_DIRECTION=1'b1 // 上层已做方向映射时改0
+ )( 
+     input wire clk,reset_n,
++    input wire signed [23:0] nav_forward_q12,nav_yaw_q12,
++    output wire signed [15:0] feedback_vx_mmps,feedback_wz_mradps,
++    output wire feedback_valid,
+     input wire UART_RXD, // P11-39 / A15; UART target chassis speed RX
+     output wire UART_TXD, // P11-40 / A16
+     input wire IRIN, // Reference IR receiver: A21, idle high
+@@ -77,10 +81,10 @@
+     uart_speed_rx #(.CLKS_PER_BIT(UART_CLKS_PER_BIT)) speed_command_rx(
+         .clk(clk),.reset_n(device_reset_n),.rx(UART_RXD),
+         .forward_q12(uart_forward_q12),.yaw_q12(uart_yaw_q12),.command_seen(uart_speed_seen),.command_valid(uart_speed_valid));
+-    wire signed [23:0] command_forward_q12=command_emergency_stop ? 24'sd0 : FIXED_FORWARD_ENABLE ? FORWARD_Q12 :
++    wire signed [23:0] command_forward_q12=command_emergency_stop ? 24'sd0 : NAV_INPUT_ENABLE ? nav_forward_q12 : FIXED_FORWARD_ENABLE ? FORWARD_Q12 :
+         (UART_SPEED_ENABLE && uart_speed_seen) ? uart_forward_q12 :
+         (IR_ENABLE ? ir_forward_q12 : FORWARD_Q12);
+-    wire signed [23:0] command_yaw_q12=command_emergency_stop ? 24'sd0 :
++    wire signed [23:0] command_yaw_q12=command_emergency_stop ? 24'sd0 : NAV_INPUT_ENABLE ? nav_yaw_q12 :
+         (UART_SPEED_ENABLE && uart_speed_seen) ? uart_yaw_q12 : (IR_ENABLE ? ir_yaw_q12 : YAW_Q12);
+     wire signed [23:0] command_height_q12=IR_ENABLE ? ir_height_q12 : HEIGHT_Q12;
+     wire signed [31:0] model_left_mmps,model_right_mmps;
+@@ -300,4 +304,9 @@
+         .sample_valid(sample_valid),.sensor_ready(sensor_ready),.sensor_error(sensor_error),
+         .sensor_error_code(sensor_error_code),.DEBUG_STATUS(oled_debug_status),
+         .IIC_SCL(sck),.IIC_SDA(sda),.ready(),.error());
++    wire signed [31:0] feedback_sum=$signed(left_speed_cms)+$signed(right_speed_cms);
++    wire signed [47:0] feedback_gyro=$signed(telemetry_wz)*48'sd1000;
++    assign feedback_vx_mmps=feedback_sum*5;
++    assign feedback_wz_mradps=feedback_gyro>>>12;
++    assign feedback_valid=left_speed_valid && right_speed_valid && model_ready;
+ endmodule

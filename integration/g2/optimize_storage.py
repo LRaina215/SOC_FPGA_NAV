@@ -13,8 +13,8 @@ def values(path,bits):
     return [int(x,16)-(1<<bits) if int(x,16)&(1<<(bits-1)) else int(x,16) for x in path.read_text().split()]
 
 
-def prepare(out):
-    out=Path(out);mem=out/'src/mem';original=ROOT/'integration/control4500/original_src'
+def prepare(out,directed=False):
+    out=Path(out);mem=out/'src/mem';original=ROOT/'control/fpga/src'
     weights=values(original/'mem/weights.mem',16);elu=values(original/'mem/elu.mem',24);bias=values(original/'mem/bias.mem',32)
     assert len(weights)==40704 and len(elu)==3073 and len(bias)==425
     banks=[]
@@ -22,7 +22,8 @@ def prepare(out):
         w=weights[i*1024:(i+1)*1024];w+= [0]*(1024-len(w))
         (mem/f'weights_bank{i:02d}.mem').write_text('\n'.join(f'{v&65535:04x}' for v in w)+'\n')
         assert values(mem/f'weights_bank{i:02d}.mem',16)[:min(1024,40704-i*1024)]==weights[i*1024:(i+1)*1024]
-        banks.append(f'''reg [15:0] bank{i} [0:1023];
+        attr='(* syn_ramstyle="block_ram",syn_romstyle="block_rom" *)' if directed else ''
+        banks.append(f'''{attr}reg [15:0] bank{i} [0:1023];
 initial $readmemh("src/mem/weights_bank{i:02d}.mem",bank{i});
 always @(posedge clk) if(en && addr[15:10]==6'd{i})q[{i}]<=bank{i}[addr[9:0]];''')
     (out/'fixed4500_weight_rom.v').write_text('''module fixed4500_weight_rom(input wire clk,en,input wire [15:0] addr,output wire signed [15:0] value);
@@ -46,9 +47,13 @@ assign value=q[selected];
     core=core.replace('reg signed [WEIGHT_BITS-1:0] weight_q;','wire signed [WEIGHT_BITS-1:0] weight_q;\n    fixed4500_weight_rom weights(.clk(clk),.en(state==MAC_REQ),.addr(weight_address),.value(weight_q));')
     core=core.replace('        $readmemh(WEIGHTS_FILE, weight_mem);','').replace('            weight_q <= weight_mem[weight_address];','')
     core=core.replace('if (state == ACT_WAIT) elu_q <= elu_mem[elu_address];',f"if (state == ACT_WAIT) elu_q <= elu_address>={tail} ? -24'sd4096 : $signed(elu_mem[elu_address]);")
+    if directed:
+        for token in (f'reg signed [{bias_bits-1}:0] bias_mem','reg signed [23:0] input_mem','reg signed [23:0] bank_a','reg signed [23:0] bank_b'):
+            assert token in core;core=core.replace(token,'(* syn_ramstyle="distributed_ram",syn_romstyle="distributed_rom" *)'+token)
+        core=core.replace('reg signed [12:0] elu_mem','(* syn_ramstyle="block_ram",syn_romstyle="block_rom" *)reg signed [12:0] elu_mem')
     (out/'fc_v4_top.v').write_text(core)
     report=dict(weight_count=len(weights),weight_values_equal=True,weight_banks40x1024x16=True,
         elu_values_equal=True,elu_bits=13,elu_constant_tail_start=tail,bias_values_equal=True,bias_bits=bias_bits,
-        original_control_changed=False,training_changed=False,MAC_schedule_changed=False,
+        original_control_changed=False,training_changed=False,MAC_schedule_changed=False,directed_storage=directed,
         boundary='exact numeric/layout checks; RTL cycle equivalence and joint resource/timing must also pass')
     (out/'storage_layout.json').write_text(json.dumps(report,indent=2));return report

@@ -44,6 +44,7 @@ RK3588 / PC --USB 串口（现在）/ P11 串口（计划）/ SFP（可选）-->
 | 目录 | 内容 |
 |---|---|
 | `config/` | **唯一参数来源**：`nav_params.yaml`（结构参数）、`regmap.yaml`（寄存器表）、`robot_calib.json`（整车 URDF 标定结果，俯仰为旧 CAD 值）。改完运行 `python tools/gen_config.py` |
+| `control/` | 原4500完整控制副本，来源与维护约定见[control/FORK.md](control/FORK.md)；后续控制侧修改在本仓库提交 |
 | `rtl/common` | FIFO、异步 FIFO、RAM、跨时钟域、时基 |
 | `rtl/lidar` | `xt_frame_rx` 帧接收（厂家 SDK 格式：逐分包校验、跳过 IMU 消息、锁存帧尾 FrameInfo）、`pc_project` 深度（径向）转点云、`pc_transform` 坐标变换、`pc_filter` 栅格化 |
 | `rtl/map` | `elev_map` 滚动高程图、`trav_v3` 可通行性分析（`trav_analysis` 为旧版 v1，保留作对照）、`map_subsys` 双缓冲代价图 |

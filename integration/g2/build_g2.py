@@ -20,7 +20,7 @@ def main():
     ap=argparse.ArgumentParser();ap.add_argument('--out',type=Path,required=True)
     ap.add_argument('--nav',choices=['as','coverage'],required=True)
     ap.add_argument('--stage',choices=['syn','all'],default='syn')
-    ap.add_argument('--packing',choices=['none','nav','control','both','ssram','hybrid','planes'],default='none')
+    ap.add_argument('--packing',choices=['none','nav','control','both','ssram','hybrid','planes','directed'],default='none')
     ap.add_argument('--command-lease',action='store_true',help='isolated command-age/stop gate, not accepted vehicle behavior')
     ap.add_argument('--wide-split',type=int,choices=[0,1],default=0,help='explicit PNR wide-RAM split; 1 duplicates every 32/36-bit block')
     a=ap.parse_args();out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
@@ -35,6 +35,9 @@ def main():
         shutil.copyfile(ROOT/'integration/g2/nav_ram_banked_hybrid.v',nav/'rtl/common/nav_ram_banked.v')
     elif a.packing=='planes':
         shutil.copyfile(ROOT/'integration/g2/nav_ram_sdp_planes.v',nav/'rtl/common/nav_ram_sdp.v')
+    elif a.packing=='directed':
+        for name in ('nav_ram_sdp','nav_ram_sp','nav_ram_banked'):
+            shutil.copyfile(ROOT/f'integration/g2/{name}_directed.v',nav/f'rtl/common/{name}.v')
     fw=out/'fw';shutil.copytree(ROOT/'fw',fw,ignore=shutil.ignore_patterns('build','__pycache__'))
     if a.nav=='coverage':
         for p in fw.rglob('*'):
@@ -46,7 +49,7 @@ def main():
     with (out/'firmware.log').open('w',encoding='utf-8') as log:
         subprocess.run([sys.executable,'-X','utf8',str(fw/'bsp/build_rv.py'),'--output-dir',str(out/'firmware'),
                         '--copy-to',str(out),'--ram-kb','128'],cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,check=True)
-    control=ROOT/'integration/control4500/original_src'
+    control=ROOT/'control/fpga/src'
     shutil.copytree(control/'mem',out/'src/mem')
     shutil.copyfile(ROOT/'rtl/plan/sin_lut.hex',out/'sin_lut.hex')
     top=(ROOT/'integration/g2/g2_top.v').read_text(encoding='utf-8')
@@ -55,15 +58,15 @@ def main():
     (out/'g2_top.v').write_text(top,encoding='utf-8')
     shutil.copyfile(ROOT/'integration/g2/g2.cst',out/'g2.cst')
     shutil.copyfile(ROOT/'integration/g2/g2.sdc',out/'g2.sdc')
-    shutil.copyfile(ROOT/'integration/g2/control4500_core.v',out/'control4500_core.v')
+    from prepare_control import prepare as prepare_control
+    prepare_control(out)
     shutil.copyfile(ROOT/'integration/g2/command_lease_guard.v',out/'command_lease_guard.v')
-    shutil.copytree(control,out/'control')
     files=[nav/x for x in ALL_RTL+SOC+['rtl/net/rgmii_mac100.v']]
     files += [p for p in (out/'control').glob('*.v') if p.name!='main.v']
     files += [out/'control4500_core.v',out/'command_lease_guard.v',out/'g2_top.v']
-    if a.packing in ('control','both','ssram','hybrid'):
+    if a.packing in ('control','both','ssram','hybrid','directed'):
         from optimize_storage import prepare
-        prepare(out)
+        prepare(out,directed=a.packing=='directed')
         files=[p for p in files if p!=out/'control/fc_v4_top.v']
         files += [out/'fc_v4_top.v',out/'fixed4500_weight_rom.v']
     tcl=['set_device -device_version C GW5AT-LV138PG484AC1/I0']
@@ -79,7 +82,7 @@ def main():
     (out/'run.tcl').write_text('\n'.join(tcl)+'\n',encoding='utf-8')
     manifest=dict(nav_variant=a.nav,coverage_enabled=a.nav=='coverage',stage=a.stage,packing=a.packing,command_lease=a.command_lease,wide_split=a.wide_split,
         device='GW5AT-LV138PG484AC1/I0',device_version='C',clock_core_mhz=50,synthesis_frequency_hint_mhz=50,
-        control_commit='6443f5678b4de222c22cbf331b8396f7c8df6a41',control_weights_changed=False,
+        control_commit='6443f5678b4de222c22cbf331b8396f7c8df6a41',control_source=str(control),control_adapter='control_nav_adapter.patch',control_weights_changed=False,
         source_files=[str(p) for p in files],programmed=False,
         scope='G2 resource gate, not complete G3 nav IMU adaptation or real vehicle acceptance')
     (out/'manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
