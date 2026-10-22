@@ -40,7 +40,7 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 `--packed-weight9`可叠加含控制存储的布局，按符号/低字节、六位打包与精确例外把权重ROM重排为35块原生9/8位模式。它不删权重位或增加读拍；模块综合40→35已测，联合节省仍需测量。`test_storage_equivalence.py --nav-layout directed --packed-weight9 --control-only --out <new-dir>`只重测改变的控制及全部地址；`measure_weight_rom9.py --variant both|bank16|packed9 --out <new-dir>`测真实ROM模块；`test_weight_rom_netlist.py --build <module-build/packed9> --out <new-dir>`验证实际综合网表的厂商INIT/使能/延迟。预检配置保存后显式exit并限时60s，完整综合/PNR没有该限时。
 
-`retry_frozen_synthesis.py <cancelled-SYN-build> --wait-pid <owned-PNR-wrapper-pid> --out <new-dir>`为单次串行重试：先复制冻结输入、重定位路径并实际回读选项，再等待已有构建退出；内存≥2GiB才开始，持续低于1GiB只取消自己的新子进程。新目录`job.json`给出阶段；成功后保存SYN摘要和存储清单。它不读取之后的工作区变更，不启动后续PNR、不编程；源目录和取消日志完整保留。
+`retry_frozen_synthesis.py <cancelled-SYN-build> --wait-pid <owned-PNR-wrapper-pid> --out <new-dir>`为单次串行重试：先复制冻结输入、重定位并回读选项，再等待已有构建退出。启动需物理空闲≥2GiB/可用提交余量≥4GiB；运行中连续提交余量<512MiB，或物理<256MiB且提交<1GiB才取消自己的子进程，SYN总预算40分钟。旧仅物理1GiB策略会过早中止，取消不等于OOM。`job.json`保存阶段、内存/耗时心跳；成功后保存SYN摘要和存储清单。它不读取之后的源码、不追加PNR、不编程，旧目录保留。
 
 当前结论与原始路径见`docs/4_design/g2_joint_resources_20261022.md`，唯一当前状态表在`docs/1_plan/system_integration_plan_20261021.md`。
 

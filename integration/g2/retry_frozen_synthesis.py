@@ -21,10 +21,10 @@ class MemoryStatus(ctypes.Structure):
         ('total_phys','avail_phys','total_page','avail_page','total_virtual','avail_virtual','avail_extended')]
 
 
-def available_memory():
+def memory_status():
     value=MemoryStatus();value.length=ctypes.sizeof(value)
     if not ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(value)):raise ctypes.WinError()
-    return value.avail_phys
+    return value
 
 
 def main():
@@ -74,22 +74,34 @@ def main():
             if result==0:break
             if result!=0x102:raise ctypes.WinError(ctypes.get_last_error())
     finally:kernel.CloseHandle(handle)
-    status('waiting_for_memory',minimum_start_free_bytes=2*1024**3)
+    status('waiting_for_memory',minimum_start_free_bytes=2*1024**3,minimum_start_available_commit_bytes=4*1024**3)
     for _ in range(24):
-        if available_memory()>=2*1024**3:break
+        memory=memory_status()
+        if memory.avail_phys>=2*1024**3 and memory.avail_page>=4*1024**3:break
         time.sleep(5)
     else:
-        status('not_started_host_memory',free_bytes=available_memory());return 1
-    status('synthesizing')
+        status('not_started_host_memory',free_bytes=memory.avail_phys,available_commit_bytes=memory.avail_page);return 1
+    status('synthesizing',max_runtime_minutes=40,
+        memory_policy='cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB')
     with (out/'gw_sh.log').open('w',encoding='utf-8') as log:
         process=subprocess.Popen([str(tool),'run.tcl'],cwd=out,stdout=log,stderr=subprocess.STDOUT,
             creationflags=subprocess.CREATE_NO_WINDOW)
-        low=0
+        low=0;started=time.monotonic();last_heartbeat=0
         while process.poll()is None:
-            free=available_memory();low=low+1 if free<1024**3 else 0
+            memory=memory_status()
+            now=time.monotonic()
+            if now-last_heartbeat>=30:
+                state.update(elapsed_s=now-started,free_bytes=memory.avail_phys,available_commit_bytes=memory.avail_page,
+                    updated_at=datetime.now().astimezone().isoformat())
+                (out/'job.json').write_text(json.dumps(state,indent=2),encoding='utf-8');last_heartbeat=now
+            danger=memory.avail_page<512*1024**2 or (memory.avail_phys<256*1024**2 and memory.avail_page<1024**3)
+            low=low+1 if danger else 0
             if low>=2:
                 process.kill();process.wait()
-                status('cancelled_host_memory',free_bytes=free,tool_exit=process.returncode);return 1
+                status('cancelled_host_memory',free_bytes=memory.avail_phys,available_commit_bytes=memory.avail_page,tool_exit=process.returncode);return 1
+            if now-started>=40*60:
+                process.kill();process.wait()
+                status('cancelled_runtime_budget',tool_exit=process.returncode);return 1
             time.sleep(2)
     text=(out/'gw_sh.log').read_text(encoding='utf-8',errors='replace')
     errors=re.findall(r'^.*ERROR\s*\(.*$',text,re.M)
