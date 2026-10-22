@@ -28,7 +28,7 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 `--fusion-norm-pipeline`由`control/tools/g2_fusion_pipeline.py`生成BMI模长寄存边界调整版，滤波、标定参数及所有外部周期保持；`test_fusion_equivalence.py`对照完整原融合模块和24位极值。有符号平方的carry-save/显式扩展加法两版均触发综合器内部错误，记录保留；当前恢复原绝对值平方表达式，只调整寄存边界；`measure_fusion_timing.py`原/新模块综合均成功，联合结果另验。原控制源不覆盖。
 
-`--gyro-sum-exact-widths`将三个原始16位陀螺仪绝对值之和精确限制到17位，显式零扩展回原32位消费者，保持live输入、参数比较、bias累计和周期。`test_fusion_equivalence.py --gyro-sum-exact-widths`增加786432组算术输入及组合版完整逐拍对照；`measure_fusion_timing.py --module fusion --gyro-sum-exact-widths`在模长候选上隔离此改动，双方有97位共同输入启动夹具，避免将未约束顶层输入当作已测路径。夹具不进产品；当前联合PNR不含此新标志。
+`--gyro-sum-exact-widths`将三个原始16位陀螺仪绝对值之和精确限制到17位，显式零扩展回原32位消费者，保持live输入、参数比较、bias累计和周期。`test_fusion_equivalence.py --gyro-sum-exact-widths`增加786432组算术输入及组合版完整逐拍对照；`measure_fusion_timing.py --module fusion --gyro-sum-exact-widths`在模长候选上隔离此改动，双方有97位共同输入启动夹具，避免将未约束顶层输入当作已测路径。夹具不进产品；具体SYN/PNR是否包含此标志以冻结manifest为准，不能将旧版结果转归新候选。
 
 `--pose-predecode`在原总线捕获拍寄存位姿提交译码，替换帧接收和覆盖层的两个消费者；点流延迟、帧归属不变。`test_pose_predecode.py`在实际NAV总线状态机内与未改寄存器文件脉冲逐拍比较。
 
@@ -42,7 +42,7 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 `retry_frozen_synthesis.py <cancelled-SYN-build> --wait-pid <owned-PNR-wrapper-pid> --out <new-dir>`为单次串行重试：先复制冻结输入、重定位并回读选项，再等待已有构建退出。启动需物理空闲≥2GiB/可用提交余量≥4GiB；运行中连续提交余量<512MiB，或物理<256MiB且提交<1GiB才取消自己的子进程，SYN总预算40分钟。旧仅物理1GiB策略会过早中止，取消不等于OOM。`job.json`保存阶段、内存/耗时心跳；成功后保存SYN摘要和存储清单。它不读取之后的源码、不追加PNR、不编程，旧目录保留。
 
-前一工具已结束时可显式使用互斥的`--start-now`；`--gyro-sum-exact-widths`仅在冻结输入副本上派生已验证的17位求和，校验来源尚未含该候选、所有RTL输入中仅`control/imu_fusion.v`改变，并写入manifest/job。旧SYN结果/内存清单不复制成新结果；50MHz预检、内存/40分钟保护、原固件和权重保持。当前309块SYN已经完成，新的权重＋gyro17综合在跑，进度仍以总计划为准。
+前一工具已结束时可显式使用互斥的`--start-now`；`--gyro-sum-exact-widths`仅在冻结输入副本上派生已验证的17位求和，校验来源尚未含该候选、所有RTL输入中仅`control/imu_fusion.v`改变，并写入manifest/job。旧SYN结果/内存清单不复制成新结果；50MHz预检、内存/40分钟保护、原固件和权重保持。派生来源、已完成报告及后续PNR进度统一见总计划。
 
 当前结论与原始路径见`docs/4_design/g2_joint_resources_20261022.md`，唯一当前状态表在`docs/1_plan/system_integration_plan_20261021.md`。
 

@@ -304,3 +304,21 @@ AX独立导航334/340与综合估计309均不能当整车数值；核心时序�
 因此下一轮先针对仍存在的路径：04:56:44启动`F:/nav_integration_g2_20261023/directed_weight9_gyro17_coverage50`，只在刚完成的冻结权重输入上应用已通过算术/完整融合对照的17位求和。`retry_frozen_synthesis.py --start-now --gyro-sum-exact-widths`逐个输入确认只有`control/imu_fusion.v`改变，manifest显式标记；其余RTL、原固件/ROM输入和有效50MHz/拆分1保留，不重新从之后的工作区取固件。旧综合报告不复制成新结果，40分钟SYN及提交余量保护保持，job记录真实工具PID和30秒内存心跳。见[冻结派生与启动记录](evidence/g2_20261023/weight9_gyro17_started.json)。
 
 本次没有重跑同一取消网表或直接开展地形批量；先看新联合综合的真实长路径/资源，再选择有预算PNR或继续必要的无损时序处理。原4500算法、16位权重及125Hz周期不变，G2整体仍未通过。
+
+### 05:06权重＋gyro17联合综合完成；05:08进入实际PNR
+
+`directed_weight9_gyro17_coverage50`于05:06:57完成SYN、厂商错误0，有效提示50MHz/拆分1。它只在上一已完成冻结输入中改变融合文件内的精确gyro求和，没有重取固件、权重或其他RTL。见[同冻结输入的联合SYN对照](evidence/g2_20261023/weight9_gyro17_joint_synthesis.json)、[新309叶存储清单](evidence/g2_20261023/weight9_gyro17_joint_memories.json)。
+
+| 联合SYN | 权重9位排布 | 再加gyro17 |
+|---|---:|---:|
+| BSRAM叶 / 32–36位宽叶 | 309 / 18 | 309 / 18 |
+| 总寄存器 / ALU / LUT | 38215 / 9579 / 52418 | 38215 / 9488 / 52417 |
+| 核心估计Fmax / 最坏到达 | 48.163MHz / 21.077ns | 52.885MHz / 19.223ns |
+| 核心最坏路径 | gyro_y→fusion/st | 命令年龄age_ms→out_yaw |
+| 最坏SYN裕量 | −0.763ns | +1.091ns |
+
+DSP、SSRAM/ROM16计数未变，物理宽拆分后327仍是预测；RX综合估计98.656MHz仍归50MHz全局提示，实际PNR要求100MHz。不同端点的“最坏到达”是两版整体极值，不把1.854ns差额当同一条路径的隔离改善，更不能把52.885MHz称为布线Fmax。
+
+已有针对仍在的gyro长路径的源码/逐拍合同与这次联合SYN改善，故直接推进实际PNR：`F:/nav_integration_g2_20261023/weight9_gyro17_place1_route2_cdc50`于05:08:59启动。它冻结上述完成网表，global50、拆分1、复制1、place1/route2均预检及实际cmd.do核对；完整SDC和CST与上一取消版相同，50/100MHz、26条hold-only、26条max-delay均保留。新SYN的引用寄存器存在检查通过，新物理26路径及52条Actived仍必须等待结果审计。见[实际启动/约束/命令记录](evidence/g2_20261023/weight9_gyro17_pnr_started.json)。
+
+工具预算仍是60分钟总时限、35分钟无日志/产物进展；没有并行启动其他SYN/PNR，没有上板。下一步按真实PNR资源、长路径、全局setup/hold及复位/脉宽判定，缺报告不通过；原4500算法/权重/125Hz保持。
