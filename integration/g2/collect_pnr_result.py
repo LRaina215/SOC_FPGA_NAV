@@ -33,6 +33,21 @@ def collect(build,top='g2_top'):
     r['clocks']=clocks
     section=t.split('3.1.1 Setup Paths Table\n')[-1].split('3.1.2 Hold Paths Table')[0]
     r['top_setup_rows']=[x.strip() for x in section.splitlines() if re.match(r'^\s*\d+\s+[-\d.]+\s+\S+',x)][:10]
+    secondary={}
+    for name,title,following in [
+        ('recovery','3.1.3 Recovery Paths Table',r'3\.1\.4 '),
+        ('removal','3.1.4 Removal Paths Table',r'3\.2 '),
+        ('minimum_pulse_width','3.2 Minimum Pulse Width Table',r'3\.3 ')]:
+        m=re.search(r'^'+re.escape(title)+r'\s*$',t,re.M)
+        section=t[m.end():] if m else ''
+        stop=re.search(r'^'+following,section,re.M)
+        if stop:section=section[:stop.start()]
+        slacks=[float(x) for x in re.findall(r'^\s*\d+\s+(-?[\d.]+)\s+\S+',section,re.M)]
+        secondary[name]=dict(available=m is not None,reported_rows=len(slacks),
+            worst_slack_ns=min(slacks) if slacks else None,
+            negative_reported_rows=sum(x<0 for x in slacks) if m else None)
+    r['reported_reset_pulse_checks']=secondary
+    r['reported_reset_pulse_checks_pass']=all(x['available'] and x['negative_reported_rows']==0 for x in secondary.values())
     core=next((c for c in clocks if c['name']=='clk50'),None)
     receive=next((c for c in clocks if c['name']=='rgmii_rxc'),None)
     r['routing_passed']=bool(t and not errors and r['unrouted_nets'] in (None,0))
@@ -41,7 +56,7 @@ def collect(build,top='g2_top'):
         and r['setup_violations']==0 and r['hold_violations']==0)
     r['receive_100mhz_report_pass']=bool(r['routing_passed'] and receive and receive['constraint_mhz']==100
         and receive['actual_fmax_mhz']>=100 and r['setup_violations']==0 and r['hold_violations']==0)
-    r['g2_resource_core_gate_pass']=r['routing_passed'] and r['bsram_work_gate_336'] and r['core_50mhz_timing_pass'] and r['receive_100mhz_report_pass']
+    r['g2_resource_core_gate_pass']=r['routing_passed'] and r['bsram_work_gate_336'] and r['core_50mhz_timing_pass'] and r['receive_100mhz_report_pass'] and r['reported_reset_pulse_checks_pass']
     r['scope']='actual reported resource/core timing; physical device revision, IO/CDC signoff and G3/vehicle acceptance remain separate'
     return r
 
