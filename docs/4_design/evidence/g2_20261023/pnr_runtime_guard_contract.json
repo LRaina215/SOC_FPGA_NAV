@@ -1,0 +1,36 @@
+{
+  "pass_": true,
+  "cases": [
+    {
+      "name": "normal",
+      "cancelled": false,
+      "reason": null,
+      "elapsed_s": 0.26600000000325963,
+      "tool_exit": 0
+    },
+    {
+      "name": "runtime",
+      "cancelled": true,
+      "reason": "maximum runtime exceeded",
+      "elapsed_s": 0.32800000003771856,
+      "tool_exit": 1
+    },
+    {
+      "name": "cpu_without_progress",
+      "cancelled": true,
+      "reason": "no observable log/artifact progress within budget",
+      "elapsed_s": 0.5939999999827705,
+      "tool_exit": 1
+    },
+    {
+      "name": "observable_progress",
+      "cancelled": false,
+      "reason": null,
+      "elapsed_s": 0.8589999999967404,
+      "tool_exit": 0
+    }
+  ],
+  "unrelated_child_unaffected": true,
+  "cpu_busy_not_treated_as_progress": true,
+  "scope": "owned child termination and observable-progress budgets only; not routing correctness"
+}
