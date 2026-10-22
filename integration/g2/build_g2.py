@@ -27,6 +27,7 @@ def main():
     ap.add_argument('--coverage-static-bounds',action='store_true',help='cycle-exact precomputation of frame-static coverage bounds')
     ap.add_argument('--fusion-norm-pipeline',action='store_true',help='cycle-exact original-square / sqrt-input register rebalance')
     ap.add_argument('--pose-predecode',action='store_true',help='cycle-exact POSE_COMMIT bus capture predecode')
+    ap.add_argument('--action-map-exact-widths',action='store_true',help='exact private gain arithmetic widths, no quantization or latency change')
     ap.add_argument('--wide-split',type=int,choices=[0,1],default=0,help='explicit PNR wide-RAM split; 1 duplicates every 32/36-bit block')
     a=ap.parse_args()
     if a.command_units_pipeline and not a.command_lease:ap.error('--command-units-pipeline requires --command-lease')
@@ -84,6 +85,11 @@ def main():
         spec=importlib.util.spec_from_file_location('fusion_pipeline',ROOT/'control/tools/g2_fusion_pipeline.py')
         generator=importlib.util.module_from_spec(spec);spec.loader.exec_module(generator)
         generator.generate(out/'control/imu_fusion.v')
+    if a.action_map_exact_widths:
+        import importlib.util
+        spec=importlib.util.spec_from_file_location('action_widths',ROOT/'control/tools/g2_action_map_widths.py')
+        generator=importlib.util.module_from_spec(spec);spec.loader.exec_module(generator)
+        generator.generate(out/'control/policy_action_map.v')
     shutil.copyfile(ROOT/'integration/g2/command_lease_guard.v',out/'command_lease_guard.v')
     shutil.copyfile(ROOT/'integration/g2/nav_command_units.v',out/'nav_command_units.v')
     files=[nav/x for x in ALL_RTL+SOC+['rtl/net/rgmii_mac100.v']]
@@ -114,6 +120,7 @@ def main():
         coverage_static_bounds=a.coverage_static_bounds,wide_split=a.wide_split,
         fusion_norm_pipeline=a.fusion_norm_pipeline,
         pose_predecode=a.pose_predecode,
+        action_map_exact_widths=a.action_map_exact_widths,
         device='GW5AT-LV138PG484AC1/I0',device_version='C',clock_core_mhz=50,synthesis_frequency_hint_mhz=50,
         control_commit='6443f5678b4de222c22cbf331b8396f7c8df6a41',control_source=str(control),control_adapter='control_nav_adapter.patch',control_weights_changed=False,
         source_files=[str(p) for p in files],programmed=False,

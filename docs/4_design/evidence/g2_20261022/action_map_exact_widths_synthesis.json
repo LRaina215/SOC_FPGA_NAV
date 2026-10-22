@@ -1,0 +1,71 @@
+{
+  "module": "policy_action_map",
+  "measurement_top": "action_map_timing",
+  "input_launch_registers": true,
+  "runs": [
+    {
+      "variant": "original",
+      "build": "F:\\nav_integration_g2_20261022\\action_map_exact_widths_synthesis_v2\\original",
+      "effective_options": {
+        "global_freq_mhz": 50.0,
+        "wide_split": 0,
+        "effective_options": "F:\\nav_integration_g2_20261022\\action_map_exact_widths_synthesis_v2\\original\\effective_options.tcl",
+        "extra_options": {}
+      },
+      "tool_exit": 0,
+      "errors": [],
+      "synthesis_succeeded": true,
+      "synthesis_resources": {
+        "name": "action_map_timing",
+        "Register": "194",
+        "T_Register": "375(194)",
+        "T_Alu": "128(0)",
+        "T_Lut": "751(0)",
+        "T_MULTALU27X18": "6(0)"
+      },
+      "estimated_fmax_mhz": 50.137,
+      "first_path": {
+        "Slack": "0.055",
+        "Data Arrival Time": "20.259",
+        "Data Required Time": "20.314",
+        "From": "actions_q_44_s0",
+        "To": "u_map/lk_us_0_s0",
+        "Launch Clk": "clk[R]",
+        "Latch Clk": "clk[R]"
+      }
+    },
+    {
+      "variant": "exact_widths",
+      "build": "F:\\nav_integration_g2_20261022\\action_map_exact_widths_synthesis_v2\\exact_widths",
+      "effective_options": {
+        "global_freq_mhz": 50.0,
+        "wide_split": 0,
+        "effective_options": "F:\\nav_integration_g2_20261022\\action_map_exact_widths_synthesis_v2\\exact_widths\\effective_options.tcl",
+        "extra_options": {}
+      },
+      "tool_exit": 0,
+      "errors": [],
+      "synthesis_succeeded": true,
+      "synthesis_resources": {
+        "name": "action_map_timing",
+        "Register": "194",
+        "T_Register": "351(194)",
+        "T_Alu": "128(0)",
+        "T_Lut": "621(0)",
+        "T_MULTALU27X18": "6(0)"
+      },
+      "estimated_fmax_mhz": 72.224,
+      "first_path": {
+        "Slack": "6.154",
+        "Data Arrival Time": "14.160",
+        "Data Required Time": "20.314",
+        "From": "actions_q_41_s0",
+        "To": "u_map/lk_us_0_s0",
+        "Launch Clk": "clk[R]",
+        "Latch Clk": "clk[R]"
+      }
+    }
+  ],
+  "programmed": false,
+  "scope": "isolated control module synthesis diagnosis/estimates; not joint PNR or vehicle acceptance"
+}

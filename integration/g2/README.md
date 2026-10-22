@@ -28,6 +28,8 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 `--pose-predecode`在原总线捕获拍寄存位姿提交译码，替换帧接收和覆盖层的两个消费者；点流延迟、帧归属不变。`test_pose_predecode.py`在实际NAV总线状态机内与未改寄存器文件脉冲逐拍比较。
 
+`--action-map-exact-widths`保留原动作裁剪、四个私有增益、对称舍入和输出周期，只按可达范围缩短中间算术。生成器位于`control/tools/g2_action_map_widths.py`，原控制文件保留。`test_action_map_equivalence.py`覆盖每增益全部8193个裁剪值和完整模块逐拍输出；`measure_fusion_timing.py --module action-map`使用共同输入启动寄存器测量，寄存器仅属测试夹具，不进入产品。不能把未约束顶层输入时测出的反馈路径Fmax当作动作路径时序。
+
 本工程统一使用器件C版、RTL核心50MHz，PNR SDC定义20ns核心与10ns接收时钟。截至directed_local，实际综合/全局提示均100MHz，旧`-frequency 50`设置未生效。脚本现改为文档支持的`-global_freq 50`，并在昂贵构建前用`saveto -all_options`回读频率和宽RAM选项，失配即停止；实际报告另读PRJ/cmd.do核对。所有PNR核心SDC约束仍为20ns，综合Fmax不能代替PNR。实板B/C对应、完整IO时序和BMI重力到导航姿态/时间适配尚待确认；旧导航IMU UART仍保留在A15，本工程不代表G3功能或实车通过。
 
 存储优化保持原参数数值与推理调度，不量化、不跳MAC、不改训练。控制权重40个1K×16银行、ELU13bit精确常量尾、偏置26bit；导航仅改变大RAM物理分银行，容量、初始化、读前写、单拍读及保持语义不变。原始文件始终保留。

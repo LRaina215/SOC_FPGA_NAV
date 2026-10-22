@@ -20,3 +20,5 @@ G2已改为读取`control/fpga/src`，通过受检补丁生成NAV接口，策略
 新增控制候选也在这里留历史：`tools/g2_observation_pipeline.py`仅生成独立构建目录中的轮速观测流水版，未覆盖原`fpga/src/rl_observation_v5.v`。有限RTL逐拍对照记录在G2报告；只有共同资源/时序通过后才能讨论接受，不能将候选生成器视为原4500已改版部署。
 
 `tools/g2_fusion_pipeline.py`同样只生成构建副本，把模长平方与求和调整到原sqrt采样边界两侧；原`fpga/src/imu_fusion.v`、滤波/标定参数及4500权重保留。20万拍有限对照通过；两种有符号平方写法触发Gowin内部综合错误的记录也保留。当前保留原绝对值平方表达式的版本模块综合成功，联合综合/PNR结果见G2报告。两种候选均需显式构建标志，未作为实机部署版本接受。
+
+`tools/g2_action_map_widths.py`保持原裁剪/增益/舍入/输出周期，仅按已证明的幅值范围缩短内部算术位宽；每个原增益的8193个裁剪域值及完整输出逐拍对照通过，原`fpga/src/policy_action_map.v`仍保留。G2必须显式指定`--action-map-exact-widths`才使用此候选。后续这些生成器、原控制源码的任何修改及验证记录均在本仓库提交。

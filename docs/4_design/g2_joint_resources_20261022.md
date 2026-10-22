@@ -185,3 +185,20 @@ AX独立导航334/340与综合估计309均不能当整车数值；核心时序�
 数字取综合XML的T_*总量，括号中的直属fusion数量另保留在JSON，不混用。器件C、有效提示50MHz、拆分0相同，DSP原语数量保持。新增128个寄存器、增加137个LUT、减少96个ALU，不称无资源代价。见[模块综合](evidence/g2_20261022/fusion_retime_unsigned_synthesis.json)。单模块原估计81MHz而联合实际26MHz说明布线/上下文影响很大，不能用105MHz承诺联合过50MHz。
 
 最新联合SYN目录`directed_fusion_pose_unsigned_coverage_effective50`，相同directed/监管/观测/单位/边界/位姿标志，融合使用最新原表达式版，宽RAM拆分1，正在运行。前两次失败目录保留，不覆盖。
+
+## 2026-10-23接续：动作映射的精确位宽
+
+上次原平方表达式版联合SYN已完成，`directed_fusion_pose_unsigned_coverage_effective50`实际提示50MHz，BSRAM314（CPU64/控制48/导航202），18个宽叶保留，拆分后预测332尚非此次PNR值。SYN估计44.852MHz，最坏22.610ns为策略actions→actuator_map/rk_us。见[联合SYN](evidence/g2_20261022/directed_fusion_pose_unsigned_synthesis.json)、[逐存储清单](evidence/g2_20261022/directed_fusion_pose_unsigned_memories.json)。不能把与上一版43.664MHz的综合差异归为单个候选收益，也没有新的实际Fmax。
+
+`control/tools/g2_action_map_widths.py`仅生成副本，保留原±4096裁剪、增益{-600,600,19,-19}、最近舍入、脉宽/轮速限幅、run/reset优先级与输出拍。裁剪后绝对值≤4096，|gain|≤600，乘积≤2457600，加2048后仍小于2^23，舍入后幅值≤600；原64位负数取绝对值/恢复符号可按该范围精确实现。生成器检查六处私有函数调用仍是原增益，失配就停止；不是量化或修改策略输出。
+
+与完整原动作映射RTL逐拍比较：每个增益穷举8193个裁剪域值，另含24位正负极值、±4097、随机饱和输入、ff极值/随机数；8770激励帧、64个无效拍、64次run停止、复位及两组舵机零位参数通过，比较轮速/四路舵机/last_actions/have_action。见[RTL对照](evidence/g2_20261022/action_map_exact_widths_equivalence.json)。未枚举全部动作与ff组合，但ff脉宽运算本身未改，裁剪后的增益算术全域已覆盖；不计实车接受。
+
+| 动作映射模块SYN（含194个共同输入启动寄存器） | 总寄存器 | 总ALU | 总LUT | MULTALU27X18 | 估计Fmax | 最坏到达 |
+|---|---:|---:|---:|---:|---:|---:|
+| 原版 | 375 | 128 | 751 | 6 | 50.137MHz | 20.259ns |
+| 精确位宽候选 | 351 | 128 | 621 | 6 | 72.224MHz | 14.160ns |
+
+见[模块测量](evidence/g2_20261022/action_map_exact_widths_synthesis.json)。最初直接将动作映射作为顶层且无输入时序约束，报告600.601MHz只量到last_actions反馈，不能代表动作输入→舵机路径；该目录保留但不采用其Fmax。有效v2测量在原/新双方都添加相同输入启动寄存器，最坏路径确为actions_q→lk_us；这些寄存器仅用于测量，不进入产品设计，也不为产品增加周期。
+
+当前完整SYN：`F:/nav_integration_g2_20261023/directed_action_coverage50`，在上一联合源码上增加`--action-map-exact-widths`，其余directed/lease/observation/units/static-bounds/fusion/pose标志和拆分1保持。完成后按实际SYN决定是否进入place2＋复制1的PNR；目前整体仍是此前26.313MHz的实际报告，G2不通过。控制原文件和权重没有修改，未烧录。
