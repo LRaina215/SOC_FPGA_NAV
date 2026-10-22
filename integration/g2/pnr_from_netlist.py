@@ -19,6 +19,18 @@ def main():
         reference=json.loads(cdc_reference.read_text(encoding='utf-8'))
         from audit_cdc_first_stages import sdc_fragment
         fragment=sdc_fragment(reference)
+        # Reference names come from a completed PNR. Fail before a long run
+        # if any source/first/second register vanished in this new netlist.
+        from audit_netlist_memories import MODULE,INST
+        modules=dict(MODULE.findall((out/'g2_top.vg').read_text(encoding='utf-8')));registers=set()
+        def walk(module,path):
+            for kind,instance in INST.findall(modules[module]):
+                child=(path+'/'+instance.lstrip('\\')).strip('/')
+                if kind in modules:walk(kind,child)
+                elif kind.startswith('DFF'):registers.add(child)
+        walk('g2_top','')
+        missing={row[key] for row in reference['paths'] for key in ('source_register','first_register','second_register') if row[key] not in registers}
+        assert not missing,('CDC reference registers absent from frozen synthesis netlist',sorted(missing))
         (out/'cdc_reference_audit.json').write_text(json.dumps(reference,indent=2),encoding='utf-8')
         if a.cdc_reference_audit:
             assert 'set_false_path' not in (out/'g2.sdc').read_text(encoding='utf-8'),'source SDC already has exceptions'

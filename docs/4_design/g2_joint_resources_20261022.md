@@ -212,3 +212,9 @@ AX独立导航334/340与综合估计309均不能当整车数值；核心时序�
 先用三寄存器实际Gowin PNR验证命令语义，避免把工具不支持或未命中的约束带进昂贵联合布线。第一次误用_s0名字，实际寄存器为_s1，工具TA2003在布局前拒绝；该失败目录保留。v2按实际名字后PNR成功，3.8节两条约束均Actived；setup表仍有source→first且关系18ns，first→second的setup与hold均存在，hold表不再包含source→first。证据及极小源/网表/SDC见[工具语义检查](evidence/g2_20261023/cdc_sdc_fixture/result.json)。这个夹具仅验证约束行为，不能代表联合资源、车辆或全CDC通过；没有烧录。
 
 `pnr_from_netlist.py --cdc-reference-audit <JSON>`仅接受上述固定分组/数量/预算，保留参考审计与片段到新构建。报告门禁要求新物理网表26条驱动/第二级/时钟与参考完全相符，52条约束全部出现在Actived表；任何缺失、额外未审例外或全局时序违例都使G2不通过。已确认原26.313MHz/8-hold报告在新门禁下仍被拒绝，未降低既有失败标准。
+
+### 新动作映射联合综合完成，实际PNR已启动
+
+`directed_action_coverage50`综合成功，实际全局提示50MHz、314个BSRAM叶子（CPU64/控制48/导航202），18个宽叶不变；拆分1仍预测332，不能在新PNR前冒充实际用量。核心SYN估计44.852→48.163MHz，最坏22.610→21.077ns，转到sensor/gyro_y→融合状态。源寄存器38196。见[完整SYN](evidence/g2_20261023/directed_action_coverage50_synthesis.json)、[存储逐叶](evidence/g2_20261023/directed_action_coverage50_memories.json)。RX综合仍跟随50MHz提示，PNR独立使用100MHz约束。
+
+实际PNR目录`F:/nav_integration_g2_20261023/directed_action_place2_cdc50`，冻结上述网表，place2/复制1/拆分1均预检回读，附加参考26路径生成的定向CDC片段。源/第一/第二级所有引用寄存器已在新综合层次逐一找到，之后仍要求物理连接及52条Actived检查。已进入布局，没有TA约束错误；实际占用/布线/Fmax尚待报告，没有烧录。与旧26.313MHz的结果存在多项RTL和布局差异，未来不能按单因素收益表述。
