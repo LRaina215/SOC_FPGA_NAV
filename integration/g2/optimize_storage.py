@@ -13,7 +13,7 @@ def values(path,bits):
     return [int(x,16)-(1<<bits) if int(x,16)&(1<<(bits-1)) else int(x,16) for x in path.read_text().split()]
 
 
-def prepare(out,directed=False):
+def prepare(out,directed=False,packed9=False):
     out=Path(out);mem=out/'src/mem';original=ROOT/'control/fpga/src'
     weights=values(original/'mem/weights.mem',16);elu=values(original/'mem/elu.mem',24);bias=values(original/'mem/bias.mem',32)
     assert len(weights)==40704 and len(elu)==3073 and len(bias)==425
@@ -32,6 +32,12 @@ reg [15:0] q [0:39];
 always @(posedge clk) if(en)selected<=addr[15:10];
 assign value=q[selected];
 '''+ '\n'.join(banks)+'\nendmodule\n')
+    packed_report=None
+    if packed9:
+        import importlib.util
+        spec=importlib.util.spec_from_file_location('weight9',ROOT/'control/tools/g2_weight_rom9.py')
+        generator=importlib.util.module_from_spec(spec);spec.loader.exec_module(generator)
+        packed_report=generator.generate(out,weights)
     tail=next(i for i in range(len(elu)) if all(v==elu[-1] for v in elu[i:]))
     assert elu[-1]==-4096 and min(elu)>=-4096 and max(elu)<=0
     (mem/'elu13.mem').write_text('\n'.join(f'{v&8191:04x}' for v in elu[:tail])+'\n')
@@ -52,7 +58,7 @@ assign value=q[selected];
             assert token in core;core=core.replace(token,'(* syn_ramstyle="distributed_ram",syn_romstyle="distributed_rom" *)'+token)
         core=core.replace('reg signed [12:0] elu_mem','(* syn_ramstyle="block_ram",syn_romstyle="block_rom" *)reg signed [12:0] elu_mem')
     (out/'fc_v4_top.v').write_text(core)
-    report=dict(weight_count=len(weights),weight_values_equal=True,weight_banks40x1024x16=True,
+    report=dict(weight_count=len(weights),weight_values_equal=True,weight_banks40x1024x16=not packed9,packed9=packed_report,
         elu_values_equal=True,elu_bits=13,elu_constant_tail_start=tail,bias_values_equal=True,bias_bits=bias_bits,
         original_control_changed=False,training_changed=False,MAC_schedule_changed=False,directed_storage=directed,
         boundary='exact numeric/layout checks; RTL cycle equivalence and joint resource/timing must also pass')

@@ -7,9 +7,11 @@ import subprocess
 def validate(tool,out,settings,frequency,wide_split,extra_expected=None):
     out=Path(out);dump=out/'effective_options.tcl';script=out/'preflight.tcl'
     tail=f'saveto -all_options {{{dump.as_posix()}}}'
-    script.write_text('\n'.join(settings+[tail])+'\n',encoding='utf-8',newline='\n')
+    # Some gw_sh sessions remain in their event loop after saveto.  Exit
+    # explicitly and bound this settings-only operation; never bound PNR here.
+    script.write_text('\n'.join(settings+[tail,'exit'])+'\n',encoding='utf-8',newline='\n')
     with (out/'preflight.log').open('w',encoding='utf-8') as log:
-        subprocess.run([str(tool),script.name],cwd=out,stdout=log,stderr=subprocess.STDOUT,check=True)
+        subprocess.run([str(tool),script.name],cwd=out,stdout=log,stderr=subprocess.STDOUT,check=True,timeout=60)
     text=dump.read_text(encoding='utf-8')
     def option(name):
         m=re.search(r'^set_option\s+-'+name+r'\s+(.+?)\s*$',text,re.M)

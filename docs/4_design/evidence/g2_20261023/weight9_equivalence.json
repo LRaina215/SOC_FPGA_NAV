@@ -1,0 +1,41 @@
+{
+  "numeric": {
+    "weight_count": 40704,
+    "weight_values_equal": true,
+    "weight_banks40x1024x16": false,
+    "packed9": {
+      "layout": "low9_and_three_high_byte_lanes_per_four_words",
+      "original_words": 40704,
+      "padded_words": 40960,
+      "decoded_all_words_equal": true,
+      "bit14_exception_addresses": [
+        675,
+        3055,
+        11735
+      ],
+      "expected_native_bsram": 35,
+      "quantization": false,
+      "weights_changed": false,
+      "additional_read_cycles": 0,
+      "scope": "numeric reconstruction and physical-mode budget only; RTL and synthesis/PNR still required"
+    },
+    "elu_values_equal": true,
+    "elu_bits": 13,
+    "elu_constant_tail_start": 2307,
+    "bias_values_equal": true,
+    "bias_bits": 26,
+    "original_control_changed": false,
+    "training_changed": false,
+    "MAC_schedule_changed": false,
+    "directed_storage": true,
+    "boundary": "exact numeric/layout checks; RTL cycle equivalence and joint resource/timing must also pass"
+  },
+  "nav_layout": "directed",
+  "frames": 3,
+  "neuron_values": 1275,
+  "cycle_exact": true,
+  "weight9_word_reads": 40960,
+  "RAM_geometries": 0,
+  "RAM_cycles_per_geometry": 0,
+  "scope": "RTL exactness and all numeric ROM values; not real control response or PNR timing"
+}

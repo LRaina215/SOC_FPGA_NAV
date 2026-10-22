@@ -28,9 +28,11 @@ def main():
     ap.add_argument('--fusion-norm-pipeline',action='store_true',help='cycle-exact original-square / sqrt-input register rebalance')
     ap.add_argument('--pose-predecode',action='store_true',help='cycle-exact POSE_COMMIT bus capture predecode')
     ap.add_argument('--action-map-exact-widths',action='store_true',help='exact private gain arithmetic widths, no quantization or latency change')
+    ap.add_argument('--packed-weight9',action='store_true',help='lossless weight bitplanes in native9 modes; no weight/cycle change')
     ap.add_argument('--wide-split',type=int,choices=[0,1],default=0,help='explicit PNR wide-RAM split; 1 duplicates every 32/36-bit block')
     a=ap.parse_args()
     if a.command_units_pipeline and not a.command_lease:ap.error('--command-units-pipeline requires --command-lease')
+    if a.packed_weight9 and a.packing not in ('control','both','ssram','hybrid','directed'):ap.error('--packed-weight9 requires a control storage layout')
     out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
     nav=out/'nav';nav.mkdir()
     shutil.copytree(ROOT/'rtl',nav/'rtl')
@@ -97,7 +99,7 @@ def main():
     files += [out/'control4500_core.v',out/'command_lease_guard.v',out/'nav_command_units.v',out/'g2_top.v']
     if a.packing in ('control','both','ssram','hybrid','directed'):
         from optimize_storage import prepare
-        prepare(out,directed=a.packing=='directed')
+        prepare(out,directed=a.packing=='directed',packed9=a.packed_weight9)
         files=[p for p in files if p!=out/'control/fc_v4_top.v']
         files += [out/'fc_v4_top.v',out/'fixed4500_weight_rom.v']
     tcl=['set_device -device_version C GW5AT-LV138PG484AC1/I0']
@@ -121,6 +123,7 @@ def main():
         fusion_norm_pipeline=a.fusion_norm_pipeline,
         pose_predecode=a.pose_predecode,
         action_map_exact_widths=a.action_map_exact_widths,
+        packed_weight9=a.packed_weight9,
         device='GW5AT-LV138PG484AC1/I0',device_version='C',clock_core_mhz=50,synthesis_frequency_hint_mhz=50,
         control_commit='6443f5678b4de222c22cbf331b8396f7c8df6a41',control_source=str(control),control_adapter='control_nav_adapter.patch',control_weights_changed=False,
         source_files=[str(p) for p in files],programmed=False,

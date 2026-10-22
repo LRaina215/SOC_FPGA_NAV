@@ -34,6 +34,8 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 存储优化保持原参数数值与推理调度，不量化、不跳MAC、不改训练。控制权重40个1K×16银行、ELU13bit精确常量尾、偏置26bit；导航仅改变大RAM物理分银行，容量、初始化、读前写、单拍读及保持语义不变。原始文件始终保留。
 
+`--packed-weight9`可叠加含控制存储的布局，按符号/低字节、六位打包与精确例外把权重ROM重排为35块原生9/8位模式。它不删权重位或增加读拍；模块综合40→35已测，联合节省仍需测量。`test_storage_equivalence.py --nav-layout directed --packed-weight9 --control-only --out <new-dir>`只重测改变的控制及全部地址；`measure_weight_rom9.py --variant both|bank16|packed9 --out <new-dir>`测真实ROM模块；`test_weight_rom_netlist.py --build <module-build/packed9> --out <new-dir>`验证实际综合网表的厂商INIT/使能/延迟。预检配置保存后显式exit并限时60s，完整综合/PNR没有该限时。
+
 当前结论与原始路径见`docs/4_design/g2_joint_resources_20261022.md`，唯一当前状态表在`docs/1_plan/system_integration_plan_20261021.md`。
 
 `collect_pnr_result.py`仅读取实际PNR报告，保留小数DSP用量；布线失败时记录未布通网络和缺失的时序，不用SYN频率填充Fmax。例：`python integration/g2/collect_pnr_result.py <build> --out <result.json>`。

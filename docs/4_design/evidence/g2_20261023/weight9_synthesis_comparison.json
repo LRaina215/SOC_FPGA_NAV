@@ -1,0 +1,121 @@
+{
+  "runs": [
+    {
+      "variant": "bank16",
+      "build": "F:\\nav_integration_g2_20261023\\weight9_synthesis\\bank16",
+      "effective_options": {
+        "global_freq_mhz": 50.0,
+        "wide_split": 1,
+        "effective_options": "F:\\nav_integration_g2_20261023\\weight9_synthesis\\bank16\\effective_options.tcl",
+        "extra_options": {}
+      },
+      "tool_exit": 0,
+      "errors": [],
+      "layout": {
+        "weight_count": 40704,
+        "weight_values_equal": true,
+        "weight_banks40x1024x16": true,
+        "packed9": null,
+        "elu_values_equal": true,
+        "elu_bits": 13,
+        "elu_constant_tail_start": 2307,
+        "bias_values_equal": true,
+        "bias_bits": 26,
+        "original_control_changed": false,
+        "training_changed": false,
+        "MAC_schedule_changed": false,
+        "directed_storage": true,
+        "boundary": "exact numeric/layout checks; RTL cycle equivalence and joint resource/timing must also pass"
+      },
+      "synthesis_resources": {
+        "name": "weight_rom_timing",
+        "Register": "23",
+        "T_Register": "669(23)",
+        "T_Lut": "393(0)",
+        "T_Bsram": "40(0)"
+      },
+      "estimated_fmax_mhz": 230.103,
+      "first_path": {
+        "Slack": "15.654",
+        "Data Arrival Time": "4.660",
+        "Data Required Time": "20.314",
+        "From": "u_rom/q[30]_0_s0",
+        "To": "value_0_s1",
+        "Launch Clk": "clk[R]",
+        "Latch Clk": "clk[R]"
+      }
+    },
+    {
+      "variant": "packed9",
+      "build": "F:\\nav_integration_g2_20261023\\weight9_synthesis_packed_v2\\packed9",
+      "effective_options": {
+        "global_freq_mhz": 50.0,
+        "wide_split": 1,
+        "effective_options": "F:\\nav_integration_g2_20261023\\weight9_synthesis_packed_v2\\packed9\\effective_options.tcl",
+        "extra_options": {}
+      },
+      "tool_exit": 0,
+      "errors": [],
+      "layout": {
+        "weight_count": 40704,
+        "weight_values_equal": true,
+        "weight_banks40x1024x16": false,
+        "packed9": {
+          "layout": "low9_and_three_high_byte_lanes_per_four_words",
+          "original_words": 40704,
+          "padded_words": 40960,
+          "decoded_all_words_equal": true,
+          "bit14_exception_addresses": [
+            675,
+            3055,
+            11735
+          ],
+          "expected_native_bsram": 35,
+          "quantization": false,
+          "weights_changed": false,
+          "additional_read_cycles": 0,
+          "scope": "numeric reconstruction and physical-mode budget only; RTL and synthesis/PNR still required"
+        },
+        "elu_values_equal": true,
+        "elu_bits": 13,
+        "elu_constant_tail_start": 2307,
+        "bias_values_equal": true,
+        "bias_bits": 26,
+        "original_control_changed": false,
+        "training_changed": false,
+        "MAC_schedule_changed": false,
+        "directed_storage": true,
+        "boundary": "exact numeric/layout checks; RTL cycle equivalence and joint resource/timing must also pass"
+      },
+      "synthesis_resources": {
+        "name": "weight_rom_timing",
+        "Register": "33",
+        "T_Register": "153(33)",
+        "T_Lut": "244(0)",
+        "T_Bsram": "35(0)"
+      },
+      "estimated_fmax_mhz": 221.337,
+      "first_path": {
+        "Slack": "15.482",
+        "Data Arrival Time": "4.832",
+        "Data Required Time": "20.314",
+        "From": "u_rom/selected_low_0_s0",
+        "To": "value_14_s1",
+        "Launch Clk": "clk[R]",
+        "Latch Clk": "clk[R]"
+      }
+    }
+  ],
+  "common_input_launch_and_sink": true,
+  "measurement_registers": 33,
+  "measured_rom_bsram_saved": 5,
+  "joint_pnr_measured": false,
+  "programmed": false,
+  "scope": "isolated original/new weight ROM synthesis only",
+  "preflight_interruption": {
+    "build": "F:\\nav_integration_g2_20261023\\weight9_synthesis\\packed9",
+    "observation": "effective options saved, process did not return for more than eight minutes, parent measurement stopped; no synthesis started",
+    "source_and_logs_retained": true,
+    "recovery": "explicit Tcl exit and 60s preflight-only timeout, new packed9-only directory; old bank16 success not repeated"
+  }
+}
