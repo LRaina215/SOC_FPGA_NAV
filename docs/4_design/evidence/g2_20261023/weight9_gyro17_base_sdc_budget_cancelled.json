@@ -1,0 +1,63 @@
+{
+  "checked_at": "2026-10-23T06:55:04.453560+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\weight9_gyro17_base_sdc_diagnostic",
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-23T05:56:33.982240+08:00",
+    "max_runtime_s": 3600.0,
+    "max_no_observable_progress_s": 2100.0,
+    "cancelled": true,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "pid": 45552,
+    "elapsed_s": 2766.875,
+    "no_observable_progress_s": 2101.9689999999828,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        1056,
+        1792706857811435300
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        601,
+        1792706857812422800
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2369920,
+        1792706827004752100
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        13713991,
+        1792706827628166900
+      ]
+    ],
+    "reason": "no observable log/artifact progress within budget",
+    "tool_exit": 1,
+    "ended_at": "2026-10-23T06:42:40.855719+08:00"
+  },
+  "g2_gate": {
+    "build": "F:\\nav_integration_g2_20261023\\weight9_gyro17_base_sdc_diagnostic",
+    "g2_resource_core_gate_pass": false,
+    "programmed": false,
+    "reason": "required implementation report unavailable",
+    "missing_report": "F:\\nav_integration_g2_20261023\\weight9_gyro17_base_sdc_diagnostic\\impl\\pnr\\g2_top.rpt.txt",
+    "diagnostic_only": true,
+    "scope": "diagnostic implementation comparison only; never G2 or deployment acceptance"
+  },
+  "last_stage": "Routing Phase0 completed",
+  "reports_present": {
+    ".rpt.txt": false,
+    ".tr": false,
+    ".vo": false
+  },
+  "diagnostic_only": true,
+  "finding": "Removing the52 directed CDC candidate commands did not produce a final report within the same no-progress budget; CDC is not established as the sole cause.",
+  "scope": "budget cancellation, not measured timing failure or proof of internal deadlock; no new actual BSRAM/Fmax",
+  "programmed": false
+}

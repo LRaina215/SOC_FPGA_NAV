@@ -20,6 +20,8 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 `--diagnostic-only`显式标记受控实现对照。采集器及最终写出的`g2_gate.json`均强制不准入，即使报告的资源/时序满足条件也不会成为生产通过结果；缺报告同样拒绝。基础SDC对照直接取SYN来源的两条50/100MHz时钟，省略`--cdc-reference-audit`，不删除或修改旧候选目录。它仅用于判断CDC候选约束是否参与长时间搜索，后续生产仍需完整26路径/52约束核验，不作烧录来源。输出策略的合成指标夹具合同不冒充真实FPGA报告。
 
+`--timing-driven 0|1`控制厂商PNR时序驱动优化，默认1。关闭时脚本要求`--diagnostic-only`，在创建输出目录前拒绝无诊断标志的请求；有效选项必须回读为0，实际`cmd.do`不再含`-timing`。它不更改SDC的50/100MHz时钟，也不等于满足时序，只用于隔离优化搜索的影响。预算与报告/物理CDC检查保持；关闭优化后完成的报告仍不得作为G2或部署准入。
+
 `--command-lease`加入NAV唯一owner的命令年龄/有界减速/实测停稳监管原型；原4500继续维持平衡。入口RTL与24项CRC/坏帧/断线/切换等合同见`test_command_lease.py`，默认500ms停稳窗口在合同测试中缩放到10ms。外部旧UART协议没有序号/session，不能因此声称旧协议具备防重放。资源结论须归到带该标志的共同工程。
 
 `--observation-pipeline`是隔离的轮速分子时序候选，生成器位于`control/tools/g2_observation_pipeline.py`。保持算法/数值及外部观测周期，仅写构建副本；原控制文件仍保留。`test_observation_equivalence.py`提供与原RTL四组符号、32帧逐周期比较，实际共同资源与时序另验。未指定标志时使用原观测RTL。

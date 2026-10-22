@@ -11,12 +11,14 @@ def main():
     ap.add_argument('--replicate-resources',type=int,choices=[0,1],help='otherwise preserve source setting; no RTL or policy change')
     ap.add_argument('--place-option',type=int,choices=[0,1,2,3,4],default=1,help='Gowin placement mode; 1 routability, 2 timing priority')
     ap.add_argument('--route-option',type=int,choices=[0,1,2],default=0,help='0 default, 1 more search, 2 faster routing')
+    ap.add_argument('--timing-driven',type=int,choices=[0,1],default=1,help='0 disables timing-driven PNR optimization for diagnostic-only comparisons; clocks remain constrained')
     ap.add_argument('--max-runtime-minutes',type=float,default=0,help='0 disables; time budget is not proof of deadlock')
     ap.add_argument('--max-no-progress-minutes',type=float,default=0,help='0 disables; observe tool log/artifacts, not CPU activity')
     ap.add_argument('--cdc-reference-audit',type=Path,help='explicit 26-path physical connectivity audit; hold-only first-stage candidate')
     ap.add_argument('--diagnostic-only',action='store_true',help='controlled implementation comparison; force G2 acceptance false regardless of measured timing')
     ap.add_argument('--out',type=Path,required=True);a=ap.parse_args()
     if a.max_runtime_minutes<0 or a.max_no_progress_minutes<0:ap.error('runtime budgets must be nonnegative')
+    if a.timing_driven==0 and not a.diagnostic_only:ap.error('--timing-driven 0 requires --diagnostic-only; never a production acceptance run')
     src=a.source.resolve();out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
     for old,new in [('impl/gwsynthesis/g2_top.vg','g2_top.vg'),('g2.cst','g2.cst'),('g2.sdc','g2.sdc')]:
         shutil.copyfile(src/old,out/new)
@@ -62,17 +64,18 @@ def main():
         'set_option -replicate_resources '+str(replicate),
         'set_option -convert_sdp32_36_to_sdp16_18 '+str(a.wide_split),
         'set_option -gen_verilog_sim_netlist 1',
-        'set_option -place_option '+str(a.place_option),'set_option -route_option '+str(a.route_option)]
+        'set_option -place_option '+str(a.place_option),'set_option -route_option '+str(a.route_option),
+        'set_option -timing_driven '+str(a.timing_driven)]
     tcl += ['set_option -'+x+' 1' for x in ['use_sspi_as_gpio','use_mspi_as_gpio','use_ready_as_gpio','use_done_as_gpio','use_i2c_as_gpio','use_cpu_as_gpio']]
     from preflight import validate
     tool=Path(r'D:\Gowin2\Gowin_V1.9.12.04_x64\IDE\bin\gw_sh.exe')
-    effective=validate(tool,out,tcl,frequency,a.wide_split,{'replicate_resources':replicate,'place_option':a.place_option,'route_option':a.route_option})
+    effective=validate(tool,out,tcl,frequency,a.wide_split,{'replicate_resources':replicate,'place_option':a.place_option,'route_option':a.route_option,'timing_driven':a.timing_driven})
     tcl += ['run pnr','exit'];(out/'run.tcl').write_text('\n'.join(tcl)+'\n',encoding='utf-8',newline='\n')
     (out/'manifest.json').write_text(json.dumps(dict(source=str(src),frozen_netlist=True,wide_split=a.wide_split,
         original_pnr_command=cmd,replicate_resources=replicate,place_option=a.place_option,route_option=a.route_option,effective_options=effective,
         max_runtime_minutes=a.max_runtime_minutes,max_no_progress_minutes=a.max_no_progress_minutes,
         cdc_reference_audit=str(cdc_reference) if cdc_reference else None,
-        diagnostic_only=a.diagnostic_only,
+        diagnostic_only=a.diagnostic_only,timing_driven=a.timing_driven,
         source_manifest=json.loads((src/'manifest.json').read_text()),programmed=False),indent=2))
     from bounded_tool import run_tool
     r=run_tool([str(tool),'run.tcl'],out,max_runtime_s=a.max_runtime_minutes*60,

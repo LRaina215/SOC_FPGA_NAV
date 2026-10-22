@@ -1,0 +1,88 @@
+{
+  "checked_at": "2026-10-23T06:55:04.453560+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\weight9_gyro17_notiming_diagnostic",
+  "comparison_build": "F:\\nav_integration_g2_20261023\\weight9_gyro17_base_sdc_diagnostic",
+  "same_input_bytes": {
+    "g2_top.vg": true,
+    "g2.cst": true,
+    "g2.sdc": true
+  },
+  "only_effective_option_difference": {
+    "timing_driven": [
+      "1",
+      "0"
+    ]
+  },
+  "actual_pnr_command": "-d F:\\nav_integration_g2_20261023\\weight9_gyro17_notiming_diagnostic\\g2_top.vg\n-p GW5AT-138C-PBGA484A-1\n-pn GW5AT-LV138PG484AC1/I0\n-cst F:\\nav_integration_g2_20261023\\weight9_gyro17_notiming_diagnostic\\g2.cst\n-cfg F:\\nav_integration_g2_20261023\\weight9_gyro17_notiming_diagnostic\\impl\\pnr\\device.cfg\n-sdc F:\\nav_integration_g2_20261023\\weight9_gyro17_notiming_diagnostic\\g2.sdc\n-bit\n-tr\n-ph\n-o\n-ireg_not_in_iob\n-oreg_not_in_iob\n-ioreg_not_in_iob\n-replicate\n-cst_error\n-convert_sdp32_36_to_sdp16_18\n-place_option 1\n-route_option 2\n-retiming_resource none\n-clock_route_order 0\n-correct_hold 1\n-route_maxfan 23\n-global_freq 50.000\n",
+  "effective_options": {
+    "global_freq_mhz": 50.0,
+    "wide_split": 1,
+    "effective_options": "F:\\nav_integration_g2_20261023\\weight9_gyro17_notiming_diagnostic\\effective_options.tcl",
+    "extra_options": {
+      "replicate_resources": 1,
+      "place_option": 1,
+      "route_option": 2,
+      "timing_driven": 0
+    }
+  },
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-23T06:54:32.606694+08:00",
+    "max_runtime_s": 3600.0,
+    "max_no_observable_progress_s": 2100.0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "pid": 27260,
+    "elapsed_s": 30.03100000001723,
+    "no_observable_progress_s": 24.01500000001397,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        860,
+        1792709678333346700
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        405,
+        1792709678333346700
+      ]
+    ]
+  },
+  "process": {
+    "ProcessId": 27260,
+    "ParentProcessId": 13988,
+    "CommandLine": "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe run.tcl"
+  },
+  "diagnostic_only": true,
+  "g2_acceptance_forced_false": true,
+  "hypothesis": "Distinguish timing-driven optimization contribution from general routing difficulty; no internal congestion or cause established.",
+  "vendor_sources": [
+    {
+      "file": "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\doc\\EN\\SUG1220-2.1E_Gowin Software Tcl Commands User Guide.pdf",
+      "section": "set_option -timing_driven:0 disables timing-driven optimization,1 enables; default1"
+    },
+    {
+      "file": "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\doc\\EN\\SUG100-4.4.7E_Gowin Software User Guide.pdf",
+      "pdf_page": 52,
+      "printed_page": 40,
+      "section": "Route Configuration; timing-driven is optimization and separate from clock constraints"
+    }
+  ],
+  "planned_budget_minutes": {
+    "total": 60,
+    "no_observable_progress": 35
+  },
+  "no_physical_result_yet": true,
+  "programmed": false,
+  "cli_guard_check": {
+    "checked_at": "2026-10-23T06:56:28.220235+08:00",
+    "invocation_without_diagnostic_only_exit": 2,
+    "output_directory_created": false,
+    "passed": true,
+    "scope": "CLI rejection before any expensive tool run, not FPGA timing evidence"
+  }
+}
