@@ -1,6 +1,6 @@
 # G2原4500与导航共同工程资源记录
 
-2026-10-22，离线构建，未烧录。五组方案均未通过：四组在PNR映射时BSRAM超限，完整帧缓冲SSRAM方案在综合时逻辑超限。没有成功布局布线或联合Fmax；G2明确不通过。
+2026-10-22，离线构建，未烧录。旧五组方案均未通过：四组在PNR映射时BSRAM超限，完整帧缓冲SSRAM方案在综合时逻辑超限。接续已定位开销、实现两侧无损布局和精确流水，当前仍没有成功布局布线或联合Fmax；尚无G2接受候选，文末列出实际运行状态。
 
 源码入口：[integration/g2](../../integration/g2/build_g2.py)。固定控制为6443f56，实际RTL/ROM已保存到integration/control4500/original_src；权重数值、网络、训练与125Hz推理不变。检查点cd9b816，分支codex/integration-g2-20261022，main未移动。
 
@@ -88,3 +88,23 @@ AX独立导航334/340与综合估计309均不能当整车数值；核心时序�
 `nav_command_units.v`保持原对称最近舍入：`floor((abs(x)*512+62)/125)`再恢复符号，用25×17部分积、移位和余数修正替代组合除法。`67109*125=2^23+17`，对本范围的倒数误差小于1，商至多偏大1，比较`q*125`精确修正。四级流水每拍可接收一条；数值/序号同步，复位或SAFE停止/看门狗清空所有在途valid，原始停止/故障仍直接进监管器。正常接受相对原组合适配增加4个50MHz核心周期（80ns），200ms有效期不延长。
 
 两轴各65536个16位输入的穷举均与原64位`(x*4096 +/-500)/1000`逐项一致，含17316次倒数修正；连续输入和65590个输出帧、8次在途清空通过。见[接口合同](evidence/g2_20261022/nav_command_units_contract.json)。这只改变接口实现，原4500观测合同/ROM/权重/125Hz调度和监管器阈值不变。构建标志`--command-units-pipeline`要求`--command-lease`；`directed_pipe2_coverage_effective50`已启动，实际资源/时序仍待报告。
+
+### 双流水综合与同网表拆分配对
+
+双流水覆盖版综合314块，实际回读50MHz，控制48、CPU64、导航202均保留。与同50MHz的观测流水版相比，只增加精确单位适配，最坏综合到达45.705→28.413ns、SYN估计Fmax21.923→35.566MHz；新最坏路径是覆盖层中心坐标到维护RAM写入。该收益仅归综合估计，不作为PNR签核。见[双流水SYN](evidence/g2_20261022/directed_pipe2_coverage_effective50_synthesis.json)。
+
+展开实际双流水网表的314个BSRAM叶子，其中17个是32/36位SDPB/SDPX9B，均在导航侧。关闭拆分预计314，开启预计331，均低于336工作门槛。现在`directed_pipe2_coverage_effective50`与`directed_pipe2_coverage_split1_effective50`固定同一网表、器件、引脚、SDC及50MHz全局提示，只改宽RAM拆分；两者均通过映射接受并进入布局。331是按原语计算的预测，非实际PNR占用；是否改善布线待测，不将旧339块方案的经验直接外推。
+
+为避免16GiB机器内存压力，AS逐存储版及中间单观测流水版主动取消剩余PNR，保留源码/综合/日志及取消记录。它们没有物理占用或Fmax结果，不记为布线失败；先集中完成容量更大的覆盖版，再构建可行配置的AS对照。
+
+| 接续运行 | 实际综合 / 提示 | 本轮状态 |
+|---|---|---|
+| native32_raw_coverage_v2 | 339 / 100MHz | PNR实测339，353未布通，失败无时序 |
+| native32_raw_as_v2 | 339 / 原冻结网表 | 因已超过工作门槛取消，未取得PNR占用/时序 |
+| directed_local_as50 | 306 / 实际100MHz | 因内存与优先级取消PNR，仅保留综合值 |
+| directed_local_coverage50 | 314 / 实际100MHz | 宽RAM不拆分，仍在布线 |
+| directed_pipe_coverage_effective50 | 314 / 实际50MHz | 单观测流水，中间版取消PNR |
+| directed_pipe2_coverage_effective50 | 314 / 实际50MHz | 双流水，拆分0，布局中 |
+| directed_pipe2_coverage_split1_effective50 | 复用上一网表，预计331 / 实际50MHz | 双流水，拆分1，同网表配对布局中 |
+
+实际报告采集还要求clk50约束50MHz、rgmii_rxc约束100MHz及相应Fmax/违例检查；IO/CDC完整签核仍单列。没有报告时保留未知，不用综合或全局提示填充。

@@ -33,11 +33,14 @@ def collect(build,top='g2_top'):
     section=t.split('3.1.1 Setup Paths Table\n')[-1].split('3.1.2 Hold Paths Table')[0]
     r['top_setup_rows']=[x.strip() for x in section.splitlines() if re.match(r'^\s*\d+\s+[-\d.]+\s+\S+',x)][:10]
     core=next((c for c in clocks if c['name']=='clk50'),None)
+    receive=next((c for c in clocks if c['name']=='rgmii_rxc'),None)
     r['routing_passed']=bool(t and not errors and r['unrouted_nets'] in (None,0))
     r['bsram_work_gate_336']=r['bsram']['used']<=336
-    r['core_50mhz_timing_pass']=bool(r['routing_passed'] and core and core['actual_fmax_mhz']>=50
+    r['core_50mhz_timing_pass']=bool(r['routing_passed'] and core and core['constraint_mhz']==50 and core['actual_fmax_mhz']>=50
         and r['setup_violations']==0 and r['hold_violations']==0)
-    r['g2_resource_core_gate_pass']=r['routing_passed'] and r['bsram_work_gate_336'] and r['core_50mhz_timing_pass']
+    r['receive_100mhz_report_pass']=bool(r['routing_passed'] and receive and receive['constraint_mhz']==100
+        and receive['actual_fmax_mhz']>=100 and r['setup_violations']==0 and r['hold_violations']==0)
+    r['g2_resource_core_gate_pass']=r['routing_passed'] and r['bsram_work_gate_336'] and r['core_50mhz_timing_pass'] and r['receive_100mhz_report_pass']
     r['scope']='actual reported resource/core timing; physical device revision, IO/CDC signoff and G3/vehicle acceptance remain separate'
     return r
 

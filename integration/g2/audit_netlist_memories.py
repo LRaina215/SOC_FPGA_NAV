@@ -45,7 +45,8 @@ def inventory(build):
     if (build/'impl/pnr/g2_top.log').exists():log+='\n'+(build/'impl/pnr/g2_top.log').read_text(encoding='utf-8',errors='replace')
     pnr=re.search(r'The number\((\d+)\) of BSRAM',log)
     totals=Counter(x['path'].split('/')[1] for x in leaves)
-    wide=[x for x in leaves if any(x['parameters'].get(k) in ('32','36') for k in ('BIT_WIDTH','BIT_WIDTH_0','BIT_WIDTH_1'))]
+    wide=[x for x in leaves if x['primitive'] in {'SDPB','SDPX9B'} and
+          any(x['parameters'].get(k) in ('32','36') for k in ('BIT_WIDTH','BIT_WIDTH_0','BIT_WIDTH_1'))]
     command=(build/'impl/pnr/cmd.do').read_text(encoding='utf-8')
     return dict(build=str(build.resolve()),synthesis_report_bsram=syn.get('T_Bsram'),
         definition_bsram_count=sum(definitions.values()),expanded_bsram_count=len(leaves),
