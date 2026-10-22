@@ -1,0 +1,41 @@
+{
+  "module": "nav_count_feedback",
+  "measurement_top": "count_feedback_timing",
+  "input_launch_registers": true,
+  "runs": [
+    {
+      "variant": "observer",
+      "build": "F:\\nav_integration_g2_20261023\\count_feedback_synthesis\\observer",
+      "effective_options": {
+        "global_freq_mhz": 50.0,
+        "wide_split": 0,
+        "effective_options": "F:\\nav_integration_g2_20261023\\count_feedback_synthesis\\observer\\effective_options.tcl",
+        "extra_options": {}
+      },
+      "tool_exit": 0,
+      "errors": [],
+      "synthesis_succeeded": true,
+      "synthesis_resources": {
+        "name": "count_feedback_timing",
+        "Register": "66",
+        "T_Register": "377(66)",
+        "T_Alu": "131(0)",
+        "T_Lut": "525(0)",
+        "T_MULT27X36": "1(0)",
+        "T_Ssram": "8(0)"
+      },
+      "estimated_fmax_mhz": 66.123,
+      "first_path": {
+        "Slack": "4.877",
+        "Data Arrival Time": "15.437",
+        "Data Required Time": "20.314",
+        "From": "u_observer/left_q_3_s0",
+        "To": "u_observer/pending_slow_s0",
+        "Launch Clk": "clk[R]",
+        "Latch Clk": "clk[R]"
+      }
+    }
+  ],
+  "programmed": false,
+  "scope": "isolated control module synthesis diagnosis/estimates; not joint PNR or vehicle acceptance"
+}

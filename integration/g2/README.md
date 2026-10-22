@@ -43,3 +43,5 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 完整构建与冻结网表PNR会保存`g2_gate.json`，并按实际报告返回G2门槛结果；厂商工具返回0或产生位流仍可能时序失败。仅综合阶段的成功不代表G2接受。采集器区分域内与全局违例，跨域违例保留；目前332块首次布通版核心26.313MHz，G2不通过，禁止按该位流部署。
 
 `audit_cdc_first_stages.py <flat-vo> --out <audit.json> --emit-sdc <fragment.sdc>`核对四组共26条已知同步器的实际驱动、时钟与第一级单扇出到预期第二级。`pnr_from_netlist.py --cdc-reference-audit <audit.json>`显式启用隔离的第一同步级hold-only及8/18ns最大延迟候选；原SDC保留。新报告要求26条物理连接与参考相符、52条约束全部Actived，出现其他未审例外即拒绝。小型工具实测表明第二级setup/hold及源到第一级的最大延迟仍计时；不代表完整CDC、IO、偏斜或MTBF签核。
+
+`nav_count_feedback.v`为独立N3候选，尚未接入`g2_top`及正在运行的冻结PNR。固定名义65mm/1320CPR、10ms原始AB计数，左正/右负为前进；保留导航速度换算余数，并提供50窗计数变化的补充慢速证据、质量/超时/重叠/范围故障及粘滞连续性丢失。计数窗口不能观测门内往返、亚计数运动和打滑，不能单独确认物理停止；原PID/RL不受影响。`test_count_feedback.py`采用独立整数/分数模型，`measure_fusion_timing.py --module count-feedback`使用输入启动寄存器测量原型（测试寄存器不进产品）。接入及完整资源/时序、G3质量状态、原4500闭环和停止包络仍待完成。

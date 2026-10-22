@@ -1,0 +1,72 @@
+{
+  "pass_": true,
+  "build": "F:\\nav_integration_g2_20261023\\count_feedback_contract_v3",
+  "frames": 1284,
+  "emissions": 1280,
+  "explicit_fault_cases": 2,
+  "overflow_frames": 2,
+  "phases": [
+    {
+      "name": "stationary",
+      "start": 0,
+      "count": 60
+    },
+    {
+      "name": "nominal_4mmps",
+      "start": 60,
+      "count": 200
+    },
+    {
+      "name": "nominal_6mmps",
+      "start": 260,
+      "count": 200
+    },
+    {
+      "name": "nominal_minus6mmps",
+      "start": 460,
+      "count": 200
+    },
+    {
+      "name": "direction_reversal_travel",
+      "start": 660,
+      "count": 120
+    },
+    {
+      "name": "fraction_then_zero",
+      "start": 780,
+      "count": 61
+    },
+    {
+      "name": "half_unit_epoch_reset",
+      "start": 841,
+      "count": 1
+    },
+    {
+      "name": "half_unit_then_zero",
+      "start": 842,
+      "count": 61
+    },
+    {
+      "name": "random_signed_counts",
+      "start": 903,
+      "count": 256
+    },
+    {
+      "name": "quality_gap",
+      "start": 1159,
+      "count": 61
+    },
+    {
+      "name": "overflow_boundaries",
+      "start": 1220,
+      "count": 64
+    }
+  ],
+  "source_clock_parameter_hz": 100000,
+  "gate_cycles": 1000,
+  "nominal_gate_ms": 10,
+  "production_default_clock_hz": 50000000,
+  "production_gate_cycles": 500000,
+  "stop_signal_role": "supplementary sampled-count evidence only; within-gate reversals, sub-count motion and slip remain unobserved",
+  "scope": "isolated RTL and independent nominal count-window arithmetic oracle; not integrated G2, original4500 behavior, MuJoCo or physical stop acceptance"
+}
