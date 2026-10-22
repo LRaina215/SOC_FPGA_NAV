@@ -9,7 +9,7 @@ v3 的坡度：沿 x、y 各取 B 格基线（默认 4 格 = 20 cm），把基�
     rise_x = Σ_{k=-B/2}^{B/2-1} gate(h[x+k+1] − h[x+k])，gate(d) = d (|d| ≤ JUMP) 否则 0
     slope 判据：max(|rise_x|, |rise_y|) + min/2 > B·res·tan(最大坡度)
   · 10° 坡道：每格 9 mm，4 格 35 mm，远低于 73 mm；22.6° 陡坡：每格 21 mm，84 mm，致命；
-  · 5.6 cm 侧沿分到两格各 ~28 mm：净升高 56 mm，不致命（真值：可跨）；
+  · 分散到栅格中的高度跳变可能被当成平滑过渡；不能据此证明实车可跨相同高度的台阶，T1仍须复核区间/支撑与有效性；
   · 8 cm 台阶：一段 80 mm 超过 JUMP 被剔除，坡度项为 0，由台阶项按可跨高度判定；
   · 有符号相加，逐格噪声相互抵消（相当于 B 格基线上的差分，而不是 B 个噪声绝对值之和）。
 硬件：x 方向是行内 B+1 级移位寄存器上的加法树；y 方向需要 B 行行缓存（每行 128×16 bit，1 块 BSRAM）。
@@ -26,9 +26,10 @@ import trav_v2
 N = nf.N
 
 DEFAULT_V3 = dict(trav_v2.DEFAULT_V2)
-# 阈值按两轮自平衡小车（轮径 65 mm）的估计能力：可跨约 2 cm、坡度 12°。场地里可跨的门槛 1.5 cm、不可跨的路沿 ≥ 5 cm，
-# 阈值取在两者之间（30 mm）留出雷达噪声余量；坡度 8°/12° 可走、20° 不可走，阈值 16°（20 cm 基线净升高 57 mm）。
-DEFAULT_V3.update(step_max=30, rough_max=50, drop_k=16, drop_slope=4, slope_b=4, slope_rise=57, jump=25, k_slope=160, k_step=48, k_rough=32)
+# 20mm仅为当前模型的能力假设，未由实车标定。不能把10mm测量容差
+# 加到能力上限；有噪声/缺测的区间与轮迹准入另行处理。
+# 坡度参数仍是旧候选，16度判据不能代表已验证的12度模型能力。
+DEFAULT_V3.update(step_max=20, rough_max=50, drop_k=16, drop_slope=4, slope_b=4, slope_rise=57, jump=25, k_slope=160, k_step=48, k_rough=32, step_high_only=1)
 
 
 def gated_rise(V, H, axis, B, jump, signed=False):
@@ -62,7 +63,11 @@ def trav_v3(em, cx, cy, cfg):
                 nb[(dy, dx)] = (sh(V, dy, dx, False), sh(H, dy, dx, 0))
     step = np.zeros((N, N), dtype=np.int64)
     for (v, h) in nb.values():
-        step = np.maximum(step, np.where(v, np.abs(h - H), 0))
+        # Experimental obstacle-boundary localization: retain the high side of
+        # a discontinuity; footprint inflation/checking protects its approach.
+        # Explicit step_high_only=0 retains the legacy two-sided classifier.
+        delta = np.maximum(H - h, 0) if c.get('step_high_only', 0) else np.abs(h - H)
+        step = np.maximum(step, np.where(v, delta, 0))
     rx, _ = gated_rise(V, H, 1, c["slope_b"], c["jump"])
     ry, _ = gated_rise(V, H, 0, c["slope_b"], c["jump"])
     rise = np.maximum(rx, ry) + (np.minimum(rx, ry) >> 1)

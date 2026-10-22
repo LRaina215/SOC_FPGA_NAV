@@ -131,8 +131,8 @@ blocks:
         off: 0x00
         acc: rw
         reset: 0x00000017
-        desc: "格式与流程控制（缺省按厂家 SDK：小端）；AUTO_INFO=1 时深度单位、ROI、像素合并取自帧尾 FrameInfo"
-        fields: {ENABLE: [0,0], HDR_LE: [1,1], PIX_LE: [2,2], WAIT_POSE: [3,3], AUTO_INFO: [4,4]}
+        desc: "格式与流程控制（缺省SDK小端）；AUTO_INFO取帧尾单位/ROI/合并。MATCH_ONLY=1且FUSE_ONLY=0时仅提结构点并保留深度帧，须同时WAIT_POSE=1；匹配门控结束后切FUSE_ONLY=1并再次POSE_COMMIT，仅融合后释放同帧。两位均0兼容单遍；配置应在提交前写入，流动期间不得改变。"
+        fields: {ENABLE: [0,0], HDR_LE: [1,1], PIX_LE: [2,2], WAIT_POSE: [3,3], AUTO_INFO: [4,4], MATCH_ONLY: [5,5], FUSE_ONLY: [6,6]}
       - {name: SUBHDR,     off: 0x04, acc: rw, reset: 20, desc: "UDP 分包头字节数（SDK = 20，>= 16）"}
       - name: DEPTH_CFG
         off: 0x08
@@ -240,9 +240,9 @@ blocks:
       - name: CTRL
         off: 0x00
         acc: rw
-        reset: 0x00000005
-        desc: "控制"
-        fields: {ENABLE: [0,0], AUTO_SWEEP: [2,2]}
+        reset: 0x0000000D
+        desc: "控制；STEP_HIGH_ONLY=1时台阶高差只归属高侧，结合完整足迹检查；0保留双侧兼容判据。当前候选默认启用，部署须与已验收配置一致。"
+        fields: {ENABLE: [0,0], AUTO_SWEEP: [2,2], STEP_HIGH_ONLY: [3,3]}
       - name: CMD
         off: 0x04
         acc: w1p
@@ -261,8 +261,8 @@ blocks:
       - name: THR0
         off: 0x18
         acc: rw
-        reset: 0x0032001E
-        desc: "致命阈值 mm：台阶（8 邻域最大高差；30 = 可跨门槛 15 与不可跨路沿 50 之间）、格内粗糙度 50"
+        reset: 0x00320014
+        desc: "致命阈值 mm：台阶20（当前模型能力假设，非实车标定；测量容差不得叠加）、格内粗糙度50"
         fields: {STEP_MAX: [15,0], ROUGH_MAX: [31,16]}
       - name: THR1
         off: 0x1C
@@ -318,7 +318,19 @@ blocks:
         acc: ro
         reset: 0
         desc: "读出槽字高位与完成标志"
-        fields: {CNT: [3,0], TAG: [11,4], STAMP: [19,12], DONE: [31,31]}
+        fields: {CNT: [3,0], TAG: [11,4], STAMP: [19,12], RETAINED_STALE: [20,20], DONE: [31,31]}
+      - name: SUPPORT_Q
+        off: 0x58
+        acc: ro
+        reset: 0
+        desc: "与ELEV_CMD同次读取的4x4轮迹子区覆盖；ELEV_Q1.DONE同时保证两层完成。年龄按200ms采集epoch，最多20s静态保留"
+        fields: {KNOWN: [15,0], FRESH: [31,16]}
+      - name: SUPPORT_STAMP
+        off: 0x5C
+        acc: rw
+        reset: 0
+        desc: "提交帧的采集时间epoch=(capture_us/200000)&127；VALID仅允许采集时间不晚于当前且延迟<=1s，FUSE前写入。32bit时基回绕清覆盖层"
+        fields: {EPOCH: [6,0], VALID: [7,7]}
 
   - name: TRAJ
     base: 0x4000

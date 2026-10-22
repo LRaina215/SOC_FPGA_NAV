@@ -30,6 +30,7 @@ typedef struct {
     double     min_clear_mm;        /* 机器人中心到障碍物的最小距离 */
     int32_t    robot_r_mm;
     uint32_t   n_cmds, n_status;
+    bool       traj_stale, traj_change_map, traj_blocked; /* 确定性HAL故障注入 */
     uint8_t    last_status[64];
     int        last_status_len;
 } sim_t;
@@ -42,6 +43,7 @@ void sim_add_obs(int32_t x0, int32_t y0, int32_t x1, int32_t y1);
 void sim_advance(uint32_t dt_us);
 /* 向"RK3588 -> FPGA"队列注入一个报文 */
 void sim_host_inject(const uint8_t *buf, int len);
+void sim_map_fixture(const uint8_t *map,const hal_map_info_t *mi);
 /* 真值点到障碍物最近距离 */
 double sim_clearance(double x, double y);
 

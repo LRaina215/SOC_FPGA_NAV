@@ -28,10 +28,10 @@ module trav_analysis #(
     // 高程图口
     output wire        em_re,
     output wire [2*LOG2N-1:0] em_raddr,
-    input  wire [51:0] em_q,
+    input  wire [52:0] em_q,
     output reg         em_we,
     output reg  [2*LOG2N-1:0] em_waddr,
-    output reg  [51:0] em_wdata,
+    output reg  [52:0] em_wdata,
 
     // 代价图后台缓冲口
     output reg         cm_we,

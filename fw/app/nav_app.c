@@ -1,5 +1,6 @@
 #include "nav_app.h"
 #include "hal.h"
+#include "support_guard.h"
 
 nav_app_t g_app;
 
@@ -8,6 +9,8 @@ bool nav_app_have_prior(void) { return g_app.prx.state == PRIOR_READY; }
 void nav_app_init(void)
 {
     nav_task_init(&g_app.nt);
+    g_app.nt.async_gmap=true;
+    support_reset(0); /* 默认不声明启动盲区已知；实验须显式给出平地前提。 */
     imu_parser_init(&g_app.imu, IMU_PROTO_WIT55);
     uint32_t now = hal_time_us();
     g_app.t_plan = now;
@@ -37,10 +40,16 @@ void nav_app_init(void)
 /* 位姿进入新坐标系（SET_POSE / 对准完成）：旧坐标系下的局部观测全部作废 */
 static void frame_jumped(nav_task_t *nt)
 {
+    astar_cancel();
+    support_frame_jump();
+    nt->scan_active=nt->scan_settling=nt->scan_failed=false;
+    nt->scan_exit_valid=false;
+    nt->terrain_frame=(local_frame_t){0};
     hal_map_clear();
     gmap_clear_obs(&nt->gm);
     nt->path_valid = false;
     nt->have_map = false;
+    g_app.anchor_wait = false;
     hal_map_info_t mi;
     if (hal_map_info(&mi)) { nt->stale = true; nt->stale_seq = mi.seq; }
     target_init(&nt->tgt, 1500000, 700);
@@ -52,6 +61,31 @@ static void send_ack(void)
     uint8_t b[16];
     int n = proto_build_map_ack(b, g_app.prx.next, g_app.prx.state);
     hal_host_send(b, n);
+}
+
+static void wait_anchor(void)
+{
+    hal_map_info_t mi = {0};
+    hal_map_info(&mi);
+    g_app.anchor_wait = true;
+    g_app.anchor_seq = mi.seq;
+}
+
+/* 第二遍复用保留的深度帧：只按已接受的采集位姿融合，不重新提取匹配点。 */
+static void finish_fusion(bool valid)
+{
+    if (!g_app.fuse_held) return;
+    nav_pose_t at = valid ? g_app.pm_at : g_app.nt.pose.cur;
+    if(!g_app.nt.gm.has_prior) local_frame_pose(&g_app.nt.terrain_frame,&at,&at);
+    int32_t r[3][3], t[3];
+    pose_lidar_tf(&g_app.nt.pose, &at, r, t);
+    hal_map_info_t mi; hal_map_info(&mi);
+    uint16_t inv = mi.inv_res ? mi.inv_res : 1311;
+    int32_t cx = (int32_t)(((int64_t)at.x*inv)>>16), cy = (int32_t)(((int64_t)at.y*inv)>>16);
+    hal_lidar_stage(HAL_LIDAR_FUSE_ONLY);
+    if (valid) wait_anchor();
+    hal_lidar_commit(r, t, cx, cy, valid ? at.z+g_app.zband_lo : 1, valid ? at.z+g_app.zband_hi : 0);
+    g_app.fuse_held = false;
 }
 
 static void on_msg(nav_task_t *nt, const proto_msg_t *m, uint32_t rx_us)
@@ -121,7 +155,16 @@ void nav_app_poll(void)
         }
     }
 
-    /* 3. 雷达帧：按预测位姿提交（融合 + 提取结构点），窗口中心跟随机器人；没有帧时启动雷达 */
+    /* 3. 雷达帧：先提结构点，匹配门控接受后按修正位姿重读同帧融合。 */
+    if (g_app.anchor_wait) {
+        hal_map_info_t mi;
+        if (hal_map_info(&mi) && mi.seq != g_app.anchor_seq) {
+            g_app.anchor_wait = false;
+            nav_pose_t local=nt->pose.cur;
+            if(!prior) local_frame_pose(&nt->terrain_frame,&local,&local);
+            pose_anchor_z_at(&nt->pose,&local,g_app.anchor_hl,g_app.anchor_hw,g_app.anchor_gain);
+        }
+    }
     xt_link_poll(&g_app.xl, now);
     lidar_cal_poll(&g_app.lcal, g_app.lcal_budget);
     uint32_t ft;
@@ -134,7 +177,9 @@ void nav_app_poll(void)
     if (att_ready) {
         nav_pose_t at;
         int32_t r[3][3], tt[3];
-        pose_at(&nt->pose, ft, &at);
+        pose_query_t query = pose_at(&nt->pose, ft, &at);
+        if (!pose_query_valid(query)) g_app.n_time_skip++;
+        if (!pose_query_valid(query)) at = nt->pose.cur; /* 仅用于消费废帧，不融合/匹配 */
         pose_lidar_tf(&nt->pose, &at, r, tt);
         hal_map_info_t mi;
         hal_map_info(&mi);
@@ -143,24 +188,32 @@ void nav_app_poll(void)
         int32_t cy = (int32_t)(((int64_t)at.y * inv) >> 16);
         /* 姿态突变前后 200 ms 的帧：点云整体倾斜未知，融合会在远处造成大片假台阶。
          * 提交空高度带（zmin > zmax）——帧被消费、不写图、不提结构点，地形扫描照常进行 */
-        bool skip = pose_att_unsettled(&nt->pose, now, 200000);
+        bool skip = !pose_query_valid(query) || pose_att_unsettled(&nt->pose, ft, 200000);
         bool no_lut = !lidar_cal_ready(&g_app.lcal);      /* 方向表只写了一部分：点的方向不可信 */
+        bool matching = !skip && !no_lut && !receiving && (prior ? lc->st != LOC_ODOM : g_app.pm_cfg.enable);
+        hal_lidar_stage(matching ? HAL_LIDAR_MATCH_ONLY : HAL_LIDAR_NORMAL);
         if (skip || no_lut) {
             hal_lidar_commit(r, tt, cx, cy, 1, 0);
             if (no_lut) g_app.n_lut_skip++;
             else g_app.n_skip++;
             skip = true;
         } else {
+            if (!matching) wait_anchor();
+            if(!matching && !prior) {
+                nav_pose_t local;
+                local_frame_pose(&nt->terrain_frame,&at,&local);
+                pose_lidar_tf(&nt->pose,&local,r,tt);
+                cx=(int32_t)(((int64_t)local.x*inv)>>16);cy=(int32_t)(((int64_t)local.y*inv)>>16);
+            }
             hal_lidar_commit(r, tt, cx, cy, at.z + g_app.zband_lo, at.z + g_app.zband_hi);
         }
-        g_app.pm_pend = !skip && !receiving && (prior ? lc->st != LOC_ODOM : g_app.pm_cfg.enable);
+        g_app.pm_pend = matching;
+        g_app.fuse_held = matching;
         g_app.pm_at = at;
         g_app.pm_stale = false;
-        pose_anchor_z(&nt->pose, g_app.anchor_hl, g_app.anchor_hw, g_app.anchor_gain);
         g_app.n_frames++;
     }
-    /* 匹配（先融合后匹配）：结构点就绪 -> 发起打分（硬件约 40 ms，主循环不等待）-> 取回结果、修正位姿
-     * -> 把结构点按修正量并入结构图（有图模式：只释放点缓冲） */
+    /* 匹配：结构点就绪 -> 异步打分 -> 提案/门控/提交 -> 结构图更新及第二遍高度融合。 */
     const pm_cfg_t *pc = prior ? &g_app.pm_cfg_prior : &g_app.pm_cfg;
     if (g_app.pm_pend && hal_match_ready()) {
         g_app.pm_pend = false;
@@ -169,46 +222,62 @@ void nav_app_poll(void)
             g_app.pm_k = 0;
         } else if (lc->st == LOC_ALIGN) {
             hal_match_gate(false);
-            g_app.pm_k = loc_align_next(lc, g_app.pm_cand, PM_MAX_CAND);
+            g_app.pm_k = loc_align_next(lc, g_app.pm_work.cand, PM_MAX_CAND);
             g_app.pm_align = true;
         } else {
-            g_app.pm_k = pose_match_cands(pc, g_app.pm_cand);
+            g_app.pm_k = pose_match_cands(pc, g_app.pm_work.cand);
         }
-        if (g_app.pm_k > 0 && hal_match_start(g_app.pm_at.x, g_app.pm_at.y, g_app.pm_cand, g_app.pm_k))
+        if (g_app.pm_k > 0 && hal_match_start(g_app.pm_at.x, g_app.pm_at.y, g_app.pm_work.cand, g_app.pm_k))
             g_app.pm_run = true;
         else {
             hal_match_gate(true);
             hal_match_update(0, 0, 0, g_app.pm_at.x, g_app.pm_at.y);
+            finish_fusion(!g_app.pm_stale && (!prior || lc->st == LOC_OK || lc->st == LOC_DEGRADED));
         }
     }
-    if (g_app.pm_run && hal_match_result(g_app.pm_res, g_app.pm_k)) {
+    if (g_app.pm_run && hal_match_result(g_app.pm_work.res, g_app.pm_k)) {
         g_app.pm_run = false;
         if (g_app.pm_stale) {
             hal_match_gate(true);
             hal_match_update(0, 0, 0, g_app.pm_at.x, g_app.pm_at.y);
+            finish_fusion(false);
         } else if (g_app.pm_align) {
-            loc_align_feed(lc, g_app.pm_cand, g_app.pm_res, g_app.pm_k);
-            g_app.pm_k = loc_align_next(lc, g_app.pm_cand, PM_MAX_CAND);
-            if (g_app.pm_k > 0 && hal_match_start(g_app.pm_at.x, g_app.pm_at.y, g_app.pm_cand, g_app.pm_k)) {
+            loc_align_feed_generated(lc, g_app.pm_work.res, g_app.pm_k);
+            g_app.pm_k = loc_align_next(lc, g_app.pm_work.cand, PM_MAX_CAND);
+            if (g_app.pm_k > 0 && hal_match_start(g_app.pm_at.x, g_app.pm_at.y, g_app.pm_work.cand, g_app.pm_k)) {
                 g_app.pm_run = true;                 /* 同一帧的下一批候选 */
             } else {
                 g_app.pm_align = false;
                 hal_match_gate(true);
                 if (loc_align_finish(lc, now)) {
-                    pose_correct_delta(&nt->pose, lc->res_dx, lc->res_dy, 0, lc->res_da);
+                    pm_stat_t correction = {.dx=lc->res_dx, .dy=lc->res_dy, .dyaw=lc->res_da};
+                    pose_match_commit(&nt->pose, g_app.pm_at.x, g_app.pm_at.y, &correction);
                     frame_jumped(nt);
                 }
                 if (lc->st == LOC_LOST) g_app.t_lost = now;
                 hal_match_update(0, 0, 0, g_app.pm_at.x, g_app.pm_at.y);
+                finish_fusion(false); /* 全局跳变后只释放旧帧，下一新帧使用新坐标 */
             }
         } else {
-            bool ok = pose_match_solve(pc, &nt->pose, g_app.pm_res, g_app.pm_k, &g_app.pm);
-            if (prior && loc_track(lc, &g_app.pm, g_app.pm_res, ok, now)) {
+            bool ok = pose_match_solve(pc, g_app.pm_work.res, g_app.pm_k, &g_app.pm);
+            if (prior && loc_track(lc, &g_app.pm, g_app.pm_work.res, ok, now)) {
                 /* 丢失：原地保持，以当前估计为中心重定位 */
                 loc_start_align(lc, lc->cfg.reloc_mm, lc->cfg.reloc_ang);
+                ok = false;
+            }
+            int32_t old_x = g_app.pm_at.x, old_y = g_app.pm_at.y;
+            if (ok) {
+                int64_t x=nt->pose.x_um,y=nt->pose.y_um;
+                pose_match_commit(&nt->pose,old_x,old_y,&g_app.pm);
+                if(!prior) local_frame_preserve(&nt->terrain_frame,x,y,nt->pose.x_um,nt->pose.y_um,g_app.pm.dyaw);
             }
             hal_match_update(ok ? g_app.pm.dx : 0, ok ? g_app.pm.dy : 0, ok ? g_app.pm.dyaw : 0,
-                             g_app.pm_at.x, g_app.pm_at.y);
+                             old_x, old_y);
+            if (ok) {
+                g_app.pm_at.x += g_app.pm.dx; g_app.pm_at.y += g_app.pm.dy;
+                g_app.pm_at.yaw = (angle_t)(g_app.pm_at.yaw + g_app.pm.dyaw);
+            }
+            finish_fusion(!prior || lc->st == LOC_OK || lc->st == LOC_DEGRADED);
         }
     }
     /* 对准失败（视野里结构不足或只有平行结构）：原地转约 35° 换视角，稳定后用新帧再对准 */
@@ -242,7 +311,7 @@ void nav_app_poll(void)
         g_app.t_plan += APP_PLAN_PERIOD_US;
         if ((uint32_t)(now - g_app.t_plan) >= APP_PLAN_PERIOD_US) g_app.t_plan = now;   /* 落后太多：重新对齐 */
         nav_task_step(nt, now);
-    }
+    } else nav_task_map_work(nt,4);
 
     /* 6. 状态回传 */
     if ((uint32_t)(now - g_app.t_status) >= APP_STATUS_PERIOD_US) {

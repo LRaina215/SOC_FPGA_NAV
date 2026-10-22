@@ -7,6 +7,21 @@
 //   6. IMU 串口：发 3 字节 -> 总线读出，首字节带 FIRST 标记和时间戳
 `timescale 1ns/1ps
 module tb_nav_top;
+`ifdef NAV_COVERAGE_TEST
+    localparam COVERAGE = 1;
+`else
+    localparam COVERAGE = 0;
+`endif
+`ifdef NAV_STAGED_TEST
+    localparam STAGED = 1;
+`else
+    localparam STAGED = 0;
+`endif
+`ifdef NAV_STEP_HIGH_TEST
+    localparam STEP_HIGH = 1;
+`else
+    localparam STEP_HIGH = 0;
+`endif
 `include "nav_regs_map.vh"
     logic clk = 0, mclk = 0, rst = 1;
     always #5 clk = ~clk;
@@ -20,6 +35,8 @@ module tb_nav_top;
     logic [31:0] gexp [0:63];
     logic [31:0] elx [0:47];
     logic [31:0] slx [0:0];            // 最后一帧 SLF 结构点数          // 高程读期望：{槽地址, 低 32 位, 高 20 位} × 16
+    logic [31:0] support_exp [0:12287]; // {address, masks}, before/after each of3 frames
+    logic [6:0] accelerated_epoch = 0;
     logic [35:0] lut [0:9599];         // 方向查找表 {rz, ry, rx}
     logic [31:0] ifx [0:4];            // {跳过分包数, LENS0, LENS8, INFO_CFG, INFO_SIZE} 期望
     logic [31:0] rtop [0:127];         // 原始帧接收期望：{主流程字节数, 帧数, 雷达缺省 IP, 每帧 {长度, 字数, 字…}}
@@ -78,6 +95,24 @@ module tb_nav_top;
     endtask
     task automatic chk(string what, input [31:0] got, input [31:0] exp);
         if (got !== exp) begin errs++; $display("%s: 期望 %h 实得 %h", what, exp, got); end
+    endtask
+    task automatic coverage_check(input integer frame_index, input integer after_fusion);
+        logic [31:0] q,d;
+        integer base,tries;
+        begin
+            base=(frame_index*2+after_fusion)*2048;
+            tries=0;
+            do begin rd(RA_MAP_STAT,d);tries++;end while(d[0] && tries<20000);
+            if(d[0])$fatal(1,"coverage ageing did not finish");
+            for(integer i=0;i<1024;i++)begin
+                wr(RA_MAP_ELEV_ADDR,support_exp[base+i*2]);wr(RA_MAP_ELEV_CMD,1);
+                tries=0;d=0;
+                do begin rd(RA_MAP_ELEV_Q1,d);tries++;end while(!d[31] && tries<64);
+                if(!d[31])$fatal(1,"support read timeout");
+                rd(RA_MAP_SUPPORT_Q,q);
+                if(q!==support_exp[base+i*2+1])$fatal(1,"support frame=%0d after=%0d addr=%h expected=%h actual=%h",frame_index,after_fusion,support_exp[base+i*2],support_exp[base+i*2+1],q);
+            end
+        end
     endtask
 
     // 雷达口发送进程
@@ -145,6 +180,10 @@ module tb_nav_top;
         $readmemh("pose.hex", pose);
         $readmemh("elev_exp.hex", elx);
         $readmemh("slf_exp.hex", slx);
+        if(COVERAGE)begin
+            $readmemh("support_exp.hex", support_exp);
+            force dut.support_epoch=accelerated_epoch;
+        end
         $readmemh("cost_exp.hex", cexp);
         $readmemh("traj.hex", trj);
         $readmemh("goal_exp.hex", gexp);
@@ -169,6 +208,8 @@ module tb_nav_top;
             wr(RA_LIDAR_LUT_Z, {20'd0, lut[i][35:24]});
         end
         wr(RA_LIDAR_ZBAND, c_zband);
+        rd(RA_MAP_CTRL, d); chk("MAP.CTRL复位值", d, RR_MAP_CTRL);
+        wr(RA_MAP_CTRL, STEP_HIGH ? 32'hd : 32'h5);
         wr(RA_MAP_VALID_CFG, c_valid);
         wr(RA_MAP_THR0, c_thr0);
         wr(RA_MAP_THR1, c_thr1);
@@ -179,6 +220,11 @@ module tb_nav_top;
         // ---------- 雷达帧 ----------
         lidar_go = 1;
         for (int k = 0; k < n_frm; k++) begin
+            if(COVERAGE)begin
+                accelerated_epoch=k+2;
+                wr(RA_MAP_SUPPORT_STAMP,32'h80|(k+2));
+                rd(RA_MAP_SUPPORT_STAMP,d);chk("support capture stamp",d,32'h80|(k+2));
+            end
             rd(RA_MAP_STAT, seq0);
             begin
                 int tries = 0;
@@ -193,9 +239,29 @@ module tb_nav_top;
             end
             $display("[%0t] 帧%0d 等待位姿", $time, k);
             for (int j = 0; j < 9; j++) wr(RA_LIDAR_R00 + 4 * j, pose[k*14 + j]);
-            wr(RA_LIDAR_TX, pose[k*14 + 9]); wr(RA_LIDAR_TY, pose[k*14 + 10]); wr(RA_LIDAR_TZ, pose[k*14 + 11]);
+            if (STAGED) wr(RA_LIDAR_CTRL, 32'h3f); // WAIT_POSE + MATCH_ONLY
+            wr(RA_LIDAR_TX, pose[k*14 + 9] + (STAGED ? 100 : 0)); wr(RA_LIDAR_TY, pose[k*14 + 10]); wr(RA_LIDAR_TZ, pose[k*14 + 11]);
             wr(RA_MAP_CENTER_X, pose[k*14 + 12]); wr(RA_MAP_CENTER_Y, pose[k*14 + 13]);
             wr(RA_LIDAR_POSE_COMMIT, 1);
+            if (STAGED) begin
+                logic [31:0] npts0;
+                int tries = 0;
+                do begin rd(RA_LIDAR_POSE_STAT, d); tries++; end while (!d[0] && tries < 100000);
+                chk("保留帧等待第二次位姿", d[0], 1);
+                tries = 0;
+                do begin rd(RA_MATCH_STAT, d); tries++; end while (!d[1] && tries < 100000);
+                chk("首遍结构点完成", d[1], 1); npts0 = d[28:16];
+                rd(RA_MAP_STAT, d); chk("匹配遍不增加地图代际", d[31:16], seq0[31:16]);
+                if (irq) begin errs++; $display("匹配遍不应触发MAP_READY"); end
+                if(COVERAGE)coverage_check(k,0);
+                wr(RA_LIDAR_CTRL, 32'h5f); // FUSE_ONLY: same raw bank, corrected pose
+                wr(RA_LIDAR_TX, pose[k*14 + 9]);
+                wr(RA_LIDAR_POSE_COMMIT, 1);
+                wait (irq);
+                rd(RA_MATCH_STAT, d);
+                chk("融合遍不能覆盖结构点状态", d[1], 1);
+                chk("融合遍不能重新提取结构点", d[28:16], npts0);
+            end
             wait (irq);
             wr(RA_SYS_IRQ_STATUS, 32'h2);
             rd(RA_MAP_STAT, d);
@@ -213,6 +279,11 @@ module tb_nav_top;
                 if (bad) begin errs += bad; $display("帧%0d 代价图不一致 %0d", k, bad); end
                 else $display("帧%0d 代价图经总线读出一致", k);
             end
+            if(COVERAGE)coverage_check(k,1);
+        end
+        if(COVERAGE)begin
+            $display("SUPPORT end-to-end:6144 coarse mask reads incl MATCH_ONLY retention");
+            release dut.support_epoch;
         end
         // ---------- SLF：最后一帧的结构点数、一次打分 + 并图走通 ----------
         begin

@@ -22,7 +22,7 @@ typedef struct {
 } hal_map_info_t;
 
 bool    hal_map_info(hal_map_info_t *mi);
-/* 把前台代价图按"窗口坐标"复制出来：out[wy*N + wx]，wx = ix - (cx - N/2)。返回复制时的 seq */
+/* 按窗口坐标复制：out[wy*N + wx]，wx = ix - (cx - N/2)。返回seq；0表示无效/复制中切图，不得使用out。 */
 uint16_t hal_map_copy(uint8_t *out, hal_map_info_t *mi);
 
 /* ---- 轨迹评估（硬件加速）---- */
@@ -33,7 +33,7 @@ typedef struct {
     uint32_t sum_cost;
     int32_t  end_x, end_y;                                  /* 世界栅格 Q8 */
 } hal_traj_res_t;
-/* 起点为世界栅格 Q8 与航向；阻塞直到完成。返回 false 表示评估期间地图已更新（结果仍可用） */
+/* 起点为世界栅格 Q8 与航向；阻塞直到完成。返回 false 表示评估期间地图已更新，调用方不得提交该结果。 */
 bool hal_traj_eval(const hal_cand_t *c, int k, int t, int32_t x0_q8, int32_t y0_q8, angle_t th0,
                    uint8_t cmax, hal_traj_res_t *res);
 
@@ -72,6 +72,8 @@ bool hal_lidar_waiting(uint32_t *frame_t_us);
 /* 写入 雷达->里程计 变换（R Q14，t mm）、本帧地图窗口中心、保留点高度带（里程计系 mm），并放行该帧 */
 void hal_lidar_commit(const int32_t r_q14[3][3], const int32_t t_mm[3], int32_t cx, int32_t cy,
                       int32_t zmin, int32_t zmax);
+enum { HAL_LIDAR_NORMAL, HAL_LIDAR_MATCH_ONLY, HAL_LIDAR_FUSE_ONLY };
+void hal_lidar_stage(int stage); /* MATCH_ONLY保留原帧，FUSE_ONLY重读后释放 */
 
 /* ---- 匹配定位（SLF，硬件并行打分）----
  * 提交帧（hal_lidar_commit）时硬件同时提取竖直结构点存入点缓冲（按提交时的位姿变换）。
@@ -81,15 +83,27 @@ void hal_lidar_commit(const int32_t r_q14[3][3], const int32_t t_mm[3], int32_t 
  * hal_match_result：打分完成时返回 true 并填结果：n_valid = 参与打分的点数，
  *   cost = Σ 点到结构线法向距离（1/16 格，截断），n_in = 近邻命中点数，n_pts = 抽样后的结构点总数（门控前）。
  * hal_match_update：把缓冲点按最终修正量（同样的变换形式）并入结构图（修正量为 0 也要调用）。 */
-typedef struct { int32_t dx, dy; int32_t dyaw; } hal_match_cand_t;       /* mm, mm, angle */
-typedef struct { uint32_t n_valid, cost, n_in, n_pts; } hal_match_res_t;   /* n_pts：本帧抽样后的结构点总数 */
+/* 与硬件候选/结果寄存器的16bit字段一致；内部数组布局不属于外部协议。
+ * Python桥显式扩为int32/uint32，不能直接memcpy此结构。 */
+typedef struct { int16_t dx,dy,dyaw; } hal_match_cand_t;
+typedef struct { uint16_t n_valid,n_in;uint32_t cost,n_pts; } hal_match_res_t;
 bool hal_match_ready(void);
+/* 返回前已向硬件/仿真复制全部候选，调用者可复用c的存储。 */
 bool hal_match_start(int32_t cx_mm, int32_t cy_mm, const hal_match_cand_t *c, int k);
 bool hal_match_result(hal_match_res_t *res, int k);
 void hal_match_update(int32_t dx, int32_t dy, int32_t dyaw, int32_t cx_mm, int32_t cy_mm);
 /* 读高程图某点（里程计系 mm）所在栅格的地面高度：[zmin, zmax] 区间中点（格内高差 > 40 mm 视为非地面）。
  * 栅格有效返回 true。上板实现走 MAP.ELEV_ADDR/ELEV_CMD/ELEV_Q0/Q1 */
 bool hal_map_height(int32_t x_mm, int32_t y_mm, int32_t *h_mm);
+/* 原始观测区间；true只表示同代读有效，不表示可行或新鲜。
+ * 保留的过期危险仍可阻挡运动，但不能证明当前轮下地面。 */
+typedef struct {
+    int16_t lo,hi;
+    uint16_t seq;
+    uint8_t count,age;
+    bool retained_stale;
+} hal_support_t;
+bool hal_map_support(int32_t x_mm,int32_t y_mm,hal_support_t *out);
 /* 清空高程图（位姿跳变到地图系后，旧坐标系下融合的内容作废） */
 void hal_map_clear(void);
 

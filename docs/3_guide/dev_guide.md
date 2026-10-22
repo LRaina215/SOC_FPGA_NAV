@@ -12,9 +12,9 @@
 | 结构参数（位宽、存储深度、时钟） | `config/nav_params.yaml` | 生成 `rtl/regs/nav_params.vh`、`fw/include/nav_params.h`、`model/nav_params.py`，以及正弦表 `rtl/plan/sin_lut.hex`、`fw/include/nav_sin_lut.h` |
 | 外部接口语义（雷达、主机报文、底盘、IMU） | [icd.md](../2_interface/icd.md) + `config/regmap.yaml` | 其他文档只能引用，不能另立定义 |
 | 实物参数（车体、传感器、安装、场地） | [platform.md](../4_design/platform.md) | 固件 / 仿真里的对应常量（表的最后一列） |
-| 引脚与电平 | `gowin/nav_board.cst` + [pinout.md](../2_interface/pinout.md) | 板级顶层 `gowin/nav_board_top.v` |
+| 引脚与电平 | 独立导航 `gowin/nav_board.cst`、控制快照 `fpga/src/main.cst` + [pinout.md](../2_interface/pinout.md) | 两套约束有冲突，G3合并；不可直接把旧导航C18/C19用于现车 |
 | RTL 文件清单 | `sim/tests.py`（`ALL_RTL`、`SOC`） | `sim/run.py`（xsim 回归）与 `gowin/syn/syn.py`（综合）共用 |
-| 进度、已知问题、计划 | [roadmap.md](../1_plan/roadmap.md) | 其余规划文档（[integration_plan.md](../1_plan/integration_plan.md) 等）展开细节 |
+| 进度与任务排序 | [当前总计划](../1_plan/system_integration_plan_20261021.md) + [控制核对报告](../5_teams/control_repo_review_20261021.md) | roadmap保留历史；导航优化计划保留子任务与执行结果 |
 
 生成文件（上表第三列）**不要手改**，改 yaml 后运行 `python tools/gen_config.py`。
 
@@ -24,7 +24,7 @@
 |---|---|---|
 | `config/*.yaml` | `gen_config.py` → `sim/run.py` → `fw/test/build.py` | 生成文件一并提交 |
 | `rtl/` | `sim/run.py`（15 项，约 10 分钟，需要 Vivado xsim）→ `gowin/syn/syn.py --board …` | 看布线后时序（当前余量只有约 0.1 MHz）与 BSRAM |
-| `fw/` | `fw/test/build.py`（主机测试，会重编 `nav_fw.dll`）→ `fw/bsp/build_rv.py` | 涉及雷达启动 / 有图 / 方向表时再跑对应的 `sim/closed_loop/test_*.py` |
+| `fw/` | `fw/test/build.py`（独立主机测试程序）→ `fw/bsp/build_rv.py`（导航默认LTO） | 涉及雷达启动 / 有图 / 方向表时再跑对应的 `sim/closed_loop/test_*.py` |
 | `model/`、`sim/closed_loop/`、定位 / 规划参数 | `sim/closed_loop/batch.py --tag <名字> -j 10`（约 30 分钟） | 与上一次批量结果逐用例对比，结论记进 [algorithms.md](../4_design/algorithms.md) |
 | `gowin/*.cst`、板级顶层 | `syn.py --board` | 核对 `impl/pnr/nav_board_top.rpt.txt` 第 7 节（Pinout by Port Name）的管脚与 Bank |
 | 文档 | 无构建 | 涉及接口 / 参数的，先改真值文件再改说明文档 |
@@ -34,18 +34,18 @@
 ## 3. 新 RTL 模块怎样接进来（底盘 / 视频 / 主机串口等）
 
 整块 FPGA 只有**一个比特流**：导航、底盘 RL、视频必须在同一个 Gowin 工程里一起综合、布局布线、下载。
-任何一组单独生成的比特流下载后都会把其他功能整个覆盖掉。所以新模块一律按下面的方式进本仓库：
+任何一组单独生成的比特流下载后都会把其他功能整个覆盖掉。当前控制仓库已经有完整RTL与原4500权重，优先复用，按下面的集成约定补适配；不为目录规范重写推理、I2C或驱动：
 
 1. **文件位置**：`rtl/<领域>/xxx.v`，测试平台放 `rtl/<领域>/tb/tb_xxx.sv`。建议的新领域目录：`rtl/chassis/`（底盘 / RL）、`rtl/video/`（摄像头、HDMI、叠加）、`rtl/host/`（RK3588 串口等）。
 2. **编码约定**（与现有代码一致）：
-   - Verilog-2001 可综合子集；同步、高有效复位 `rst`；时钟参数化 `parameter integer CLK_HZ`（板级 50 MHz，`NAV_USE_PLL` 时 100 MHz）。
+   - Verilog-2001 可综合子集；新增导航边界采用同步、高有效复位 `rst`；既有控制是低有效 `reset_n`，用适配器统一释放时序；时钟参数化 `parameter integer CLK_HZ`（板级 50 MHz，`NAV_USE_PLL` 时 100 MHz）。
    - 尽量与导航同一个 `clk` 域。确需别的时钟时，跨域只用 `rtl/common/nav_cdc.v`（电平 / 脉冲同步）与 `nav_async_fifo.v`，单拍脉冲不能直接跨域。
    - 不用锁存器；除 RAM 初值外不用 `initial`；RAM 用 `rtl/common/nav_ram_*.v`（高云综合对"读写同址"的推断有坑，见 roadmap 第 4 节第 1、2 条）。
-   - 时间一律用导航的 32 位微秒计数 `time_us`（约 71.6 分钟回绕），差值用无符号模运算比较。
+   - 时间统一到导航的32位微秒基准是目标，当前 `time_us` 未作为共享顶层端口，需G1/G3实际接出或映射。区分采样与接收时间，回绕差值用无符号模运算比较。
    - 厂家加密 IP（PLL、DDR3、1G Serial Ethernet 等）放 `gowin/ip/`，在 `gowin/ip/ip_files.txt` 登记，用顶层宏（`NAV_USE_*`）开关，没有 IP 时工程仍能构建。
 3. **登记文件清单**：在 `sim/tests.py` 里加到对应列表（综合脚本直接用 `ALL_RTL`，不在清单里的文件不会被综合），并加一个 `TESTS["tb_xxx"]` 条目。
-4. **逐位参考模型**：算法类模块（推理核、滤波、编码器测速）在 `model/` 写 Python 定点参考，`sim/gen/gen_xxx.py` 生成激励与期望值，testbench 逐位比较——这是本仓库所有 RTL 的验收方式。
-5. **资源先报预算**：接入前在 [integration_plan.md](../1_plan/integration_plan.md) 第 4 节登记 BSRAM / DSP / 逻辑 / 引脚 / 时钟需求。当前板级 BSRAM 已用 324 / 340。
+4. **逐位参考模型**：新增或改变数值行为的算法模块在 `model/` 维护 Python 定点参考；既有控制推理优先复用随仓库提供的参考与验证记录。对于新增适配边界，`sim/gen/gen_xxx.py` 生成激励与期望值，testbench 逐位比较——这是本仓库所有 RTL 的验收方式。
+5. **资源先报预算**：接入前在 [integration_plan.md](../1_plan/integration_plan.md) 第 4 节登记 BSRAM / DSP / 逻辑 / 引脚 / 时钟需求。历史导航板级BSRAM已用324/340；原4500实际权重容量已超过16块剩余量，G2先做保留完整数据通路的资源预估，G3真实互连后验收最终报告。
 6. **跑 `python sim/run.py tb_xxx`**，再跑全量回归和 `syn.py --board`，确认导航原有 15 项回归不受影响、时序不出现负 slack。
 
 ## 4. 寄存器与地址空间
@@ -70,10 +70,11 @@
 
 ## 5. 固件约束（`fw/`）
 
-- 算法只经 `fw/hal/hal.h` 访问硬件：上板实现 `fw/drv/hal_fpga.c`，主机测试实现 `fw/test/hal_sim.c`。新增硬件访问先加 HAL 函数，两边都实现。
-- **RAM 很紧**：软核 RAM 128 KB，当前镜像 36012 字节 + `.bss` 85324 字节，链接脚本另外保留 8 KB 栈，剩余可用只有约 1.5 KB。
+- 算法只经 `fw/hal/hal.h` 访问硬件：上板实现 `fw/drv/hal_fpga.c`，主机测试实现 `fw/test/hal_sim.c`，Python闭环实现 `fw/test/hal_py.c`。新增硬件访问先加 HAL 函数，三处都实现。
+- **RAM 很紧**：软核RAM128KiB。2026-10-21接续N2的AS保留实验镜像50880B、BSS73512B；导航默认预留6KiB栈后余536B，完整静态栈界2672B。6KiB构建会自动分析，必须IRQ关闭、无未解间接调用/动态栈且静态界<=3KiB，否则构建失败；自检默认8KiB，可显式选择`--stack-kb 8`。这些是实验预算，尚未联合验收或上板，最新数字见[任务规划](../1_plan/nav_optimization_plan.md)。
   新增数组前先看 `build_rv.py` 打印的数字（超限时链接直接报错）；要加大功能，先在 roadmap 第 6 节的 BSRAM 预算里找空间，或复用 `fw/nav/scratch.c` 的共用缓冲。
 - 主循环不能阻塞：雷达 10 帧/秒时单次循环最长约 38 ms（速度看门狗 200 ms）。不要在固件里忙等外设；需要微秒级实时性的控制（底盘平衡、电机）一律放 RTL，不放软核。
+  38ms是原记录，新增完整足迹检查尚未做板级最坏周期测量，不能据主机耗时确认该预算。
 - 32 位微秒时间比较一律 `(uint32_t)(now - t) > dt`，不要用有符号差（roadmap 第 4 节第 20 条）。
 - 浮点：PicoRV32 没有浮点单元，固件全部定点（`fw/nav/fixmath.c`）。
 
@@ -81,7 +82,7 @@
 
 - 下载只用 SRAM（`programmer_cli --run 2`），调试阶段不动 Flash；只换固件用 `nav_uart.py COM11 load`（约 10 秒）。
 - 一个串口同时只能被一个程序打开：`nav_uart.py con`、`nav_host.py listen`、串口助手不要同时开。
-- 暂停软核 `nav_uart.py COM11 wr 0xF000 1`、恢复 `reset`；暂停期间速度看门狗会让底盘输出减到 0。
+- 暂停软核 `nav_uart.py COM11 wr 0xF000 1`、恢复 `reset`；暂停期间导航SAFE目标会按斜坡减到0；只有G3真实接通该链路后才作用于车上控制器，当前独立控制UART没有命令年龄看门狗。
 - 每个上板验证过的比特流按日期另存到 `D:\tools\`（命名见 [hardware_guide.md](hardware_guide.md) 第 4.1 节）。
 
 ## 7. Git 与协作

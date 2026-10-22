@@ -36,6 +36,8 @@ module pc_filter #(
     output reg         m_eof,
     output reg  signed [31:0] m_cx,
     output reg  signed [31:0] m_cy,
+    output reg [13:0] m_cov_addr,
+    output reg        m_cov_upd,
 
     output reg  [31:0] stat_upd,         // 上一帧写入点数（帧尾更新）
     output reg  [31:0] stat_drop         // 上一帧有效但被剔除的点数
@@ -68,6 +70,7 @@ module pc_filter #(
     wire signed [26:0] iy = my >>> 16;
     reg  signed [31:0] dx2, dy2;
     reg  [LOG2N+TAGB-1:0] ixl2, iyl2;
+    reg [1:0] subx2,suby2;
     reg        v2, sof2, eof2, keep2, pv2;
     reg signed [15:0] z2;
     reg signed [31:0] cx2, cy2;
@@ -96,6 +99,7 @@ module pc_filter #(
             dy2 <= iy - (cy1 - N/2);
             ixl2 <= ix[LOG2N+TAGB-1:0];
             iyl2 <= iy[LOG2N+TAGB-1:0];
+            subx2<=mx[15:14];suby2<=my[15:14];
             cx2 <= cx1; cy2 <= cy1;
 
             m_valid <= v2 && (kept || eof2);
@@ -107,6 +111,8 @@ module pc_filter #(
             m_eof   <= eof2;
             m_cx    <= cx2;
             m_cy    <= cy2;
+            m_cov_addr<={iyl2[4:0],ixl2[4:0],suby2,subx2};
+            m_cov_upd<=kept && dx2>=N/2-16 && dx2<N/2+16 && dy2>=N/2-16 && dy2<N/2+16;
 
             if (v2) begin
                 if (sof2) begin

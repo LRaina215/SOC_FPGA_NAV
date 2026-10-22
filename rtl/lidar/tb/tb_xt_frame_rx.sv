@@ -27,7 +27,7 @@ module tb_xt_frame_rx;
     xt_frame_rx dut (
         .clk(clk), .rst(rst), .time_us(time_us),
         .cfg_enable(1'b1), .cfg_hdr_le(cfg[0][0]), .cfg_pix_le(cfg[1][0]), .cfg_subhdr(cfg[2][7:0]),
-        .cfg_amp_min(cfg[3]), .cfg_raw_inv(cfg[4]), .cfg_wait_pose(1'b0), .pose_commit(1'b0),
+        .cfg_amp_min(cfg[3]), .cfg_raw_inv(cfg[4]), .cfg_wait_pose(1'b0), .pose_commit(1'b0), .cfg_retain(1'b0),
         .s_valid(s_valid), .s_data(s_data), .s_last(s_last), .s_err(s_err),
         .m_valid(m_valid), .m_ready(m_ready), .m_u(m_u), .m_v(m_v), .m_depth(m_depth),
         .m_sof(m_sof), .m_eof(m_eof),

@@ -13,6 +13,8 @@ import lidar_lut
 class World:
     """高程图场景：res 米/格，原点在地图中心。"""
 
+    raycast_version = "heightfield_dda_v1"
+
     def __init__(self, size_m=16.0, res=0.01):
         self.res = res
         self.n = int(round(size_m / res))
@@ -46,19 +48,42 @@ class World:
         return out
 
     def raycast(self, origin, dirs, tmax=20.0, step=0.01):
-        """origin (3,), dirs (M,3) 单位向量 -> 命中距离 (M,)，未命中为 inf。"""
-        m = dirs.shape[0]
-        hit = np.full(m, np.inf)
-        alive = np.ones(m, dtype=bool)
-        t = step
-        prev_above = np.ones(m, dtype=bool)
-        while t <= tmax and alive.any():
-            p = origin[None, :] + dirs * t
-            below = p[:, 2] <= self.height(p[:, 0], p[:, 1])
-            newhit = alive & below
-            hit[newhit] = t
-            alive &= ~newhit
-            t += step
+        """求分片常高高程场的首次表面交点；step仅保留旧接口兼容。
+
+        XY格边界DDA，不跳过1cm薄障碍；格内解析求水平面交点，进入
+        较高格时在竖直侧面命中。测距噪声仍由VirtualLidar随后独立添加。
+        """
+        origin=np.asarray(origin,dtype=float);dirs=np.asarray(dirs,dtype=float)
+        m=len(dirs);hit=np.full(m,np.inf);entry=np.zeros(m)
+        ix=np.full(m,int(np.floor((origin[0]-self.o)/self.res)),dtype=np.int64)
+        iy=np.full(m,int(np.floor((origin[1]-self.o)/self.res)),dtype=np.int64)
+        sx=np.sign(dirs[:,0]).astype(np.int64);sy=np.sign(dirs[:,1]).astype(np.int64)
+        tx=np.full(m,np.inf);ty=np.full(m,np.inf)
+        dx=np.full(m,np.inf);dy=np.full(m,np.inf)
+        np.divide(self.o+(ix+(sx>0))*self.res-origin[0],dirs[:,0],out=tx,where=sx!=0)
+        np.divide(self.o+(iy+(sy>0))*self.res-origin[1],dirs[:,1],out=ty,where=sy!=0)
+        np.divide(self.res,np.abs(dirs[:,0]),out=dx,where=sx!=0)
+        np.divide(self.res,np.abs(dirs[:,1]),out=dy,where=sy!=0)
+        tx=np.maximum(tx,0);ty=np.maximum(ty,0)
+        ids=np.arange(m)
+        while len(ids):
+            inside=(ix[ids]>=0)&(ix[ids]<self.n)&(iy[ids]>=0)&(iy[ids]<self.n)
+            h=np.full(len(ids),3.0)
+            h[inside]=self.h[iy[ids[inside]],ix[ids[inside]]]
+            end=np.minimum(np.minimum(tx[ids],ty[ids]),tmax)
+            start=entry[ids];dz=dirs[ids,2]
+            plane=np.full(len(ids),np.inf)
+            np.divide(h-origin[2],dz,out=plane,where=dz<0)
+            side=origin[2]+dz*start<=h
+            floor=(plane>=start)&(plane<=end)
+            found=side|floor
+            hit[ids[found]]=np.where(side[found],start[found],plane[found])
+            keep=~found & (end<tmax) & np.isfinite(end)
+            ids=ids[keep];end=end[keep]
+            cross_x=tx[ids]<=end+1e-12;cross_y=ty[ids]<=end+1e-12
+            ix[ids[cross_x]]+=sx[ids[cross_x]];tx[ids[cross_x]]+=dx[ids[cross_x]]
+            iy[ids[cross_y]]+=sy[ids[cross_y]];ty[ids[cross_y]]+=dy[ids[cross_y]]
+            entry[ids]=end
         return hit
 
 

@@ -31,17 +31,22 @@ def main():
     global BUILD
     if board:
         BUILD = ROOT / "gowin" / "syn" / "build_board"
+    for a in sys.argv[1:]:
+        if a.startswith('--output-dir='): BUILD=Path(a.split('=',1)[1]).resolve()
     BUILD.mkdir(parents=True, exist_ok=True)
     for f in ("rtl/plan/sin_lut.hex",):
         shutil.copy(ROOT / f, BUILD / Path(f).name)
     ram_kb, app = "128", "nav"
+    firmware=ROOT/'fw'
     for a in sys.argv[1:]:
         if a.startswith("--ram-kb="):
             ram_kb = a.split("=", 1)[1]
         if a.startswith("--app="):
             app = a.split("=", 1)[1]
+        if a.startswith('--firmware-dir='): firmware=Path(a.split('=',1)[1]).resolve()
     if board:                                   # 软核 RAM 初始镜像（缺省导航固件；--app=selftest --ram-kb=32 为上板自检用的小镜像）
-        rc = subprocess.run([sys.executable, str(ROOT / "fw/bsp/build_rv.py"), "--app", app, "--ram-kb", ram_kb, "--copy-to", str(BUILD)])
+        rc = subprocess.run([sys.executable, str(firmware / "bsp/build_rv.py"), "--app", app,
+                             "--ram-kb", ram_kb, "--output-dir",str(BUILD/'firmware'),"--copy-to", str(BUILD)])
         if rc.returncode:
             return 1
         defines = [a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--define=")]

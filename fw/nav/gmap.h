@@ -25,6 +25,8 @@
 #define GM_DS 2
 #endif
 #define GM_VBLK 4
+#define GM_COST_PARTIAL 252      /* 仅记忆粗格：部分细格受限，须细图复核 */
+#define GM_COST_BLOCKED 253      /* 整粗格受限 */
 
 typedef struct {
     int8_t  occ_hit, occ_miss, occ_max, occ_min;   /* 证据增量与饱和 */
@@ -37,20 +39,25 @@ typedef struct {
     int32_t ox, oy;                 /* 栅格 (0,0) 对应的局部格索引 / GM_DS（绝对粗格坐标） */
     bool    init;
     int8_t  occ[GM_N * GM_N];       /* -128 = 未观测 */
-    uint8_t cost[GM_N * GM_N];      /* 可通行代价（0..200），A* 用 */
-    uint8_t grid[GM_N * GM_N];      /* 合成后的 A* 栅格：255 未知、254 致命、其余代价 */
+    uint8_t cost[GM_N * GM_N];      /* 0..200地形/252部分受限/253全受限，不等同原始占用 */
+    uint8_t grid[GM_N * GM_N];      /* A*栅格：255未知、254占用、253禁行、252高代价 */
     uint8_t prior[GM_N * GM_N];     /* 先验代价（有图模式；255 = 无） */
     struct { int16_t gx, gy; uint8_t r; uint16_t ttl; } vblk[GM_VBLK];   /* 临时虚拟障碍（反复卡住处），ttl 按更新次数 */
     bool    has_prior;
     int32_t pox, poy;               /* 下载中的先验图原点 / 宽 */
     int     pgnx;
     uint32_t n_upd, n_shift;
+    uint16_t row_seq[GM_N],work_seq,work_row;
+    bool work_active,work_done,ready;
 } gmap_t;
 
 void gmap_default_cfg(gmap_cfg_t *c);
 void gmap_init(gmap_t *g);
 /* map: 局部代价图窗口（hal_map_copy 输出），mi: 其窗口信息；rx/ry: 机器人位置 mm */
 void gmap_update(gmap_t *g, const uint8_t *map, const hal_map_info_t *mi, int32_t rx, int32_t ry);
+/* 有界后台更新：每次最多rows行，同一行同一代仅积累一次证据。
+ * 跨帧可能为不同观测年龄的记忆拼图，只作引导，运动仍用当前细图复核。 */
+bool gmap_update_rows(gmap_t *g,const uint8_t *map,const hal_map_info_t *mi,int32_t rx,int32_t ry,int rows);
 /* 有图模式：先验层。begin 固定原点并清空；put 按先验图行优先下标写一格；done 生效 */
 void gmap_prior_begin(gmap_t *g, int32_t gox, int32_t goy, int gnx, int gny);
 void gmap_prior_put(gmap_t *g, int i, uint8_t v);

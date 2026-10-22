@@ -185,7 +185,18 @@ def scene_field5():
     return s
 
 
-SCENES = {"terrain": scene_terrain, "loop": scene_loop, "field5": scene_field5}
+def scene_flat():
+    s=Scene(size=(7.,5.),origin=(-2.,-2.5)); s.walls()
+    return s
+
+
+def scene_one_box():
+    s=scene_flat(); s.box(1.2,-.25,1.6,.25,.3,'test_box')
+    return s
+
+
+SCENES = {"terrain": scene_terrain, "loop": scene_loop, "field5": scene_field5,
+          "flat": scene_flat, "one_box": scene_one_box}
 
 
 def perturb(s, scene_name, kind):

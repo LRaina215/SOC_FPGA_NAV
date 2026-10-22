@@ -21,13 +21,16 @@ TESTS = {
 }
 
 LIDAR = ["rtl/lidar/xt_frame_rx.v", "rtl/lidar/pc_project.v", "rtl/lidar/pc_transform.v", "rtl/lidar/pc_filter.v"]
-MAP = ["rtl/map/elev_map.v", "rtl/map/trav_v3.v", "rtl/map/map_subsys.v"]
+MAP = ["rtl/map/elev_map.v", "rtl/map/trav_v3.v", "rtl/map/map_subsys.v", "rtl/map/support_coverage.v"]
+TESTS['tb_support_coverage']={'pre':['sim/gen/gen_support_coverage.py'],'src':COMMON+['rtl/map/support_coverage.v','rtl/map/tb/tb_support_coverage.sv'],'top':'tb_support_coverage'}
+TESTS['tb_map_retention'] = {'src':COMMON+MAP+['rtl/map/tb/tb_map_retention.sv'],'top':'tb_map_retention'}
 
 TESTS["tb_lidar_map"] = {
     "pre": ["sim/gen/gen_map.py"],
     "src": COMMON + LIDAR + MAP + ["rtl/map/tb/tb_lidar_map.sv"],
     "top": "tb_lidar_map",
 }
+TESTS['tb_lidar_map_high'] = dict(TESTS['tb_lidar_map'],pre=['sim/gen/gen_map.py','--high-only'])
 
 MATCH = ["rtl/match/slf_extract.v", "rtl/match/slf_lf.v", "rtl/match/slf_match.v"]
 
@@ -50,6 +53,17 @@ TESTS["tb_safety_guard"] = {
     "src": COMMON + PLAN + ["rtl/plan/tb/tb_safety_guard.sv"],
     "top": "tb_safety_guard",
     "copy": ["rtl/plan/sin_lut.hex"],
+}
+TESTS['tb_safe_reference'] = {
+    'pre':['sim/gen/gen_safe_reference.py'],
+    'src':['rtl/plan/safety_guard.v','rtl/plan/tb/tb_safe_reference.sv'],
+    'top':'tb_safe_reference',
+}
+TESTS['tb_control_pid_reference'] = {
+    'pre':['sim/gen/gen_control_pid_reference.py'],
+    'src':['../control_repo_snapshot_20261021/fpga/src/motor520_closed_loop.v',
+           'rtl/plan/tb/tb_control_pid_reference.sv'],
+    'top':'tb_control_pid_reference',
 }
 
 NET = ["rtl/net/udp_rx.v", "rtl/net/udp_tx.v", "rtl/net/raw_cap.v", "rtl/net/net_port.v", "rtl/net/host_mbx.v"]
@@ -80,6 +94,9 @@ TESTS["tb_nav_top"] = {
 }
 
 SOC = ["rtl/common/nav_ram_sp.v", "rtl/soc/third_party/picorv32.v", "rtl/soc/nav_soc.v"]
+TESTS["tb_nav_staged"] = dict(TESTS["tb_nav_top"], defines=["NAV_STAGED_TEST"])
+TESTS['tb_nav_coverage'] = dict(TESTS['tb_nav_top'],defines=['NAV_STAGED_TEST','NAV_COVERAGE_TEST'])
+TESTS['tb_nav_staged_high'] = dict(TESTS['tb_nav_top'],defines=['NAV_STAGED_TEST','NAV_STEP_HIGH_TEST'],pre=['sim/gen/gen_top.py','--high-only'])
 
 TESTS["tb_soc"] = {
     "pre": ["fw/bsp/build_rv.py", "--app", "selftest", "--ram-kb", "16", "--copy-to"],

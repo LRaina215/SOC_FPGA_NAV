@@ -61,6 +61,17 @@ module nav_subsystem #(
     wire [31:0] time_us;
     wire        tick_us;
     nav_timebase #(.CLK_HZ(CLK_HZ)) u_time (.clk(clk), .rst(rst), .time_us(time_us), .tick_us(tick_us));
+    // Capture epochs share SYS_TIME_US; timer wrap conservatively clears support.
+    reg [17:0] support_tick_us;
+    reg [6:0] support_epoch;
+    wire support_time_wrap=tick_us && time_us==0;
+    always @(posedge clk) begin
+        if(rst || support_time_wrap)begin support_tick_us<=0;support_epoch<=0;end
+        else if(tick_us)begin
+            if(support_tick_us==199999)begin support_tick_us<=0;support_epoch<=support_epoch+1'b1;end
+            else support_tick_us<=support_tick_us+1'b1;
+        end
+    end
 
     // ================================================================ 寄存器文件连线
     reg         rf_wr, rf_rd;
@@ -192,6 +203,7 @@ module nav_subsystem #(
         .cfg_enable(r_LIDAR_CTRL[0]), .cfg_hdr_le(r_LIDAR_CTRL[1]), .cfg_pix_le(r_LIDAR_CTRL[2]),
         .cfg_subhdr(r_LIDAR_SUBHDR[7:0]), .cfg_amp_min(r_LIDAR_VALID_CFG[15:0]),
         .cfg_raw_inv(r_LIDAR_VALID_CFG[31:16]), .cfg_wait_pose(r_LIDAR_CTRL[3]), .pose_commit(p_LIDAR_POSE_COMMIT),
+        .cfg_retain(r_LIDAR_CTRL[3] && r_LIDAR_CTRL[5] && !r_LIDAR_CTRL[6]),
         .s_valid(lu_valid), .s_data(lu_data), .s_last(lu_last), .s_err(lu_err),
         .m_valid(x_valid), .m_ready(x_ready), .m_u(x_u), .m_v(x_v), .m_depth(x_depth), .m_sof(x_sof), .m_eof(x_eof),
         .frm_sn(frm_sn), .frm_w(frm_w), .frm_h(frm_h), .frm_ts(frm_ts), .frm_devstate(frm_ds), .frm_proto(frm_pv),
@@ -277,6 +289,8 @@ module nav_subsystem #(
     wire [7:0]  pf_tag;
     wire signed [15:0] pf_z;
     wire signed [31:0] pf_cx, pf_cy;
+    wire [13:0] pf_cov_addr;
+    wire pf_cov_upd;
     pc_filter u_pf (
         .clk(clk), .rst(rst), .cfg_inv_res(r_MAP_INV_RES[15:0]), .cfg_cx(r_MAP_CENTER_X), .cfg_cy(r_MAP_CENTER_Y),
         .cfg_zmin(r_LIDAR_ZBAND[15:0]), .cfg_zmax(r_LIDAR_ZBAND[31:16]),
@@ -284,6 +298,7 @@ module nav_subsystem #(
         .s_sof(pt_sof), .s_eof(pt_eof),
         .m_valid(pf_valid), .m_ready(pf_ready), .m_upd(pf_upd), .m_addr(pf_addr), .m_tag(pf_tag), .m_z(pf_z),
         .m_sof(pf_sof), .m_eof(pf_eof), .m_cx(pf_cx), .m_cy(pf_cy),
+        .m_cov_addr(pf_cov_addr),.m_cov_upd(pf_cov_upd),
         .stat_upd(i_MAP_STAT_UPD), .stat_drop(i_MAP_STAT_DROP)
     );
 
@@ -297,38 +312,56 @@ module nav_subsystem #(
     wire [15:0] map_seq;
     wire signed [31:0] map_lcx, map_lcy;
     wire [7:0]  map_fc;
-    reg         el_req, el_done;
-    reg  [51:0] el_word;
+    wire match_only = r_LIDAR_CTRL[5];
+    wire fuse_only = r_LIDAR_CTRL[6];
+    wire map_pf_ready;
+    wire cov_ready,cov_busy,cov_ack;
+    wire [31:0] cov_q;
+    assign pf_ready = match_only ? 1'b1 : map_pf_ready & cov_ready;
+    reg         el_req, el_done,el_got,cov_got;
+    reg [31:0] cov_word;
+    reg  [52:0] el_word;
     wire        el_ack;
-    wire [51:0] el_q;
+    wire [52:0] el_q;
     map_subsys u_map (
         .clk(clk), .rst(rst), .cfg_enable(r_MAP_CTRL[0]), .cfg_auto_sweep(r_MAP_CTRL[2]),
         .cmd_sweep(p_MAP_CMD & wd_q[0]), .cmd_clear(p_MAP_CMD & wd_q[1]),
         .cfg_cx(r_MAP_CENTER_X), .cfg_cy(r_MAP_CENTER_Y),
         .cfg_age_max(r_MAP_VALID_CFG[7:0]), .cfg_cnt_min(r_MAP_VALID_CFG[11:8]), .cfg_keep_r(r_MAP_VALID_CFG[19:16]),
-        .cfg_step_max(r_MAP_THR0[15:0]), .cfg_rough_max(r_MAP_THR0[31:16]),
+        .cfg_step_max(r_MAP_THR0[15:0]), .cfg_step_high_only(r_MAP_CTRL[3]), .cfg_rough_max(r_MAP_THR0[31:16]),
         .cfg_slope_rise(r_MAP_THR1[15:0]), .cfg_jump(r_MAP_THR1[23:16]),
         .cfg_drop_k(r_MAP_DROP[4:0]), .cfg_drop_slope(r_MAP_DROP[15:8]),
         .cfg_k_slope(r_MAP_WEIGHT[7:0]), .cfg_k_step(r_MAP_WEIGHT[15:8]), .cfg_k_rough(r_MAP_WEIGHT[23:16]),
         .cfg_fill_min(r_MAP_FILL[3:0]), .cfg_fill_tol(r_MAP_FILL[15:8]), .cfg_fill_cost(r_MAP_FILL[23:16]),
         .cfg_infl_r(r_MAP_INFL[3:0]), .cfg_infl_disk(r_MAP_INFL[4]),
-        .s_valid(pf_valid), .s_ready(pf_ready), .s_upd(pf_upd), .s_addr(pf_addr), .s_tag(pf_tag), .s_z(pf_z),
+        .s_valid(pf_valid & !match_only & cov_ready), .s_ready(map_pf_ready), .s_upd(pf_upd), .s_addr(pf_addr), .s_tag(pf_tag), .s_z(pf_z),
         .s_eof(pf_eof), .s_cx(pf_cx), .s_cy(pf_cy),
         .a_re(cm_a_re), .a_addr(cm_a_addr), .a_q(cm_a_q),
         .b_req(cm_b_req), .b_addr(cm_b_addr), .b_ack(cm_b_ack), .b_q(cm_b_q),
-        .e_req(el_req), .e_addr(r_MAP_ELEV_ADDR[13:0]), .e_ack(el_ack), .e_q(el_q),
+        .e_req(el_req & !el_got), .e_addr(r_MAP_ELEV_ADDR[13:0]), .e_ack(el_ack), .e_q(el_q),
         .busy(map_busy), .front(map_front), .seq(map_seq), .lat_cx(map_lcx), .lat_cy(map_lcy),
         .frame_cnt(map_fc), .map_ready(map_ready)
     );
-    assign i_MAP_STAT      = {map_seq, 14'd0, map_front, map_busy};
+    support_coverage u_support(
+        .clk(clk),.rst(rst),.clear((p_MAP_CMD & wd_q[1])|support_time_wrap),.age_epoch(support_epoch),
+        .frame_start(p_LIDAR_POSE_COMMIT & !match_only),.frame_cx(r_MAP_CENTER_X),.frame_cy(r_MAP_CENTER_Y),
+        .capture_epoch(r_MAP_SUPPORT_STAMP[6:0]),.capture_valid(r_MAP_SUPPORT_STAMP[7]),
+        .s_valid(pf_valid & !match_only & map_pf_ready & r_MAP_CTRL[0]),.s_upd(pf_cov_upd),.s_ready(cov_ready),.s_addr(pf_cov_addr),
+        .cpu_req(el_req & !cov_got),.cpu_addr(r_MAP_ELEV_ADDR[13:0]),.cpu_ack(cov_ack),.cpu_q(cov_q),.busy(cov_busy));
+    assign i_MAP_STAT      = {map_seq, 14'd0, map_front, map_busy|cov_busy};
     // 高程图读：ELEV_CMD.READ 发起，完成后锁存到 ELEV_Q0/Q1 并置 DONE
     always @(posedge clk) begin
-        if (rst) begin el_req <= 1'b0; el_done <= 1'b0; el_word <= 52'd0; end
-        else if (p_MAP_ELEV_CMD & wd_q[0]) begin el_req <= 1'b1; el_done <= 1'b0; end
-        else if (el_ack) begin el_req <= 1'b0; el_done <= 1'b1; el_word <= el_q; end
+        if (rst) begin el_req<=0;el_done<=0;el_word<=0;el_got<=0;cov_got<=0;cov_word<=0;end
+        else if(p_MAP_ELEV_CMD & wd_q[0])begin el_req<=1;el_done<=0;el_got<=0;cov_got<=0;end
+        else begin
+            if(el_ack)begin el_got<=1;el_word<=el_q;end
+            if(cov_ack)begin cov_got<=1;cov_word<=cov_q;end
+            if(el_req && (el_got|el_ack) && (cov_got|cov_ack))begin el_req<=0;el_done<=1;end
+        end
     end
     assign i_MAP_ELEV_Q0 = el_word[31:0];
-    assign i_MAP_ELEV_Q1 = {el_done, 11'd0, el_word[51:32]};
+    assign i_MAP_ELEV_Q1 = {el_done, 10'd0, el_word[52:32]};
+    assign i_MAP_SUPPORT_Q=cov_word;
     assign i_MAP_LAT_CX    = map_lcx;
     assign i_MAP_LAT_CY    = map_lcy;
     assign i_MAP_FRAME_CNT = {24'd0, map_fc};
@@ -346,7 +379,7 @@ module nav_subsystem #(
     wire        mt_frame_en = r_MATCH_CTRL[0] && ($signed(r_LIDAR_ZBAND[15:0]) <= $signed(r_LIDAR_ZBAND[31:16]));
     slf_match #(.SIN_INIT(SIN_INIT)) u_match (
         .clk(clk), .rst(rst),
-        .s_fire(pt_valid & pt_ready), .s_x(pt_x), .s_y(pt_y), .s_z(pt_z), .s_pv(pt_pv), .s_sof(pt_sof), .s_eof(pt_eof),
+        .s_fire(pt_valid & pt_ready & !fuse_only), .s_x(pt_x), .s_y(pt_y), .s_z(pt_z), .s_pv(pt_pv), .s_sof(pt_sof), .s_eof(pt_eof),
         .frame_en(mt_frame_en),
         .cfg_zlo(mt_zref + {{16{r_MATCH_ZREL[15]}}, r_MATCH_ZREL[15:0]}),
         .cfg_zhi(mt_zref + {{16{r_MATCH_ZREL[31]}}, r_MATCH_ZREL[31:16]}),

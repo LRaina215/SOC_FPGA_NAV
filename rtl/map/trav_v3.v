@@ -23,6 +23,7 @@ module trav_v3 #(
     input  wire [3:0]  cfg_cnt_min,
     input  wire [3:0]  cfg_keep_r,
     input  wire [15:0] cfg_step_max,
+    input  wire        cfg_step_high_only,
     input  wire [15:0] cfg_rough_max,
     input  wire [15:0] cfg_slope_rise,
     input  wire [7:0]  cfg_jump,
@@ -41,10 +42,10 @@ module trav_v3 #(
 
     output wire        em_re,
     output wire [2*LOG2N-1:0] em_raddr,
-    input  wire [51:0] em_q,
+    input  wire [52:0] em_q,
     output reg         em_we,
     output reg  [2*LOG2N-1:0] em_waddr,
-    output reg  [51:0] em_wdata,
+    output reg  [52:0] em_wdata,
 
     output reg         cm_we,
     output reg  [2*LOG2N-1:0] cm_waddr,
@@ -103,7 +104,8 @@ module trav_v3 #(
     wire [LOG2N-1:0] kdx = (tx1 >= N/2) ? (tx1 - N/2) : (N/2 - tx1);
     wire [LOG2N-1:0] kdy = (ty1 >= N/2) ? (ty1 - N/2) : (N/2 - ty1);
     wire        q_keep = (kdx <= cfg_keep_r) && (kdy <= cfg_keep_r);
-    wire        q_live = (q_cnt != 0) && (q_tag == etag1) && ((q_age <= cfg_age_max) || q_keep);
+    wire q_stale=em_q[52];
+    wire        q_live = (q_cnt != 0) && (q_tag == etag1) && ((!q_stale && q_age <= cfg_age_max) || q_keep);
     wire        q_valid = inr1 && q_live && (q_cnt >= cfg_cnt_min);
     wire [16:0] q_rough17 = {q_zmax[15], q_zmax} - {q_zmin[15], q_zmin};
     wire [15:0] q_rough = q_rough17[16] ? 16'd0 : q_rough17[15:0];     // zmax >= zmin 恒成立
@@ -138,6 +140,13 @@ module trav_v3 #(
         begin
             d = {a[15], a} - {b[15], b};
             absd = d[16] ? -d : d;
+        end
+    endfunction
+    function [16:0] stepd(input signed [15:0] center, input signed [15:0] neighbor);
+        reg signed [16:0] d;
+        begin
+            d = {center[15], center} - {neighbor[15], neighbor};
+            stepd = d[16] ? (cfg_step_high_only ? 17'd0 : -d) : d;
         end
     endfunction
     function signed [16:0] sdiff(input signed [15:0] a, input signed [15:0] b);   // a - b
@@ -396,8 +405,10 @@ module trav_v3 #(
             // ---------------- T1：清除、行缓存、窗口 ----------------
             wval <= v1 && (r1 >= 2) && (c1 >= 2);
             if (v1) begin
-                if ((ph1 == P_A) && inr1 && q_cnt != 0 && !q_live) begin
-                    em_we <= 1'b1; em_waddr <= sl1; em_wdata <= {em_q[51:36], 4'd0, em_q[31:0]};
+                if ((ph1 == P_A) && inr1 && q_cnt != 0 && (!q_live || (!q_stale && q_age>cfg_age_max))) begin
+                    // 近区保留危险证据，但锁存过期状态；8bit帧龄回绕不能使它重新变新。
+                    em_we <= 1'b1; em_waddr <= sl1;
+                    em_wdata <= {1'b1,em_q[51:36],q_live?q_cnt:4'd0,em_q[31:0]};
                 end
                 lb1[c1] <= cur; lb2[c1] <= l1; lb3[c1] <= l2; lb4[c1] <= l3;
                 for (i = 0; i < 5; i = i + 1)
@@ -434,7 +445,7 @@ module trav_v3 #(
             s3 <= s2;
             if (s2) begin
                 ph3 <= ph2; sl3 <= sl2; wi3 <= wi2; cv3 <= cv2; ch3 <= ch2; cro3 <= cro2;
-                for (i = 0; i < 8; i = i + 1) ad3[i] <= nv2[i] ? absd(nh2[i], ch2) : 17'd0;
+                for (i = 0; i < 8; i = i + 1) ad3[i] <= nv2[i] ? stepd(ch2, nh2[i]) : 17'd0;
                 for (i = 0; i < 4; i = i + 1) begin
                     dx3[i] <= sdiff(xh2[i+1], xh2[i]);
                     dy3[i] <= sdiff(yh2[i+1], yh2[i]);

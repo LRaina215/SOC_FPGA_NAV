@@ -45,11 +45,11 @@ uint16_t hal_map_copy(uint8_t *out, hal_map_info_t *mi)
         }
         for (int wx = 0; wx < N; wx++) out[wy * N + wx] = row[(sx0 + wx) & (N - 1)];
     }
-    /* 复制期间若切换了前台，重读一次（代价图 30 Hz 更新，复制约 0.5 ms，冲突概率低） */
-    uint16_t seq = mi->seq;
-    hal_map_info(mi);
-    if (mi->seq != seq) return hal_map_copy(out, mi);
-    return seq;
+    /* 切图时本次复制无效；由下一规划周期重取，不递归占栈或混用两代格。 */
+    hal_map_info_t after;
+    if (!hal_map_info(&after) || after.seq != mi->seq || after.cx != mi->cx ||
+        after.cy != mi->cy || after.inv_res != mi->inv_res) return 0;
+    return mi->seq;
 }
 
 bool hal_traj_eval(const hal_cand_t *c, int k, int t, int32_t x0_q8, int32_t y0_q8, angle_t th0,
@@ -111,6 +111,14 @@ bool hal_lidar_waiting(uint32_t *frame_t_us)
 void hal_lidar_init(void)
 {
     nav_wr(NAV_LIDAR_CTRL, nav_rd(NAV_LIDAR_CTRL) | NAV_LIDAR_CTRL_WAIT_POSE_MASK);
+}
+
+void hal_lidar_stage(int stage)
+{
+    uint32_t v = nav_rd(NAV_LIDAR_CTRL) & ~(NAV_LIDAR_CTRL_MATCH_ONLY_MASK | NAV_LIDAR_CTRL_FUSE_ONLY_MASK);
+    if (stage == HAL_LIDAR_MATCH_ONLY) v |= NAV_LIDAR_CTRL_MATCH_ONLY_MASK | NAV_LIDAR_CTRL_WAIT_POSE_MASK;
+    if (stage == HAL_LIDAR_FUSE_ONLY) v |= NAV_LIDAR_CTRL_FUSE_ONLY_MASK;
+    nav_wr(NAV_LIDAR_CTRL, v);
 }
 
 uint32_t hal_lidar_frames(void) { return nav_rd(NAV_LIDAR_STAT_FRAMES); }
@@ -278,10 +286,23 @@ void hal_map_clear(void)
 
 bool hal_map_height(int32_t x_mm, int32_t y_mm, int32_t *h_mm)
 {
+    hal_support_t s;
+    if(!hal_map_support(x_mm,y_mm,&s) || s.retained_stale ||
+       s.age>(nav_rd(NAV_MAP_VALID_CFG)&255) || (int32_t)s.hi-s.lo>40) return false;
+    *h_mm=((int32_t)s.lo+s.hi)/2;
+    return true;
+}
+
+bool hal_map_support(int32_t x_mm,int32_t y_mm,hal_support_t *out)
+{
     const int32_t N = HAL_MAP_N, LOG2N = NP_MAP_LOG2N;
+    hal_map_info_t before,after;
+    if(!hal_map_info(&before) || (nav_rd(NAV_MAP_STAT)&NAV_MAP_STAT_BUSY_MASK)) return false;
+    uint32_t fc=nav_rd(NAV_MAP_FRAME_CNT);
     uint32_t inv = nav_rd(NAV_MAP_INV_RES) & 0xFFFFu;
     int32_t ix = (int32_t)(((int64_t)x_mm * inv) >> 16);
     int32_t iy = (int32_t)(((int64_t)y_mm * inv) >> 16);
+    if(ix<before.cx-N/2 || iy<before.cy-N/2 || ix>=before.cx+N/2 || iy>=before.cy+N/2) return false;
     uint32_t slot = ((uint32_t)(iy & (N - 1)) << LOG2N) | (uint32_t)(ix & (N - 1));
     uint32_t tag = ((uint32_t)((iy >> LOG2N) & 15) << 4) | (uint32_t)((ix >> LOG2N) & 15);
     nav_wr(NAV_MAP_ELEV_ADDR, slot);
@@ -292,8 +313,13 @@ bool hal_map_height(int32_t x_mm, int32_t y_mm, int32_t *h_mm)
     if (FIELD(q1, MAP_ELEV_Q1, CNT) == 0 || FIELD(q1, MAP_ELEV_Q1, TAG) != tag) return false;
     uint32_t q0 = nav_rd(NAV_MAP_ELEV_Q0);
     int32_t zmax = (int16_t)(q0 & 0xFFFFu), zmin = (int16_t)(q0 >> 16);
-    if (zmax - zmin > 40) return false;                           /* 格内有高差（障碍/台阶边沿），不作地面 */
-    *h_mm = (zmax + zmin) / 2;                                    /* 区间中点：zmax 含正噪声，用它锚定会向上漂 */
+    if(!hal_map_info(&after) || before.seq!=after.seq || before.cx!=after.cx ||
+       before.cy!=after.cy || before.inv_res!=after.inv_res ||
+       fc!=nav_rd(NAV_MAP_FRAME_CNT) || (nav_rd(NAV_MAP_STAT)&NAV_MAP_STAT_BUSY_MASK)) return false;
+    *out=(hal_support_t){.lo=(int16_t)zmin,.hi=(int16_t)zmax,.seq=before.seq,
+        .count=(uint8_t)FIELD(q1,MAP_ELEV_Q1,CNT),
+        .age=(uint8_t)(fc-FIELD(q1,MAP_ELEV_Q1,STAMP)),
+        .retained_stale=(q1&NAV_MAP_ELEV_Q1_RETAINED_STALE_MASK)!=0};
     return true;
 }
 

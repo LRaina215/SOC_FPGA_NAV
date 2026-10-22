@@ -216,11 +216,21 @@ uint16_t hal_map_copy(uint8_t *out, hal_map_info_t *mi)
     return s_mi.seq;
 }
 
+void sim_map_fixture(const uint8_t *map,const hal_map_info_t *mi) {
+    s_mi=*mi;
+    for(int y=0;y<N;y++) for(int x=0;x<N;x++) {
+        int ix=mi->cx-N/2+x,iy=mi->cy-N/2+y;
+        s_slot[((iy&(N-1))<<7)|(ix&(N-1))]=map[y*N+x];
+    }
+}
+
 bool hal_traj_eval(const hal_cand_t *c, int k, int t, int32_t x0, int32_t y0, angle_t th0,
                    uint8_t cmax, hal_traj_res_t *res)
 {
     traj_eval_sw(s_slot, s_mi.cx, s_mi.cy, c, k, t, x0, y0, th0, cmax, res);
-    return true;
+    if (g_sim.traj_blocked) for (int i = 0; i < k; i++) { res[i].collide = true; res[i].coll_step = 1; }
+    if (g_sim.traj_change_map) s_mi.seq++;
+    return !g_sim.traj_stale;
 }
 
 void hal_send_cmd(const nav_cmd_t *cmd)
@@ -239,6 +249,7 @@ bool hal_odom(int16_t *vx, int16_t *vy, int16_t *wz, uint32_t *t_us)
 
 bool hal_lidar_waiting(uint32_t *t) { (void)t; return false; }
 void hal_lidar_init(void) { }
+void hal_lidar_stage(int stage) { (void)stage; }
 uint32_t hal_lidar_info_seq(void) { return 0; }
 void hal_lidar_lens(uint32_t lens[9]) { for (int i = 0; i < 9; i++) lens[i] = 0; }
 void hal_lidar_lut_write(uint32_t idx, const int16_t *rxyz, int n) { (void)idx; (void)rxyz; (void)n; }
@@ -256,6 +267,15 @@ bool hal_match_result(hal_match_res_t *res, int k) { (void)res; (void)k; return 
 void hal_match_update(int32_t dx, int32_t dy, int32_t dyaw, int32_t cx_mm, int32_t cy_mm)
 { (void)dx; (void)dy; (void)dyaw; (void)cx_mm; (void)cy_mm; }
 bool hal_map_height(int32_t x, int32_t y, int32_t *h) { (void)x; (void)y; (void)h; return false; }
+/* 此主机测试台定义为平地+竖直障碍，只从已构建的传感器代价图提供支撑；
+ * 未见格仍未知。真正高程闭环使用hal_py的原始区间回调。 */
+bool hal_map_support(int32_t x,int32_t y,hal_support_t *out) {
+    int32_t ix=(int32_t)(((int64_t)x*s_mi.inv_res)>>16),iy=(int32_t)(((int64_t)y*s_mi.inv_res)>>16);
+    if(!s_mi.seq || ix<s_mi.cx-N/2 || ix>=s_mi.cx+N/2 || iy<s_mi.cy-N/2 || iy>=s_mi.cy+N/2) return false;
+    uint8_t cost=s_slot[((iy&(N-1))<<7)|(ix&(N-1))];
+    if(cost>=254) return false;
+    *out=(hal_support_t){.lo=0,.hi=0,.seq=s_mi.seq,.count=1};return true;
+}
 void hal_map_clear(void) { }
 void hal_prior_begin(void) { }
 void hal_prior_write(uint16_t slot, uint32_t word) { (void)slot; (void)word; }

@@ -17,6 +17,8 @@ import math
 import struct
 import sys
 import time
+import platform
+import subprocess
 from pathlib import Path
 
 import numpy as np
@@ -34,6 +36,7 @@ import sim_world as sw  # noqa: E402
 import world as W  # noqa: E402
 import nav_host as rk_host  # noqa: E402
 import prior_map  # noqa: E402
+from evaluation import EVALUATION_VERSION, TerminalCriteria, TerminalJudge, TerrainCounts, tracking_completion_candidate  # noqa: E402
 
 DLL = ROOT / "sim" / "build" / "closed_loop" / "nav_fw.dll"
 INV_RES = 1311
@@ -64,9 +67,13 @@ class Firmware:
         return getattr(self.d, n)
 
 
-def main():
+def main(observer=None):
+    global DLL
     ap = argparse.ArgumentParser()
     ap.add_argument("--scene", default="terrain")
+    ap.add_argument("--backend", choices=["fast", "mujoco"], default="fast")
+    ap.add_argument('--control-repo', type=Path, help='只读控制快照目录，供冻结执行树的MuJoCo后端使用')
+    ap.add_argument('--match-timing',choices=['legacy40','rtl50'],default='legacy40',help='历史40ms或RTL逐次周期模型@50MHz')
     ap.add_argument("--start", default="-1.0,-0.3,0")
     ap.add_argument("--goal")
     ap.add_argument("--waypoints")
@@ -82,8 +89,15 @@ def main():
     ap.add_argument("--snap", type=float, default=0, help="每隔多少秒存一张快照（0 = 只存结束时）")
     ap.add_argument("--gif", action="store_true", help="把快照合成动画 run.gif（未指定 --snap 时按 1 s 一帧）")
     ap.add_argument("--no-build", action="store_true")
+    ap.add_argument("--firmware-dll", type=Path, help="加载保存的原版/候选DLL，复评时无需重编")
+    ap.add_argument("--no-plots", action="store_true", help="批量评测跳过图片，仍保存地图、时序和判分")
     ap.add_argument("--anchor", type=int, default=64)
     ap.add_argument("--tcfg", default="", help="覆盖地形参数，如 keep_r=0,age_max=100")
+    ap.add_argument("--support-bootstrap-mm",type=int,default=0,choices=[0,350],
+                    help="显式声明已独立确认的起点平地区域；350要求起点400mm内平坦无障碍")
+    ap.add_argument("--support-layer", choices=["auto", "legacy", "coverage4", "external"], default="auto",
+                    help="auto按固件接口启用4x4支撑覆盖；external仅供专项原型回调")
+    ap.add_argument('--support-snapshot',choices=['auto','off','verify'],default='auto',help='宿主批量HAL桥；verify逐查询与原回调核对，不改变板级实现')
     ap.add_argument("--gmap", default="on", help="A* 用全局记忆栅格（on）还是局部代价图（off）")
     ap.add_argument("--noise", default="", help="只开启部分误差源，逗号分隔：slip,gyro,att,scale")
     ap.add_argument("--ideal", action="store_true", help="理想传感器（无打滑/零偏/噪声），用于排查")
@@ -100,8 +114,18 @@ def main():
     ap.add_argument("--mount", default="", help="俯角°,前伸 mm,离地 mm：覆盖标定的雷达安装位姿（安装方案对比）")
     ap.add_argument("--kidnap", default="", help="t,dx,dy,dyaw：t 秒时把机器人真值位姿突然平移/旋转（模拟被撞/严重打滑）")
     a = ap.parse_args()
+    if a.control_repo: a.control_repo = str(a.control_repo.resolve())
+    if a.backend == 'mujoco' and a.kidnap:
+        ap.error('MuJoCo kidnapping has not been implemented; use supported cases')
+    if a.firmware_dll:
+        if not a.no_build:
+            ap.error("--firmware-dll requires --no-build")
+        DLL = a.firmware_dll.resolve()
+        a.firmware_dll = str(DLL)
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
+    ERR_PTS["fp"].clear()
+    ERR_PTS["fn"].clear()
     if a.gif and a.snap <= 0:
         a.snap = 1.0
     for old in out.glob("snapshot_*.png"):
@@ -118,7 +142,11 @@ def main():
     sx, sy, syaw = (float(v) for v in a.start.split(","))
     Bot = rb.BalanceBot if a.bot == "balance" else rb.RobotSim
     bkw = {}
-    if a.bot == "balance":
+    if a.backend == 'mujoco':
+        from mujoco_robot import MujocoRobot
+        Bot = MujocoRobot
+        bkw = dict(out=out / 'physics_backend', control_repo=a.control_repo)
+    elif a.bot == "balance":
         o_ = [float(v) for v in a.osc.split(",")]
         bkw = dict(osc_deg=o_[0], osc_hz=o_[1], kick_deg_per_cm=o_[2])
     if a.ideal:
@@ -140,6 +168,22 @@ def main():
         k, v = kv.split("=")
         fpga.cfg[k] = int(v)
     fw = Firmware()
+    coverage_interface = hasattr(fw, 'py_set_coverage_cb')
+    coverage_mode = ('coverage4' if coverage_interface else 'legacy') if a.support_layer == 'auto' else a.support_layer
+    if coverage_mode in ('coverage4', 'external') and not coverage_interface:
+        ap.error('Selected support layer requires the firmware coverage interface')
+    if coverage_mode == 'legacy' and coverage_interface:
+        ap.error('Coverage firmware requires coverage4 or an explicit external provider')
+    if coverage_mode == 'coverage4':
+        fpga.enable_support_coverage()
+    if hasattr(fw,'py_set_support_bootstrap'):
+        fw.py_set_support_bootstrap(a.support_bootstrap_mm)
+    elif a.support_bootstrap_mm and not getattr(observer,'allow_legacy_bootstrap',False):
+        ap.error('This frozen firmware has no explicit support bootstrap interface')
+    if a.match_timing=='rtl50' and not hasattr(fw,'py_set_match_latency_us'):
+        ap.error('RTL timing requires the simulator timing shim in the host DLL')
+    if a.backend == 'mujoco' and not hasattr(fw,'py_get_cmd_seq'):
+        ap.error('MuJoCo requires read-only command-sequence shim; build_frozen_dll.py preserves frozen nav code')
     fw.py_set_match_enable(1 if a.match == "on" else 0)
     fw.py_set_caps(0, 500, 1200, int(round(W.Robot.radius * 1000)))
     fw.py_set_mount(int(round(mnt[0] * 100)), int(round(mnt[1])), int(round(mnt[2])))
@@ -148,12 +192,59 @@ def main():
     fw.py_set_pose_decomp(1 if a.bot == "car" else 0)
     if a.pmcfg:
         fw.py_set_pm_prior(*(int(v) for v in a.pmcfg.split(",")))
+    # Record resolved inputs before any simulation, without changing the algorithm.
+    from trav_v3 import DEFAULT_V3
+    effective_cfg = dict(DEFAULT_V3) if a.trav == "v3" else dict(fpga.cfg)
+    effective_cfg.update(fpga.cfg)
+    terminal_criteria = TerminalCriteria(position_m=1.0 if a.search else 0.150)
+    manifest = dict(evaluation=EVALUATION_VERSION, arguments=vars(a), argv=sys.argv,
+                    git_head=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+                    working_changes=subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True).splitlines(),
+                    python=sys.version, executable=sys.executable, platform=platform.platform(), numpy=np.__version__,
+                    terrain_cfg=effective_cfg, mount_pitch_x_z=mnt,
+                    lidar_assumptions=dict(raycast=getattr(scene.w,"raycast_version",getattr(sw.World,"raycast_version","legacy_march")), noise_mm=lid.noise,
+                                           min_m=lid.rng_min,max_m=lid.rng_max,legacy_step_m=lid.step),
+                    capability_assumptions=dict(step_m=W.Robot.step_climb, slope_deg=W.Robot.slope_max_deg,
+                                                footprint_radius_m=W.Robot.radius, wheel_track_m=W.Robot.width),
+                    response_assumptions=dict(tau_s=0.12, accel_mps2=1.5, angular_accel_rps2=6.0,
+                                              safe_in_loop=False, rl_in_loop=False),
+                    terminal_criteria=terminal_criteria.__dict__,
+                    terrain_alignment="current_pose_aligned; excludes global localization drift",
+                    prior_package_bytes=len(pkg) if pkg is not None else 0)
+    manifest['support_bootstrap_interface']=hasattr(fw,'py_set_support_bootstrap')
+    manifest['support_layer'] = dict(mode=coverage_mode, clock='SYS_TIME_US; capture timestamp from retained raw bank',
+        subcell_mm=65536/5244 if coverage_mode=='coverage4' else None,
+        known_distinct_epochs=2 if coverage_mode=='coverage4' else None,
+        fresh_upper_s=1, retained_static_upper_s=20, fill=False)
+    manifest["firmware_dll"] = str(DLL)
+    if a.backend == 'mujoco':
+        manifest['response_assumptions'] = bot.report()
+    manifest['response_assumptions']['match_timing']=a.match_timing
+    manifest['response_assumptions']['raw_frame_buffer']='two-bank queue' if a.match_timing=='rtl50' else 'legacy capture after consumption'
+    (out / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
     CTL_CB = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_int32, ctypes.c_int32, ctypes.c_int32)
 
     @CTL_CB
     def ctl_cb(op, x, y, z):
         fpga.ctl(op, x, y, z)
     fw.py_set_ctl_cb(ctl_cb)
+    if coverage_mode == 'coverage4':
+        COVERAGE_CB = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_int32, ctypes.c_int32, ctypes.POINTER(ctypes.c_int32))
+        coverage_cache = [None, None, None]
+
+        @COVERAGE_CB
+        def coverage_cb(x, y, result):
+            cov = fpga.coverage
+            key = (cov.seq, fpga.clock_us // 200000, cov.cx, cov.cy)
+            if key != coverage_cache[0]:
+                known, fresh = cov.mask_windows(fpga.clock_us)
+                coverage_cache[:] = [key, known, fresh]
+            ix = ((int(x) * INV_RES) >> 16) - (cov.cx // 4 - 16)
+            iy = ((int(y) * INV_RES) >> 16) - (cov.cy // 4 - 16)
+            result[0] = int(coverage_cache[1][iy, ix]) if 0 <= ix < 32 and 0 <= iy < 32 else 0
+            result[1] = int(coverage_cache[2][iy, ix]) if 0 <= ix < 32 and 0 <= iy < 32 else 0
+            return 1
+        fw.py_set_coverage_cb(coverage_cb)
 
     # 里程计系 = 世界系平移 (sx, sy)、旋转 syaw；有图模式下固件在 SET_POSE 之后工作在地图系 = 世界系
     c0, s0 = math.cos(math.radians(syaw)), math.sin(math.radians(syaw))
@@ -169,10 +260,22 @@ def main():
     def o2w(x, y):
         return sx0 + c0 * x - s0 * y, sy0 + s0 * x + c0 * y
 
+    callback_errors = []
+    match_timing_log=[]
     @MATCH_CB
     def match_cb(cxm, cym, cand, k, res):
         cs = np.array([[cand[3 * i], cand[3 * i + 1], cand[3 * i + 2]] for i in range(k)], dtype=np.int64)
-        o = fpga.match_eval(cxm, cym, cs)
+        try:
+            o = fpga.match_eval(cxm, cym, cs)
+            if a.match_timing=='rtl50':
+                from slf_timing import evaluation_cycles,evaluation_us
+                ns,nv=int(o[0,3]),int(o[0,0])
+                cycles=evaluation_cycles(ns,nv,k);latency=evaluation_us(ns,nv,k)
+                fw.py_set_match_latency_us(ctypes.c_uint32(latency))
+                match_timing_log.append([now_us,k,ns,nv,cycles,latency])
+        except Exception as error:
+            callback_errors.append(error)
+            o = np.zeros((k, 4), dtype=np.int64)
         for i in range(k):
             for j in range(4):
                 res[4 * i + j] = int(o[i, j]) & 0xFFFFFFFF
@@ -180,24 +283,63 @@ def main():
 
     @MU_CB
     def mu_cb(dx, dy, da, cxm, cym):
-        fpga.match_update(dx, dy, da, cxm, cym)
+        try:
+            fpga.match_update(dx, dy, da, cxm, cym)
+        except Exception as error:
+            callback_errors.append(error)
     fw.py_set_mu_cb(mu_cb)
     H_CB = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_int32, ctypes.c_int32, ctypes.POINTER(ctypes.c_int32))
 
-    @H_CB
-    def h_cb(x, y, hp):
+    def support_at(x,y):
         ix = int((x * INV_RES) >> 16); iy = int((y * INV_RES) >> 16)
         wx, wy = ix - (fpga.cx - 64), iy - (fpga.cy - 64)
         if not (0 <= wx < 128 and 0 <= wy < 128):
-            return 0
+            return None
         a_ = ((iy & 127) << 7) | (ix & 127)
         em = fpga.em
         tag = (((iy >> 7) & 15) << 4) | ((ix >> 7) & 15)
-        if em.cnt[a_] == 0 or em.tag[a_] != tag or em.zmax[a_] - em.zmin[a_] > 40:
+        if em.cnt[a_] == 0 or em.tag[a_] != tag:
+            return None
+        return (int(em.zmin[a_]),int(em.zmax[a_]),fpga.seq,int(em.cnt[a_]),
+                (int(em.fc)-int(em.stamp[a_]))&255,int(em.stale[a_]))
+
+    @H_CB
+    def h_cb(x,y,hp):
+        s=support_at(x,y)
+        if s is None or s[5] or s[4]>fpga.cfg.get('age_max',60) or s[1]-s[0]>40:
             return 0
-        hp[0] = int(em.zmax[a_] + em.zmin[a_]) // 2      # 区间中点：zmax 偏高（噪声取最大），用它锚定会正反馈地往上漂
+        hp[0] = int((s[0]+s[1])/2) # C有符号除法向零截断
         return 1
     fw.py_set_h_cb(h_cb)
+
+    @H_CB
+    def support_cb(x,y,out):
+        s=support_at(x,y)
+        if s is None:return 0
+        for i,v in enumerate(s):out[i]=v
+        return 1
+    if hasattr(fw,'py_set_support_cb'):fw.py_set_support_cb(support_cb)
+    snapshot_enabled=hasattr(fw,'py_set_support_snapshot') and a.support_snapshot!='off'
+    snapshot_keys=[None,None]
+    if snapshot_enabled:
+        fw.py_set_support_snapshot.argtypes=[ctypes.c_void_p]*5+[ctypes.c_int32,ctypes.c_int32,ctypes.c_uint16,ctypes.c_uint16]
+        fw.py_set_coverage_snapshot.argtypes=[ctypes.c_void_p,ctypes.c_void_p,ctypes.c_int32,ctypes.c_int32,ctypes.c_uint32]
+        fw.py_set_support_snapshot_verify(a.support_snapshot=='verify')
+    def sync_support_snapshot():
+        if not snapshot_enabled:return
+        em=fpga.em;key=(id(em),fpga.seq,fpga.cx,fpga.cy)
+        if snapshot_keys[0]!=key:
+            gx=np.arange(fpga.cx-64,fpga.cx+64);gy=np.arange(fpga.cy-64,fpga.cy+64)
+            slots=((gy[:,None]&127)<<7)|(gx[None,:]&127);tag=(((gy[:,None]>>7)&15)<<4)|((gx[None,:]>>7)&15)
+            values=[np.ascontiguousarray(em.zmin[slots],dtype=np.int16),np.ascontiguousarray(em.zmax[slots],dtype=np.int16),
+                    np.ascontiguousarray(np.where(em.tag[slots]==tag,em.cnt[slots],0),dtype=np.uint8),
+                    np.ascontiguousarray((int(em.fc)-em.stamp[slots])&255,dtype=np.uint8),np.ascontiguousarray(em.stale[slots],dtype=np.uint8)]
+            fw.py_set_support_snapshot(*[v.ctypes.data for v in values],fpga.cx,fpga.cy,fpga.seq,INV_RES);snapshot_keys[0]=key
+        if fpga.coverage is not None:
+            cov=fpga.coverage;ep=fpga.clock_us//200000;key=(cov.seq,ep,cov.cx,cov.cy)
+            if snapshot_keys[1]!=key:
+                known,fresh=cov.mask_windows(fpga.clock_us)
+                fw.py_set_coverage_snapshot(known.ctypes.data,fresh.ctypes.data,cov.cx//4,cov.cy//4,ep);snapshot_keys[1]=key
 
     # 任务
     upload = rk_host.map_messages(pkg) if pkg is not None else []
@@ -240,6 +382,9 @@ def main():
     traj_true, traj_est, loc_err = [], [], []
     tlog = []                                    # 逐 0.1 s：t, 真值 x y z yaw, 估计 x y z yaw, 指令 vx wz, 受阻
     conf = np.zeros((2, 2), dtype=np.int64)      # [真值 可通行/不可][预测 可通行/致命]
+    terrain_counts = TerrainCounts()
+    loc_err_full = []
+    loc_valid_samples = 0
     n_obs_free = 0
     match_log = []
     dt_ctrl = 0.001
@@ -255,12 +400,18 @@ def main():
     st = (ctypes.c_int32 * 12)()
     cmdv = (ctypes.c_int16 * 4)()
     commit_v = (ctypes.c_int32 * 16)()
+    terminal_goal = (tx, ty) if a.search else (goals_w[-1] if goals_w else None)
+    terminal = TerminalJudge(terminal_goal, terminal_criteria)
+    truth_prev = (0.0, bot.x, bot.y, bot.yaw)
 
     def local_o2w():
         """里程计系 -> 世界系，按"当前估计位姿 ↔ 当前真值位姿"对齐：局部地图是用估计位姿建的，
         用它评估地形判定可以排除全局漂移的影响（漂移另由定位误差指标衡量）"""
         fw.py_get_state(st)
         ex, ey, eyaw = st[0] / 1000, st[1] / 1000, (st[3] & 0xFFFF) / 65536 * 2 * math.pi
+        if hasattr(fw,'py_get_terrain_pose'):
+            local=(ctypes.c_int32*6)();fw.py_get_terrain_pose(local)
+            ex,ey,eyaw=local[0]/1000,local[1]/1000,(local[2]&65535)*2*math.pi/65536
         dyaw = bot.yaw - eyaw
         cd, sd = math.cos(dyaw), math.sin(dyaw)
 
@@ -270,13 +421,23 @@ def main():
         return f
 
     def snapshot(tag):
+        if a.no_plots:
+            return
         save_snapshot(out / f"snapshot_{tag}.png", scene, fpga, traj_true, traj_est, goals_w, local_o2w(), w2o, a,
                       get_gmap(fw), o2w)
+
+    if observer is not None:observer.setup(bot,fpga,fw,a)
 
     ms = 0
     n_frames = 0
     frame_pending = False
-    while t < a.time:
+    raw_queue=[]
+    raw_dropped=0
+    while t < a.time or (terminal.declared_s is not None and not terminal.finished):
+        fpga.clock_us = now_us & 0xffffffff
+        sync_support_snapshot()
+        if callback_errors:
+            raise RuntimeError('FPGA callback failed; trial invalid') from callback_errors[0]
         for _ in range(4):
             if upload:
                 send(upload.pop(0))
@@ -292,31 +453,47 @@ def main():
             bot.update_attitude()
             kid = None
         # 雷达帧：上一帧已提交（FPGA 双缓冲握手）才采集下一帧
-        if t >= t_frame and not frame_pending:
+        if t >= t_frame and (a.match_timing=='rtl50' or not frame_pending):
             t_frame += 1.0 / a.fps
-            Rwb, twb = bot.body_pose()
-            Rws, tws = sw.compose(Rwb, twb, Rbs, tbs)
-            depth, _ = lid.capture(scene.w, Rws, tws)
+            if a.match_timing=='rtl50' and len(raw_queue)+int(frame_pending)>=2:
+                raw_dropped+=1
+            else:
+                Rwb, twb = bot.body_pose()
+                Rws, tws = sw.compose(Rwb, twb, Rbs, tbs)
+                depth, _ = lid.capture(scene.w, Rws, tws)
+                if observer is not None:observer.raw(depth,Rws,tws,t)
+                raw_queue.append((depth,now_us))
+        if not frame_pending and raw_queue:
+            depth,capture_us=raw_queue.pop(0)
             fpga.frame(depth)
-            fw.py_set_lidar_waiting(ctypes.c_uint32(now_us))
-            frame_pending = True
+            fpga.capture_us = capture_us
+            fw.py_set_lidar_waiting(ctypes.c_uint32(capture_us))
+            frame_pending=True
+        assert len(raw_queue)+int(frame_pending)<=2
         if frame_pending:
             fw.py_poll()
             if fw.py_get_commit(commit_v):
-                frame_pending = False
+                phase = fw.py_get_commit_phase() if hasattr(fw, "py_get_commit_phase") else 0
+                frame_pending = phase == 1             # 匹配遍继续保留同一深度帧，禁止覆盖xyz
                 v = list(commit_v)
+                if hasattr(fw, 'py_get_lidar_capture_us'):
+                    fw.py_get_lidar_capture_us.restype = ctypes.c_uint32
+                    if fw.py_get_lidar_capture_us() != fpga.capture_us:
+                        raise RuntimeError('Firmware fusion timestamp differs from retained raw capture')
                 fpga.commit(v[:12], v[12], v[13], v[14], v[15])
                 slot = (ctypes.c_uint8 * (128 * 128)).from_buffer_copy(np.clip(fpga.cost, 0, 255).astype(np.uint8).tobytes())
-                fw.py_set_map(slot, v[12], v[13], ctypes.c_uint16(fpga.seq), ctypes.c_uint16(INV_RES))
+                fw.py_set_map(slot, fpga.cx, fpga.cy, ctypes.c_uint16(fpga.seq), ctypes.c_uint16(INV_RES))
+                sync_support_snapshot()
                 mv = (ctypes.c_int32 * 12)()
                 fw.py_get_match(mv)
-                match_log.append(list(mv))
-                n_frames += 1
-                if n_frames % 5 == 0:
-                    stat_confusion(scene, fpga, local_o2w(), conf, t)
+                if phase != 1: match_log.append(list(mv))
+                n_frames += phase != 1
+                if observer is not None and phase != 1:observer.fused(fpga,t,local_o2w(),v)
+                if phase != 1 and n_frames % 5 == 0:
+                    stat_confusion(scene, fpga, local_o2w(), conf, t, terrain_counts)
         # 里程计 50 Hz、IMU 50 Hz
         if t >= t_odo:
-            t_odo += 0.02
+            t_odo += .01 if a.backend == 'mujoco' else .02
             vx, vy, wz = bot.odom()
             fw.py_push_odom(vx, vy, wz, ctypes.c_uint32(now_us))
         if t >= t_imu:
@@ -333,41 +510,63 @@ def main():
                     found_t = t
         fw.py_poll()
         fw.py_get_cmd(cmdv)
+        if a.backend == 'mujoco':
+            bot.submit(cmdv[:3], fw.py_get_cmd_seq())
         bot.step((cmdv[0], cmdv[1], cmdv[2]), dt_ctrl)
         ms += 1
         t = ms * dt_ctrl
         now_us += 1000
         fw.py_set_time(ctypes.c_uint32(now_us))
+        if observer is not None:observer.tick(bot,fw,t,cmdv)
+        if getattr(bot,'failed',False):
+            tail=getattr(observer,'failure_tail_s',0.)
+            first=getattr(bot,'first_failure_s',None)
+            if not tail or first is None or t>=first+tail:break
         if ms % 100 == 0 and pkg is not None:
             fw.py_get_loc(loc_v)
             loc_hist.append((t, loc_v[0], loc_v[1], loc_v[2], loc_v[10], loc_v[11], loc_v[5]))
             if align_t is None and loc_v[0] in (2, 3):
                 align_t = t
         localized = pkg is None or (align_t is not None and loc_v[0] in (2, 3))
-        if ms % 100 == 0 and localized:
+        if ms % 100 == 0:
             fw.py_get_state(st)
             ex, ey = o2w(st[0] / 1000, st[1] / 1000)
             traj_true.append((bot.x, bot.y, bot.z))
             traj_est.append((ex, ey, st[2] / 1000))
             yaw0 = 0.0 if pkg is not None else math.radians(syaw)
             yaw_err = math.degrees(math.remainder(((st[3] & 0xFFFF) / 65536 * 2 * math.pi) + yaw0 - bot.yaw, 2 * math.pi))
-            loc_err.append((math.hypot(ex - bot.x, ey - bot.y), abs(st[2] / 1000 - bot.z), abs(yaw_err)))
+            err = (math.hypot(ex - bot.x, ey - bot.y), abs(st[2] / 1000 - bot.z), abs(yaw_err))
+            loc_err_full.append(err)
+            if localized:
+                loc_err.append(err)
+                loc_valid_samples += 1
+            prev_t, prev_x, prev_y, prev_yaw = truth_prev
+            speed = math.hypot(bot.x - prev_x, bot.y - prev_y) / (t - prev_t)
+            yaw_rate = math.remainder(bot.yaw - prev_yaw, 2 * math.pi) / (t - prev_t)
+            truth_prev = (t, bot.x, bot.y, bot.yaw)
             tlog.append((t, bot.x, bot.y, bot.z, math.degrees(bot.yaw), ex, ey, st[2] / 1000,
                          math.degrees(bot.yaw) + yaw_err, cmdv[0], cmdv[2], int(bot.blocked),
-                         math.degrees(bot.pitch), st[4] * 360 / 65536, math.degrees(bot.roll), st[5] * 360 / 65536))
-            if a.goal or a.waypoints:
-                if st[7] == 2 and arrived_t is None:
-                    arrived_t = t
-                    break
-            if a.search and found_t is not None and st[6] == 2 and math.hypot(bot.x - tx, bot.y - ty) < 1.0 \
-                    and abs(cmdv[0]) < 10:
-                arrived_t = t
+                         math.degrees(bot.pitch), st[4] * 360 / 65536, math.degrees(bot.roll), st[5] * 360 / 65536,
+                         speed, yaw_rate, int(localized)))
+            declared = bool((a.goal or a.waypoints) and st[7] == 2)
+            if a.search:
+                # Tracking has no firmware ARRIVED state: retain the historical
+                # external 1 m objective, then independently verify the stop.
+                declared = tracking_completion_candidate(found_t is not None, st[6], cmdv,
+                    math.hypot(bot.x - tx, bot.y - ty), terminal_criteria.position_m)
+            terminal.observe(t, bot.x, bot.y, speed, yaw_rate, declared=declared and t <= a.time)
+            if terminal.finished and not getattr(bot,'failed',False):
+                if terminal.success and bot.collisions == 0:
+                    arrived_t = terminal.declared_s
                 break
         if t >= t_snap:
             snapshot(f"{snap_i:03d}_t{t:05.1f}s")
             snap_i += 1
             t_snap += a.snap
     snapshot("final")
+    if snapshot_enabled:
+        snapshot_stats=(ctypes.c_uint32*2)();fw.py_get_support_snapshot_stats(snapshot_stats)
+        if snapshot_stats[1]:raise RuntimeError(f'Bulk HAL differs from callback: {snapshot_stats[1]}/{snapshot_stats[0]} queries')
     if fpga.view is not None:
         _, V_, H_, RO_ = fpga.view
         gm_ = get_gmap(fw)
@@ -377,23 +576,38 @@ def main():
                  true=np.array([bot.x, bot.y, bot.z, bot.yaw]), fp_pts=np.array(ERR_PTS["fp"]).reshape(-1, 3),
                  fn_pts=np.array(ERR_PTS["fn"]).reshape(-1, 3), match_log=np.array(match_log), tlog=np.array(tlog),
                  loc_hist=np.array(loc_hist).reshape(-1, 7))
-    if a.gif:
+    if a.gif and not a.no_plots:
         from PIL import Image
         frames = [Image.open(p) for p in sorted(out.glob("snapshot_[0-9]*.png"))] + [Image.open(out / "snapshot_final.png")]
         frames[0].save(out / "run.gif", save_all=True, append_images=frames[1:], duration=250, loop=0)
 
-    save_err_plot(out / "trav_errors.png", scene, ERR_PTS, traj_true)
+    if not a.no_plots:
+        save_err_plot(out / "trav_errors.png", scene, ERR_PTS, traj_true)
     if tlog:
         tl = np.array(tlog)
         np.savetxt(out / "timeseries.csv", tl, delimiter=",", fmt="%.4f",
-                   header="t,x,y,z,yaw_deg,ex,ey,ez,eyaw_deg,cmd_vx,cmd_wz,blocked,pitch,epitch,roll,eroll", comments="")
-        save_timeseries_plot(out / "loc_error.png", tl)
+                   header="t,x,y,z,yaw_deg,ex,ey,ez,eyaw_deg,cmd_vx,cmd_wz,blocked,pitch,epitch,roll,eroll,true_speed_mps,true_yaw_rate_rps,loc_valid", comments="")
+        if not a.no_plots:
+            save_timeseries_plot(out / "loc_error.png", tl)
     le = np.array(loc_err) if loc_err else np.zeros((1, 3))
     ml = np.array(match_log) if match_log else np.zeros((1, 12))
+    le_full = np.array(loc_err_full) if loc_err_full else None
     tp, fn, fp, tn = int(conf[1, 1]), int(conf[1, 0]), int(conf[0, 1]), int(conf[0, 0])
     m = {
+        'host_support_snapshot':dict(enabled=snapshot_enabled,verify=a.support_snapshot=='verify',queries=int(snapshot_stats[0]) if snapshot_enabled else 0,mismatches=int(snapshot_stats[1]) if snapshot_enabled else 0),
         "scene": a.scene, "trav": a.trav, "match": a.match, "seed": a.seed, "slip": a.slip,
         "arrived": arrived_t is not None, "time_s": round(arrived_t if arrived_t else t, 1),
+        "evaluation": EVALUATION_VERSION,
+        "firmware_arrived": terminal.declared_s is not None and not bool(a.search),
+        "completion_candidate": terminal.declared_s is not None,
+        "outcome": "collision" if bot.collisions else ("physical_failure" if getattr(bot,'failed',False) else terminal.outcome),
+        "terminal": terminal.report(),
+        "simulation_end_s": round(t, 3),
+        "raw_frames_dropped": raw_dropped,
+        "terrain": terrain_counts.report(),
+        "loc_valid_fraction": loc_valid_samples / len(loc_err_full) if loc_err_full else None,
+        "loc_samples": len(loc_err_full), "loc_valid_samples": loc_valid_samples,
+        "loc_err_xy_full_rms_m": round(float(np.sqrt((le_full[:, 0] ** 2).mean())), 3) if le_full is not None else None,
         "found_s": found_t,
         "collisions": bot.collisions,
         "coll_first": getattr(bot, "coll_log", [])[:5],
@@ -418,9 +632,26 @@ def main():
         "wall_s": round(time.time() - wall0, 1),
         "astar_heap_max": int(fw.py_astar_heap_max()),
     }
+    if not loc_err:
+        for key in ("loc_err_xy_rms_m", "loc_err_xy_final_m", "loc_err_xy_max_m",
+                    "loc_err_z_max_m", "loc_err_yaw_final_deg"):
+            m[key] = None
+    if a.backend == 'mujoco':
+        m['physics_backend']=bot.report(); bot.close()
+    if observer is not None:observer.finish(m)
+    if match_timing_log:
+        np.savetxt(out/'match_timing.csv',np.array(match_timing_log,dtype=np.int64),fmt='%d',delimiter=',',
+                   header='now_us,candidates,sampled_points,valid,cycles,latency_us',comments='')
     (out / "metrics.json").write_text(json.dumps(m, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps(m, ensure_ascii=False))
     return 0
+
+
+def prior_cache_name(scene_name):
+    import slf_match
+    variant=scene_name if slf_match.SN==256 else f"{scene_name}_sn{slf_match.SN}"
+    ray=getattr(sw.World,'raycast_version',None)
+    return variant+(f"_{ray}" if ray else "")+'.nvmp'
 
 
 def get_prior(scene_name, spec):
@@ -428,7 +659,7 @@ def get_prior(scene_name, spec):
     if spec != "auto":
         return Path(spec).read_bytes()
     import slf_match
-    p = ROOT / "sim" / "build" / "prior" / (f"{scene_name}.nvmp" if slf_match.SN == 256 else f"{scene_name}_sn{slf_match.SN}.nvmp")
+    p = ROOT / "sim" / "build" / "prior" / prior_cache_name(scene_name)
     if p.exists():
         return p.read_bytes()
     sc = W.SCENES[scene_name]()
@@ -511,7 +742,7 @@ def target_visible(bot, scene, tx, ty, fov=math.radians(70), rng=4.0):
 ERR_PTS = {"fp": [], "fn": []}
 
 
-def stat_confusion(scene, fpga, o2w, conf, t=0.0):
+def stat_confusion(scene, fpga, o2w, conf, t=0.0, terrain_counts=None):
     """当前窗口内：已观测（代价 != 255）栅格的预测（致命 = 254）与真值标签比较"""
     N = nf.N
     cw = cost_window(fpga)
@@ -524,6 +755,11 @@ def stat_confusion(scene, fpga, o2w, conf, t=0.0):
     x0, y0, x1, y1 = scene.bounds
     inb = (WX > x0) & (WX < x1) & (WY > y0) & (WY < y1)
     obs = (cw != 255) & inb
+    if terrain_counts is not None:
+        # Raw lethal and observed masks are window-order arrays, unlike cost slots.
+        labels = np.full(cw.shape, 2, dtype=np.int8)
+        labels[inb] = scene.gt_lookup(WX[inb], WY[inb])
+        terrain_counts.add(labels, cw, fpga.last_lethal, fpga.view[1], inb)
     if not obs.any():
         return
     lab = np.full(cw.shape, 2, dtype=np.int8)

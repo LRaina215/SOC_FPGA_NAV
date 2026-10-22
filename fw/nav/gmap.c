@@ -24,10 +24,10 @@ void gmap_init(gmap_t *g)
     for (int i = 0; i < GM_N * GM_N; i++) { g->occ[i] = UNSEEN; g->cost[i] = 0; g->grid[i] = 255; g->prior[i] = 255; }
 }
 
-static void compose(gmap_t *g)
+static void compose_rows(gmap_t *g,int row0,int row1)
 {
     const gmap_cfg_t *c = &g->cfg;
-    for (int i = 0; i < GM_N * GM_N; i++) {
+    for (int i = row0*GM_N; i < row1*GM_N; i++) {
         int o = g->occ[i];
         uint8_t obs = (o == UNSEEN) ? 255 : (o >= c->occ_thr) ? NP_COST_LETHAL : g->cost[i];
         uint8_t pr = g->has_prior ? g->prior[i] : 255;
@@ -38,11 +38,18 @@ static void compose(gmap_t *g)
     for (int k = 0; k < GM_VBLK; k++) {
         if (!g->vblk[k].ttl) continue;
         int r = g->vblk[k].r, bx = g->vblk[k].gx - g->ox, by = g->vblk[k].gy - g->oy;
-        for (int y = by - r; y <= by + r; y++)
+        for (int y = nav_max32(row0,by-r); y <= nav_min32(row1-1,by+r); y++)
             for (int x = bx - r; x <= bx + r; x++)
                 if (x >= 0 && y >= 0 && x < GM_N && y < GM_N && (x - bx) * (x - bx) + (y - by) * (y - by) <= r * r + 1)
                     g->grid[y * GM_N + x] = NP_COST_LETHAL;
     }
+}
+
+static void compose(gmap_t *g) {compose_rows(g,0,GM_N);}
+
+static void reset_work(gmap_t *g) {
+    for(int y=0;y<GM_N;y++) g->row_seq[y]=0;
+    g->work_active=false;g->work_done=false;g->work_row=0;
 }
 
 void gmap_block_add(gmap_t *g, const hal_map_info_t *mi, int32_t x, int32_t y, int r, int ttl)
@@ -60,6 +67,8 @@ void gmap_block_add(gmap_t *g, const hal_map_info_t *mi, int32_t x, int32_t y, i
 
 void gmap_clear_obs(gmap_t *g)
 {
+    reset_work(g);
+    g->ready=g->has_prior;
     for (int i = 0; i < GM_N * GM_N; i++) { g->occ[i] = UNSEEN; g->cost[i] = 0; }
     if (!g->has_prior) g->init = false;
     compose(g);
@@ -83,10 +92,12 @@ void gmap_prior_put(gmap_t *g, int i, uint8_t v)
 
 void gmap_prior_done(gmap_t *g)
 {
+    reset_work(g);
     for (int i = 0; i < GM_N * GM_N; i++) { g->occ[i] = UNSEEN; g->cost[i] = 0; }
     g->ox = g->pox; g->oy = g->poy;
     g->init = true;
     g->has_prior = true;
+    g->ready=true;
     g->n_shift++;
     compose(g);
 }
@@ -134,11 +145,11 @@ static void shift(gmap_t *g, int sx, int sy)
     g->ox += sx;
     g->oy += sy;
     g->n_shift++;
+    reset_work(g);compose(g);
 }
 
-void gmap_update(gmap_t *g, const uint8_t *map, const hal_map_info_t *mi, int32_t rx, int32_t ry)
+static void prepare(gmap_t *g,const hal_map_info_t *mi,int32_t rx,int32_t ry)
 {
-    const gmap_cfg_t *c = &g->cfg;
     uint16_t inv = mi->inv_res ? mi->inv_res : 1311;
     int32_t rcx = fdiv(fine_idx(rx, inv), GM_DS), rcy = fdiv(fine_idx(ry, inv), GM_DS);
     if (!g->init) {
@@ -152,25 +163,32 @@ void gmap_update(gmap_t *g, const uint8_t *map, const hal_map_info_t *mi, int32_
         if (ly < GM_N / 4 || ly >= GM_N - GM_N / 4) sy = ly - GM_N / 2;
         if (sx || sy) shift(g, sx, sy);
     }
+}
+
+static void observe_rows(gmap_t *g,const uint8_t *map,const hal_map_info_t *mi,int row0,int row1)
+{
+    const gmap_cfg_t *c=&g->cfg;
     /* 完整落在局部窗口内的粗格 */
     int32_t f0x = mi->cx - LN / 2, f0y = mi->cy - LN / 2;
     int32_t cgx0 = -fdiv(-f0x, GM_DS), cgy0 = -fdiv(-f0y, GM_DS);       /* 向上取整 */
     int32_t cgx1 = fdiv(f0x + LN, GM_DS), cgy1 = fdiv(f0y + LN, GM_DS);  /* 不含 */
-    for (int32_t cgy = cgy0; cgy < cgy1; cgy++) {
+    for (int32_t cgy = nav_max32(cgy0,g->oy+row0); cgy < nav_min32(cgy1,g->oy+row1); cgy++) {
         int gy = cgy - g->oy;
-        if (gy < 0 || gy >= GM_N) continue;
         for (int32_t cgx = cgx0; cgx < cgx1; cgx++) {
             int gx = cgx - g->ox;
             if (gx < 0 || gx >= GM_N) continue;
             int wx0 = cgx * GM_DS - f0x, wy0 = cgy * GM_DS - f0y;
-            int nk = 0, nl = 0, mc = 0;
+            int nk = 0, nl = 0, nb = 0, mc = 0;
             for (int j = 0; j < GM_DS; j++)
                 for (int i = 0; i < GM_DS; i++) {
                     uint8_t v = map[(wy0 + j) * LN + wx0 + i];
                     if (v == NP_COST_UNKNOWN) continue;
                     nk++;
+                    if (v >= GM_COST_BLOCKED) nb++;
                     if (v == NP_COST_LETHAL) nl++;
-                    else if (v <= NP_COST_FREE_MAX && v > mc) mc = v;
+                    /* 253是中心规划的足迹净空代价，不能在细格->记忆粗格时丢掉。
+                     * 它不增加原始障碍的占用证据，仍与254分开；新自由观测可替换。 */
+                    else if (v > mc) mc = v;
                 }
             if (nk < c->min_known) continue;
             int k = gy * GM_N + gx;
@@ -180,10 +198,47 @@ void gmap_update(gmap_t *g, const uint8_t *map, const hal_map_info_t *mi, int32_
             if (o > c->occ_max) o = c->occ_max;
             if (o < c->occ_min) o = c->occ_min;
             g->occ[k] = (int8_t)o;
-            g->cost[k] = (uint8_t)mc;
+            /* 全粗格都受限才保留253硬净空；混合格保留252高代价，
+             * 允许细图/完整足迹在其中寻找接入，不能封死跨粗格边界的窄带。 */
+            g->cost[k] = (uint8_t)((mc == GM_COST_BLOCKED && nb < GM_DS * GM_DS) ? GM_COST_PARTIAL : mc);
         }
     }
-    for (int k = 0; k < GM_VBLK; k++) if (g->vblk[k].ttl) g->vblk[k].ttl--;
-    compose(g);
-    g->n_upd++;
+}
+
+void gmap_update(gmap_t *g,const uint8_t *map,const hal_map_info_t *mi,int32_t rx,int32_t ry)
+{
+    prepare(g,mi,rx,ry);observe_rows(g,map,mi,0,GM_N);
+    for(int k=0;k<GM_VBLK;k++) if(g->vblk[k].ttl) g->vblk[k].ttl--;
+    compose(g);g->n_upd++;g->ready=true;reset_work(g);
+}
+
+bool gmap_update_rows(gmap_t *g,const uint8_t *map,const hal_map_info_t *mi,int32_t rx,int32_t ry,int rows)
+{
+    if(!mi->seq || rows<=0) return false;
+    if(!g->work_active || g->work_seq!=mi->seq) {
+        unsigned age=g->work_active?(uint16_t)(mi->seq-g->work_seq):1;
+        prepare(g,mi,rx,ry);
+        for(int k=0;k<GM_VBLK;k++) {
+            unsigned ttl=g->vblk[k].ttl;
+            g->vblk[k].ttl=(uint16_t)(ttl>age?ttl-age:0);
+        }
+        g->work_seq=mi->seq;g->work_active=true;g->work_done=false;
+    }
+    if(g->work_done) return false;
+    rows=nav_min32(rows,GM_N);
+    for(int n=0;n<rows;) {
+        int y=g->work_row;
+        int count=1;
+        if(g->row_seq[y]!=mi->seq) {
+            while(n+count<rows && y+count<GM_N && g->row_seq[y+count]!=mi->seq) count++;
+            observe_rows(g,map,mi,y,y+count);compose_rows(g,y,y+count);
+            for(int i=y;i<y+count;i++) g->row_seq[i]=mi->seq;
+        }
+        n+=count;g->work_row=(uint16_t)((y+count)%GM_N);
+        if(!g->work_row) {
+            bool all=true;for(int i=0;i<GM_N;i++) if(g->row_seq[i]!=mi->seq) {all=false;break;}
+            if(all) {g->work_done=true;g->ready=true;g->n_upd++;break;}
+        }
+    }
+    return true;
 }

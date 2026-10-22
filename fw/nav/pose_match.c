@@ -20,7 +20,9 @@ static int64_t score(const hal_match_res_t *r) { return (int64_t)r->cost; }
 int pose_match_cands(const pm_cfg_t *c, hal_match_cand_t *cand)
 {
     const int h = c->half, w = 2 * h + 1, ha = c->half_ang, wa = 2 * ha + 1;
-    if (!c->enable || w * w * wa > PM_MAX_CAND) return 0;
+    if (!c->enable || h<0 || ha<0 || h>7 || ha>7 || w*w*wa>PM_MAX_CAND ||
+        c->step_mm<0 || c->step_ang<0 || (int64_t)h*c->step_mm>INT16_MAX ||
+        (int64_t)ha*c->step_ang>INT16_MAX) return 0;
     int k = 0;
     for (int ia = -ha; ia <= ha; ia++)
         for (int iy = -h; iy <= h; iy++)
@@ -33,7 +35,7 @@ int pose_match_cands(const pm_cfg_t *c, hal_match_cand_t *cand)
     return k;
 }
 
-bool pose_match_solve(const pm_cfg_t *c, pose_est_t *pe, const hal_match_res_t *res, int k, pm_stat_t *st)
+bool pose_match_solve(const pm_cfg_t *c, const hal_match_res_t *res, int k, pm_stat_t *st)
 {
     st->applied = false;
     st->n_in_best = 0;
@@ -150,9 +152,20 @@ bool pose_match_solve(const pm_cfg_t *c, pose_est_t *pe, const hal_match_res_t *
     st->dx = dx * c->gain_q8 / 256;
     st->dy = dy * c->gain_q8 / 256;
     st->dyaw = da * c->gain_q8 / 256;
-    /* 候选平移是绕机器人位置旋转后的平移，直接作用在位姿上 */
-    pose_correct_delta(pe, st->dx, st->dy, 0, st->dyaw);
+    return true;
+}
+
+void pose_match_commit(pose_est_t *pe, int32_t cx, int32_t cy, pm_stat_t *st)
+{
+    int64_t c = fx_cos((angle_t)st->dyaw), s = fx_sin((angle_t)st->dyaw);
+    /* 匹配是坐标修正，不能丢掉每20ms里程计累计的小数毫米。
+     * 特别是退化轴dx=0时，每帧pose_set截断会把7mm/s完全抹去。
+     * 历史样本仍用mm；当前积分器保留um，绕采集位置施加同一SE(2)。 */
+    int64_t x = pe->x_um - (int64_t)cx*1000, y = pe->y_um - (int64_t)cy*1000;
+    int64_t nx = (int64_t)(cx+st->dx)*1000 + (x*c-y*s)/Q14;
+    int64_t ny = (int64_t)(cy+st->dy)*1000 + (x*s+y*c)/Q14;
+    pose_set(pe, (int32_t)(nx/1000), (int32_t)(ny/1000), (angle_t)(pe->cur.yaw+st->dyaw));
+    pe->x_um = nx; pe->y_um = ny;
     st->applied = true;
     st->n_applied++;
-    return true;
 }

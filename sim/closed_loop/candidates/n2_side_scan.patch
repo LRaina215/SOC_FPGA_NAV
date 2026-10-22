@@ -1,0 +1,49 @@
+--- a/fw/nav/nav_task.c
++++ b/fw/nav/nav_task.c
+@@ -553,12 +553,22 @@
+         nt->cmd_source=CMD_GROUND_SCAN;nt->prog_t_us=nt->last_ok_us=now;
+         if(!nt->scan_active) {
+             nt->scan_active=true;nt->scan_start_us=now;nt->scan_turned=0;nt->scan_last_yaw=p->yaw;
++            nt->scan_phase=0;nt->scan_bearing=fx_atan2(scan_gy-p->y,scan_gx-p->x);
+             nt->scan_dir=fx_angle_diff(p->yaw,fx_atan2(scan_gy-p->y,scan_gx-p->x))< -182?-1:1;
+         }
+         nt->scan_turned+=nt->scan_dir*fx_angle_diff(nt->scan_last_yaw,p->yaw);nt->scan_last_yaw=p->yaw;
+         if((uint32_t)(now-nt->scan_start_us)>24000000) nt->scan_failed=true;
+         bool feedback=nt->pose.have_odo && (uint32_t)(now-nt->pose.last_odo_us)<100000;
+-        if(!nt->scan_failed && feedback && !nt->scan_exit_valid &&
++        /* Observe both sides while still inside the original fixed bootstrap disk.
++         * Phase changes use measured yaw. No coverage is fabricated. */
++        angle_t scan_target=(angle_t)(nt->scan_bearing+(nt->scan_phase==0?10923:nt->scan_phase==1?-10923:0));
++        int scan_error=fx_angle_diff(p->yaw,scan_target);
++        if(feedback && nav_abs32(scan_error)<364 && nt->scan_phase<2) {
++            nt->scan_phase++;
++            scan_target=(angle_t)(nt->scan_bearing+(nt->scan_phase==1?-10923:0));
++            scan_error=fx_angle_diff(p->yaw,scan_target);
++        }
++        if(!nt->scan_failed && feedback && nt->scan_phase==2 && nav_abs32(scan_error)<364 && !nt->scan_exit_valid &&
+            nav_abs32(fx_angle_diff(p->yaw,fx_atan2(scan_gy-p->y,scan_gx-p->x)))<=8192) {
+             /* 一圈不是观测充分的证明：必须实际查到一条450mm支撑走廊。
+              * 375仅用于只读前推（1.2s=450mm），实际退出速度另限50。 */
+@@ -572,7 +582,10 @@
+                 nt->scan_exit_valid=true;
+             }
+         }
+-        if(!nt->scan_failed && feedback && !nt->scan_exit_valid) nt->cmd.wz=(int16_t)(nt->scan_dir*600);
++        if(!nt->scan_failed && feedback && !nt->scan_exit_valid) {
++            int w=nav_clamp32(scan_error*12566/65536,-600,600);
++            if(nav_abs32(scan_error)>182)nt->cmd.wz=(int16_t)(w<0?nav_min32(-100,w):nav_max32(100,w));
++        }
+         if(nt->scan_exit_valid && feedback && nav_abs32(nt->pose.odo_wz)<=50 &&
+            nav_abs32(nt->pose.odo_vx)<=20 && nav_abs32(nt->pose.odo_vy)<=20) {
+             if(!nt->scan_settling) {nt->scan_settling=true;nt->scan_settle_us=now;}
+--- a/fw/nav/nav_task.h
++++ b/fw/nav/nav_task.h
+@@ -47,6 +47,8 @@
+     uint32_t scan_start_us,scan_settle_us;
+     bool scan_exit_valid;
+     int8_t scan_dir;
++    uint8_t scan_phase;
++    angle_t scan_bearing;
+     int32_t scan_exit_x,scan_exit_y;
+     explore_cfg_t  ex_cfg;
+ 

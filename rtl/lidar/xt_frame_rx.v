@@ -29,6 +29,7 @@ module xt_frame_rx #(
     input  wire [15:0] cfg_raw_inv,    // 非 0 时，原始深度/幅值 >= 此值视为无效（SDK 无效码从 64000 起）
     input  wire        cfg_wait_pose,
     input  wire        pose_commit,    // 单拍
+    input  wire        cfg_retain,     // 本遍结束保留帧，等待修正位姿后重读
 
     // UDP 负载输入（不反压）
     input  wire        s_valid,
@@ -386,6 +387,7 @@ module xt_frame_rx #(
     reg  [7:0]  q_u, q_v;
     reg         q_sof, q_eof;
     reg         rd_done;        // 已发出最后一个读
+    reg         retain_frame;
 
     assign pose_waiting = rd_wait;
 
@@ -394,7 +396,7 @@ module xt_frame_rx #(
         frame_start <= 1'b0;
         clr_full    <= 1'b0;
         if (rst) begin
-            rb <= 1'b0; rd_act <= 1'b0; rd_wait <= 1'b0; rp <= 0; rd_done <= 1'b0;
+            rb <= 1'b0; rd_act <= 1'b0; rd_wait <= 1'b0; rp <= 0; rd_done <= 1'b0; retain_frame <= 1'b0;
         end else begin
             if (!rd_act && !rd_wait && full[rb] && !clr_full) begin
                 frm_sn <= m_sn[rb]; frm_w <= m_w[rb]; frm_h <= m_h[rb]; frm_ts <= m_ts[rb];
@@ -408,6 +410,7 @@ module xt_frame_rx #(
             if (rd_wait && (!cfg_wait_pose || pose_commit)) begin
                 rd_wait <= 1'b0; rd_act <= 1'b1; rp <= 0; ru <= 0; rv <= 0; rd_done <= 1'b0;
                 frame_start <= 1'b1;
+                retain_frame <= cfg_retain;
             end
             if (rd_issue) begin
                 q_u <= ru; q_v <= rv;
@@ -420,8 +423,8 @@ module xt_frame_rx #(
             end
             if (rd_act && m_valid && m_ready && m_eof) begin
                 rd_act <= 1'b0;
-                clr_full <= 1'b1;
-                rb <= ~rb;
+                if (retain_frame) rd_wait <= 1'b1;
+                else begin clr_full <= 1'b1; rb <= ~rb; end
             end
         end
     end

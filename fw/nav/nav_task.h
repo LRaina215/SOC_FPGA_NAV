@@ -14,8 +14,10 @@
 #include "astar.h"
 #include "gmap.h"
 #include "local_planner.h"
+#include "motion_guard.h"
 #include "explore.h"
 #include "proto.h"
+#include "local_frame.h"
 
 typedef struct {
     int32_t  lookahead_mm;       /* 路径前视距离 */
@@ -26,7 +28,9 @@ typedef struct {
     int32_t  wp_tol_mm;          /* 中间路径点的到达容差（比终点宽：只是途经） */
     uint32_t stall_us;           /* 这么久位移不到 stall_mm 视为卡住，执行脱困动作 */
     int32_t  stall_mm;
-    int32_t  near_goal_mm;       /* 卡住时离目标已不到此距离：视为到达（目标多半落在障碍/膨胀区里） */
+    int32_t  near_goal_mm;       /* 此范围内卡住时保持停止/受阻，不冒充到达或盲目恢复 */
+    uint32_t settle_us;          /* 最终目标内，实际速度持续稳定多久才声明到达 */
+    int32_t  goal_pose_margin_mm; /* 物理到达要求中预留的定位误差预算，离线假设、待实测 */
     uint32_t recover_us;         /* 脱困动作时长 */
 } nav_task_cfg_t;
 
@@ -36,6 +40,14 @@ typedef struct {
     astar_cfg_t    as_cfg;       /* 局部图上的 A*（use_gmap=false 时） */
     astar_cfg_t    as_cfg_g;     /* 全局记忆栅格上的 A* */
     bool           use_gmap;
+    bool           async_gmap,search_work_done;
+    bool scan_active,scan_settling,scan_failed;
+    angle_t scan_last_yaw;
+    int32_t scan_turned;
+    uint32_t scan_start_us,scan_settle_us;
+    bool scan_exit_valid;
+    int8_t scan_dir;
+    int32_t scan_exit_x,scan_exit_y;
     explore_cfg_t  ex_cfg;
 
     nav_mode_t mode;
@@ -46,6 +58,8 @@ typedef struct {
     bool       wp_loop;
 
     pose_est_t pose;
+    local_frame_t terrain_frame;
+    bool stepping_local;
     target_t   tgt;
     explore_t  exp;
 
@@ -57,15 +71,27 @@ typedef struct {
     uint32_t       path_shift;       /* 规划时 gmap 的平移计数（平移后路径坐标失效） */
     uint16_t       path_seq;
     uint32_t       path_t_us;
+    uint32_t       settle_t_us;
     bool           path_valid;
+    bool           path_complete;    /* A*到达未裁剪的目标；部分路径不替换成最终目标 */
+    bool           path_target_is_goal;
+    int32_t        plan_goal_x,plan_goal_y;
+    bool           search_fine,search_keep_route;
+    uint32_t       search_shift;
+    bool           settling;
+    bool           path_fine;        /* 原分辨率近场路径；固定其生成窗口原点 */
+    bool           refine_path;      /* 粗路径无可执行接入/局部受阻后才请求细化 */
+    int32_t        path_cx, path_cy;
     lp_result_t    lp;
     nav_cmd_t      cmd;
+    uint8_t        cmd_source, motion_result; /* 本周期提议来源与最终检查结果 */
     uint32_t       last_ok_us;       /* 最近一次找到可行候选 */
     uint32_t       search_t_us;
     bool           search_goal_valid;
     int32_t        look_x, look_y;   /* 当前前视点（调试/显示） */
     bool           turning;          /* 原地转向对准前视点中 */
     int32_t        prog_x, prog_y;   /* 卡住检测参考点 */
+    int16_t        progress_speed;  /* 上一周期通过最终检查的平移速度幅值 */
     uint32_t       prog_t_us;
     uint32_t       recover_until_us;
     bool           recovering;
@@ -87,6 +113,7 @@ void nav_task_set_mode(nav_task_t *nt, nav_mode_t mode);
 void nav_task_set_goal(nav_task_t *nt, int32_t x, int32_t y);
 /* 周期调用：规划并下发速度指令 */
 void nav_task_step(nav_task_t *nt, uint32_t now_us);
+void nav_task_map_work(nav_task_t *nt,int rows);
 /* 生成状态报文内容 */
 void nav_task_status(const nav_task_t *nt, proto_status_t *s, uint32_t now_us);
 

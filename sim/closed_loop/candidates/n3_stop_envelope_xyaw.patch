@@ -1,0 +1,340 @@
+--- a/fw/app/nav_app.c
++++ b/fw/app/nav_app.c
+@@ -139,7 +139,7 @@
+     /* 1. 底盘里程计 */
+     int16_t vx, vy, wz;
+     uint32_t t;
+-    while (hal_odom(&vx, &vy, &wz, &t)) pose_odom(&nt->pose, vx, vy, wz, t);
++    while (hal_odom(&vx, &vy, &wz, &t)) {pose_odom(&nt->pose,vx,vy,wz,t);stop_feedback(&nt->stop,vx,vy,wz,t);}
+ 
+     /* 2. IMU 姿态 */
+     uint8_t b;
+--- a/fw/nav/nav_task.c
++++ b/fw/nav/nav_task.c
+@@ -398,7 +398,7 @@
+         if (!stopped) { nt->settling = false; return false; }
+         if (!nt->settling) { nt->settling = true; nt->settle_t_us = now; }
+         nt->last_ok_us = now;
+-        return (uint32_t)(now - nt->settle_t_us) >= nt->cfg.settle_us;
++        return (uint32_t)(now - nt->settle_t_us) >= nt->cfg.settle_us && nt->stop.status==STOP_CONFIRMED;
+     }
+     nt->settling = false;
+     /* 卡住检测：stall_us 内位移不到 stall_mm */
+@@ -508,6 +508,26 @@
+     return false;
+ }
+ 
++/* Same map and full tread checks apply to navigation hold corrections. */
++static uint8_t response_admit(nav_task_t *nt,const nav_pose_t *p,bool fresh,uint32_t now) {
++    hal_map_info_t check;
++    int margin=stop_margin(&nt->stop,&nt->cmd,now);
++    if(margin<0)return MOTION_LIMIT;
++    if(!nt->have_map || nt->stale || !fresh)return MOTION_NO_MAP;
++    if(!hal_map_info(&check) || !motion_map_same(&check,&nt->mi))return MOTION_MAP_CHANGED;
++    lp_cfg_t cfg=nt->lp_cfg;cfg.caps.radius_mm+=margin;
++    uint8_t result;
++    if(nt->cmd.vx || nt->cmd.vy || nt->cmd.wz)result=motion_check(nt->map,&nt->mi,p,&cfg,&nt->cmd);
++    else result=motion_segment(nt->map,&nt->mi,p,&cfg,p->x,p->y);
++    if(result==MOTION_OK || result==MOTION_UNKNOWN) {
++        int ground=support_check_margin(p,&cfg,&nt->mi,&nt->cmd,margin);
++        if(ground!=SUPPORT_PASS)result=ground==SUPPORT_FRAME?MOTION_MAP_CHANGED:
++            ground==SUPPORT_BLOCK?MOTION_SUPPORT_BLOCK:MOTION_SUPPORT_UNKNOWN;
++    }
++    if(!hal_map_info(&check) || !motion_map_same(&check,&nt->mi))result=MOTION_MAP_CHANGED;
++    return result;
++}
++
+ static void task_step_local(nav_task_t *nt, uint32_t now)
+ {
+     nt->search_work_done=false;
+@@ -694,36 +714,29 @@
+         nt->cmd.vy = (int16_t)(nt->cmd.vy / 2);
+         nt->cmd.wz = (int16_t)(nt->cmd.wz / 2);
+     }
+-    /* 所有非零运动只有这一个出口。先约束最终指令，再检查同代地图和完整足迹。 */
+-    if (nt->cmd.vx || nt->cmd.vy || nt->cmd.wz) {
+-        hal_map_info_t check;
+-        if (!nt->have_map || nt->stale || !fresh) nt->motion_result = MOTION_NO_MAP;
+-        else if (!hal_map_info(&check) || !motion_map_same(&check, &nt->mi)) nt->motion_result = MOTION_MAP_CHANGED;
++    bool requested=nt->cmd.vx || nt->cmd.vy || nt->cmd.wz;
++    bool estop=nt->mode==NAV_MODE_ESTOP;
++    if(requested && !estop) {
++        nt->motion_result=response_admit(nt,p,fresh,now);
++        bool creep=nt->motion_result==MOTION_UNKNOWN && nt->as_cfg.allow_unknown &&
++            nt->cmd.vx>=0 && nt->cmd.vx<=60 && !nt->cmd.vy;
++        if(nt->motion_result==MOTION_OK || creep)stop_release(&nt->stop);
+         else {
+-            nt->motion_result = motion_check(nt->map, &nt->mi, p, &nt->lp_cfg, &nt->cmd);
+-            if(nt->motion_result==MOTION_OK || nt->motion_result==MOTION_UNKNOWN) {
+-                /* 同一次无IRQ调用内，局部规划已核对同一最终命令/同代地图；
+-                 * 复用轮支撑结论。其它来源或改动过的命令仍在此完整查询。 */
+-                bool checked=nt->cmd_source==CMD_LOCAL && nt->lp.ground_checked &&
+-                    nt->cmd.vx==nt->lp.cmd.vx && nt->cmd.vy==nt->lp.cmd.vy && nt->cmd.wz==nt->lp.cmd.wz;
+-                int ground=checked?SUPPORT_PASS:support_check(p,&nt->lp_cfg,&nt->mi,&nt->cmd);
+-                if(ground!=SUPPORT_PASS) nt->motion_result=ground==SUPPORT_FRAME?MOTION_MAP_CHANGED:
+-                    ground==SUPPORT_BLOCK?MOTION_SUPPORT_BLOCK:MOTION_SUPPORT_UNKNOWN;
+-            }
+-            if (!hal_map_info(&check) || !motion_map_same(&check, &nt->mi)) nt->motion_result = MOTION_MAP_CHANGED;
+-        }
+-        /* 现有雷达近场有盲区：保留A*允许未知时的前向探索，并明确记录UNKNOWN，
+-         * 不将其记为已证实自由。未观测的新足迹不允许倒车；近场支撑/停止区待T1/N3。 */
+-        /* 圆形包络下任意曲线200ms中心路程仍<=12mm；轮胎旋转扫掠单独检查。
+-         * UNKNOWN标志保留。实际延迟/刹停并未由这条名义上界覆盖。 */
+-        bool uncertain_creep = nt->motion_result == MOTION_UNKNOWN && nt->as_cfg.allow_unknown &&
+-                               nt->cmd.vx>=0 && nt->cmd.vx<=60 && nt->cmd.vy==0;
+-        if (nt->motion_result != MOTION_OK && !uncertain_creep) {
+-            nt->cmd = (nav_cmd_t){0, 0, 0, 0};
+-            /* 切图丢弃本次速度，世界坐标路线保留到下周期重新复核。 */
+-            if(nt->motion_result!=MOTION_MAP_CHANGED || (!nt->use_gmap && !nt->path_fine)) nt->path_valid=false;
+-            nt->last_ok_us = now - nt->cfg.blocked_us - 1u;
+-            if (nt->mode == NAV_MODE_GOTO) nt->state = ST_BLOCKED;
++            nt->cmd=(nav_cmd_t){0};nt->path_valid=false;
++            nt->last_ok_us=now-nt->cfg.blocked_us-1u;
++            if(nt->mode==NAV_MODE_GOTO)nt->state=ST_BLOCKED;
++        }
++    }
++    if(estop || (!nt->cmd.vx && !nt->cmd.vy && !nt->cmd.wz)) {
++        nt->cmd=stop_hold(&nt->stop,now,estop || nt->hold);
++        if(estop)nt->cmd.mode=(uint8_t)NAV_MODE_ESTOP;
++        if(!estop && !nt->hold) {
++            uint8_t result=response_admit(nt,p,fresh,now);
++            bool creep=result==MOTION_UNKNOWN && nt->as_cfg.allow_unknown && nt->cmd.vx>=0;
++            if(result!=MOTION_OK && !creep) {
++                nt->cmd=(nav_cmd_t){0};stop_admission(&nt->stop,false);
++            } else {stop_admission(&nt->stop,true);if(nt->cmd.vx || nt->cmd.wz)nt->cmd_source=CMD_HOLD;}
++            if(!requested)nt->motion_result=result;
+         }
+     }
+     nt->pose.cmd_still = (nt->cmd.vx == 0 && nt->cmd.vy == 0 && nt->cmd.wz == 0);
+--- a/fw/nav/nav_task.h
++++ b/fw/nav/nav_task.h
+@@ -18,6 +18,7 @@
+ #include "explore.h"
+ #include "proto.h"
+ #include "local_frame.h"
++#include "stop_guard.h"
+ 
+ typedef struct {
+     int32_t  lookahead_mm;       /* 路径前视距离 */
+@@ -36,6 +37,7 @@
+ 
+ typedef struct {
+     nav_task_cfg_t cfg;
++    stop_guard_t stop;
+     lp_cfg_t       lp_cfg;
+     astar_cfg_t    as_cfg;       /* 局部图上的 A*（use_gmap=false 时） */
+     astar_cfg_t    as_cfg_g;     /* 全局记忆栅格上的 A* */
+--- a/fw/nav/pose.c
++++ b/fw/nav/pose.c
+@@ -1,5 +1,33 @@
+ #include "pose.h"
+ #include "hal.h"
++#include "support_guard.h"
++static uint32_t anchor_diag[6];
++void pose_anchor_diagnostics(uint32_t out[6]) {for(int i=0;i<6;i++)out[i]=anchor_diag[i];}
++
++/* Optional fallback uses explicitly remembered static contacts, never calls
++ * them fresh. Two confirmed wheel-center tiles plus fresh front references
++ * must agree under the unchanged20mm transition contract. */
++static bool anchor_contacts(pose_est_t *p,const nav_pose_t *at,int hw,int gain) {
++    hal_map_info_t mi,after;if(!hal_map_info(&mi) || !mi.inv_res)return false;
++    hal_support_t contact[2],front[2];uint32_t epoch=hal_time_us()/200000u;
++    for(int i=0;i<2;i++) {
++        int32_t x,y;pose_body_to_odom(at,0,i?-hw:hw,&x,&y);
++        if(!hal_map_support(x,y,&contact[i]) || contact[i].seq!=mi.seq || contact[i].count<2 || contact[i].hi-contact[i].lo+2>20) {anchor_diag[3]=3;return false;}
++        unsigned sx=(unsigned)(((int64_t)x*mi.inv_res)>>14)&3,sy=(unsigned)(((int64_t)y*mi.inv_res)>>14)&3;
++        if(!(contact[i].coverage&(1u<<(sy*4+sx)))){anchor_diag[3]=4;return false;}
++        pose_body_to_odom(at,60,i?-hw:hw,&x,&y);
++        if(!hal_map_support(x,y,&front[i]) || front[i].seq!=mi.seq || front[i].retained_stale || front[i].age>60 ||
++           support_transition(contact[i].lo,contact[i].hi,front[i].lo,front[i].hi,20,1)!=SUPPORT_PASS) {anchor_diag[3]=5;return false;}
++        unsigned fx=(unsigned)(((int64_t)x*mi.inv_res)>>14)&3,fy=(unsigned)(((int64_t)y*mi.inv_res)>>14)&3;
++        if(!(front[i].coverage&(1u<<(fy*4+fx)))){anchor_diag[3]=4;return false;}
++    }
++    if(support_transition(contact[0].lo,contact[0].hi,contact[1].lo,contact[1].hi,57,1)!=SUPPORT_PASS ||
++       !hal_map_info(&after) || after.seq!=mi.seq || after.cx!=mi.cx || after.cy!=mi.cy || after.inv_res!=mi.inv_res || hal_time_us()/200000u!=epoch) {anchor_diag[3]=6;return false;}
++    int target=((int)contact[0].lo+contact[0].hi+contact[1].lo+contact[1].hi)/4;
++    int e=target-p->cur.z;if(e>150 || e< -150){anchor_diag[3]=7;return false;}
++    int delta=nav_clamp32(e*nav_min32(gain,32)/256,-2,2);
++    pose_correct_delta(p,0,0,delta,0);anchor_diag[1]++;anchor_diag[3]=1;anchor_diag[4]=target;anchor_diag[5]=delta;return true;
++}
+ 
+ static void hist_push(pose_est_t *p)
+ {
+@@ -282,10 +310,14 @@
+         pose_body_to_odom(at, SX[i] * hl, SY[i] * hw, &ox, &oy);
+         if (hal_map_height(ox, oy, &h)) { sum += h; n++; }
+     }
+-    if (n < 3) return;
++    if (n < 3) {
++        if(!anchor_contacts(p,at,hw,gain_q8))anchor_diag[2]++;
++        return;
++    }
+     int32_t e = sum / n - p->cur.z;                 /* 地图说机器人应在的高度 - 估计高度 */
+     if (e > 150 || e < -150) return;                /* 离谱的差值：多半是轮下格被障碍占据，不用 */
+     pose_correct_delta(p, 0, 0, e * gain_q8 / 256, 0);
++    anchor_diag[0]++;anchor_diag[3]=0;
+ }
+ 
+ void pose_body_to_odom(const nav_pose_t *at, int32_t bx, int32_t by, int32_t *ox, int32_t *oy)
+--- a/fw/nav/pose.h
++++ b/fw/nav/pose.h
+@@ -80,6 +80,7 @@
+  * 用它把位姿 z 拉向地图，消除里程计高度积分漂移造成的"新旧观测高差"（假台阶）。 */
+ void pose_anchor_z(pose_est_t *p, int32_t half_len_mm, int32_t half_wid_mm, int32_t gain_q8);
+ void pose_anchor_z_at(pose_est_t *p,const nav_pose_t *at,int32_t hl,int32_t hw,int32_t gain_q8);
++void pose_anchor_diagnostics(uint32_t out[6]);
+ /* 机身系点 -> 里程计系点 */
+ void pose_body_to_odom(const nav_pose_t *at, int32_t bx, int32_t by, int32_t *ox, int32_t *oy);
+ 
+--- /dev/null
++++ b/fw/nav/stop_guard.c
+@@ -0,0 +1,69 @@
++#include "stop_guard.h"
++#include "fixmath.h"
++bool stop_fresh(const stop_guard_t *s,uint32_t now) {
++    return s->have && (uint32_t)(now-s->stamp)<100000u;
++}
++void stop_release(stop_guard_t *s) {
++    s->active=s->stable=s->fault=s->admitted=0;s->error_um=s->integral_um_s=0;s->status=STOP_MOVING;
++    s->yaw_urad=s->yaw_integral_urad_s=s->lateral_um=0;
++}
++void stop_admission(stop_guard_t *s,bool admitted) {
++    s->admitted=admitted;
++    if(!admitted){s->stable=0;s->status=s->fault?STOP_FEEDBACK:STOP_ENVELOPE;}
++}
++void stop_feedback(stop_guard_t *s,int vx,int vy,int wz,uint32_t t) {
++    if(s->have && (int32_t)(t-s->stamp)<=0)return;
++    uint32_t dt=s->have?t-s->stamp:0;
++    s->vx=vx;s->vy=vy;s->wz=wz;s->stamp=t;s->have=1;
++    if(!dt || dt>100000u) {
++        s->filtered_q8=vx*256;s->filtered_w_q8=wz*256;s->stable=0;
++        if(s->active){s->fault=1;s->status=STOP_FEEDBACK;}
++        return;
++    }
++    s->filtered_q8+=(int32_t)((int64_t)(vx*256-s->filtered_q8)*dt/(200000u+dt));
++    s->filtered_w_q8+=(int32_t)((int64_t)(wz*256-s->filtered_w_q8)*dt/(200000u+dt));
++    if(!s->active || s->fault)return;
++    s->error_um+=(int64_t)vx*dt/1000;
++    s->lateral_um+=(int64_t)vy*dt/1000;
++    s->yaw_urad+=(int64_t)wz*dt/1000;
++    s->yaw_integral_urad_s+=s->yaw_urad*dt/1000000;
++    if(s->yaw_integral_urad_s>600000)s->yaw_integral_urad_s=600000;
++    if(s->yaw_integral_urad_s< -600000)s->yaw_integral_urad_s=-600000;
++    s->integral_um_s+=s->error_um*dt/1000000;
++    if(s->integral_um_s>200000)s->integral_um_s=200000;
++    if(s->integral_um_s< -200000)s->integral_um_s=-200000;
++    bool still=s->admitted && nav_abs32(vx)<=2 && nav_abs32(vy)<=2 && nav_abs32(wz)<=50 &&
++               s->error_um<=15000 && s->error_um>=-15000 &&
++               s->lateral_um<=15000 && s->lateral_um>=-15000 &&
++               s->yaw_urad<=50000 && s->yaw_urad>=-50000;
++    if(!still)s->stable=0;
++    else if(!s->stable){s->stable=1;s->stable_since=t;}
++    s->status=!s->admitted?STOP_ENVELOPE:s->stable && (uint32_t)(t-s->stable_since)>=500000u?STOP_CONFIRMED:STOP_HOLDING;
++}
++nav_cmd_t stop_hold(stop_guard_t *s,uint32_t now,bool estop) {
++    nav_cmd_t cmd={0};
++    if(estop){s->active=s->stable=0;s->status=STOP_UNCONFIRMED;return cmd;}
++    if(!stop_fresh(s,now)){s->fault=1;s->stable=0;s->status=STOP_FEEDBACK;return cmd;}
++    if(s->fault){s->status=STOP_FEEDBACK;return cmd;}
++    if(!s->active){s->active=1;s->stable=s->admitted=0;s->error_um=s->integral_um_s=0;s->yaw_urad=s->yaw_integral_urad_s=s->lateral_um=0;}
++    int64_t numerator=-10*s->error_um-(int64_t)s->filtered_q8*2000/256-s->integral_um_s;
++    int u=(int)((numerator+(numerator>=0?10000:-10000))/20000);
++    cmd.vx=(int16_t)nav_clamp32(u,-25,25);
++    int64_t wn=-10*s->yaw_urad-(int64_t)s->filtered_w_q8*2000/256-s->yaw_integral_urad_s;
++    cmd.wz=(int16_t)nav_clamp32((int)((wn+(wn>=0?10000:-10000))/20000),-75,75);
++    if(s->status!=STOP_CONFIRMED)s->status=s->admitted?STOP_HOLDING:STOP_ENVELOPE;
++    return cmd;
++}
++int stop_margin(const stop_guard_t *s,const nav_cmd_t *c,uint32_t now) {
++    if(!stop_fresh(s,now))return -1;
++    int v=nav_max32(nav_abs32(s->vx)+nav_abs32(s->vy),nav_abs32(c->vx)+nav_abs32(c->vy));
++    int w=nav_max32(nav_abs32(s->wz),nav_abs32(c->wz));
++    if(v>500 || w>2000)return -1;
++    /* L1 translation bound plus wheel-point angular displacement <=172*angle.
++     * Isotropic tube also reserves the reverse correction, not just forward.
++     * Reject large unverified envelopes rather than truncating them. */
++    int translation=(v*200+999)/1000+(v*v+199)/200;
++    int angle_mrad=(w*200+999)/1000+(w*w+1999)/2000;
++    int margin=25+translation+(172*angle_mrad+999)/1000;
++    return margin<=96?margin:-1;
++}
+--- /dev/null
++++ b/fw/nav/stop_guard.h
+@@ -0,0 +1,22 @@
++#ifndef NAV_STOP_GUARD_H
++#define NAV_STOP_GUARD_H
++#include "nav_types.h"
++/* Navigation supervisor, not the original4500 low-level controller.
++ * Experimental bounds: reaction200ms, deceleration100mm/s2 and1000mrad/s2,
++ * hold excursion25mm. These are offline assumptions, not vehicle calibration. */
++enum { STOP_UNCONFIRMED, STOP_MOVING, STOP_HOLDING, STOP_CONFIRMED, STOP_FEEDBACK, STOP_ENVELOPE };
++typedef struct {
++    int64_t error_um, integral_um_s;
++    int64_t yaw_urad,yaw_integral_urad_s,lateral_um;
++    int32_t filtered_q8,filtered_w_q8;
++    uint32_t stamp, stable_since;
++    int16_t vx,vy,wz;
++    uint8_t active,have,stable,status,fault,admitted;
++} stop_guard_t;
++void stop_feedback(stop_guard_t *s,int vx,int vy,int wz,uint32_t t);
++bool stop_fresh(const stop_guard_t *s,uint32_t now);
++void stop_release(stop_guard_t *s);
++nav_cmd_t stop_hold(stop_guard_t *s,uint32_t now,bool estop);
++int stop_margin(const stop_guard_t *s,const nav_cmd_t *c,uint32_t now);
++void stop_admission(stop_guard_t *s,bool admitted);
++#endif
+--- a/fw/nav/support_guard.c
++++ b/fw/nav/support_guard.c
+@@ -89,8 +89,9 @@
+     return SUPPORT_PASS;
+ }
+ static int32_t sn(angle_t a) {int f=a&63;return (fx_sin(a)*(64-f)+fx_sin((angle_t)(a+64))*f)/64;}
+-int support_check(const nav_pose_t *p,const lp_cfg_t *cfg,const hal_map_info_t *mi,const nav_cmd_t *cmd) {
+-    if(!enabled || (!cmd->vx && !cmd->vy && !cmd->wz)) return SUPPORT_PASS;
++int support_check_margin(const nav_pose_t *p,const lp_cfg_t *cfg,const hal_map_info_t *mi,const nav_cmd_t *cmd,int extra_mm) {
++    if(!enabled || (!extra_mm && !cmd->vx && !cmd->vy && !cmd->wz)) return SUPPORT_PASS;
++    if(extra_mm<0 || extra_mm>96)return SUPPORT_UNKNOWN;
+     if(!mi->inv_res) return SUPPORT_UNKNOWN;
+     if(!boot_set) {boot_x=p->x;boot_y=p->y;boot_z=p->z;boot_set=true;}
+     uint32_t epoch=hal_time_us()/200000u;
+@@ -104,7 +105,7 @@
+      * 50ms样本间任意轮上点到最近端点的位移上界speed/40，另加2mm数值裕量。
+      * 矩形是整个轮胎水平投影，不把轮半径误当胎面横向宽度。 */
+     int speed=nav_abs32(cmd->vx)+nav_abs32(cmd->vy)+(nav_abs32(cmd->wz)*172+999)/1000;
+-    int margin=(speed+39)/40+2;
++    int margin=(speed+39)/40+2+extra_mm;
+     int64_t x=(int64_t)p->x*16384,y=(int64_t)p->y*16384,th=(int64_t)p->yaw*65536;
+     int64_t da=(int64_t)cmd->wz*50*65536*65536/6283185;
+     for(int i=0;i<=steps;i++) {
+@@ -138,3 +139,5 @@
+     }
+     return hal_time_us()/200000u==epoch?SUPPORT_PASS:SUPPORT_FRAME;
+ }
++
++int support_check(const nav_pose_t *p,const lp_cfg_t *cfg,const hal_map_info_t *mi,const nav_cmd_t *cmd) {return support_check_margin(p,cfg,mi,cmd,0);}
+--- a/fw/nav/support_guard.h
++++ b/fw/nav/support_guard.h
+@@ -13,6 +13,7 @@
+ bool support_scan_needed(void);
+ void support_scan_finish(void);
+ int support_check(const nav_pose_t *p,const lp_cfg_t *cfg,const hal_map_info_t *mi,const nav_cmd_t *cmd);
++int support_check_margin(const nav_pose_t *p,const lp_cfg_t *cfg,const hal_map_info_t *mi,const nav_cmd_t *cmd,int extra_mm);
+ int support_transition(int alo,int ahi,int blo,int bhi,int cap,int quant);
+ void support_diagnostics(uint32_t out[4]);
+ #endif
+--- a/fw/test/hal_py.c
++++ b/fw/test/hal_py.c
+@@ -53,6 +53,7 @@
+ EXPORT void py_set_support_cb(support_cb_t cb) {s_support_cb=cb;}
+ EXPORT void py_set_support_bootstrap(int mm) {support_reset(mm>=0 && mm<=350?mm:0);}
+ EXPORT void py_get_support_diagnostics(uint32_t *v) {support_diagnostics(v);}
++EXPORT void py_get_anchor_diagnostics(uint32_t *v) {pose_anchor_diagnostics(v);}
+ bool hal_map_support(int32_t x,int32_t y,hal_support_t *out) {
+     int32_t v[6],cov[2]={0,0};
+     if(!s_support_cb || !s_support_cb(x,y,v)) return false;
+@@ -450,3 +451,5 @@
+     s_hout_n++;
+     return true;
+ }
++
++EXPORT void py_get_stop_diagnostics(int32_t *v) {stop_guard_t *s=&g_app.nt.stop;v[0]=s->status;v[1]=s->error_um;v[2]=s->filtered_q8;v[3]=s->vx;v[4]=s->active;v[5]=s->stable;v[6]=s->integral_um_s;}

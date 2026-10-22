@@ -5,6 +5,7 @@
 #include "hal.h"
 #include "traj_sw.h"
 #include "nav_app.h"
+#include "support_guard.h"
 
 #define N NP_MAP_N
 #define EXPORT __declspec(dllexport)
@@ -27,6 +28,8 @@ static int      s_ih, s_it;
 static bool     s_lw;
 static uint32_t s_lw_t;
 static bool     s_commit;
+static int      s_stage;
+static uint32_t s_match_latency_us = 40000u; /* 历史对照默认；S1可由RTL周期模型逐次设置 */
 static int32_t  s_commit_v[16];
 
 /* 雷达方向查找表：固件写入的表（仿真的点云链路用 Python 模型自己的表，这里只供对比测试） */
@@ -38,10 +41,22 @@ typedef int (*h_cb_t)(int32_t x, int32_t y, int32_t *h);
 static h_cb_t s_h_cb;
 EXPORT void py_set_h_cb(h_cb_t cb) { s_h_cb = cb; }
 bool hal_map_height(int32_t x, int32_t y, int32_t *h) { return s_h_cb ? s_h_cb(x, y, h) != 0 : false; }
+typedef int (*support_cb_t)(int32_t x,int32_t y,int32_t *out);
+static support_cb_t s_support_cb;
+EXPORT void py_set_support_cb(support_cb_t cb) {s_support_cb=cb;}
+EXPORT void py_set_support_bootstrap(int mm) {support_reset(mm>=0 && mm<=350?mm:0);}
+EXPORT void py_get_support_diagnostics(uint32_t *v) {support_diagnostics(v);}
+bool hal_map_support(int32_t x,int32_t y,hal_support_t *out) {
+    int32_t v[6];
+    if(!s_support_cb || !s_support_cb(x,y,v)) return false;
+    *out=(hal_support_t){.lo=(int16_t)v[0],.hi=(int16_t)v[1],.seq=(uint16_t)v[2],
+                        .count=(uint8_t)v[3],.age=(uint8_t)v[4],.retained_stale=v[5]!=0};
+    return true;
+}
 typedef void (*mu_cb_t)(int32_t dx, int32_t dy, int32_t dyaw, int32_t cx_mm, int32_t cy_mm);
 static mu_cb_t s_mu_cb;
 EXPORT void py_set_mu_cb(mu_cb_t cb) { s_mu_cb = cb; }
-static bool s_match_ready;
+static bool s_match_ready, s_mdone;
 bool hal_match_ready(void) { return s_match_ready; }
 void hal_match_update(int32_t dx, int32_t dy, int32_t dyaw, int32_t cx_mm, int32_t cy_mm)
 {
@@ -64,6 +79,7 @@ static ctl_cb_t s_ctl_cb;
 EXPORT void py_set_ctl_cb(ctl_cb_t cb) { s_ctl_cb = cb; }
 static void ctl(int op, int32_t a, int32_t b, int32_t c) { if (s_ctl_cb) s_ctl_cb(op, a, b, c); }
 void hal_map_clear(void) { ctl(0, 0, 0, 0); }
+void hal_lidar_stage(int stage) { s_stage = stage; ctl(6, stage, 0, 0); }
 void hal_prior_begin(void) { ctl(1, 0, 0, 0); }
 void hal_prior_write(uint16_t slot, uint32_t word) { ctl(2, slot, (int32_t)word, 0); }
 void hal_prior_enable(bool en, int32_t ox, int32_t oy) { ctl(3, en, ox, oy); }
@@ -75,7 +91,7 @@ EXPORT void py_set_time(uint32_t t) { s_now = t; }
 EXPORT void py_set_map(const uint8_t *slot, int32_t cx, int32_t cy, uint16_t seq, uint16_t inv_res)
 {
     memcpy(s_slot, slot, sizeof s_slot);
-    s_match_ready = true;                  /* 帧已提交处理完：结构点缓冲就绪 */
+    if (s_stage != HAL_LIDAR_FUSE_ONLY) s_match_ready = true; /* 仅提点遍使SLF就绪 */
     s_mi.cx = cx; s_mi.cy = cy; s_mi.seq = seq; s_mi.inv_res = inv_res;
     s_mi.res_mm = inv_res ? 65536 / inv_res : 50;
 }
@@ -104,6 +120,8 @@ EXPORT int py_get_commit(int32_t *v)
     s_commit = false;
     return 1;
 }
+EXPORT int py_get_commit_phase(void) { return s_stage; }
+EXPORT void py_set_match_latency_us(uint32_t us) { s_match_latency_us = us > 1000000u ? 1000000u : us; }
 EXPORT void py_set_match_cb(match_cb_t cb) { s_match_cb = cb; }
 EXPORT void py_push_host(const uint8_t *b, int n, uint32_t t)
 {
@@ -115,6 +133,48 @@ EXPORT void py_push_host(const uint8_t *b, int n, uint32_t t)
 }
 EXPORT int py_get_host_out(uint8_t *b) { memcpy(b, s_hout, (size_t)s_hout_len); return s_hout_len; }
 EXPORT void py_get_cmd(int16_t *v) { v[0] = s_cmd.vx; v[1] = s_cmd.vy; v[2] = s_cmd.wz; v[3] = s_cmd.mode; }
+EXPORT uint32_t py_get_cmd_seq(void) { return s_ncmd; }
+/* 内部离线诊断，不扩展串口协议：来源、检查、恢复累计、路径完整性。 */
+EXPORT void py_get_motion(int32_t *v)
+{
+    const nav_task_t *nt = &g_app.nt;
+    v[0] = nt->cmd_source; v[1] = nt->motion_result;
+    v[2] = (int32_t)nt->n_recover; v[3] = nt->path_complete;
+}
+EXPORT void py_get_path_diag(int32_t *v)
+{
+    v[0] = g_app.nt.path_fine;
+    v[1] = g_app.nt.path.n;
+}
+EXPORT void py_get_terrain_pose(int32_t *v)
+{
+    nav_pose_t p=g_app.nt.pose.cur;
+    if(!g_app.nt.gm.has_prior) local_frame_pose(&g_app.nt.terrain_frame,&p,&p);
+    v[0]=p.x;v[1]=p.y;v[2]=p.yaw;
+    v[3]=(int32_t)(g_app.nt.terrain_frame.tx_um/1000);
+    v[4]=(int32_t)(g_app.nt.terrain_frame.ty_um/1000);
+    v[5]=g_app.nt.terrain_frame.yaw;
+}
+/* Read-only frame/timing diagnostics; no target HAL or protocol changes. */
+EXPORT void py_get_frame_diag(int32_t *v)
+{
+    const nav_task_t *n = &g_app.nt;
+    const pose_est_t *p = &n->pose;
+    int old = (p->hist_head - p->hist_n + POSE_HIST) % POSE_HIST;
+    int aold = (p->att_head - p->att_hn + POSE_ATT_HIST) % POSE_ATT_HIST;
+    v[0]=s_now; v[1]=g_app.n_frames; v[2]=g_app.pm.n_applied;
+    v[3]=p->cur.x; v[4]=p->cur.y; v[5]=p->cur.z; v[6]=p->cur.yaw;
+    v[7]=p->cur.pitch; v[8]=p->cur.roll; v[9]=p->cur.t_us;
+    v[10]=p->last_odo_us; v[11]=p->imu_t_us;
+    v[12]=p->hist[old].t_us; v[13]=p->hist_n;
+    v[14]=p->att_hist[aold].t_us; v[15]=p->att_hn;
+    v[16]=g_app.pm_at.t_us; v[17]=g_app.pm_at.x; v[18]=g_app.pm_at.y;
+    v[19]=g_app.pm_at.z; v[20]=g_app.pm_at.yaw;
+    v[21]=g_app.pm.dx; v[22]=g_app.pm.dy; v[23]=g_app.pm.dyaw;
+    v[24]=g_app.pm_pend; v[25]=g_app.pm_run; v[26]=g_app.n_skip;
+    v[27]=s_mi.seq; v[28]=n->mi.seq; v[29]=s_mi.cx; v[30]=s_mi.cy;
+    v[31]=n->motion_result;
+}
 /* v: x y z yaw pitch roll mode state goal_x goal_y look_x look_y */
 EXPORT void py_get_state(int32_t *v)
 {
@@ -190,6 +250,7 @@ EXPORT void py_set_caps(int holonomic, int vx_max, int wz_max, int radius)
 }
 EXPORT void py_set_lidar_info(const uint32_t *lens) { memcpy(s_lens, lens, sizeof s_lens); s_info_seq++; }
 EXPORT int py_astar_heap_max(void) { return astar_heap_max(); }
+EXPORT int py_astar_heap_dropped(void) {return astar_heap_dropped();}
 EXPORT uint32_t py_get_lut(int16_t *out, int32_t *v)
 {
     memcpy(out, s_lut, sizeof s_lut);
@@ -256,6 +317,11 @@ EXPORT void py_init(void)
 {
     s_now = 1000; memset(&s_mi, 0, sizeof s_mi); memset(s_slot, 255, sizeof s_slot);
     s_oh = s_ot = s_ih = s_it = s_hh = s_ht = 0; s_lw = s_commit = false; s_hout_len = 0; s_ncmd = 0;
+    s_stage = HAL_LIDAR_NORMAL;
+    s_support_cb = 0;
+    s_match_latency_us = 40000u;
+    s_match_ready = s_mdone = false;
+    s_cmd = (nav_cmd_t){0};
     memset(s_lut, 0, sizeof s_lut); s_lut_writes = 0; memset(s_lens, 0, sizeof s_lens); s_info_seq = 0;
     s_ltx_h = s_ltx_t = s_lrx_h = s_lrx_n = 0; s_lrx_drop = 0;
     nav_app_init();
@@ -327,11 +393,10 @@ void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int
     s_commit_v[12] = cx; s_commit_v[13] = cy; s_commit_v[14] = zmin; s_commit_v[15] = zmax;
     s_commit = true;
     s_lw = false;
+    if (s_stage != HAL_LIDAR_FUSE_ONLY) s_match_ready = false; /* 新SOF使旧点缓冲失效 */
 }
 static hal_match_res_t s_mres[256];
-static bool s_mdone;
 static uint32_t s_mdone_t;
-#define PY_MATCH_LAT_US 40000u      /* 硬件打分耗时（245 候选 × 1024 点 × 约 15 拍 @100 MHz） */
 bool hal_match_start(int32_t cx_mm, int32_t cy_mm, const hal_match_cand_t *c, int k)
 {
     if (!s_match_cb || k > 256) return false;
@@ -341,7 +406,7 @@ bool hal_match_start(int32_t cx_mm, int32_t cy_mm, const hal_match_cand_t *c, in
     s_match_cb(cx_mm, cy_mm, cand, k, out);
     for (int i = 0; i < k; i++) { s_mres[i].n_valid = out[4 * i]; s_mres[i].cost = out[4 * i + 1]; s_mres[i].n_in = out[4 * i + 2]; s_mres[i].n_pts = out[4 * i + 3]; }
     s_mdone = true;
-    s_mdone_t = s_now + PY_MATCH_LAT_US;
+    s_mdone_t = s_now + s_match_latency_us;
     return true;
 }
 bool hal_match_result(hal_match_res_t *res, int k)

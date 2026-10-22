@@ -45,6 +45,10 @@ void loc_start_align(loc_t *l, int32_t range_mm, int32_t range_ang)
 {
     l->rng_mm = range_mm > 0 ? range_mm : l->cfg.range_mm;
     l->rng_ang = range_ang > 0 ? range_ang : l->cfg.range_ang;
+    if(l->cfg.step_mm<=0 || l->cfg.step_ang<=0 || l->rng_mm<0 || l->rng_ang<0 ||
+       l->rng_mm>32000 || l->rng_ang>32000) {
+        l->st=LOC_LOST;l->phase=3;l->k_total=l->k_next=0;return;
+    }
     l->retry = 0;
     l->st = LOC_ALIGN;
     align_reset(l);
@@ -128,6 +132,29 @@ void loc_align_feed(loc_t *l, const hal_match_cand_t *cand, const hal_match_res_
         if (res[i].n_pts > l->n_pts) l->n_pts = res[i].n_pts;
         if (l->phase == 0) top_insert(l, c);
         else if (c.cost < l->fine.cost) l->fine = c;
+    }
+}
+
+void loc_align_feed_generated(loc_t *l,const hal_match_res_t *res,int k)
+{
+    /* 与刚返回的next批次同序；fine必须固定批次种子，不能随最优点更新。 */
+    const loc_cand_t seed=l->fine;
+    for(int j=0;j<k;j++) {
+        int32_t dx,dy,da;
+        if(l->phase==0) {
+            uint32_t i=l->k_next-(uint32_t)k+(uint32_t)j;
+            int ix=(int)(i%(uint32_t)l->nxy),iy=(int)((i/(uint32_t)l->nxy)%(uint32_t)l->nxy);
+            int ia=(int)(i/(uint32_t)(l->nxy*l->nxy));
+            dx=(ix-l->nxy/2)*l->cfg.step_mm;dy=(iy-l->nxy/2)*l->cfg.step_mm;
+            da=(ia-l->na/2)*l->cfg.step_ang;
+        } else {
+            int sm=l->phase==2?25:10,sa=l->phase==2?128:64;
+            dx=seed.dx+(j%7-3)*sm;dy=seed.dy+((j/7)%7-3)*sm;da=seed.da+(j/49-2)*sa;
+        }
+        loc_cand_t c={dx,dy,da,res[j].cost,res[j].n_in};
+        if(res[j].n_pts>l->n_pts) l->n_pts=res[j].n_pts;
+        if(l->phase==0) top_insert(l,c);
+        else if(c.cost<l->fine.cost) l->fine=c;
     }
 }
 

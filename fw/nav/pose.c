@@ -1,11 +1,13 @@
 #include "pose.h"
 #include "hal.h"
 
-static void pose_at_xy(const pose_est_t *p, uint32_t t_us, nav_pose_t *out);
-
 static void hist_push(pose_est_t *p)
 {
-    p->hist[p->hist_head] = p->cur;
+    if (p->hist_n) {
+        int last = (p->hist_head - 1 + POSE_HIST) % POSE_HIST;
+        if ((uint32_t)(p->cur.t_us - p->hist[last].t_us) < POSE_HIST_PERIOD_US) return;
+    }
+    p->hist[p->hist_head] = (pose_xy_hist_t){p->cur.x, p->cur.y, p->cur.z, p->cur.t_us, p->cur.yaw};
     p->hist_head = (p->hist_head + 1) % POSE_HIST;
     if (p->hist_n < POSE_HIST) p->hist_n++;
 }
@@ -23,16 +25,21 @@ void pose_init(pose_est_t *p, angle_t mount_pitch, int32_t mount_x_mm, int32_t m
 
 void pose_odom(pose_est_t *p, int16_t vx, int16_t vy, int16_t wz, uint32_t t_us)
 {
+    if (p->have_odo && (int32_t)(t_us - p->last_odo_us) <= 0) return;
+    p->odo_vx = vx; p->odo_vy = vy; p->odo_wz = wz;
     if (!p->have_odo) {
         p->have_odo = true;
         p->last_odo_us = t_us;
         p->cur.t_us = t_us;
+        p->hist_n = p->hist_head = 0;
+        hist_push(p);
         return;
     }
     int32_t dt = (int32_t)(t_us - p->last_odo_us);
     p->last_odo_us = t_us;
     if (dt <= 0 || dt > 200000) {           /* 回传中断过久：不积分这一段 */
         p->cur.t_us = t_us;
+        p->hist_n = p->hist_head = 0;       /* 不能在未知运动的缺口内插出虚假的连续轨迹 */
         hist_push(p);
         return;
     }
@@ -76,6 +83,7 @@ void pose_odom(pose_est_t *p, int16_t vx, int16_t vy, int16_t wz, uint32_t t_us)
 
 void pose_imu_att(pose_est_t *p, angle_t yaw, angle_t pitch, angle_t roll, bool yaw_valid, uint32_t t_us)
 {
+    if (p->have_att && (int32_t)(t_us - p->imu_t_us) <= 0) return;
     if (yaw_valid) p->cur.yaw = yaw;
     /* 俯仰/横滚 α-β 滤波（α=1/4，β=1/32，按 50 Hz 采样）：姿态噪声会让整帧点云整体倾斜，远处地面高度逐帧跳动，
      * 在高程图里形成假台阶；但一阶低通有滞后——原地转向时车体姿态以 10–20°/s 变化，0.16 s 的滞后就是 2–3°，
@@ -119,6 +127,7 @@ void pose_imu_att(pose_est_t *p, angle_t yaw, angle_t pitch, angle_t roll, bool 
 
 void pose_imu_gyro(pose_est_t *p, int16_t gx, int16_t gy, uint32_t t_us)
 {
+    if (p->have_gyro && (int32_t)(t_us - p->gyro_t_us) <= 0) return;
     /* raw × 2000/32768 °/s × 65536/360 angle/° × 16 × 0.02 s = raw × 32/9 */
     p->gyro_rr = (int32_t)gx * 32 / 9;
     p->gyro_pr = (int32_t)gy * 32 / 9;
@@ -128,7 +137,8 @@ void pose_imu_gyro(pose_est_t *p, int16_t gx, int16_t gy, uint32_t t_us)
 
 bool pose_att_unsettled(const pose_est_t *p, uint32_t t_us, uint32_t win_us)
 {
-    return p->att_jumped && (uint32_t)(t_us - p->att_jump_us) < win_us;
+    int32_t dt = (int32_t)(t_us - p->att_jump_us);
+    return p->att_jumped && dt > -(int32_t)win_us && dt < (int32_t)win_us;
 }
 
 void pose_correct(pose_est_t *p, int32_t x, int32_t y, angle_t yaw)
@@ -148,7 +158,7 @@ void pose_set(pose_est_t *p, int32_t x, int32_t y, angle_t yaw)
     int32_t cx = p->cur.x, cy = p->cur.y;
     for (int i = 0; i < p->hist_n; i++) {
         int idx = (p->hist_head - 1 - i + 2 * POSE_HIST) % POSE_HIST;
-        nav_pose_t *h = &p->hist[idx];
+        pose_xy_hist_t *h = &p->hist[idx];
         int64_t rx = h->x - cx, ry = h->y - cy;
         h->x = x + (int32_t)((rx * c - ry * s) / Q14);
         h->y = y + (int32_t)((rx * s + ry * c) / Q14);
@@ -176,13 +186,15 @@ void pose_correct_delta(pose_est_t *p, int32_t dx, int32_t dy, int32_t dz, int32
 }
 
 /* 姿态历史插值：t_us 前后两个 IMU 样本线性插值（超出范围取最近） */
-static void att_at(const pose_est_t *p, uint32_t t_us, nav_pose_t *out)
+static pose_query_t att_at(const pose_est_t *p, uint32_t t_us, nav_pose_t *out)
 {
-    if (p->att_hn == 0) return;
+    if (p->att_hn == 0) return POSE_ATT_EMPTY;
     int inew = (p->att_head - 1 + POSE_ATT_HIST) % POSE_ATT_HIST;
-    if ((int32_t)(t_us - p->att_hist[inew].t_us) >= 0) {
+    int32_t newer = (int32_t)(t_us - p->att_hist[inew].t_us);
+    if (newer > 0) return POSE_ATT_FUTURE;
+    if (newer == 0) {
         out->pitch = (angle_t)p->att_hist[inew].pitch; out->roll = (angle_t)p->att_hist[inew].roll;
-        return;
+        return POSE_OK;
     }
     for (int i = 1; i < p->att_hn; i++) {
         int io = (p->att_head - 1 - i + 2 * POSE_ATT_HIST) % POSE_ATT_HIST;
@@ -190,44 +202,58 @@ static void att_at(const pose_est_t *p, uint32_t t_us, nav_pose_t *out)
         if ((int32_t)(t_us - p->att_hist[io].t_us) >= 0) {
             int32_t span = (int32_t)(p->att_hist[in].t_us - p->att_hist[io].t_us);
             int32_t k = span > 0 ? (int32_t)((int64_t)(t_us - p->att_hist[io].t_us) * 1024 / span) : 0;
-            out->pitch = (angle_t)(int16_t)(p->att_hist[io].pitch + (p->att_hist[in].pitch - p->att_hist[io].pitch) * k / 1024);
-            out->roll = (angle_t)(int16_t)(p->att_hist[io].roll + (p->att_hist[in].roll - p->att_hist[io].roll) * k / 1024);
-            return;
+            out->pitch = (angle_t)(p->att_hist[io].pitch + fx_angle_diff(p->att_hist[io].pitch, p->att_hist[in].pitch) * k / 1024);
+            out->roll = (angle_t)(p->att_hist[io].roll + fx_angle_diff(p->att_hist[io].roll, p->att_hist[in].roll) * k / 1024);
+            return POSE_OK;
         }
     }
-    int iold = (p->att_head - p->att_hn + POSE_ATT_HIST) % POSE_ATT_HIST;
-    out->pitch = (angle_t)p->att_hist[iold].pitch; out->roll = (angle_t)p->att_hist[iold].roll;
+    return POSE_ATT_OLD;
 }
 
-void pose_at(const pose_est_t *p, uint32_t t_us, nav_pose_t *out)
+pose_query_t pose_at(const pose_est_t *p, uint32_t t_us, nav_pose_t *out)
 {
-    pose_at_xy(p, t_us, out);
-    att_at(p, t_us, out);
+    pose_query_t q = pose_xy_at(p, t_us, out);
+    if (!pose_query_valid(q)) return q;
+    pose_query_t a = att_at(p, t_us, out);
+    return a == POSE_OK ? q : a;
 }
 
-static void pose_at_xy(const pose_est_t *p, uint32_t t_us, nav_pose_t *out)
+pose_query_t pose_xy_at(const pose_est_t *p, uint32_t t_us, nav_pose_t *out)
 {
-    if (p->hist_n == 0) { *out = p->cur; return; }
+    if (!p->have_odo || p->hist_n == 0) return POSE_EMPTY;
+    int32_t future = (int32_t)(t_us - p->cur.t_us);
+    if (future > 0) {
+        if ((uint32_t)future > POSE_PREDICT_US) return POSE_FUTURE;
+        *out = p->cur;
+        int32_t wz = (int32_t)p->odo_wz - (p->wz_bias_q8 + (p->wz_bias_q8 >= 0 ? 128 : -128)) / 256;
+        int32_t da = p->imu_att_valid ? 0 : (int32_t)((int64_t)wz * future * 65536 / 6283185000LL);
+        angle_t mid = (angle_t)(out->yaw + da / 2);
+        int32_t vh = p->decomp_pitch ? p->odo_vx * fx_cos(out->pitch) / Q14 : p->odo_vx;
+        out->x += (int32_t)(((int64_t)vh * fx_cos(mid) - (int64_t)p->odo_vy * fx_sin(mid)) * future / Q14 / 1000000);
+        out->y += (int32_t)(((int64_t)vh * fx_sin(mid) + (int64_t)p->odo_vy * fx_cos(mid)) * future / Q14 / 1000000);
+        out->yaw = (angle_t)(out->yaw + da); out->t_us = t_us;
+        return POSE_PREDICTED;
+    }
     /* 从新到旧找第一个时间 <= t_us 的样本 */
     nav_pose_t newer = p->cur;
     for (int i = 0; i < p->hist_n; i++) {
         int idx = (p->hist_head - 1 - i + 2 * POSE_HIST) % POSE_HIST;
-        const nav_pose_t *h = &p->hist[idx];
+        const pose_xy_hist_t *h = &p->hist[idx];
         if ((int32_t)(t_us - h->t_us) >= 0) {
             int32_t span = (int32_t)(newer.t_us - h->t_us);
             int32_t k = (span > 0) ? (int32_t)((int64_t)(t_us - h->t_us) * 1024 / span) : 0;
             if (k > 1024) k = 1024;
-            *out = *h;
+            *out = p->cur;
             out->x = h->x + (int32_t)((int64_t)(newer.x - h->x) * k / 1024);
             out->y = h->y + (int32_t)((int64_t)(newer.y - h->y) * k / 1024);
             out->z = h->z + (int32_t)((int64_t)(newer.z - h->z) * k / 1024);
             out->yaw = (angle_t)(h->yaw + fx_angle_diff(h->yaw, newer.yaw) * k / 1024);
             out->t_us = t_us;
-            return;
+            return POSE_OK;
         }
-        newer = *h;
+        newer.x=h->x; newer.y=h->y; newer.z=h->z; newer.yaw=h->yaw; newer.t_us=h->t_us;
     }
-    *out = newer;       /* 比历史还早：取最旧 */
+    return POSE_OLD;
 }
 
 void pose_lidar_tf(const pose_est_t *p, const nav_pose_t *at, int32_t r_q14[3][3], int32_t t_mm[3])
@@ -245,12 +271,15 @@ void pose_lidar_tf(const pose_est_t *p, const nav_pose_t *at, int32_t r_q14[3][3
 }
 
 void pose_anchor_z(pose_est_t *p, int32_t hl, int32_t hw, int32_t gain_q8)
+{ pose_anchor_z_at(p,&p->cur,hl,hw,gain_q8); }
+
+void pose_anchor_z_at(pose_est_t *p,const nav_pose_t *at,int32_t hl,int32_t hw,int32_t gain_q8)
 {
     static const int8_t SX[4] = {1, 1, -1, -1}, SY[4] = {1, -1, 1, -1};
     int32_t sum = 0, n = 0;
     for (int i = 0; i < 4; i++) {
         int32_t ox, oy, h;
-        pose_body_to_odom(&p->cur, SX[i] * hl, SY[i] * hw, &ox, &oy);
+        pose_body_to_odom(at, SX[i] * hl, SY[i] * hw, &ox, &oy);
         if (hal_map_height(ox, oy, &h)) { sum += h; n++; }
     }
     if (n < 3) return;

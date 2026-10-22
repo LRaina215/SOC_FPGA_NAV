@@ -84,7 +84,7 @@
 
 | 偏移 | 名称 | 访问 | 复位值 | 说明 |
 |---|---|---|---|---|
-| 0x2000 | CTRL | rw | 0x00000017 | 格式与流程控制（缺省按厂家 SDK：小端）；AUTO_INFO=1 时深度单位、ROI、像素合并取自帧尾 FrameInfo；ENABLE[0] HDR_LE[1] PIX_LE[2] WAIT_POSE[3] AUTO_INFO[4] |
+| 0x2000 | CTRL | rw | 0x00000017 | 格式与流程控制（缺省SDK小端）；AUTO_INFO取帧尾单位/ROI/合并。MATCH_ONLY=1且FUSE_ONLY=0时仅提结构点并保留深度帧，须同时WAIT_POSE=1；匹配门控结束后切FUSE_ONLY=1并再次POSE_COMMIT，仅融合后释放同帧。两位均0兼容单遍；配置应在提交前写入，流动期间不得改变。；ENABLE[0] HDR_LE[1] PIX_LE[2] WAIT_POSE[3] AUTO_INFO[4] MATCH_ONLY[5] FUSE_ONLY[6] |
 | 0x2004 | SUBHDR | rw | 0x00000014 | UDP 分包头字节数（SDK = 20，>= 16） |
 | 0x2008 | DEPTH_CFG | rw | 0x00000100 | 深度换算（帧无 FrameInfo 或 AUTO_INFO=0 时使用）；DEPTH_MUL[15:0] |
 | 0x200C | RANGE | rw | 0x4E200064 | 有效距离 mm；MIN_MM[15:0] MAX_MM[31:16] |
@@ -134,13 +134,13 @@
 
 | 偏移 | 名称 | 访问 | 复位值 | 说明 |
 |---|---|---|---|---|
-| 0x3000 | CTRL | rw | 0x00000005 | 控制；ENABLE[0] AUTO_SWEEP[2] |
+| 0x3000 | CTRL | rw | 0x0000000D | 控制；STEP_HIGH_ONLY=1时台阶高差只归属高侧，结合完整足迹检查；0保留双侧兼容判据。当前候选默认启用，部署须与已验收配置一致。；ENABLE[0] AUTO_SWEEP[2] STEP_HIGH_ONLY[3] |
 | 0x3004 | CMD | w1p | 0x00000000 | 命令脉冲；SWEEP[0] CLEAR[1] |
 | 0x3008 | INV_RES | rw | 0x0000051F | 65536/分辨率mm，[15:0] |
 | 0x300C | CENTER_X | rw | 0x00000000 | 窗口中心世界栅格 x（int32），帧开始时锁存 |
 | 0x3010 | CENTER_Y | rw | 0x00000000 | 窗口中心世界栅格 y（int32） |
 | 0x3014 | VALID_CFG | rw | 0x000C013C | 栅格有效性（默认年龄上限 60 帧、最少 1 点、窗口中心 ±12 格不过期）；AGE_MAX[7:0] CNT_MIN[11:8] KEEP_R[19:16] |
-| 0x3018 | THR0 | rw | 0x0032001E | 致命阈值 mm：台阶（8 邻域最大高差；30 = 可跨门槛 15 与不可跨路沿 50 之间）、格内粗糙度 50；STEP_MAX[15:0] ROUGH_MAX[31:16] |
+| 0x3018 | THR0 | rw | 0x00320014 | 致命阈值 mm：台阶20（当前模型能力假设，非实车标定；测量容差不得叠加）、格内粗糙度50；STEP_MAX[15:0] ROUGH_MAX[31:16] |
 | 0x301C | THR1 | rw | 0x00190039 | 坡度：4 格基线门控净升高阈值 mm（= 4·res·tan 最大坡度，57 ≈ 16°）；跳变门限 mm（单段超过它按台阶处理，25）；SLOPE_RISE[15:0] JUMP[23:16] |
 | 0x3020 | WEIGHT | rw | 0x002030A0 | 代价权重 (>>8)；K_SLOPE[7:0] K_STEP[15:8] K_ROUGH[23:16] |
 | 0x3024 | INFL | rw | 0x00000014 | 膨胀半径（格，按底盘外接圆半径设置：209 mm -> 4 格，tools/robot_calib.py）；DISK=1 圆形膨胀（半径 <= 4），否则方形（斜向多出 √2 倍，斜对角的窄缝会被堵死）；RADIUS[3:0] DISK[4] |
@@ -155,7 +155,9 @@
 | 0x3048 | ELEV_ADDR | rw | 0x00000000 | 高程图读：槽地址 [13:0]（= (iy&127)<<7 \| (ix&127)） |
 | 0x304C | ELEV_CMD | w1p | 0x00000000 | 高程图读命令（地图更新/扫描空闲时服务，通常数拍内完成）；READ[0] |
 | 0x3050 | ELEV_Q0 | ro | 0x00000000 | 读出槽字 [31:0] = {zmin[15:0], zmax[15:0]} |
-| 0x3054 | ELEV_Q1 | ro | 0x00000000 | 读出槽字高位与完成标志；CNT[3:0] TAG[11:4] STAMP[19:12] DONE[31] |
+| 0x3054 | ELEV_Q1 | ro | 0x00000000 | 读出槽字高位与完成标志；CNT[3:0] TAG[11:4] STAMP[19:12] RETAINED_STALE[20] DONE[31] |
+| 0x3058 | SUPPORT_Q | ro | 0x00000000 | 与ELEV_CMD同次读取的4x4轮迹子区覆盖；ELEV_Q1.DONE同时保证两层完成。年龄按200ms采集epoch，最多20s静态保留；KNOWN[15:0] FRESH[31:16] |
+| 0x305C | SUPPORT_STAMP | rw | 0x00000000 | 提交帧的采集时间epoch=(capture_us/200000)&127；VALID仅允许采集时间不晚于当前且延迟<=1s，FUSE前写入。32bit时基回绕清覆盖层；EPOCH[6:0] VALID[7] |
 
 ## TRAJ（0x4000）候选轨迹并行评估
 

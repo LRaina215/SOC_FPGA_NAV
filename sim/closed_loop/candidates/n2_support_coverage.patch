@@ -1,0 +1,370 @@
+--- a/fw/app/nav_app.c
++++ b/fw/app/nav_app.c
+@@ -84,7 +84,7 @@
+     int32_t cx = (int32_t)(((int64_t)at.x*inv)>>16), cy = (int32_t)(((int64_t)at.y*inv)>>16);
+     hal_lidar_stage(HAL_LIDAR_FUSE_ONLY);
+     if (valid) wait_anchor();
+-    hal_lidar_commit(r, t, cx, cy, valid ? at.z+g_app.zband_lo : 1, valid ? at.z+g_app.zband_hi : 0);
++    hal_lidar_commit(r, t, cx, cy, valid ? at.z+g_app.zband_lo : 1, valid ? at.z+g_app.zband_hi : 0,at.t_us);
+     g_app.fuse_held = false;
+ }
+ 
+@@ -193,7 +193,7 @@
+         bool matching = !skip && !no_lut && !receiving && (prior ? lc->st != LOC_ODOM : g_app.pm_cfg.enable);
+         hal_lidar_stage(matching ? HAL_LIDAR_MATCH_ONLY : HAL_LIDAR_NORMAL);
+         if (skip || no_lut) {
+-            hal_lidar_commit(r, tt, cx, cy, 1, 0);
++            hal_lidar_commit(r, tt, cx, cy, 1, 0,ft);
+             if (no_lut) g_app.n_lut_skip++;
+             else g_app.n_skip++;
+             skip = true;
+@@ -205,7 +205,7 @@
+                 pose_lidar_tf(&nt->pose,&local,r,tt);
+                 cx=(int32_t)(((int64_t)local.x*inv)>>16);cy=(int32_t)(((int64_t)local.y*inv)>>16);
+             }
+-            hal_lidar_commit(r, tt, cx, cy, at.z + g_app.zband_lo, at.z + g_app.zband_hi);
++            hal_lidar_commit(r, tt, cx, cy, at.z + g_app.zband_lo, at.z + g_app.zband_hi,at.t_us);
+         }
+         g_app.pm_pend = matching;
+         g_app.fuse_held = matching;
+--- a/fw/drv/hal_fpga.c
++++ b/fw/drv/hal_fpga.c
+@@ -12,6 +12,8 @@
+ static inline void nav_wr(uint32_t off, uint32_t v) { *(volatile uint32_t *)(uintptr_t)(NAV_BASE + off) = v; }
+ 
+ #define FIELD(v, reg, f) (((v) & NAV_##reg##_##f##_MASK) >> NAV_##reg##_##f##_SHIFT)
++static uint32_t support_last_capture,support_last_now;
++static bool support_have_capture;
+ 
+ uint32_t hal_time_us(void) { return nav_rd(NAV_SYS_TIME_US); }
+ 
+@@ -281,6 +283,7 @@
+ 
+ void hal_map_clear(void)
+ {
++    support_have_capture=false;
+     nav_wr(NAV_MAP_CMD, NAV_MAP_CMD_CLEAR_MASK);
+ }
+ 
+@@ -316,14 +319,16 @@
+     if(!hal_map_info(&after) || before.seq!=after.seq || before.cx!=after.cx ||
+        before.cy!=after.cy || before.inv_res!=after.inv_res ||
+        fc!=nav_rd(NAV_MAP_FRAME_CNT) || (nav_rd(NAV_MAP_STAT)&NAV_MAP_STAT_BUSY_MASK)) return false;
++    uint32_t coverage=nav_rd(NAV_MAP_SUPPORT_Q);
+     *out=(hal_support_t){.lo=(int16_t)zmin,.hi=(int16_t)zmax,.seq=before.seq,
+-        .count=(uint8_t)FIELD(q1,MAP_ELEV_Q1,CNT),
++        .count=(uint8_t)FIELD(q1,MAP_ELEV_Q1,CNT),.coverage=(uint16_t)coverage,
+         .age=(uint8_t)(fc-FIELD(q1,MAP_ELEV_Q1,STAMP)),
+-        .retained_stale=(q1&NAV_MAP_ELEV_Q1_RETAINED_STALE_MASK)!=0};
+-    return true;
+-}
+-
+-void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int32_t cy, int32_t zmin, int32_t zmax)
++        .retained_stale=(q1&NAV_MAP_ELEV_Q1_RETAINED_STALE_MASK)!=0,
++        .coverage_retained_stale=((coverage&~(coverage>>16))&65535u)!=0};
++    return true;
++}
++
++void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int32_t cy, int32_t zmin, int32_t zmax, uint32_t capture_us)
+ {
+     for (int i = 0; i < 3; i++)
+         for (int j = 0; j < 3; j++) nav_wr(NAV_LIDAR_R00 + 4u * (3 * i + j), (uint32_t)(uint16_t)(int16_t)r[i][j]);
+@@ -335,6 +340,16 @@
+     zmin = nav_clamp32(zmin, -32768, 32767);
+     zmax = nav_clamp32(zmax, -32768, 32767);
+     nav_wr(NAV_LIDAR_ZBAND, ((uint32_t)(uint16_t)zmax << 16) | (uint16_t)zmin);
++    uint32_t now=hal_time_us();
++    if(now<support_last_now)support_have_capture=false;
++    support_last_now=now;
++    bool valid=capture_us<=now && now-capture_us<=1000000u &&
++        (!support_have_capture || capture_us>support_last_capture);
++    uint32_t stamp=valid ? 128u|((capture_us/200000u)&127u):0;
++    if(valid && !(nav_rd(NAV_LIDAR_CTRL)&NAV_LIDAR_CTRL_MATCH_ONLY_MASK)) {
++        support_last_capture=capture_us;support_have_capture=true;
++    }
++    nav_wr(NAV_MAP_SUPPORT_STAMP,stamp);
+     nav_wr(NAV_LIDAR_POSE_COMMIT, 1);
+ }
+ 
+--- a/fw/hal/hal.h
++++ b/fw/hal/hal.h
+@@ -71,7 +71,7 @@
+ bool hal_lidar_waiting(uint32_t *frame_t_us);
+ /* 写入 雷达->里程计 变换（R Q14，t mm）、本帧地图窗口中心、保留点高度带（里程计系 mm），并放行该帧 */
+ void hal_lidar_commit(const int32_t r_q14[3][3], const int32_t t_mm[3], int32_t cx, int32_t cy,
+-                      int32_t zmin, int32_t zmax);
++                      int32_t zmin, int32_t zmax, uint32_t capture_us);
+ enum { HAL_LIDAR_NORMAL, HAL_LIDAR_MATCH_ONLY, HAL_LIDAR_FUSE_ONLY };
+ void hal_lidar_stage(int stage); /* MATCH_ONLY保留原帧，FUSE_ONLY重读后释放 */
+ 
+@@ -101,7 +101,9 @@
+     int16_t lo,hi;
+     uint16_t seq;
+     uint8_t count,age;
++    uint16_t coverage; /*4x4 known subregions, capture-time limited*/
+     bool retained_stale;
++    bool coverage_retained_stale; /* Separate fine coverage age from height retention. */
+ } hal_support_t;
+ bool hal_map_support(int32_t x_mm,int32_t y_mm,hal_support_t *out);
+ /* 清空高程图（位姿跳变到地图系后，旧坐标系下融合的内容作废） */
+--- a/fw/nav/explore.c
++++ b/fw/nav/explore.c
+@@ -27,7 +27,7 @@
+ 
+ void explore_seen_reset(explore_t *e)
+ {
+-    for (int i = 0; i < GM_N * GM_N; i++) e->seen[i] = 0;
++    for (unsigned i = 0; i < sizeof e->seen_bits; i++) e->seen_bits[i] = 0;
+     e->n_seen = 0;
+     e->n_seen_reset++;
+ }
+@@ -50,7 +50,7 @@
+             gmap_mm_to_cell(gm, mi, pose->x + (int32_t)((int64_t)ca * d / Q14), pose->y + (int32_t)((int64_t)sa * d / Q14), &gx, &gy);
+             if (gx < 0 || gy < 0 || gx >= GM_N || gy >= GM_N) break;
+             int i = gy * GM_N + gx;
+-            if (!e->seen[i]) { e->seen[i] = 1; e->n_seen++; }
++            if (!explore_seen_get(e,i)) { e->seen_bits[i>>3] |= (uint8_t)(1u<<(i&7)); e->n_seen++; }
+             if (gm->grid[i] == NP_COST_LETHAL) break;          /* 视线被挡 */
+         }
+     }
+@@ -162,7 +162,7 @@
+             if (nx < 0 || ny < 0 || nx >= GM_N || ny >= GM_N) continue;
+             uint8_t v = gm->grid[ny * GM_N + nx];
+             if (seen_mode) {
+-                if (searchable(v) && !e->seen[ny * GM_N + nx]) frontier = true;
++                if (searchable(v) && !explore_seen_get(e,ny * GM_N + nx)) frontier = true;
+                 if (v == 255) continue;
+             } else if (v == 255) { frontier = true; continue; }
+             if (v >= NP_COST_LETHAL || s_bd[ny * GM_N + nx] != 0xFFFF) continue;
+--- a/fw/nav/explore.h
++++ b/fw/nav/explore.h
+@@ -42,9 +42,11 @@
+     int32_t  bl_x[EXP_BL], bl_y[EXP_BL];      /* 黑名单（里程计系 mm） */
+     int      bl_n, bl_i;
+     uint32_t n_frontier;                    /* 上次找到的边界格数（调试） */
+-    uint8_t  seen[GM_N * GM_N];             /* 有图搜索：记忆栅格坐标下已被相机看过的格 */
++    uint8_t  seen_bits[(GM_N * GM_N+7)/8];             /* 有图搜索：记忆栅格坐标下已被相机看过的格 */
+     uint32_t n_seen, n_seen_reset;
+ } explore_t;
++
++static inline bool explore_seen_get(const explore_t *e,int i) {return (e->seen_bits[i>>3]&(1u<<(i&7)))!=0;}
+ 
+ void explore_default_cfg(explore_cfg_t *c);
+ void explore_init(explore_t *e);
+--- a/fw/nav/nav_task.c
++++ b/fw/nav/nav_task.c
+@@ -558,7 +558,7 @@
+         nt->scan_turned+=nt->scan_dir*fx_angle_diff(nt->scan_last_yaw,p->yaw);nt->scan_last_yaw=p->yaw;
+         if((uint32_t)(now-nt->scan_start_us)>24000000) nt->scan_failed=true;
+         bool feedback=nt->pose.have_odo && (uint32_t)(now-nt->pose.last_odo_us)<100000;
+-        if(!nt->scan_failed && feedback && nt->scan_turned>=65536 && !nt->scan_exit_valid &&
++        if(!nt->scan_failed && feedback && !nt->scan_exit_valid &&
+            nav_abs32(fx_angle_diff(p->yaw,fx_atan2(scan_gy-p->y,scan_gx-p->x)))<=8192) {
+             /* 一圈不是观测充分的证明：必须实际查到一条450mm支撑走廊。
+              * 375仅用于只读前推（1.2s=450mm），实际退出速度另限50。 */
+--- a/fw/nav/support_guard.c
++++ b/fw/nav/support_guard.c
+@@ -17,7 +17,7 @@
+     if(lo>cap || hi< -cap) return SUPPORT_BLOCK;
+     return lo>=-cap && hi<=cap?SUPPORT_PASS:SUPPORT_UNKNOWN;
+ }
+-typedef struct {int32_t x,y;int16_t lo,hi;uint8_t kind;} cell_t;
++typedef struct {int32_t x,y;int16_t lo,hi;uint16_t coverage;uint8_t kind;} cell_t;
+ typedef struct {cell_t cell[32];uint32_t used;uint16_t seq,inv;} query_t;
+ 
+ static int cell(query_t *q,int32_t ix,int32_t iy,cell_t *out) {
+@@ -28,14 +28,22 @@
+     cell_t c={.x=ix,.y=iy};hal_support_t s;
+     if(hal_map_support(x,y,&s) && s.count && s.lo<=s.hi) {
+         if(s.seq!=q->seq) return SUPPORT_FRAME;
+-        c.lo=s.lo;c.hi=s.hi;
+-        c.kind=s.retained_stale || s.age>60?2:1;
++        c.lo=s.lo;c.hi=s.hi;c.coverage=s.coverage;
++        c.kind=s.retained_stale || s.coverage_retained_stale || s.age>60?2:1;
+         if(c.kind==2) remembered++;
+-    } else if(boot_mm>0) {
+-        /* 全格落在初始已声明平地内才借用启动假设。 */
+-        int32_t half=(65536/q->inv+1)/2;
+-        int64_t dx=nav_abs32(x-boot_x)+half+1,dy=nav_abs32(y-boot_y)+half+1;
+-        if(dx*dx+dy*dy<=(int64_t)boot_mm*boot_mm) {c.lo=c.hi=(int16_t)boot_z;c.kind=3;assumed++;}
++    }
++    if(c.coverage!=0xffff && boot_mm>0) {
++        int32_t bx=(int32_t)(((int64_t)boot_x*q->inv)>>8),by=(int32_t)(((int64_t)boot_y*q->inv)>>8);
++        int32_t base_x=ix*256-bx,base_y=iy*256-by;
++        int32_t r=(int32_t)(((int64_t)boot_mm*q->inv)>>8);
++        uint16_t assumed_bits=0;
++        /* Whole subcell including Q8 rounding bound must fit the fixed disk. */
++        for(int sy=0;sy<4;sy++) for(int sx=0;sx<4;sx++) {
++            unsigned bit=1u<<(sy*4+sx);if(c.coverage&bit) continue;
++            int64_t dx=nav_abs32(base_x+sx*64+32)+33,dy=nav_abs32(base_y+sy*64+32)+33;
++            if(dx*dx+dy*dy<=(int64_t)r*r) assumed_bits|=bit;
++        }
++        if(assumed_bits) {if(!c.kind)c.lo=c.hi=(int16_t)boot_z;c.kind=3;c.coverage|=assumed_bits;assumed++;}
+     }
+     q->used|=1u<<k;q->cell[k]=c;*out=c;
+     return c.kind?SUPPORT_PASS:SUPPORT_UNKNOWN;
+@@ -57,6 +65,22 @@
+         int64_t af=(int64_t)aq*16384+cell_projection,al=(int64_t)bq*16384+cell_projection;
+         if(forward>af || forward< -af || lateral>al || lateral< -al) continue;
+         cell_t c;status=cell(q,xx,yy,&c);if(status) return status;
++        /* Missing observed subregions stay unknown. Full masks have a fast path.
++         * Same rectangle/SAT and margin as the original patch, at quarter-cell
++         * centers; coarse height intervals are not interpolated. */
++        if(c.coverage!=0xffff) {
++            int32_t xb=((int64_t)rx*q->inv+255)>>8,yb=((int64_t)ry*q->inv+255)>>8;
++            int32_t cp=32*(nav_abs32(cs_)+nav_abs32(sn_));
++            int64_t sf=(int64_t)aq*16384+cp,sl=(int64_t)bq*16384+cp;
++            for(int sy=0;sy<4;sy++) for(int sx=0;sx<4;sx++) {
++                if(c.coverage&(1u<<(sy*4+sx))) continue;
++                int32_t ddx=xx*256+sx*64+32-px,ddy=yy*256+sy*64+32-py;
++                if(nav_abs32(ddx)>xb+32 || nav_abs32(ddy)>yb+32) continue;
++                int64_t f=(int64_t)ddx*cs_+(int64_t)ddy*sn_;
++                int64_t l=-(int64_t)ddx*sn_+(int64_t)ddy*cs_;
++                if(f<=sf && f>=-sf && l<=sl && l>=-sl) return SUPPORT_UNKNOWN;
++            }
++        }
+         /* Within-cell ambiguity is not converted into extra step capability. */
+         if(c.hi-c.lo+2>20) return c.hi-c.lo-2>20?SUPPORT_BLOCK:SUPPORT_UNKNOWN;
+         status=support_transition(center->lo,center->hi,c.lo,c.hi,20,1);
+@@ -69,6 +93,7 @@
+     if(!enabled || (!cmd->vx && !cmd->vy && !cmd->wz)) return SUPPORT_PASS;
+     if(!mi->inv_res) return SUPPORT_UNKNOWN;
+     if(!boot_set) {boot_x=p->x;boot_y=p->y;boot_z=p->z;boot_set=true;}
++    uint32_t epoch=hal_time_us()/200000u;
+     query_t q={.used=0,.seq=mi->seq,.inv=mi->inv_res};
+     cell_t previous[2]={{0}};bool have[2]={false,false};
+     cell_t grade[2]={{0}};int32_t grade_x[2]={0},grade_y[2]={0};
+@@ -111,5 +136,5 @@
+         y+=((int64_t)cmd->vx*ss+(int64_t)cmd->vy*cc)/20;
+         th+=da;
+     }
+-    return SUPPORT_PASS;
++    return hal_time_us()/200000u==epoch?SUPPORT_PASS:SUPPORT_FRAME;
+ }
+--- a/fw/test/hal_py.c
++++ b/fw/test/hal_py.c
+@@ -27,6 +27,7 @@
+ 
+ static bool     s_lw;
+ static uint32_t s_lw_t;
++static uint32_t s_capture_us;
+ static bool     s_commit;
+ static int      s_stage;
+ static uint32_t s_match_latency_us = 40000u; /* 历史对照默认；S1可由RTL周期模型逐次设置 */
+@@ -40,17 +41,25 @@
+ typedef int (*h_cb_t)(int32_t x, int32_t y, int32_t *h);
+ static h_cb_t s_h_cb;
+ EXPORT void py_set_h_cb(h_cb_t cb) { s_h_cb = cb; }
+-bool hal_map_height(int32_t x, int32_t y, int32_t *h) { return s_h_cb ? s_h_cb(x, y, h) != 0 : false; }
++bool hal_map_height(int32_t x, int32_t y, int32_t *h) {
++    hal_support_t support;
++    /* Same stale-coverage rejection as the board HAL; h_cb owns raw limits. */
++    return s_h_cb && s_h_cb(x,y,h) && hal_map_support(x,y,&support) && !support.retained_stale;
++}
+ typedef int (*support_cb_t)(int32_t x,int32_t y,int32_t *out);
+ static support_cb_t s_support_cb;
++static support_cb_t s_coverage_cb;
++EXPORT void py_set_coverage_cb(support_cb_t cb) {s_coverage_cb=cb;}
+ EXPORT void py_set_support_cb(support_cb_t cb) {s_support_cb=cb;}
+ EXPORT void py_set_support_bootstrap(int mm) {support_reset(mm>=0 && mm<=350?mm:0);}
+ EXPORT void py_get_support_diagnostics(uint32_t *v) {support_diagnostics(v);}
+ bool hal_map_support(int32_t x,int32_t y,hal_support_t *out) {
+-    int32_t v[6];
++    int32_t v[6],cov[2]={0,0};
+     if(!s_support_cb || !s_support_cb(x,y,v)) return false;
++    if(s_coverage_cb)s_coverage_cb(x,y,cov);
+     *out=(hal_support_t){.lo=(int16_t)v[0],.hi=(int16_t)v[1],.seq=(uint16_t)v[2],
+-                        .count=(uint8_t)v[3],.age=(uint8_t)v[4],.retained_stale=v[5]!=0};
++                        .count=(uint8_t)v[3],.age=(uint8_t)v[4],.coverage=(uint16_t)cov[0],.retained_stale=v[5]!=0,
++                        .coverage_retained_stale=(cov[0]&~cov[1])!=0};
+     return true;
+ }
+ typedef void (*mu_cb_t)(int32_t dx, int32_t dy, int32_t dyaw, int32_t cx_mm, int32_t cy_mm);
+@@ -121,6 +130,7 @@
+     return 1;
+ }
+ EXPORT int py_get_commit_phase(void) { return s_stage; }
++EXPORT uint32_t py_get_lidar_capture_us(void) { return s_capture_us; }
+ EXPORT void py_set_match_latency_us(uint32_t us) { s_match_latency_us = us > 1000000u ? 1000000u : us; }
+ EXPORT void py_set_match_cb(match_cb_t cb) { s_match_cb = cb; }
+ EXPORT void py_push_host(const uint8_t *b, int n, uint32_t t)
+@@ -211,7 +221,7 @@
+     for (int i = 0; i < n; i++) { path[2 * i] = nt->path.wx[i]; path[2 * i + 1] = nt->path.wy[i]; }
+     return n;
+ }
+-EXPORT void py_get_seen(uint8_t *s) { memcpy(s, g_app.nt.exp.seen, sizeof g_app.nt.exp.seen); }
++EXPORT void py_get_seen(uint8_t *s) { for(int i=0;i<GM_N*GM_N;i++)s[i]=explore_seen_get(&g_app.nt.exp,i); }
+ /* 调试：在给定栅格上用导航同一套参数跑 A*，返回 rc，path 写入栅格坐标 */
+ EXPORT int py_astar(const uint8_t *grid, int n, int sx, int sy, int gx, int gy, int16_t *path, int *np, int *expanded)
+ {
+@@ -386,8 +396,9 @@
+         for (int j = 0; j < 3; j++) s_lut[3 * (idx + (uint32_t)i) + (uint32_t)j] = rxyz[3 * i + j];
+     s_lut_writes += (uint32_t)n;
+ }
+-void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int32_t cy, int32_t zmin, int32_t zmax)
+-{
++void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int32_t cy, int32_t zmin, int32_t zmax, uint32_t capture_us)
++{
++    s_capture_us = capture_us;
+     for (int i = 0; i < 9; i++) s_commit_v[i] = r[i / 3][i % 3];
+     s_commit_v[9] = t[0]; s_commit_v[10] = t[1]; s_commit_v[11] = t[2];
+     s_commit_v[12] = cx; s_commit_v[13] = cy; s_commit_v[14] = zmin; s_commit_v[15] = zmax;
+--- a/fw/test/hal_sim.c
++++ b/fw/test/hal_sim.c
+@@ -253,7 +253,7 @@
+ uint32_t hal_lidar_info_seq(void) { return 0; }
+ void hal_lidar_lens(uint32_t lens[9]) { for (int i = 0; i < 9; i++) lens[i] = 0; }
+ void hal_lidar_lut_write(uint32_t idx, const int16_t *rxyz, int n) { (void)idx; (void)rxyz; (void)n; }
+-void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int32_t cy, int32_t zmin, int32_t zmax)
++void hal_lidar_commit(const int32_t r[3][3], const int32_t t[3], int32_t cx, int32_t cy, int32_t zmin, int32_t zmax, uint32_t capture_us)
+ { (void)r; (void)t; (void)cx; (void)cy; (void)zmin; (void)zmax; }
+ /* 雷达启动（TCP）：主机测试不接雷达口，tcp_en = false，xt_link 一直只做监视 */
+ void hal_netl_cfg(hal_netl_cfg_t *c) { memset(c, 0, sizeof *c); }
+@@ -274,7 +274,7 @@
+     if(!s_mi.seq || ix<s_mi.cx-N/2 || ix>=s_mi.cx+N/2 || iy<s_mi.cy-N/2 || iy>=s_mi.cy+N/2) return false;
+     uint8_t cost=s_slot[((iy&(N-1))<<7)|(ix&(N-1))];
+     if(cost>=254) return false;
+-    *out=(hal_support_t){.lo=0,.hi=0,.seq=s_mi.seq,.count=1};return true;
++    *out=(hal_support_t){.lo=0,.hi=0,.seq=s_mi.seq,.count=1,.coverage=0xffff};return true;
+ }
+ void hal_map_clear(void) { }
+ void hal_prior_begin(void) { }
+--- a/fw/test/test_main.c
++++ b/fw/test/test_main.c
+@@ -483,12 +483,25 @@
+     nav_task_t *nt=task_fixture(1500,0);support_reset(350);
+     pose_odom(&nt->pose,0,0,0,g_sim.now_us);
+     nav_task_step(nt,g_sim.now_us);
+-    CHECK(nt->cmd_source==CMD_GROUND_SCAN && nt->cmd.wz==600 && !nt->cmd.vx,"先观察再平移");
++    CHECK(nt->scan_exit_valid && nt->cmd_source==CMD_GROUND_SCAN && !nt->cmd.wz && !nt->cmd.vx,
++          "已有完整实测退出走廊时应直接停稳，不为转满一圈引入漂移");
++    CHECK(support_scan_needed(),"取得退出前缀仍需连续新鲜停稳反馈");
++    for(int i=0;i<8 && support_scan_needed();i++) {
++        g_sim.now_us+=100000;pose_odom(&nt->pose,0,0,0,g_sim.now_us);nav_task_step(nt,g_sim.now_us);
++    }
++    CHECK(!support_scan_needed(),"已查验退出走廊并连续停稳可以完成观察");
++    nav_task_step(nt,g_sim.now_us);
++    CHECK(nt->cmd_source==CMD_GROUND_EXIT && nt->cmd.vx==50 && nt->state!=ST_ARRIVED,
++          "退出只允许已受检的50mm/s前缀，不能直接宣布全局到达");
++    nt=task_fixture(1500,0);support_reset(350);
++    static uint8_t missing[NP_MAP_N*NP_MAP_N];memset(missing,255,sizeof missing);sim_map_fixture(missing,&nt->mi);
++    pose_odom(&nt->pose,0,0,0,g_sim.now_us);nav_task_step(nt,g_sim.now_us);
++    CHECK(!nt->scan_exit_valid && nt->cmd.wz==600,"缺支撑时仍须观察");
+     for(int i=0;i<255;i++) {
+         g_sim.now_us+=100000;pose_odom(&nt->pose,0,0,0,g_sim.now_us);nav_task_step(nt,g_sim.now_us);
+     }
+     CHECK(nt->scan_failed && support_scan_needed() && !nt->cmd.wz && !nt->cmd.vx,
+-          "不能用已发600mrad/s假装转完一圈，静止反馈应超时停车");
++          "缺支撑且反馈静止不能假装完成观察，必须超时停车");
+     nt=task_fixture(1500,0);support_reset(350);pose_odom(&nt->pose,0,0,0,g_sim.now_us);
+     nav_task_step(nt,g_sim.now_us);
+     for(int i=0;i<115;i++) {
+@@ -516,7 +529,7 @@
+     }
+     CHECK(nt->scan_turned>=65536 && support_scan_needed() && !nt->scan_exit_valid,
+           "反馈转满一圈但没有实测支撑退出走廊时，不能宣布观察充分");
+-    nt=task_fixture(1500,-500);support_reset(350);pose_odom(&nt->pose,0,0,0,g_sim.now_us);
++    nt=task_fixture(1500,-500);support_reset(350);sim_map_fixture(missing,&nt->mi);pose_odom(&nt->pose,0,0,0,g_sim.now_us);
+     nav_task_step(nt,g_sim.now_us);CHECK(nt->cmd.wz<0,"启动观察方向应先朝向任务所在侧");
+     nt=task_fixture(1500,0);support_reset(350);pose_odom(&nt->pose,0,0,0,g_sim.now_us);
+     nt->map[64*NP_MAP_N+68]=254;nav_task_step(nt,g_sim.now_us);

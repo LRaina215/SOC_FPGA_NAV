@@ -41,6 +41,18 @@ def words(b):
 
 def main(out):
     out = Path(out)
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'closed_loop'))
+    from support_coverage import CompactCoverage
+    coverage = CompactCoverage()
+    coverage_rows = []
+    def coverage_words(cx, cy, stamp):
+        known, fresh = coverage.mask_windows(stamp)
+        for gy in range(cy-16, cy+16):
+            for gx in range(cx-16, cx+16):
+                x, y = gx-(coverage.cx//4-16), gy-(coverage.cy//4-16)
+                word = int(known[y,x]) | (int(fresh[y,x])<<16) if 0<=x<32 and 0<=y<32 else 0
+                coverage_rows.extend([f'{((gy&127)<<7)|(gx&127):08x}', f'{word:08x}'])
+    MAPCFG['step_high_only'] = int('--high-only' in sys.argv)
     world = sw.default_scene()
     lid = sw.VirtualLidar(noise_mm=3.0, seed=5)
     Rbs, tbs = sw.mount_pose()
@@ -86,10 +98,16 @@ def main(out):
         last_cost, last_c = cost, (cx, cy, x, y, yaw)
         xyz, pv = fast.pc_project(depth, np.array(lut, dtype=np.int64))
         pt = fast.pc_transform(xyz, np.array(Rq), np.array(tq))
+        # Accelerated wall-clock epochs in tb_nav_coverage; real point chain.
+        stamp = (k+2)*200000
+        coverage_words(cx, cy, stamp)   # MATCH_ONLY must retain the old layer.
+        coverage.update(pt, pv & (pt[:,2]>=ZMIN) & (pt[:,2]<=ZMAX), cx, cy, stamp, stamp)
+        coverage_words(cx, cy, stamp)
         n_struct = min(int(slf.structure_mask(pt, pv, int(tq[2]) - rm.RESET["MATCH_MOUNT_Z"]).sum()), slf.PB_MAX)
         print(f"帧{k}: 更新 {sum(q[0] for q in upd)} 可通行 {int((cost <= 200).sum())}")
 
     (out / "slf_exp.hex").write_text(f"{n_struct:08x}\n")      # 最后一帧的结构点数
+    (out / 'support_exp.hex').write_text('\n'.join(coverage_rows)+'\n')
     info = xt.parse_info(xt.frame_info(160, 60))
     icfg = (info["roiy0"] << 24) | (info["roix0"] << 16) | (info["binning"] << 8) | info["unit_div"]
     isz = (info["hdrmode"] << 24) | (info["imageflags"] << 16) | info["infosize"]
@@ -174,4 +192,4 @@ def main(out):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv[-1])

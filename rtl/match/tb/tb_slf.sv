@@ -27,6 +27,16 @@ module tb_slf;
     logic        dbg_req = 0; logic [15:0] dbg_addr; logic dbg_ack; logic [17:0] dbg_q;
     logic        busy, pts_ready, eval_done;
     logic [12:0] n_pts;
+    integer timing_cycle = 0, timing_start = 0;
+    logic timing_done = 0;
+    always @(posedge clk) begin
+        timing_cycle <= timing_cycle + 1;
+        timing_done <= eval_done;
+        if (cmd_eval) timing_start <= timing_cycle;
+        if (eval_done && !timing_done)
+            $display("SLF_TIMING points=%0d candidates=%0d cycles=%0d us_at_50MHz=%0f", n_pts, n_cand,
+                     timing_cycle-timing_start, (timing_cycle-timing_start)/50.0);
+    end
 
     slf_match #(.SIN_INIT("sin_lut.hex")) dut (
         .clk(clk), .rst(rst),

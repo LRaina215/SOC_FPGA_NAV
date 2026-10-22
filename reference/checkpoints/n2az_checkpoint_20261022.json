@@ -1,0 +1,1708 @@
+{
+  "accepted": false,
+  "deployed": false,
+  "accepted_baseline": "N1c",
+  "live_firmware": "AS",
+  "control_changed": false,
+  "production_C_H_equal_frozen_AS": [
+    "app/main.c",
+    "app/nav_app.c",
+    "app/nav_app.h",
+    "bsp/console.c",
+    "bsp/selftest.c",
+    "bsp/soc.h",
+    "drv/hal_fpga.c",
+    "hal/hal.h",
+    "include/nav_params.h",
+    "include/nav_sin_lut.h",
+    "include/nav_types.h",
+    "nav/astar.c",
+    "nav/astar.h",
+    "nav/explore.c",
+    "nav/explore.h",
+    "nav/fixmath.c",
+    "nav/fixmath.h",
+    "nav/gmap.c",
+    "nav/gmap.h",
+    "nav/imu_parse.c",
+    "nav/imu_parse.h",
+    "nav/lidar_cal.c",
+    "nav/lidar_cal.h",
+    "nav/loc.c",
+    "nav/loc.h",
+    "nav/local_frame.c",
+    "nav/local_frame.h",
+    "nav/local_planner.c",
+    "nav/local_planner.h",
+    "nav/motion_guard.c",
+    "nav/motion_guard.h",
+    "nav/nav_task.c",
+    "nav/nav_task.h",
+    "nav/pose.c",
+    "nav/pose.h",
+    "nav/pose_match.c",
+    "nav/pose_match.h",
+    "nav/prior.c",
+    "nav/prior.h",
+    "nav/proto.c",
+    "nav/proto.h",
+    "nav/scratch.c",
+    "nav/scratch.h",
+    "nav/support_guard.c",
+    "nav/support_guard.h",
+    "nav/target.c",
+    "nav/target.h",
+    "nav/traj_sw.c",
+    "nav/traj_sw.h",
+    "nav/xt_link.c",
+    "nav/xt_link.h",
+    "test/hal_py.c",
+    "test/hal_sim.c",
+    "test/hal_sim.h",
+    "test/test_main.c"
+  ],
+  "candidates": "AZ anchors; BA/BE/BG/BJ observation; BB/BC/BH/BH2 stopping (separate branches)",
+  "trials": [
+    {
+      "id": "AY_gap_trace30",
+      "outcome": "timeout",
+      "time_s": 30.0,
+      "end_s": 30.0,
+      "error_m": 1.9874228162524887,
+      "collisions": 0,
+      "backend": "fast kinematic; not4500 dynamics",
+      "query_bridge": {
+        "enabled": true,
+        "verify": true,
+        "queries": 10344,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\AY_gap_trace30"
+    },
+    {
+      "id": "AY_snapshot_contract_flat",
+      "outcome": "arrived",
+      "time_s": 20.7,
+      "end_s": 22.7,
+      "error_m": 0.1332451255101345,
+      "collisions": 0,
+      "backend": "mujoco-original4500-terrain",
+      "query_bridge": {
+        "enabled": true,
+        "verify": true,
+        "queries": 5102,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\AY_snapshot_contract_flat"
+    },
+    {
+      "id": "AY_snapshot_verify_flat",
+      "outcome": "arrived",
+      "time_s": 20.7,
+      "end_s": 22.7,
+      "error_m": 0.1332451255101345,
+      "collisions": 0,
+      "backend": "mujoco-original4500-terrain",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 5102,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\AY_snapshot_verify_flat"
+    },
+    {
+      "id": "AZ_anchor_up8",
+      "outcome": "timeout",
+      "time_s": 45.0,
+      "end_s": 45.0,
+      "error_m": 0.5011849404858802,
+      "collisions": 0,
+      "backend": "mujoco-original4500-terrain",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 41438,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\AZ_anchor_up8",
+      "anchor_last": [
+        45.0,
+        25.0,
+        21.0,
+        403.0,
+        5.0,
+        52.0,
+        0.0
+      ]
+    },
+    {
+      "id": "BA_flat",
+      "outcome": "timeout",
+      "time_s": 35.0,
+      "end_s": 35.0,
+      "error_m": 0.8687403852862051,
+      "collisions": 0,
+      "backend": "mujoco-original4500-terrain",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 4358,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\BA_flat"
+    },
+    {
+      "id": "BA_gap30",
+      "outcome": "timeout",
+      "time_s": 30.0,
+      "end_s": 30.0,
+      "error_m": 1.7141233087505168,
+      "collisions": 0,
+      "backend": "fast kinematic; not4500 dynamics",
+      "query_bridge": {
+        "enabled": true,
+        "verify": true,
+        "queries": 18506,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\BA_gap30"
+    },
+    {
+      "id": "BA_gap90",
+      "outcome": "arrived",
+      "time_s": 38.2,
+      "end_s": 40.2,
+      "error_m": 0.09148202617651512,
+      "collisions": 0,
+      "backend": "fast kinematic; not4500 dynamics",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 36672,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\BA_gap90"
+    },
+    {
+      "id": "BA_up8",
+      "outcome": "timeout",
+      "time_s": 45.0,
+      "end_s": 45.0,
+      "error_m": 1.1158984699116277,
+      "collisions": 0,
+      "backend": "mujoco-original4500-terrain",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 4358,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\BA_up8"
+    },
+    {
+      "id": "BB_flat",
+      "outcome": "timeout",
+      "time_s": 30.0,
+      "end_s": 30.0,
+      "error_m": 0.8642518382827314,
+      "collisions": 0,
+      "backend": "mujoco-original4500-terrain",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 65995,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\BB_flat",
+      "stop_last": [
+        30.0,
+        2.0,
+        87216.0,
+        1555.0,
+        6.0,
+        1.0,
+        0.0,
+        200000.0
+      ],
+      "anchor_last": [
+        30.0,
+        0.0,
+        0.0,
+        299.0,
+        3.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "BB_trench40d150",
+      "outcome": "timeout",
+      "time_s": 45.0,
+      "end_s": 45.0,
+      "error_m": 0.6159441475383626,
+      "collisions": 0,
+      "backend": "mujoco-original4500-terrain",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 66944,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\BB_trench40d150",
+      "stop_last": [
+        45.0,
+        2.0,
+        177220.0,
+        1555.0,
+        6.0,
+        1.0,
+        0.0,
+        200000.0
+      ],
+      "anchor_last": [
+        45.0,
+        0.0,
+        0.0,
+        449.0,
+        4.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "BE_flat",
+      "outcome": "timeout",
+      "time_s": 35.0,
+      "end_s": 35.0,
+      "error_m": 0.8904502096126533,
+      "collisions": 0,
+      "backend": "mujoco-original4500-terrain",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 8429,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\BE_flat",
+      "anchor_last": [
+        35.0,
+        0.0,
+        0.0,
+        349.0,
+        4.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "BE_gap90",
+      "outcome": "arrived",
+      "time_s": 39.8,
+      "end_s": 41.8,
+      "error_m": 0.09085998726180984,
+      "collisions": 0,
+      "backend": "fast kinematic; not4500 dynamics",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 33829,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\BE_gap90"
+    },
+    {
+      "id": "BE_up8",
+      "outcome": "timeout",
+      "time_s": 45.0,
+      "end_s": 45.0,
+      "error_m": 1.1383131150197063,
+      "collisions": 0,
+      "backend": "mujoco-original4500-terrain",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 8529,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\BE_up8",
+      "anchor_last": [
+        45.0,
+        0.0,
+        0.0,
+        449.0,
+        3.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "BG_flat",
+      "outcome": "timeout",
+      "time_s": 35.0,
+      "end_s": 35.0,
+      "error_m": 0.8825862290356503,
+      "collisions": 0,
+      "backend": "mujoco-original4500-terrain",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 6823,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\BG_flat",
+      "anchor_last": [
+        35.0,
+        0.0,
+        0.0,
+        349.0,
+        4.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "BG_up8",
+      "outcome": "timeout",
+      "time_s": 45.0,
+      "end_s": 45.0,
+      "error_m": 1.130040395064879,
+      "collisions": 0,
+      "backend": "mujoco-original4500-terrain",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 6923,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\BG_up8",
+      "anchor_last": [
+        45.0,
+        0.0,
+        0.0,
+        449.0,
+        3.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "BH2_trench40d150",
+      "outcome": "timeout",
+      "time_s": 45.0,
+      "end_s": 45.0,
+      "error_m": 0.6736980051470973,
+      "collisions": 0,
+      "backend": "mujoco-original4500-terrain",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 62573,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\BH2_trench40d150",
+      "stop_last": [
+        45.0,
+        5.0,
+        271160.0,
+        1555.0,
+        6.0,
+        1.0,
+        0.0,
+        200000.0
+      ],
+      "anchor_last": [
+        45.0,
+        0.0,
+        0.0,
+        449.0,
+        4.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "BH_trench40d150",
+      "outcome": "timeout",
+      "time_s": 45.0,
+      "end_s": 45.0,
+      "error_m": 0.6161041935058286,
+      "collisions": 0,
+      "backend": "mujoco-original4500-terrain",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 65994,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\BH_trench40d150",
+      "stop_last": [
+        45.0,
+        5.0,
+        178870.0,
+        1555.0,
+        6.0,
+        1.0,
+        0.0,
+        200000.0
+      ],
+      "anchor_last": [
+        45.0,
+        0.0,
+        0.0,
+        449.0,
+        4.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "BJ_flat",
+      "outcome": "arrived",
+      "time_s": 23.4,
+      "end_s": 25.4,
+      "error_m": 0.14728857072038903,
+      "collisions": 0,
+      "backend": "mujoco-original4500-terrain",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 5406,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\BJ_flat",
+      "anchor_last": [
+        25.400000000000002,
+        69.0,
+        3.0,
+        181.0,
+        1.0,
+        13.0,
+        0.0
+      ]
+    },
+    {
+      "id": "BJ_gap90",
+      "outcome": "timeout",
+      "time_s": 90.0,
+      "end_s": 90.0,
+      "error_m": 1.978547754551252,
+      "collisions": 0,
+      "backend": "fast kinematic; not4500 dynamics",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 8796,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\BJ_gap90"
+    },
+    {
+      "id": "BJ_trace_up8",
+      "outcome": "timeout",
+      "time_s": 45.0,
+      "end_s": 45.0,
+      "error_m": 0.8287621973820666,
+      "collisions": 0,
+      "backend": "mujoco-original4500-terrain",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 12746,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\BJ_trace_up8",
+      "anchor_last": [
+        45.0,
+        0.0,
+        31.0,
+        418.0,
+        4.0,
+        17.0,
+        0.0
+      ]
+    },
+    {
+      "id": "BJ_trench40d150",
+      "outcome": "timeout",
+      "time_s": 45.0,
+      "end_s": 45.0,
+      "error_m": 0.6716118680680877,
+      "collisions": 0,
+      "backend": "mujoco-original4500-terrain",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 7236,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\BJ_trench40d150",
+      "anchor_last": [
+        45.0,
+        0.0,
+        0.0,
+        449.0,
+        3.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "BJ_up8",
+      "outcome": "timeout",
+      "time_s": 45.0,
+      "end_s": 45.0,
+      "error_m": 0.8287621973820666,
+      "collisions": 0,
+      "backend": "mujoco-original4500-terrain",
+      "query_bridge": {
+        "enabled": true,
+        "verify": false,
+        "queries": 12746,
+        "mismatches": 0
+      },
+      "path": "F:\\nav_terrain4500_20261022\\evidence\\n2av\\n2az\\BJ_up8",
+      "anchor_last": [
+        45.0,
+        0.0,
+        31.0,
+        418.0,
+        4.0,
+        17.0,
+        0.0
+      ]
+    }
+  ],
+  "stop_labs": [
+    {
+      "mode": "hold",
+      "law": "slow",
+      "turn_before_stop_mrad_s": 0,
+      "control_changed": false,
+      "source": "original4500; native training-affine plant; no terrain guard in lab",
+      "simulated_s": 25.0,
+      "request_stop_s": 8.0,
+      "max_reference_displacement_after_stop_mm": 14.562827473557999,
+      "final_reference_displacement_after_stop_mm": 4.490058165678973,
+      "last5s_mean_abs_odom_mm_s": 0.928,
+      "last5s_max_abs_request_mm_s": 12.0,
+      "feedback": "wheel odometry100Hz, command100ms; no true position/speed in hold calculation",
+      "hold_law": "actual C supervisor: P.5+D.1+I.05,tau.2s,linear cap25mm/s and yaw cap75mrad/s",
+      "real_vehicle_calibrated": false,
+      "supervisor_c": true,
+      "final_stop_status": 3,
+      "id": "c_hold_xyaw",
+      "max_true_yaw_change_deg": 5.248001186936649,
+      "max_declared_planar_tread_corner_excursion_mm": 21.75487011268499
+    },
+    {
+      "mode": "hold",
+      "law": "slow",
+      "turn_before_stop_mrad_s": 150,
+      "control_changed": false,
+      "source": "original4500; native training-affine plant; no terrain guard in lab",
+      "simulated_s": 25.0,
+      "request_stop_s": 8.0,
+      "max_reference_displacement_after_stop_mm": 14.531038985518357,
+      "final_reference_displacement_after_stop_mm": 4.510895194612662,
+      "last5s_mean_abs_odom_mm_s": 0.964,
+      "last5s_max_abs_request_mm_s": 12.0,
+      "feedback": "wheel odometry100Hz, command100ms; no true position/speed in hold calculation",
+      "hold_law": "actual C supervisor: P.5+D.1+I.05,tau.2s,linear cap25mm/s and yaw cap75mrad/s",
+      "real_vehicle_calibrated": false,
+      "supervisor_c": true,
+      "final_stop_status": 3,
+      "id": "c_hold_xyaw_turn",
+      "max_true_yaw_change_deg": 5.286411436131572,
+      "max_declared_planar_tread_corner_excursion_mm": 21.970032524226763
+    },
+    {
+      "mode": "hold",
+      "law": "slow",
+      "turn_before_stop_mrad_s": 0,
+      "control_changed": false,
+      "source": "original4500; native training-affine plant; no terrain guard in lab",
+      "simulated_s": 25.0,
+      "request_stop_s": 8.0,
+      "max_reference_displacement_after_stop_mm": 13.649101168510946,
+      "final_reference_displacement_after_stop_mm": 6.5825649913070325,
+      "last5s_mean_abs_odom_mm_s": 0.706,
+      "last5s_max_abs_request_mm_s": 11.0,
+      "feedback": "wheel odometry100Hz, command100ms; no true position/speed in hold calculation",
+      "hold_law": "aggressive:P2+D1 cap50; slow:P.5+D.1+I.05,velocity tau.2s,cap25; zero angular request after stop",
+      "real_vehicle_calibrated": false,
+      "supervisor_c": true,
+      "final_stop_status": 3,
+      "id": "c_slow_hold",
+      "max_true_yaw_change_deg": 17.10546163568299,
+      "max_declared_planar_tread_corner_excursion_mm": 50.797817376884126
+    },
+    {
+      "mode": "hold",
+      "law": "slow",
+      "turn_before_stop_mrad_s": 0,
+      "control_changed": false,
+      "source": "original4500; native training-affine plant; no terrain guard in lab",
+      "simulated_s": 25.0,
+      "request_stop_s": 8.0,
+      "max_reference_displacement_after_stop_mm": 13.045422493974986,
+      "final_reference_displacement_after_stop_mm": 5.9415009631220315,
+      "last5s_mean_abs_odom_mm_s": 0.784,
+      "last5s_max_abs_request_mm_s": 11.0,
+      "feedback": "wheel odometry100Hz, command100ms; no true position/speed in hold calculation",
+      "hold_law": "aggressive:P2+D1 cap50; slow:P.5+D.1+I.05,velocity tau.2s,cap25; zero angular request after stop",
+      "real_vehicle_calibrated": false,
+      "id": "slow_hold_0",
+      "max_true_yaw_change_deg": 17.117767370043246,
+      "max_declared_planar_tread_corner_excursion_mm": 49.72205095175422
+    },
+    {
+      "mode": "hold",
+      "law": "slow",
+      "turn_before_stop_mrad_s": 150,
+      "control_changed": false,
+      "source": "original4500; native training-affine plant; no terrain guard in lab",
+      "simulated_s": 25.0,
+      "request_stop_s": 8.0,
+      "max_reference_displacement_after_stop_mm": 13.201652855245836,
+      "final_reference_displacement_after_stop_mm": 6.487930718112919,
+      "last5s_mean_abs_odom_mm_s": 0.804,
+      "last5s_max_abs_request_mm_s": 11.0,
+      "feedback": "wheel odometry100Hz, command100ms; no true position/speed in hold calculation",
+      "hold_law": "aggressive:P2+D1 cap50; slow:P.5+D.1+I.05,velocity tau.2s,cap25; zero angular request after stop",
+      "real_vehicle_calibrated": false,
+      "id": "slow_hold_150",
+      "max_true_yaw_change_deg": 17.53757550997162,
+      "max_declared_planar_tread_corner_excursion_mm": 51.542833196464116
+    },
+    {
+      "mode": "hold",
+      "turn_before_stop_mrad_s": 0,
+      "control_changed": false,
+      "source": "original4500; native training-affine plant; no terrain guard in lab",
+      "simulated_s": 25.0,
+      "request_stop_s": 8.0,
+      "max_reference_displacement_after_stop_mm": 24.30277756673564,
+      "final_reference_displacement_after_stop_mm": 23.068454392049457,
+      "last5s_mean_abs_odom_mm_s": 62.978,
+      "last5s_max_abs_request_mm_s": 50.0,
+      "feedback": "wheel odometry100Hz, command100ms; no true position/speed in hold calculation",
+      "hold_law": "clip(-2*integral(odo_vx)-odo_vx,-50,+50)mm/s; zero angular request after stop",
+      "real_vehicle_calibrated": false,
+      "id": "straight_hold",
+      "max_true_yaw_change_deg": 23.25057618815772,
+      "max_declared_planar_tread_corner_excursion_mm": 81.69866472059478
+    },
+    {
+      "mode": "zero",
+      "turn_before_stop_mrad_s": 0,
+      "control_changed": false,
+      "source": "original4500; native training-affine plant; no terrain guard in lab",
+      "simulated_s": 25.0,
+      "request_stop_s": 8.0,
+      "max_reference_displacement_after_stop_mm": 112.18254126314991,
+      "final_reference_displacement_after_stop_mm": 112.18254126314991,
+      "last5s_mean_abs_odom_mm_s": 6.0,
+      "last5s_max_abs_request_mm_s": 0.0,
+      "feedback": "wheel odometry100Hz, command100ms; no true position/speed in hold calculation",
+      "hold_law": "clip(-2*integral(odo_vx)-odo_vx,-50,+50)mm/s; zero angular request after stop",
+      "real_vehicle_calibrated": false,
+      "id": "straight_zero",
+      "max_true_yaw_change_deg": 16.74585289055843,
+      "max_declared_planar_tread_corner_excursion_mm": 156.2357191855598
+    },
+    {
+      "mode": "hold",
+      "turn_before_stop_mrad_s": 150,
+      "control_changed": false,
+      "source": "original4500; native training-affine plant; no terrain guard in lab",
+      "simulated_s": 25.0,
+      "request_stop_s": 8.0,
+      "max_reference_displacement_after_stop_mm": 24.38694532372722,
+      "final_reference_displacement_after_stop_mm": 23.012466368941105,
+      "last5s_mean_abs_odom_mm_s": 63.3,
+      "last5s_max_abs_request_mm_s": 50.0,
+      "feedback": "wheel odometry100Hz, command100ms; no true position/speed in hold calculation",
+      "hold_law": "clip(-2*integral(odo_vx)-odo_vx,-50,+50)mm/s; zero angular request after stop",
+      "real_vehicle_calibrated": false,
+      "id": "turn_hold",
+      "max_true_yaw_change_deg": 23.683634360394535,
+      "max_declared_planar_tread_corner_excursion_mm": 83.09495293543272
+    },
+    {
+      "mode": "zero",
+      "turn_before_stop_mrad_s": 150,
+      "control_changed": false,
+      "source": "original4500; native training-affine plant; no terrain guard in lab",
+      "simulated_s": 25.0,
+      "request_stop_s": 8.0,
+      "max_reference_displacement_after_stop_mm": 110.18944448147873,
+      "final_reference_displacement_after_stop_mm": 110.18944448147873,
+      "last5s_mean_abs_odom_mm_s": 6.0,
+      "last5s_max_abs_request_mm_s": 0.0,
+      "feedback": "wheel odometry100Hz, command100ms; no true position/speed in hold calculation",
+      "hold_law": "clip(-2*integral(odo_vx)-odo_vx,-50,+50)mm/s; zero angular request after stop",
+      "real_vehicle_calibrated": false,
+      "id": "turn_zero",
+      "max_true_yaw_change_deg": 17.1712283133291,
+      "max_declared_planar_tread_corner_excursion_mm": 155.40743593220972
+    }
+  ],
+  "contracts": {
+    "BB_contract": {
+      "passed": 27,
+      "rows": [
+        {
+          "name": "remembered_contact",
+          "got": 2,
+          "expected": 2
+        },
+        {
+          "name": "missing_contact_tile",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "one_hit",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "mixed_surface",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "front_step",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "stale_front",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "epoch_change",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "resolution_change",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "missing_front_tile",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "outlier",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "old_regular_anchor_preserved",
+          "got": 5,
+          "expected": 5
+        },
+        {
+          "name": "no_feedback_request",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "no_feedback_unconfirmed",
+          "got": 4,
+          "expected": 4
+        },
+        {
+          "name": "actual_stable_dwell",
+          "got": 3,
+          "expected": 3
+        },
+        {
+          "name": "estop_zero",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "estop_does_not_claim_stop",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "residual_three_not_confirmed",
+          "got": 2,
+          "expected": 2
+        },
+        {
+          "name": "lost_feedback",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "gap_unconfirmed",
+          "got": 4,
+          "expected": 4
+        },
+        {
+          "name": "gap_cannot_reanchor_to_fake_stop",
+          "got": 4,
+          "expected": 4
+        },
+        {
+          "name": "zero_has_hold_reserve",
+          "got": 25,
+          "expected": 25
+        },
+        {
+          "name": "command50_stop_radius",
+          "got": 48,
+          "expected": 48
+        },
+        {
+          "name": "turn600_stop_radius",
+          "got": 77,
+          "expected": 77
+        },
+        {
+          "name": "excessive_unverified_radius",
+          "got": -1,
+          "expected": -1
+        },
+        {
+          "name": "zero_request_uses_actual50",
+          "got": 48,
+          "expected": 48
+        },
+        {
+          "name": "feedback100ms_rejected",
+          "got": -1,
+          "expected": -1
+        },
+        {
+          "name": "zero_motion_still_checks_missing_tread",
+          "got": 1,
+          "expected": 1
+        }
+      ],
+      "scope": "actual candidate C, finite synthetic evidence; no physical calibration"
+    },
+    "BC_contract": {
+      "passed": 28,
+      "rows": [
+        {
+          "name": "remembered_contact",
+          "got": 2,
+          "expected": 2
+        },
+        {
+          "name": "missing_contact_tile",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "one_hit",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "mixed_surface",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "front_step",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "stale_front",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "epoch_change",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "resolution_change",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "missing_front_tile",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "outlier",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "old_regular_anchor_preserved",
+          "got": 5,
+          "expected": 5
+        },
+        {
+          "name": "no_feedback_request",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "no_feedback_unconfirmed",
+          "got": 4,
+          "expected": 4
+        },
+        {
+          "name": "actual_stable_dwell",
+          "got": 3,
+          "expected": 3
+        },
+        {
+          "name": "estop_zero",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "estop_does_not_claim_stop",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "residual_three_not_confirmed",
+          "got": 2,
+          "expected": 2
+        },
+        {
+          "name": "rejected_hold_cannot_confirm_between_plan_ticks",
+          "got": 5,
+          "expected": 5
+        },
+        {
+          "name": "lost_feedback",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "gap_unconfirmed",
+          "got": 4,
+          "expected": 4
+        },
+        {
+          "name": "gap_cannot_reanchor_to_fake_stop",
+          "got": 4,
+          "expected": 4
+        },
+        {
+          "name": "zero_has_hold_reserve",
+          "got": 25,
+          "expected": 25
+        },
+        {
+          "name": "command50_stop_radius",
+          "got": 48,
+          "expected": 48
+        },
+        {
+          "name": "turn600_stop_radius",
+          "got": 77,
+          "expected": 77
+        },
+        {
+          "name": "excessive_unverified_radius",
+          "got": -1,
+          "expected": -1
+        },
+        {
+          "name": "zero_request_uses_actual50",
+          "got": 48,
+          "expected": 48
+        },
+        {
+          "name": "feedback100ms_rejected",
+          "got": -1,
+          "expected": -1
+        },
+        {
+          "name": "zero_motion_still_checks_missing_tread",
+          "got": 1,
+          "expected": 1
+        }
+      ],
+      "scope": "actual candidate C, finite synthetic evidence; no physical calibration"
+    },
+    "BH_contract": {
+      "passed": 30,
+      "rows": [
+        {
+          "name": "remembered_contact",
+          "got": 2,
+          "expected": 2
+        },
+        {
+          "name": "missing_contact_tile",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "one_hit",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "mixed_surface",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "front_step",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "stale_front",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "epoch_change",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "resolution_change",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "missing_front_tile",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "outlier",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "old_regular_anchor_preserved",
+          "got": 5,
+          "expected": 5
+        },
+        {
+          "name": "no_feedback_request",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "no_feedback_unconfirmed",
+          "got": 4,
+          "expected": 4
+        },
+        {
+          "name": "actual_stable_dwell",
+          "got": 3,
+          "expected": 3
+        },
+        {
+          "name": "estop_zero",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "estop_does_not_claim_stop",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "residual_three_not_confirmed",
+          "got": 2,
+          "expected": 2
+        },
+        {
+          "name": "rejected_hold_cannot_confirm_between_plan_ticks",
+          "got": 5,
+          "expected": 5
+        },
+        {
+          "name": "lost_feedback",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "gap_unconfirmed",
+          "got": 4,
+          "expected": 4
+        },
+        {
+          "name": "gap_cannot_reanchor_to_fake_stop",
+          "got": 4,
+          "expected": 4
+        },
+        {
+          "name": "zero_has_hold_reserve",
+          "got": 25,
+          "expected": 25
+        },
+        {
+          "name": "command50_stop_radius",
+          "got": 48,
+          "expected": 48
+        },
+        {
+          "name": "turn600_stop_radius",
+          "got": 77,
+          "expected": 77
+        },
+        {
+          "name": "excessive_unverified_radius",
+          "got": -1,
+          "expected": -1
+        },
+        {
+          "name": "zero_request_uses_actual50",
+          "got": 48,
+          "expected": 48
+        },
+        {
+          "name": "feedback100ms_rejected",
+          "got": -1,
+          "expected": -1
+        },
+        {
+          "name": "angular_drift_not_stopped",
+          "got": 2,
+          "expected": 2
+        },
+        {
+          "name": "angular_hold_opposes_drift",
+          "got": 1,
+          "expected": 1
+        },
+        {
+          "name": "zero_motion_still_checks_missing_tread",
+          "got": 1,
+          "expected": 1
+        }
+      ],
+      "scope": "actual candidate C, finite synthetic evidence; no physical calibration"
+    },
+    "BH2_contract": {
+      "passed": 33,
+      "rows": [
+        {
+          "name": "remembered_contact",
+          "got": 2,
+          "expected": 2
+        },
+        {
+          "name": "missing_contact_tile",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "one_hit",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "mixed_surface",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "front_step",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "stale_front",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "epoch_change",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "resolution_change",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "missing_front_tile",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "outlier",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "old_regular_anchor_preserved",
+          "got": 5,
+          "expected": 5
+        },
+        {
+          "name": "no_feedback_request",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "no_feedback_unconfirmed",
+          "got": 4,
+          "expected": 4
+        },
+        {
+          "name": "actual_stable_dwell",
+          "got": 3,
+          "expected": 3
+        },
+        {
+          "name": "estop_zero",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "estop_does_not_claim_stop",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "residual_three_not_confirmed",
+          "got": 2,
+          "expected": 2
+        },
+        {
+          "name": "rejected_hold_cannot_confirm_between_plan_ticks",
+          "got": 5,
+          "expected": 5
+        },
+        {
+          "name": "lost_feedback",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "gap_unconfirmed",
+          "got": 4,
+          "expected": 4
+        },
+        {
+          "name": "gap_cannot_reanchor_to_fake_stop",
+          "got": 4,
+          "expected": 4
+        },
+        {
+          "name": "zero_has_hold_reserve",
+          "got": 25,
+          "expected": 25
+        },
+        {
+          "name": "command50_stop_radius",
+          "got": 48,
+          "expected": 48
+        },
+        {
+          "name": "turn600_stop_radius",
+          "got": 77,
+          "expected": 77
+        },
+        {
+          "name": "excessive_unverified_radius",
+          "got": -1,
+          "expected": -1
+        },
+        {
+          "name": "zero_request_uses_actual50",
+          "got": 48,
+          "expected": 48
+        },
+        {
+          "name": "feedback100ms_rejected",
+          "got": -1,
+          "expected": -1
+        },
+        {
+          "name": "angular_drift_not_stopped",
+          "got": 2,
+          "expected": 2
+        },
+        {
+          "name": "angular_hold_opposes_drift",
+          "got": 1,
+          "expected": 1
+        },
+        {
+          "name": "zero_motion_still_checks_missing_tread",
+          "got": 1,
+          "expected": 1
+        },
+        {
+          "name": "zero_nominal_contract_preserved",
+          "got": 0,
+          "expected": 0
+        },
+        {
+          "name": "zero_stop_tube_known",
+          "got": 1,
+          "expected": 1
+        },
+        {
+          "name": "extra_radius_is_not_current_occupied_space",
+          "got": 5,
+          "expected": 5
+        }
+      ],
+      "scope": "actual candidate C, finite synthetic evidence; no physical calibration"
+    }
+  },
+  "rv": {
+    "BC_RV": {
+      "image_bytes": 53708,
+      "stack": {
+        "complete": true,
+        "static_bound_bytes": 2768,
+        "direct_call_bound_bytes": 2768,
+        "path": [
+          "main",
+          "nav_app_poll",
+          "task_step_local.constprop.0",
+          "drive_to.constprop.0",
+          "candidate_check.constprop.0",
+          "support_check_margin.constprop.0",
+          "cell",
+          "hal_map_support",
+          "hal_map_info"
+        ],
+        "resolved_switches": [
+          {
+            "function": "xt_link_poll.constprop.0",
+            "table": ".L1655",
+            "targets": [
+              ".L1659",
+              ".L1658",
+              ".L1657",
+              ".L1656",
+              ".L1654"
+            ]
+          },
+          {
+            "function": "task_step_local.constprop.0",
+            "table": ".L1404",
+            "targets": [
+              ".L1403",
+              ".L1371",
+              ".L1368",
+              ".L1405",
+              ".L1403"
+            ]
+          }
+        ],
+        "unresolved_indirect": [],
+        "nonstatic_frames": [],
+        "unresolved_sp_writes": [],
+        "irq_disabled": true,
+        "stack_reserved_bytes": 6144,
+        "largest_frames": [
+          [
+            "support_check_margin.constprop.0",
+            992
+          ],
+          [
+            "drive_to.constprop.0",
+            624
+          ],
+          [
+            "nav_app_poll",
+            592
+          ],
+          [
+            "motion_segment.constprop.0",
+            240
+          ],
+          [
+            "xt_link_poll.constprop.0",
+            240
+          ],
+          [
+            "task_step_local.constprop.0",
+            240
+          ],
+          [
+            "motion_check.constprop.0",
+            224
+          ],
+          [
+            "send_tcp.constprop.0",
+            224
+          ]
+        ],
+        "scope": "linked image, no IRQ/recursion/heap; tail calls conservatively nested; board watermark still pending"
+      }
+    },
+    "BH_RV": {
+      "image_bytes": 54268,
+      "stack": {
+        "complete": true,
+        "static_bound_bytes": 2768,
+        "direct_call_bound_bytes": 2768,
+        "path": [
+          "main",
+          "nav_app_poll",
+          "task_step_local.constprop.0",
+          "drive_to.constprop.0",
+          "candidate_check.constprop.0",
+          "support_check_margin.constprop.0",
+          "cell",
+          "hal_map_support",
+          "hal_map_info"
+        ],
+        "resolved_switches": [
+          {
+            "function": "xt_link_poll.constprop.0",
+            "table": ".L1694",
+            "targets": [
+              ".L1698",
+              ".L1697",
+              ".L1696",
+              ".L1695",
+              ".L1693"
+            ]
+          },
+          {
+            "function": "task_step_local.constprop.0",
+            "table": ".L1439",
+            "targets": [
+              ".L1438",
+              ".L1406",
+              ".L1403",
+              ".L1440",
+              ".L1438"
+            ]
+          }
+        ],
+        "unresolved_indirect": [],
+        "nonstatic_frames": [],
+        "unresolved_sp_writes": [],
+        "irq_disabled": true,
+        "stack_reserved_bytes": 6144,
+        "largest_frames": [
+          [
+            "support_check_margin.constprop.0",
+            992
+          ],
+          [
+            "drive_to.constprop.0",
+            624
+          ],
+          [
+            "nav_app_poll",
+            592
+          ],
+          [
+            "motion_segment.constprop.0",
+            240
+          ],
+          [
+            "xt_link_poll.constprop.0",
+            240
+          ],
+          [
+            "task_step_local.constprop.0",
+            240
+          ],
+          [
+            "motion_check.constprop.0",
+            224
+          ],
+          [
+            "send_tcp.constprop.0",
+            224
+          ]
+        ],
+        "scope": "linked image, no IRQ/recursion/heap; tail calls conservatively nested; board watermark still pending"
+      }
+    },
+    "BH2_RV": {
+      "image_bytes": 54316,
+      "stack": {
+        "complete": true,
+        "static_bound_bytes": 2768,
+        "direct_call_bound_bytes": 2768,
+        "path": [
+          "main",
+          "nav_app_poll",
+          "task_step_local.constprop.0",
+          "drive_to.constprop.0",
+          "candidate_check.constprop.0",
+          "support_check_margin.constprop.0",
+          "cell",
+          "hal_map_support",
+          "hal_map_info"
+        ],
+        "resolved_switches": [
+          {
+            "function": "xt_link_poll.constprop.0",
+            "table": ".L1697",
+            "targets": [
+              ".L1701",
+              ".L1700",
+              ".L1699",
+              ".L1698",
+              ".L1696"
+            ]
+          },
+          {
+            "function": "task_step_local.constprop.0",
+            "table": ".L1433",
+            "targets": [
+              ".L1432",
+              ".L1400",
+              ".L1397",
+              ".L1434",
+              ".L1432"
+            ]
+          }
+        ],
+        "unresolved_indirect": [],
+        "nonstatic_frames": [],
+        "unresolved_sp_writes": [],
+        "irq_disabled": true,
+        "stack_reserved_bytes": 6144,
+        "largest_frames": [
+          [
+            "support_check_margin.constprop.0",
+            992
+          ],
+          [
+            "drive_to.constprop.0",
+            624
+          ],
+          [
+            "nav_app_poll",
+            592
+          ],
+          [
+            "motion_segment.constprop.0",
+            240
+          ],
+          [
+            "xt_link_poll.constprop.0",
+            240
+          ],
+          [
+            "task_step_local.constprop.0",
+            240
+          ],
+          [
+            "check.constprop.0",
+            224
+          ],
+          [
+            "send_tcp.constprop.0",
+            224
+          ]
+        ],
+        "scope": "linked image, no IRQ/recursion/heap; tail calls conservatively nested; board watermark still pending"
+      }
+    },
+    "BJ_RV": {
+      "image_bytes": 52564,
+      "stack": {
+        "complete": true,
+        "static_bound_bytes": 2768,
+        "direct_call_bound_bytes": 2768,
+        "path": [
+          "main",
+          "nav_app_poll",
+          "task_step_local.constprop.0",
+          "drive_to.constprop.0",
+          "candidate_check.constprop.0",
+          "support_check.constprop.0",
+          "cell",
+          "hal_map_support",
+          "hal_map_info"
+        ],
+        "resolved_switches": [
+          {
+            "function": "task_step_local.constprop.0",
+            "table": ".L1449",
+            "targets": [
+              ".L1448",
+              ".L1406",
+              ".L1403",
+              ".L1450",
+              ".L1448"
+            ]
+          },
+          {
+            "function": "xt_link_poll.constprop.0",
+            "table": ".L1772",
+            "targets": [
+              ".L1776",
+              ".L1775",
+              ".L1774",
+              ".L1773",
+              ".L1771"
+            ]
+          }
+        ],
+        "unresolved_indirect": [],
+        "nonstatic_frames": [],
+        "unresolved_sp_writes": [],
+        "irq_disabled": true,
+        "stack_reserved_bytes": 6144,
+        "largest_frames": [
+          [
+            "support_check.constprop.0",
+            992
+          ],
+          [
+            "drive_to.constprop.0",
+            624
+          ],
+          [
+            "nav_app_poll",
+            592
+          ],
+          [
+            "motion_segment.constprop.0",
+            240
+          ],
+          [
+            "task_step_local.constprop.0",
+            240
+          ],
+          [
+            "xt_link_poll.constprop.0",
+            240
+          ],
+          [
+            "motion_check.constprop.0",
+            224
+          ],
+          [
+            "send_tcp.constprop.0",
+            224
+          ]
+        ],
+        "scope": "linked image, no IRQ/recursion/heap; tail calls conservatively nested; board watermark still pending"
+      }
+    }
+  },
+  "host_BJ": "[fixmath]\n  atan2 最大误差 0.0174°\n[proto]\n[pose]\n[pose 时间/历史合同]\n[匹配提案/门控/提交]\n[astar]\n  路径 91 点，展开 1852 节点\n[任务：卡住与停稳]\n[地图：粗格保留足迹净空]\n[地图：分行更新/跨帧去重]\n[启动地形观察：反馈/超时/统一出口]\n[匹配工作区复用：粗/细候选重建等价]\n[任务：低速进展与真实停滞]\n[任务：近目标与部分路径]\n[任务：统一运动检查]\n[traj_eval_sw 与定点模型交叉验证]\n  90 条候选，不一致 0\n[闭环：定点导航绕障]\n  用时 35.5 s，终点误差 121 mm，最小离障 340 mm，状态 2\n[闭环：路径点巡航]\n  用时 34.5 s，当前航点 2，终点 (30, 2252)，最小离障 470 mm\n[闭环：探索找目标 -> 跟踪接近]\n  发现目标 29.5 s，结束 39.0 s，与目标距离 895 mm（站位 700），最小离障 389 mm\n[急停报文]\n\nFW TEST PASSED（失败 0）\n",
+  "boundaries": [
+    "same seed is not independent validation",
+    "native MuJoCo is not real vehicle calibration",
+    "fast gap success does not validate4500 dynamics",
+    "no target whole-loop CPU timing or new bitstream"
+  ]
+}

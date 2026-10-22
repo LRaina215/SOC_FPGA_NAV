@@ -21,6 +21,7 @@ module map_subsys #(
     input  wire [3:0]  cfg_cnt_min,
     input  wire [3:0]  cfg_keep_r,
     input  wire [15:0] cfg_step_max,
+    input  wire        cfg_step_high_only,
     input  wire [15:0] cfg_rough_max,
     input  wire [15:0] cfg_slope_rise,
     input  wire [7:0]  cfg_jump,
@@ -59,7 +60,7 @@ module map_subsys #(
     input  wire        e_req,
     input  wire [2*LOG2N-1:0] e_addr,
     output wire        e_ack,
-    output wire [51:0] e_q,
+    output wire [52:0] e_q,
 
     output wire        busy,
     output reg         front,
@@ -74,7 +75,7 @@ module map_subsys #(
     wire        swp_busy;
     wire        em_re, em_we, cm_we, cm_re;
     wire [AW-1:0] em_raddr, em_waddr, cm_waddr, cm_raddr;
-    wire [51:0] em_q, em_wdata;
+    wire [52:0] em_q, em_wdata;
     wire [7:0]  cm_wdata;
     wire        frame_done, em_busy;
     reg         sweep_pend;
@@ -101,7 +102,7 @@ module map_subsys #(
     trav_v3 #(.LOG2N(LOG2N), .TAGB(TAGB)) u_tv (
         .clk(clk), .rst(rst), .start(tv_start), .cx(sw_cx), .cy(sw_cy), .fc(frame_cnt),
         .cfg_age_max(cfg_age_max), .cfg_cnt_min(cfg_cnt_min), .cfg_keep_r(cfg_keep_r),
-        .cfg_step_max(cfg_step_max), .cfg_rough_max(cfg_rough_max), .cfg_slope_rise(cfg_slope_rise),
+        .cfg_step_max(cfg_step_max), .cfg_step_high_only(cfg_step_high_only), .cfg_rough_max(cfg_rough_max), .cfg_slope_rise(cfg_slope_rise),
         .cfg_jump(cfg_jump), .cfg_drop_k(cfg_drop_k), .cfg_drop_slope(cfg_drop_slope),
         .cfg_k_slope(cfg_k_slope), .cfg_k_step(cfg_k_step), .cfg_k_rough(cfg_k_rough),
         .cfg_fill_min(cfg_fill_min), .cfg_fill_tol(cfg_fill_tol), .cfg_fill_cost(cfg_fill_cost),

@@ -13,8 +13,9 @@ void target_update(target_t *t, const pose_est_t *pe, bool found, int32_t bx, in
 {
     if (!found) return;          /* 未找到：保持旧值，交给超时判断 */
     uint32_t cap = rx_us - (uint32_t)latency_ms * 1000u;
+    if (t->valid && (int32_t)(cap - t->t_us) < 0) return;
     nav_pose_t at;
-    pose_at(pe, cap, &at);
+    if (!pose_query_valid(pose_xy_at(pe, cap, &at))) return;
     pose_body_to_odom(&at, bx, by, &t->x, &t->y);
     t->t_us = cap;
     t->id = id;

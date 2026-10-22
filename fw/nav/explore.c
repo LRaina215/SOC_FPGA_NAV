@@ -136,6 +136,7 @@ void explore_blacklist(explore_t *e, int32_t x, int32_t y)
 bool explore_frontier(explore_t *e, const explore_cfg_t *c, const gmap_t *gm, const hal_map_info_t *mi,
                       const nav_pose_t *pose, bool seen_mode, int32_t *gx, int32_t *gy)
 {
+    astar_cancel(); /* BFS与分周期A*复用缓存，切换前显式取消旧搜索 */
     static const int8_t DX4[4] = {1, -1, 0, 0}, DY4[4] = {0, 0, 1, -1};
     int rx, ry;
     gmap_mm_to_cell(gm, mi, pose->x, pose->y, &rx, &ry);

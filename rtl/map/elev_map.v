@@ -1,4 +1,4 @@
-// 滚动高程栅格：N×N 槽，每槽 52 位 {stamp[8], tag[8], cnt[4], zmin[16], zmax[16]}。
+// N×N槽，每槽53位 {retained_stale,stamp[8],tag[8],cnt[4],zmin[16],zmax[16]}。
 // 更新规则（每点读-改-写，每拍 1 点；读数据先寄存一拍再合并写回，同址连续更新用两级前递解决）：
 //   槽空 / 标签不符 / 不是本帧写入的 -> 以该点重新初始化（每帧用最新观测替换，动态障碍可消失）
 //   否则 -> zmax/zmin 取极值，cnt 饱和加 1
@@ -28,10 +28,10 @@ module elev_map #(
     input  wire        swp_sel,        // 扫描占用存储
     input  wire        swp_re,
     input  wire [2*LOG2N-1:0] swp_raddr,
-    output wire [51:0] swp_rdata,
+    output wire [52:0] swp_rdata,
     input  wire        swp_we,
     input  wire [2*LOG2N-1:0] swp_waddr,
-    input  wire [51:0] swp_wdata,
+    input  wire [52:0] swp_wdata,
 
     // 软核读口：读口空闲（无扫描、本拍无点更新、非清除）时服务；req 保持到 ack，ack 拍 swp_rdata 即数据
     input  wire        cpu_req,
@@ -56,38 +56,38 @@ module elev_map #(
     reg [AW-1:0] a2;
     reg [2*TAGB-1:0] tag2;
     reg signed [15:0] z2;
-    reg [51:0]   q2;
+    reg [52:0]   q2;
     // S3：写回（寄存后再写 RAM）
     // 前递：前 1/2/3 个点的新值（它们写入 RAM 的时刻不早于本点读 RAM 的时刻）
     reg          fw1_v, fw2_v, fw3_v;
     reg [AW-1:0] fw1_a, fw2_a, fw3_a;
-    reg [51:0]   fw1_d, fw2_d, fw3_d;
+    reg [52:0]   fw1_d, fw2_d, fw3_d;
 
-    wire [51:0] q;
+    wire [52:0] q;
     // 前递命中在 S1 预先比较（S1 时的 S2/fw1/fw2 即为 S2 时的 fw1/fw2/fw3）
     reg m1, m2, m3;
-    wire [51:0] old = m1 ? fw1_d : m2 ? fw2_d : m3 ? fw3_d : q2;
+    wire [52:0] old = m1 ? fw1_d : m2 ? fw2_d : m3 ? fw3_d : q2;
     wire [7:0]  o_stamp = old[51:44];
     wire [7:0]  o_tag   = old[43:36];
     wire [3:0]  o_cnt   = old[35:32];
     wire signed [15:0] o_zmin = old[31:16];
     wire signed [15:0] o_zmax = old[15:0];
-    wire fresh = (o_cnt == 4'd0) || (o_tag != tag2) || (o_stamp != fc);
-    wire [51:0] nw = fresh ? {fc, tag2, 4'd1, z2, z2}
-                           : {fc, tag2, (o_cnt == 4'hF) ? 4'hF : o_cnt + 4'd1,
+    wire fresh = old[52] || (o_cnt == 4'd0) || (o_tag != tag2) || (o_stamp != fc);
+    wire [52:0] nw = fresh ? {1'b0,fc, tag2, 4'd1, z2, z2}
+                           : {1'b0,fc, tag2, (o_cnt == 4'hF) ? 4'hF : o_cnt + 4'd1,
                               (z2 < o_zmin) ? z2 : o_zmin, (z2 > o_zmax) ? z2 : o_zmax};
 
     wire          we_u = v2 & upd2;
     // fw1 即 S3 写口寄存器
     wire          ram_we    = clr_act ? 1'b1 : swp_sel ? swp_we : fw1_v;
     wire [AW-1:0] ram_waddr = clr_act ? clr_a : swp_sel ? swp_waddr : fw1_a;
-    wire [51:0]   ram_wdata = clr_act ? 52'd0 : swp_sel ? swp_wdata : fw1_d;
+    wire [52:0]   ram_wdata = clr_act ? 53'd0 : swp_sel ? swp_wdata : fw1_d;
     reg           cpu_pend;
     wire          cpu_go    = cpu_req & ~cpu_pend & ~cpu_ack & ~swp_sel & ~acc & ~clr_act;
     wire          ram_re    = swp_sel ? swp_re : (acc | cpu_go);
     wire [AW-1:0] ram_raddr = swp_sel ? swp_raddr : acc ? s_addr : cpu_raddr;
 
-    nav_ram_sdp #(.DW(52), .AW(AW)) u_ram (
+    nav_ram_sdp #(.DW(53), .AW(AW)) u_ram (
         .clk(clk), .we(ram_we), .waddr(ram_waddr), .wdata(ram_wdata),
         .re(ram_re), .raddr(ram_raddr), .rdata(q)
     );

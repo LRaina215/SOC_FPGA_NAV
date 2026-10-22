@@ -66,6 +66,7 @@ def elev_update(em, addr, tag, z):
         em.cnt[u] = np.minimum(cnt, 15)
         em.tag[u] = tg[start]
         em.stamp[u] = em.fc
+        em.stale[u] = False
     em.fc = (em.fc + 1) & 0xFF
 
 
@@ -81,15 +82,18 @@ def window_view(em, cx, cy, cfg, kill=True):
     etag = (ty[:, None] << TAGB) | tx[None, :]
     cnt = em.cnt[slot]
     age = (em.fc - em.stamp[slot]) & 0xFF
-    fresh = age <= cfg["age_max"]
+    fresh = (age <= cfg["age_max"]) & ~em.stale[slot]
+    near = np.zeros((N,N),dtype=bool)
     kr = cfg.get("keep_r", 0)
     if kr:
         # 近区不过期：机器人周围（窗口中心 ±keep_r 格）落在雷达最小量程/俯视盲区内，
         # 贴近障碍时它再也看不见——按时间过期会让它从图上消失，机器人就会开上去
         d = np.abs(w - N // 2)
-        fresh = fresh | ((d[:, None] <= kr) & (d[None, :] <= kr))
+        near = (d[:, None] <= kr) & (d[None, :] <= kr)
+        fresh = fresh | near
     live = (cnt != 0) & (em.tag[slot] == etag) & fresh
     if kill:
+        em.stale[slot[(cnt!=0) & (em.tag[slot]==etag) & (age>cfg["age_max"])]] = True
         dead = (cnt != 0) & ~live
         em.cnt[slot[dead]] = 0
     valid = live & (cnt >= cfg["cnt_min"])

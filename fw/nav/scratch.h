@@ -8,22 +8,23 @@
 #include "gmap.h"
 
 #define ASTAR_NC     (ASTAR_MAXN * ASTAR_MAXN)
-/* 堆容量：5 m 场地 50 次闭环实测最多 468 项，留 3 倍余量；堆满时丢弃新项（路径可能次优，不会失败） */
+/* 历史受测峰值514项；1152项留约2.24倍。满时记录丢弃，不保证搜索完备。 */
 #ifndef ASTAR_HEAP_N
-#define ASTAR_HEAP_N 1536
+#define ASTAR_HEAP_N 1152
 #endif
 
 typedef struct { uint16_t idx; uint16_t f; } astar_hnode_t;
 
 typedef union {
     struct {
-        uint8_t  cost[ASTAR_N * ASTAR_N];      /* 窗口粗栅格代价（astar_plan） */
-        uint16_t g[ASTAR_NC];
-        uint8_t  par[ASTAR_NC];                /* 0..7 = 来自的方向，0xFF = 未访问，0xFE = 起点 */
-        uint8_t  closed[ASTAR_NC / 8];
-        uint8_t  dist[ASTAR_NC];               /* 到最近不可走粗格的距离（切比雪夫，饱和） */
+        uint8_t  cost[ASTAR_NC];              /* 冻结搜索快照；分周期搜索不读变化中的gmap */
+        union {
+            uint16_t g[ASTAR_NC];
+            struct {uint8_t d[ASTAR_NC];uint64_t mask[2*ASTAR_MAXN];} dt;
+        } work; /* 距离变换结束后才初始化g，两个阶段复用同一空间 */
+        uint8_t  par[(ASTAR_NC + 1) / 2];      /* 方向3bit + CLOSED；未访问由g=INF表示 */
+        uint8_t  dist[(ASTAR_NC+1)/2];          /* 切比雪夫距离4bit饱和15，配置<=15 */
         astar_hnode_t heap[ASTAR_HEAP_N];
-        int      path_tmp[ASTAR_MAX_PATH];     /* 回溯路径时的倒序缓冲 */
     } as;
     struct {
         uint16_t bd[GM_N * GM_N];              /* 广度优先距离（格），0xFFFF = 未到达 */

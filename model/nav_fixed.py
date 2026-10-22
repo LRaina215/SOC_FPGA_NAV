@@ -81,7 +81,7 @@ def pc_filter(pts, inv_res, cx, cy, zmin, zmax):
 
 # ------------------------------------------------------------------ elev_map
 class ElevMap:
-    """每槽: zmax, zmin, cnt(4 位饱和), tag(8 位), stamp(8 位)。"""
+    """每槽: zmax,zmin,cnt4,tag8,stamp8,retained_stale1。"""
 
     def __init__(self):
         self.zmax = np.zeros(N * N, dtype=np.int64)
@@ -89,13 +89,14 @@ class ElevMap:
         self.cnt = np.zeros(N * N, dtype=np.int64)
         self.tag = np.zeros(N * N, dtype=np.int64)
         self.stamp = np.zeros(N * N, dtype=np.int64)
+        self.stale = np.zeros(N * N, dtype=bool)
         self.fc = 0
 
     def update(self, upds):
         """输入 pc_filter 的输出（一帧或多帧），帧尾 fc 加 1。"""
         for upd, addr, tag, z, eof in upds:
             if upd:
-                if self.cnt[addr] == 0 or self.tag[addr] != tag or self.stamp[addr] != self.fc:
+                if self.stale[addr] or self.cnt[addr] == 0 or self.tag[addr] != tag or self.stamp[addr] != self.fc:
                     self.zmax[addr] = z
                     self.zmin[addr] = z
                     self.cnt[addr] = 1
@@ -105,12 +106,13 @@ class ElevMap:
                     self.cnt[addr] = min(self.cnt[addr] + 1, 15)
                 self.tag[addr] = tag
                 self.stamp[addr] = self.fc
+                self.stale[addr] = False
             if eof:
                 self.fc = (self.fc + 1) & 0xFF
 
     def word(self, a):
-        """打包成 RTL 存储字 {stamp, tag, cnt, zmin, zmax}（52 位）。"""
-        return ((int(self.stamp[a]) << 44) | (int(self.tag[a]) << 36) | (int(self.cnt[a]) << 32)
+        """53bit RTL字：{retained_stale,stamp,tag,cnt,zmin,zmax}。"""
+        return ((int(self.stale[a]) << 52) | (int(self.stamp[a]) << 44) | (int(self.tag[a]) << 36) | (int(self.cnt[a]) << 32)
                 | ((int(self.zmin[a]) & 0xFFFF) << 16) | (int(self.zmax[a]) & 0xFFFF))
 
 
@@ -139,7 +141,7 @@ def trav_analysis(em, cx, cy, cfg):
             slot[wy, wx] = a
             tag_ok = em.tag[a] == ((ty << TAGB) | tx)
             age = (fc - int(em.stamp[a])) & 0xFF
-            live = em.cnt[a] != 0 and tag_ok and age <= cfg["age_max"]
+            live = em.cnt[a] != 0 and tag_ok and not em.stale[a] and age <= cfg["age_max"]
             if em.cnt[a] != 0 and not live:
                 em.cnt[a] = 0
             valid[wy, wx] = live and em.cnt[a] >= cfg["cnt_min"]

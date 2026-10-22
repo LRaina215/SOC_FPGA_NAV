@@ -1,0 +1,126 @@
+--- a/fw/nav/nav_task.c
++++ b/fw/nav/nav_task.c
+@@ -553,12 +553,29 @@
+         nt->cmd_source=CMD_GROUND_SCAN;nt->prog_t_us=nt->last_ok_us=now;
+         if(!nt->scan_active) {
+             nt->scan_active=true;nt->scan_start_us=now;nt->scan_turned=0;nt->scan_last_yaw=p->yaw;
++            nt->scan_phase=3;nt->scan_bearing=fx_atan2(scan_gy-p->y,scan_gx-p->x);
+             nt->scan_dir=fx_angle_diff(p->yaw,fx_atan2(scan_gy-p->y,scan_gx-p->x))< -182?-1:1;
+         }
+         nt->scan_turned+=nt->scan_dir*fx_angle_diff(nt->scan_last_yaw,p->yaw);nt->scan_last_yaw=p->yaw;
+         if((uint32_t)(now-nt->scan_start_us)>24000000) nt->scan_failed=true;
+         bool feedback=nt->pose.have_odo && (uint32_t)(now-nt->pose.last_odo_us)<100000;
+-        if(!nt->scan_failed && feedback && !nt->scan_exit_valid &&
++        /* Observe both sides while still inside the original fixed bootstrap disk.
++         * Phase changes use measured yaw. No coverage is fabricated. */
++        if(nt->scan_phase==3) {
++            int32_t lx=scan_gx,ly=scan_gy;
++            if(pick_lookahead(nt,p,scan_gx,scan_gy,&lx,&ly)) {
++                int turn=nav_abs32(fx_angle_diff(nt->scan_bearing,fx_atan2(ly-p->y,lx-p->x)));
++                nt->scan_phase=turn>8192?0:2;
++            } else if(!astar_busy())nt->scan_phase=0;
++        }
++        angle_t scan_target=(angle_t)(nt->scan_bearing+(nt->scan_phase==0?10923:nt->scan_phase==1?-10923:0));
++        int scan_error=fx_angle_diff(p->yaw,scan_target);
++        if(feedback && nav_abs32(scan_error)<364 && nt->scan_phase<2) {
++            nt->scan_phase++;
++            scan_target=(angle_t)(nt->scan_bearing+(nt->scan_phase==1?-10923:0));
++            scan_error=fx_angle_diff(p->yaw,scan_target);
++        }
++        if(!nt->scan_failed && feedback && nt->scan_phase==2 && nav_abs32(scan_error)<364 && !nt->scan_exit_valid &&
+            nav_abs32(fx_angle_diff(p->yaw,fx_atan2(scan_gy-p->y,scan_gx-p->x)))<=8192) {
+             /* 一圈不是观测充分的证明：必须实际查到一条450mm支撑走廊。
+              * 375仅用于只读前推（1.2s=450mm），实际退出速度另限50。 */
+@@ -572,7 +589,10 @@
+                 nt->scan_exit_valid=true;
+             }
+         }
+-        if(!nt->scan_failed && feedback && !nt->scan_exit_valid) nt->cmd.wz=(int16_t)(nt->scan_dir*600);
++        if(!nt->scan_failed && feedback && nt->scan_phase!=3 && !nt->scan_exit_valid) {
++            int w=nav_clamp32(scan_error*12566/65536,-600,600);
++            if(nav_abs32(scan_error)>182)nt->cmd.wz=(int16_t)(w<0?nav_min32(-100,w):nav_max32(100,w));
++        }
+         if(nt->scan_exit_valid && feedback && nav_abs32(nt->pose.odo_wz)<=50 &&
+            nav_abs32(nt->pose.odo_vx)<=20 && nav_abs32(nt->pose.odo_vy)<=20) {
+             if(!nt->scan_settling) {nt->scan_settling=true;nt->scan_settle_us=now;}
+--- a/fw/nav/nav_task.h
++++ b/fw/nav/nav_task.h
+@@ -47,6 +47,8 @@
+     uint32_t scan_start_us,scan_settle_us;
+     bool scan_exit_valid;
+     int8_t scan_dir;
++    uint8_t scan_phase;
++    angle_t scan_bearing;
+     int32_t scan_exit_x,scan_exit_y;
+     explore_cfg_t  ex_cfg;
+ 
+--- a/fw/nav/pose.c
++++ b/fw/nav/pose.c
+@@ -1,5 +1,33 @@
+ #include "pose.h"
+ #include "hal.h"
++#include "support_guard.h"
++static uint32_t anchor_diag[6];
++void pose_anchor_diagnostics(uint32_t out[6]) {for(int i=0;i<6;i++)out[i]=anchor_diag[i];}
++
++/* Optional fallback uses explicitly remembered static contacts, never calls
++ * them fresh. Two confirmed wheel-center tiles plus fresh front references
++ * must agree under the unchanged20mm transition contract. */
++static bool anchor_contacts(pose_est_t *p,const nav_pose_t *at,int hw,int gain) {
++    hal_map_info_t mi,after;if(!hal_map_info(&mi) || !mi.inv_res)return false;
++    hal_support_t contact[2],front[2];uint32_t epoch=hal_time_us()/200000u;
++    for(int i=0;i<2;i++) {
++        int32_t x,y;pose_body_to_odom(at,0,i?-hw:hw,&x,&y);
++        if(!hal_map_support(x,y,&contact[i]) || contact[i].seq!=mi.seq || contact[i].count<2 || contact[i].hi-contact[i].lo+2>20) {anchor_diag[3]=3;return false;}
++        unsigned sx=(unsigned)(((int64_t)x*mi.inv_res)>>14)&3,sy=(unsigned)(((int64_t)y*mi.inv_res)>>14)&3;
++        if(!(contact[i].coverage&(1u<<(sy*4+sx)))){anchor_diag[3]=4;return false;}
++        pose_body_to_odom(at,60,i?-hw:hw,&x,&y);
++        if(!hal_map_support(x,y,&front[i]) || front[i].seq!=mi.seq || front[i].retained_stale || front[i].age>60 ||
++           support_transition(contact[i].lo,contact[i].hi,front[i].lo,front[i].hi,20,1)!=SUPPORT_PASS) {anchor_diag[3]=5;return false;}
++        unsigned fx=(unsigned)(((int64_t)x*mi.inv_res)>>14)&3,fy=(unsigned)(((int64_t)y*mi.inv_res)>>14)&3;
++        if(!(front[i].coverage&(1u<<(fy*4+fx)))){anchor_diag[3]=4;return false;}
++    }
++    if(support_transition(contact[0].lo,contact[0].hi,contact[1].lo,contact[1].hi,57,1)!=SUPPORT_PASS ||
++       !hal_map_info(&after) || after.seq!=mi.seq || after.cx!=mi.cx || after.cy!=mi.cy || after.inv_res!=mi.inv_res || hal_time_us()/200000u!=epoch) {anchor_diag[3]=6;return false;}
++    int target=((int)contact[0].lo+contact[0].hi+contact[1].lo+contact[1].hi)/4;
++    int e=target-p->cur.z;if(e>150 || e< -150){anchor_diag[3]=7;return false;}
++    int delta=nav_clamp32(e*nav_min32(gain,32)/256,-2,2);
++    pose_correct_delta(p,0,0,delta,0);anchor_diag[1]++;anchor_diag[3]=1;anchor_diag[4]=target;anchor_diag[5]=delta;return true;
++}
+ 
+ static void hist_push(pose_est_t *p)
+ {
+@@ -282,10 +310,14 @@
+         pose_body_to_odom(at, SX[i] * hl, SY[i] * hw, &ox, &oy);
+         if (hal_map_height(ox, oy, &h)) { sum += h; n++; }
+     }
+-    if (n < 3) return;
++    if (n < 3) {
++        if(!anchor_contacts(p,at,hw,gain_q8))anchor_diag[2]++;
++        return;
++    }
+     int32_t e = sum / n - p->cur.z;                 /* 地图说机器人应在的高度 - 估计高度 */
+     if (e > 150 || e < -150) return;                /* 离谱的差值：多半是轮下格被障碍占据，不用 */
+     pose_correct_delta(p, 0, 0, e * gain_q8 / 256, 0);
++    anchor_diag[0]++;anchor_diag[3]=0;
+ }
+ 
+ void pose_body_to_odom(const nav_pose_t *at, int32_t bx, int32_t by, int32_t *ox, int32_t *oy)
+--- a/fw/nav/pose.h
++++ b/fw/nav/pose.h
+@@ -80,6 +80,7 @@
+  * 用它把位姿 z 拉向地图，消除里程计高度积分漂移造成的"新旧观测高差"（假台阶）。 */
+ void pose_anchor_z(pose_est_t *p, int32_t half_len_mm, int32_t half_wid_mm, int32_t gain_q8);
+ void pose_anchor_z_at(pose_est_t *p,const nav_pose_t *at,int32_t hl,int32_t hw,int32_t gain_q8);
++void pose_anchor_diagnostics(uint32_t out[6]);
+ /* 机身系点 -> 里程计系点 */
+ void pose_body_to_odom(const nav_pose_t *at, int32_t bx, int32_t by, int32_t *ox, int32_t *oy);
+ 
+--- a/fw/test/hal_py.c
++++ b/fw/test/hal_py.c
+@@ -450,3 +450,5 @@
+     s_hout_n++;
+     return true;
+ }
++
++EXPORT void py_get_anchor_diagnostics(uint32_t *out) {pose_anchor_diagnostics(out);}

@@ -66,14 +66,17 @@ def run_test(name):
     cmd = ["cmd", "/c", bat("xelab"), "-debug", "off", "-timescale", "1ns/1ps", t["top"], "-s", "snap"]
     for k, v in t.get("generics", {}).items():
         cmd += ["-generic_top", f"{k}={v}"]
-    if sh(cmd, wd, wd / "xelab.log"):
-        return False, f"xelab 失败，见 {wd / 'xelab.log'}"
-    sh(["cmd", "/c", bat("xsim"), "snap", "-R"], wd, wd / "xsim.log")
-    out = (wd / "xsim.log").read_text(encoding="utf-8", errors="replace")
+    if sh(cmd, wd, wd / "xelab_stdout.log"):
+        return False, f"xelab 失败，见 {wd / 'xelab_stdout.log'}"
+    # Simulator also writes xsim.log itself. Capturing stdout to the same file
+    # causes concurrent writers and can corrupt/repeat timing evidence.
+    if sh(["cmd", "/c", bat("xsim"), "snap", "-R"], wd, wd / "xsim_stdout.log"):
+        return False, f"仿真进程失败，见 {wd / 'xsim_stdout.log'}"
+    out = (wd / "xsim_stdout.log").read_text(encoding="utf-8", errors="replace")
     if "TEST FAILED" in out or "Fatal" in out or "FATAL" in out or "ERROR:" in out:
-        return False, f"仿真失败，见 {wd / 'xsim.log'}"
+        return False, f"仿真失败，见 {wd / 'xsim_stdout.log'}"
     if "TEST PASSED" not in out:
-        return False, f"未见 TEST PASSED，见 {wd / 'xsim.log'}"
+        return False, f"未见 TEST PASSED，见 {wd / 'xsim_stdout.log'}"
 
     if t.get("post"):
         rc = sh([PY, str(ROOT / t["post"][0])] + t["post"][1:] + env_args, ROOT, wd / "post.log")

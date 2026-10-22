@@ -72,6 +72,7 @@ void loc_start_align(loc_t *l, int32_t range_mm, int32_t range_ang);
 /* 生成下一批候选，返回个数；0 表示本帧搜索完毕，调用 loc_align_finish */
 int  loc_align_next(loc_t *l, hal_match_cand_t *cand, int kmax);
 void loc_align_feed(loc_t *l, const hal_match_cand_t *cand, const hal_match_res_t *res, int k);
+void loc_align_feed_generated(loc_t *l,const hal_match_res_t *res,int k);
 /* 判定：接受返回 true（res_* 有效，状态 -> OK）；否则准备下一帧重试（重试用尽 -> LOST） */
 bool loc_align_finish(loc_t *l, uint32_t now);
 /* 跟踪一帧；返回 true 表示刚判为丢失（调用方应开始重定位） */

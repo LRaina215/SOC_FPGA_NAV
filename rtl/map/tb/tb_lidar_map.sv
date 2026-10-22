@@ -12,7 +12,7 @@ module tb_lidar_map;
     logic [31:0] pose [0:14*8-1];
     logic [39:0] fexp [0:9600*8-1];
     logic [7:0]  cexp [0:NCELL*8-1];
-    logic [15:0] mcfg [0:18];
+    logic [15:0] mcfg [0:19];
     int n_pix, n_flt, n_frm;
 
     logic [143:0] cfg_r;
@@ -71,11 +71,11 @@ module tb_lidar_map;
         .clk(clk), .rst(rst), .cfg_enable(1'b1), .cfg_auto_sweep(1'b1), .cmd_sweep(1'b0), .cmd_clear(1'b0),
         .cfg_cx(cfg_cx), .cfg_cy(cfg_cy),
         .cfg_age_max(mcfg[0][7:0]), .cfg_cnt_min(mcfg[1][3:0]), .cfg_keep_r(mcfg[2][3:0]),
-        .cfg_step_max(mcfg[3]), .cfg_rough_max(mcfg[4]), .cfg_slope_rise(mcfg[5]), .cfg_jump(mcfg[6][7:0]),
+        .cfg_step_max(mcfg[3]), .cfg_step_high_only(mcfg[19][0]), .cfg_rough_max(mcfg[4]), .cfg_slope_rise(mcfg[5]), .cfg_jump(mcfg[6][7:0]),
         .cfg_drop_k(mcfg[7][4:0]), .cfg_drop_slope(mcfg[8][7:0]),
         .cfg_k_slope(mcfg[9][7:0]), .cfg_k_step(mcfg[10][7:0]), .cfg_k_rough(mcfg[11][7:0]),
         .cfg_fill_min(mcfg[12][3:0]), .cfg_fill_tol(mcfg[13][7:0]), .cfg_fill_cost(mcfg[14][7:0]),
-        .cfg_infl_r(mcfg[15][3:0]),
+        .cfg_infl_r(mcfg[15][3:0]), .cfg_infl_disk(mcfg[15][4]),
         .s_valid(f_valid), .s_ready(f_ready), .s_upd(f_upd), .s_addr(f_addr), .s_tag(f_tag), .s_z(f_z),
         .s_eof(f_eof), .s_cx(f_cx), .s_cy(f_cy),
         .a_re(a_re), .a_addr(a_addr), .a_q(a_q), .b_req(1'b0), .b_addr(14'd0), .b_ack(), .b_q(),

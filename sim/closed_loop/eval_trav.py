@@ -5,6 +5,7 @@
 用法: python sim/closed_loop/eval_trav.py [--trav v1 v2] [--set key=val ...]
 """
 import argparse
+import json
 import math
 import sys
 from pathlib import Path
@@ -19,6 +20,7 @@ import nav_fast as fast  # noqa: E402
 import nav_fixed as nf  # noqa: E402
 import sim_world as sw  # noqa: E402
 import world as W  # noqa: E402
+from evaluation import EVALUATION_VERSION, TerrainCounts  # noqa: E402
 
 RES = 65536 / 1311 / 1000
 
@@ -50,6 +52,8 @@ def evaluate(trav, cfg_over, verbose=True):
     fm = fpga_model.FpgaModel(trav=trav)
     fm.cfg.update(cfg_over)
     stats = {}
+    raw_stats = {}
+    all_counts = TerrainCounts()
     # 路线插值（每 0.25 m 一帧，朝向插值）
     poses = []
     for (x0, y0, a0), (x1, y1, a1) in zip(ROUTE[:-1], ROUTE[1:]):
@@ -80,6 +84,9 @@ def evaluate(trav, cfg_over, verbose=True):
         obs = inb & (cw != 255)
         lab = scene.gt_lookup(WX, WY)
         reg = regions(scene, WX, WY)
+        all_counts.add(lab, cw, fm.last_lethal, fm.view[1], inb)
+        for r in set(reg[inb].tolist()):
+            raw_stats.setdefault(r, TerrainCounts()).add(lab, cw, fm.last_lethal, fm.view[1], inb & (reg == r))
         use = obs & (lab != 2)
         pl = cw >= 254          # 判致命（用于误报）
         pb = cw >= 253          # 判不可走（含膨胀区，用于漏报：真致命格落在膨胀区里对机器人中心同样不可走）
@@ -109,6 +116,11 @@ def evaluate(trav, cfg_over, verbose=True):
     if verbose:
         print(f"{'合计':12s} {tot[0] + tot[1]:8d} {100 * fp:7.1f}% {tot[2] + tot[3]:8d} {100 * fn:7.1f}%   "
               f"可通行区未知比例 {100 * u[0] / max(1, u[1]):.1f}%")
+    stats["_evaluation"] = dict(version=EVALUATION_VERSION, terrain=all_counts.report(),
+                                regions={k: v.report() for k, v in sorted(raw_stats.items())})
+    if verbose:
+        print("独立分层统计（旧表格保留为历史口径）:")
+        print(json.dumps(stats["_evaluation"], ensure_ascii=False))
     return fp, fn, u[0] / max(1, u[1]), stats
 
 
@@ -116,7 +128,14 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--trav", nargs="+", default=["v1", "v2"])
     ap.add_argument("--set", nargs="*", default=[])
+    ap.add_argument("--out", help="保存分层评测 JSON")
     a = ap.parse_args()
     over = {k: int(v) for k, v in (s.split("=") for s in a.set)}
+    reports = {}
     for t in a.trav:
-        evaluate(t, over)
+        _, _, _, s = evaluate(t, over)
+        reports[t] = s["_evaluation"]
+    if a.out:
+        p = Path(a.out)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(json.dumps(dict(overrides=over, reports=reports), ensure_ascii=False, indent=2), encoding="utf-8")

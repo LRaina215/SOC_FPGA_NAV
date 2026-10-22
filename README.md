@@ -1,17 +1,21 @@
 # FPGA 导航子系统（嵌赛 2026 FPGA 选题 3）
 
-目标板：小梅哥 ACX750（高云 GW5AT-LV138PG484AC1/I0，器件版本 B）。架构依据《嵌赛-FPGA-选题3.pdf》第 13–14 页：
+目标板：小梅哥 ACX750（高云 GW5AT-LV138PG484AC1/I0；导航历史工程记录版本B，控制工程记录C，统一构建前核对实物）。架构依据《嵌赛-FPGA-选题3.pdf》第 13–14 页：
 感知、定位、规划、避障与轮腿控制都在这一块 FPGA 上完成（RTL + 软核），RK3588 只提供视觉目标与任务，**导航不依赖 RK3588**。
 
 ```text
 XT-M60 --UDP--> 帧接收 -> 深度转点云 -> 坐标变换 -> 滤波/栅格化 -> 滚动高程图 -> 可通行性分析 v3(代价图)
                                               \-> 竖直结构点 -> SLF 匹配定位(结构图/打分) --修正量--> 位姿
-BMI088 --SPI--> 采集 + 姿态估计（与底盘共用）                                      |
+BMI088 --I2C--> 既有控制采集/融合 --导航适配（待实现）                                      |
 RK3588 / PC --USB 串口（现在）/ P11 串口（计划）/ SFP（可选）--> 邮箱 -> 软核固件：定点导航(A*，记忆栅格) /
                                                     目标跟踪 / 探索 -> 局部规划 --(候选)--> 轨迹评估加速器
                                                                                   |
                               安全限幅/斜坡/看门狗/急停 -> vx vy wz -> 轮腿 RL 运动控制（同一 FPGA）-> odo -> 位姿
 ```
+
+上图是整车目标架构，当前导航与控制独立顶层尚未真实互连；完整证据见 [控制仓库审阅](docs/5_teams/control_repo_review_20261021.md)。
+
+**导航优化检查点（2026-10-21）：** 接受算法仍为冻结N1c。已追到窄缝危险格的原始像素，修正仿真射线地下偏差，保留低速探测及近目标受检重试；过短前视和253可搜索两项试验已撤回。最终保留AS实验，主机/RV128通过，新口径1/2到达、0碰撞，N1c对照2/2，N2仍未接受。CPU全循环与N3制动尚未验收，未上板。进度与失败证据见[任务规划](docs/1_plan/nav_optimization_plan.md)和[验证结果](docs/4_design/nav_optimization_results.md)。
 
 两种模式（选题 3 方案），局部高程图 / 可通行性分析 / 局部规划共用：
 
@@ -23,19 +27,20 @@ RK3588 / PC --USB 串口（现在）/ P11 串口（计划）/ SFP（可选）-->
 先验地图：卷尺量测或赛前扫图得到地图点云，`tools/map_tool.py` 转成 `.nvmp`；PC 或 RK3588 用 `tools/nav_host.py` 下发
 （PC 经板载 USB 串口即可下发地图、初始位姿、目标点、路径点并读状态）。
 
-## 现状一览（2026-10-01）
+## 现状一览（2026-10-21核对）
 
 | 部分 | 状态 |
 |---|---|
-| 导航子系统 RTL + 软核固件 | RTL 回归 15 项全部与 Python 定点模型逐位一致；固件主机测试通过；闭环仿真 50/50 到达 |
-| 真雷达 XT-M60 | 直连板子 10 帧/秒、坏帧 0、网口错误 0；软核自己当 TCP 客户端启动雷达，掉电重启后自动恢复 |
-| 雷达安装 | 实车正常正装、下俯 10°；固件与仿真已改，含 10° 固件的比特流已上板并接真雷达测试通过，装车后的安装标定还没做 |
-| 速度安全层 | 板上台架测试通过（限幅、斜坡、看门狗、软件急停、节拍序号；底盘尚未接入） |
-| 板级资源 | BSRAM 324 / 340（96%）、逻辑 18%、DSP 23%，50 MHz 约束下 Fmax 50.085 MHz、0 违例 |
-| IMU | 博世 BMI088（SPI、只出原始数据）；SPI 采集与姿态估计模块待写，现在比特流与固件里是过渡的串口 / WIT 通路 |
-| 底盘（轮腿 RL） | 接口已定义（`ch_*` / `odo_*` / `ext_stop`），整车顶层未接；底盘组技术路线已审阅 |
-| RK3588 | 报文已定义；FPGA 不改就能经板载 USB 串口联调（串口注入 2026-10-01 已上板通过，PC 侧测试了状态、目标点、地图包与 TARGET）；专用串口与以太网是计划 |
-| 先验地图 | 工具链与板上定位完成（仿真）；真实场地地图未做 |
+| 导航离线基线 | 严格新口径：原版27/50，接受N1c为28/50；历史50/50不能继续作为当前成绩 |
+| 当前N2g候选 | 统一命令检查和路径修复已实现，专项/主机/RV通过；长航点99.8s成功退化为240s超时，联合验收未过，未上板 |
+| 真雷达与R0主机接口 | 10月1日独立导航板级记录已通过雷达10Hz、启动恢复、主机状态/目标/地图/TARGET和SAFE台架测试 |
+| RL控制 | 已读 `Chenyudog/fpga@6443f56`：原4500模型、125Hz推理、四舵机、520双轮AB闭环、双速度UART均有源码；用户确认新接口已烧车 |
+| IMU | 控制工程已有BMI088 I2C及融合；导航仍是旧WIT UART入口，需要轴向、重力姿态和时间适配 |
+| 位流与版本 | 仓库唯一.fs头为10月19日，10月21日提交说明仍说不含新UART；车上版本与仓库文件对应待核实，不否定用户已部署确认 |
+| 同片集成 | 导航 `ch_*` / `odo_*` 尚未接真实控制；命令所有权、失联/停止语义、里程计和统一顶层待完成 |
+| 资源 | 导航旧布线BSRAM324/340；真实RL不能沿用旧5–6块估算，联合资源与时序是前置闸门 |
+| 装车验收 | 正常腿姿/雷达外参、真实响应/制动/通过性及整车自主导航仍需记录和验收 |
+| 后续方向 | G1接口与F1导航回归诊断并行，再做资源、执行响应、统一顶层、分级上车；详见 [当前总计划](docs/1_plan/system_integration_plan_20261021.md) |
 
 ## 文档导航
 
@@ -43,7 +48,7 @@ RK3588 / PC --USB 串口（现在）/ P11 串口（计划）/ SFP（可选）-->
 
 | 目录 | 给谁 | 文档 |
 |---|---|---|
-| `docs/1_plan/` 进度与计划 | 接手的人先读 roadmap | [roadmap](docs/1_plan/roadmap.md)、[integration_plan](docs/1_plan/integration_plan.md)（整车联调）、[mapping_plan](docs/1_plan/mapping_plan.md)（扫图） |
+| `docs/1_plan/` 进度与计划 | 接手先读新总计划与核对报告 | [当前总计划](docs/1_plan/system_integration_plan_20261021.md)、[roadmap](docs/1_plan/roadmap.md)（历史记录）、[integration_plan](docs/1_plan/integration_plan.md)（整车联调）、[mapping_plan](docs/1_plan/mapping_plan.md)（扫图） |
 | `docs/2_interface/` 接口（唯一真值） | 接口实现者 | [icd](docs/2_interface/icd.md)（接口定义）、[regmap](docs/2_interface/regmap.md)（寄存器表，自动生成）、[pinout](docs/2_interface/pinout.md)（引脚与接线） |
 | `docs/3_guide/` 操作手册 | 上板、改代码的人 | [hardware_guide](docs/3_guide/hardware_guide.md)（实机搭建与测试）、[board_bringup](docs/3_guide/board_bringup.md)（上板要点）、[dev_guide](docs/3_guide/dev_guide.md)（开发规范） |
 | `docs/4_design/` 设计与参数 | 算法开发者 | [algorithms](docs/4_design/algorithms.md)（仿真与算法记录）、[platform](docs/4_design/platform.md)（机器人 / 传感器 / 场地参数） |
@@ -104,5 +109,4 @@ python tools/nav_host.py --link uart:COM5 map field.nvmp    # PC 下发地图；
 
 ## 未完成 / 需实机确认
 
-见 [docs/1_plan/roadmap.md](docs/1_plan/roadmap.md) 第 7、8 节与 [docs/1_plan/integration_plan.md](docs/1_plan/integration_plan.md)。主要是：BMI088 的 SPI 采集与姿态估计；底盘整车顶层与接口冻结（第一版控制器要能转向）；
-雷达左右方向、深度定义与装车高度的板上核对；FPGA 资源（底盘、视频合入前要先压缩 BSRAM）；RK3588 链路；真实场地地图。
+以 [当前总计划](docs/1_plan/system_integration_plan_20261021.md) 为准：现有控制与导航的接口/时间/停止适配、同片资源和统一顶层、N2g新增退化修复，以及装车参数和真实响应验收。BMI088 I2C、原4500模型及转向接口已有实现，不再从零开发。RK3588任务与可选显示按资源和整车进度安排。

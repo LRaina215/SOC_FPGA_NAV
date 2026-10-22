@@ -1,15 +1,15 @@
 # 上板与实机接入步骤
 
 实物到货后的完整操作步骤（含通过标准与故障排查）见 [hardware_guide.md](hardware_guide.md)；本文件是开发侧的要点记录。
-过渡的 IMU 串口引脚已从 C20/D20（拨码开关 SW7/SW6）改到扩展口 P11 的 C18/C19；IMU 确认为 BMI088 后，P11 第 1–7 针改作它的 SPI 与中断（pinout v0.2）。
+**2026-10-21适用范围：** 本页旧命令和位流属于独立导航台架，不能直接替换车上控制位流。现有控制占用C18/C19等作为舵机，BMI088为P11-7/8上的I2C；旧SPI1–7计划撤销。当前导航工作区N2g尚未通过联合验收，上车先完成 [G1–G3](../1_plan/system_integration_plan_20261021.md) 和约束核对。
 雷达口 PHY 管理口 MDC R14、MDIO U21。全部引脚与电平见 [pinout.md](../2_interface/pinout.md)。
 
-## 0. 当前可直接上板的内容
+## 0. 历史导航独立台架构建（不是当前整车发布）
 
 `python gowin/syn/syn.py --board --app=nav --ram-kb=128` 综合、布局布线并生成比特流
 `gowin/syn/build_board/impl/pnr/nav_board_top.fs`（50 MHz，0 违例）：软核 + 导航固件 + 雷达口百兆 MAC（自写，不需要 IP）+
 完整点云链路 + 雷达口原始帧通道（软核 TCP 客户端启动雷达）。下载后：LED0 心跳；PC 经板载 USB 串口（921600）运行 `python tools/nav_uart.py COMx id`，应读到 `ID=0x4E415630`。
-最近一次构建：2026-10-01（固件含 10° 安装参数），布线 BSRAM 324 / 340、逻辑 18%、DSP 67 / 298，Fmax 50.085 MHz；已另存为 `D:\tools\nav_fw_128k_d1_10deg_20261001.fs`，尚未上板。
+最近一次构建：2026-10-01（固件含 10° 安装参数），布线 BSRAM 324 / 340、逻辑 18%、DSP 67 / 298，Fmax 50.085 MHz；已另存为 `D:\tools\nav_fw_128k_d1_10deg_20261001.fs`；后续10月1日上板结果见hardware_guide/roadmap。这是历史导航镜像，不是原4500控制或统一整车镜像。
 
 ## 1. 生成 IP（Gowin IDE → IP Core Generator），名字要和顶层一致
 

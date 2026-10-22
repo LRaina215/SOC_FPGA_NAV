@@ -141,6 +141,8 @@
     wire        p_MAP_ELEV_CMD;
     wire [31:0] i_MAP_ELEV_Q0;
     wire [31:0] i_MAP_ELEV_Q1;
+    wire [31:0] i_MAP_SUPPORT_Q;
+    wire [31:0] r_MAP_SUPPORT_STAMP;
     wire        p_TRAJ_CMD;
     wire [31:0] i_TRAJ_STAT;
     wire [31:0] r_TRAJ_CFG;
@@ -337,6 +339,8 @@
         .p_MAP_ELEV_CMD(p_MAP_ELEV_CMD),
         .i_MAP_ELEV_Q0(i_MAP_ELEV_Q0),
         .i_MAP_ELEV_Q1(i_MAP_ELEV_Q1),
+        .i_MAP_SUPPORT_Q(i_MAP_SUPPORT_Q),
+        .r_MAP_SUPPORT_STAMP(r_MAP_SUPPORT_STAMP),
         .p_TRAJ_CMD(p_TRAJ_CMD),
         .i_TRAJ_STAT(i_TRAJ_STAT),
         .r_TRAJ_CFG(r_TRAJ_CFG),
