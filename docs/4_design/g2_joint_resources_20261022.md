@@ -102,7 +102,7 @@ AX独立导航334/340与综合估计309均不能当整车数值；核心时序�
 | native32_raw_coverage_v2 | 339 / 100MHz | PNR实测339，353未布通，失败无时序 |
 | native32_raw_as_v2 | 339 / 原冻结网表 | 因已超过工作门槛取消，未取得PNR占用/时序 |
 | directed_local_as50 | 306 / 实际100MHz | 因内存与优先级取消PNR，仅保留综合值 |
-| directed_local_coverage50 | 314 / 实际100MHz | 宽RAM不拆分，仍在布线 |
+| directed_local_coverage50 | 314 / 实际100MHz | 可用内存再次不足1GiB，因已被双流水配对取代而取消PNR；没有物理结果 |
 | directed_pipe_coverage_effective50 | 314 / 实际50MHz | 单观测流水，中间版取消PNR |
 | directed_pipe2_coverage_effective50 | 314 / 实际50MHz | 双流水，拆分0，布局中 |
 | directed_pipe2_coverage_split1_effective50 | 复用上一网表，预计331 / 实际50MHz | 双流水，拆分1，同网表配对布局中 |
