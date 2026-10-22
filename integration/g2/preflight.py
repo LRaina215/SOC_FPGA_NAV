@@ -4,7 +4,7 @@ import re
 import subprocess
 
 
-def validate(tool,out,settings,frequency,wide_split):
+def validate(tool,out,settings,frequency,wide_split,extra_expected=None):
     out=Path(out);dump=out/'effective_options.tcl';script=out/'preflight.tcl'
     tail=f'saveto -all_options {{{dump.as_posix()}}}'
     script.write_text('\n'.join(settings+[tail])+'\n',encoding='utf-8',newline='\n')
@@ -19,4 +19,7 @@ def validate(tool,out,settings,frequency,wide_split):
     actual_split=int(option('convert_sdp32_36_to_sdp16_18'))
     assert actual_frequency==frequency,(actual_frequency,frequency)
     assert actual_split==wide_split,(actual_split,wide_split)
-    return dict(global_freq_mhz=actual_frequency,wide_split=actual_split,effective_options=str(dump))
+    extras={}
+    for name,expected in (extra_expected or {}).items():
+        extras[name]=int(option(name));assert extras[name]==expected,(name,extras[name],expected)
+    return dict(global_freq_mhz=actual_frequency,wide_split=actual_split,effective_options=str(dump),extra_options=extras)

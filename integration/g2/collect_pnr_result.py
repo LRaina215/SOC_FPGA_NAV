@@ -16,6 +16,7 @@ def collect(build,top='g2_top'):
         manifest=json.loads((build/'manifest.json').read_text()) if (build/'manifest.json').exists() else None)
     command=(p/'cmd.do').read_text(encoding='utf-8')
     r['actual_pnr_global_freq_mhz']=float(re.search(r'-global_freq\s+(\S+)',command)[1])
+    r['actual_pnr_replicate_resources']=bool(re.search(r'(?m)^-replicate(?:_resources)?(?:\s|$)',command))
     prj=build/'impl/gwsynthesis'/ (top+'.prj')
     if prj.exists():
         values={x.get('type'):x.get('value') for x in ET.parse(prj).getroot().findall('./OptionList/Option')}

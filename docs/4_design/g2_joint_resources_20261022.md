@@ -93,7 +93,9 @@ AX独立导航334/340与综合估计309均不能当整车数值；核心时序�
 
 双流水覆盖版综合314块，实际回读50MHz，控制48、CPU64、导航202均保留。与同50MHz的观测流水版相比，只增加精确单位适配，最坏综合到达45.705→28.413ns、SYN估计Fmax21.923→35.566MHz；新最坏路径是覆盖层中心坐标到维护RAM写入。该收益仅归综合估计，不作为PNR签核。见[双流水SYN](evidence/g2_20261022/directed_pipe2_coverage_effective50_synthesis.json)。
 
-展开实际双流水网表的314个BSRAM叶子，其中17个是32/36位SDPB/SDPX9B，均在导航侧。关闭拆分预计314，开启预计331，均低于336工作门槛。现在`directed_pipe2_coverage_effective50`与`directed_pipe2_coverage_split1_effective50`固定同一网表、器件、引脚、SDC及50MHz全局提示，只改宽RAM拆分；两者均通过映射接受并进入布局。331是按原语计算的预测，非实际PNR占用；是否改善布线待测，不将旧339块方案的经验直接外推。
+双流水源网表有314个BSRAM叶子。初次预测只计了导航17块宽SDP，漏掉控制IK的一块36bit只读pROMX9，错误预计331；审计器已修正为覆盖所有宽存储物理模式。实际18块宽叶子逐对对应后PNR新增18块（7个SDPB、10个SDPX9B、1个pROMX9），全部原314个实例仍在，314＋18＝332。控制IK ROM36→两块18，未更改其表值或算法。见[逐实例实物理网表核对](evidence/g2_20261022/directed_pipe2_split1_physical_memories.json)。
+
+固定同一网表、器件、引脚、SDC、50MHz提示及复制关闭，拆分0实际314块/502未布通，拆分1实际332块/411未布通。两者均通过≤336存储占用，却都PR0004失败，无时序报告或联合Fmax。开启后的模块分解为CPU64、控制49、导航219；与源综合的64/48/202分开记录。不能把这次未布通数下降当作布线成功或统计通过率。
 
 为避免16GiB机器内存压力，AS逐存储版及中间单观测流水版主动取消剩余PNR，保留源码/综合/日志及取消记录。它们没有物理占用或Fmax结果，不记为布线失败；先集中完成容量更大的覆盖版，再构建可行配置的AS对照。
 
@@ -104,8 +106,10 @@ AX独立导航334/340与综合估计309均不能当整车数值；核心时序�
 | directed_local_as50 | 306 / 实际100MHz | 因内存与优先级取消PNR，仅保留综合值 |
 | directed_local_coverage50 | 314 / 实际100MHz | 可用内存再次不足1GiB，因已被双流水配对取代而取消PNR；没有物理结果 |
 | directed_pipe_coverage_effective50 | 314 / 实际50MHz | 单观测流水，中间版取消PNR |
-| directed_pipe2_coverage_effective50 | 314 / 实际50MHz | 双流水，拆分0，布局中 |
-| directed_pipe2_coverage_split1_effective50 | 复用上一网表，预计331 / 实际50MHz | 双流水，拆分1，同网表配对布局中 |
+| directed_pipe2_coverage_effective50 | 314 / 实际50MHz | 双流水拆分0，实际314，502条未布通，无时序 |
+| directed_pipe2_coverage_split1_effective50 | 复用上一网表 / 实际50MHz | 双流水拆分1，实际332，411条未布通，无时序 |
+| directed_static_coverage_effective50 | 314 / 实际50MHz | 加静态边界，仅综合完成，估计43.664MHz，非PNR |
+| directed_static_coverage_rep1_effective50 | 复用静态边界网表 / 实际50MHz | 拆分1、工具高负载复制1，布局中，最终占用/时序待测 |
 
 实际报告采集还要求clk50约束50MHz、rgmii_rxc约束100MHz及相应Fmax/违例检查；IO/CDC完整签核仍单列。没有报告时保留未知，不用综合或全局提示填充。
 
@@ -122,4 +126,12 @@ AX独立导航334/340与综合估计309均不能当整车数值；核心时序�
 | 原覆盖层 | 8 | 436 | 228 | 738 | 54.836MHz | 18.532ns |
 | 静态边界候选 | 8 | 546 | 502 | 301 | 112.120MHz | 9.233ns |
 
-见[模块原始综合摘录](evidence/g2_20261022/coverage_static_bounds_synthesis.json)。增加110个寄存器和274个ALU、减少437个LUT，不称零资源代价。孤立模块的54.836MHz与联合上下文的35.566MHz本就不同，不能把112.120MHz写成联合速度。尚未启动此候选的完整联合综合/PNR；当前双流水拆分0/1配对仍使用原覆盖维护实现，未被此原型改写。
+见[模块原始综合摘录](evidence/g2_20261022/coverage_static_bounds_synthesis.json)。增加110个寄存器和274个ALU、减少437个LUT，不称零资源代价。孤立模块的54.836MHz与联合上下文的35.566MHz本就不同，不能把112.120MHz写成联合速度。原双流水0/1配对未被此候选改写。
+
+完整静态边界联合综合现已完成：314块（CPU64/控制48/导航202），LUT52931、ALU9714、寄存器38055；相同有效50MHz提示下，SYN估计35.566→43.664MHz、最坏到达28.413→23.216ns。新最坏路径是原BMI融合的egy→sqrt_value，尚无实际PNR时序，不能据此宣称BMI部署失败或改变其算法。见[完整联合SYN摘录](evidence/g2_20261022/directed_static_coverage_effective50_synthesis.json)。
+
+### 布线负载诊断与工具复制候选
+
+实际失败网表直接输入端口引用计数：控制复位9101、导航复位6528、观测复位4183、策略快照CE4032、观测提交CE3896。见[原始网表负载摘录](evidence/g2_20261022/directed_pipe2_split1_pin_loads.json)。脚本只计非时钟输入引用，不归并assign别名；这不是411条未布通网络名单。本次报告没有逐网未布通身份，不能确认这些信号就是失败根因。
+
+官方SUG1220说明`replicate_resources`可复制高负载资源以降低扇出、改善时序；基线实际关闭。`pnr_from_netlist.py`现支持SYN-only网表及显式复制选项，先回读有效配置再运行。对静态边界联合网表的复制1候选已启动，器件/引脚/SDC/50MHz和原4500算法/权重/125Hz不变；回读为50MHz、宽存储拆分1、复制1，实际PNR命令使用二进制选项`-replicate`（不是Tcl名`-replicate_resources`）。这是一项有负载依据的试验，不是已证实修复；是否复制何种实例、BSRAM是否仍≤336、布线及50/100MHz实际时序均待完整报告。

@@ -45,17 +45,21 @@ def inventory(build):
     if (build/'impl/pnr/g2_top.log').exists():log+='\n'+(build/'impl/pnr/g2_top.log').read_text(encoding='utf-8',errors='replace')
     pnr=re.search(r'The number\((\d+)\) of BSRAM',log)
     totals=Counter(x['path'].split('/')[1] for x in leaves)
-    wide=[x for x in leaves if x['primitive'] in {'SDPB','SDPX9B'} and
-          any(x['parameters'].get(k) in ('32','36') for k in ('BIT_WIDTH','BIT_WIDTH_0','BIT_WIDTH_1'))]
-    command=(build/'impl/pnr/cmd.do').read_text(encoding='utf-8')
+    # Read-only pROMX9 also uses the wide physical storage mode. Do not exclude
+    # ROMs based on the logical primitive name; verify the prediction after PNR.
+    wide=[x for x in leaves if any(x['parameters'].get(k) in ('32','36') for k in ('BIT_WIDTH','BIT_WIDTH_0','BIT_WIDTH_1'))]
+    command_file=build/'impl/pnr/cmd.do'
+    command=command_file.read_text(encoding='utf-8') if command_file.exists() else None
+    split='-convert_sdp32_36_to_sdp16_18' in command if command is not None else None
     return dict(build=str(build.resolve()),synthesis_report_bsram=syn.get('T_Bsram'),
         definition_bsram_count=sum(definitions.values()),expanded_bsram_count=len(leaves),
         pnr_bsram_demand=int(pnr[1]) if pnr else None,by_top_instance=dict(totals),
         by_primitive=dict(Counter(x['primitive'] for x in leaves)),
         wide32_36_count=len(wide),wide32_36_by_top=dict(Counter(x['path'].split('/')[1] for x in wide)),
-        pnr_wide_split_enabled='-convert_sdp32_36_to_sdp16_18' in command,
+        wide32_36_by_primitive=dict(Counter(x['primitive'] for x in wide)),
+        pnr_wide_split_enabled=split,
         predicted_split_bsram=len(leaves)+len(wide),
-        predicted_bsram_under_actual_option=len(leaves)+(len(wide) if '-convert_sdp32_36_to_sdp16_18' in command else 0),
+        predicted_bsram_under_actual_option=len(leaves)+(len(wide) if split else 0) if split is not None else None,
         reused_modules={k:v for k,v in multiplicity.items() if v>1},
         primitive_types=dict(primitive_types),leaves=leaves)
 

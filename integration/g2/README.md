@@ -12,6 +12,10 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 必须显式记录`--wide-split 0|1`（现默认0）。安装工具的旧实际PNR命令开启了32/36位存储拆分，八次构建的额外需求与宽叶子数量逐一相等。`pnr_from_netlist.py`可以固定已有网表，仅改该开关配对；`audit_netlist_memories.py`给出原语、位宽和层次归因。关闭拆分可避免重复占用，不改变算法/数据，但仍需实际资源和时序通过。
 
+宽叶还包括只读pROMX9等物理模式，不能仅按SDP名筛选；双流水实际为314＋18＝332（导航17/控制IK ROM1）。`audit_physical_memories.py`把后PNR的332个叶子与来源逐实例对齐，原314全在、18对拆分均匹配。`audit_pin_loads.py`只计实际网表直接非时钟输入引用，不代表未布通网络名单。
+
+`pnr_from_netlist.py`也可读取SYN-only构建，从实际PRJ/有效配置获取频率；`--replicate-resources 0|1`显式覆盖工具高负载资源复制，否则保持来源设置。预检回读复制选项，实际PNR二进制标志为`-replicate`。这是物理实现试验，不改RTL算法或权重，仍须重测实际占用/布线/时序。示例：`python integration/g2/pnr_from_netlist.py <SYN-build> --wide-split 1 --replicate-resources 1 --out <new-build>`。
+
 `--command-lease`加入NAV唯一owner的命令年龄/有界减速/实测停稳监管原型；原4500继续维持平衡。入口RTL与24项CRC/坏帧/断线/切换等合同见`test_command_lease.py`，默认500ms停稳窗口在合同测试中缩放到10ms。外部旧UART协议没有序号/session，不能因此声称旧协议具备防重放。资源结论须归到带该标志的共同工程。
 
 `--observation-pipeline`是隔离的轮速分子时序候选，生成器位于`control/tools/g2_observation_pipeline.py`。保持算法/数值及外部观测周期，仅写构建副本；原控制文件仍保留。`test_observation_equivalence.py`提供与原RTL四组符号、32帧逐周期比较，实际共同资源与时序另验。未指定标志时使用原观测RTL。
