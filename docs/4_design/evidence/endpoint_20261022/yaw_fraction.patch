@@ -1,0 +1,48 @@
+--- a/fw/nav/pose.c
++++ b/fw/nav/pose.c
+@@ -58,11 +58,15 @@
+         p->still_us = 0;
+     }
+     int32_t wzc = (int32_t)wz - (p->wz_bias_q8 + (p->wz_bias_q8 >= 0 ? 128 : -128)) / 256;
+-    if (p->still_us > 300000) wzc = 0;            /* 静止时不积分航向 */
++    if (p->still_us > 300000) { wzc = 0; p->yaw_rem = 0; }            /* 静止时不积分航向 */
+     /* 航向：没有 IMU 航向时用 wz 积分（mrad/s -> angle：65536 / (2pi*1000)） */
+     if (!p->imu_att_valid || (uint32_t)(t_us - p->imu_t_us) > 100000) {
+-        int64_t dth = (int64_t)wzc * dt * 65536 / 6283185 / 1000;
+-        p->cur.yaw = (angle_t)(p->cur.yaw + (int32_t)dth);
++        /* Keep sub-angle increments across feedback packets. Truncating each
++         * packet introduces a rate-dependent deadband (9.59mrad/s at 10ms). */
++        int64_t num = p->yaw_rem + (int64_t)wzc * dt * 65536;
++        int32_t dth = (int32_t)(num / 6283185000LL);
++        p->yaw_rem = num - (int64_t)dth * 6283185000LL;
++        p->cur.yaw = (angle_t)(p->cur.yaw + dth);
+     }
+     /* 机身速度按俯仰分解：水平分量 vx·cos(pitch)，高度 -vx·sin(pitch)（pitch>0 为低头），um 精度累加 */
+     int64_t cp = p->decomp_pitch ? fx_cos(p->cur.pitch) : Q14, sp = p->decomp_pitch ? fx_sin(p->cur.pitch) : 0;
+@@ -84,7 +88,7 @@
+ void pose_imu_att(pose_est_t *p, angle_t yaw, angle_t pitch, angle_t roll, bool yaw_valid, uint32_t t_us)
+ {
+     if (p->have_att && (int32_t)(t_us - p->imu_t_us) <= 0) return;
+-    if (yaw_valid) p->cur.yaw = yaw;
++    if (yaw_valid) { p->cur.yaw = yaw; p->yaw_rem = 0; }
+     /* 俯仰/横滚 α-β 滤波（α=1/4，β=1/32，按 50 Hz 采样）：姿态噪声会让整帧点云整体倾斜，远处地面高度逐帧跳动，
+      * 在高程图里形成假台阶；但一阶低通有滞后——原地转向时车体姿态以 10–20°/s 变化，0.16 s 的滞后就是 2–3°，
+      * 4 m 外的地面高差 15–20 cm（闭环仿真中理想传感器下误报率也到 12%）。α-β 同时估计角速度，匀速变化时无稳态滞后。 */
+@@ -146,6 +150,7 @@
+     p->cur.x = x;
+     p->cur.y = y;
+     p->cur.yaw = yaw;
++    p->yaw_rem = 0;
+     p->x_um = (int64_t)x * 1000;
+     p->y_um = (int64_t)y * 1000;
+ }
+--- a/fw/nav/pose.h
++++ b/fw/nav/pose.h
+@@ -24,6 +24,7 @@
+     nav_pose_t cur;
+     /* 亚毫米累计，避免积分截断误差 */
+     int64_t    x_um, y_um, z_um;
++    int64_t    yaw_rem; /* angle numerator remainder / 6283185000 */
+     /* 陀螺零偏：静止（轮速为零）持续 ZUPT_US 后，用角速度读数估计零偏并从此扣除 */
+     int32_t    wz_bias_q8;      /* mrad/s × 256 */
+     uint32_t   still_us;

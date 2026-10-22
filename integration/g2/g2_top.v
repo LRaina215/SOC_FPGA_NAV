@@ -133,13 +133,31 @@ module g2_top (
     wire irq, ch_valid, ch_stop, ch_wdog;
     wire signed [15:0] ch_vx,ch_wz,odo_vx,odo_wz;
     wire odo_valid;
-    reg signed [23:0] nav_forward_q12,nav_yaw_q12;
+    wire [15:0] ch_seq;
     wire signed [47:0] vx_product=$signed(ch_vx)*48'sd4096;
     wire signed [47:0] wz_product=$signed(ch_wz)*48'sd4096;
+`ifdef G2_COMMAND_LEASE
+    wire signed [23:0] nav_forward_q12,nav_yaw_q12;
+    wire signed [47:0] vx_rounded=vx_product<0?vx_product-500:vx_product+500;
+    wire signed [47:0] wz_rounded=wz_product<0?wz_product-500:wz_product+500;
+    wire signed [47:0] vx_converted=vx_rounded/1000,wz_converted=wz_rounded/1000;
+    // NAV is the sole owner in this G2 image. SAFE's raw command watchdog is
+    // authoritative; periodic SAFE output alone must not keep a stale lease.
+    command_lease_guard #(.CLK_HZ(CLK_HZ)) u_command_lease(
+        .clk(clk),.reset_n(~rst),.owner_select(2'd1),.source_id(2'd1),
+        .session_select(32'd1),.packet_session(32'd1),.packet_seq(ch_seq),
+        .valid(ch_valid),.source_fault(ch_wdog),.estop(ch_stop),
+        .forward_q12(vx_converted[23:0]),.yaw_q12(wz_converted[23:0]),
+        .feedback_valid(odo_valid),.measured_vx_mmps(odo_vx),.measured_wz_mradps(odo_wz),
+        .out_forward_q12(nav_forward_q12),.out_yaw_q12(nav_yaw_q12),
+        .armed(),.expired(),.stop_confirmed(),.age_ms(),.accepted_count(),.rejected_count(),.balance_enable());
+`else
+    reg signed [23:0] nav_forward_q12,nav_yaw_q12;
     always @(posedge clk) begin
         if(rst || ch_stop || ch_wdog)begin nav_forward_q12<=0;nav_yaw_q12<=0;end
         else if(ch_valid)begin nav_forward_q12<=vx_product/1000;nav_yaw_q12<=wz_product/1000;end
     end
+`endif
     control4500_core u_control(
         .clk(clk),.reset_n(~rst),.nav_forward_q12(nav_forward_q12),.nav_yaw_q12(nav_yaw_q12),
         .feedback_valid(odo_valid),.feedback_vx_mmps(odo_vx),.feedback_wz_mradps(odo_wz),
@@ -162,7 +180,7 @@ module g2_top (
         .h_tx_clk(h_tx_clk), .h_tx_rst(h_tx_rst), .h_tx_valid(h_tx_valid), .h_tx_data(h_tx_data),
         .h_tx_last(h_tx_last), .h_tx_ready(h_tx_ready),
         .imu_rx(imu_rxd), .imu_tx(),
-        .ch_vx(ch_vx), .ch_vy(), .ch_wz(ch_wz), .ch_mode(), .ch_stop(ch_stop), .ch_wdog(ch_wdog), .ch_valid(ch_valid), .ch_seq(),
+        .ch_vx(ch_vx), .ch_vy(), .ch_wz(ch_wz), .ch_mode(), .ch_stop(ch_stop), .ch_wdog(ch_wdog), .ch_valid(ch_valid), .ch_seq(ch_seq),
         .odo_valid(odo_valid), .odo_vx(odo_vx), .odo_vy(16'd0), .odo_wz(odo_wz),
         .ext_stop(4'd0)
     );

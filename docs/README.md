@@ -19,6 +19,7 @@
 | | [dev_guide.md](3_guide/dev_guide.md) | 开发规范：唯一真值、改动后必跑、新模块接入、地址空间、协作 |
 | `4_design/` 设计与参数 | [algorithms.md](4_design/algorithms.md) | 闭环仿真平台、算法改进记录、批量评测结果 |
 | | [g2_joint_resources_20261022.md](4_design/g2_joint_resources_20261022.md) | 原4500真实策略与导航共同工程资源、分解、无损优化和时序证据 |
+| | [endpoint_stop_20261022.md](4_design/endpoint_stop_20261022.md) | 航向数值反例、同版本终点配对、零偏/漂移和命令有效期故障注入 |
 | | [platform.md](4_design/platform.md) | 机器人 / 传感器 / 场地参数（已知 / 假设 / 待测） |
 | | [nav_optimization_results.md](4_design/nav_optimization_results.md) | 导航优化实施证据：独立判分、原版基线、参数来源、输入合同与迁移边界 |
 | | [local_map_terrain_feasibility_report_20261021.md](4_design/local_map_terrain_feasibility_report_20261021.md) | 真实地形/原4500条件性能力/地图决策三条证据，负空间反例及全部视频 |
