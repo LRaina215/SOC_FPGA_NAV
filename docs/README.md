@@ -4,9 +4,9 @@
 
 | 目录 | 文档 | 内容 |
 |---|---|---|
-| `1_plan/` 进度与计划 | [system_integration_plan_20261021.md](1_plan/system_integration_plan_20261021.md) | 当前总计划：复用原4500控制、导航回归修复、接口/资源闸门与整车分级验收 |
+| `1_plan/` 进度与计划 | [system_integration_plan_20261021.md](1_plan/system_integration_plan_20261021.md) | 唯一当前状态与顺序：检查点、G2联合资源、终点精度/命令有效期、后续验收 |
 | | [control_improvement_plan_20261021.md](1_plan/control_improvement_plan_20261021.md) | 控制侧专项：启动/失联/反馈整改、无损存储优化、执行响应与量化/蒸馏/架构分支 |
-| | [roadmap.md](1_plan/roadmap.md) | 当前状态、本机环境、踩过的坑、关键参数、BSRAM 预算、已知问题、后续任务（接手先读） |
+| | [roadmap.md](1_plan/roadmap.md) | 历史板级记录、本机环境与踩坑记录；不维护当前状态 |
 | | [nav_optimization_plan.md](1_plan/nav_optimization_plan.md) | 2026-10-21 导航优化执行规划：前后方案关系、离线验证边界、任务依赖、验收与实机迁移 |
 | | [terrain_map_feasibility_plan_20261021.md](1_plan/terrain_map_feasibility_plan_20261021.md) | 原4500坡/阶/沟真实接触试验、地图可行性分析及进度 |
 | | [integration_plan.md](1_plan/integration_plan.md) | 整车集成说明：当前系统、接口矩阵、联合资源、停止/时间合同；任务顺序见新总计划 |
@@ -18,6 +18,7 @@
 | | [board_bringup.md](3_guide/board_bringup.md) | 开发侧上板要点、IP 生成、有图模式与 PC 单独操作 |
 | | [dev_guide.md](3_guide/dev_guide.md) | 开发规范：唯一真值、改动后必跑、新模块接入、地址空间、协作 |
 | `4_design/` 设计与参数 | [algorithms.md](4_design/algorithms.md) | 闭环仿真平台、算法改进记录、批量评测结果 |
+| | [g2_joint_resources_20261022.md](4_design/g2_joint_resources_20261022.md) | 原4500真实策略与导航共同工程资源、分解、无损优化和时序证据 |
 | | [platform.md](4_design/platform.md) | 机器人 / 传感器 / 场地参数（已知 / 假设 / 待测） |
 | | [nav_optimization_results.md](4_design/nav_optimization_results.md) | 导航优化实施证据：独立判分、原版基线、参数来源、输入合同与迁移边界 |
 | | [local_map_terrain_feasibility_report_20261021.md](4_design/local_map_terrain_feasibility_report_20261021.md) | 真实地形/原4500条件性能力/地图决策三条证据，负空间反例及全部视频 |

@@ -1,4 +1,6 @@
-# 导航模块进度、交接要点与后续计划（接续工作请先读本文件）
+> 当前状态与执行顺序只维护在[整车总计划](system_integration_plan_20261021.md)。本文件保留各日期的历史证据，不作为新任务队列。
+
+# 导航历史记录与环境交接
 
 详细实验记录与数据见 [algorithms.md](../4_design/algorithms.md)，实物参数（机器人 / 传感器 / 场地，已知与假设）见 [platform.md](../4_design/platform.md)，
 上板步骤见 [board_bringup.md](../3_guide/board_bringup.md) 与 [hardware_guide.md](../3_guide/hardware_guide.md)（给硬件同学的逐步手册），接口见 [icd.md](../2_interface/icd.md)，引脚见 [pinout.md](../2_interface/pinout.md)。

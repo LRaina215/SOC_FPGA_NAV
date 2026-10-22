@@ -9,7 +9,8 @@
 // 总线：bus_req 保持到 bus_ack（单拍）；ack 后一拍内可撤销 req。按字访问，addr 为字节地址。
 module nav_subsystem #(
     parameter integer CLK_HZ = 100000000,  // 核心时钟频率（须为 1 MHz 整数倍；串口分频等按此换算）
-    parameter SIN_INIT = "sin_lut.hex"
+    parameter SIN_INIT = "sin_lut.hex",
+    parameter integer SUPPORT_COVERAGE_ENABLE = 1
 ) (
     input  wire        clk,             // 核心时钟 100 MHz
     input  wire        rst,
@@ -342,12 +343,17 @@ module nav_subsystem #(
         .busy(map_busy), .front(map_front), .seq(map_seq), .lat_cx(map_lcx), .lat_cy(map_lcy),
         .frame_cnt(map_fc), .map_ready(map_ready)
     );
+    generate if(SUPPORT_COVERAGE_ENABLE) begin : g_support
     support_coverage u_support(
         .clk(clk),.rst(rst),.clear((p_MAP_CMD & wd_q[1])|support_time_wrap),.age_epoch(support_epoch),
         .frame_start(p_LIDAR_POSE_COMMIT & !match_only),.frame_cx(r_MAP_CENTER_X),.frame_cy(r_MAP_CENTER_Y),
         .capture_epoch(r_MAP_SUPPORT_STAMP[6:0]),.capture_valid(r_MAP_SUPPORT_STAMP[7]),
         .s_valid(pf_valid & !match_only & map_pf_ready & r_MAP_CTRL[0]),.s_upd(pf_cov_upd),.s_ready(cov_ready),.s_addr(pf_cov_addr),
         .cpu_req(el_req & !cov_got),.cpu_addr(r_MAP_ELEV_ADDR[13:0]),.cpu_ack(cov_ack),.cpu_q(cov_q),.busy(cov_busy));
+    end else begin : g_no_support
+        assign cov_ready=1'b1;assign cov_busy=1'b0;
+        assign cov_ack=el_req & !cov_got;assign cov_q=32'd0;
+    end endgenerate
     assign i_MAP_STAT      = {map_seq, 14'd0, map_front, map_busy|cov_busy};
     // 高程图读：ELEV_CMD.READ 发起，完成后锁存到 ELEV_Q0/Q1 并置 DONE
     always @(posedge clk) begin
