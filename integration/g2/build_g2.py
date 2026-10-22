@@ -22,6 +22,7 @@ def main():
     ap.add_argument('--stage',choices=['syn','all'],default='syn')
     ap.add_argument('--packing',choices=['none','nav','control','both','ssram','hybrid','planes'],default='none')
     ap.add_argument('--command-lease',action='store_true',help='isolated command-age/stop gate, not accepted vehicle behavior')
+    ap.add_argument('--wide-split',type=int,choices=[0,1],default=0,help='explicit PNR wide-RAM split; 1 duplicates every 32/36-bit block')
     a=ap.parse_args();out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
     nav=out/'nav';nav.mkdir()
     shutil.copytree(ROOT/'rtl',nav/'rtl')
@@ -72,11 +73,11 @@ def main():
             f'set_option -include_path {{{(nav/"rtl/regs").as_posix()}}}',
             'set_option -top_module g2_top','set_option -output_base_name g2_top',
             'set_option -verilog_std v2001','set_option -frequency 50','set_option -print_all_synthesis_warning 1',
-            'set_option -looplimit 100000']
+            'set_option -looplimit 100000','set_option -convert_sdp32_36_to_sdp16_18 '+str(a.wide_split)]
     tcl += ['set_option -'+x+' 1' for x in ['use_sspi_as_gpio','use_mspi_as_gpio','use_ready_as_gpio','use_done_as_gpio','use_i2c_as_gpio','use_cpu_as_gpio']]
     tcl += ['set_option -place_option 1','set_option -route_option 0','run '+a.stage]
     (out/'run.tcl').write_text('\n'.join(tcl)+'\n',encoding='utf-8')
-    manifest=dict(nav_variant=a.nav,coverage_enabled=a.nav=='coverage',stage=a.stage,packing=a.packing,command_lease=a.command_lease,
+    manifest=dict(nav_variant=a.nav,coverage_enabled=a.nav=='coverage',stage=a.stage,packing=a.packing,command_lease=a.command_lease,wide_split=a.wide_split,
         device='GW5AT-LV138PG484AC1/I0',device_version='C',clock_core_mhz=50,synthesis_frequency_hint_mhz=50,
         control_commit='6443f5678b4de222c22cbf331b8396f7c8df6a41',control_weights_changed=False,
         source_files=[str(p) for p in files],programmed=False,
