@@ -1,0 +1,231 @@
+{
+  "schema": "full_center_v4.fixed_policy.v1",
+  "source_checkpoint": "/home/cyd/fpga/rl_ws2/_car_tools/results/logs/car_balance/full_center_v4/model_1000.pt",
+  "checkpoint_sha256": "29b12e353b84380fa57ed7c3f8928fb1d51e9df99c0fa01bd3f4aec2de5a8c03",
+  "extraction_report": "extraction_report.json",
+  "formats": {
+    "input": {
+      "signed_bits": 24,
+      "fraction_bits": 12
+    },
+    "activation": {
+      "signed_bits": 24,
+      "fraction_bits": 12
+    },
+    "output": {
+      "signed_bits": 24,
+      "fraction_bits": 12
+    },
+    "weight": {
+      "signed_bits": 16,
+      "fraction_bits": 12
+    },
+    "bias": {
+      "signed_bits": 32,
+      "fraction_bits": 24
+    },
+    "accumulator": {
+      "signed_bits": 48,
+      "fraction_bits": 24
+    }
+  },
+  "quantization": {
+    "parameters_and_float_inputs": "nearest ties-even (numpy.rint)",
+    "parameter_saturation": "reject overflow",
+    "input_saturation": "signed24, reported flag/count",
+    "accumulator": "exact dot plus bias; signed48 overflow rejected",
+    "requantization": "shift12 nearest ties-away-from-zero, then signed24 saturation BEFORE ELU"
+  },
+  "elu": {
+    "file": "elu.mem",
+    "words": 3073,
+    "alpha": 1,
+    "nonnegative": "identity",
+    "negative_index": "min(3072, (-x + 8) >> 4)",
+    "table": "np.rint((exp(-i/256)-1)*4096), i=0..3072; signed24 F12"
+  },
+  "memory_encoding": "lowercase fixed-width two's-complement hex; one word per line; no header",
+  "weight_order": "layer order below; row-major output neuron first, input index second",
+  "memories": {
+    "weights": {
+      "file": "weights.mem",
+      "words": 39936,
+      "hex_digits": 4,
+      "sha256": "00a468ae4e84bd5ef02d8ffb38996d05a8a4215de487aa070a369035eff1d983"
+    },
+    "bias": {
+      "file": "bias.mem",
+      "words": 425,
+      "hex_digits": 8,
+      "sha256": "7c1cdc8e968f3fb3c6ca87c3a5b652c0234d6ba3ba395e11ae4026af6c8a3a39"
+    },
+    "elu": {
+      "file": "elu.mem",
+      "words": 3073,
+      "hex_digits": 6,
+      "sha256": "415e521d23337743e3193b06e3bd2829815e533d768f8603dce38b5920355516"
+    }
+  },
+  "interface": {
+    "obs_size": 27,
+    "history_size": 135,
+    "history_order": "oldest to newest, 5 x 27",
+    "actor_input": "obs27 followed by latent3",
+    "obs_history_clipping": "unchanged simulator-supplied values",
+    "raw_actions": "6 signed24 F12, no action clamp",
+    "clipped_actions": "6 signed24 F12 clipped +/-4096",
+    "latent": "3 signed24 F12, no action clamp",
+    "layer_outputs": 425
+  },
+  "layers": [
+    {
+      "name": "encoder_0",
+      "input_size": 135,
+      "output_size": 128,
+      "activation": "elu",
+      "weight_offset": 0,
+      "weight_count": 17280,
+      "bias_offset": 0,
+      "bias_count": 128,
+      "expected_layer_output_offset": 0,
+      "weight_quantization_error": {
+        "max_abs": 0.0001220703125,
+        "mean_abs": 6.0857286853711734e-05,
+        "rmse": 7.036839712545635e-05
+      },
+      "bias_quantization_error": {
+        "max_abs": 2.9802322387695312e-08,
+        "mean_abs": 1.3556245903600939e-08,
+        "rmse": 1.628988787858783e-08
+      }
+    },
+    {
+      "name": "encoder_2",
+      "input_size": 128,
+      "output_size": 64,
+      "activation": "elu",
+      "weight_offset": 17280,
+      "weight_count": 8192,
+      "bias_offset": 128,
+      "bias_count": 64,
+      "expected_layer_output_offset": 128,
+      "weight_quantization_error": {
+        "max_abs": 0.0001220703125,
+        "mean_abs": 6.14866061965369e-05,
+        "rmse": 7.081890384839184e-05
+      },
+      "bias_quantization_error": {
+        "max_abs": 2.9802322387695312e-08,
+        "mean_abs": 1.7727870726957917e-08,
+        "rmse": 2.0394144482893143e-08
+      }
+    },
+    {
+      "name": "encoder_4",
+      "input_size": 64,
+      "output_size": 3,
+      "activation": "linear",
+      "weight_offset": 25472,
+      "weight_count": 192,
+      "bias_offset": 192,
+      "bias_count": 3,
+      "expected_layer_output_offset": 192,
+      "weight_quantization_error": {
+        "max_abs": 0.00012196041643619537,
+        "mean_abs": 5.830294886285022e-05,
+        "rmse": 6.785195560194157e-05
+      },
+      "bias_quantization_error": {
+        "max_abs": 1.4901161193847656e-08,
+        "mean_abs": 8.692344029744467e-09,
+        "rmse": 9.85619169125181e-09
+      }
+    },
+    {
+      "name": "actor_0",
+      "input_size": 30,
+      "output_size": 128,
+      "activation": "elu",
+      "weight_offset": 25664,
+      "weight_count": 3840,
+      "bias_offset": 195,
+      "bias_count": 128,
+      "expected_layer_output_offset": 195,
+      "weight_quantization_error": {
+        "max_abs": 0.00012206286191940308,
+        "mean_abs": 6.10614772227791e-05,
+        "rmse": 7.041191235568558e-05
+      },
+      "bias_quantization_error": {
+        "max_abs": 2.9802322387695312e-08,
+        "mean_abs": 1.4722900232300162e-08,
+        "rmse": 1.734016867513768e-08
+      }
+    },
+    {
+      "name": "actor_2",
+      "input_size": 128,
+      "output_size": 64,
+      "activation": "elu",
+      "weight_offset": 29504,
+      "weight_count": 8192,
+      "bias_offset": 323,
+      "bias_count": 64,
+      "expected_layer_output_offset": 323,
+      "weight_quantization_error": {
+        "max_abs": 0.00012203678488731384,
+        "mean_abs": 6.082115089395268e-05,
+        "rmse": 7.029222965067965e-05
+      },
+      "bias_quantization_error": {
+        "max_abs": 2.9802322387695312e-08,
+        "mean_abs": 1.4850002116872929e-08,
+        "rmse": 1.708990186154409e-08
+      }
+    },
+    {
+      "name": "actor_4",
+      "input_size": 64,
+      "output_size": 32,
+      "activation": "elu",
+      "weight_offset": 37696,
+      "weight_count": 2048,
+      "bias_offset": 387,
+      "bias_count": 32,
+      "expected_layer_output_offset": 387,
+      "weight_quantization_error": {
+        "max_abs": 0.00012184679508209229,
+        "mean_abs": 6.254178500386676e-05,
+        "rmse": 7.158546424087617e-05
+      },
+      "bias_quantization_error": {
+        "max_abs": 2.9802322387695312e-08,
+        "mean_abs": 1.3969838619232178e-08,
+        "rmse": 1.589229046048738e-08
+      }
+    },
+    {
+      "name": "actor_6",
+      "input_size": 32,
+      "output_size": 6,
+      "activation": "linear",
+      "weight_offset": 39744,
+      "weight_count": 192,
+      "bias_offset": 419,
+      "bias_count": 6,
+      "expected_layer_output_offset": 419,
+      "weight_quantization_error": {
+        "max_abs": 0.00012045726180076599,
+        "mean_abs": 5.888751790431949e-05,
+        "rmse": 6.833966148064926e-05
+      },
+      "bias_quantization_error": {
+        "max_abs": 2.9802322387695312e-08,
+        "mean_abs": 1.5522042910257976e-08,
+        "rmse": 1.8059014742882287e-08
+      }
+    }
+  ],
+  "vectors_manifest": "vectors/manifest.json",
+  "verification_scope": "Offline software reference; not a hardware or closed-loop claim"
+}

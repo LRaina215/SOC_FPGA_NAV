@@ -1,0 +1,133 @@
+{
+  "source": "/home/cyd/fpga/tools/fpga_telemetry/logs/fpga_20261017_213102.csv",
+  "fits": {
+    "left": {
+      "samples": 3869,
+      "acceleration_coefficients": [
+        3.885786073800066,
+        8.260199400044769,
+        0.09068445655193988
+      ],
+      "tau_s": 0.12106245280163336,
+      "gain_mps_per_full_duty": 0.4704227931566647,
+      "one_step_accel_rmse": 1.3491848333721836
+    },
+    "right": {
+      "samples": 3923,
+      "acceleration_coefficients": [
+        5.232819650647254,
+        9.19159562529208,
+        -0.09382618220556438
+      ],
+      "tau_s": 0.10879503850760656,
+      "gain_mps_per_full_duty": 0.5693048153955284,
+      "one_step_accel_rmse": 1.3800694881195723
+    }
+  },
+  "model_warning": "closed-loop observational fit with body-motion confounding; not uniquely identified physical motor",
+  "uncertainty": "chosen +/-25% gain, +/-30% tau around both side fits; not statistical bounds",
+  "plant_count": 18,
+  "candidate_count": 513,
+  "nominal_simulation_target": {
+    "tau_s": 0.045,
+    "delay_s": 0.01
+  },
+  "baseline": {
+    "gains": [
+      2.5,
+      0.35,
+      2.0,
+      0.8,
+      100
+    ],
+    "score": 5.294808299672967,
+    "mean_squared_tracking_integral": 0.03566692681234755,
+    "max_overshoot_mps": 0.01831131379761386
+  },
+  "selected": {
+    "gains": [
+      4.0,
+      0.35,
+      0.5,
+      3.5,
+      600
+    ],
+    "score": 0.007520247281947752,
+    "mean_squared_tracking_integral": 0.0032262572058085527,
+    "max_overshoot_mps": 0.021818937433673913,
+    "relative_score_change": -0.9985796941350242,
+    "motor_faults": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "top5": [
+    {
+      "gains": [
+        4.0,
+        0.35,
+        0.5,
+        3.5,
+        600
+      ],
+      "score": 0.007520247281947752
+    },
+    {
+      "gains": [
+        4.0,
+        0.35,
+        0.0,
+        3.5,
+        600
+      ],
+      "score": 0.007558571312155357
+    },
+    {
+      "gains": [
+        6.0,
+        0.35,
+        1.0,
+        3.5,
+        600
+      ],
+      "score": 0.007709734605917449
+    },
+    {
+      "gains": [
+        6.0,
+        0.35,
+        0.5,
+        3.5,
+        600
+      ],
+      "score": 0.007712887266001205
+    },
+    {
+      "gains": [
+        6.0,
+        0.35,
+        0.0,
+        3.5,
+        600
+      ],
+      "score": 0.007723049864506717
+    }
+  ],
+  "hardware_validated": false
+}

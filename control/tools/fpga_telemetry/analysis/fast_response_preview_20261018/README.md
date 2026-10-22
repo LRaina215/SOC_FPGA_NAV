@@ -1,0 +1,3 @@
+Same original4500 policy. Blue: original simulation. Orange: existing FPGA 10ms encoder/PID. Pink: proposed mixed count/period estimator 1ms publication and PID2ms, gain1. All hardware groups retain IMU10ms, servo20ms, policy8ms plus2ms application delay. Physics2ms: two interpolated1ms estimator ticks are an approximation. Motor stall torque0.30Nm and no-load speed1m/s remain unmeasured assumptions. PID I/D/filter/ramp and sample-based fault counters rescaled to preserve physical time constants. Not physical-board validation. No FPGA source or weights modified.
+
+Pink servo refresh changed to nominal5ms. Existing2ms physics grid applies ticks at alternating6/4ms intervals. Orange servo remains20ms. Other settings unchanged.

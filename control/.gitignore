@@ -1,0 +1,62 @@
+# Local credentials and machine settings
+.env
+.env.*
+*.pem
+*.key
+**/.sshcred
+/rl_ws/_car_tools/rc
+.vscode/
+*.gprj.user
+
+# Python/build caches and runtime output
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.log
+logs/
+*.csv
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.vvp
+*.vcd
+*.fst
+*.pid
+**/monitor_status.json
+**/preview_state.json
+
+# External reference downloads and separately installed SDKs
+/references/
+/rl_ws/IsaacGym_Preview_4_Package/
+/model/archive/
+
+# Gowin implementation intermediates; retain the latest programming artifact
+/fpga/impl/*
+!/fpga/impl/pnr/
+/fpga/impl/pnr/*
+!/fpga/impl/pnr/fpga.fs
+
+# Historical board build runs
+/rl_ws/vehicle_integration/board/gowin/runs/
+/rl_ws/vehicle_integration/tools/iverilog
+
+# Local recovery copies, old projects and installed SDK compatibility paths
+/_model_backups/
+/Documents/
+/fpga/bmi088/
+/rl_ws2/
+/tools/stackforce_velocity_backup/
+/pt_to_fpga/response_7000/
+*.o
+
+# Local diagnostics and reproducible evaluation snapshots
+**/evaluations/**/checkpoint.pt
+/fpga/build_2ms*_manifest.json
+/fpga/build_7000_manifest.json
+/fpga/latest_imu_build.json
+/tools/control_chain_review_20261019/sf_full_extract/
+/tools/fpga_telemetry/analysis/latest_fail_20261019/
+/tools/fpga_telemetry/analysis/shaking_20261018/
+/tools/fpga_telemetry/*.bak

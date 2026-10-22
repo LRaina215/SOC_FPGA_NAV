@@ -1,0 +1,77 @@
+<mujoco model="model4500_sim2sim">
+  <compiler angle="radian" autolimits="true" inertiafromgeom="false" balanceinertia="false" />
+  <option timestep="0.002" gravity="0 0 -9.81" integrator="implicitfast" iterations="50" cone="elliptic" />
+  <visual>
+    <global offwidth="1280" offheight="900" />
+    <headlight ambient=".4 .4 .4" diffuse=".7 .7 .7" />
+  </visual>
+  <default>
+    <joint damping="0" armature="0" frictionloss="0" />
+    <geom friction=".6 .005 .0001" solref=".006 1" solimp=".9 .95 .001" condim="3" />
+  </default>
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" rgb1=".18 .22 .26" rgb2=".28 .33 .38" width="256" height="256" />
+    <material name="floor_mat" texture="grid" texrepeat="10 10" texuniform="true" reflectance=".1" />
+    <mesh name="mesh0" file="/home/cyd/fpga/rl_ws/Wheel-Legged-Gym-SF_small/resources/robots/chy/meshes/base.STL" />
+    <mesh name="mesh1" file="/home/cyd/fpga/rl_ws/Wheel-Legged-Gym-SF_small/resources/robots/chy/meshes/RightFrontUpper.STL" />
+    <mesh name="mesh2" file="/home/cyd/fpga/rl_ws/Wheel-Legged-Gym-SF_small/resources/robots/chy/meshes/RightFrontLower.STL" />
+    <mesh name="mesh3" file="/home/cyd/fpga/rl_ws/Wheel-Legged-Gym-SF_small/resources/robots/chy/meshes/RightWheel_link.STL" />
+    <mesh name="mesh4" file="/home/cyd/fpga/rl_ws/Wheel-Legged-Gym-SF_small/resources/robots/chy/meshes/LeftFrontUpper.STL" />
+    <mesh name="mesh5" file="/home/cyd/fpga/rl_ws/Wheel-Legged-Gym-SF_small/resources/robots/chy/meshes/LeftFrontLower.STL" />
+    <mesh name="mesh6" file="/home/cyd/fpga/rl_ws/Wheel-Legged-Gym-SF_small/resources/robots/chy/meshes/LeftWheel_link.STL" />
+  </asset>
+  <worldbody>
+    <light pos="0 -1 3" dir="0 .2 -1" directional="true" />
+    <geom name="floor" type="plane" size="20 20 .1" material="floor_mat" contype="0" conaffinity="1" />
+    <body name="base" pos="0.0 0.0 0.1305">
+      <freejoint name="root" />
+      <inertial mass="1.8267529733" pos="-0.076488696608 -0.045503244943 0.029811344562" fullinertia="0.0033122358854 0.0050979759235 0.0075202126611 1.0845890652e-05 2.1803288417e-06 3.4985722811e-05" />
+      <geom name="base_visual0" pos="0 0 0" euler="0 0 0" contype="0" conaffinity="0" group="2" rgba=".68 .72 .77 1" type="mesh" mesh="mesh0" />
+      <geom name="base_collision0" pos="0 0 0" euler="0 0 0" contype="1" conaffinity="0" group="3" rgba=".25 .35 .45 .3" type="mesh" mesh="mesh0" />
+      <body name="RightUpper_link" pos="0.0229 0.022468 0.033" euler="0 0 0">
+        <joint name="RightHip_joint" type="hinge" axis="1 0 0" range="-1.2 1.2" />
+        <inertial mass="0.055392784167" pos="0.017012641892 -0.03255748553 -0.025066258712" fullinertia="0.0002852939652 5.6053747949e-05 0.00028351493903 8.0360765172e-05 -4.151644631e-06 1.6643913363e-05" />
+        <geom name="RightUpper_link_visual0" pos="0 0 0" euler="0 0 0" contype="0" conaffinity="0" group="2" rgba=".68 .72 .77 1" type="mesh" mesh="mesh1" />
+        <geom name="RightUpper_link_collision0" pos="0.001567380066 0.01674691876 -0.03355280483" euler="-2.678648271 0 0" contype="1" conaffinity="0" group="3" rgba=".25 .35 .45 .3" type="capsule" size="0.005 0.0255" />
+        <body name="RightLower_link" pos="-1.009609063e-15 0.03349383753 -0.06710560966" euler="0 0 0">
+          <joint name="RightKnee_joint" type="hinge" axis="1 0 0" range="-2.0 2.0" />
+          <inertial mass="0.093331310153" pos="0.010700419962 -0.086362186134 -0.038648866785" fullinertia="0.00030244482804 0.00014778152467 0.00031630465122 0.00010220832071 -1.50125547e-05 -1.3426056961e-05" />
+          <geom name="RightLower_link_visual0" pos="0 0 0" euler="0 0 0" contype="0" conaffinity="0" group="2" rgba=".68 .72 .77 1" type="mesh" mesh="mesh2" />
+          <geom name="RightLower_link_collision0" pos="-0.007290200947 -0.05206742216 -0.03457214991" euler="2.156942261 0 0" contype="1" conaffinity="0" group="3" rgba=".25 .35 .45 .3" type="capsule" size="0.005 0.0505" />
+          <body name="RightWheel_link" pos="0.027 -0.1041348443 -0.06914429982" euler="0 0 0">
+            <joint name="RightWheel_joint" type="hinge" axis="-1 0 0" range="-1000 1000" />
+            <inertial mass="0.026992854554" pos="0.00094007132007 4.7431185536e-07 -2.8642121287e-06" fullinertia="2.0197103843e-05 1.1953631852e-05 1.1955963186e-05 -3.5882620171e-10 4.8965076845e-10 -5.2323689315e-09" />
+            <geom name="RightWheel_link_visual0" pos="0 0 0" euler="0 0 0" contype="0" conaffinity="0" group="2" rgba=".68 .72 .77 1" type="mesh" mesh="mesh3" />
+            <geom name="RightWheel_link_collision0" pos="0 0 0" euler="0 1.5707963268 0" contype="1" conaffinity="0" group="3" rgba=".25 .35 .45 .3" type="capsule" size="0.0325 0.009" />
+          </body>
+        </body>
+      </body>
+      <body name="LeftUpper_link" pos="-0.1844 0.022468 0.033" euler="0 0 0">
+        <joint name="LeftHip_joint" type="hinge" axis="-1 0 0" range="-1.2 1.2" />
+        <inertial mass="0.052886101771" pos="-0.017744776299 -0.023528787686 -0.019396257196" fullinertia="0.00029456800541 4.6138402275e-05 0.00030142569122 -8.1064474891e-05 -6.387092082e-06 -1.491493523e-05" />
+        <geom name="LeftUpper_link_visual0" pos="0 0 0" euler="0 0 0" contype="0" conaffinity="0" group="2" rgba=".68 .72 .77 1" type="mesh" mesh="mesh4" />
+        <geom name="LeftUpper_link_collision0" pos="-0.001567380066 0.03241167216 -0.01886089892" euler="-2.097813283 0 0" contype="1" conaffinity="0" group="3" rgba=".25 .35 .45 .3" type="capsule" size="0.005 0.0255" />
+        <body name="LeftLower_link" pos="0 0.06482334431 -0.03772179784" euler="0 0 0">
+          <joint name="LeftKnee_joint" type="hinge" axis="1 0 0" range="-2.0 2.0" />
+          <inertial mass="0.088767279423" pos="-0.011625494593 -0.082716296788 -0.05280913405" fullinertia="0.00030791987332 0.00014324157254 0.00032304195494 -0.000107340735 -9.3908480262e-06 -4.8926999644e-05" />
+          <geom name="LeftLower_link_visual0" pos="0 0 0" euler="0 0 0" contype="0" conaffinity="0" group="2" rgba=".68 .72 .77 1" type="mesh" mesh="mesh5" />
+          <geom name="LeftLower_link_collision0" pos="0.007290200947 -0.04670222825 -0.04153494765" euler="2.297700032 0 0" contype="1" conaffinity="0" group="3" rgba=".25 .35 .45 .3" type="capsule" size="0.005 0.0505" />
+          <body name="LeftWheel_link" pos="-0.027 -0.09340445651 -0.0830698953" euler="0 0 0">
+            <joint name="LeftWheel_joint" type="hinge" axis="1 0 0" range="-1000 1000" />
+            <inertial mass="0.02699380786" pos="-0.00094040158451 1.4671797677e-07 -2.3062122562e-07" fullinertia="2.019165875e-05 1.1953362592e-05 1.1950966155e-05 4.8449696536e-11 -4.6518601702e-11 5.0776577288e-10" />
+            <geom name="LeftWheel_link_visual0" pos="0 0 0" euler="0 0 0" contype="0" conaffinity="0" group="2" rgba=".68 .72 .77 1" type="mesh" mesh="mesh6" />
+            <geom name="LeftWheel_link_collision0" pos="0 0 0" euler="0 1.5707963268 0" contype="1" conaffinity="0" group="3" rgba=".25 .35 .45 .3" type="capsule" size="0.0325 0.009" />
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <general name="RightHip_joint_motor" joint="RightHip_joint" gear="1" gaintype="fixed" gainprm="60.0" biastype="affine" biasprm="0 -60 -0.06" forcelimited="true" forcerange="-1.96 1.96" />
+    <general name="RightKnee_joint_motor" joint="RightKnee_joint" gear="1" gaintype="fixed" gainprm="60.0" biastype="affine" biasprm="0 -60 -0.06" forcelimited="true" forcerange="-1.96 1.96" />
+    <general name="RightWheel_joint_motor" joint="RightWheel_joint" gear="1" gaintype="fixed" gainprm="0.025" biastype="affine" biasprm="0 -0 -0.025" forcelimited="true" forcerange="-0.5 0.5" />
+    <general name="LeftHip_joint_motor" joint="LeftHip_joint" gear="1" gaintype="fixed" gainprm="60.0" biastype="affine" biasprm="0 -60 -0.06" forcelimited="true" forcerange="-1.96 1.96" />
+    <general name="LeftKnee_joint_motor" joint="LeftKnee_joint" gear="1" gaintype="fixed" gainprm="60.0" biastype="affine" biasprm="0 -60 -0.06" forcelimited="true" forcerange="-1.96 1.96" />
+    <general name="LeftWheel_joint_motor" joint="LeftWheel_joint" gear="1" gaintype="fixed" gainprm="0.025" biastype="affine" biasprm="0 -0 -0.025" forcelimited="true" forcerange="-0.5 0.5" />
+  </actuator>
+</mujoco>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="car_open">
+  <!-- 由 car_closed.xml 派生的等价开链模型。
+       每侧: hip(75mm) -> knee(125mm) -> wheel，串联 2R，运动学与五连杆精确等价。
+       自动生成，请勿手工编辑。 -->
+  <link name="base">
+    <inertial><origin xyz="-0.07933812364 -0.02885379808 0.03075910492" rpy="0 0 0"/><mass value="0.4277185558"/>
+      <inertia ixx="0.001155975354" ixy="7.334507103e-06" ixz="1.327744555e-06" iyy="0.002235431321" iyz="2.1396203e-05" izz="0.00300496858"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="../meshes/base.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="../meshes/base.STL"/></geometry></collision>
+  </link>
+  <link name="RightUpper_link">
+    <inertial><origin xyz="0.001567380066 0.0137380467 -0.02751633281" rpy="0 0 0"/><mass value="0.01722213176"/>
+      <inertia ixx="1.347989316e-05" ixy="-3.377635853e-08" ixz="6.768112775e-08" iyy="1.02948632e-05" iyz="4.618417571e-06" izz="3.364185843e-06"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="../meshes/RightFrontUpper.STL"/></geometry></visual>
+    <collision><origin xyz="0.001567380066 0.01674691876 -0.03355280483" rpy="-2.678648271 0 0"/><geometry><cylinder radius="0.005" length="0.051"/></geometry></collision>
+  </link>
+  <link name="RightLower_link">
+    <inertial><origin xyz="-0.007290200947 -0.06387709846 -0.04238470538" rpy="0 0 0"/><mass value="0.0313569156"/>
+      <inertia ixx="5.98406094e-05" ixy="1.261612244e-06" ixz="8.365859891e-07" iyy="1.958655305e-05" iyz="-2.597141839e-05" izz="4.14339882e-05"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="../meshes/RightFrontLower.STL"/></geometry></visual>
+    <collision><origin xyz="-0.007290200947 -0.05206742216 -0.03457214991" rpy="2.156942261 0 0"/><geometry><cylinder radius="0.005" length="0.101"/></geometry></collision>
+  </link>
+  <link name="RightWheel_link">
+    <inertial><origin xyz="0.00392179 1.87685e-07 -3.70967e-07" rpy="0 0 0"/><mass value="0.0339959"/>
+      <inertia ixx="2.07024e-05" ixy="1.002099853e-10" ixz="1.399829063e-11" iyy="1.254113584e-05" iyz="-6.323464915e-10" izz="1.253886416e-05"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="../meshes/RightWheel_link.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 1.5707963268 0"/><geometry><cylinder radius="0.0325" length="0.018"/></geometry></collision>
+  </link>
+  <joint name="RightHip_joint" type="revolute">
+    <origin xyz="0.0229 0.022468 0.033" rpy="0 0 0"/>
+    <parent link="base"/><child link="RightUpper_link"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-1.2" upper="1.2" effort="1.96" velocity="20"/>
+  </joint>
+  <joint name="RightKnee_joint" type="revolute">
+    <origin xyz="-1.009609063e-15 0.03349383753 -0.06710560966" rpy="0 0 0"/>
+    <parent link="RightUpper_link"/><child link="RightLower_link"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-2.0" upper="2.0" effort="1.96" velocity="20"/>
+  </joint>
+  <joint name="RightWheel_joint" type="revolute">
+    <origin xyz="0.027 -0.1041348443 -0.06914429982" rpy="0 0 0"/>
+    <parent link="RightLower_link"/><child link="RightWheel_link"/>
+    <axis xyz="-1 0 0"/>
+    <limit lower="-1000" upper="1000" effort="1.0" velocity="100"/>
+  </joint>
+  <link name="LeftUpper_link">
+    <inertial><origin xyz="-0.001567380066 0.02658024094 -0.01547169318" rpy="0 0 0"/><mass value="0.01722213176"/>
+      <inertia ixx="1.347989316e-05" ixy="6.537959201e-08" ixz="-3.804058883e-08" iyy="3.982808777e-06" iyz="5.023401485e-06" izz="9.676240264e-06"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="../meshes/LeftFrontUpper.STL"/></geometry></visual>
+    <collision><origin xyz="-0.001567380066 0.03241167216 -0.01886089892" rpy="-2.097813283 0 0"/><geometry><cylinder radius="0.005" length="0.051"/></geometry></collision>
+  </link>
+  <link name="LeftLower_link">
+    <inertial><origin xyz="0.007290200947 -0.05726702399 -0.05096307409" rpy="0 0 0"/><mass value="0.0313569156"/>
+      <inertia ixx="5.98406094e-05" ixy="-1.130538774e-06" ixz="-1.006689451e-06" iyy="2.721146814e-05" iyz="-2.798142386e-05" izz="3.38090731e-05"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="../meshes/LeftFrontLower.STL"/></geometry></visual>
+    <collision><origin xyz="0.007290200947 -0.04670222825 -0.04153494765" rpy="2.297700032 0 0"/><geometry><cylinder radius="0.005" length="0.101"/></geometry></collision>
+  </link>
+  <link name="LeftWheel_link">
+    <inertial><origin xyz="-0.00392209 -3.10465e-07 2.3112e-06" rpy="0 0 0"/><mass value="0.0339969"/>
+      <inertia ixx="2.069609995e-05" ixy="-7.735318088e-11" ixz="6.53213163e-10" iyy="1.254022639e-05" iyz="1.824204048e-09" izz="1.253367366e-05"/></inertial>
+    <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="../meshes/LeftWheel_link.STL"/></geometry></visual>
+    <collision><origin xyz="0 0 0" rpy="0 1.5707963268 0"/><geometry><cylinder radius="0.0325" length="0.018"/></geometry></collision>
+  </link>
+  <joint name="LeftHip_joint" type="revolute">
+    <origin xyz="-0.1844 0.022468 0.033" rpy="0 0 0"/>
+    <parent link="base"/><child link="LeftUpper_link"/>
+    <axis xyz="-1 0 0"/>
+    <limit lower="-1.2" upper="1.2" effort="1.96" velocity="20"/>
+  </joint>
+  <joint name="LeftKnee_joint" type="revolute">
+    <origin xyz="0 0.06482334431 -0.03772179784" rpy="0 0 0"/>
+    <parent link="LeftUpper_link"/><child link="LeftLower_link"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-2.0" upper="2.0" effort="1.96" velocity="20"/>
+  </joint>
+  <joint name="LeftWheel_joint" type="revolute">
+    <origin xyz="-0.027 -0.09340445651 -0.0830698953" rpy="0 0 0"/>
+    <parent link="LeftLower_link"/><child link="LeftWheel_link"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-1000" upper="1000" effort="1.0" velocity="100"/>
+  </joint>
+</robot>

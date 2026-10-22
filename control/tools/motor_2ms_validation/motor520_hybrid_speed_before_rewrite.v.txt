@@ -1,0 +1,76 @@
+// 2ms M/T estimator. Uses synchronized quadrature position from motor520_speed.
+// >=4 net edges: count/window; low speed: last same-direction edge period,
+// with max(period,edge age) decay. Two edges required after start/reversal.
+// Existing10ms raw count path remains dedicated to the4500 model observation.
+module motor520_hybrid_speed #(
+ parameter integer CLK_HZ=50000000,SAMPLE_CYCLES=100000,
+ parameter integer ENCODER_CPR=1320,WHEEL_DIAMETER_UM=65000,ENCODER_SIGN=1,
+ parameter integer STOP_CYCLES=2500000,COUNT_THRESHOLD=4
+)(input wire clk,reset_n,input wire signed[31:0] position,
+ output reg signed[31:0] speed_mmps,output reg signed[15:0] speed_cms,
+ output reg sample_valid);
+ localparam [63:0] CIRC=(64'd1*WHEEL_DIAMETER_UM*3141593+500000)/1000000;
+ localparam [63:0] SPEED_NUM=CIRC*CLK_HZ;
+ localparam [63:0] BASE_DEN=64'd1*ENCODER_CPR*1000;
+ reg signed[31:0] last_position,window_position;
+ wire signed[31:0] edge_delta=position-last_position;
+ wire signed[31:0] window_delta=position-window_position;
+ reg [31:0] age,period,timer;
+ reg have_edge,period_valid,direction;
+ wire edge_now=edge_delta!=0;
+ wire next_direction=edge_delta[31];
+ wire usable_period=period_valid && (!edge_now || next_direction==direction);
+ wire [31:0] effective_period=edge_now ? age+1 : (age>period ? age : period);
+ wire [31:0] count_abs=window_delta[31] ? -window_delta : window_delta;
+ reg [63:0] dividend,divisor,quotient,remainder;
+ reg [63:0] captured_num,captured_den;
+ reg negative;
+ reg [6:0] bits_left;
+ reg [2:0] state;
+ wire [64:0] trial={remainder,dividend[63]};
+ wire take=trial>={1'b0,divisor};
+ wire [64:0] reduced=take ? trial-{1'b0,divisor} : trial;
+ always @(posedge clk) begin
+  sample_valid<=0;
+  if(!reset_n) begin
+   last_position<=0;window_position<=0;age<=STOP_CYCLES;period<=0;timer<=0;
+   have_edge<=0;period_valid<=0;direction<=0;state<=0;
+   captured_num<=0;captured_den<=1;dividend<=0;divisor<=1;quotient<=0;remainder<=0;
+   negative<=0;bits_left<=0;speed_mmps<=0;speed_cms<=0;
+  end else begin
+   last_position<=position;
+   if(age<STOP_CYCLES) age<=age+1'b1;
+   if(age>=STOP_CYCLES) begin have_edge<=0;period_valid<=0;end
+   if(edge_now) begin
+    period_valid<=have_edge && next_direction==direction && age<STOP_CYCLES;
+    period<=age+1'b1;age<=0;have_edge<=1;direction<=next_direction;
+   end
+   if(timer==SAMPLE_CYCLES-1) begin
+    timer<=0;window_position<=position;
+    if(count_abs>=COUNT_THRESHOLD) begin
+     captured_num<=count_abs*SPEED_NUM;captured_den<=BASE_DEN*SAMPLE_CYCLES;
+     negative<=window_delta[31] ^ (ENCODER_SIGN<0);
+    end else if(usable_period && age<STOP_CYCLES && effective_period!=0) begin
+     captured_num<=SPEED_NUM;captured_den<=BASE_DEN*effective_period;
+     negative<=direction ^ (ENCODER_SIGN<0);
+    end else begin captured_num<=0;captured_den<=1;negative<=0;end
+    state<=1;
+   end else timer<=timer+1'b1;
+   case(state)
+    1:begin dividend<=captured_num+(captured_den>>1);divisor<=captured_den;quotient<=0;remainder<=0;bits_left<=64;state<=2;end
+    2:begin
+     dividend<={dividend[62:0],1'b0};quotient<={quotient[62:0],take};remainder<=reduced[63:0];
+     bits_left<=bits_left-1'b1;if(bits_left==1) state<=3;
+    end
+    3:begin
+     speed_mmps<=negative ? -$signed(quotient>32767 ? 32'd32767 : quotient[31:0]) : $signed(quotient>32767 ? 32'd32767 : quotient[31:0]);
+     state<=4;
+    end
+    4:begin
+     speed_cms<=speed_mmps<0 ? -((-speed_mmps+5)/10) : (speed_mmps+5)/10;
+     sample_valid<=1;state<=0;
+    end
+   endcase
+  end
+ end
+endmodule

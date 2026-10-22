@@ -1,0 +1,22 @@
+{
+  "urdf": "/home/cyd/fpga/rl_ws/Wheel-Legged-Gym-SF_small/resources/robots/chy/urdf/chy.urdf",
+  "urdf_sha256": "8fc9a5e0c483f4b34f647d8e001fe3909b1919dd84154f5d2846df8b6e6f3457",
+  "total_mass_kg": 2.171117111228,
+  "nq": 13,
+  "nv": 12,
+  "joints": [
+    "root",
+    "RightHip_joint",
+    "RightKnee_joint",
+    "RightWheel_joint",
+    "LeftHip_joint",
+    "LeftKnee_joint",
+    "LeftWheel_joint"
+  ],
+  "caveats": [
+    "MuJoCo contact solver differs from PhysX; no claim of contact equivalence.",
+    "Ground sliding friction .6; restitution .15 has no direct identical mapping.",
+    "Cylinder-to-capsule conversion follows the training asset option.",
+    "Native affine actuators preserve saturated PD gains; damping integrated implicitly."
+  ]
+}

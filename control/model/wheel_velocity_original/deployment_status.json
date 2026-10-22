@@ -1,0 +1,19 @@
+{
+  "status": "completed",
+  "baseline": "/home/cyd/fpga/model/reference/training_config.json",
+  "directory": "/root/autodl-tmp/car_original_velocity",
+  "output": "logs/original_velocity_v1",
+  "pid": 5909,
+  "iterations": 3000,
+  "num_envs": 4096,
+  "from_scratch": true,
+  "configuration_changes": [
+    "control.wheel_control: torque -> velocity",
+    "control.vel_action_scale: 20 -> 0.6/0.0325"
+  ],
+  "preflight_passed": true,
+  "observed_at": "2026-10-15T01:59:14.173042+08:00",
+  "last_observed_iteration": 3000,
+  "local_checkpoint": "/home/cyd/fpga/model/wheel_velocity_original/model_3000.pt",
+  "checkpoint_sha256": "6faa8670bc5bc5515ac91b120da0ba5261e397a0a7bec11242661bacb46781d6"
+}

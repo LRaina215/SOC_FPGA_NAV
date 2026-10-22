@@ -1,0 +1,387 @@
+{
+  "schema": "full_center_v4.fixed_vectors.v1",
+  "format": "signed24 F12",
+  "ordering": "sample-major, one hex word/line",
+  "inputs": "obs27 then history135 oldest-to-newest",
+  "expected_layers": "encoder_0[128],encoder_2[64],encoder_4[3],actor_0[128],actor_2[64],actor_4[32],actor_6[6]; post-ELU for hidden layers",
+  "expected_saturated": "one logical boolean per sample in a signed24 F0 word, shape(N,1); any pre-ELU signed24 saturation across seven layers, excluding input saturation and final action clipping",
+  "layer_offsets": {
+    "encoder_0": 0,
+    "encoder_2": 128,
+    "encoder_4": 192,
+    "actor_0": 195,
+    "actor_2": 323,
+    "actor_4": 387,
+    "actor_6": 419
+  },
+  "datasets": {
+    "synthetic": {
+      "samples": 256,
+      "files": {
+        "inputs": {
+          "file": "inputs.mem",
+          "words_per_sample": 162,
+          "words": 41472,
+          "sha256": "3359833b0e27700775e8852dca13ac244978e6220c227c9d2df72a01d3d9853a"
+        },
+        "expected_layers": {
+          "file": "expected_layers.mem",
+          "words_per_sample": 425,
+          "words": 108800,
+          "sha256": "cc2bc7953976c4e0d5322f8afb57405f4465a1e09dd2f2abecb99f8abed34203"
+        },
+        "expected_raw": {
+          "file": "expected_raw.mem",
+          "words_per_sample": 6,
+          "words": 1536,
+          "sha256": "de32d93b5072ee4e3d320183a6a388abcd6a94304e738ec59ea3bd0f7d3db48f"
+        },
+        "expected_clipped": {
+          "file": "expected_clipped.mem",
+          "words_per_sample": 6,
+          "words": 1536,
+          "sha256": "1de3f6ac938d05d91664ee6a9c3e64b7ed86a67d8eab437d19c7bf04f2c30a1b"
+        },
+        "expected_latent": {
+          "file": "expected_latent.mem",
+          "words_per_sample": 3,
+          "words": 768,
+          "sha256": "45d303ce4c9bf14c343f44c6edea99a10df9547db59b68726bf6febac0b4b443"
+        },
+        "expected_saturated": {
+          "file": "expected_saturated.mem",
+          "words_per_sample": 1,
+          "words": 256,
+          "sha256": "9b2d7fe5ba9d96ad6feae4a249bb69f53597ab941ffbfb29816df0e93be7aeb2",
+          "signed_bits": 24,
+          "fraction_bits": 0,
+          "hex_digits": 6,
+          "encoding": "000000=false; 000001=true",
+          "semantics": "any pre-ELU signed24 saturation across seven layers; excludes input saturation and final action clipping"
+        }
+      },
+      "npz": "fixed_vectors.npz",
+      "directory": ".",
+      "source": "exporter synthetic seed6701"
+    },
+    "stress": {
+      "samples": 8,
+      "files": {
+        "inputs": {
+          "file": "inputs.mem",
+          "words_per_sample": 162,
+          "words": 1296,
+          "sha256": "44a56735441936318e26043cfd2717e11847487550bd3c336cb2badd07d555c1"
+        },
+        "expected_layers": {
+          "file": "expected_layers.mem",
+          "words_per_sample": 425,
+          "words": 3400,
+          "sha256": "053f37f9bb37e47cb5485ad0cf3b3da1188e0e8f39b1b8f4396cda40a599135e"
+        },
+        "expected_raw": {
+          "file": "expected_raw.mem",
+          "words_per_sample": 6,
+          "words": 48,
+          "sha256": "90d30e3bc0c5ffbf68b6bb9a206a9fb19f81ef0e5c91551675fd79a1f1f4ccca"
+        },
+        "expected_clipped": {
+          "file": "expected_clipped.mem",
+          "words_per_sample": 6,
+          "words": 48,
+          "sha256": "7777eb59adfec7d0c52ec906f7ab94dd0e036a01a12a769eac898496635e5e34"
+        },
+        "expected_latent": {
+          "file": "expected_latent.mem",
+          "words_per_sample": 3,
+          "words": 24,
+          "sha256": "03d663a4a0d8a406906473b5d470b1e1668ff117ec0c7fb85782a870755cafb9"
+        },
+        "expected_saturated": {
+          "file": "expected_saturated.mem",
+          "words_per_sample": 1,
+          "words": 8,
+          "sha256": "e326434dd03f0701cb034c9efbe3ebd2aaca30e6534b33bf2bfbe4bb8829a3c5",
+          "signed_bits": 24,
+          "fraction_bits": 0,
+          "hex_digits": 6,
+          "encoding": "000000=false; 000001=true",
+          "semantics": "any pre-ELU signed24 saturation across seven layers; excludes input saturation and final action clipping"
+        }
+      },
+      "npz": "fixed_vectors.npz",
+      "directory": "stress",
+      "source": "numeric stress, not physical observations"
+    },
+    "trajectory_0_rollout_fixed_mild": {
+      "samples": 512,
+      "files": {
+        "inputs": {
+          "file": "inputs.mem",
+          "words_per_sample": 162,
+          "words": 82944,
+          "sha256": "dfe43febaba1fd4623253fd624a3e2dfd5cfa0259efb8083c7fa503144b20d86"
+        },
+        "expected_layers": {
+          "file": "expected_layers.mem",
+          "words_per_sample": 425,
+          "words": 217600,
+          "sha256": "cc002becd8a48a6adccb2b6f8ae1dda6a2578947d541459a4e9aef1145865357"
+        },
+        "expected_raw": {
+          "file": "expected_raw.mem",
+          "words_per_sample": 6,
+          "words": 3072,
+          "sha256": "1e40eb5fff2aa1bdea15d85a3c155e4a16576b2a4961663477b22e366386f411"
+        },
+        "expected_clipped": {
+          "file": "expected_clipped.mem",
+          "words_per_sample": 6,
+          "words": 3072,
+          "sha256": "1e40eb5fff2aa1bdea15d85a3c155e4a16576b2a4961663477b22e366386f411"
+        },
+        "expected_latent": {
+          "file": "expected_latent.mem",
+          "words_per_sample": 3,
+          "words": 1536,
+          "sha256": "ef010d81598774633462ceb15e91ec2931a6c7645a9a68644a78cb0e0e4ffb0b"
+        },
+        "expected_saturated": {
+          "file": "expected_saturated.mem",
+          "words_per_sample": 1,
+          "words": 512,
+          "sha256": "c0f338609f45bd17fe54aa75d582a453966199685e81b7640cb15d6aea435971",
+          "signed_bits": 24,
+          "fraction_bits": 0,
+          "hex_digits": 6,
+          "encoding": "000000=false; 000001=true",
+          "semantics": "any pre-ELU signed24 saturation across seven layers; excludes input saturation and final action clipping"
+        }
+      },
+      "npz": "fixed_vectors.npz",
+      "directory": "trajectory_0_rollout_fixed_mild",
+      "source": "/home/cyd/fpga/pt_to_fpga/full_center_v4_deploy_20261005/vectors/rollout_fixed_mild.npz"
+    },
+    "trajectory_1_rollout_fixed_nominal": {
+      "samples": 512,
+      "files": {
+        "inputs": {
+          "file": "inputs.mem",
+          "words_per_sample": 162,
+          "words": 82944,
+          "sha256": "456a4fc0f414109acb0509aba9412d36a42293a473def8ba511fd788445b5781"
+        },
+        "expected_layers": {
+          "file": "expected_layers.mem",
+          "words_per_sample": 425,
+          "words": 217600,
+          "sha256": "02aed3058b45fbbe1a028219ec4632b48da81ffdf8238d1e86048029a8c80586"
+        },
+        "expected_raw": {
+          "file": "expected_raw.mem",
+          "words_per_sample": 6,
+          "words": 3072,
+          "sha256": "23a65f8b1c15b4ddd2699cc87515a6e12e1030c4305a83d122d04717fd5625ff"
+        },
+        "expected_clipped": {
+          "file": "expected_clipped.mem",
+          "words_per_sample": 6,
+          "words": 3072,
+          "sha256": "23a65f8b1c15b4ddd2699cc87515a6e12e1030c4305a83d122d04717fd5625ff"
+        },
+        "expected_latent": {
+          "file": "expected_latent.mem",
+          "words_per_sample": 3,
+          "words": 1536,
+          "sha256": "37a374f78a389bffcae0fec7cb78a033f1e6aa765fe4711de7a1f620c64187e0"
+        },
+        "expected_saturated": {
+          "file": "expected_saturated.mem",
+          "words_per_sample": 1,
+          "words": 512,
+          "sha256": "c0f338609f45bd17fe54aa75d582a453966199685e81b7640cb15d6aea435971",
+          "signed_bits": 24,
+          "fraction_bits": 0,
+          "hex_digits": 6,
+          "encoding": "000000=false; 000001=true",
+          "semantics": "any pre-ELU signed24 saturation across seven layers; excludes input saturation and final action clipping"
+        }
+      },
+      "npz": "fixed_vectors.npz",
+      "directory": "trajectory_1_rollout_fixed_nominal",
+      "source": "/home/cyd/fpga/pt_to_fpga/full_center_v4_deploy_20261005/vectors/rollout_fixed_nominal.npz"
+    },
+    "trajectory_2_rollout_float_mild": {
+      "samples": 512,
+      "files": {
+        "inputs": {
+          "file": "inputs.mem",
+          "words_per_sample": 162,
+          "words": 82944,
+          "sha256": "8b71ebf1a402d9c96f5b50271b6f72ca5b3c7ead62b61ed75e0bb932441b29f0"
+        },
+        "expected_layers": {
+          "file": "expected_layers.mem",
+          "words_per_sample": 425,
+          "words": 217600,
+          "sha256": "95bdc3d8453012d98ca35c76e5659c6a60f1907ddb5bf4ee52ec6bc2eabdee80"
+        },
+        "expected_raw": {
+          "file": "expected_raw.mem",
+          "words_per_sample": 6,
+          "words": 3072,
+          "sha256": "5af888a45ba5573f75fc694e178d38fa676a0f8c5037a7211fa7bb290a8f31d8"
+        },
+        "expected_clipped": {
+          "file": "expected_clipped.mem",
+          "words_per_sample": 6,
+          "words": 3072,
+          "sha256": "5af888a45ba5573f75fc694e178d38fa676a0f8c5037a7211fa7bb290a8f31d8"
+        },
+        "expected_latent": {
+          "file": "expected_latent.mem",
+          "words_per_sample": 3,
+          "words": 1536,
+          "sha256": "f99d22e9a4f4c741c7a27ec9f10edea724b06b18686828e126d2602986e5b02f"
+        },
+        "expected_saturated": {
+          "file": "expected_saturated.mem",
+          "words_per_sample": 1,
+          "words": 512,
+          "sha256": "c0f338609f45bd17fe54aa75d582a453966199685e81b7640cb15d6aea435971",
+          "signed_bits": 24,
+          "fraction_bits": 0,
+          "hex_digits": 6,
+          "encoding": "000000=false; 000001=true",
+          "semantics": "any pre-ELU signed24 saturation across seven layers; excludes input saturation and final action clipping"
+        }
+      },
+      "npz": "fixed_vectors.npz",
+      "directory": "trajectory_2_rollout_float_mild",
+      "source": "/home/cyd/fpga/pt_to_fpga/full_center_v4_deploy_20261005/vectors/rollout_float_mild.npz"
+    },
+    "trajectory_3_rollout_float_nominal": {
+      "samples": 512,
+      "files": {
+        "inputs": {
+          "file": "inputs.mem",
+          "words_per_sample": 162,
+          "words": 82944,
+          "sha256": "7e787d0d21350af3428f9133b073c59e6266b01eb0db39b07df75e4d066343ed"
+        },
+        "expected_layers": {
+          "file": "expected_layers.mem",
+          "words_per_sample": 425,
+          "words": 217600,
+          "sha256": "80d5485a2a0cc598267ab979792ab1f3c3fea3639b2b8c713041123437593607"
+        },
+        "expected_raw": {
+          "file": "expected_raw.mem",
+          "words_per_sample": 6,
+          "words": 3072,
+          "sha256": "714820e25fe5445f1887ae3da86dfdf838f293e10d6061bba7ed46d6ae6bd1e8"
+        },
+        "expected_clipped": {
+          "file": "expected_clipped.mem",
+          "words_per_sample": 6,
+          "words": 3072,
+          "sha256": "714820e25fe5445f1887ae3da86dfdf838f293e10d6061bba7ed46d6ae6bd1e8"
+        },
+        "expected_latent": {
+          "file": "expected_latent.mem",
+          "words_per_sample": 3,
+          "words": 1536,
+          "sha256": "428918af1de8a2f170c2cb5a9471de4c3498d2f541afa373e2825d11d7a00451"
+        },
+        "expected_saturated": {
+          "file": "expected_saturated.mem",
+          "words_per_sample": 1,
+          "words": 512,
+          "sha256": "c0f338609f45bd17fe54aa75d582a453966199685e81b7640cb15d6aea435971",
+          "signed_bits": 24,
+          "fraction_bits": 0,
+          "hex_digits": 6,
+          "encoding": "000000=false; 000001=true",
+          "semantics": "any pre-ELU signed24 saturation across seven layers; excludes input saturation and final action clipping"
+        }
+      },
+      "npz": "fixed_vectors.npz",
+      "directory": "trajectory_3_rollout_float_nominal",
+      "source": "/home/cyd/fpga/pt_to_fpga/full_center_v4_deploy_20261005/vectors/rollout_float_nominal.npz"
+    },
+    "real": {
+      "samples": 2048,
+      "files": {
+        "inputs": {
+          "file": "real_inputs.mem",
+          "words_per_sample": 162,
+          "words": 331776,
+          "sha256": "1fc2fdc95ccd386f7e2a510a2fec71eb3d908f704577ba133098809a1baed28c"
+        },
+        "expected_layers": {
+          "file": "real_expected_layers.mem",
+          "words_per_sample": 425,
+          "words": 870400,
+          "sha256": "056dca095cd3d1e0bcb6b478cb738dc8b09c4f9b3bffbd2e14d983827c585eec"
+        },
+        "expected_raw": {
+          "file": "real_expected_raw.mem",
+          "words_per_sample": 6,
+          "words": 12288,
+          "sha256": "526238a716f0eb4fce1f82d4782a0e6adb58ee65f66af7934701ab4baecd8df6"
+        },
+        "expected_clipped": {
+          "file": "real_expected_clipped.mem",
+          "words_per_sample": 6,
+          "words": 12288,
+          "sha256": "526238a716f0eb4fce1f82d4782a0e6adb58ee65f66af7934701ab4baecd8df6"
+        },
+        "expected_latent": {
+          "file": "real_expected_latent.mem",
+          "words_per_sample": 3,
+          "words": 6144,
+          "sha256": "1784c9c6d271fbc0ade0edf6328bb6453c5e5747c9595a90ef813c74cd11a0a3"
+        },
+        "expected_saturated": {
+          "file": "real_expected_saturated.mem",
+          "words_per_sample": 1,
+          "words": 2048,
+          "sha256": "8b3fe3c7099047fff55581b2a96778606da2b9b2853e7eced54bd282b9a7f66f",
+          "signed_bits": 24,
+          "fraction_bits": 0,
+          "hex_digits": 6,
+          "encoding": "000000=false; 000001=true",
+          "semantics": "any pre-ELU signed24 saturation across seven layers; excludes input saturation and final action clipping"
+        }
+      },
+      "npz": "real_fixed_vectors.npz",
+      "directory": ".",
+      "sources": [
+        {
+          "source": "/home/cyd/fpga/pt_to_fpga/full_center_v4_deploy_20261005/vectors/rollout_fixed_mild.npz",
+          "frames": 64,
+          "envs": 8,
+          "samples": 512
+        },
+        {
+          "source": "/home/cyd/fpga/pt_to_fpga/full_center_v4_deploy_20261005/vectors/rollout_fixed_nominal.npz",
+          "frames": 64,
+          "envs": 8,
+          "samples": 512
+        },
+        {
+          "source": "/home/cyd/fpga/pt_to_fpga/full_center_v4_deploy_20261005/vectors/rollout_float_mild.npz",
+          "frames": 64,
+          "envs": 8,
+          "samples": 512
+        },
+        {
+          "source": "/home/cyd/fpga/pt_to_fpga/full_center_v4_deploy_20261005/vectors/rollout_float_nominal.npz",
+          "frames": 64,
+          "envs": 8,
+          "samples": 512
+        }
+      ]
+    }
+  }
+}

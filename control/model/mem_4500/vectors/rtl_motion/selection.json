@@ -1,0 +1,140 @@
+{
+  "sources": [
+    {
+      "dataset": "trajectory_0_rollout_forward",
+      "selected_indices": [
+        0,
+        36,
+        72,
+        109,
+        145,
+        182,
+        218,
+        255
+      ]
+    },
+    {
+      "dataset": "trajectory_1_rollout_high",
+      "selected_indices": [
+        0,
+        36,
+        72,
+        109,
+        145,
+        182,
+        218,
+        255
+      ]
+    },
+    {
+      "dataset": "trajectory_2_rollout_left",
+      "selected_indices": [
+        0,
+        36,
+        72,
+        109,
+        145,
+        182,
+        218,
+        255
+      ]
+    },
+    {
+      "dataset": "trajectory_3_rollout_low",
+      "selected_indices": [
+        0,
+        36,
+        72,
+        109,
+        145,
+        182,
+        218,
+        255
+      ]
+    },
+    {
+      "dataset": "trajectory_4_rollout_reverse",
+      "selected_indices": [
+        0,
+        36,
+        72,
+        109,
+        145,
+        182,
+        218,
+        255
+      ]
+    },
+    {
+      "dataset": "trajectory_5_rollout_right",
+      "selected_indices": [
+        0,
+        36,
+        72,
+        109,
+        145,
+        182,
+        218,
+        255
+      ]
+    },
+    {
+      "dataset": "trajectory_6_rollout_stop",
+      "selected_indices": [
+        0,
+        36,
+        72,
+        109,
+        145,
+        182,
+        218,
+        255
+      ]
+    }
+  ],
+  "samples": 56,
+  "files": {
+    "inputs": {
+      "file": "inputs.mem",
+      "words_per_sample": 168,
+      "words": 9408,
+      "sha256": "4222d6d7a078fc781a0a7ff3f2c8eb6afaa92e7239f97c0367bf9733ab4c5761"
+    },
+    "expected_layers": {
+      "file": "expected_layers.mem",
+      "words_per_sample": 425,
+      "words": 23800,
+      "sha256": "46dc6f63527b76bbc1815c681ce9c2d0a513d94212e6b05da73f1cd0c400847a"
+    },
+    "expected_raw": {
+      "file": "expected_raw.mem",
+      "words_per_sample": 6,
+      "words": 336,
+      "sha256": "62b15daf2d14a14d3e3fd8f0c05bdbb22803d24bdefc1e8e155984384a3c14e6"
+    },
+    "expected_clipped": {
+      "file": "expected_clipped.mem",
+      "words_per_sample": 6,
+      "words": 336,
+      "sha256": "6eb9a88bc609e09d19931446d0d724232ffb29ef686f80d168f2eb6d49d9a5f8"
+    },
+    "expected_latent": {
+      "file": "expected_latent.mem",
+      "words_per_sample": 3,
+      "words": 168,
+      "sha256": "89ae4f8e0282da3217e32068bb172fc7372e2fc30d46f1f2310f4d1997b3c2e6"
+    },
+    "expected_saturated": {
+      "file": "expected_saturated.mem",
+      "words_per_sample": 1,
+      "words": 56,
+      "sha256": "ad88ea041342f42e5aef245b10de798b4e3a7f233a4aef5725f09b6bd2856f3a",
+      "signed_bits": 24,
+      "fraction_bits": 0,
+      "hex_digits": 6,
+      "encoding": "000000=false; 000001=true",
+      "semantics": "any pre-ELU signed24 saturation across seven layers; excludes input saturation and final action clipping"
+    }
+  },
+  "npz": "fixed_vectors.npz"
+}

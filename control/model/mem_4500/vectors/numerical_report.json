@@ -1,0 +1,2182 @@
+{
+  "schema": "full_center_v5.numerical_report.v1",
+  "original_vs_extracted": "256 synthetic samples: exact match to original act_inference and TorchScript reload.",
+  "full_fixed_point_reference_verified": true,
+  "memory_roundtrip_verified": true,
+  "rtl_verified": true,
+  "closed_loop_verified": false,
+  "note": "Synthetic/stress are not real trajectories; real trajectory comparisons are open-loop.",
+  "datasets": [
+    {
+      "name": "synthetic",
+      "samples": 256,
+      "layers": {
+        "encoder_0": {
+          "float_range": [
+            -1.0,
+            18.49459457397461
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            18.494140625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0045261383056640625,
+            "mean_abs": 0.000500859369938933,
+            "rmse": 0.0007814083098595094
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.004464149475097656,
+            "mean_abs": 0.0004902897926726268,
+            "rmse": 0.0007626394030904631
+          },
+          "accumulator_min": -379619819,
+          "accumulator_max": 310281434,
+          "rounded_min": -92681,
+          "rounded_max": 75752,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4096,
+          "output_max": 75752
+        },
+        "encoder_2": {
+          "float_range": [
+            -1.0,
+            26.88564109802246
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            26.882568359375
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.01709461212158203,
+            "mean_abs": 0.0008520905867683837,
+            "rmse": 0.0016492571485440827
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.018586158752441406,
+            "mean_abs": 0.0008355137242332944,
+            "rmse": 0.0016233311051404608
+          },
+          "accumulator_min": -1250006010,
+          "accumulator_max": 451016116,
+          "rounded_min": -305177,
+          "rounded_max": 110111,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4096,
+          "output_max": 110111
+        },
+        "encoder_4": {
+          "float_range": [
+            -3.9020471572875977,
+            2.7162129878997803
+          ],
+          "fixed_dequantized_range": [
+            -3.905517578125,
+            2.72119140625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.007039785385131836,
+            "mean_abs": 0.001718593335681362,
+            "rmse": 0.00214418342705591
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.006814479827880859,
+            "mean_abs": 0.0017124174664786551,
+            "rmse": 0.0021404120497132205
+          },
+          "accumulator_min": -65525263,
+          "accumulator_max": 45653062,
+          "rounded_min": -15997,
+          "rounded_max": 11146,
+          "pre_elu_saturation_count": 0,
+          "output_min": -15997,
+          "output_max": 11146
+        },
+        "actor_0": {
+          "float_range": [
+            -0.9738161563873291,
+            3.5427963733673096
+          ],
+          "fixed_dequantized_range": [
+            -0.973876953125,
+            3.54296875
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0044310372322797775,
+            "mean_abs": 0.0006200100301598788,
+            "rmse": 0.0008056664074129517
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.00444369949400425,
+            "mean_abs": 0.0006189873685953362,
+            "rmse": 0.0008044816526554577
+          },
+          "accumulator_min": -61121343,
+          "accumulator_max": 59442477,
+          "rounded_min": -14922,
+          "rounded_max": 14512,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3989,
+          "output_max": 14512
+        },
+        "actor_2": {
+          "float_range": [
+            -0.9891834259033203,
+            4.103844165802002
+          ],
+          "fixed_dequantized_range": [
+            -0.9892578125,
+            4.104736328125
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.005434304475784302,
+            "mean_abs": 0.0007689469311280561,
+            "rmse": 0.0010169853257598106
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.00539831817150116,
+            "mean_abs": 0.000768882374062585,
+            "rmse": 0.0010167074582968691
+          },
+          "accumulator_min": -75939440,
+          "accumulator_max": 68865195,
+          "rounded_min": -18540,
+          "rounded_max": 16813,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4052,
+          "output_max": 16813
+        },
+        "actor_4": {
+          "float_range": [
+            -0.9834626913070679,
+            3.7254319190979004
+          ],
+          "fixed_dequantized_range": [
+            -0.9833984375,
+            3.7265625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.006797432899475098,
+            "mean_abs": 0.0008556496668354896,
+            "rmse": 0.0011358382224895133
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.006768345832824707,
+            "mean_abs": 0.0008554544276861975,
+            "rmse": 0.0011352496152830791
+          },
+          "accumulator_min": -68817154,
+          "accumulator_max": 62520657,
+          "rounded_min": -16801,
+          "rounded_max": 15264,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4028,
+          "output_max": 15264
+        },
+        "actor_6": {
+          "float_range": [
+            -4.644975662231445,
+            3.7132651805877686
+          ],
+          "fixed_dequantized_range": [
+            -4.64501953125,
+            3.718505859375
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.009184837341308594,
+            "mean_abs": 0.0016790885626202605,
+            "rmse": 0.002198826479731316
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.009143948554992676,
+            "mean_abs": 0.0016742410431713022,
+            "rmse": 0.002194820033734338
+          },
+          "accumulator_min": -77932257,
+          "accumulator_max": 62386919,
+          "rounded_min": -19026,
+          "rounded_max": 15231,
+          "pre_elu_saturation_count": 0,
+          "output_min": -19026,
+          "output_max": 15231
+        }
+      },
+      "input_saturation": {
+        "obs": 0,
+        "history": 0,
+        "flag": false
+      },
+      "action_clip_count": 479,
+      "outputs": {
+        "raw": {
+          "error_vs_original_float": {
+            "max_abs": 0.009184837341308594,
+            "mean_abs": 0.0016790885626202605,
+            "rmse": 0.002198826479731316
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.009143948554992676,
+            "mean_abs": 0.0016742410431713022,
+            "rmse": 0.002194820033734338
+          }
+        },
+        "clipped": {
+          "error_vs_original_float": {
+            "max_abs": 0.00831371545791626,
+            "mean_abs": 0.0011185489432439983,
+            "rmse": 0.0017716971112014433
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.00834965705871582,
+            "mean_abs": 0.0011159538274417475,
+            "rmse": 0.001769104073571908
+          }
+        },
+        "latent": {
+          "error_vs_original_float": {
+            "max_abs": 0.007039785385131836,
+            "mean_abs": 0.001718593335681362,
+            "rmse": 0.00214418342705591
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.006814479827880859,
+            "mean_abs": 0.0017124174664786551,
+            "rmse": 0.0021404120497132205
+          }
+        }
+      },
+      "source": "exporter synthetic seed6701"
+    },
+    {
+      "name": "stress",
+      "samples": 8,
+      "layers": {
+        "encoder_0": {
+          "float_range": [
+            -1.0,
+            51326.3984375
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            2047.999755859375
+          ],
+          "error_vs_original_float": {
+            "max_abs": 49278.398681640625,
+            "mean_abs": 2439.5666914990347,
+            "rmse": 6530.828324931672
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 32990.797119140625,
+            "mean_abs": 1956.188744827005,
+            "rmse": 5121.40523015967
+          },
+          "accumulator_min": -587832521473,
+          "accumulator_max": 587830819652,
+          "rounded_min": -143513799,
+          "rounded_max": 143513384,
+          "pre_elu_saturation_count": 605,
+          "output_min": -4096,
+          "output_max": 8388607
+        },
+        "encoder_2": {
+          "float_range": [
+            -1.0,
+            73435.4140625
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            2047.999755859375
+          ],
+          "error_vs_original_float": {
+            "max_abs": 71387.41430664062,
+            "mean_abs": 3262.515796398402,
+            "rmse": 8298.955140738835
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 48084.527587890625,
+            "mean_abs": 2764.262552117587,
+            "rmse": 6769.898565393527
+          },
+          "accumulator_min": -340009403051,
+          "accumulator_max": 195189423012,
+          "rounded_min": -83010108,
+          "rounded_max": 47653668,
+          "pre_elu_saturation_count": 259,
+          "output_min": -4096,
+          "output_max": 8388607
+        },
+        "encoder_4": {
+          "float_range": [
+            -2088.956787109375,
+            6720.658203125
+          ],
+          "fixed_dequantized_range": [
+            -95.2705078125,
+            349.615966796875
+          ],
+          "error_vs_original_float": {
+            "max_abs": 6371.042236328125,
+            "mean_abs": 1308.9192919943791,
+            "rmse": 2110.91290288686
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 4238.537841796875,
+            "mean_abs": 1083.9253223949734,
+            "rmse": 1681.4330156608426
+          },
+          "accumulator_min": -1598375482,
+          "accumulator_max": 5865580968,
+          "rounded_min": -390228,
+          "rounded_max": 1432027,
+          "pre_elu_saturation_count": 0,
+          "output_min": -390228,
+          "output_max": 1432027
+        },
+        "actor_0": {
+          "float_range": [
+            -1.0,
+            6537.89892578125
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            2047.999755859375
+          ],
+          "error_vs_original_float": {
+            "max_abs": 4489.899169921875,
+            "mean_abs": 200.5275400373779,
+            "rmse": 491.16007379550217
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 2415.334228515625,
+            "mean_abs": 150.04808703154993,
+            "rmse": 339.0523629299098
+          },
+          "accumulator_min": -63986927301,
+          "accumulator_max": 62105391381,
+          "rounded_min": -15621808,
+          "rounded_max": 15162449,
+          "pre_elu_saturation_count": 62,
+          "output_min": -4096,
+          "output_max": 8388607
+        },
+        "actor_2": {
+          "float_range": [
+            -1.0,
+            3932.328857421875
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            1736.664306640625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 2275.5830078125,
+            "mean_abs": 169.46734154994903,
+            "rmse": 368.2585493375654
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 1246.7926025390625,
+            "mean_abs": 126.65301121284557,
+            "rmse": 256.32917241145583
+          },
+          "accumulator_min": -45378949264,
+          "accumulator_max": 29136393976,
+          "rounded_min": -11078845,
+          "rounded_max": 7113377,
+          "pre_elu_saturation_count": 4,
+          "output_min": -4096,
+          "output_max": 7113377
+        },
+        "actor_4": {
+          "float_range": [
+            -1.0,
+            1889.7681884765625
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            1276.3603515625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 1102.3673095703125,
+            "mean_abs": 122.43051890355491,
+            "rmse": 253.3348795487733
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 800.7647705078125,
+            "mean_abs": 97.5902360191285,
+            "rmse": 191.39777910873082
+          },
+          "accumulator_min": -33434306228,
+          "accumulator_max": 21413773923,
+          "rounded_min": -8162672,
+          "rounded_max": 5227972,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4096,
+          "output_max": 5227972
+        },
+        "actor_6": {
+          "float_range": [
+            -1632.5184326171875,
+            2096.9375
+          ],
+          "fixed_dequantized_range": [
+            -549.91064453125,
+            998.757080078125
+          ],
+          "error_vs_original_float": {
+            "max_abs": 1181.5697021484375,
+            "mean_abs": 280.2008170611225,
+            "rmse": 413.3551531216924
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 664.7947998046875,
+            "mean_abs": 222.47214598720893,
+            "rmse": 302.4718343039109
+          },
+          "accumulator_min": -9225969151,
+          "accumulator_max": 16756363973,
+          "rounded_min": -2252434,
+          "rounded_max": 4090909,
+          "pre_elu_saturation_count": 0,
+          "output_min": -2252434,
+          "output_max": 4090909
+        }
+      },
+      "input_saturation": {
+        "obs": 56,
+        "history": 280,
+        "flag": true
+      },
+      "action_clip_count": 42,
+      "outputs": {
+        "raw": {
+          "error_vs_original_float": {
+            "max_abs": 1181.5697021484375,
+            "mean_abs": 280.2008170611225,
+            "rmse": 413.3551531216924
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 664.7947998046875,
+            "mean_abs": 222.47214598720893,
+            "rmse": 302.4718343039109
+          }
+        },
+        "clipped": {
+          "error_vs_original_float": {
+            "max_abs": 2.0,
+            "mean_abs": 0.33346399928753573,
+            "rmse": 0.8164967260864857
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 2.0,
+            "mean_abs": 0.33346399928753573,
+            "rmse": 0.8164967260864857
+          }
+        },
+        "latent": {
+          "error_vs_original_float": {
+            "max_abs": 6371.042236328125,
+            "mean_abs": 1308.9192919943791,
+            "rmse": 2110.91290288686
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 4238.537841796875,
+            "mean_abs": 1083.9253223949734,
+            "rmse": 1681.4330156608426
+          }
+        }
+      },
+      "source": "numeric stress, not physical observations"
+    },
+    {
+      "name": "trajectory_0_rollout_forward",
+      "samples": 400,
+      "layers": {
+        "encoder_0": {
+          "float_range": [
+            -0.9999958276748657,
+            5.142732620239258
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            5.143798828125
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0031275078654289246,
+            "mean_abs": 0.0004790494233230902,
+            "rmse": 0.0006712041666855679
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0030707307159900665,
+            "mean_abs": 0.00046097989635427437,
+            "rmse": 0.0006510178548472128
+          },
+          "accumulator_min": -207859002,
+          "accumulator_max": 86299281,
+          "rounded_min": -50747,
+          "rounded_max": 21069,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4096,
+          "output_max": 21069
+        },
+        "encoder_2": {
+          "float_range": [
+            -1.0,
+            4.6740946769714355
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            4.676025390625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.009182274341583252,
+            "mean_abs": 0.000654333602991386,
+            "rmse": 0.001126097615119231
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.008323132991790771,
+            "mean_abs": 0.0006459947335406468,
+            "rmse": 0.001108077188237598
+          },
+          "accumulator_min": -335604825,
+          "accumulator_max": 78451566,
+          "rounded_min": -81935,
+          "rounded_max": 19153,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4096,
+          "output_max": 19153
+        },
+        "encoder_4": {
+          "float_range": [
+            -0.20372739434242249,
+            0.669317901134491
+          ],
+          "fixed_dequantized_range": [
+            -0.20458984375,
+            0.667724609375
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0023200511932373047,
+            "mean_abs": 0.0009565591257220755,
+            "rmse": 0.0011297454147462254
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0023126602172851562,
+            "mean_abs": 0.0009598298211737226,
+            "rmse": 0.001126743757932335
+          },
+          "accumulator_min": -3431445,
+          "accumulator_max": 11203213,
+          "rounded_min": -838,
+          "rounded_max": 2735,
+          "pre_elu_saturation_count": 0,
+          "output_min": -838,
+          "output_max": 2735
+        },
+        "actor_0": {
+          "float_range": [
+            -0.8430672883987427,
+            1.7799594402313232
+          ],
+          "fixed_dequantized_range": [
+            -0.843017578125,
+            1.779541015625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.002840796369127929,
+            "mean_abs": 0.0005456572047995678,
+            "rmse": 0.0006997183578258664
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.002795155392959714,
+            "mean_abs": 0.0005449196060910566,
+            "rmse": 0.0006983046359097184
+          },
+          "accumulator_min": -31059242,
+          "accumulator_max": 29855441,
+          "rounded_min": -7583,
+          "rounded_max": 7289,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3453,
+          "output_max": 7289
+        },
+        "actor_2": {
+          "float_range": [
+            -0.955135703086853,
+            2.219139575958252
+          ],
+          "fixed_dequantized_range": [
+            -0.955078125,
+            2.219482421875
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0034447386860847473,
+            "mean_abs": 0.0006413373882014639,
+            "rmse": 0.000815017504894251
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0034312233328819275,
+            "mean_abs": 0.0006361523403870706,
+            "rmse": 0.0008081014165413202
+          },
+          "accumulator_min": -52091232,
+          "accumulator_max": 37235068,
+          "rounded_min": -12718,
+          "rounded_max": 9091,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3912,
+          "output_max": 9091
+        },
+        "actor_4": {
+          "float_range": [
+            -0.8442792892456055,
+            2.9977223873138428
+          ],
+          "fixed_dequantized_range": [
+            -0.84423828125,
+            2.998779296875
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0045098066329956055,
+            "mean_abs": 0.0007118662234717554,
+            "rmse": 0.0009453798569043884
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.004425704479217529,
+            "mean_abs": 0.0007040257410389473,
+            "rmse": 0.0009333280235688143
+          },
+          "accumulator_min": -31219530,
+          "accumulator_max": 50309370,
+          "rounded_min": -7622,
+          "rounded_max": 12283,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3458,
+          "output_max": 12283
+        },
+        "actor_6": {
+          "float_range": [
+            -3.0168261528015137,
+            0.699871838092804
+          ],
+          "fixed_dequantized_range": [
+            -3.01611328125,
+            0.701904296875
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.004481315612792969,
+            "mean_abs": 0.0012095321676072975,
+            "rmse": 0.0014241177092751195
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.004471302032470703,
+            "mean_abs": 0.0011937341769225895,
+            "rmse": 0.00140537173056271
+          },
+          "accumulator_min": -50602657,
+          "accumulator_max": 11774801,
+          "rounded_min": -12354,
+          "rounded_max": 2875,
+          "pre_elu_saturation_count": 0,
+          "output_min": -12354,
+          "output_max": 2875
+        }
+      },
+      "input_saturation": {
+        "obs": 0,
+        "history": 0,
+        "flag": false
+      },
+      "action_clip_count": 817,
+      "outputs": {
+        "raw": {
+          "error_vs_original_float": {
+            "max_abs": 0.004481315612792969,
+            "mean_abs": 0.0012095321676072975,
+            "rmse": 0.0014241177092751195
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.004471302032470703,
+            "mean_abs": 0.0011937341769225895,
+            "rmse": 0.00140537173056271
+          }
+        },
+        "clipped": {
+          "error_vs_original_float": {
+            "max_abs": 0.004259169101715088,
+            "mean_abs": 0.0009093287051655352,
+            "rmse": 0.0012627934666230181
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.004246175289154053,
+            "mean_abs": 0.0008944374501394729,
+            "rmse": 0.0012426205061066848
+          }
+        },
+        "latent": {
+          "error_vs_original_float": {
+            "max_abs": 0.0023200511932373047,
+            "mean_abs": 0.0009565591257220755,
+            "rmse": 0.0011297454147462254
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0023126602172851562,
+            "mean_abs": 0.0009598298211737226,
+            "rmse": 0.001126743757932335
+          }
+        }
+      },
+      "source": "/home/cyd/fpga/pt_to_fpga/parking_speed_4500/vectors/rollout_forward.npz"
+    },
+    {
+      "name": "trajectory_1_rollout_high",
+      "samples": 400,
+      "layers": {
+        "encoder_0": {
+          "float_range": [
+            -0.9999974966049194,
+            4.327376842498779
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            4.32861328125
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0032238466665148735,
+            "mean_abs": 0.0004455606744156171,
+            "rmse": 0.0006242833657378694
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.00325873214751482,
+            "mean_abs": 0.0004253315650895928,
+            "rmse": 0.0006003779788468596
+          },
+          "accumulator_min": -216348870,
+          "accumulator_max": 72621512,
+          "rounded_min": -52820,
+          "rounded_max": 17730,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4096,
+          "output_max": 17730
+        },
+        "encoder_2": {
+          "float_range": [
+            -1.0,
+            5.013274192810059
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            5.01416015625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.008388221263885498,
+            "mean_abs": 0.0005522071664267969,
+            "rmse": 0.0008893142573125
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.006898939609527588,
+            "mean_abs": 0.0005198605153464087,
+            "rmse": 0.0008331598937526951
+          },
+          "accumulator_min": -425066283,
+          "accumulator_max": 84123635,
+          "rounded_min": -103776,
+          "rounded_max": 20538,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4096,
+          "output_max": 20538
+        },
+        "encoder_4": {
+          "float_range": [
+            -0.27982446551322937,
+            0.5514724254608154
+          ],
+          "fixed_dequantized_range": [
+            -0.280517578125,
+            0.55029296875
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0015033259987831116,
+            "mean_abs": 0.0006739898243298133,
+            "rmse": 0.0007642286786030551
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0014779940247535706,
+            "mean_abs": 0.0006590314954519272,
+            "rmse": 0.0007490728606801552
+          },
+          "accumulator_min": -4707713,
+          "accumulator_max": 9234075,
+          "rounded_min": -1149,
+          "rounded_max": 2254,
+          "pre_elu_saturation_count": 0,
+          "output_min": -1149,
+          "output_max": 2254
+        },
+        "actor_0": {
+          "float_range": [
+            -0.8463309407234192,
+            2.017676591873169
+          ],
+          "fixed_dequantized_range": [
+            -0.8466796875,
+            2.017333984375
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0026882681995630264,
+            "mean_abs": 0.000488877429000496,
+            "rmse": 0.0006584805365087477
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0026398971676826477,
+            "mean_abs": 0.0004875110262583604,
+            "rmse": 0.0006569456485842963
+          },
+          "accumulator_min": -31437024,
+          "accumulator_max": 33845740,
+          "rounded_min": -7675,
+          "rounded_max": 8263,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3468,
+          "output_max": 8263
+        },
+        "actor_2": {
+          "float_range": [
+            -0.9646742343902588,
+            2.1898458003997803
+          ],
+          "fixed_dequantized_range": [
+            -0.964599609375,
+            2.190673828125
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0037602558732032776,
+            "mean_abs": 0.0006021783707706163,
+            "rmse": 0.0007696506675642663
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.003775704652070999,
+            "mean_abs": 0.0006005230212917923,
+            "rmse": 0.000767710794869519
+          },
+          "accumulator_min": -56093602,
+          "accumulator_max": 36754790,
+          "rounded_min": -13695,
+          "rounded_max": 8973,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3951,
+          "output_max": 8973
+        },
+        "actor_4": {
+          "float_range": [
+            -0.7544965744018555,
+            2.7599825859069824
+          ],
+          "fixed_dequantized_range": [
+            -0.7548828125,
+            2.760986328125
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.003565490245819092,
+            "mean_abs": 0.0006458229199779453,
+            "rmse": 0.0008163778143275468
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.003403961658477783,
+            "mean_abs": 0.0006436007601587335,
+            "rmse": 0.0008137406869413278
+          },
+          "accumulator_min": -23586435,
+          "accumulator_max": 46320740,
+          "rounded_min": -5758,
+          "rounded_max": 11309,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3092,
+          "output_max": 11309
+        },
+        "actor_6": {
+          "float_range": [
+            -3.2501370906829834,
+            0.36400076746940613
+          ],
+          "fixed_dequantized_range": [
+            -3.252197265625,
+            0.365478515625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.004709720611572266,
+            "mean_abs": 0.0009512640722095967,
+            "rmse": 0.001198891365554393
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.00487065315246582,
+            "mean_abs": 0.0009484652383252979,
+            "rmse": 0.0011966006220439265
+          },
+          "accumulator_min": -54562638,
+          "accumulator_max": 6132693,
+          "rounded_min": -13321,
+          "rounded_max": 1497,
+          "pre_elu_saturation_count": 0,
+          "output_min": -13321,
+          "output_max": 1497
+        }
+      },
+      "input_saturation": {
+        "obs": 0,
+        "history": 0,
+        "flag": false
+      },
+      "action_clip_count": 1191,
+      "outputs": {
+        "raw": {
+          "error_vs_original_float": {
+            "max_abs": 0.004709720611572266,
+            "mean_abs": 0.0009512640722095967,
+            "rmse": 0.001198891365554393
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.00487065315246582,
+            "mean_abs": 0.0009484652383252979,
+            "rmse": 0.0011966006220439265
+          }
+        },
+        "clipped": {
+          "error_vs_original_float": {
+            "max_abs": 0.0033997558057308197,
+            "mean_abs": 0.000409550437082847,
+            "rmse": 0.0007224465698973672
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.003342326730489731,
+            "mean_abs": 0.00040703348349779844,
+            "rmse": 0.0007170548081971882
+          }
+        },
+        "latent": {
+          "error_vs_original_float": {
+            "max_abs": 0.0015033259987831116,
+            "mean_abs": 0.0006739898243298133,
+            "rmse": 0.0007642286786030551
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0014779940247535706,
+            "mean_abs": 0.0006590314954519272,
+            "rmse": 0.0007490728606801552
+          }
+        }
+      },
+      "source": "/home/cyd/fpga/pt_to_fpga/parking_speed_4500/vectors/rollout_high.npz"
+    },
+    {
+      "name": "trajectory_2_rollout_left",
+      "samples": 400,
+      "layers": {
+        "encoder_0": {
+          "float_range": [
+            -1.0,
+            6.64174222946167
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            6.642578125
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0038325488567352295,
+            "mean_abs": 0.0005716828509559946,
+            "rmse": 0.0007997436787222643
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0031391531229019165,
+            "mean_abs": 0.000556492823813528,
+            "rmse": 0.000768121405110515
+          },
+          "accumulator_min": -307152173,
+          "accumulator_max": 111443266,
+          "rounded_min": -74988,
+          "rounded_max": 27208,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4096,
+          "output_max": 27208
+        },
+        "encoder_2": {
+          "float_range": [
+            -1.0,
+            4.6803483963012695
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            4.681640625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.007673740386962891,
+            "mean_abs": 0.0006730409197552945,
+            "rmse": 0.0011329086659936775
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0058591365814208984,
+            "mean_abs": 0.0006847492760152818,
+            "rmse": 0.0011444719669266555
+          },
+          "accumulator_min": -326130520,
+          "accumulator_max": 78544847,
+          "rounded_min": -79622,
+          "rounded_max": 19176,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4096,
+          "output_max": 19176
+        },
+        "encoder_4": {
+          "float_range": [
+            -0.24504388868808746,
+            0.39924293756484985
+          ],
+          "fixed_dequantized_range": [
+            -0.24462890625,
+            0.398193359375
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0014956966042518616,
+            "mean_abs": 0.0006216517742723227,
+            "rmse": 0.000670543478356211
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0012330487370491028,
+            "mean_abs": 0.0006145181755224864,
+            "rmse": 0.0006600502906974061
+          },
+          "accumulator_min": -4104755,
+          "accumulator_max": 6680797,
+          "rounded_min": -1002,
+          "rounded_max": 1631,
+          "pre_elu_saturation_count": 0,
+          "output_min": -1002,
+          "output_max": 1631
+        },
+        "actor_0": {
+          "float_range": [
+            -0.8649807572364807,
+            2.012249708175659
+          ],
+          "fixed_dequantized_range": [
+            -0.865234375,
+            2.01220703125
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0030151940882205963,
+            "mean_abs": 0.0005200555007905905,
+            "rmse": 0.0006790773915902772
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.002990409731864929,
+            "mean_abs": 0.0005216848319400925,
+            "rmse": 0.0006786515995091945
+          },
+          "accumulator_min": -33587461,
+          "accumulator_max": 33759884,
+          "rounded_min": -8200,
+          "rounded_max": 8242,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3544,
+          "output_max": 8242
+        },
+        "actor_2": {
+          "float_range": [
+            -0.938652515411377,
+            2.3614468574523926
+          ],
+          "fixed_dequantized_range": [
+            -0.938720703125,
+            2.36181640625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0035170093178749084,
+            "mean_abs": 0.0005490495507202553,
+            "rmse": 0.0007131530852969682
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0035311272367835045,
+            "mean_abs": 0.0005523003035827046,
+            "rmse": 0.0007161371752685954
+          },
+          "accumulator_min": -46854066,
+          "accumulator_max": 39625827,
+          "rounded_min": -11439,
+          "rounded_max": 9674,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3845,
+          "output_max": 9674
+        },
+        "actor_4": {
+          "float_range": [
+            -0.7521570920944214,
+            3.0265231132507324
+          ],
+          "fixed_dequantized_range": [
+            -0.751953125,
+            3.02685546875
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0032776445150375366,
+            "mean_abs": 0.0005789074907511349,
+            "rmse": 0.0007571526879481668
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0031659752130508423,
+            "mean_abs": 0.0005804485167323037,
+            "rmse": 0.0007584920589371152
+          },
+          "accumulator_min": -23410144,
+          "accumulator_max": 50783303,
+          "rounded_min": -5715,
+          "rounded_max": 12398,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3080,
+          "output_max": 12398
+        },
+        "actor_6": {
+          "float_range": [
+            -3.002220869064331,
+            0.9297764301300049
+          ],
+          "fixed_dequantized_range": [
+            -3.001953125,
+            0.929443359375
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.003473997116088867,
+            "mean_abs": 0.0006257767292360464,
+            "rmse": 0.0008025804480966878
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0035020411014556885,
+            "mean_abs": 0.0006361157074570656,
+            "rmse": 0.0008164143500762611
+          },
+          "accumulator_min": -50365373,
+          "accumulator_max": 15594104,
+          "rounded_min": -12296,
+          "rounded_max": 3807,
+          "pre_elu_saturation_count": 0,
+          "output_min": -12296,
+          "output_max": 3807
+        }
+      },
+      "input_saturation": {
+        "obs": 0,
+        "history": 0,
+        "flag": false
+      },
+      "action_clip_count": 796,
+      "outputs": {
+        "raw": {
+          "error_vs_original_float": {
+            "max_abs": 0.003473997116088867,
+            "mean_abs": 0.0006257767292360464,
+            "rmse": 0.0008025804480966878
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0035020411014556885,
+            "mean_abs": 0.0006361157074570656,
+            "rmse": 0.0008164143500762611
+          }
+        },
+        "clipped": {
+          "error_vs_original_float": {
+            "max_abs": 0.003473997116088867,
+            "mean_abs": 0.0003858908327917258,
+            "rmse": 0.0006115561845083823
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0035020411014556885,
+            "mean_abs": 0.0003852187966307004,
+            "rmse": 0.0006137701852336753
+          }
+        },
+        "latent": {
+          "error_vs_original_float": {
+            "max_abs": 0.0014956966042518616,
+            "mean_abs": 0.0006216517742723227,
+            "rmse": 0.000670543478356211
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0012330487370491028,
+            "mean_abs": 0.0006145181755224864,
+            "rmse": 0.0006600502906974061
+          }
+        }
+      },
+      "source": "/home/cyd/fpga/pt_to_fpga/parking_speed_4500/vectors/rollout_left.npz"
+    },
+    {
+      "name": "trajectory_3_rollout_low",
+      "samples": 400,
+      "layers": {
+        "encoder_0": {
+          "float_range": [
+            -0.9999998807907104,
+            4.744555950164795
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            4.74462890625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.003650359809398651,
+            "mean_abs": 0.0004467852782142501,
+            "rmse": 0.0006285488187438605
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0034635444171726704,
+            "mean_abs": 0.0004359083417146259,
+            "rmse": 0.0006129002305376445
+          },
+          "accumulator_min": -264981412,
+          "accumulator_max": 79601547,
+          "rounded_min": -64693,
+          "rounded_max": 19434,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4096,
+          "output_max": 19434
+        },
+        "encoder_2": {
+          "float_range": [
+            -1.0,
+            4.473146438598633
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            4.473388671875
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.006819978356361389,
+            "mean_abs": 0.0005731018498590857,
+            "rmse": 0.00093257561607653
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.006407812237739563,
+            "mean_abs": 0.0005613716377365563,
+            "rmse": 0.0009132244850585544
+          },
+          "accumulator_min": -285898208,
+          "accumulator_max": 75052876,
+          "rounded_min": -69799,
+          "rounded_max": 18323,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4096,
+          "output_max": 18323
+        },
+        "encoder_4": {
+          "float_range": [
+            -0.3208466172218323,
+            0.29765602946281433
+          ],
+          "fixed_dequantized_range": [
+            -0.321044921875,
+            0.296875
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0017511621117591858,
+            "mean_abs": 0.0007435437090074023,
+            "rmse": 0.0008345215055636558
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0016307458281517029,
+            "mean_abs": 0.0007486227065480003,
+            "rmse": 0.0008330100645909477
+          },
+          "accumulator_min": -5386919,
+          "accumulator_max": 4982156,
+          "rounded_min": -1315,
+          "rounded_max": 1216,
+          "pre_elu_saturation_count": 0,
+          "output_min": -1315,
+          "output_max": 1216
+        },
+        "actor_0": {
+          "float_range": [
+            -0.8008010983467102,
+            1.7816259860992432
+          ],
+          "fixed_dequantized_range": [
+            -0.80078125,
+            1.781494140625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0028348229825496674,
+            "mean_abs": 0.0004776080782253589,
+            "rmse": 0.000641009706376204
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.002799835056066513,
+            "mean_abs": 0.00047703786210885114,
+            "rmse": 0.0006404512271037227
+          },
+          "accumulator_min": -27055801,
+          "accumulator_max": 29886546,
+          "rounded_min": -6605,
+          "rounded_max": 7297,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3280,
+          "output_max": 7297
+        },
+        "actor_2": {
+          "float_range": [
+            -0.9545802474021912,
+            2.0484437942504883
+          ],
+          "fixed_dequantized_range": [
+            -0.95458984375,
+            2.049072265625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0034950491972267628,
+            "mean_abs": 0.0005642765180567367,
+            "rmse": 0.0007240321291828132
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0034914622083306313,
+            "mean_abs": 0.0005630895690030258,
+            "rmse": 0.0007227870101413334
+          },
+          "accumulator_min": -51881642,
+          "accumulator_max": 34379557,
+          "rounded_min": -12666,
+          "rounded_max": 8393,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3910,
+          "output_max": 8393
+        },
+        "actor_4": {
+          "float_range": [
+            -0.7625836133956909,
+            2.7073912620544434
+          ],
+          "fixed_dequantized_range": [
+            -0.762451171875,
+            2.708251953125
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0036584138870239258,
+            "mean_abs": 0.0005889755837415577,
+            "rmse": 0.0007525527790502377
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.003655228763818741,
+            "mean_abs": 0.0005878969793378985,
+            "rmse": 0.0007513076753518985
+          },
+          "accumulator_min": -24137232,
+          "accumulator_max": 45438133,
+          "rounded_min": -5893,
+          "rounded_max": 11093,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3123,
+          "output_max": 11093
+        },
+        "actor_6": {
+          "float_range": [
+            -3.5428433418273926,
+            0.5832445025444031
+          ],
+          "fixed_dequantized_range": [
+            -3.54345703125,
+            0.58447265625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.003831148147583008,
+            "mean_abs": 0.0008653230398582916,
+            "rmse": 0.0010805716595766882
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.003808736801147461,
+            "mean_abs": 0.00086351532721892,
+            "rmse": 0.0010772886047052323
+          },
+          "accumulator_min": -59449825,
+          "accumulator_max": 9804477,
+          "rounded_min": -14514,
+          "rounded_max": 2394,
+          "pre_elu_saturation_count": 0,
+          "output_min": -14514,
+          "output_max": 2394
+        }
+      },
+      "input_saturation": {
+        "obs": 0,
+        "history": 0,
+        "flag": false
+      },
+      "action_clip_count": 1190,
+      "outputs": {
+        "raw": {
+          "error_vs_original_float": {
+            "max_abs": 0.003831148147583008,
+            "mean_abs": 0.0008653230398582916,
+            "rmse": 0.0010805716595766882
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.003808736801147461,
+            "mean_abs": 0.00086351532721892,
+            "rmse": 0.0010772886047052323
+          }
+        },
+        "clipped": {
+          "error_vs_original_float": {
+            "max_abs": 0.00332622230052948,
+            "mean_abs": 0.00038639917271211745,
+            "rmse": 0.0006800762010847762
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0032498836517333984,
+            "mean_abs": 0.00038784944995616874,
+            "rmse": 0.0006846794002175973
+          }
+        },
+        "latent": {
+          "error_vs_original_float": {
+            "max_abs": 0.0017511621117591858,
+            "mean_abs": 0.0007435437090074023,
+            "rmse": 0.0008345215055636558
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0016307458281517029,
+            "mean_abs": 0.0007486227065480003,
+            "rmse": 0.0008330100645909477
+          }
+        }
+      },
+      "source": "/home/cyd/fpga/pt_to_fpga/parking_speed_4500/vectors/rollout_low.npz"
+    },
+    {
+      "name": "trajectory_4_rollout_reverse",
+      "samples": 400,
+      "layers": {
+        "encoder_0": {
+          "float_range": [
+            -0.9999998807907104,
+            4.476766109466553
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            4.47705078125
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.003233999013900757,
+            "mean_abs": 0.000475700775652399,
+            "rmse": 0.0006631812362642888
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0031507834792137146,
+            "mean_abs": 0.00045696297181734735,
+            "rmse": 0.0006377217480010851
+          },
+          "accumulator_min": -271302929,
+          "accumulator_max": 75112788,
+          "rounded_min": -66236,
+          "rounded_max": 18338,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4096,
+          "output_max": 18338
+        },
+        "encoder_2": {
+          "float_range": [
+            -1.0,
+            7.152403831481934
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            7.1533203125
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.007193624973297119,
+            "mean_abs": 0.0005710731490924559,
+            "rmse": 0.0009328040432097515
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.006509676575660706,
+            "mean_abs": 0.0005609813099727034,
+            "rmse": 0.0009158035101220485
+          },
+          "accumulator_min": -339747371,
+          "accumulator_max": 120012441,
+          "rounded_min": -82946,
+          "rounded_max": 29300,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4096,
+          "output_max": 29300
+        },
+        "encoder_4": {
+          "float_range": [
+            -0.7662480473518372,
+            0.41765540838241577
+          ],
+          "fixed_dequantized_range": [
+            -0.7666015625,
+            0.41796875
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0011547207832336426,
+            "mean_abs": 0.0004987011919729412,
+            "rmse": 0.0005431299745022047
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0010744929313659668,
+            "mean_abs": 0.0004951304434022555,
+            "rmse": 0.0005349043324235743
+          },
+          "accumulator_min": -12862912,
+          "accumulator_max": 7013057,
+          "rounded_min": -3140,
+          "rounded_max": 1712,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3140,
+          "output_max": 1712
+        },
+        "actor_0": {
+          "float_range": [
+            -0.8126455545425415,
+            2.0141971111297607
+          ],
+          "fixed_dequantized_range": [
+            -0.812744140625,
+            2.013916015625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0026619471609592438,
+            "mean_abs": 0.0004207607161481519,
+            "rmse": 0.0005652616767678723
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.002662673592567444,
+            "mean_abs": 0.00042132415430273795,
+            "rmse": 0.0005656041197240716
+          },
+          "accumulator_min": -28089400,
+          "accumulator_max": 33788599,
+          "rounded_min": -6858,
+          "rounded_max": 8249,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3329,
+          "output_max": 8249
+        },
+        "actor_2": {
+          "float_range": [
+            -0.9607061743736267,
+            1.8479386568069458
+          ],
+          "fixed_dequantized_range": [
+            -0.960693359375,
+            1.847900390625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.003073819912970066,
+            "mean_abs": 0.0005112292304920629,
+            "rmse": 0.0006626936230099206
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0030841976404190063,
+            "mean_abs": 0.0005125826820813017,
+            "rmse": 0.0006635190848602791
+          },
+          "accumulator_min": -54317293,
+          "accumulator_max": 31001978,
+          "rounded_min": -13261,
+          "rounded_max": 7569,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3935,
+          "output_max": 7569
+        },
+        "actor_4": {
+          "float_range": [
+            -0.6738699674606323,
+            2.435537338256836
+          ],
+          "fixed_dequantized_range": [
+            -0.674072265625,
+            2.435302734375
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0029609352350234985,
+            "mean_abs": 0.0006027117412371296,
+            "rmse": 0.000779444457494202
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0031085163354873657,
+            "mean_abs": 0.0006053479393448669,
+            "rmse": 0.0007824948356669601
+          },
+          "accumulator_min": -18809095,
+          "accumulator_max": 40857828,
+          "rounded_min": -4592,
+          "rounded_max": 9975,
+          "pre_elu_saturation_count": 0,
+          "output_min": -2761,
+          "output_max": 9975
+        },
+        "actor_6": {
+          "float_range": [
+            -3.1537976264953613,
+            0.6882418394088745
+          ],
+          "fixed_dequantized_range": [
+            -3.156494140625,
+            0.688232421875
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0043451786041259766,
+            "mean_abs": 0.0009493104368448257,
+            "rmse": 0.0011764784873872238
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.004197359085083008,
+            "mean_abs": 0.0009539024656017622,
+            "rmse": 0.0011812390954695465
+          },
+          "accumulator_min": -52955960,
+          "accumulator_max": 11545208,
+          "rounded_min": -12929,
+          "rounded_max": 2819,
+          "pre_elu_saturation_count": 0,
+          "output_min": -12929,
+          "output_max": 2819
+        }
+      },
+      "input_saturation": {
+        "obs": 0,
+        "history": 0,
+        "flag": false
+      },
+      "action_clip_count": 1188,
+      "outputs": {
+        "raw": {
+          "error_vs_original_float": {
+            "max_abs": 0.0043451786041259766,
+            "mean_abs": 0.0009493104368448257,
+            "rmse": 0.0011764784873872238
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.004197359085083008,
+            "mean_abs": 0.0009539024656017622,
+            "rmse": 0.0011812390954695465
+          }
+        },
+        "clipped": {
+          "error_vs_original_float": {
+            "max_abs": 0.0033659636974334717,
+            "mean_abs": 0.0005288959791262944,
+            "rmse": 0.000906069187331916
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0033416450023651123,
+            "mean_abs": 0.0005309539164106051,
+            "rmse": 0.0009078335764399857
+          }
+        },
+        "latent": {
+          "error_vs_original_float": {
+            "max_abs": 0.0011547207832336426,
+            "mean_abs": 0.0004987011919729412,
+            "rmse": 0.0005431299745022047
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0010744929313659668,
+            "mean_abs": 0.0004951304434022555,
+            "rmse": 0.0005349043324235743
+          }
+        }
+      },
+      "source": "/home/cyd/fpga/pt_to_fpga/parking_speed_4500/vectors/rollout_reverse.npz"
+    },
+    {
+      "name": "trajectory_5_rollout_right",
+      "samples": 400,
+      "layers": {
+        "encoder_0": {
+          "float_range": [
+            -1.0,
+            8.990992546081543
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            8.990966796875
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.00342695415019989,
+            "mean_abs": 0.0005618504209713749,
+            "rmse": 0.0008001568142788197
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0032269805669784546,
+            "mean_abs": 0.0005454827350017766,
+            "rmse": 0.0007828684454195955
+          },
+          "accumulator_min": -324917305,
+          "accumulator_max": 150844763,
+          "rounded_min": -79326,
+          "rounded_max": 36827,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4096,
+          "output_max": 36827
+        },
+        "encoder_2": {
+          "float_range": [
+            -1.0,
+            20.29889488220215
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            20.30078125
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.008286084979772568,
+            "mean_abs": 0.0006575759223119348,
+            "rmse": 0.0010908897752763742
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.007249519228935242,
+            "mean_abs": 0.0006442271799915034,
+            "rmse": 0.0010644741618290438
+          },
+          "accumulator_min": -387257657,
+          "accumulator_max": 340591046,
+          "rounded_min": -94545,
+          "rounded_max": 83152,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4096,
+          "output_max": 83152
+        },
+        "encoder_4": {
+          "float_range": [
+            -0.7042167782783508,
+            0.3157256543636322
+          ],
+          "fixed_dequantized_range": [
+            -0.704345703125,
+            0.3125
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.003225654363632202,
+            "mean_abs": 0.0006724827736616135,
+            "rmse": 0.0007964780192950688
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.003143101930618286,
+            "mean_abs": 0.0006605551888545354,
+            "rmse": 0.0007836305386605603
+          },
+          "accumulator_min": -11815510,
+          "accumulator_max": 5243977,
+          "rounded_min": -2885,
+          "rounded_max": 1280,
+          "pre_elu_saturation_count": 0,
+          "output_min": -2885,
+          "output_max": 1280
+        },
+        "actor_0": {
+          "float_range": [
+            -0.8999870419502258,
+            2.2824888229370117
+          ],
+          "fixed_dequantized_range": [
+            -0.89990234375,
+            2.28271484375
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0026290826499462128,
+            "mean_abs": 0.0005105055129644143,
+            "rmse": 0.0006685888955397611
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0025960542261600494,
+            "mean_abs": 0.0005105599755103185,
+            "rmse": 0.0006679364980842456
+          },
+          "accumulator_min": -38610959,
+          "accumulator_max": 38295584,
+          "rounded_min": -9427,
+          "rounded_max": 9350,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3686,
+          "output_max": 9350
+        },
+        "actor_2": {
+          "float_range": [
+            -0.9798591732978821,
+            1.954495906829834
+          ],
+          "fixed_dequantized_range": [
+            -0.97998046875,
+            1.9560546875
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.00412781722843647,
+            "mean_abs": 0.0006063804901414471,
+            "rmse": 0.0007971538809173265
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.004176001995801926,
+            "mean_abs": 0.000604025634087364,
+            "rmse": 0.0007939994773618948
+          },
+          "accumulator_min": -65525014,
+          "accumulator_max": 32815771,
+          "rounded_min": -15997,
+          "rounded_max": 8012,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4014,
+          "output_max": 8012
+        },
+        "actor_4": {
+          "float_range": [
+            -0.7120370864868164,
+            2.7069292068481445
+          ],
+          "fixed_dequantized_range": [
+            -0.71240234375,
+            2.70654296875
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.004302978515625,
+            "mean_abs": 0.0006855001744497713,
+            "rmse": 0.0008621676009167997
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.00425112247467041,
+            "mean_abs": 0.0006827775272358849,
+            "rmse": 0.0008583958287544572
+          },
+          "accumulator_min": -20895635,
+          "accumulator_max": 45407719,
+          "rounded_min": -5101,
+          "rounded_max": 11086,
+          "pre_elu_saturation_count": 0,
+          "output_min": -2918,
+          "output_max": 11086
+        },
+        "actor_6": {
+          "float_range": [
+            -2.36853289604187,
+            0.4428402781486511
+          ],
+          "fixed_dequantized_range": [
+            -2.36669921875,
+            0.44775390625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.005587100982666016,
+            "mean_abs": 0.0010637543924773734,
+            "rmse": 0.0013705675810144577
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.005587935447692871,
+            "mean_abs": 0.0010601447476074098,
+            "rmse": 0.001365228310421939
+          },
+          "accumulator_min": -39707357,
+          "accumulator_max": 7513589,
+          "rounded_min": -9694,
+          "rounded_max": 1834,
+          "pre_elu_saturation_count": 0,
+          "output_min": -9694,
+          "output_max": 1834
+        }
+      },
+      "input_saturation": {
+        "obs": 0,
+        "history": 0,
+        "flag": false
+      },
+      "action_clip_count": 1192,
+      "outputs": {
+        "raw": {
+          "error_vs_original_float": {
+            "max_abs": 0.005587100982666016,
+            "mean_abs": 0.0010637543924773734,
+            "rmse": 0.0013705675810144577
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.005587935447692871,
+            "mean_abs": 0.0010601447476074098,
+            "rmse": 0.001365228310421939
+          }
+        },
+        "clipped": {
+          "error_vs_original_float": {
+            "max_abs": 0.005224883556365967,
+            "mean_abs": 0.0003955857284987966,
+            "rmse": 0.0007092074698551364
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.005159914493560791,
+            "mean_abs": 0.00039775405855228504,
+            "rmse": 0.000713002876528047
+          }
+        },
+        "latent": {
+          "error_vs_original_float": {
+            "max_abs": 0.003225654363632202,
+            "mean_abs": 0.0006724827736616135,
+            "rmse": 0.0007964780192950688
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.003143101930618286,
+            "mean_abs": 0.0006605551888545354,
+            "rmse": 0.0007836305386605603
+          }
+        }
+      },
+      "source": "/home/cyd/fpga/pt_to_fpga/parking_speed_4500/vectors/rollout_right.npz"
+    },
+    {
+      "name": "trajectory_6_rollout_stop",
+      "samples": 400,
+      "layers": {
+        "encoder_0": {
+          "float_range": [
+            -1.0,
+            9.79376220703125
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            9.793701171875
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.003445785492658615,
+            "mean_abs": 0.0004684630209467855,
+            "rmse": 0.0006535066079271373
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0033196359872817993,
+            "mean_abs": 0.0004532755723218429,
+            "rmse": 0.0006359384602245645
+          },
+          "accumulator_min": -368786397,
+          "accumulator_max": 164309429,
+          "rounded_min": -90036,
+          "rounded_max": 40115,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4096,
+          "output_max": 40115
+        },
+        "encoder_2": {
+          "float_range": [
+            -1.0,
+            8.273087501525879
+          ],
+          "fixed_dequantized_range": [
+            -1.0,
+            8.27197265625
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.007540494203567505,
+            "mean_abs": 0.0006232156095150287,
+            "rmse": 0.0010270680670297252
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.007038779556751251,
+            "mean_abs": 0.0006099235896249411,
+            "rmse": 0.0010046073072921221
+          },
+          "accumulator_min": -353359920,
+          "accumulator_max": 138781007,
+          "rounded_min": -86270,
+          "rounded_max": 33882,
+          "pre_elu_saturation_count": 0,
+          "output_min": -4096,
+          "output_max": 33882
+        },
+        "encoder_4": {
+          "float_range": [
+            -0.2791173756122589,
+            0.140752375125885
+          ],
+          "fixed_dequantized_range": [
+            -0.280029296875,
+            0.14111328125
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0017255768179893494,
+            "mean_abs": 0.0008058810245711356,
+            "rmse": 0.0009038308562544869
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.001739300787448883,
+            "mean_abs": 0.0007986782281659544,
+            "rmse": 0.0008890395700777062
+          },
+          "accumulator_min": -4696850,
+          "accumulator_max": 2366979,
+          "rounded_min": -1147,
+          "rounded_max": 578,
+          "pre_elu_saturation_count": 0,
+          "output_min": -1147,
+          "output_max": 578
+        },
+        "actor_0": {
+          "float_range": [
+            -0.8225386142730713,
+            1.8734393119812012
+          ],
+          "fixed_dequantized_range": [
+            -0.822021484375,
+            1.873046875
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0026280805468559265,
+            "mean_abs": 0.0005024439733860397,
+            "rmse": 0.0006752079914111152
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.00265561044216156,
+            "mean_abs": 0.0005011499327895541,
+            "rmse": 0.0006745182956285448
+          },
+          "accumulator_min": -28993015,
+          "accumulator_max": 31423873,
+          "rounded_min": -7078,
+          "rounded_max": 7672,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3367,
+          "output_max": 7672
+        },
+        "actor_2": {
+          "float_range": [
+            -0.9630920886993408,
+            2.1146442890167236
+          ],
+          "fixed_dequantized_range": [
+            -0.963134765625,
+            2.114501953125
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0036029741168022156,
+            "mean_abs": 0.0006036982973370187,
+            "rmse": 0.0007712345329233045
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0033752769231796265,
+            "mean_abs": 0.0006027902517195116,
+            "rmse": 0.0007697619225572538
+          },
+          "accumulator_min": -55356321,
+          "accumulator_max": 35477160,
+          "rounded_min": -13515,
+          "rounded_max": 8661,
+          "pre_elu_saturation_count": 0,
+          "output_min": -3945,
+          "output_max": 8661
+        },
+        "actor_4": {
+          "float_range": [
+            -0.7151294350624084,
+            2.9032375812530518
+          ],
+          "fixed_dequantized_range": [
+            -0.714599609375,
+            2.9033203125
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.0032225847244262695,
+            "mean_abs": 0.0006801994033958181,
+            "rmse": 0.0008424390802014611
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.0030624866485595703,
+            "mean_abs": 0.0006783318031375529,
+            "rmse": 0.0008400849172643898
+          },
+          "accumulator_min": -21067295,
+          "accumulator_max": 48710886,
+          "rounded_min": -5143,
+          "rounded_max": 11892,
+          "pre_elu_saturation_count": 0,
+          "output_min": -2927,
+          "output_max": 11892
+        },
+        "actor_6": {
+          "float_range": [
+            -2.9684407711029053,
+            0.5024226903915405
+          ],
+          "fixed_dequantized_range": [
+            -2.967041015625,
+            0.5029296875
+          ],
+          "error_vs_original_float": {
+            "max_abs": 0.004674673080444336,
+            "mean_abs": 0.0009775708825327455,
+            "rmse": 0.0012366463017729331
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.004657745361328125,
+            "mean_abs": 0.0009676134314698478,
+            "rmse": 0.0012221937342603848
+          },
+          "accumulator_min": -49780664,
+          "accumulator_max": 8435777,
+          "rounded_min": -12153,
+          "rounded_max": 2060,
+          "pre_elu_saturation_count": 0,
+          "output_min": -12153,
+          "output_max": 2060
+        }
+      },
+      "input_saturation": {
+        "obs": 0,
+        "history": 0,
+        "flag": false
+      },
+      "action_clip_count": 1190,
+      "outputs": {
+        "raw": {
+          "error_vs_original_float": {
+            "max_abs": 0.004674673080444336,
+            "mean_abs": 0.0009775708825327455,
+            "rmse": 0.0012366463017729331
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.004657745361328125,
+            "mean_abs": 0.0009676134314698478,
+            "rmse": 0.0012221937342603848
+          }
+        },
+        "clipped": {
+          "error_vs_original_float": {
+            "max_abs": 0.0031678378582000732,
+            "mean_abs": 0.0003907616149323682,
+            "rmse": 0.0006906610403233361
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.002998828887939453,
+            "mean_abs": 0.0003930868930183351,
+            "rmse": 0.0006932484138643585
+          }
+        },
+        "latent": {
+          "error_vs_original_float": {
+            "max_abs": 0.0017255768179893494,
+            "mean_abs": 0.0008058810245711356,
+            "rmse": 0.0009038308562544869
+          },
+          "error_vs_float_on_quantized_inputs": {
+            "max_abs": 0.001739300787448883,
+            "mean_abs": 0.0007986782281659544,
+            "rmse": 0.0008890395700777062
+          }
+        }
+      },
+      "source": "/home/cyd/fpga/pt_to_fpga/parking_speed_4500/vectors/rollout_stop.npz"
+    }
+  ],
+  "rtl_tests": {
+    "synthetic": 256,
+    "stress": 8,
+    "trajectory_balanced": 56,
+    "layer_outputs_checked_per_sample": 425,
+    "logs": [
+      "rtl_synthetic_4500.log",
+      "rtl_stress_4500.log",
+      "rtl_trajectory_4500.log"
+    ]
+  }
+}

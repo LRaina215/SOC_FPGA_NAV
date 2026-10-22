@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-10-06T03:11:56.859300+00:00",
+  "inspection": "read-only lsusb and filesystem enumeration only",
+  "usb_enumeration_exit_code": 0,
+  "usb_stdout": "Bus 009 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub\nBus 008 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 007 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub\nBus 006 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 005 Device 002: ID 05e3:0608 Genesys Logic, Inc. Hub\nBus 005 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 004 Device 008: ID 35d6:3510 Bridgesil USB3.2 Hub\nBus 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub\nBus 003 Device 004: ID 8087:0029 Intel Corp. AX200 Bluetooth\nBus 003 Device 057: ID 1a86:55d4 QinHeng Electronics USB Single Serial\nBus 003 Device 055: ID 3837:201b SINOWEALTH MCHOSE 2.4G Wireless\nBus 003 Device 054: ID 0403:6014 Future Technology Devices International, Ltd FT232H Single HS USB-UART/FIFO IC\nBus 003 Device 053: ID 35d6:2510 Bridgesil USB2.1 Hub\nBus 003 Device 002: ID 4e53:5406  USB OPTICAL MOUSE \nBus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub\nBus 001 Device 003: ID 2109:0715 VIA Labs, Inc. VL817 SATA Adaptor\nBus 001 Device 055: ID 2b7e:b651 SunplusIT Inc HD Webcam\nBus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\n",
+  "usb_stderr": "",
+  "serial_links": [
+    {
+      "path": "/dev/serial/by-id/usb-1a86_USB_Single_Serial_5910012847-if00",
+      "target": "/dev/ttyACM0",
+      "opened": false
+    },
+    {
+      "path": "/dev/serial/by-path/pci-0000:06:00.4-usb-0:2.3:1.0",
+      "target": "/dev/ttyACM0",
+      "opened": false
+    }
+  ],
+  "ftdi_0403_6014_present": true,
+  "ftdi_classification": "JTAG/download-cable candidate only, NOT a verified usable board UART",
+  "ch9102_detected": true,
+  "board_uart_usable_verified": false,
+  "board_connection_verified": false,
+  "programmer_executed": false,
+  "serial_opened": false,
+  "serial_transmitted": false,
+  "programming_performed": false,
+  "programmer_executable": "/home/cyd/fpga/GW_fpga/Gowin_V1.9.12.04_linux/Programmer/bin/programmer_cli",
+  "programmer_document": "/home/cyd/fpga/GW_fpga/Gowin_V1.9.12.04_linux/Programmer/doc/EN/SUG502-2.5.2E_Gowin Programmer User Guide.pdf",
+  "later_authorized_download_template": "programmer_cli --device <verified GW5AT-138C CLI name> --run 2 --fsFile <approved bitstream.fs> --cable-index <verified> --location <verified> --uid <verified>",
+  "restriction": "Template only, never executed. SRAM mode 2 per local guide. Exact target/cable requires later human authorization; flash is separately unauthorized."
+}

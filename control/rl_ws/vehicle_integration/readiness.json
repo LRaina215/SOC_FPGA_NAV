@@ -1,0 +1,46 @@
+{
+  "status": "integration_in_progress_not_ready_for_actuator_power",
+  "completed": [
+    "Full original encoder and actor on FPGA: 264 physical inference cases passed",
+    "Dual encoder and BMI088 telemetry with frozen64byte packets; 30 host tests and UART RTL pass",
+    "Both physical wheel encoders report valid CRC angles; weak-field flag accepted as instructed",
+    "26-pin mapped and timed build; all actuator outputs constant zero",
+    "8 CPU observation and geometry tests"
+  ],
+  "in_progress": [],
+  "missing_hardware_facts": [
+    "BMI088 valid chip IDs and six-axis readings",
+    "Measured servo zero, direction, radians-to-pulse conversion and mechanical limits",
+    "Measured motor torque/current conversion",
+    "Actual added load"
+  ],
+  "dynamics_evidence": {
+    "closed_servo_current_history": "diagnostics/closed_servo_current_history.json",
+    "survived": false,
+    "first_failure_seconds": 1.08
+  },
+  "imu_orientation_user_confirmed": {
+    "x": "right",
+    "y": "forward",
+    "z": "right-hand-rule upward"
+  },
+  "actuator_outputs": "constant_zero",
+  "programming_mode": "SRAM_only",
+  "remaining_implementation": [
+    "Fresh IMU samples and 125Hz autonomous observation-to-action loop",
+    "Calibrated motor and servo command conversion and arming interlocks",
+    "Stable closed-loop validation: current servo-model evaluation fails at1.08s"
+  ],
+  "latest_sensor_capture": "hardware_tests/sensors_gyro_probes_3v3.json",
+  "blocking_hardware": "User reports3.3V. Both documented physical CS lines returnFF on independent read-only gyro ID probes; acceleration ID alsoFF. Need actual module pin labels/model to verify SPI interface.",
+  "latest_bitstream": "board/gowin/runs/20261006T033158.298291Z/fc_v4_board/impl/pnr/fc_v4_board.fs",
+  "latest_bitstream_sha256": "3a8a187ddabaf0496557378e626bd5ea58e0c85722c385731fe100fa550174d8",
+  "latest_physical_inference_report": "hardware_tests/20261006T032523Z/report.json",
+  "latest_physical_inference_cases": 264,
+  "next_required_input": [
+    "BMI088 module model or actual data-output pin labels",
+    "Existing servo calibration records or confirmation that no calibration exists"
+  ],
+  "imu_supply_voltage_user_reported_v": 3.3,
+  "latest_physical_inference_bitstream": "board/gowin/runs/20261006T032322.867222Z/fc_v4_board/impl/pnr/fc_v4_board.fs"
+}

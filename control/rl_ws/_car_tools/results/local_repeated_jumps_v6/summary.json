@@ -1,0 +1,727 @@
+{
+  "options": {
+    "mode": "jump",
+    "output": "_car_tools/results/local_repeated_jumps_v6",
+    "num_envs": 8,
+    "device": "cpu",
+    "velocity": 0.5,
+    "yaw": 0.0,
+    "config": "_car_tools/results/motion_v6_config.json",
+    "seconds": 13.0,
+    "jump_count": 3
+  },
+  "env": {
+    "asset": {
+      "angular_damping": 0.0,
+      "armature": 0.0,
+      "collapse_fixed_joints": true,
+      "default_dof_drive_mode": 3,
+      "density": 0.001,
+      "disable_gravity": false,
+      "file": "{WHEEL_LEGGED_GYM_ROOT_DIR}/resources/robots/car/urdf/car_open.urdf",
+      "fix_base_link": false,
+      "flip_visual_attachments": false,
+      "foot_name": "Wheel_link",
+      "forward_reference_x": -0.08075,
+      "l1": 0.075,
+      "l2": 0.125,
+      "linear_damping": 0.0,
+      "max_angular_velocity": 1000.0,
+      "max_linear_velocity": 1000.0,
+      "name": "CarRobot",
+      "offset": 0.02,
+      "penalize_contacts_on": [
+        "Lower",
+        "base"
+      ],
+      "replace_cylinder_with_capsule": true,
+      "self_collisions": 0,
+      "terminate_after_contacts_on": [
+        "base"
+      ],
+      "thickness": 0.01
+    },
+    "commands": {
+      "advanced_max_curriculum": 1.5,
+      "basic_max_curriculum": 2.5,
+      "boundary_sampling": false,
+      "curriculum": false,
+      "curriculum_threshold": 0.7,
+      "heading_command": false,
+      "num_commands": 3,
+      "ranges": {
+        "ang_vel_yaw": [
+          0.0,
+          0.0
+        ],
+        "heading": [
+          -3.14,
+          3.14
+        ],
+        "height": [
+          0.1305,
+          0.1305
+        ],
+        "lin_vel_x": [
+          0.0,
+          0.0
+        ]
+      },
+      "resampling_time": 5.0,
+      "standing_fraction": 0.25
+    },
+    "control": {
+      "action_scale": 0.5,
+      "balance_kd": 0.08,
+      "balance_kp": 0.3,
+      "control_type": "P",
+      "damping": {
+        "Hip": 0.06,
+        "Knee": 0.06,
+        "Wheel": 0.025
+      },
+      "decimation": 4,
+      "forward_torque_limit": 0.12,
+      "height_reference": true,
+      "height_reference_rate": 0.125,
+      "integral_windup_limit": 1.5,
+      "jump_air_height": 0.085,
+      "jump_air_torque_limit": 0.02,
+      "jump_crouch_s": 0.55,
+      "jump_enabled": true,
+      "jump_leg_y": -0.027,
+      "jump_leg_y_speed_gain": 0.016,
+      "jump_push_height": 0.19,
+      "jump_push_hold_s": 0.0,
+      "jump_push_s": 0.1,
+      "leg_integral_gain": 0.0,
+      "min_reference_height": 0.085,
+      "motion_controller": "feedback",
+      "pos_action_scale": 0.0,
+      "speed_ki": 0.03,
+      "speed_kp": 0.25,
+      "speed_reference_rate": 0.6,
+      "stiffness": {
+        "Hip": 60.0,
+        "Knee": 60.0,
+        "Wheel": 0
+      },
+      "turn_torque_limit": 0.05,
+      "vel_action_scale": 4.0,
+      "velocity_source": "base",
+      "wheel_control": "torque",
+      "yaw_ki": 0.002,
+      "yaw_kp": 0.015
+    },
+    "domain_rand": {
+      "added_mass_range": [
+        -0.0,
+        0.08
+      ],
+      "delay_ms_range": [
+        0,
+        7
+      ],
+      "friction_range": [
+        0.1,
+        0.8
+      ],
+      "max_push_vel_xy": 0.05,
+      "push_interval": 63.0,
+      "push_interval_s": 0.5,
+      "push_robots": false,
+      "rand_com_vec": [
+        0.05,
+        0.05,
+        0.05
+      ],
+      "randomize_Kd": false,
+      "randomize_Kd_range": [
+        0.9,
+        1.1
+      ],
+      "randomize_Kp": false,
+      "randomize_Kp_range": [
+        0.9,
+        1.1
+      ],
+      "randomize_action_delay": false,
+      "randomize_base_com": false,
+      "randomize_base_mass": false,
+      "randomize_default_dof_pos": false,
+      "randomize_default_dof_pos_range": [
+        -0.05,
+        0.05
+      ],
+      "randomize_friction": false,
+      "randomize_inertia": false,
+      "randomize_inertia_range": [
+        0.9,
+        1.1
+      ],
+      "randomize_motor_torque": false,
+      "randomize_motor_torque_range": [
+        0.9,
+        1.1
+      ],
+      "randomize_restitution": false,
+      "restitution_range": [
+        0.0,
+        0.6
+      ]
+    },
+    "env": {
+      "dof_vel_use_pos_diff": false,
+      "env_spacing": 3.0,
+      "episode_length_s": 20.0,
+      "fail_to_terminal_time_s": 0.05,
+      "num_actions": 6,
+      "num_envs": 8,
+      "num_observations": 27,
+      "num_privileged_obs": 143,
+      "obs_history_dec": 1,
+      "obs_history_length": 5,
+      "reset_velocity_scale": 0.1,
+      "send_timeouts": true,
+      "tilt_fail_deg": 30.0
+    },
+    "init_member_classes": {},
+    "init_state": {
+      "ang_vel": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "default_joint_angles": {
+        "RightHip_joint": 0.290418,
+        "RightKnee_joint": -0.220039,
+        "RightWheel_joint": 0.0,
+        "LeftHip_joint": 0.290418,
+        "LeftKnee_joint": 0.220039,
+        "LeftWheel_joint": 0.0
+      },
+      "lin_vel": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pos": [
+        0.0,
+        0.0,
+        0.1305
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "noise": {
+      "add_noise": false,
+      "noise_level": 1.0,
+      "noise_scales": {
+        "ang_vel": 0.2,
+        "dof_pos": 0.01,
+        "dof_vel": 0.4,
+        "gravity": 0.1,
+        "height_measurements": 0.1,
+        "lin_vel": 0.1
+      }
+    },
+    "normalization": {
+      "clip_actions": 1.0,
+      "clip_observations": 100.0,
+      "obs_scales": {
+        "ang_vel": 1.3,
+        "dof_acc": 0.0025,
+        "dof_pos": 1.0,
+        "dof_vel": 0.15,
+        "gravity": 3.0,
+        "height_measurements": 5.0,
+        "lin_vel": 2.0,
+        "torque": 0.05
+      }
+    },
+    "rewards": {
+      "base_height_target": 0.18,
+      "clip_single_reward": 100,
+      "max_contact_force": 30.0,
+      "only_positive_rewards": false,
+      "scales": {
+        "action_rate": -0.005,
+        "action_smooth": 0.0,
+        "ang_vel_xy": 0.0,
+        "base_height": 1.0,
+        "base_height_enhance": 0,
+        "collision": 0.0,
+        "dof_acc": 0.0,
+        "dof_pos_limits": 0.0,
+        "dof_vel": 0.0,
+        "forward_error": -2.0,
+        "leg_together": 0.0,
+        "lin_vel_z": 0.0,
+        "nominal_state": 0.0,
+        "orientation": -3.0,
+        "termination": -5.0,
+        "torques": 0.0,
+        "tracking_ang_vel": 1.5,
+        "tracking_ang_vel_enhance": 0,
+        "tracking_lin_vel": 2.0,
+        "tracking_lin_vel_enhance": 0,
+        "upright": 3.0,
+        "yaw_error": -0.3
+      },
+      "soft_dof_pos_limit": 0.97,
+      "soft_dof_vel_limit": 1.0,
+      "soft_torque_limit": 1.0,
+      "tracking_sigma": 0.04
+    },
+    "seed": 1,
+    "sim": {
+      "dt": 0.002,
+      "gravity": [
+        0.0,
+        0.0,
+        -9.81
+      ],
+      "physx": {
+        "bounce_threshold_velocity": 0.5,
+        "contact_collection": 2,
+        "contact_offset": 0.01,
+        "default_buffer_size_multiplier": 5,
+        "max_depenetration_velocity": 1.0,
+        "max_gpu_contact_pairs": 8388608,
+        "num_position_iterations": 4,
+        "num_threads": 10,
+        "num_velocity_iterations": 0,
+        "rest_offset": 0.0,
+        "solver_type": 1
+      },
+      "substeps": 1,
+      "up_axis": 1
+    },
+    "terrain": {
+      "border_size": 25,
+      "curriculum": false,
+      "dynamic_friction": 0.6,
+      "horizontal_scale": 0.3,
+      "max_init_terrain_level": 1,
+      "measure_heights": true,
+      "measured_points_x": [
+        -0.5,
+        -0.4,
+        -0.3,
+        -0.2,
+        -0.1,
+        0.0,
+        0.1,
+        0.2,
+        0.3,
+        0.4,
+        0.5
+      ],
+      "measured_points_y": [
+        -0.3,
+        -0.2,
+        -0.1,
+        0.0,
+        0.1,
+        0.2,
+        0.3
+      ],
+      "mesh_type": "plane",
+      "num_cols": 10,
+      "num_rows": 5,
+      "restitution": 0.15,
+      "selected": false,
+      "slope_treshold": 0.75,
+      "static_friction": 0.6,
+      "terrain_kwargs": null,
+      "terrain_length": 6.0,
+      "terrain_proportions": [
+        0.5,
+        0.0,
+        0.5,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "terrain_width": 6.0,
+      "vertical_scale": 0.005
+    },
+    "viewer": {
+      "lookat": [
+        0,
+        0,
+        0
+      ],
+      "pos": [
+        0,
+        -2,
+        1
+      ],
+      "ref_env": 0
+    }
+  },
+  "train": {
+    "algorithm": {
+      "clip_param": 0.2,
+      "desired_kl": 0.005,
+      "entropy_coef": 0.001,
+      "extra_learning_rate": 0.001,
+      "gamma": 0.995,
+      "lam": 0.95,
+      "learning_rate": 0.0001,
+      "max_grad_norm": 1.0,
+      "num_learning_epochs": 5,
+      "num_mini_batches": 4,
+      "schedule": "fixed",
+      "use_clipped_value_loss": true,
+      "value_loss_coef": 1.0
+    },
+    "init_member_classes": {},
+    "policy": {
+      "activation": "elu",
+      "actor_hidden_dims": [
+        128,
+        64,
+        32
+      ],
+      "critic_hidden_dims": [
+        256,
+        128,
+        64
+      ],
+      "encoder_hidden_dims": [
+        128,
+        64
+      ],
+      "init_noise_std": 0.08,
+      "latent_dim": 3,
+      "num_encoder_obs": 135
+    },
+    "runner": {
+      "algorithm_class_name": "PPO",
+      "checkpoint": -1,
+      "experiment_name": "car_robot",
+      "load_run": -1,
+      "max_iterations": 5000,
+      "num_steps_per_env": 48,
+      "policy_class_name": "ActorCriticSequence",
+      "resume": false,
+      "resume_path": null,
+      "run_name": "",
+      "save_interval": 100
+    },
+    "runner_class_name": "OnPolicyRunner",
+    "seed": 1
+  },
+  "results": [
+    {
+      "env": 7,
+      "ever_failed": false,
+      "first_failure_s": 13.0,
+      "clearance_m": 0.1028955951333046,
+      "base_rise_after_takeoff_m": 0.05615134537220001,
+      "airborne_s": 0.24800002574920654,
+      "takeoff_s": 9.608000755310059,
+      "landing_s": 3.864000082015991,
+      "peak_vz_mps": 1.682536005973816,
+      "mean_tilt_deg": 4.466959476470947,
+      "speed_mae_all": 0.11859423667192459,
+      "yaw_mae_all": 0.09380356967449188,
+      "jumps": [
+        {
+          "clearance_m": 0.1041628047823906,
+          "base_rise_after_takeoff_m": 0.047821998596191406,
+          "airborne_s": 0.24800002574920654,
+          "takeoff_s": 3.616000175476074,
+          "landing_s": 3.864000082015991
+        },
+        {
+          "clearance_m": 0.1028955951333046,
+          "base_rise_after_takeoff_m": 0.04735274612903595,
+          "airborne_s": 0.24800002574920654,
+          "takeoff_s": 6.616000175476074,
+          "landing_s": 6.86400032043457
+        },
+        {
+          "clearance_m": 0.10460341721773148,
+          "base_rise_after_takeoff_m": 0.05615134537220001,
+          "airborne_s": 0.25600001215934753,
+          "takeoff_s": 9.608000755310059,
+          "landing_s": 9.86400032043457
+        }
+      ],
+      "score": -0.06075476258993148
+    },
+    {
+      "env": 5,
+      "ever_failed": false,
+      "first_failure_s": 13.0,
+      "clearance_m": 0.10271261632442474,
+      "base_rise_after_takeoff_m": 0.05604472756385803,
+      "airborne_s": 0.25600001215934753,
+      "takeoff_s": 9.608000755310059,
+      "landing_s": 3.864000082015991,
+      "peak_vz_mps": 1.680829644203186,
+      "mean_tilt_deg": 3.926325798034668,
+      "speed_mae_all": 0.10466965287923813,
+      "yaw_mae_all": 0.0912594124674797,
+      "jumps": [
+        {
+          "clearance_m": 0.10291787981987,
+          "base_rise_after_takeoff_m": 0.05664902925491333,
+          "airborne_s": 0.25600001215934753,
+          "takeoff_s": 3.6080002784729004,
+          "landing_s": 3.864000082015991
+        },
+        {
+          "clearance_m": 0.10271261632442474,
+          "base_rise_after_takeoff_m": 0.05595064163208008,
+          "airborne_s": 0.25600001215934753,
+          "takeoff_s": 6.6080002784729,
+          "landing_s": 6.86400032043457
+        },
+        {
+          "clearance_m": 0.1041203960776329,
+          "base_rise_after_takeoff_m": 0.05604472756385803,
+          "airborne_s": 0.25600001215934753,
+          "takeoff_s": 9.608000755310059,
+          "landing_s": 9.86400032043457
+        }
+      ],
+      "score": -0.06016512364149093
+    },
+    {
+      "env": 0,
+      "ever_failed": false,
+      "first_failure_s": 13.0,
+      "clearance_m": 0.10258108377456665,
+      "base_rise_after_takeoff_m": 0.05607573688030243,
+      "airborne_s": 0.25600001215934753,
+      "takeoff_s": 9.608000755310059,
+      "landing_s": 3.864000082015991,
+      "peak_vz_mps": 1.6838246583938599,
+      "mean_tilt_deg": 3.737882614135742,
+      "speed_mae_all": 0.09827391058206558,
+      "yaw_mae_all": 0.07428427785634995,
+      "jumps": [
+        {
+          "clearance_m": 0.10306434333324432,
+          "base_rise_after_takeoff_m": 0.0564291775226593,
+          "airborne_s": 0.25600001215934753,
+          "takeoff_s": 3.6080002784729004,
+          "landing_s": 3.864000082015991
+        },
+        {
+          "clearance_m": 0.10486527532339096,
+          "base_rise_after_takeoff_m": 0.0562778115272522,
+          "airborne_s": 0.25600001215934753,
+          "takeoff_s": 6.6080002784729,
+          "landing_s": 6.86400032043457
+        },
+        {
+          "clearance_m": 0.10258108377456665,
+          "base_rise_after_takeoff_m": 0.05607573688030243,
+          "airborne_s": 0.25600001215934753,
+          "takeoff_s": 9.608000755310059,
+          "landing_s": 9.86400032043457
+        }
+      ],
+      "score": -0.058656820654869074
+    },
+    {
+      "env": 6,
+      "ever_failed": false,
+      "first_failure_s": 13.0,
+      "clearance_m": 0.10270093381404877,
+      "base_rise_after_takeoff_m": 0.055434778332710266,
+      "airborne_s": 0.24800002574920654,
+      "takeoff_s": 9.608000755310059,
+      "landing_s": 3.864000082015991,
+      "peak_vz_mps": 1.6748946905136108,
+      "mean_tilt_deg": 3.975830316543579,
+      "speed_mae_all": 0.10701125860214233,
+      "yaw_mae_all": 0.09162762761116028,
+      "jumps": [
+        {
+          "clearance_m": 0.10280042886734009,
+          "base_rise_after_takeoff_m": 0.055305421352386475,
+          "airborne_s": 0.25600001215934753,
+          "takeoff_s": 3.6080002784729004,
+          "landing_s": 3.864000082015991
+        },
+        {
+          "clearance_m": 0.10270093381404877,
+          "base_rise_after_takeoff_m": 0.04696962237358093,
+          "airborne_s": 0.24800002574920654,
+          "takeoff_s": 6.616000175476074,
+          "landing_s": 6.86400032043457
+        },
+        {
+          "clearance_m": 0.10303972661495209,
+          "base_rise_after_takeoff_m": 0.055434778332710266,
+          "airborne_s": 0.25600001215934753,
+          "takeoff_s": 9.608000755310059,
+          "landing_s": 9.86400032043457
+        }
+      ],
+      "score": -0.05847450494766235
+    },
+    {
+      "env": 2,
+      "ever_failed": false,
+      "first_failure_s": 13.0,
+      "clearance_m": 0.1020101010799408,
+      "base_rise_after_takeoff_m": 0.054991111159324646,
+      "airborne_s": 0.24800002574920654,
+      "takeoff_s": 9.608000755310059,
+      "landing_s": 3.864000082015991,
+      "peak_vz_mps": 1.6803607940673828,
+      "mean_tilt_deg": 4.011565685272217,
+      "speed_mae_all": 0.10555492341518402,
+      "yaw_mae_all": 0.09274803102016449,
+      "jumps": [
+        {
+          "clearance_m": 0.10304564237594604,
+          "base_rise_after_takeoff_m": 0.05663655698299408,
+          "airborne_s": 0.25600001215934753,
+          "takeoff_s": 3.6080002784729004,
+          "landing_s": 3.864000082015991
+        },
+        {
+          "clearance_m": 0.10442692041397095,
+          "base_rise_after_takeoff_m": 0.05626913905143738,
+          "airborne_s": 0.25600001215934753,
+          "takeoff_s": 6.6080002784729,
+          "landing_s": 6.86400032043457
+        },
+        {
+          "clearance_m": 0.1020101010799408,
+          "base_rise_after_takeoff_m": 0.054991111159324646,
+          "airborne_s": 0.24800002574920654,
+          "takeoff_s": 9.608000755310059,
+          "landing_s": 9.86400032043457
+        }
+      ],
+      "score": -0.057001212239265436
+    },
+    {
+      "env": 3,
+      "ever_failed": false,
+      "first_failure_s": 13.0,
+      "clearance_m": 0.10349485278129578,
+      "base_rise_after_takeoff_m": 0.04733729362487793,
+      "airborne_s": 0.24800002574920654,
+      "takeoff_s": 9.616000175476074,
+      "landing_s": 3.864000082015991,
+      "peak_vz_mps": 1.6614934206008911,
+      "mean_tilt_deg": 4.044223785400391,
+      "speed_mae_all": 0.10751833766698837,
+      "yaw_mae_all": 0.09790902584791183,
+      "jumps": [
+        {
+          "clearance_m": 0.10409936308860779,
+          "base_rise_after_takeoff_m": 0.047621071338653564,
+          "airborne_s": 0.24800002574920654,
+          "takeoff_s": 3.616000175476074,
+          "landing_s": 3.864000082015991
+        },
+        {
+          "clearance_m": 0.10349485278129578,
+          "base_rise_after_takeoff_m": 0.047171056270599365,
+          "airborne_s": 0.24800002574920654,
+          "takeoff_s": 6.616000175476074,
+          "landing_s": 6.86400032043457
+        },
+        {
+          "clearance_m": 0.10363942384719849,
+          "base_rise_after_takeoff_m": 0.04733729362487793,
+          "airborne_s": 0.24800002574920654,
+          "takeoff_s": 9.616000175476074,
+          "landing_s": 9.86400032043457
+        }
+      ],
+      "score": -0.05097671747207641
+    },
+    {
+      "env": 4,
+      "ever_failed": false,
+      "first_failure_s": 13.0,
+      "clearance_m": 0.10261490941047668,
+      "base_rise_after_takeoff_m": 0.046826690435409546,
+      "airborne_s": 0.24800002574920654,
+      "takeoff_s": 9.616000175476074,
+      "landing_s": 3.864000082015991,
+      "peak_vz_mps": 1.6698024272918701,
+      "mean_tilt_deg": 4.4612507820129395,
+      "speed_mae_all": 0.11792020499706268,
+      "yaw_mae_all": 0.11268023401498795,
+      "jumps": [
+        {
+          "clearance_m": 0.10387825965881348,
+          "base_rise_after_takeoff_m": 0.04741588234901428,
+          "airborne_s": 0.24800002574920654,
+          "takeoff_s": 3.616000175476074,
+          "landing_s": 3.864000082015991
+        },
+        {
+          "clearance_m": 0.10261490941047668,
+          "base_rise_after_takeoff_m": 0.05534787476062775,
+          "airborne_s": 0.24800002574920654,
+          "takeoff_s": 6.6080002784729,
+          "landing_s": 6.86400032043457
+        },
+        {
+          "clearance_m": 0.10329300165176392,
+          "base_rise_after_takeoff_m": 0.046826690435409546,
+          "airborne_s": 0.24800002574920654,
+          "takeoff_s": 9.616000175476074,
+          "landing_s": 9.86400032043457
+        }
+      ],
+      "score": -0.050119692087173456
+    },
+    {
+      "env": 1,
+      "ever_failed": false,
+      "first_failure_s": 13.0,
+      "clearance_m": 0.10230571031570435,
+      "base_rise_after_takeoff_m": 0.046816468238830566,
+      "airborne_s": 0.24800002574920654,
+      "takeoff_s": 9.616000175476074,
+      "landing_s": 3.864000082015991,
+      "peak_vz_mps": 1.6833007335662842,
+      "mean_tilt_deg": 4.390042781829834,
+      "speed_mae_all": 0.11774374544620514,
+      "yaw_mae_all": 0.10142592340707779,
+      "jumps": [
+        {
+          "clearance_m": 0.10495485365390778,
+          "base_rise_after_takeoff_m": 0.05658012628555298,
+          "airborne_s": 0.25600001215934753,
+          "takeoff_s": 3.6080002784729004,
+          "landing_s": 3.864000082015991
+        },
+        {
+          "clearance_m": 0.10415342450141907,
+          "base_rise_after_takeoff_m": 0.05623714625835419,
+          "airborne_s": 0.25600001215934753,
+          "takeoff_s": 6.6080002784729,
+          "landing_s": 6.86400032043457
+        },
+        {
+          "clearance_m": 0.10230571031570435,
+          "base_rise_after_takeoff_m": 0.046816468238830566,
+          "airborne_s": 0.24800002574920654,
+          "takeoff_s": 9.616000175476074,
+          "landing_s": 9.86400032043457
+        }
+      ],
+      "score": -0.04912217855453491
+    }
+  ],
+  "passed_jump_count": 8
+}

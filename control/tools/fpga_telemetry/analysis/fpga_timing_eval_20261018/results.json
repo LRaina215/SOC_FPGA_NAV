@@ -1,0 +1,3952 @@
+{
+  "checkpoint": "/home/cyd/fpga/model/wheel_velocity_original/model_4500.pt",
+  "checkpoint_sha256": "a0c0024e132b71d10fc42cc92081129e2738e8148b0191f56acf7eecfc73d99b",
+  "saved_config": "/home/cyd/fpga/model/wheel_velocity_original/parking_config.json",
+  "effective_config": {
+    "env": {
+      "asset": {
+        "angular_damping": 0.0,
+        "armature": 0.0,
+        "collapse_fixed_joints": true,
+        "default_dof_drive_mode": 3,
+        "density": 0.001,
+        "disable_gravity": false,
+        "file": "{WHEEL_LEGGED_GYM_ROOT_DIR}/resources/robots/chy/urdf/chy.urdf",
+        "fix_base_link": false,
+        "flip_visual_attachments": false,
+        "foot_name": "Wheel_link",
+        "forward_reference_x": -0.08075,
+        "l1": 0.075,
+        "l2": 0.125,
+        "linear_damping": 0.0,
+        "max_angular_velocity": 1000.0,
+        "max_linear_velocity": 1000.0,
+        "name": "CarRobot",
+        "offset": 0.02,
+        "penalize_contacts_on": [
+          "Lower",
+          "base"
+        ],
+        "replace_cylinder_with_capsule": true,
+        "self_collisions": 1,
+        "terminate_after_contacts_on": [
+          "base"
+        ],
+        "thickness": 0.01
+      },
+      "commands": {
+        "advanced_max_curriculum": 0.6,
+        "basic_max_curriculum": 0.6,
+        "boundary_sampling": true,
+        "curriculum": false,
+        "curriculum_threshold": 0.7,
+        "heading_command": false,
+        "jump_fraction": 0.0,
+        "num_commands": 3,
+        "parking_extra_fraction": 0.0,
+        "ranges": {
+          "ang_vel_yaw": [
+            -2.9,
+            2.9
+          ],
+          "heading": [
+            -3.14,
+            3.14
+          ],
+          "height": [
+            0.085,
+            0.19
+          ],
+          "jump": [
+            0.0,
+            1.0
+          ],
+          "lin_vel_x": [
+            -0.6,
+            0.6
+          ]
+        },
+        "resampling_time": 5.0,
+        "standing_fraction": 0.25
+      },
+      "control": {
+        "action_scale": 0.5,
+        "balance_kd": 0.05,
+        "balance_kp": 0.6,
+        "control_type": "P",
+        "damping": {
+          "Hip": 0.06,
+          "Knee": 0.06,
+          "Wheel": 0.025
+        },
+        "decimation": 4,
+        "forward_torque_limit": 0.12,
+        "height_reference": true,
+        "height_reference_rate": 0.05,
+        "integral_windup_limit": 1.5,
+        "jump_air_height": 0.09,
+        "jump_air_torque_limit": 0.02,
+        "jump_crouch_s": 0.55,
+        "jump_enabled": false,
+        "jump_leg_y": -0.03,
+        "jump_leg_y_speed_gain": 0.0,
+        "jump_push_height": 0.19,
+        "jump_push_hold_s": 0.0,
+        "jump_push_s": 0.08,
+        "leg_integral_gain": 0.0,
+        "min_reference_height": 0.085,
+        "motion_controller": "policy",
+        "pos_action_scale": 0.03,
+        "speed_ki": 0.01,
+        "speed_kp": 0.08,
+        "speed_reference_rate": 0.6,
+        "stiffness": {
+          "Hip": 60.0,
+          "Knee": 60.0,
+          "Wheel": 0
+        },
+        "turn_torque_limit": 0.05,
+        "vel_action_scale": 18.46153846153846,
+        "velocity_source": "base",
+        "wheel_control": "velocity",
+        "yaw_ki": 0.002,
+        "yaw_kp": 0.015
+      },
+      "domain_rand": {
+        "added_mass_range": [
+          -0.0,
+          0.08
+        ],
+        "delay_ms_range": [
+          0,
+          7
+        ],
+        "friction_range": [
+          0.1,
+          0.8
+        ],
+        "max_push_vel_xy": 0.05,
+        "push_interval": 63.0,
+        "push_interval_s": 0.5,
+        "push_robots": false,
+        "rand_com_vec": [
+          0.05,
+          0.05,
+          0.05
+        ],
+        "randomize_Kd": false,
+        "randomize_Kd_range": [
+          0.9,
+          1.1
+        ],
+        "randomize_Kp": false,
+        "randomize_Kp_range": [
+          0.9,
+          1.1
+        ],
+        "randomize_action_delay": false,
+        "randomize_base_com": false,
+        "randomize_base_mass": false,
+        "randomize_default_dof_pos": false,
+        "randomize_default_dof_pos_range": [
+          -0.05,
+          0.05
+        ],
+        "randomize_friction": false,
+        "randomize_inertia": false,
+        "randomize_inertia_range": [
+          0.9,
+          1.1
+        ],
+        "randomize_motor_torque": false,
+        "randomize_motor_torque_range": [
+          0.9,
+          1.1
+        ],
+        "randomize_restitution": false,
+        "restitution_range": [
+          0.0,
+          0.6
+        ]
+      },
+      "env": {
+        "dof_vel_use_pos_diff": false,
+        "env_spacing": 3.0,
+        "episode_length_s": 30.0,
+        "fail_to_terminal_time_s": 0.05,
+        "num_actions": 6,
+        "num_envs": 420,
+        "num_observations": 28,
+        "num_privileged_obs": 144,
+        "obs_history_dec": 1,
+        "obs_history_length": 5,
+        "reset_velocity_scale": 0.0,
+        "send_timeouts": true,
+        "spawn_radius": 0.0,
+        "tilt_fail_deg": 30.0
+      },
+      "init_member_classes": {},
+      "init_state": {
+        "ang_vel": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "default_joint_angles": {
+          "RightHip_joint": 0.290418,
+          "RightKnee_joint": -0.220039,
+          "RightWheel_joint": 0.0,
+          "LeftHip_joint": 0.290418,
+          "LeftKnee_joint": 0.220039,
+          "LeftWheel_joint": 0.0
+        },
+        "lin_vel": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pos": [
+          0.0,
+          0.0,
+          0.1305
+        ],
+        "rot": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "noise": {
+        "add_noise": false,
+        "noise_level": 1.0,
+        "noise_scales": {
+          "ang_vel": 0.2,
+          "dof_pos": 0.01,
+          "dof_vel": 0.4,
+          "gravity": 0.1,
+          "height_measurements": 0.1,
+          "lin_vel": 0.1
+        }
+      },
+      "normalization": {
+        "clip_actions": 1.0,
+        "clip_observations": 100.0,
+        "obs_scales": {
+          "ang_vel": 1.3,
+          "dof_acc": 0.0025,
+          "dof_pos": 1.0,
+          "dof_vel": 0.15,
+          "gravity": 3.0,
+          "height_measurements": 5.0,
+          "lin_vel": 2.0,
+          "torque": 0.05
+        }
+      },
+      "rewards": {
+        "base_height_target": 0.18,
+        "clip_single_reward": 100,
+        "max_contact_force": 30.0,
+        "only_positive_rewards": false,
+        "scales": {
+          "action_rate": -0.01,
+          "action_smooth": 0.0,
+          "ang_vel_xy": -0.05,
+          "base_height": -10.0,
+          "base_height_enhance": 0,
+          "collision": -1.0,
+          "dof_acc": -2.5e-07,
+          "dof_pos_limits": -1.0,
+          "dof_vel": 0.0,
+          "forward_error": -2.0,
+          "jump_airborne": 0.0,
+          "jump_height": 0.0,
+          "jump_landing": 0.0,
+          "leg_together": 0.0,
+          "lin_vel_z": -1.0,
+          "nominal_state": 0.0,
+          "orientation": -10.0,
+          "parking_heading": -1.5,
+          "parking_position": -12.0,
+          "parking_velocity": -60.0,
+          "parking_yaw": -2.0,
+          "termination": 0.0,
+          "torques": -0.0001,
+          "tracking_ang_vel": 1.5,
+          "tracking_ang_vel_enhance": 0,
+          "tracking_lin_vel": 3.0,
+          "tracking_lin_vel_enhance": 0,
+          "upright": 0.0,
+          "wheel_acc": -2.5e-09,
+          "yaw_error": -0.3
+        },
+        "soft_dof_pos_limit": 0.97,
+        "soft_dof_vel_limit": 1.0,
+        "soft_torque_limit": 1.0,
+        "tracking_sigma": 0.09
+      },
+      "seed": 1,
+      "sim": {
+        "dt": 0.002,
+        "gravity": [
+          0.0,
+          0.0,
+          -9.81
+        ],
+        "physx": {
+          "bounce_threshold_velocity": 0.5,
+          "contact_collection": 2,
+          "contact_offset": 0.01,
+          "default_buffer_size_multiplier": 5,
+          "max_depenetration_velocity": 1.0,
+          "max_gpu_contact_pairs": 8388608,
+          "num_position_iterations": 4,
+          "num_threads": 10,
+          "num_velocity_iterations": 0,
+          "rest_offset": 0.0,
+          "solver_type": 1
+        },
+        "substeps": 1,
+        "up_axis": 1
+      },
+      "terrain": {
+        "border_size": 25,
+        "curriculum": false,
+        "custom_terrains": true,
+        "dynamic_friction": 0.6,
+        "horizontal_scale": 0.1,
+        "max_init_terrain_level": 2,
+        "measure_heights": true,
+        "measured_points_x": [
+          -0.5,
+          -0.4,
+          -0.3,
+          -0.2,
+          -0.1,
+          0.0,
+          0.1,
+          0.2,
+          0.3,
+          0.4,
+          0.5
+        ],
+        "measured_points_y": [
+          -0.3,
+          -0.2,
+          -0.1,
+          0.0,
+          0.1,
+          0.2,
+          0.3
+        ],
+        "mesh_type": "plane",
+        "num_cols": 20,
+        "num_rows": 5,
+        "num_sub_terrains": 100,
+        "restitution": 0.15,
+        "rough_height": 0.005,
+        "selected": false,
+        "slope_deg": 10.0,
+        "slope_treshold": 0.75,
+        "static_friction": 0.6,
+        "terrain_kwargs": null,
+        "terrain_length": 6.0,
+        "terrain_proportions": [
+          0.25,
+          0.25,
+          0.25,
+          0.25
+        ],
+        "terrain_width": 6.0,
+        "vertical_scale": 0.001
+      },
+      "viewer": {
+        "lookat": [
+          0,
+          0,
+          0
+        ],
+        "pos": [
+          0,
+          -2,
+          1
+        ],
+        "ref_env": 0
+      }
+    },
+    "train": {
+      "algorithm": {
+        "clip_param": 0.2,
+        "desired_kl": 0.005,
+        "entropy_coef": 0.003,
+        "extra_learning_rate": 0.001,
+        "gamma": 0.995,
+        "lam": 0.95,
+        "learning_rate": 0.0001,
+        "max_grad_norm": 1.0,
+        "num_learning_epochs": 5,
+        "num_mini_batches": 4,
+        "schedule": "fixed",
+        "use_clipped_value_loss": true,
+        "value_loss_coef": 1.0
+      },
+      "init_member_classes": {},
+      "policy": {
+        "activation": "elu",
+        "actor_hidden_dims": [
+          128,
+          64,
+          32
+        ],
+        "critic_hidden_dims": [
+          256,
+          128,
+          64
+        ],
+        "encoder_hidden_dims": [
+          128,
+          64
+        ],
+        "init_noise_std": 0.25,
+        "latent_dim": 3,
+        "num_encoder_obs": 140
+      },
+      "runner": {
+        "algorithm_class_name": "PPO",
+        "checkpoint": -1,
+        "experiment_name": "car_robot",
+        "load_run": -1,
+        "max_iterations": 5000,
+        "num_steps_per_env": 48,
+        "policy_class_name": "ActorCriticSequence",
+        "resume": false,
+        "resume_path": null,
+        "run_name": "",
+        "save_interval": 100
+      },
+      "runner_class_name": "OnPolicyRunner",
+      "seed": 1
+    }
+  },
+  "modes": [
+    "original",
+    "sampled_timing",
+    "fpga_pid_tau015",
+    "fpga_pid_tau030",
+    "fpga_pid_tau050",
+    "fpga_pid_tau030_gain18"
+  ],
+  "cases": [
+    "stop",
+    "forward",
+    "reverse",
+    "left",
+    "right",
+    "low",
+    "high"
+  ],
+  "environments_per_mode_case": 10,
+  "phase_offsets_ms": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18
+  ],
+  "seconds": 18,
+  "command_on_s": 3,
+  "command_off_s": 13,
+  "height_profile": "IR +/- 1 Q12 per10ms, high-low difference about100mm",
+  "score_interval_s": [
+    5,
+    13
+  ],
+  "physics_dt_s": 0.002,
+  "policy_period_s": 0.008,
+  "model_latency_approx_s": 0.002,
+  "hardware_sample_s": 0.01,
+  "servo_hold_s": 0.02,
+  "pid_test": {
+    "result": "PASS",
+    "samples": 417,
+    "checks": "actual RTL sample outputs vs integer torch model; reversal, zero, antiwindup, D filtering, stall, wrong direction, disable"
+  },
+  "motor_proxy": {
+    "formula": "tau_physical=stall_torque*(duty/2500 - wheel_linear_speed/no_load_mps); coast at zero target or stopped",
+    "stall_torque_sweep_Nm": [
+      0.15,
+      0.3,
+      0.5
+    ],
+    "no_load_mps": 1.0,
+    "measured": false
+  },
+  "not_emulated": [
+    "real mass/COM changes",
+    "real servo internal dynamics/backlash/deadzone",
+    "motor current/battery voltage",
+    "real sensor bias/noise/I2C driver and fusion dynamics",
+    "RTL full fixed-point network; uses original FP32 checkpoint",
+    "sub-2ms PWM switching/deadtime and exact sampling phase"
+  ],
+  "source_hashes": {
+    "/home/cyd/fpga/fpga/src/main.v": "4807afcbbed9a9e5a3171117946df3d70f1d9b3abec1189356375eea162a7b39",
+    "/home/cyd/fpga/fpga/src/motor520_closed_loop.v": "bdd47a9094a8e4471811eb99b1635c62c0eb4365fa79f768bb79bca21a50ca14",
+    "/home/cyd/fpga/fpga/src/motor520_speed.v": "7de48192356dc11c40a5bc5667d6eec831a6a0fd56baca95fdc5c7b83999359b",
+    "/home/cyd/fpga/fpga/src/servo_driver.v": "fe75232d9e3bd72e454183ae5591dce67bb4bef18c39182c04f98a6cb6337e7b",
+    "/home/cyd/fpga/tools/fpga_telemetry/analysis/fpga_timing_eval_20261018/hardware_env.py": "39d00a0be2d2e26784389128128b052bf2ad6a27c11734f120522365dd7353e2",
+    "/home/cyd/fpga/tools/fpga_telemetry/analysis/fpga_timing_eval_20261018/fpga_pid.py": "107cf7e81a4271a7f30bd5b1a687b6b830b5ef7c91efc244445cd459aad55674"
+  },
+  "results": [
+    {
+      "mode": "original",
+      "case": "stop",
+      "physical_survival": 1.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 10000,
+      "forward_mae": 0.007570798974484205,
+      "yaw_mae": 0.0028321605641394854,
+      "tilt_rms_deg": 3.752176670323484,
+      "height_mae_m": 0.008198125287890434,
+      "mean_forward": 0.007570798974484205,
+      "mean_yaw": 0.0003273985639680177,
+      "wheel_mae": 0.003306235885247588,
+      "foreaft_angular_rms": 0.005553303111801741,
+      "pwm_saturated_fraction": 0.0,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "original",
+      "case": "forward",
+      "physical_survival": 1.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 10000,
+      "forward_mae": 0.04789605736732483,
+      "yaw_mae": 0.02179410308599472,
+      "tilt_rms_deg": 3.5180129693742668,
+      "height_mae_m": 0.008578532375395298,
+      "mean_forward": 0.2521039545536041,
+      "mean_yaw": -0.02179410308599472,
+      "wheel_mae": 0.0034106692764908075,
+      "foreaft_angular_rms": 0.011119050771488238,
+      "pwm_saturated_fraction": 0.0,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "original",
+      "case": "reverse",
+      "physical_survival": 1.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 10000,
+      "forward_mae": 0.12377356737852097,
+      "yaw_mae": 0.0033704149536788464,
+      "tilt_rms_deg": 3.890613601851715,
+      "height_mae_m": 0.00803276989609003,
+      "mean_forward": -0.17622648179531097,
+      "mean_yaw": -0.0031313328072428703,
+      "wheel_mae": 0.001132844714447856,
+      "foreaft_angular_rms": 0.005510584540487096,
+      "pwm_saturated_fraction": 0.0,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "original",
+      "case": "left",
+      "physical_survival": 1.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 10000,
+      "forward_mae": 0.02444908209145069,
+      "yaw_mae": 0.20484404265880585,
+      "tilt_rms_deg": 3.6349702723151993,
+      "height_mae_m": 0.008362662978470325,
+      "mean_forward": -0.02444908209145069,
+      "mean_yaw": 1.2048441171646118,
+      "wheel_mae": 0.013413391076028347,
+      "foreaft_angular_rms": 0.03370110572569685,
+      "pwm_saturated_fraction": 0.0,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "original",
+      "case": "right",
+      "physical_survival": 1.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 10000,
+      "forward_mae": 0.049395252019166946,
+      "yaw_mae": 0.1718510389328003,
+      "tilt_rms_deg": 3.9130939800578695,
+      "height_mae_m": 0.008173858746886253,
+      "mean_forward": 0.049395252019166946,
+      "mean_yaw": -1.1718510389328003,
+      "wheel_mae": 0.012644952163100243,
+      "foreaft_angular_rms": 0.02315924921936175,
+      "pwm_saturated_fraction": 0.0,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "original",
+      "case": "low",
+      "physical_survival": 1.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 10000,
+      "forward_mae": 0.034949809312820435,
+      "yaw_mae": 0.05862175300717354,
+      "tilt_rms_deg": 6.035781660050564,
+      "height_mae_m": 0.010577471926808357,
+      "mean_forward": -0.034949809312820435,
+      "mean_yaw": 0.05862175300717354,
+      "wheel_mae": 0.0067658089101314545,
+      "foreaft_angular_rms": 0.030480008841949426,
+      "pwm_saturated_fraction": 0.0,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "original",
+      "case": "high",
+      "physical_survival": 1.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 10000,
+      "forward_mae": 0.010548146441578865,
+      "yaw_mae": 0.010174503549933434,
+      "tilt_rms_deg": 2.901245895310522,
+      "height_mae_m": 0.005374307278543711,
+      "mean_forward": 0.001920246984809637,
+      "mean_yaw": -0.002151709981262684,
+      "wheel_mae": 0.005547369364649057,
+      "foreaft_angular_rms": 0.06395643484738837,
+      "pwm_saturated_fraction": 0.0,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "sampled_timing",
+      "case": "stop",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        0.3760000169277191,
+        0.41600000858306885,
+        0.29600000381469727,
+        0.3360000252723694,
+        0.2639999985694885,
+        0.2720000147819519,
+        0.1680000126361847,
+        0.2160000056028366,
+        0.1600000113248825,
+        0.2240000069141388
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 0,
+      "forward_mae": null,
+      "yaw_mae": null,
+      "tilt_rms_deg": null,
+      "height_mae_m": null,
+      "mean_forward": null,
+      "mean_yaw": null,
+      "wheel_mae": null,
+      "foreaft_angular_rms": null,
+      "pwm_saturated_fraction": null,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "sampled_timing",
+      "case": "forward",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        0.2639999985694885,
+        0.4400000274181366,
+        0.4000000059604645,
+        0.4000000059604645,
+        0.35200002789497375,
+        0.35200002789497375,
+        0.18400001525878906,
+        0.2160000056028366,
+        0.15200001001358032,
+        0.2639999985694885
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 0,
+      "forward_mae": null,
+      "yaw_mae": null,
+      "tilt_rms_deg": null,
+      "height_mae_m": null,
+      "mean_forward": null,
+      "mean_yaw": null,
+      "wheel_mae": null,
+      "foreaft_angular_rms": null,
+      "pwm_saturated_fraction": null,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "sampled_timing",
+      "case": "reverse",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        0.31200000643730164,
+        0.328000009059906,
+        0.2800000011920929,
+        0.5200000405311584,
+        0.2639999985694885,
+        0.3440000116825104,
+        0.17600001394748688,
+        0.2160000056028366,
+        0.1600000113248825,
+        0.31200000643730164
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 0,
+      "forward_mae": null,
+      "yaw_mae": null,
+      "tilt_rms_deg": null,
+      "height_mae_m": null,
+      "mean_forward": null,
+      "mean_yaw": null,
+      "wheel_mae": null,
+      "foreaft_angular_rms": null,
+      "pwm_saturated_fraction": null,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "sampled_timing",
+      "case": "left",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        0.24800001084804535,
+        0.4320000112056732,
+        0.328000009059906,
+        0.3920000195503235,
+        0.3360000252723694,
+        0.2880000174045563,
+        0.17600001394748688,
+        0.20800000429153442,
+        0.15200001001358032,
+        0.24800001084804535
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 0,
+      "forward_mae": null,
+      "yaw_mae": null,
+      "tilt_rms_deg": null,
+      "height_mae_m": null,
+      "mean_forward": null,
+      "mean_yaw": null,
+      "wheel_mae": null,
+      "foreaft_angular_rms": null,
+      "pwm_saturated_fraction": null,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "sampled_timing",
+      "case": "right",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        0.2639999985694885,
+        0.36000001430511475,
+        0.2880000174045563,
+        0.5520000457763672,
+        0.30400002002716064,
+        0.4000000059604645,
+        0.18400001525878906,
+        0.2160000056028366,
+        0.1600000113248825,
+        0.19200000166893005
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 0,
+      "forward_mae": null,
+      "yaw_mae": null,
+      "tilt_rms_deg": null,
+      "height_mae_m": null,
+      "mean_forward": null,
+      "mean_yaw": null,
+      "wheel_mae": null,
+      "foreaft_angular_rms": null,
+      "pwm_saturated_fraction": null,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "sampled_timing",
+      "case": "low",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        0.25600001215934753,
+        0.4480000138282776,
+        0.2880000174045563,
+        0.5200000405311584,
+        0.2880000174045563,
+        0.2639999985694885,
+        0.17600001394748688,
+        0.20800000429153442,
+        0.14400000870227814,
+        0.2720000147819519
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 0,
+      "forward_mae": null,
+      "yaw_mae": null,
+      "tilt_rms_deg": null,
+      "height_mae_m": null,
+      "mean_forward": null,
+      "mean_yaw": null,
+      "wheel_mae": null,
+      "foreaft_angular_rms": null,
+      "pwm_saturated_fraction": null,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "sampled_timing",
+      "case": "high",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        0.24800001084804535,
+        0.45600003004074097,
+        0.2880000174045563,
+        0.35200002789497375,
+        0.2639999985694885,
+        0.320000022649765,
+        0.17600001394748688,
+        0.2160000056028366,
+        0.14400000870227814,
+        0.2160000056028366
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 0,
+      "forward_mae": null,
+      "yaw_mae": null,
+      "tilt_rms_deg": null,
+      "height_mae_m": null,
+      "mean_forward": null,
+      "mean_yaw": null,
+      "wheel_mae": null,
+      "foreaft_angular_rms": null,
+      "pwm_saturated_fraction": null,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau015",
+      "case": "stop",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        10.472000122070312,
+        16.352001190185547,
+        11.496000289916992,
+        15.512001037597656,
+        10.368000030517578,
+        15.480000495910645,
+        11.256000518798828,
+        17.352001190185547,
+        10.464000701904297,
+        16.856000900268555
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 8627,
+      "forward_mae": 0.03957909345626831,
+      "yaw_mae": 0.14960739016532898,
+      "tilt_rms_deg": 5.014654428094036,
+      "height_mae_m": 0.008084780536592007,
+      "mean_forward": -0.011266078799962997,
+      "mean_yaw": -0.10149016231298447,
+      "wheel_mae": 0.1242138221859932,
+      "foreaft_angular_rms": 0.7849371305425797,
+      "pwm_saturated_fraction": 0.007244696840643883,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau015",
+      "case": "forward",
+      "physical_survival": 0.10000000149011612,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        4.840000152587891,
+        18.0,
+        10.160000801086426,
+        6.968000411987305,
+        9.976000785827637,
+        10.5600004196167,
+        6.712000370025635,
+        6.304000377655029,
+        8.288000106811523,
+        5.008000373840332
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 3989,
+      "forward_mae": 0.1200624406337738,
+      "yaw_mae": 0.13890676200389862,
+      "tilt_rms_deg": 7.293128544630614,
+      "height_mae_m": 0.008511962369084358,
+      "mean_forward": 0.19163137674331665,
+      "mean_yaw": -0.04495376721024513,
+      "wheel_mae": 0.13382190465927124,
+      "foreaft_angular_rms": 1.0670726775789616,
+      "pwm_saturated_fraction": 0.023690147325396538,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau015",
+      "case": "reverse",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        4.824000358581543,
+        4.616000175476074,
+        5.168000221252441,
+        4.600000381469727,
+        6.664000511169434,
+        5.76800012588501,
+        4.8480000495910645,
+        4.616000175476074,
+        9.440000534057617,
+        4.552000045776367
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 876,
+      "forward_mae": 0.19480161368846893,
+      "yaw_mae": 0.21524415910243988,
+      "tilt_rms_deg": 11.142403694679835,
+      "height_mae_m": 0.00843871384859085,
+      "mean_forward": -0.15139193832874298,
+      "mean_yaw": -0.01848125085234642,
+      "wheel_mae": 0.19598886370658875,
+      "foreaft_angular_rms": 1.6998670722377671,
+      "pwm_saturated_fraction": 0.03995433449745178,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau015",
+      "case": "left",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        4.576000213623047,
+        4.504000186920166,
+        4.568000316619873,
+        4.4079999923706055,
+        8.480000495910645,
+        4.424000263214111,
+        4.448000431060791,
+        4.288000106811523,
+        4.488000392913818,
+        4.5360002517700195
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 434,
+      "forward_mae": 0.1285780966281891,
+      "yaw_mae": 0.3207479417324066,
+      "tilt_rms_deg": 8.669990293503973,
+      "height_mae_m": 0.008228365331888199,
+      "mean_forward": -0.07967443764209747,
+      "mean_yaw": 1.099085807800293,
+      "wheel_mae": 0.16389121115207672,
+      "foreaft_angular_rms": 1.211672209307671,
+      "pwm_saturated_fraction": 0.028801843523979187,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau015",
+      "case": "right",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        7.7920002937316895,
+        5.008000373840332,
+        6.136000156402588,
+        4.7920002937316895,
+        8.680000305175781,
+        5.688000202178955,
+        4.824000358581543,
+        4.824000358581543,
+        5.872000217437744,
+        5.568000316619873
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 1211,
+      "forward_mae": 0.11253882944583893,
+      "yaw_mae": 0.34763798117637634,
+      "tilt_rms_deg": 10.098936089105424,
+      "height_mae_m": 0.006584399379789829,
+      "mean_forward": -0.017148476094007492,
+      "mean_yaw": -1.086828589439392,
+      "wheel_mae": 0.22489576041698456,
+      "foreaft_angular_rms": 1.686281400010678,
+      "pwm_saturated_fraction": 0.06028076261281967,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau015",
+      "case": "low",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        10.896000862121582,
+        9.920000076293945,
+        10.952000617980957,
+        9.336000442504883,
+        12.224000930786133,
+        9.928000450134277,
+        10.35200023651123,
+        9.24000072479248,
+        11.368000984191895,
+        9.144000053405762
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 6660,
+      "forward_mae": 0.06290454417467117,
+      "yaw_mae": 0.12125314027070999,
+      "tilt_rms_deg": 7.921243917093564,
+      "height_mae_m": 0.009937390685081482,
+      "mean_forward": -0.04520037770271301,
+      "mean_yaw": 0.08335370570421219,
+      "wheel_mae": 0.07976862788200378,
+      "foreaft_angular_rms": 0.9358675094698071,
+      "pwm_saturated_fraction": 0.010585585609078407,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau015",
+      "case": "high",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        8.447999954223633,
+        5.680000305175781,
+        5.680000305175781,
+        5.688000202178955,
+        5.672000408172607,
+        13.256000518798828,
+        5.656000137329102,
+        6.272000312805176,
+        12.896000862121582,
+        5.688000202178955
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 3076,
+      "forward_mae": 0.1371963620185852,
+      "yaw_mae": 0.245210200548172,
+      "tilt_rms_deg": 8.44735797456745,
+      "height_mae_m": 0.007168350741267204,
+      "mean_forward": 0.027981562539935112,
+      "mean_yaw": -0.1545705944299698,
+      "wheel_mae": 0.18377745151519775,
+      "foreaft_angular_rms": 1.4333928354613585,
+      "pwm_saturated_fraction": 0.017230169847607613,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau030",
+      "case": "stop",
+      "physical_survival": 1.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 10000,
+      "forward_mae": 0.02809036523103714,
+      "yaw_mae": 0.10928652435541153,
+      "tilt_rms_deg": 3.828417583884266,
+      "height_mae_m": 0.008219805546104908,
+      "mean_forward": -0.007329917512834072,
+      "mean_yaw": -0.0561232827603817,
+      "wheel_mae": 0.07931419461965561,
+      "foreaft_angular_rms": 0.6429427483493606,
+      "pwm_saturated_fraction": 0.0,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau030",
+      "case": "forward",
+      "physical_survival": 0.20000000298023224,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        6.880000114440918,
+        7.112000465393066,
+        18.0,
+        6.952000141143799,
+        13.872000694274902,
+        9.304000854492188,
+        10.496000289916992,
+        10.84000015258789,
+        14.008000373840332,
+        18.0
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 6692,
+      "forward_mae": 0.11718413233757019,
+      "yaw_mae": 0.1560925394296646,
+      "tilt_rms_deg": 6.662456072864688,
+      "height_mae_m": 0.008755902759730816,
+      "mean_forward": 0.20696792006492615,
+      "mean_yaw": -0.03271166607737541,
+      "wheel_mae": 0.10662691295146942,
+      "foreaft_angular_rms": 1.006645591643652,
+      "pwm_saturated_fraction": 0.013224746100604534,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau030",
+      "case": "reverse",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        4.760000228881836,
+        4.544000148773193,
+        4.8560004234313965,
+        4.560000419616699,
+        4.680000305175781,
+        4.528000354766846,
+        4.5920000076293945,
+        4.584000110626221,
+        5.736000061035156,
+        4.432000160217285
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 91,
+      "forward_mae": 0.13969816267490387,
+      "yaw_mae": 0.24286417663097382,
+      "tilt_rms_deg": 12.815463286325784,
+      "height_mae_m": 0.004749278537929058,
+      "mean_forward": -0.35970139503479004,
+      "mean_yaw": -0.06873787939548492,
+      "wheel_mae": 0.29834139347076416,
+      "foreaft_angular_rms": 2.3978919983850795,
+      "pwm_saturated_fraction": 0.04395604506134987,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau030",
+      "case": "left",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        4.4720001220703125,
+        4.464000225067139,
+        4.616000175476074,
+        4.448000431060791,
+        4.432000160217285,
+        4.392000198364258,
+        4.424000263214111,
+        4.3520002365112305,
+        4.392000198364258,
+        4.320000171661377
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 0,
+      "forward_mae": null,
+      "yaw_mae": null,
+      "tilt_rms_deg": null,
+      "height_mae_m": null,
+      "mean_forward": null,
+      "mean_yaw": null,
+      "wheel_mae": null,
+      "foreaft_angular_rms": null,
+      "pwm_saturated_fraction": null,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau030",
+      "case": "right",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        5.064000129699707,
+        8.688000679016113,
+        7.160000324249268,
+        5.152000427246094,
+        8.112000465393066,
+        11.032000541687012,
+        5.0,
+        7.264000415802002,
+        5.648000240325928,
+        9.91200065612793
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 2870,
+      "forward_mae": 0.12075617909431458,
+      "yaw_mae": 0.3372775614261627,
+      "tilt_rms_deg": 8.835219079989258,
+      "height_mae_m": 0.0073464494198560715,
+      "mean_forward": -0.037697602063417435,
+      "mean_yaw": -1.0893449783325195,
+      "wheel_mae": 0.15288180112838745,
+      "foreaft_angular_rms": 1.3946027123014968,
+      "pwm_saturated_fraction": 0.024564459919929504,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau030",
+      "case": "low",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        11.432000160217285,
+        11.42400074005127,
+        12.016000747680664,
+        10.784000396728516,
+        12.296000480651855,
+        11.416000366210938,
+        11.616000175476074,
+        10.568000793457031,
+        11.5600004196167,
+        10.680000305175781
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 7964,
+      "forward_mae": 0.044212937355041504,
+      "yaw_mae": 0.14357657730579376,
+      "tilt_rms_deg": 7.545936289154612,
+      "height_mae_m": 0.00994960032403469,
+      "mean_forward": -0.04115752503275871,
+      "mean_yaw": 0.06372608989477158,
+      "wheel_mae": 0.06217056140303612,
+      "foreaft_angular_rms": 0.7276919620294877,
+      "pwm_saturated_fraction": 0.005838774610310793,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau030",
+      "case": "high",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        14.832000732421875,
+        8.296000480651855,
+        5.968000411987305,
+        7.960000514984131,
+        7.936000347137451,
+        5.664000034332275,
+        10.320000648498535,
+        9.104000091552734,
+        10.032000541687012,
+        8.072000503540039
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 4535,
+      "forward_mae": 0.16895611584186554,
+      "yaw_mae": 0.32659152150154114,
+      "tilt_rms_deg": 7.715569833316474,
+      "height_mae_m": 0.006699028890579939,
+      "mean_forward": 0.09019733965396881,
+      "mean_yaw": -0.24219408631324768,
+      "wheel_mae": 0.1448109745979309,
+      "foreaft_angular_rms": 1.3937342741211634,
+      "pwm_saturated_fraction": 0.014112458564341068,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau050",
+      "case": "stop",
+      "physical_survival": 1.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 10000,
+      "forward_mae": 0.026982976123690605,
+      "yaw_mae": 0.09466388076543808,
+      "tilt_rms_deg": 3.7671879101076224,
+      "height_mae_m": 0.008198979310691357,
+      "mean_forward": -0.0049944729544222355,
+      "mean_yaw": -0.02153085544705391,
+      "wheel_mae": 0.062329161912202835,
+      "foreaft_angular_rms": 0.5999620375941997,
+      "pwm_saturated_fraction": 0.0,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau050",
+      "case": "forward",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        9.112000465393066,
+        10.816000938415527,
+        8.664000511169434,
+        6.76800012588501,
+        6.896000385284424,
+        8.128000259399414,
+        5.2960004806518555,
+        6.672000408172607,
+        5.744000434875488,
+        9.776000022888184
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 3474,
+      "forward_mae": 0.16972537338733673,
+      "yaw_mae": 0.23522348701953888,
+      "tilt_rms_deg": 8.807597643234912,
+      "height_mae_m": 0.00825122743844986,
+      "mean_forward": 0.15076975524425507,
+      "mean_yaw": 0.0016228320309892297,
+      "wheel_mae": 0.1515510231256485,
+      "foreaft_angular_rms": 1.3963144905954132,
+      "pwm_saturated_fraction": 0.03180771693587303,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau050",
+      "case": "reverse",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        4.8480000495910645,
+        4.480000019073486,
+        4.600000381469727,
+        4.4720001220703125,
+        4.944000244140625,
+        4.5920000076293945,
+        4.528000354766846,
+        4.519999980926514,
+        4.504000186920166,
+        4.648000240325928
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 0,
+      "forward_mae": null,
+      "yaw_mae": null,
+      "tilt_rms_deg": null,
+      "height_mae_m": null,
+      "mean_forward": null,
+      "mean_yaw": null,
+      "wheel_mae": null,
+      "foreaft_angular_rms": null,
+      "pwm_saturated_fraction": null,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau050",
+      "case": "left",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        4.216000080108643,
+        4.328000068664551,
+        6.432000160217285,
+        4.3520002365112305,
+        4.528000354766846,
+        4.384000301361084,
+        4.111999988555908,
+        4.25600004196167,
+        4.504000186920166,
+        4.248000144958496
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 178,
+      "forward_mae": 0.14900831878185272,
+      "yaw_mae": 0.4419851005077362,
+      "tilt_rms_deg": 11.159997305374093,
+      "height_mae_m": 0.006346241105347872,
+      "mean_forward": -0.13273371756076813,
+      "mean_yaw": 0.9656692743301392,
+      "wheel_mae": 0.1948060542345047,
+      "foreaft_angular_rms": 1.6403096940548387,
+      "pwm_saturated_fraction": 0.042134832590818405,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau050",
+      "case": "right",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        7.768000602722168,
+        4.9120001792907715,
+        5.136000156402588,
+        5.336000442504883,
+        5.144000053405762,
+        4.9760003089904785,
+        5.02400016784668,
+        5.344000339508057,
+        5.0960001945495605,
+        7.904000282287598
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 836,
+      "forward_mae": 0.22442957758903503,
+      "yaw_mae": 0.4724905788898468,
+      "tilt_rms_deg": 12.206126841496573,
+      "height_mae_m": 0.00624409643933177,
+      "mean_forward": -0.1751609593629837,
+      "mean_yaw": -0.886552095413208,
+      "wheel_mae": 0.16519030928611755,
+      "foreaft_angular_rms": 1.6182702903895778,
+      "pwm_saturated_fraction": 0.02452152967453003,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau050",
+      "case": "low",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        10.616000175476074,
+        11.064000129699707,
+        10.968000411987305,
+        10.080000877380371,
+        10.280000686645508,
+        9.816000938415527,
+        10.37600040435791,
+        9.93600082397461,
+        10.368000030517578,
+        9.168000221252441
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 6574,
+      "forward_mae": 0.05868623033165932,
+      "yaw_mae": 0.16836635768413544,
+      "tilt_rms_deg": 7.829887876913632,
+      "height_mae_m": 0.009878064505755901,
+      "mean_forward": -0.05566130205988884,
+      "mean_yaw": 0.05683790519833565,
+      "wheel_mae": 0.0781707912683487,
+      "foreaft_angular_rms": 0.8985627460255193,
+      "pwm_saturated_fraction": 0.009507149457931519,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau050",
+      "case": "high",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        5.992000102996826,
+        5.968000411987305,
+        5.920000076293945,
+        14.112000465393066,
+        5.816000461578369,
+        6.02400016784668,
+        5.760000228881836,
+        13.136000633239746,
+        6.0400004386901855,
+        5.696000099182129
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 2894,
+      "forward_mae": 0.1584022045135498,
+      "yaw_mae": 0.3769068121910095,
+      "tilt_rms_deg": 8.203403548098144,
+      "height_mae_m": 0.00643811235204339,
+      "mean_forward": 0.03502510488033295,
+      "mean_yaw": -0.24089275300502777,
+      "wheel_mae": 0.17464251816272736,
+      "foreaft_angular_rms": 1.5745182935585373,
+      "pwm_saturated_fraction": 0.0278161708265543,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau030_gain18",
+      "case": "stop",
+      "physical_survival": 1.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 10000,
+      "forward_mae": 0.02787645161151886,
+      "yaw_mae": 0.10987256467342377,
+      "tilt_rms_deg": 3.8292451426393113,
+      "height_mae_m": 0.008219112642109394,
+      "mean_forward": -0.00806158035993576,
+      "mean_yaw": -0.057560186833143234,
+      "wheel_mae": 0.07912611216306686,
+      "foreaft_angular_rms": 0.6393421167622877,
+      "pwm_saturated_fraction": 0.0,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau030_gain18",
+      "case": "forward",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        5.0,
+        4.76800012588501,
+        4.840000152587891,
+        4.840000152587891,
+        4.760000228881836,
+        4.936000347137451,
+        5.28000020980835,
+        5.216000080108643,
+        4.800000190734863,
+        5.368000030517578
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 105,
+      "forward_mae": 0.5108687877655029,
+      "yaw_mae": 0.48011675477027893,
+      "tilt_rms_deg": 22.643494523555354,
+      "height_mae_m": 0.010726148262619972,
+      "mean_forward": -0.17952774465084076,
+      "mean_yaw": -0.10562408715486526,
+      "wheel_mae": 0.43801701068878174,
+      "foreaft_angular_rms": 3.2748500352842225,
+      "pwm_saturated_fraction": 0.14761905372142792,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau030_gain18",
+      "case": "reverse",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        5.312000274658203,
+        5.088000297546387,
+        5.7920002937316895,
+        5.088000297546387,
+        5.25600004196167,
+        5.048000335693359,
+        5.008000373840332,
+        4.696000099182129,
+        5.712000370025635,
+        4.76800012588501
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 280,
+      "forward_mae": 0.19416244328022003,
+      "yaw_mae": 0.4788670837879181,
+      "tilt_rms_deg": 17.30273161915121,
+      "height_mae_m": 0.00436950009316206,
+      "mean_forward": -0.22372454404830933,
+      "mean_yaw": -0.2535935640335083,
+      "wheel_mae": 0.39317581057548523,
+      "foreaft_angular_rms": 2.9549887291294743,
+      "pwm_saturated_fraction": 0.07857143133878708,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau030_gain18",
+      "case": "left",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        4.312000274658203,
+        4.336000442504883,
+        4.528000354766846,
+        4.424000263214111,
+        4.496000289916992,
+        4.400000095367432,
+        4.424000263214111,
+        4.136000156402588,
+        4.368000030517578,
+        4.184000015258789
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 0,
+      "forward_mae": null,
+      "yaw_mae": null,
+      "tilt_rms_deg": null,
+      "height_mae_m": null,
+      "mean_forward": null,
+      "mean_yaw": null,
+      "wheel_mae": null,
+      "foreaft_angular_rms": null,
+      "pwm_saturated_fraction": null,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau030_gain18",
+      "case": "right",
+      "physical_survival": 0.20000000298023224,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        11.40000057220459,
+        9.712000846862793,
+        4.696000099182129,
+        8.35200023651123,
+        18.0,
+        18.0,
+        13.648000717163086,
+        6.0320000648498535,
+        10.360000610351562,
+        8.223999977111816
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 6004,
+      "forward_mae": 0.0896327793598175,
+      "yaw_mae": 0.3093513548374176,
+      "tilt_rms_deg": 6.308042860041543,
+      "height_mae_m": 0.007737061008810997,
+      "mean_forward": 0.018026696518063545,
+      "mean_yaw": -1.1813632249832153,
+      "wheel_mae": 0.14492203295230865,
+      "foreaft_angular_rms": 1.1524499359345335,
+      "pwm_saturated_fraction": 0.01365756243467331,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau030_gain18",
+      "case": "low",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        11.224000930786133,
+        11.592000961303711,
+        12.200000762939453,
+        10.680000305175781,
+        11.696000099182129,
+        10.824000358581543,
+        11.368000984191895,
+        10.632000923156738,
+        11.40000057220459,
+        10.416000366210938
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 7744,
+      "forward_mae": 0.04628106951713562,
+      "yaw_mae": 0.1447230577468872,
+      "tilt_rms_deg": 7.526025756678324,
+      "height_mae_m": 0.009863085113465786,
+      "mean_forward": -0.043082259595394135,
+      "mean_yaw": 0.06385739147663116,
+      "wheel_mae": 0.061764564365148544,
+      "foreaft_angular_rms": 0.7409152319372274,
+      "pwm_saturated_fraction": 0.00555268581956625,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "mode": "fpga_pid_tau030_gain18",
+      "case": "high",
+      "physical_survival": 0.0,
+      "no_motor_stop": 1.0,
+      "first_failure_s": [
+        7.40000057220459,
+        8.432000160217285,
+        8.056000709533691,
+        8.168000221252441,
+        7.624000549316406,
+        8.039999961853027,
+        5.88800048828125,
+        8.016000747680664,
+        7.664000511169434,
+        5.728000164031982
+      ],
+      "first_motor_stop_s": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "valid_samples": 3117,
+      "forward_mae": 0.15808092057704926,
+      "yaw_mae": 0.32302942872047424,
+      "tilt_rms_deg": 8.41237578845893,
+      "height_mae_m": 0.007228700909763575,
+      "mean_forward": 0.06664736568927765,
+      "mean_yaw": -0.2516033947467804,
+      "wheel_mae": 0.14129506051540375,
+      "foreaft_angular_rms": 1.6206275361464575,
+      "pwm_saturated_fraction": 0.013795316219329834,
+      "motor_faults": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    }
+  ],
+  "wall_seconds": 69.67891901100029
+}

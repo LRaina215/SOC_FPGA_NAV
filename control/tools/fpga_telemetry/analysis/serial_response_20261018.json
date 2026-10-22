@@ -1,0 +1,120 @@
+{
+  "source": "/home/cyd/fpga/tools/fpga_telemetry/logs/fpga_20261017_213102.csv",
+  "telemetry_period_ms": 20,
+  "fixed_030_runs": [
+    {
+      "host_start": "2026-10-17T22:02:34.206",
+      "duration_ms": 540,
+      "rows": 28,
+      "baseline": {
+        "left_speed": "0.11",
+        "right_speed": "0.11",
+        "roll_deg": "-4.0906030106436235"
+      },
+      "wheels": {
+        "left": {
+          "mean_mps": 0.2942857142857143,
+          "first_speeds_mps": [
+            0.11,
+            0.15,
+            0.19,
+            0.23,
+            0.26,
+            0.28,
+            0.29,
+            0.31
+          ],
+          "first_pwm": [
+            0.4,
+            0.482,
+            0.4732,
+            0.4532,
+            0.4368,
+            0.4268,
+            0.4228,
+            0.4024
+          ],
+          "crossing_ms_from_first_target_frame": {
+            "0.1": 20,
+            "0.5": 60,
+            "0.9": 120
+          }
+        },
+        "right": {
+          "mean_mps": 0.28750000000000003,
+          "first_speeds_mps": [
+            0.11,
+            0.12,
+            0.19,
+            0.23,
+            0.25,
+            0.26,
+            0.29,
+            0.29
+          ],
+          "first_pwm": [
+            0.3392,
+            0.4964,
+            0.4524,
+            0.4356,
+            0.4352,
+            0.4392,
+            0.4116,
+            0.4184
+          ],
+          "crossing_ms_from_first_target_frame": {
+            "0.1": 40,
+            "0.5": 60,
+            "0.9": 120
+          }
+        }
+      },
+      "tilt_start_end": [
+        -3.8941462345683773,
+        63.10972793687333
+      ]
+    }
+  ],
+  "lag_scan": [
+    {
+      "group": "original1x_active",
+      "wheel": "left",
+      "frames": 1825,
+      "best_correlation_lag_ms": 100,
+      "correlations_by_20ms": [
+        0.5804123040296132,
+        0.6183394371237544,
+        0.6910134226014858,
+        0.7394862064873322,
+        0.7673339641391033,
+        0.7731584363549171,
+        0.7622681709162047,
+        0.7323625744468727,
+        0.6902656842974159,
+        0.6311176819044914,
+        0.5511885898586433
+      ],
+      "warning": "closed-loop correlation, not independent actuator delay identification"
+    },
+    {
+      "group": "original1x_active",
+      "wheel": "right",
+      "frames": 1825,
+      "best_correlation_lag_ms": 80,
+      "correlations_by_20ms": [
+        0.7324998666065189,
+        0.8085172917723671,
+        0.8700031769156734,
+        0.9092835905532115,
+        0.9259463594884548,
+        0.9223243081681938,
+        0.8991156415689986,
+        0.8586968960568192,
+        0.8035226705795077,
+        0.7362094009494318,
+        0.6588360094151277
+      ],
+      "warning": "closed-loop correlation, not independent actuator delay identification"
+    }
+  ]
+}
