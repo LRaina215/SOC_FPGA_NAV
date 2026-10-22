@@ -41,3 +41,5 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 签核还检查已报告的Recovery、Removal及最小脉宽最差表；存在负裕量或缺失表时不宣布G2通过。表中负数计数仅为工具报告出的行，不当作全部违例端点数。IO/CDC与器件版本完整签核继续单列。
 
 完整构建与冻结网表PNR会保存`g2_gate.json`，并按实际报告返回G2门槛结果；厂商工具返回0或产生位流仍可能时序失败。仅综合阶段的成功不代表G2接受。采集器区分域内与全局违例，跨域违例保留；目前332块首次布通版核心26.313MHz，G2不通过，禁止按该位流部署。
+
+`audit_cdc_first_stages.py <flat-vo> --out <audit.json> --emit-sdc <fragment.sdc>`核对四组共26条已知同步器的实际驱动、时钟与第一级单扇出到预期第二级。`pnr_from_netlist.py --cdc-reference-audit <audit.json>`显式启用隔离的第一同步级hold-only及8/18ns最大延迟候选；原SDC保留。新报告要求26条物理连接与参考相符、52条约束全部Actived，出现其他未审例外即拒绝。小型工具实测表明第二级setup/hold及源到第一级的最大延迟仍计时；不代表完整CDC、IO、偏斜或MTBF签核。

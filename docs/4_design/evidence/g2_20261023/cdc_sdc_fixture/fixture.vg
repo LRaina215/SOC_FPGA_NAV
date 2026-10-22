@@ -1,0 +1,81 @@
+//
+//Written by GowinSynthesis
+//Tool Version: V1.9.12.04 (64-bit)(89079)
+//Device: GW5AT-138
+//Device Version: C
+//Part Number: GW5AT-LV138PG484AC1/I0
+//Device-Package: GW5AT-138C-PBGA484A
+//Fri Oct 23 01:18:11 2026
+
+//Source file index table:
+//file0 "\F:/nav_integration_g2_20261023/cdc_sdc_tool_check/fixture.v"
+`timescale 100 ps/100 ps
+module cdc_fixture (
+  clk50,
+  rgmii_rxc,
+  uart_rx,
+  led_heartbeat
+)
+;
+input clk50;
+input rgmii_rxc;
+input uart_rx;
+output led_heartbeat;
+wire clk50_d;
+wire rgmii_rxc_d;
+wire uart_rx_d;
+wire first;
+wire second;
+wire source;
+wire VCC;
+wire GND;
+  IBUF clk50_ibuf (
+    .O(clk50_d),
+    .I(clk50) 
+);
+  IBUF rgmii_rxc_ibuf (
+    .O(rgmii_rxc_d),
+    .I(rgmii_rxc) 
+);
+  IBUF uart_rx_ibuf (
+    .O(uart_rx_d),
+    .I(uart_rx) 
+);
+  OBUF led_heartbeat_obuf (
+    .O(led_heartbeat),
+    .I(second) 
+);
+  DFFRE first_s1 (
+    .Q(first),
+    .D(source),
+    .CLK(rgmii_rxc_d),
+    .RESET(GND),
+    .CE(VCC) 
+);
+defparam first_s1.INIT=1'b0;
+  DFFRE second_s1 (
+    .Q(second),
+    .D(first),
+    .CLK(rgmii_rxc_d),
+    .RESET(GND),
+    .CE(VCC) 
+);
+defparam second_s1.INIT=1'b0;
+  DFFRE source_s1 (
+    .Q(source),
+    .D(uart_rx_d),
+    .CLK(clk50_d),
+    .RESET(GND),
+    .CE(VCC) 
+);
+defparam source_s1.INIT=1'b0;
+  VCC VCC_cZ (
+    .V(VCC)
+);
+  GND GND_cZ (
+    .G(GND)
+);
+  GSR GSR (
+    .GSRI(VCC) 
+);
+endmodule /* cdc_fixture */

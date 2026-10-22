@@ -75,7 +75,27 @@ def collect(build,top='g2_top'):
         and domain_clean('clk50'))
     r['receive_100mhz_report_pass']=bool(r['routing_passed'] and receive and receive['constraint_mhz']==100
         and receive['actual_fmax_mhz']>=100 and domain_clean('rgmii_rxc'))
-    r['g2_resource_core_gate_pass']=r['routing_passed'] and r['bsram_work_gate_336'] and r['core_50mhz_timing_pass'] and r['receive_100mhz_report_pass'] and r['reported_reset_pulse_checks_pass'] and r['setup_violations']==0 and r['hold_violations']==0
+    sdc=(build/'g2.sdc').read_text(encoding='utf-8')
+    exception_commands=[x.strip() for x in sdc.splitlines() if re.match(r'^\s*set_(false_path|clock_groups|multicycle_path|max_delay|min_delay)\b',x)]
+    reference_file=build/'cdc_reference_audit.json';reviewed=[];cdc_pass=True
+    if reference_file.exists():
+        from audit_cdc_first_stages import audit,sdc_fragment
+        reference=json.loads(reference_file.read_text(encoding='utf-8'))
+        reviewed=[x for x in sdc_fragment(reference).splitlines() if x.startswith('set_')]
+        physical_netlist=p/(top+'.vo')
+        physical=audit(physical_netlist) if physical_netlist.exists() else dict(passed=False,paths=[],errors=['physical netlist unavailable'])
+        def endpoints(data):return {(x['source_register'],x['first_register'],x['second_register'],x['source_clock'],x['target_clock']) for x in data['paths']}
+        endpoints_match=physical['passed'] and endpoints(physical)==endpoints(reference)
+        active_commands=re.findall(r'^\s*TC_\S+\s+Actived\s+(.+?)\s*$',t,re.M)
+        normalize=lambda x:' '.join(x.split())
+        active={normalize(x) for x in active_commands}
+        missing=[x for x in reviewed if normalize(x) not in active]
+        cdc_pass=bool(endpoints_match and not missing)
+        r['cdc_first_stage_candidate']=dict(physical_audit=physical,endpoints_match_reference=endpoints_match,
+            required_active_constraints=len(reviewed),missing_active_constraints=missing,passed=cdc_pass,
+            scope='only audited first-stage hold exceptions and explicit max delays; no full CDC/IO/MTBF signoff')
+    r['unreviewed_timing_exceptions']=[x for x in exception_commands if ' '.join(x.split()) not in {' '.join(y.split()) for y in reviewed}]
+    r['g2_resource_core_gate_pass']=r['routing_passed'] and r['bsram_work_gate_336'] and r['core_50mhz_timing_pass'] and r['receive_100mhz_report_pass'] and r['reported_reset_pulse_checks_pass'] and r['setup_violations']==0 and r['hold_violations']==0 and cdc_pass and not r['unreviewed_timing_exceptions']
     r['scope']='actual reported resource/core timing; physical device revision, IO/CDC signoff and G3/vehicle acceptance remain separate'
     return r
 

@@ -10,9 +10,19 @@ def main():
     ap=argparse.ArgumentParser();ap.add_argument('source',type=Path);ap.add_argument('--wide-split',type=int,choices=[0,1],required=True)
     ap.add_argument('--replicate-resources',type=int,choices=[0,1],help='otherwise preserve source setting; no RTL or policy change')
     ap.add_argument('--place-option',type=int,choices=[0,1,2,3,4],default=1,help='Gowin placement mode; 1 routability, 2 timing priority')
+    ap.add_argument('--cdc-reference-audit',type=Path,help='explicit 26-path physical connectivity audit; hold-only first-stage candidate')
     ap.add_argument('--out',type=Path,required=True);a=ap.parse_args();src=a.source.resolve();out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
     for old,new in [('impl/gwsynthesis/g2_top.vg','g2_top.vg'),('g2.cst','g2.cst'),('g2.sdc','g2.sdc')]:
         shutil.copyfile(src/old,out/new)
+    cdc_reference=a.cdc_reference_audit or (src/'cdc_reference_audit.json' if (src/'cdc_reference_audit.json').exists() else None)
+    if cdc_reference:
+        reference=json.loads(cdc_reference.read_text(encoding='utf-8'))
+        from audit_cdc_first_stages import sdc_fragment
+        fragment=sdc_fragment(reference)
+        (out/'cdc_reference_audit.json').write_text(json.dumps(reference,indent=2),encoding='utf-8')
+        if a.cdc_reference_audit:
+            assert 'set_false_path' not in (out/'g2.sdc').read_text(encoding='utf-8'),'source SDC already has exceptions'
+            with (out/'g2.sdc').open('a',encoding='utf-8',newline='\n') as file:file.write('\n'+fragment)
     command=src/'impl/pnr/cmd.do';cmd=command.read_text(encoding='utf-8') if command.exists() else None
     if cmd:
         frequency=float(re.search(r'-global_freq\s+(\S+)',cmd)[1]);replicate=int(bool(re.search(r'(?m)^-replicate(?:_resources)?(?:\s|$)',cmd)))
@@ -42,6 +52,7 @@ def main():
     tcl += ['run pnr'];(out/'run.tcl').write_text('\n'.join(tcl)+'\n',encoding='utf-8',newline='\n')
     (out/'manifest.json').write_text(json.dumps(dict(source=str(src),frozen_netlist=True,wide_split=a.wide_split,
         original_pnr_command=cmd,replicate_resources=replicate,place_option=a.place_option,effective_options=effective,
+        cdc_reference_audit=str(cdc_reference) if cdc_reference else None,
         source_manifest=json.loads((src/'manifest.json').read_text()),programmed=False),indent=2))
     with (out/'gw_sh.log').open('w',encoding='utf-8') as log:
         r=subprocess.run([str(tool),'run.tcl'],cwd=out,stdout=log,stderr=subprocess.STDOUT)

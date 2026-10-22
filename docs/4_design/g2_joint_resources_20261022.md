@@ -202,3 +202,13 @@ AX独立导航334/340与综合估计309均不能当整车数值；核心时序�
 见[模块测量](evidence/g2_20261022/action_map_exact_widths_synthesis.json)。最初直接将动作映射作为顶层且无输入时序约束，报告600.601MHz只量到last_actions反馈，不能代表动作输入→舵机路径；该目录保留但不采用其Fmax。有效v2测量在原/新双方都添加相同输入启动寄存器，最坏路径确为actions_q→lk_us；这些寄存器仅用于测量，不进入产品设计，也不为产品增加周期。
 
 当前完整SYN：`F:/nav_integration_g2_20261023/directed_action_coverage50`，在上一联合源码上增加`--action-map-exact-widths`，其余directed/lease/observation/units/static-bounds/fusion/pose标志和拆分1保持。完成后按实际SYN决定是否进入place2＋复制1的PNR；目前整体仍是此前26.313MHz的实际报告，G2不通过。控制原文件和权重没有修改，未烧录。
+
+### 26条同步器实际连接审计与定向约束候选
+
+`audit_cdc_first_stages.py`对已经布通的静态边界物理网表检查：雷达FIFO写指针Gray到读域12位、读指针Gray到写域12位、MAC时钟监测与采样选择各1，共26条。每条直接由预期源时钟的寄存器驱动第一级D，第一/第二级为目的时钟、CE常1，第一级Q只有预期第二级D一个直接负载。Gray最高位实际合并到同值二进制指针最高位，按连接追踪而非只筛名字。见[26条逐路径审计](evidence/g2_20261023/static_cdc_first_stages.json)。这仍是四组白名单结构检查，不代表所有CDC或复位已签核。
+
+隔离SDC片段只对这26对source-Q→first-D设置`-hold`例外，同时设置最大延迟：源RX10ns周期预算8ns，源core20ns周期预算18ns。保留setup的显式路由限制、第一级→第二级全部正常时序和复位检查；不添加clock_groups、setup false_path或multicycle。8/18ns是候选路由预算，不能据此宣称已完成Gray总线物理偏斜/MTBF签核。原`g2.sdc`仍未改，只有显式`--cdc-reference-audit`的冻结PNR副本追加片段。
+
+先用三寄存器实际Gowin PNR验证命令语义，避免把工具不支持或未命中的约束带进昂贵联合布线。第一次误用_s0名字，实际寄存器为_s1，工具TA2003在布局前拒绝；该失败目录保留。v2按实际名字后PNR成功，3.8节两条约束均Actived；setup表仍有source→first且关系18ns，first→second的setup与hold均存在，hold表不再包含source→first。证据及极小源/网表/SDC见[工具语义检查](evidence/g2_20261023/cdc_sdc_fixture/result.json)。这个夹具仅验证约束行为，不能代表联合资源、车辆或全CDC通过；没有烧录。
+
+`pnr_from_netlist.py --cdc-reference-audit <JSON>`仅接受上述固定分组/数量/预算，保留参考审计与片段到新构建。报告门禁要求新物理网表26条驱动/第二级/时钟与参考完全相符，52条约束全部出现在Actived表；任何缺失、额外未审例外或全局时序违例都使G2不通过。已确认原26.313MHz/8-hold报告在新门禁下仍被拒绝，未降低既有失败标准。
