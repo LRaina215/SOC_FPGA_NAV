@@ -322,3 +322,13 @@ DSP、SSRAM/ROM16计数未变，物理宽拆分后327仍是预测；RX综合估�
 已有针对仍在的gyro长路径的源码/逐拍合同与这次联合SYN改善，故直接推进实际PNR：`F:/nav_integration_g2_20261023/weight9_gyro17_place1_route2_cdc50`于05:08:59启动。它冻结上述完成网表，global50、拆分1、复制1、place1/route2均预检及实际cmd.do核对；完整SDC和CST与上一取消版相同，50/100MHz、26条hold-only、26条max-delay均保留。新SYN的引用寄存器存在检查通过，新物理26路径及52条Actived仍必须等待结果审计。见[实际启动/约束/命令记录](evidence/g2_20261023/weight9_gyro17_pnr_started.json)。
 
 工具预算仍是60分钟总时限、35分钟无日志/产物进展；没有并行启动其他SYN/PNR，没有上板。下一步按真实PNR资源、长路径、全局setup/hold及复位/脉宽判定，缺报告不通过；原4500算法/权重/125Hz保持。
+
+### 05:54再次触发无进展预算；开始同网表约束诊断
+
+`weight9_gyro17_place1_route2_cdc50`于05:54:56.431被所属监管器取消：总2756.984秒（45分57秒），无进展2100.062秒；最近仍Routing Phase0完成。`.rpt.txt/.tr/.vo`均缺失，门禁false，全部源/日志/布局文件保留。见[取消记录](evidence/g2_20261023/weight9_gyro17_pnr_budget_cancelled.json)。309块SYN及52.885MHz估计没有转成实际物理报告，不把它们填为实际占用/Fmax；也没有新的内部迭代或拥塞证据可证明死循环。
+
+当前需要隔离仍未确定的约束影响，而非继续无依据修改算法。05:56:33.982启动`F:/nav_integration_g2_20261023/weight9_gyro17_base_sdc_diagnostic`：与刚取消版网表逐字节相同、CST相同、global50/拆分1/复制1/place1/route2及60–35分钟预算相同，只改SDC为冻结SYN原有的核心50/RX100两条时钟，不附加26条hold-only及26条max-delay。不是取消时钟要求或放宽生产接受；见[单因素输入及实际命令](evidence/g2_20261023/weight9_gyro17_base_sdc_diagnostic_started.json)。
+
+新增`--diagnostic-only`写入manifest；`collect_pnr_result.py`保留报告指标，同时强制G2=false，独立采集/最终输出均遵守，缺报告仍明确拒绝。因此即使该轮布通或报告达频，也只说明这一组诊断输入的结果，不能进入部署。四项[输出准入合同](evidence/g2_20261023/diagnostic_gate_contract.json)覆盖正常合格结果保留、诊断合格指标拒绝、诊断失败拒绝和诊断缺报告拒绝；使用合成指标夹具，不计实际时序验证，未重复RTL/物理批量。
+
+若诊断有物理报告，再审查26条实际CDC连接/命名、真实首级延迟和长路径，决定如何重新验证完整候选约束；若仍不能在预算内出报告，这组对照也不能将CDC定为唯一原因。原4500、权重及125Hz不变，没有编程或实机动作。

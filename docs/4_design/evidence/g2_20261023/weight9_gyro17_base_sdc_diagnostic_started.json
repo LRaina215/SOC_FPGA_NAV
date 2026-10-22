@@ -1,0 +1,55 @@
+{
+  "checked_at": "2026-10-23T05:57:57.418150+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\weight9_gyro17_base_sdc_diagnostic",
+  "qualified_comparison_build": "F:\\nav_integration_g2_20261023\\weight9_gyro17_place1_route2_cdc50",
+  "frozen_netlist_same_bytes": true,
+  "cst_same_bytes": true,
+  "only_experimental_change": "remove the52 first-stage CDC candidate commands, retain original50/100MHz clocks",
+  "sdc_commands": [
+    "create_clock -name clk50 -period 20 [get_ports {clk50}]",
+    "create_clock -name rgmii_rxc -period 10 [get_ports {rgmii_rxc}]"
+  ],
+  "actual_pnr_command": "-d F:\\nav_integration_g2_20261023\\weight9_gyro17_base_sdc_diagnostic\\g2_top.vg\n-p GW5AT-138C-PBGA484A-1\n-pn GW5AT-LV138PG484AC1/I0\n-cst F:\\nav_integration_g2_20261023\\weight9_gyro17_base_sdc_diagnostic\\g2.cst\n-cfg F:\\nav_integration_g2_20261023\\weight9_gyro17_base_sdc_diagnostic\\impl\\pnr\\device.cfg\n-sdc F:\\nav_integration_g2_20261023\\weight9_gyro17_base_sdc_diagnostic\\g2.sdc\n-bit\n-tr\n-ph\n-o\n-timing\n-ireg_not_in_iob\n-oreg_not_in_iob\n-ioreg_not_in_iob\n-replicate\n-cst_error\n-convert_sdp32_36_to_sdp16_18\n-place_option 1\n-route_option 2\n-retiming_resource none\n-clock_route_order 0\n-correct_hold 1\n-route_maxfan 23\n-global_freq 50.000\n",
+  "effective_options": {
+    "global_freq_mhz": 50.0,
+    "wide_split": 1,
+    "effective_options": "F:\\nav_integration_g2_20261023\\weight9_gyro17_base_sdc_diagnostic\\effective_options.tcl",
+    "extra_options": {
+      "replicate_resources": 1,
+      "place_option": 1,
+      "route_option": 2
+    }
+  },
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-23T05:56:33.982240+08:00",
+    "max_runtime_s": 3600.0,
+    "max_no_observable_progress_s": 2100.0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "pid": 45552,
+    "elapsed_s": 60.06199999997625,
+    "no_observable_progress_s": 54.04599999997299,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        860,
+        1792706199393476500
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        405,
+        1792706199394452900
+      ]
+    ]
+  },
+  "diagnostic_only": true,
+  "g2_acceptance_forced_false": true,
+  "no_physical_result_yet": true,
+  "hypothesis": "test whether candidate CDC constraints contribute to prolonged routing; no cause established yet",
+  "programmed": false
+}

@@ -1,0 +1,30 @@
+{
+  "result": "passed",
+  "cases": [
+    {
+      "case": "normal_pass",
+      "returned_pass": true,
+      "serialized_pass": true,
+      "diagnostic_only": false
+    },
+    {
+      "case": "diagnostic_metrics_pass",
+      "returned_pass": false,
+      "serialized_pass": false,
+      "diagnostic_only": true
+    },
+    {
+      "case": "diagnostic_metrics_fail",
+      "returned_pass": false,
+      "serialized_pass": false,
+      "diagnostic_only": true
+    },
+    {
+      "case": "diagnostic_missing_report",
+      "returned_pass": false,
+      "serialized_pass": false,
+      "diagnostic_only": true
+    }
+  ],
+  "scope": "admission/output policy contract using synthetic completed-metrics fixtures; not FPGA timing or parser acceptance"
+}

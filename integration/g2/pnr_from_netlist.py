@@ -14,6 +14,7 @@ def main():
     ap.add_argument('--max-runtime-minutes',type=float,default=0,help='0 disables; time budget is not proof of deadlock')
     ap.add_argument('--max-no-progress-minutes',type=float,default=0,help='0 disables; observe tool log/artifacts, not CPU activity')
     ap.add_argument('--cdc-reference-audit',type=Path,help='explicit 26-path physical connectivity audit; hold-only first-stage candidate')
+    ap.add_argument('--diagnostic-only',action='store_true',help='controlled implementation comparison; force G2 acceptance false regardless of measured timing')
     ap.add_argument('--out',type=Path,required=True);a=ap.parse_args()
     if a.max_runtime_minutes<0 or a.max_no_progress_minutes<0:ap.error('runtime budgets must be nonnegative')
     src=a.source.resolve();out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
@@ -71,6 +72,7 @@ def main():
         original_pnr_command=cmd,replicate_resources=replicate,place_option=a.place_option,route_option=a.route_option,effective_options=effective,
         max_runtime_minutes=a.max_runtime_minutes,max_no_progress_minutes=a.max_no_progress_minutes,
         cdc_reference_audit=str(cdc_reference) if cdc_reference else None,
+        diagnostic_only=a.diagnostic_only,
         source_manifest=json.loads((src/'manifest.json').read_text()),programmed=False),indent=2))
     from bounded_tool import run_tool
     r=run_tool([str(tool),'run.tcl'],out,max_runtime_s=a.max_runtime_minutes*60,

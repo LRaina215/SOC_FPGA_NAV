@@ -4,6 +4,15 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 
+def diagnostic_policy(result):
+    """A diagnostic report can contain useful metrics but cannot release G2."""
+    result['diagnostic_only']=bool((result.get('manifest') or {}).get('diagnostic_only',False))
+    if result['diagnostic_only']:
+        result['g2_resource_core_gate_pass']=False
+        result['scope']='diagnostic implementation comparison only; never G2 or deployment acceptance'
+    return result
+
+
 def collect(build,top='g2_top'):
     p=build/'impl/pnr';report=p/(top+'.rpt.txt');timing=p/(top+'.tr')
     s=report.read_text(encoding='utf-8');t=timing.read_text(encoding='utf-8') if timing.exists() else ''
@@ -97,7 +106,7 @@ def collect(build,top='g2_top'):
     r['unreviewed_timing_exceptions']=[x for x in exception_commands if ' '.join(x.split()) not in {' '.join(y.split()) for y in reviewed}]
     r['g2_resource_core_gate_pass']=r['routing_passed'] and r['bsram_work_gate_336'] and r['core_50mhz_timing_pass'] and r['receive_100mhz_report_pass'] and r['reported_reset_pulse_checks_pass'] and r['setup_violations']==0 and r['hold_violations']==0 and cdc_pass and not r['unreviewed_timing_exceptions']
     r['scope']='actual reported resource/core timing; physical device revision, IO/CDC signoff and G3/vehicle acceptance remain separate'
-    return r
+    return diagnostic_policy(r)
 
 
 def finalize_gate(build):
@@ -108,8 +117,11 @@ def finalize_gate(build):
     except FileNotFoundError as e:
         r=dict(build=str(build.resolve()),g2_resource_core_gate_pass=False,programmed=False,
                reason='required implementation report unavailable',missing_report=str(e.filename))
+    manifest_file=build/'manifest.json'
+    if 'manifest' not in r and manifest_file.exists():r['manifest']=json.loads(manifest_file.read_text())
+    diagnostic_policy(r)
     (build/'g2_gate.json').write_text(json.dumps(r,indent=2),encoding='utf-8',newline='\n')
-    print('G2 resource/core gate: '+('PASS' if r['g2_resource_core_gate_pass'] else 'FAIL / UNVERIFIED'))
+    print('G2 resource/core gate: '+('DIAGNOSTIC ONLY' if r['diagnostic_only'] else 'PASS' if r['g2_resource_core_gate_pass'] else 'FAIL / UNVERIFIED'))
     return r['g2_resource_core_gate_pass']
 
 
