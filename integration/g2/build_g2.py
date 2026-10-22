@@ -115,7 +115,7 @@ def main():
     tool=os.environ.get('GW_SH',r'D:\Gowin2\Gowin_V1.9.12.04_x64\IDE\bin\gw_sh.exe')
     from preflight import validate
     effective=validate(tool,out,tcl,50,a.wide_split)
-    tcl += ['run '+a.stage]
+    tcl += ['run '+a.stage,'exit']
     (out/'run.tcl').write_text('\n'.join(tcl)+'\n',encoding='utf-8')
     manifest=dict(nav_variant=a.nav,coverage_enabled=a.nav=='coverage',stage=a.stage,packing=a.packing,command_lease=a.command_lease,
         observation_pipeline=a.observation_pipeline,command_units_pipeline=a.command_units_pipeline,

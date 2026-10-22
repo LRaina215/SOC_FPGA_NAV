@@ -61,7 +61,7 @@ def main():
     from preflight import validate
     tool=Path(r'D:\Gowin2\Gowin_V1.9.12.04_x64\IDE\bin\gw_sh.exe')
     effective=validate(tool,out,tcl,frequency,a.wide_split,{'replicate_resources':replicate,'place_option':a.place_option})
-    tcl += ['run pnr'];(out/'run.tcl').write_text('\n'.join(tcl)+'\n',encoding='utf-8',newline='\n')
+    tcl += ['run pnr','exit'];(out/'run.tcl').write_text('\n'.join(tcl)+'\n',encoding='utf-8',newline='\n')
     (out/'manifest.json').write_text(json.dumps(dict(source=str(src),frozen_netlist=True,wide_split=a.wide_split,
         original_pnr_command=cmd,replicate_resources=replicate,place_option=a.place_option,effective_options=effective,
         cdc_reference_audit=str(cdc_reference) if cdc_reference else None,

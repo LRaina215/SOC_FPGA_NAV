@@ -50,6 +50,8 @@ def main():
     count=len(raw['t']);assert count==len(maps['t'])==len(events['commit'])
     assert np.all(np.diff(raw['t'])>0) and np.all(np.diff(maps['t'])>0)
     assert np.all(raw['t']<=maps['t'])
+    assert np.array_equal(events['commit'][:,12],maps['cx'])
+    assert np.array_equal(events['commit'][:,13],maps['cy'])
     # Match frozen C arithmetic, including negative division and LUT interpolation.
     header=(a.firmware/'include/nav_sin_lut.h').read_text()
     sine=list(map(int,re.findall(r'-?\d+',header.split('= {',1)[1].split('}',1)[0])))
