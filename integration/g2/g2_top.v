@@ -138,16 +138,27 @@ module g2_top (
     wire signed [47:0] wz_product=$signed(ch_wz)*48'sd4096;
 `ifdef G2_COMMAND_LEASE
     wire signed [23:0] nav_forward_q12,nav_yaw_q12;
+    wire nav_guard_valid;wire [15:0] nav_guard_seq;
+    wire signed [23:0] vx_command_q12,wz_command_q12;
+`ifdef G2_UNITS_PIPELINE
+    nav_command_units u_command_units(.clk(clk),.reset_n(~rst),.kill(ch_stop|ch_wdog),
+        .valid(ch_valid),.seq(ch_seq),.vx(ch_vx),.wz(ch_wz),
+        .out_valid(nav_guard_valid),.out_seq(nav_guard_seq),
+        .out_vx_q12(vx_command_q12),.out_wz_q12(wz_command_q12));
+`else
     wire signed [47:0] vx_rounded=vx_product<0?vx_product-500:vx_product+500;
     wire signed [47:0] wz_rounded=wz_product<0?wz_product-500:wz_product+500;
     wire signed [47:0] vx_converted=vx_rounded/1000,wz_converted=wz_rounded/1000;
+    assign vx_command_q12=vx_converted[23:0];assign wz_command_q12=wz_converted[23:0];
+    assign nav_guard_valid=ch_valid;assign nav_guard_seq=ch_seq;
+`endif
     // NAV is the sole owner in this G2 image. SAFE's raw command watchdog is
     // authoritative; periodic SAFE output alone must not keep a stale lease.
     command_lease_guard #(.CLK_HZ(CLK_HZ)) u_command_lease(
         .clk(clk),.reset_n(~rst),.owner_select(2'd1),.source_id(2'd1),
-        .session_select(32'd1),.packet_session(32'd1),.packet_seq(ch_seq),
-        .valid(ch_valid),.source_fault(ch_wdog),.estop(ch_stop),
-        .forward_q12(vx_converted[23:0]),.yaw_q12(wz_converted[23:0]),
+        .session_select(32'd1),.packet_session(32'd1),.packet_seq(nav_guard_seq),
+        .valid(nav_guard_valid),.source_fault(ch_wdog),.estop(ch_stop),
+        .forward_q12(vx_command_q12),.yaw_q12(wz_command_q12),
         .feedback_valid(odo_valid),.measured_vx_mmps(odo_vx),.measured_wz_mradps(odo_wz),
         .out_forward_q12(nav_forward_q12),.out_yaw_q12(nav_yaw_q12),
         .armed(),.expired(),.stop_confirmed(),.age_ms(),.accepted_count(),.rejected_count(),.balance_enable());

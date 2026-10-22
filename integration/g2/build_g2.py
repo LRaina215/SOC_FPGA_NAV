@@ -23,8 +23,11 @@ def main():
     ap.add_argument('--packing',choices=['none','nav','control','both','ssram','hybrid','planes','directed'],default='none')
     ap.add_argument('--command-lease',action='store_true',help='isolated command-age/stop gate, not accepted vehicle behavior')
     ap.add_argument('--observation-pipeline',action='store_true',help='cycle-exact wheel numerator timing candidate; original source remains intact')
+    ap.add_argument('--command-units-pipeline',action='store_true',help='exact units/sequence adapter pipeline before lease guard')
     ap.add_argument('--wide-split',type=int,choices=[0,1],default=0,help='explicit PNR wide-RAM split; 1 duplicates every 32/36-bit block')
-    a=ap.parse_args();out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
+    a=ap.parse_args()
+    if a.command_units_pipeline and not a.command_lease:ap.error('--command-units-pipeline requires --command-lease')
+    out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
     nav=out/'nav';nav.mkdir()
     shutil.copytree(ROOT/'rtl',nav/'rtl')
     if a.packing in ('nav','both'):
@@ -56,6 +59,7 @@ def main():
     top=(ROOT/'integration/g2/g2_top.v').read_text(encoding='utf-8')
     top=top.replace('`include "soc_cfg.vh"','`define NAV_SOC_RAM_KB 128\n`define G2_COVERAGE '+str(int(a.nav=='coverage')))
     if a.command_lease:top='`define G2_COMMAND_LEASE\n'+top
+    if a.command_units_pipeline:top='`define G2_UNITS_PIPELINE\n'+top
     (out/'g2_top.v').write_text(top,encoding='utf-8')
     shutil.copyfile(ROOT/'integration/g2/g2.cst',out/'g2.cst')
     shutil.copyfile(ROOT/'integration/g2/g2.sdc',out/'g2.sdc')
@@ -67,9 +71,10 @@ def main():
         generator=importlib.util.module_from_spec(spec);spec.loader.exec_module(generator)
         generator.generate(out/'control/rl_observation_v5.v')
     shutil.copyfile(ROOT/'integration/g2/command_lease_guard.v',out/'command_lease_guard.v')
+    shutil.copyfile(ROOT/'integration/g2/nav_command_units.v',out/'nav_command_units.v')
     files=[nav/x for x in ALL_RTL+SOC+['rtl/net/rgmii_mac100.v']]
     files += [p for p in (out/'control').glob('*.v') if p.name!='main.v']
-    files += [out/'control4500_core.v',out/'command_lease_guard.v',out/'g2_top.v']
+    files += [out/'control4500_core.v',out/'command_lease_guard.v',out/'nav_command_units.v',out/'g2_top.v']
     if a.packing in ('control','both','ssram','hybrid','directed'):
         from optimize_storage import prepare
         prepare(out,directed=a.packing=='directed')
@@ -91,7 +96,7 @@ def main():
     tcl += ['run '+a.stage]
     (out/'run.tcl').write_text('\n'.join(tcl)+'\n',encoding='utf-8')
     manifest=dict(nav_variant=a.nav,coverage_enabled=a.nav=='coverage',stage=a.stage,packing=a.packing,command_lease=a.command_lease,
-        observation_pipeline=a.observation_pipeline,wide_split=a.wide_split,
+        observation_pipeline=a.observation_pipeline,command_units_pipeline=a.command_units_pipeline,wide_split=a.wide_split,
         device='GW5AT-LV138PG484AC1/I0',device_version='C',clock_core_mhz=50,synthesis_frequency_hint_mhz=50,
         control_commit='6443f5678b4de222c22cbf331b8396f7c8df6a41',control_source=str(control),control_adapter='control_nav_adapter.patch',control_weights_changed=False,
         source_files=[str(p) for p in files],programmed=False,
