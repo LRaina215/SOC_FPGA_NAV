@@ -16,3 +16,5 @@ git diff -- control/
 共同构建、适配和当前资源结论见[总计划](../docs/1_plan/system_integration_plan_20261021.md)与[G2入口](../integration/g2/README.md)。以后控制修改、适配修改和对应验证结果应一起提交，禁止只改仓库外快照。
 
 G2已改为读取`control/fpga/src`，通过受检补丁生成NAV接口，策略原入口仍保留。闭环仿真默认读取本目录；历史只读快照仍可显式传入用于配对。导入后的16帧/128ms短迁移检查中，两份来源的qpos/qvel/动作逐项相同；这个检查不代替整车或地形验收。
+
+新增控制候选也在这里留历史：`tools/g2_observation_pipeline.py`仅生成独立构建目录中的轮速观测流水版，未覆盖原`fpga/src/rl_observation_v5.v`。有限RTL逐拍对照记录在G2报告；只有共同资源/时序通过后才能讨论接受，不能将候选生成器视为原4500已改版部署。

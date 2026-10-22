@@ -54,6 +54,7 @@ def inventory(build):
         wide32_36_count=len(wide),wide32_36_by_top=dict(Counter(x['path'].split('/')[1] for x in wide)),
         pnr_wide_split_enabled='-convert_sdp32_36_to_sdp16_18' in command,
         predicted_split_bsram=len(leaves)+len(wide),
+        predicted_bsram_under_actual_option=len(leaves)+(len(wide) if '-convert_sdp32_36_to_sdp16_18' in command else 0),
         reused_modules={k:v for k,v in multiplicity.items() if v>1},
         primitive_types=dict(primitive_types),leaves=leaves)
 

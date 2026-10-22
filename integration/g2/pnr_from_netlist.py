@@ -18,7 +18,7 @@ def main():
         f'add_file -type cst {{{(out/"g2.cst").as_posix()}}}',
         f'add_file -type sdc {{{(out/"g2.sdc").as_posix()}}}',
         'set_option -top_module g2_top','set_option -output_base_name g2_top',
-        'set_option -frequency '+frequency,
+        'set_option -global_freq '+frequency,
         'set_option -convert_sdp32_36_to_sdp16_18 '+str(a.wide_split),
         'set_option -gen_verilog_sim_netlist 1',
         'set_option -place_option 1','set_option -route_option 0']
