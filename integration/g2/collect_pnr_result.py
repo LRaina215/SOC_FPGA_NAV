@@ -31,8 +31,24 @@ def collect(build,top='g2_top'):
     for m in re.finditer(r'^\s*\d+\s+(\S+)\s+([\d.]+)\(MHz\)\s+([\d.]+)\(MHz\)\s+(\d+)\s+(\S+)',t,re.M):
         clocks.append(dict(name=m[1],constraint_mhz=float(m[2]),actual_fmax_mhz=float(m[3]),levels=int(m[4]),entity=m[5]))
     r['clocks']=clocks
+    # The clock-domain summary excludes cross-clock paths. Keep both it and
+    # the global totals: a receive-domain pass must not hide global failures.
+    per_clock={}
+    for name,kind,tns,count in re.findall(r'^\s*(\S+)\s+(setup|hold)\s+(-?[\d.]+)\s+(\d+)\s*$',t,re.M):
+        per_clock.setdefault(name,{})[kind]=dict(tns_ns=float(tns),violated_endpoints=int(count))
+    r['per_clock_violations']=per_clock
+    r['violations_outside_per_clock_summary']={
+        kind:(r[kind+'_violations']-sum(x.get(kind,{}).get('violated_endpoints',0) for x in per_clock.values())
+              if r[kind+'_violations'] is not None else None) for kind in ('setup','hold')}
     section=t.split('3.1.1 Setup Paths Table\n')[-1].split('3.1.2 Hold Paths Table')[0]
     r['top_setup_rows']=[x.strip() for x in section.splitlines() if re.match(r'^\s*\d+\s+[-\d.]+\s+\S+',x)][:10]
+    section=t.split('3.1.2 Hold Paths Table\n')[-1].split('3.1.3 Recovery Paths Table')[0]
+    r['negative_reported_hold_paths']=[]
+    for row in section.splitlines():
+        fields=row.split()
+        if len(fields)==9 and fields[0].isdigit() and float(fields[1])<0:
+            r['negative_reported_hold_paths'].append(dict(slack_ns=float(fields[1]),source=fields[2],destination=fields[3],
+                source_clock=fields[4],destination_clock=fields[5],cross_clock=fields[4]!=fields[5]))
     secondary={}
     for name,title,following in [
         ('recovery','3.1.3 Recovery Paths Table',r'3\.1\.4 '),
@@ -52,13 +68,29 @@ def collect(build,top='g2_top'):
     receive=next((c for c in clocks if c['name']=='rgmii_rxc'),None)
     r['routing_passed']=bool(t and not errors and r['unrouted_nets'] in (None,0))
     r['bsram_work_gate_336']=r['bsram']['used']<=336
+    def domain_clean(name):
+        counts=per_clock.get(name,{})
+        return all(counts.get(kind,{}).get('violated_endpoints')==0 for kind in ('setup','hold'))
     r['core_50mhz_timing_pass']=bool(r['routing_passed'] and core and core['constraint_mhz']==50 and core['actual_fmax_mhz']>=50
-        and r['setup_violations']==0 and r['hold_violations']==0)
+        and domain_clean('clk50'))
     r['receive_100mhz_report_pass']=bool(r['routing_passed'] and receive and receive['constraint_mhz']==100
-        and receive['actual_fmax_mhz']>=100 and r['setup_violations']==0 and r['hold_violations']==0)
-    r['g2_resource_core_gate_pass']=r['routing_passed'] and r['bsram_work_gate_336'] and r['core_50mhz_timing_pass'] and r['receive_100mhz_report_pass'] and r['reported_reset_pulse_checks_pass']
+        and receive['actual_fmax_mhz']>=100 and domain_clean('rgmii_rxc'))
+    r['g2_resource_core_gate_pass']=r['routing_passed'] and r['bsram_work_gate_336'] and r['core_50mhz_timing_pass'] and r['receive_100mhz_report_pass'] and r['reported_reset_pulse_checks_pass'] and r['setup_violations']==0 and r['hold_violations']==0
     r['scope']='actual reported resource/core timing; physical device revision, IO/CDC signoff and G3/vehicle acceptance remain separate'
     return r
+
+
+def finalize_gate(build):
+    """A successful vendor process can still generate a timing-failing bitstream."""
+    build=Path(build)
+    try:
+        r=collect(build)
+    except FileNotFoundError as e:
+        r=dict(build=str(build.resolve()),g2_resource_core_gate_pass=False,programmed=False,
+               reason='required implementation report unavailable',missing_report=str(e.filename))
+    (build/'g2_gate.json').write_text(json.dumps(r,indent=2),encoding='utf-8',newline='\n')
+    print('G2 resource/core gate: '+('PASS' if r['g2_resource_core_gate_pass'] else 'FAIL / UNVERIFIED'))
+    return r['g2_resource_core_gate_pass']
 
 
 def main():

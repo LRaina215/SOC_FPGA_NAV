@@ -14,7 +14,7 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 宽叶还包括只读pROMX9等物理模式，不能仅按SDP名筛选；双流水实际为314＋18＝332（导航17/控制IK ROM1）。`audit_physical_memories.py`把后PNR的332个叶子与来源逐实例对齐，原314全在、18对拆分均匹配。`audit_pin_loads.py`只计实际网表直接非时钟输入引用，不代表未布通网络名单。
 
-`pnr_from_netlist.py`也可读取SYN-only构建，从实际PRJ/有效配置获取频率；`--replicate-resources 0|1`显式覆盖工具高负载资源复制，否则保持来源设置。预检回读复制选项，实际PNR二进制标志为`-replicate`。这是物理实现试验，不改RTL算法或权重，仍须重测实际占用/布线/时序。示例：`python integration/g2/pnr_from_netlist.py <SYN-build> --wide-split 1 --replicate-resources 1 --out <new-build>`。
+`pnr_from_netlist.py`也可读取SYN-only构建，从实际PRJ/有效配置获取频率；`--replicate-resources 0|1`显式覆盖工具高负载资源复制，否则保持来源设置。`--place-option`默认1（可布线优先），2为时序优先，均在预检回读。实际PNR二进制复制标志为`-replicate`。这是物理实现试验，不改RTL算法或权重，仍须重测实际占用/布线/时序。示例：`python integration/g2/pnr_from_netlist.py <SYN-build> --wide-split 1 --replicate-resources 1 --place-option 2 --out <new-build>`。
 
 `--command-lease`加入NAV唯一owner的命令年龄/有界减速/实测停稳监管原型；原4500继续维持平衡。入口RTL与24项CRC/坏帧/断线/切换等合同见`test_command_lease.py`，默认500ms停稳窗口在合同测试中缩放到10ms。外部旧UART协议没有序号/session，不能因此声称旧协议具备防重放。资源结论须归到带该标志的共同工程。
 
@@ -23,6 +23,10 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 `--command-units-pipeline`（要求`--command-lease`）将NAV单位换算改为精确四级流水，正常接收多4拍/80ns，序号同步、停止/看门狗直接优先并清空在途命令。`test_nav_command_units.py`穷举两轴全部16位输入并验证连续输入、序号和复位/故障；不改变原4500算法、网络、权重或125Hz推理。
 
 `--coverage-static-bounds`提前计算覆盖层每帧固定的窗口基点/边界，保留32位回绕算术、全部状态和外部周期。AS可指定相同标志用于同源码对照（覆盖层仍不实例化）。`test_coverage_collision.py --static-bounds`比较原/新模块所有外部信号与有效RAM端口每拍一致，沿用独立模型及碰撞X读值；`measure_coverage_timing.py`仅测模块综合。模块Fmax改善不等于共同工程或PNR通过，当前在跑的双流水配对没有此标志。
+
+`--fusion-norm-pipeline`由`control/tools/g2_fusion_pipeline.py`生成BMI模长寄存边界调整版，滤波、标定参数及所有外部周期保持；`test_fusion_equivalence.py`对照完整原融合模块和24位极值。首种carry-save写法综合器内部错误已保留，当前使用显式扩展加法。原控制源不覆盖。
+
+`--pose-predecode`在原总线捕获拍寄存位姿提交译码，替换帧接收和覆盖层的两个消费者；点流延迟、帧归属不变。`test_pose_predecode.py`在实际NAV总线状态机内与未改寄存器文件脉冲逐拍比较。
 
 本工程统一使用器件C版、RTL核心50MHz，PNR SDC定义20ns核心与10ns接收时钟。截至directed_local，实际综合/全局提示均100MHz，旧`-frequency 50`设置未生效。脚本现改为文档支持的`-global_freq 50`，并在昂贵构建前用`saveto -all_options`回读频率和宽RAM选项，失配即停止；实际报告另读PRJ/cmd.do核对。所有PNR核心SDC约束仍为20ns，综合Fmax不能代替PNR。实板B/C对应、完整IO时序和BMI重力到导航姿态/时间适配尚待确认；旧导航IMU UART仍保留在A15，本工程不代表G3功能或实车通过。
 
@@ -33,3 +37,5 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 `collect_pnr_result.py`仅读取实际PNR报告，保留小数DSP用量；布线失败时记录未布通网络和缺失的时序，不用SYN频率填充Fmax。例：`python integration/g2/collect_pnr_result.py <build> --out <result.json>`。
 
 签核还检查已报告的Recovery、Removal及最小脉宽最差表；存在负裕量或缺失表时不宣布G2通过。表中负数计数仅为工具报告出的行，不当作全部违例端点数。IO/CDC与器件版本完整签核继续单列。
+
+完整构建与冻结网表PNR会保存`g2_gate.json`，并按实际报告返回G2门槛结果；厂商工具返回0或产生位流仍可能时序失败。仅综合阶段的成功不代表G2接受。采集器区分域内与全局违例，跨域违例保留；目前332块首次布通版核心26.313MHz，G2不通过，禁止按该位流部署。

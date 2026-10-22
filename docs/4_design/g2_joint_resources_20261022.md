@@ -109,7 +109,7 @@ AX独立导航334/340与综合估计309均不能当整车数值；核心时序�
 | directed_pipe2_coverage_effective50 | 314 / 实际50MHz | 双流水拆分0，实际314，502条未布通，无时序 |
 | directed_pipe2_coverage_split1_effective50 | 复用上一网表 / 实际50MHz | 双流水拆分1，实际332，411条未布通，无时序 |
 | directed_static_coverage_effective50 | 314 / 实际50MHz | 加静态边界，仅综合完成，估计43.664MHz，非PNR |
-| directed_static_coverage_rep1_effective50 | 复用静态边界网表 / 实际50MHz | 拆分1、工具高负载复制1，布局中，最终占用/时序待测 |
+| directed_static_coverage_rep1_effective50 | 复用静态边界网表 / 实际50MHz | 拆分1、复制1，实际332，布通；核心26.313MHz/5003 setup，全局8 hold，G2不通过 |
 
 实际报告采集还要求clk50约束50MHz、rgmii_rxc约束100MHz及相应Fmax/违例检查；IO/CDC完整签核仍单列。没有报告时保留未知，不用综合或全局提示填充。
 
@@ -135,3 +135,32 @@ AX独立导航334/340与综合估计309均不能当整车数值；核心时序�
 实际失败网表直接输入端口引用计数：控制复位9101、导航复位6528、观测复位4183、策略快照CE4032、观测提交CE3896。见[原始网表负载摘录](evidence/g2_20261022/directed_pipe2_split1_pin_loads.json)。脚本只计非时钟输入引用，不归并assign别名；这不是411条未布通网络名单。本次报告没有逐网未布通身份，不能确认这些信号就是失败根因。
 
 官方SUG1220说明`replicate_resources`可复制高负载资源以降低扇出、改善时序；基线实际关闭。`pnr_from_netlist.py`现支持SYN-only网表及显式复制选项，先回读有效配置再运行。对静态边界联合网表的复制1候选已启动，器件/引脚/SDC/50MHz和原4500算法/权重/125Hz不变；回读为50MHz、宽存储拆分1、复制1，实际PNR命令使用二进制选项`-replicate`（不是Tcl名`-replicate_resources`）。这是一项有负载依据的试验，不是已证实修复；是否复制何种实例、BSRAM是否仍≤336、布线及50/100MHz实际时序均待完整报告。
+
+### 首次实际布通：存储通过，时序不通过
+
+`directed_static_coverage_rep1_effective50`于17:57:40完成PNR并生成位流，工具返回0；**不代表G2通过，未烧录**。相同器件C、引脚和20ns/10ns SDC，实际BSRAM332/340、Logic89584/138240、寄存器39957、DSP163.5/298。源314个存储叶子完整保留，18对宽叶拆分全部对齐，CPU64/控制49/导航219。见[实际PNR](evidence/g2_20261022/directed_static_coverage_rep1_effective50_pnr.json)、[物理存储](evidence/g2_20261022/directed_static_rep1_physical_memories.json)。
+
+| 检查 | 实际结果 | 判定 |
+|---|---|---|
+| BSRAM工作门槛 | 332≤336，硬上限340 | 通过占用 |
+| 布线 | 完成并产生实际时序报告 | 通过布线 |
+| clk50 | 约束50MHz，实际26.313MHz，5003 setup违例 | 不通过 |
+| rgmii_rxc域自身 | 约束100MHz，实际123.530MHz，域内setup/hold均0 | 仅该域报告通过 |
+| 全局hold | 8条，最坏−0.211ns；全部为RX Gray指针到第一级同步器 | CDC及例外约束待审，整体不通过 |
+| Recovery / Removal / 最小脉宽 | 最坏+3.354/+0.660/+2.843ns | 已报告表均为正 |
+
+实际物理网表包含`gowin_replicate_reg`实例，寄存器相对源综合增加1902；但控制复位直接引用9153、导航6553、观测复位4366、策略快照CE4032、观测提交CE4001仍高，见[负载摘录](evidence/g2_20261022/directed_static_rep1_pin_loads.json)。不能声称复制降低了这些特定负载，也不能将成功独归复制：此版同时加静态边界，尚非单因素配对。
+
+时序最坏实际路径为控制融合`egz→sqrt_value`，24级、37.915ns数据延迟、−18.004ns裕量。报告细分有绝对值进位、DSP平方和两段11.595/10.541ns长连线。导航`a_q→u_pp`另有37.028ns，路径经过位姿提交译码、帧提交和点流反压；不能只按终点DSP猜测深度参数需要再寄存（该参数原本已有寄存）。下一步同时减少实际组合链并评估时序优先布局，不能承诺单项即可过50MHz。
+
+采集器现区分每个时钟自身违例和全局违例，8条跨域hold保留来源。整体门槛仍要求全局setup/hold为0；不因RX自身通过就宣布G2通过。`build_g2.py --stage all`与`pnr_from_netlist.py`写入`g2_gate.json`，实际时序失败时脚本返回失败，即使厂商工具已返回0。已用本次实际失败报告核验门禁拒绝。
+
+### 控制模长与位姿译码的逐拍候选
+
+`control/tools/g2_fusion_pipeline.py`只生成构建副本：原状态4/9寄存三个有符号平方，下一拍由原sqrt引擎采样精确和。`x*x=abs(x)*abs(x)`包括24位最小负数；平方48位、求和显式扩展49/50位再零扩展64位，避免截断。状态、启动、滤波/标定参数、原4500策略与权重未改，未增加对外周期。
+
+20万拍对照中，50MHz与100kHz参数各288完整帧，149/139次接受/拒绝加速度、64个全24位极值/随机模长向量、忙时输入和复位通过；逐拍比较全部外部输出、状态、sqrt_start及有效sqrt输入。测试标定样本数缩为4加速激励，生产仍原值。见[有限RTL对照](evidence/g2_20261022/fusion_pipeline_equivalence.json)。最初carry-save移位写法RTL通过，但完整综合在推断阶段SP00019内部错误，无资源/时序值；见[失败记录](evidence/g2_20261022/directed_fusion_carrysave_failed.json)，构建目录保留。显式扩展加法版重新RTL通过后进入联合综合，不能沿用旧写法的硬件结论。
+
+`prepare_pose_predecode.py`只在真实总线寄存器分支捕获POSE_COMMIT译码，替换原两处消费者；原寄存器文件保留。与未改的真实寄存器文件输出在实际总线状态机内逐拍比较3091次、83个提交脉冲、541事务、2种复位通过，含不对齐别名、零数据写、读操作、特殊窗口和随机地址。见[脉冲对照](evidence/g2_20261022/pose_predecode_equivalence.json)。不插入点流延迟，也不改捕获epoch/帧归属。
+
+组合候选`directed_fusion_pose_coverage_effective50`已启动SYN，标志为directed＋lease＋observation/units/static-bounds/fusion-norm/pose-predecode，split1。综合、实际PNR与G2整体是否改善仍待报告；不将有限等价或综合估计写成实板通过。

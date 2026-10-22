@@ -25,12 +25,17 @@ def main():
     ap.add_argument('--observation-pipeline',action='store_true',help='cycle-exact wheel numerator timing candidate; original source remains intact')
     ap.add_argument('--command-units-pipeline',action='store_true',help='exact units/sequence adapter pipeline before lease guard')
     ap.add_argument('--coverage-static-bounds',action='store_true',help='cycle-exact precomputation of frame-static coverage bounds')
+    ap.add_argument('--fusion-norm-pipeline',action='store_true',help='cycle-exact signed-square / sqrt-input register rebalance')
+    ap.add_argument('--pose-predecode',action='store_true',help='cycle-exact POSE_COMMIT bus capture predecode')
     ap.add_argument('--wide-split',type=int,choices=[0,1],default=0,help='explicit PNR wide-RAM split; 1 duplicates every 32/36-bit block')
     a=ap.parse_args()
     if a.command_units_pipeline and not a.command_lease:ap.error('--command-units-pipeline requires --command-lease')
     out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
     nav=out/'nav';nav.mkdir()
     shutil.copytree(ROOT/'rtl',nav/'rtl')
+    if a.pose_predecode:
+        from prepare_pose_predecode import generate
+        generate(nav/'rtl/top/nav_subsystem.v')
     if a.coverage_static_bounds:
         from prepare_coverage_timing import generate
         generate(nav/'rtl/map/support_coverage.v')
@@ -74,6 +79,11 @@ def main():
         spec=importlib.util.spec_from_file_location('observation_pipeline',ROOT/'control/tools/g2_observation_pipeline.py')
         generator=importlib.util.module_from_spec(spec);spec.loader.exec_module(generator)
         generator.generate(out/'control/rl_observation_v5.v')
+    if a.fusion_norm_pipeline:
+        import importlib.util
+        spec=importlib.util.spec_from_file_location('fusion_pipeline',ROOT/'control/tools/g2_fusion_pipeline.py')
+        generator=importlib.util.module_from_spec(spec);spec.loader.exec_module(generator)
+        generator.generate(out/'control/imu_fusion.v')
     shutil.copyfile(ROOT/'integration/g2/command_lease_guard.v',out/'command_lease_guard.v')
     shutil.copyfile(ROOT/'integration/g2/nav_command_units.v',out/'nav_command_units.v')
     files=[nav/x for x in ALL_RTL+SOC+['rtl/net/rgmii_mac100.v']]
@@ -102,6 +112,8 @@ def main():
     manifest=dict(nav_variant=a.nav,coverage_enabled=a.nav=='coverage',stage=a.stage,packing=a.packing,command_lease=a.command_lease,
         observation_pipeline=a.observation_pipeline,command_units_pipeline=a.command_units_pipeline,
         coverage_static_bounds=a.coverage_static_bounds,wide_split=a.wide_split,
+        fusion_norm_pipeline=a.fusion_norm_pipeline,
+        pose_predecode=a.pose_predecode,
         device='GW5AT-LV138PG484AC1/I0',device_version='C',clock_core_mhz=50,synthesis_frequency_hint_mhz=50,
         control_commit='6443f5678b4de222c22cbf331b8396f7c8df6a41',control_source=str(control),control_adapter='control_nav_adapter.patch',control_weights_changed=False,
         source_files=[str(p) for p in files],programmed=False,
@@ -114,6 +126,10 @@ def main():
     errors=[line for line in text.splitlines() if 'ERROR' in line]
     print('\n'.join(errors[:15]) if errors else text[-1000:])
     print('Gowin process return code: '+str(result.returncode))
+    if a.stage=='all':
+        from collect_pnr_result import finalize_gate
+        gate=finalize_gate(out)
+        return result.returncode or bool(errors) or not gate
     return result.returncode or bool(errors)
 
 

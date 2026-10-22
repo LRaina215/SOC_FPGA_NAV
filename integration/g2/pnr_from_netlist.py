@@ -9,6 +9,7 @@ from pathlib import Path
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('source',type=Path);ap.add_argument('--wide-split',type=int,choices=[0,1],required=True)
     ap.add_argument('--replicate-resources',type=int,choices=[0,1],help='otherwise preserve source setting; no RTL or policy change')
+    ap.add_argument('--place-option',type=int,choices=[0,1,2,3,4],default=1,help='Gowin placement mode; 1 routability, 2 timing priority')
     ap.add_argument('--out',type=Path,required=True);a=ap.parse_args();src=a.source.resolve();out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
     for old,new in [('impl/gwsynthesis/g2_top.vg','g2_top.vg'),('g2.cst','g2.cst'),('g2.sdc','g2.sdc')]:
         shutil.copyfile(src/old,out/new)
@@ -33,19 +34,22 @@ def main():
         'set_option -replicate_resources '+str(replicate),
         'set_option -convert_sdp32_36_to_sdp16_18 '+str(a.wide_split),
         'set_option -gen_verilog_sim_netlist 1',
-        'set_option -place_option 1','set_option -route_option 0']
+        'set_option -place_option '+str(a.place_option),'set_option -route_option 0']
     tcl += ['set_option -'+x+' 1' for x in ['use_sspi_as_gpio','use_mspi_as_gpio','use_ready_as_gpio','use_done_as_gpio','use_i2c_as_gpio','use_cpu_as_gpio']]
     from preflight import validate
     tool=Path(r'D:\Gowin2\Gowin_V1.9.12.04_x64\IDE\bin\gw_sh.exe')
-    effective=validate(tool,out,tcl,frequency,a.wide_split,{'replicate_resources':replicate})
+    effective=validate(tool,out,tcl,frequency,a.wide_split,{'replicate_resources':replicate,'place_option':a.place_option})
     tcl += ['run pnr'];(out/'run.tcl').write_text('\n'.join(tcl)+'\n',encoding='utf-8',newline='\n')
     (out/'manifest.json').write_text(json.dumps(dict(source=str(src),frozen_netlist=True,wide_split=a.wide_split,
-        original_pnr_command=cmd,replicate_resources=replicate,effective_options=effective,
+        original_pnr_command=cmd,replicate_resources=replicate,place_option=a.place_option,effective_options=effective,
         source_manifest=json.loads((src/'manifest.json').read_text()),programmed=False),indent=2))
     with (out/'gw_sh.log').open('w',encoding='utf-8') as log:
         r=subprocess.run([str(tool),'run.tcl'],cwd=out,stdout=log,stderr=subprocess.STDOUT)
     s=(out/'gw_sh.log').read_text(encoding='utf-8',errors='replace')
-    print(s[-4000:]);return r.returncode or ('ERROR' in s)
+    print(s[-4000:])
+    from collect_pnr_result import finalize_gate
+    gate=finalize_gate(out)
+    return r.returncode or ('ERROR' in s) or not gate
 
 
 if __name__=='__main__':raise SystemExit(main())
