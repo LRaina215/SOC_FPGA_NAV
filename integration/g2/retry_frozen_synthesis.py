@@ -1,4 +1,4 @@
-"""One-shot serial retry of frozen SYN sources after an owned PNR finishes.
+"""One bounded SYN from frozen inputs, optionally after an owned PNR finishes.
 
 Copies source inputs into a new directory before waiting. Never programs,
 changes running builds, reruns physics or automatically launches another PNR.
@@ -29,16 +29,34 @@ def memory_status():
 
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('source',type=Path)
-    ap.add_argument('--out',type=Path,required=True);ap.add_argument('--wait-pid',type=int,required=True)
+    ap.add_argument('--out',type=Path,required=True)
+    launch=ap.add_mutually_exclusive_group(required=True)
+    launch.add_argument('--wait-pid',type=int)
+    launch.add_argument('--start-now',action='store_true',help='explicit serial launch after the prior tool has exited')
+    ap.add_argument('--gyro-sum-exact-widths',action='store_true',help='derive only the already-validated17-bit gyro sum from frozen RTL')
     a=ap.parse_args();src=a.source.resolve();out=a.out.resolve()
-    assert a.wait_pid>0 and out!=src and src not in out.parents and out not in src.parents
+    assert (a.wait_pid is None or a.wait_pid>0) and out!=src and src not in out.parents and out not in src.parents
     manifest=json.loads((src/'manifest.json').read_text(encoding='utf-8'))
     assert manifest['stage']=='syn' and not manifest['control_weights_changed'] and not manifest['programmed']
+    assert not a.gyro_sum_exact_widths or not manifest.get('gyro_sum_exact_widths',False),'source already contains this candidate'
     original=(src/'run.tcl').read_text(encoding='utf-8')
     assert [s.strip()for s in original.splitlines()if s.strip().startswith('run ')]==['run syn']
     # Preserve the cancelled directory, including partial implementation files.
     shutil.copytree(src,out,ignore=shutil.ignore_patterns('impl','gw_sh.log','preflight.log',
-        'resource_cancellation.json','__pycache__','job.json'))
+        'resource_cancellation.json','__pycache__','job.json','synthesis_summary.json',
+        'memory_inventory.json','tool_runtime.json'))
+    modified=[]
+    if a.gyro_sum_exact_widths:
+        import importlib.util
+        generator_path=Path(__file__).resolve().parents[2]/'control/tools/g2_gyro_sum_widths.py'
+        spec=importlib.util.spec_from_file_location('gyro_widths',generator_path)
+        generator=importlib.util.module_from_spec(spec);spec.loader.exec_module(generator)
+        generator.generate(out/'control/imu_fusion.v')
+        for name in manifest['source_files']:
+            previous=Path(name);relative=previous.relative_to(src)
+            if previous.read_bytes()!=(out/relative).read_bytes():modified.append(relative.as_posix())
+        assert modified==['control/imu_fusion.v'],modified
+        manifest['gyro_sum_exact_widths']=True
     def rewrite(value):
         if isinstance(value,str):return value.replace(src.as_posix(),out.as_posix()).replace(str(src),str(out))
         if isinstance(value,list):return [rewrite(v)for v in value]
@@ -49,7 +67,8 @@ def main():
     settings=[rewrite(line)for line in original.splitlines()if line.strip()not in ('run syn','exit')]
     state=dict(source=str(src),build=str(out),wait_pid=a.wait_pid,programmed=False,
         source_frozen_before_wait=True,automatic_pnr=False,
-        scope='one frozen SYN retry only; SYN completion is not G2/vehicle acceptance')
+        modified_rtl_inputs=modified,
+        scope='one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance')
     def status(phase,**extra):
         state.update(phase=phase,updated_at=datetime.now().astimezone().isoformat(),**extra)
         (out/'job.json').write_text(json.dumps(state,indent=2),encoding='utf-8')
@@ -60,20 +79,21 @@ def main():
     (out/'run.tcl').write_text('\n'.join(settings+['run syn','exit'])+'\n',encoding='utf-8')
     manifest['effective_options']=effective
     (out/'manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
-    kernel=ctypes.WinDLL('kernel32',use_last_error=True)
-    kernel.OpenProcess.argtypes=[ctypes.c_uint32,ctypes.c_int,ctypes.c_uint32];kernel.OpenProcess.restype=ctypes.c_void_p
-    kernel.WaitForSingleObject.argtypes=[ctypes.c_void_p,ctypes.c_uint32]
-    kernel.CloseHandle.argtypes=[ctypes.c_void_p]
-    handle=kernel.OpenProcess(0x100000,False,a.wait_pid)
-    if not handle:
-        status('wait_process_unavailable',windows_error=ctypes.get_last_error());return 1
-    status('waiting_for_prior_pnr')
-    try:
-        while True:
-            result=kernel.WaitForSingleObject(handle,2000)
-            if result==0:break
-            if result!=0x102:raise ctypes.WinError(ctypes.get_last_error())
-    finally:kernel.CloseHandle(handle)
+    if a.wait_pid is not None:
+        kernel=ctypes.WinDLL('kernel32',use_last_error=True)
+        kernel.OpenProcess.argtypes=[ctypes.c_uint32,ctypes.c_int,ctypes.c_uint32];kernel.OpenProcess.restype=ctypes.c_void_p
+        kernel.WaitForSingleObject.argtypes=[ctypes.c_void_p,ctypes.c_uint32]
+        kernel.CloseHandle.argtypes=[ctypes.c_void_p]
+        handle=kernel.OpenProcess(0x100000,False,a.wait_pid)
+        if not handle:
+            status('wait_process_unavailable',windows_error=ctypes.get_last_error());return 1
+        status('waiting_for_prior_pnr')
+        try:
+            while True:
+                result=kernel.WaitForSingleObject(handle,2000)
+                if result==0:break
+                if result!=0x102:raise ctypes.WinError(ctypes.get_last_error())
+        finally:kernel.CloseHandle(handle)
     status('waiting_for_memory',minimum_start_free_bytes=2*1024**3,minimum_start_available_commit_bytes=4*1024**3)
     for _ in range(24):
         memory=memory_status()
@@ -86,6 +106,7 @@ def main():
     with (out/'gw_sh.log').open('w',encoding='utf-8') as log:
         process=subprocess.Popen([str(tool),'run.tcl'],cwd=out,stdout=log,stderr=subprocess.STDOUT,
             creationflags=subprocess.CREATE_NO_WINDOW)
+        state.update(tool_pid=process.pid,synthesis_started_at=datetime.now().astimezone().isoformat())
         low=0;started=time.monotonic();last_heartbeat=0
         while process.poll()is None:
             memory=memory_status()

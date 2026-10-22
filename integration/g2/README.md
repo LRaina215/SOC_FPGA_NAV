@@ -42,6 +42,8 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 `retry_frozen_synthesis.py <cancelled-SYN-build> --wait-pid <owned-PNR-wrapper-pid> --out <new-dir>`为单次串行重试：先复制冻结输入、重定位并回读选项，再等待已有构建退出。启动需物理空闲≥2GiB/可用提交余量≥4GiB；运行中连续提交余量<512MiB，或物理<256MiB且提交<1GiB才取消自己的子进程，SYN总预算40分钟。旧仅物理1GiB策略会过早中止，取消不等于OOM。`job.json`保存阶段、内存/耗时心跳；成功后保存SYN摘要和存储清单。它不读取之后的源码、不追加PNR、不编程，旧目录保留。
 
+前一工具已结束时可显式使用互斥的`--start-now`；`--gyro-sum-exact-widths`仅在冻结输入副本上派生已验证的17位求和，校验来源尚未含该候选、所有RTL输入中仅`control/imu_fusion.v`改变，并写入manifest/job。旧SYN结果/内存清单不复制成新结果；50MHz预检、内存/40分钟保护、原固件和权重保持。当前309块SYN已经完成，新的权重＋gyro17综合在跑，进度仍以总计划为准。
+
 当前结论与原始路径见`docs/4_design/g2_joint_resources_20261022.md`，唯一当前状态表在`docs/1_plan/system_integration_plan_20261021.md`。
 
 `collect_pnr_result.py`仅读取实际PNR报告，保留小数DSP用量；布线失败时记录未布通网络和缺失的时序，不用SYN频率填充Fmax。例：`python integration/g2/collect_pnr_result.py <build> --out <result.json>`。
