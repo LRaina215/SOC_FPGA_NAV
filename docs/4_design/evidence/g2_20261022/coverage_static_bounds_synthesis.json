@@ -1,0 +1,64 @@
+{
+  "runs": [
+    {
+      "variant": "original",
+      "build": "F:\\nav_integration_g2_20261022\\coverage_static_bounds_synthesis\\original",
+      "effective_options": {
+        "global_freq_mhz": 50.0,
+        "wide_split": 0,
+        "effective_options": "F:\\nav_integration_g2_20261022\\coverage_static_bounds_synthesis\\original\\effective_options.tcl"
+      },
+      "synthesis_resources": {
+        "name": "support_coverage",
+        "Register": "433",
+        "Alu": "228",
+        "Lut": "455",
+        "T_Register": "436(433)",
+        "T_Alu": "228(228)",
+        "T_Lut": "738(455)",
+        "T_Bsram": "8(0)"
+      },
+      "estimated_fmax_mhz": 54.836,
+      "first_path": {
+        "Slack": "1.764",
+        "Data Arrival Time": "18.532",
+        "Data Required Time": "20.296",
+        "From": "cx_4_s1",
+        "To": "u_ram/g_banked.g_bank[7].mem_g_banked.g_bank[7].mem_0_0_s",
+        "Launch Clk": "clk[R]",
+        "Latch Clk": "clk[R]"
+      }
+    },
+    {
+      "variant": "static_bounds",
+      "build": "F:\\nav_integration_g2_20261022\\coverage_static_bounds_synthesis\\static_bounds",
+      "effective_options": {
+        "global_freq_mhz": 50.0,
+        "wide_split": 0,
+        "effective_options": "F:\\nav_integration_g2_20261022\\coverage_static_bounds_synthesis\\static_bounds\\effective_options.tcl"
+      },
+      "synthesis_resources": {
+        "name": "support_coverage",
+        "Register": "543",
+        "Alu": "502",
+        "Lut": "234",
+        "T_Register": "546(543)",
+        "T_Alu": "502(502)",
+        "T_Lut": "301(234)",
+        "T_Bsram": "8(0)"
+      },
+      "estimated_fmax_mhz": 112.12,
+      "first_path": {
+        "Slack": "11.081",
+        "Data Arrival Time": "9.233",
+        "Data Required Time": "20.314",
+        "From": "u_ram/g_banked.g_bank[6].mem_g_banked.g_bank[6].mem_0_0_s",
+        "To": "cpu_q_4_s2",
+        "Launch Clk": "clk[R]",
+        "Latch Clk": "clk[R]"
+      }
+    }
+  ],
+  "programmed": false,
+  "scope": "isolated module synthesis estimates, not joint PNR, vehicle throughput or deployment acceptance"
+}

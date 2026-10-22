@@ -24,12 +24,16 @@ def main():
     ap.add_argument('--command-lease',action='store_true',help='isolated command-age/stop gate, not accepted vehicle behavior')
     ap.add_argument('--observation-pipeline',action='store_true',help='cycle-exact wheel numerator timing candidate; original source remains intact')
     ap.add_argument('--command-units-pipeline',action='store_true',help='exact units/sequence adapter pipeline before lease guard')
+    ap.add_argument('--coverage-static-bounds',action='store_true',help='cycle-exact precomputation of frame-static coverage bounds')
     ap.add_argument('--wide-split',type=int,choices=[0,1],default=0,help='explicit PNR wide-RAM split; 1 duplicates every 32/36-bit block')
     a=ap.parse_args()
     if a.command_units_pipeline and not a.command_lease:ap.error('--command-units-pipeline requires --command-lease')
     out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
     nav=out/'nav';nav.mkdir()
     shutil.copytree(ROOT/'rtl',nav/'rtl')
+    if a.coverage_static_bounds:
+        from prepare_coverage_timing import generate
+        generate(nav/'rtl/map/support_coverage.v')
     if a.packing in ('nav','both'):
         shutil.copyfile(ROOT/'integration/g2/nav_ram_sdp_banked.v',nav/'rtl/common/nav_ram_sdp.v')
     elif a.packing=='ssram':
@@ -96,7 +100,8 @@ def main():
     tcl += ['run '+a.stage]
     (out/'run.tcl').write_text('\n'.join(tcl)+'\n',encoding='utf-8')
     manifest=dict(nav_variant=a.nav,coverage_enabled=a.nav=='coverage',stage=a.stage,packing=a.packing,command_lease=a.command_lease,
-        observation_pipeline=a.observation_pipeline,command_units_pipeline=a.command_units_pipeline,wide_split=a.wide_split,
+        observation_pipeline=a.observation_pipeline,command_units_pipeline=a.command_units_pipeline,
+        coverage_static_bounds=a.coverage_static_bounds,wide_split=a.wide_split,
         device='GW5AT-LV138PG484AC1/I0',device_version='C',clock_core_mhz=50,synthesis_frequency_hint_mhz=50,
         control_commit='6443f5678b4de222c22cbf331b8396f7c8df6a41',control_source=str(control),control_adapter='control_nav_adapter.patch',control_weights_changed=False,
         source_files=[str(p) for p in files],programmed=False,
