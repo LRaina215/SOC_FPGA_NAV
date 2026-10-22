@@ -135,8 +135,8 @@ tools 存放测试、烧录和调试工具，包括验证脚本、flash_gowin.py
 | 红外接收头 | NEC输入，空闲高电平 | 板载 | A21 | IRIN |
 | 时钟 | 50MHz | 板载 | W19 | clk |
 | 复位按键 | 低电平复位 | 板载 | D21 | reset_n |
-| USB转串口 | 模块TXD→FPGA RXD | 39 | A15 | UART_RXD（预留接收，暂不解析） |
-| USB转串口 | 模块RXD←FPGA TXD | 40 | A16 | UART_TXD（115200，50Hz遥测） |
+| USB转串口 | 模块TXD→FPGA RXD | 39 | A15 | UART_RXD（CRC车体速度/转向帧，详见7.3） |
+| USB转串口 | 模块RXD←FPGA TXD | 40 | A16 | UART_TXD（当前源码230400，100Hz V2遥测；旧位流参数另查） |
 
 # 五、.mem文件内容和机器人物理参数
 

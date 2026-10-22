@@ -1,0 +1,112 @@
+{
+  "recorded_at": "2026-10-23T04:18:42.388528+08:00",
+  "user_confirmed": {
+    "vehicle_power": "off",
+    "control_pins": "unchanged",
+    "necessary_real_fpga_tests": "authorized"
+  },
+  "first_usb_snapshot": {
+    "ft232h": "COM13",
+    "ch9102": null,
+    "cable_location": 36
+  },
+  "later_usb_snapshot": {
+    "ft232h": "COM14",
+    "ch9102": "COM11",
+    "cable_location": 579
+  },
+  "jtag_scan": {
+    "devices": 1,
+    "id": "0x0011081B",
+    "vendor_candidates": [
+      "GW5AT-75B",
+      "GW5AT-75C",
+      "GW5A-138B",
+      "GW5A-138C",
+      "GW5AT-138B",
+      "GW5AT-138C"
+    ],
+    "specific_device_revision_verified": false
+  },
+  "read_usercode": {
+    "value": "0x000099A6",
+    "operation": 73,
+    "selected_device_argument": "GW5AT-138C",
+    "selection_is_not_independent_device_identification": true,
+    "matches_repository_fs_header": "control/fpga/impl/pnr/fpga.fs",
+    "complete_image_identity_proven": false
+  },
+  "documented_control_pins": {
+    "BMI088_SDA": "P11-7/F18",
+    "BMI088_SCL": "P11-8/E18",
+    "control_tx": "P11-40/A16",
+    "control_rx": "P11-39/A15",
+    "board_usb_uart_rx_tx": "L21/M21"
+  },
+  "document_sources": [
+    "control/README.md sections4,6.3,7.2",
+    "control/fpga/md/BMI088_OLED.md",
+    "control/fpga/src/main.cst",
+    "control/fpga/src/main.v",
+    "docs/2_interface/pinout.md"
+  ],
+  "existing_image_com11_passive": [
+    {
+      "port": "COM11",
+      "baud": 230400,
+      "tx_bytes": 0,
+      "requested_dtr": false,
+      "requested_rts": false,
+      "rx_bytes": 0,
+      "valid_control_frames": 0,
+      "crc_errors": 0,
+      "elapsed_s": 4.061999999976251,
+      "first_bytes_hex": ""
+    },
+    {
+      "port": "COM11",
+      "baud": 115200,
+      "tx_bytes": 0,
+      "requested_dtr": false,
+      "requested_rts": false,
+      "rx_bytes": 0,
+      "valid_control_frames": 0,
+      "crc_errors": 0,
+      "elapsed_s": 4.078000000037719,
+      "first_bytes_hex": ""
+    },
+    {
+      "port": "COM11",
+      "baud": 921600,
+      "tx_bytes": 0,
+      "requested_dtr": false,
+      "requested_rts": false,
+      "rx_bytes": 0,
+      "valid_control_frames": 0,
+      "crc_errors": 0,
+      "elapsed_s": 4.061999999976251,
+      "first_bytes_hex": ""
+    }
+  ],
+  "existing_image_nav_read_probe": {
+    "port": "COM11",
+    "baud": 921600,
+    "operation": "read SYS_ID 0x0000 only",
+    "tx_hex": "520000",
+    "register_writes": 0,
+    "requested_dtr": false,
+    "requested_rts": false,
+    "rx_hex": "",
+    "nav_sys_id": null,
+    "nav_bridge_confirmed": false
+  },
+  "readback": {
+    "path": "F:/nav_hardware_20261023/before_probe_sram_readback.txt",
+    "characters": 33114208,
+    "zero_bits": 0,
+    "one_bits": 33092336,
+    "other_characters": [],
+    "replayable_image_confirmed": false
+  },
+  "scope": "connection/interface evidence only; no BMI088, physical stop, navigation or G2 acceptance"
+}
