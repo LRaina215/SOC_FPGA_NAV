@@ -1,0 +1,76 @@
+{
+  "confirmed_source_fact": true,
+  "circumference_um": 204204,
+  "encoder_cpr": 1320,
+  "window_ms": 10,
+  "source_control": "control/fpga/src/motor520_speed.v",
+  "source_adapter": "integration/g2/control_nav_adapter.patch",
+  "examples": [
+    {
+      "window_ms": 10,
+      "current_both_wheels_feedback_mmps": -50,
+      "error_mmps": -3.59,
+      "left_raw_delta": -3,
+      "right_raw_delta": 3,
+      "forward_delta_per_wheel_after_direction_sign": -3,
+      "count_preserving_nominal_mmps": -46.41
+    },
+    {
+      "window_ms": 10,
+      "current_both_wheels_feedback_mmps": -30,
+      "error_mmps": 0.94,
+      "left_raw_delta": -2,
+      "right_raw_delta": 2,
+      "forward_delta_per_wheel_after_direction_sign": -2,
+      "count_preserving_nominal_mmps": -30.94
+    },
+    {
+      "window_ms": 10,
+      "current_both_wheels_feedback_mmps": -20,
+      "error_mmps": -4.53,
+      "left_raw_delta": -1,
+      "right_raw_delta": 1,
+      "forward_delta_per_wheel_after_direction_sign": -1,
+      "count_preserving_nominal_mmps": -15.47
+    },
+    {
+      "window_ms": 10,
+      "current_both_wheels_feedback_mmps": 0,
+      "error_mmps": 0.0,
+      "left_raw_delta": 0,
+      "right_raw_delta": 0,
+      "forward_delta_per_wheel_after_direction_sign": 0,
+      "count_preserving_nominal_mmps": 0.0
+    },
+    {
+      "window_ms": 10,
+      "current_both_wheels_feedback_mmps": 20,
+      "error_mmps": 4.53,
+      "left_raw_delta": 1,
+      "right_raw_delta": -1,
+      "forward_delta_per_wheel_after_direction_sign": 1,
+      "count_preserving_nominal_mmps": 15.47
+    },
+    {
+      "window_ms": 10,
+      "current_both_wheels_feedback_mmps": 30,
+      "error_mmps": -0.94,
+      "left_raw_delta": 2,
+      "right_raw_delta": -2,
+      "forward_delta_per_wheel_after_direction_sign": 2,
+      "count_preserving_nominal_mmps": 30.94
+    },
+    {
+      "window_ms": 10,
+      "current_both_wheels_feedback_mmps": 50,
+      "error_mmps": 3.59,
+      "left_raw_delta": 3,
+      "right_raw_delta": -3,
+      "forward_delta_per_wheel_after_direction_sign": 3,
+      "count_preserving_nominal_mmps": 46.41
+    }
+  ],
+  "low_speed_one_count_relative_bias": 0.29282482223658696,
+  "scope": "deterministic source arithmetic counterexample; not physical wheel calibration and not an explanation of native-simulation drift",
+  "required_followup": "separate count-preserving NAV/stop observer, retain original PID/RL inputs, preserve 5mmps dwell threshold, validate fractional accumulation/range/age and remeasure joint build"
+}
