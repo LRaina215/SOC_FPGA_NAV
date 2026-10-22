@@ -25,7 +25,7 @@ def main():
     ap.add_argument('--observation-pipeline',action='store_true',help='cycle-exact wheel numerator timing candidate; original source remains intact')
     ap.add_argument('--command-units-pipeline',action='store_true',help='exact units/sequence adapter pipeline before lease guard')
     ap.add_argument('--coverage-static-bounds',action='store_true',help='cycle-exact precomputation of frame-static coverage bounds')
-    ap.add_argument('--fusion-norm-pipeline',action='store_true',help='cycle-exact signed-square / sqrt-input register rebalance')
+    ap.add_argument('--fusion-norm-pipeline',action='store_true',help='cycle-exact original-square / sqrt-input register rebalance')
     ap.add_argument('--pose-predecode',action='store_true',help='cycle-exact POSE_COMMIT bus capture predecode')
     ap.add_argument('--wide-split',type=int,choices=[0,1],default=0,help='explicit PNR wide-RAM split; 1 duplicates every 32/36-bit block')
     a=ap.parse_args()

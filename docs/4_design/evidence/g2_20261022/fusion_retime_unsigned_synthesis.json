@@ -1,0 +1,78 @@
+{
+  "runs": [
+    {
+      "variant": "original",
+      "build": "F:\\nav_integration_g2_20261022\\fusion_retime_unsigned_synthesis\\original",
+      "effective_options": {
+        "global_freq_mhz": 50.0,
+        "wide_split": 0,
+        "effective_options": "F:\\nav_integration_g2_20261022\\fusion_retime_unsigned_synthesis\\original\\effective_options.tcl",
+        "extra_options": {}
+      },
+      "tool_exit": 0,
+      "errors": [],
+      "synthesis_succeeded": true,
+      "synthesis_resources": {
+        "name": "imu_fusion",
+        "Register": "832",
+        "Alu": "881",
+        "Lut": "738",
+        "MULTALU27X18": "12",
+        "MULT27X36": "18",
+        "T_Register": "1883(832)",
+        "T_Alu": "1195(881)",
+        "T_Lut": "2495(738)",
+        "T_MULTALU27X18": "12(12)",
+        "T_MULT27X36": "18(18)"
+      },
+      "estimated_fmax_mhz": 81.473,
+      "first_path": {
+        "Slack": "7.726",
+        "Data Arrival Time": "12.588",
+        "Data Required Time": "20.314",
+        "From": "egy_3_s0",
+        "To": "sqrt_value_48_s0",
+        "Launch Clk": "clk[R]",
+        "Latch Clk": "clk[R]"
+      }
+    },
+    {
+      "variant": "retimed",
+      "build": "F:\\nav_integration_g2_20261022\\fusion_retime_unsigned_synthesis\\retimed",
+      "effective_options": {
+        "global_freq_mhz": 50.0,
+        "wide_split": 0,
+        "effective_options": "F:\\nav_integration_g2_20261022\\fusion_retime_unsigned_synthesis\\retimed\\effective_options.tcl",
+        "extra_options": {}
+      },
+      "tool_exit": 0,
+      "errors": [],
+      "synthesis_succeeded": true,
+      "synthesis_resources": {
+        "name": "imu_fusion",
+        "Register": "960",
+        "Alu": "785",
+        "Lut": "869",
+        "MULTALU27X18": "12",
+        "MULT27X36": "18",
+        "T_Register": "2011(960)",
+        "T_Alu": "1099(785)",
+        "T_Lut": "2632(869)",
+        "T_MULTALU27X18": "12(12)",
+        "T_MULT27X36": "18(18)"
+      },
+      "estimated_fmax_mhz": 105.162,
+      "first_path": {
+        "Slack": "10.491",
+        "Data Arrival Time": "9.823",
+        "Data Required Time": "20.314",
+        "From": "egz_3_s0",
+        "To": "norm_square_z_47_s0",
+        "Launch Clk": "clk[R]",
+        "Latch Clk": "clk[R]"
+      }
+    }
+  ],
+  "programmed": false,
+  "scope": "isolated fusion synthesis diagnosis/estimates; not joint PNR or vehicle acceptance"
+}

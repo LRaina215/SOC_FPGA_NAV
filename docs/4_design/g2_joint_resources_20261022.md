@@ -157,10 +157,31 @@ AX独立导航334/340与综合估计309均不能当整车数值；核心时序�
 
 ### 控制模长与位姿译码的逐拍候选
 
-`control/tools/g2_fusion_pipeline.py`只生成构建副本：原状态4/9寄存三个有符号平方，下一拍由原sqrt引擎采样精确和。`x*x=abs(x)*abs(x)`包括24位最小负数；平方48位、求和显式扩展49/50位再零扩展64位，避免截断。状态、启动、滤波/标定参数、原4500策略与权重未改，未增加对外周期。
+`control/tools/g2_fusion_pipeline.py`只生成构建副本：原状态4/9寄存三个平方，下一拍由原sqrt引擎采样精确和。当前使用原绝对值/平方表达式及64位范围，最大和3×2^46，不改滤波/标定参数、状态/启动、原4500策略、权重及外部输出周期。
 
-20万拍对照中，50MHz与100kHz参数各288完整帧，149/139次接受/拒绝加速度、64个全24位极值/随机模长向量、忙时输入和复位通过；逐拍比较全部外部输出、状态、sqrt_start及有效sqrt输入。测试标定样本数缩为4加速激励，生产仍原值。见[有限RTL对照](evidence/g2_20261022/fusion_pipeline_equivalence.json)。最初carry-save移位写法RTL通过，但完整综合在推断阶段SP00019内部错误，无资源/时序值；见[失败记录](evidence/g2_20261022/directed_fusion_carrysave_failed.json)，构建目录保留。显式扩展加法版重新RTL通过后进入联合综合，不能沿用旧写法的硬件结论。
+20万拍对照中，50MHz与100kHz参数各288完整帧，149/139次接受/拒绝加速度、64个全24位极值/随机模长向量、忙时输入和复位通过；逐拍比较全部外部输出、状态、sqrt_start及sqrt输入。测试标定样本数缩为4加速激励，生产仍原值。当前原表达式版复验见[有限RTL对照](evidence/g2_20261022/fusion_pipeline_equivalence.json)，冻结源码保存在其中标出的独立目录。
+
+前两次有符号平方写法数学等价且RTL通过，但Gowin完整综合均在推断阶段SP00019：carry-save版报n7972、显式扩展加法版报n7429的10CSHIFT1无srcPin。第二次已没有carry-save，因此不能再将原因归结为该移位表达式；工具内部具体原因尚未证实。两次均无资源/时序数，见[第一次失败](evidence/g2_20261022/directed_fusion_carrysave_failed.json)、[第二次失败](evidence/g2_20261022/directed_fusion_signed_failed.json)，完整构建和源码全部保留。当前回退到原绝对值平方，仅保留寄存边界调整，先用`measure_fusion_timing.py`做原/新模块综合隔离，再决定是否重建联合工程。
 
 `prepare_pose_predecode.py`只在真实总线寄存器分支捕获POSE_COMMIT译码，替换原两处消费者；原寄存器文件保留。与未改的真实寄存器文件输出在实际总线状态机内逐拍比较3091次、83个提交脉冲、541事务、2种复位通过，含不对齐别名、零数据写、读操作、特殊窗口和随机地址。见[脉冲对照](evidence/g2_20261022/pose_predecode_equivalence.json)。不插入点流延迟，也不改捕获epoch/帧归属。
 
-组合候选`directed_fusion_pose_coverage_effective50`已启动SYN，标志为directed＋lease＋observation/units/static-bounds/fusion-norm/pose-predecode，split1。综合、实际PNR与G2整体是否改善仍待报告；不将有限等价或综合估计写成实板通过。
+组合候选`directed_fusion_pose_coverage_effective50`标志为directed＋lease＋observation/units/static-bounds/fusion-norm/pose-predecode，split1；已因上述第二次SP00019失败，未得到任何资源/时序数，不能单独据此判断位姿提前译码是否改善联合实现。
+
+### 跨域约束审阅边界（未改SDC）
+
+源码确认当前联合顶层：RX时钟直接来自外部rgmii_rxc，TX及未启用SFP的主机口使用clk50；RX复位经`nav_rst_sync`异步置位/两级同步释放。雷达RX FIFO两方向均是源域寄存Gray指针、目的域两级同步、第二级后解码；本次8条负hold均在`wp_g→wp_g_r1`，不是同步器第一级到第二级。另有MAC的`rdiv[5]→rsync[0]`三级链和`rx_neg→neg_s[0]`两级链，需要与FIFO一起列入CDC审查；不能仅处理报告中最坏的8条。
+
+安装版`SUG940-2.0.5E`第37页给出例外优先级：false_path和clock_groups高于max/min_delay；第69–70页支持定向`-hold`例外及max/min_delay，没有列出`-datapath_only`或bus-skew命令。全文提取保存在`F:/nav_integration_g2_20261022/SUG940_local.txt`。因此后续应逐组定位第一同步级，保留Gray总线相对源周期的路由延迟/偏斜要求，保留第一级到第二级的正常分析，再检查实际命中对象和例外报告。不能照搬其他厂商命令，也不能用全时钟组屏蔽后误称Gray路由受max_delay约束。当前SDC仍只有两个create_clock，未加入任何掩盖现有失败的例外；这次只完成源码/手册核对，未完成CDC物理签核。
+
+### 模长候选恢复原平方表达式后的模块测量
+
+`fusion_retime_unsigned_synthesis`原/新模块综合均成功，避免将多模块联合综合内部崩溃继续当作算法数值问题。当前生成器保留原`abs16/abs24`平方表达式与64位上下文，只改变平方和的寄存边界；最新20万拍逐拍对照通过，冻结源码见RTL证据路径。
+
+| 单独fusion及其sqrt/recip子模块SYN | 总寄存器 | 总ALU | 总LUT | MULTALU27X18 / MULT27X36 | 估计Fmax | 最坏到达 |
+|---|---:|---:|---:|---|---:|---:|
+| 原版 | 1883 | 1195 | 2495 | 12 / 18 | 81.473MHz | 12.588ns |
+| 原平方寄存调整版 | 2011 | 1099 | 2632 | 12 / 18 | 105.162MHz | 9.823ns |
+
+数字取综合XML的T_*总量，括号中的直属fusion数量另保留在JSON，不混用。器件C、有效提示50MHz、拆分0相同，DSP原语数量保持。新增128个寄存器、增加137个LUT、减少96个ALU，不称无资源代价。见[模块综合](evidence/g2_20261022/fusion_retime_unsigned_synthesis.json)。单模块原估计81MHz而联合实际26MHz说明布线/上下文影响很大，不能用105MHz承诺联合过50MHz。
+
+最新联合SYN目录`directed_fusion_pose_unsigned_coverage_effective50`，相同directed/监管/观测/单位/边界/位姿标志，融合使用最新原表达式版，宽RAM拆分1，正在运行。前两次失败目录保留，不覆盖。

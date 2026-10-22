@@ -22,7 +22,8 @@ def main():
     run('xelab',['-debug','off','-timescale','1ns/1ps','tb_fusion_equivalence','-s','snap'])
     run('xsim',['snap','-runall']);s=(out/'xsim.log').read_text();assert 'TEST PASSED' in s and 'Fatal:' not in s
     m=re.search(r'frames50m=(\d+) frames100k=(\d+) accepted=(\d+) rejected=(\d+) math=(\d+) busy_reset=(\d+)',s)
-    result=dict(pass_=True,frames_50mhz_parameter=int(m[1]),frames_100khz_parameter=int(m[2]),accepted_accel=int(m[3]),rejected_accel=int(m[4]),
+    result=dict(pass_=True,build=str(out),candidate_source=str(out/'fusion_candidate.v'),original_source=str(base/'imu_fusion.v'),
+        frames_50mhz_parameter=int(m[1]),frames_100khz_parameter=int(m[2]),accepted_accel=int(m[3]),rejected_accel=int(m[4]),
         norm_extreme_random_vectors=int(m[5]),busy_resets=int(m[6]),clock_cycles=200000,
         calibration_samples_in_test=4,production_calibration_and_sample_parameters_changed=False,
         external_outputs_state_start_sqrt_input_cycle_exact=True,
