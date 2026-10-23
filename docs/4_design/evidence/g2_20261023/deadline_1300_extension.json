@@ -1,0 +1,139 @@
+{
+  "recorded_at": "2026-10-23T10:57:02.657510+08:00",
+  "user_instruction": "再延长到13:00吧，说不定他真的在努力布线",
+  "extension": {
+    "recorded_at": "2026-10-23T10:52:12.007518+08:00",
+    "deadline": "2026-10-23T13:00:00+08:00",
+    "authorized_reason": "human explicitly extended this same running PNR to today13:00",
+    "original_wrapper_pid": 22696,
+    "original_wrapper_created": 1792719511.9560077,
+    "tool_pid": 68076,
+    "tool_created": 1792719514.837318,
+    "supervisor_pid": 34724,
+    "previous_runtime": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-23T09:38:34.763959+08:00",
+      "max_runtime_s": 5400.0,
+      "max_no_observable_progress_s": 4500.0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 68076,
+      "elapsed_s": 4415.391000000003,
+      "no_observable_progress_s": 3762.2350000000442,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          1038,
+          1792720167692529700
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          592,
+          1792720167692529700
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          2248060,
+          1792720134958639600
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          13028911,
+          1792720135514708000
+        ]
+      ]
+    },
+    "tool_restarted": false,
+    "automatic_programming": false,
+    "scope": "one absolute-deadline extension; CPU/telemetry never count as routing progress",
+    "phase": "supervising_same_tool",
+    "wrapper_suspended": true
+  },
+  "runtime_snapshot": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-23T09:38:34.763959+08:00",
+    "max_runtime_s": 12085.236041,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 68076,
+    "elapsed_s": 4687.971524000168,
+    "no_observable_progress_s": 4034.8155238628387,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        1038,
+        1792720167692529700
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        592,
+        1792720167692529700
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2248060,
+        1792720134958639600
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        13028911,
+        1792720135514708000
+      ]
+    ],
+    "absolute_deadline": "2026-10-23T13:00:00+08:00",
+    "deadline_supervisor_pid": 34724,
+    "runtime_budget_source": "deadline_extension.json; original wrapper suspended until tool exits"
+  },
+  "process_contract": {
+    "passed": true,
+    "cases": [
+      {
+        "case": "natural",
+        "pid_preserved": true,
+        "wrapper_resumed": true,
+        "cancelled": false,
+        "exit": 0
+      },
+      {
+        "case": "deadline",
+        "pid_preserved": true,
+        "wrapper_resumed": true,
+        "cancelled": true,
+        "exit": 124
+      }
+    ],
+    "scope": "disposable process lifecycle contract; no Gowin run, app-close guarantee or hardware test"
+  },
+  "feedback_wait_snapshot": {
+    "build": "F:\\nav_hardware_20261023\\feedback_probe_build1",
+    "dependency": "F:\\nav_integration_g2_20261023\\trigblock_extended90_diagnostic\\tool_runtime.json",
+    "programmed": false,
+    "automatic_programming": false,
+    "source_frozen_before_wait": true,
+    "wait_deadline": "2026-10-23T13:15:00+08:00",
+    "scope": "one bounded diagnostic build after existing G2 exits, no recurring supervision",
+    "phase": "waiting_for_dependency_or_memory",
+    "updated_at": "2026-10-23T10:56:49.058986+08:00",
+    "dependency_ended": false,
+    "dependency_process_alive": true,
+    "available_physical_bytes": 1109348352,
+    "available_commit_bytes": 2155814912
+  },
+  "tool_restarted": false,
+  "application_exit_survival_verified": false,
+  "job_membership_does_not_prove_job_owner_or_exit_policy": true,
+  "automatic_programming": false
+}
