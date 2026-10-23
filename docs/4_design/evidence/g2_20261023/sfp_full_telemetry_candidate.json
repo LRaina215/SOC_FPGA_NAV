@@ -153,7 +153,7 @@
     "history_phy_guard": "0985e15",
     "lease_sfp_client": "214d3c6"
   },
-  "updated_at": "2026-10-24T06:40:59.523567+08:00",
+  "updated_at": "2026-10-24T06:50:01.382359+08:00",
   "history_fanout_candidate": {
     "generator": "control/tools/g2_history_fanout.py",
     "source_edit": "one syn_maxfan=128 synthesis attribute, no functional RTL edit",
@@ -459,24 +459,18 @@
     "joint_physical_improvement_measured": false
   },
   "current_pnr": {
-    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_pnr8",
-    "phase": "natural_failure586_unrouted",
-    "tool_pid": 56008,
-    "wrapper_pid": 57496,
-    "controller_pid": 2328,
-    "started_at": "2026-10-24T04:06:52.158314+08:00",
-    "absolute_deadline": "2026-10-24T06:36:52.158314+08:00",
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_biasblock_pnr9",
+    "phase": "full_pnr_running",
+    "tool_pid": 62516,
+    "wrapper_pid": 11184,
+    "controller_pid": 65408,
+    "started_at": "2026-10-24T06:48:48.182022+08:00",
+    "absolute_deadline": "2026-10-24T09:18:48.182022+08:00",
     "max_runtime_minutes": 150,
     "max_no_progress_minutes": 0,
     "diagnostic_only": false,
     "serdes_lane": "Q0 Lane2",
-    "evidence": "slf_row_banks_joint_synthesis_20261024.json",
-    "unrouted_nets": 586,
-    "actual_bsram": 334,
-    "cancelled": false,
-    "ended_at": "2026-10-24T06:23:23.741522+08:00",
-    "result_evidence": "lane2_rowbanks_final_unrouted586.json",
-    "g2_passed": false
+    "evidence": "bias_block_joint_synthesis_20261024.json"
   },
   "previous_pnr": {
     "build": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_ce_pnr5",
@@ -639,16 +633,43 @@
       "cancelled": true,
       "actual_unrouted_nets": null,
       "evidence": "lane2_pnr150_cancelled_20261024.json"
+    },
+    {
+      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_pnr8",
+      "phase": "natural_failure586_unrouted",
+      "tool_pid": 56008,
+      "wrapper_pid": 57496,
+      "controller_pid": 2328,
+      "started_at": "2026-10-24T04:06:52.158314+08:00",
+      "absolute_deadline": "2026-10-24T06:36:52.158314+08:00",
+      "max_runtime_minutes": 150,
+      "max_no_progress_minutes": 0,
+      "diagnostic_only": false,
+      "serdes_lane": "Q0 Lane2",
+      "evidence": "slf_row_banks_joint_synthesis_20261024.json",
+      "unrouted_nets": 586,
+      "actual_bsram": 334,
+      "cancelled": false,
+      "ended_at": "2026-10-24T06:23:23.741522+08:00",
+      "result_evidence": "lane2_rowbanks_final_unrouted586.json",
+      "g2_passed": false
     }
   ],
   "pending_builds": [
     {
-      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_biasblock_syn8",
-      "stage": "synthesizing",
-      "supervisor_pid": 62480,
-      "tool_pid": 57444,
-      "max_runtime_minutes": 40,
-      "evidence": "bias_block_intervention_20261024.json"
+      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_biasblock_pnr9",
+      "phase": "full_pnr_running",
+      "tool_pid": 62516,
+      "wrapper_pid": 11184,
+      "controller_pid": 65408,
+      "started_at": "2026-10-24T06:48:48.182022+08:00",
+      "absolute_deadline": "2026-10-24T09:18:48.182022+08:00",
+      "max_runtime_minutes": 150,
+      "max_no_progress_minutes": 0,
+      "diagnostic_only": false,
+      "serdes_lane": "Q0 Lane2",
+      "evidence": "bias_block_joint_synthesis_20261024.json",
+      "stage": "pnr"
     }
   ],
   "best_measured_candidate": {
@@ -682,13 +703,14 @@
   "one_shot_continuation": {
     "controller_pid": 65408,
     "live_state_file": "F:\\nav_integration_g2_20261023\\lane2_biasblock_one_shot\\job.json",
-    "phase": "waiting_for_existing_synthesis",
+    "phase": "full_pnr_running",
     "maximum_future_pnr_runs": 1,
     "pnr_out": "F:\\nav_integration_g2_20261023\\sfp_lane2_biasblock_pnr9",
     "pnr_budget_minutes": 150,
     "pnr_idle_budget_minutes": 0,
     "deployment_accepted": false,
-    "evidence": "bias_block_intervention_20261024.json"
+    "evidence": "bias_block_joint_synthesis_20261024.json",
+    "pre_pnr_checks_passed": true
   },
   "superseded_pending_builds": [
     {
@@ -772,6 +794,12 @@
     ],
     "rom16_removed": 702,
     "additional_physical_bsram_prediction": 2,
-    "full_synthesis_pending": true
+    "full_synthesis_pending": false,
+    "source_bsram": 317,
+    "wide_leaves": 19,
+    "predicted_split_bsram": 336,
+    "full_bias_low_address_loads_before": 702,
+    "full_bias_low_address_loads_after": 1,
+    "result_evidence": "bias_block_joint_synthesis_20261024.json"
   }
 }
