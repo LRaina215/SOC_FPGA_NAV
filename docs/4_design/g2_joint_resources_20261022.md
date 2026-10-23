@@ -521,3 +521,9 @@ SFP守卫依据IPUG1021 Table 3-2，在SGMII模式额外要求status[8]（对端
 ## 2026-10-23 16:50 首轮SFP PNR收尾及命令路径候选
 
 `sfp_web_pnr2`因35分钟无日志/产物更新于16:45:27取消，总42分9.171秒；没有最终rpt/tr/vo，G2门禁拒绝。新history/PHY守卫SYN已串行启动。针对真实联合SYN的age_ms→输出长路径，`--lease-output-select`只在构建副本先算正常目标/停止两种原approach结果，最后用原stop_mode选输出；原状态和每拍优先级不改。24项故障场景中63850拍所有输出与原实现一致。模块带168位相同输入启动寄存器：估计70.586→115.037MHz、最坏14.481→9.007ns、FF473不变（含夹具168）、LUT698→745、ALU191→192。该候选已冻结为`sfp_history128_phyguard_lease_syn3`，只改前版command_lease_guard.v，等待前版SYN退出后综合。未根据模块结果宣称联合或物理改善。
+
+## 2026-10-23 17:00 联合候选实测与新PNR
+
+两轮串行SYN均完成且错误0。history/PHY版实际history initialized为23个寄存器、最大直接负载128；LUT54408、FF41017、ALU10141、316个源BSRAM、18宽叶，全部存储叶路径/类型/参数与原SFP版相同。lease版进一步使核心估计52.070→54.372MHz，最坏变为`policy/actions_27_s1→actuator_map/lk_us_4_s0`、18.706ns/裕量1.608ns；全局LUT54502、FF41017、ALU10141，BSRAM/DSP/SSRAM均保持。不得把模块115.037MHz当作联合结果，也不得把联合54.372MHz当作物理结果。
+
+`sfp_history128_lease_pnr3`于16:58:37启动真实PNR（PID16036），以新冻结SYN为源，51条主机CDC重新生成/复核，原26条引用存在，共154条候选命令与四时钟约束，CSR/复制/拆分/布局1/布线2/时序驱动/hold修正从cmd.do实际回读。当前布局中，60/35分钟预算；没有最终物理BSRAM/未布通数/Fmax/全局setup/hold/复位脉宽及有效约束报告，G2保持未验证。完整控制遥测的资源已纳入；PATH/局部图/session/实际停止业务仍按总计划待办，不能称完整Web业务通过。

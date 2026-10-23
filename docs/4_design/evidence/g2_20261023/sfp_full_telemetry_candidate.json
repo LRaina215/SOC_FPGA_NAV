@@ -149,9 +149,11 @@
   "commits": {
     "nav_integration": "af2acea",
     "web_protocol": "3ff1af3",
-    "web_windows_validation_fixes": "df1243c"
+    "web_windows_validation_fixes": "df1243c",
+    "history_phy_guard": "0985e15",
+    "lease_sfp_client": "214d3c6"
   },
-  "updated_at": "2026-10-23T16:50:55.128320+08:00",
+  "updated_at": "2026-10-23T17:00:58.274323+08:00",
   "history_fanout_candidate": {
     "generator": "control/tools/g2_history_fanout.py",
     "source_edit": "one syn_maxfan=128 synthesis attribute, no functional RTL edit",
@@ -214,28 +216,84 @@
     "scope": "old standalone physical netlist; no joint acceptance or blanket exception; vector coherence, combinational-source, status and reset paths remain separate"
   },
   "successor_synthesis": {
-    "source": "F:\\nav_integration_g2_20261023\\sfp_web_syn1",
     "build": "F:\\nav_integration_g2_20261023\\sfp_history128_phyguard_syn2",
-    "wait_pid": 34204,
-    "programmed": false,
-    "source_frozen_before_wait": true,
-    "automatic_pnr": false,
-    "modified_rtl_inputs": [
-      "control/rl_observation_v5.v",
-      "sfp_management.v"
-    ],
-    "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
-    "phase": "synthesizing",
-    "updated_at": "2026-10-23T16:50:27.508757+08:00",
-    "minimum_start_free_bytes": 2147483648,
-    "minimum_start_available_commit_bytes": 4294967296,
-    "max_runtime_minutes": 40,
-    "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
-    "tool_pid": 17972,
-    "synthesis_started_at": "2026-10-23T16:45:27.436472+08:00",
-    "elapsed_s": 300.06300000002375,
-    "free_bytes": 4775481344,
-    "available_commit_bytes": 7178752000
+    "job": {
+      "source": "F:\\nav_integration_g2_20261023\\sfp_web_syn1",
+      "build": "F:\\nav_integration_g2_20261023\\sfp_history128_phyguard_syn2",
+      "wait_pid": 34204,
+      "programmed": false,
+      "source_frozen_before_wait": true,
+      "automatic_pnr": false,
+      "modified_rtl_inputs": [
+        "control/rl_observation_v5.v",
+        "sfp_management.v"
+      ],
+      "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+      "phase": "synthesis_complete",
+      "updated_at": "2026-10-23T16:51:44.808747+08:00",
+      "minimum_start_free_bytes": 2147483648,
+      "minimum_start_available_commit_bytes": 4294967296,
+      "max_runtime_minutes": 40,
+      "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+      "tool_pid": 17972,
+      "synthesis_started_at": "2026-10-23T16:45:27.436472+08:00",
+      "elapsed_s": 360.0780000000377,
+      "free_bytes": 4791324672,
+      "available_commit_bytes": 7211819008,
+      "tool_exit": 0,
+      "joint_pnr_measured": false
+    },
+    "bsram_source": 316,
+    "wide_leaves": 18,
+    "physical_bsram_prediction": 334,
+    "all_memory_paths_types_parameters_unchanged": true,
+    "timing": {
+      "clocks": [
+        {
+          "name": "clk50",
+          "constraint_mhz": 50.0,
+          "estimated_fmax_mhz": 52.07,
+          "levels": 24,
+          "entity": "TOP"
+        },
+        {
+          "name": "rgmii_rxc",
+          "constraint_mhz": 50.0,
+          "estimated_fmax_mhz": 98.656,
+          "levels": 6,
+          "entity": "TOP"
+        }
+      ],
+      "first_path": {
+        "Slack": "0.795",
+        "Data Arrival Time": "19.519",
+        "Data Required Time": "20.314",
+        "From": "u_command_lease/age_ms_6_s3",
+        "To": "u_command_lease/out_forward_q12_10_s1",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]"
+      },
+      "scope": "synthesis estimate only; actual PNR resource/timing acceptance must come from PNR reports"
+    },
+    "resources": {
+      "name": "g2_top",
+      "Register": "26",
+      "Alu": "25",
+      "Lut": "175",
+      "T_Register": "41017(26)",
+      "T_Alu": "10141(25)",
+      "T_Lut": "54408(175)",
+      "T_MULTALU27X18": "77(0)",
+      "T_MULT12X12": "23(0)",
+      "T_MULT27X36": "37(0)",
+      "T_MULTADDALU12X12": "1(0)",
+      "T_Bsram": "316(0)",
+      "T_Ssram": "4159(0)",
+      "T_ROM16": "702(0)"
+    },
+    "history_initialized_registers": 23,
+    "history_maximum_direct_pin_load": 128,
+    "programmed": false
   },
   "lease_output_candidate": {
     "equivalence": {
@@ -303,10 +361,117 @@
         "command_lease_guard.v"
       ],
       "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
-      "phase": "waiting_for_prior_pnr",
-      "updated_at": "2026-10-23T16:49:09.519812+08:00"
+      "phase": "synthesis_complete",
+      "updated_at": "2026-10-23T16:57:59.015139+08:00",
+      "minimum_start_free_bytes": 2147483648,
+      "minimum_start_available_commit_bytes": 4294967296,
+      "max_runtime_minutes": 40,
+      "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+      "tool_pid": 8040,
+      "synthesis_started_at": "2026-10-23T16:51:41.792487+08:00",
+      "elapsed_s": 360.079000000027,
+      "free_bytes": 4608180224,
+      "available_commit_bytes": 7237132288,
+      "tool_exit": 0,
+      "joint_pnr_measured": false
     },
     "supervisor_pid": 38948,
-    "joint_benefit_measured": false
+    "joint_benefit_measured": false,
+    "joint_synthesis": {
+      "build": "F:\\nav_integration_g2_20261023\\sfp_history128_phyguard_lease_syn3",
+      "job": {
+        "source": "F:\\nav_integration_g2_20261023\\sfp_history128_phyguard_syn2",
+        "build": "F:\\nav_integration_g2_20261023\\sfp_history128_phyguard_lease_syn3",
+        "wait_pid": 17972,
+        "programmed": false,
+        "source_frozen_before_wait": true,
+        "automatic_pnr": false,
+        "modified_rtl_inputs": [
+          "command_lease_guard.v"
+        ],
+        "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+        "phase": "synthesis_complete",
+        "updated_at": "2026-10-23T16:57:59.015139+08:00",
+        "minimum_start_free_bytes": 2147483648,
+        "minimum_start_available_commit_bytes": 4294967296,
+        "max_runtime_minutes": 40,
+        "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+        "tool_pid": 8040,
+        "synthesis_started_at": "2026-10-23T16:51:41.792487+08:00",
+        "elapsed_s": 360.079000000027,
+        "free_bytes": 4608180224,
+        "available_commit_bytes": 7237132288,
+        "tool_exit": 0,
+        "joint_pnr_measured": false
+      },
+      "bsram_source": 316,
+      "wide_leaves": 18,
+      "physical_bsram_prediction": 334,
+      "all_memory_paths_types_parameters_unchanged": true,
+      "timing": {
+        "clocks": [
+          {
+            "name": "clk50",
+            "constraint_mhz": 50.0,
+            "estimated_fmax_mhz": 54.372,
+            "levels": 20,
+            "entity": "TOP"
+          },
+          {
+            "name": "rgmii_rxc",
+            "constraint_mhz": 50.0,
+            "estimated_fmax_mhz": 98.656,
+            "levels": 6,
+            "entity": "TOP"
+          }
+        ],
+        "first_path": {
+          "Slack": "1.608",
+          "Data Arrival Time": "18.706",
+          "Data Required Time": "20.314",
+          "From": "u_control/model_thread/policy/actions_27_s1",
+          "To": "u_control/model_thread/actuator_map/lk_us_4_s0",
+          "Launch Clk": "clk50[R]",
+          "Latch Clk": "clk50[R]"
+        },
+        "scope": "synthesis estimate only; actual PNR resource/timing acceptance must come from PNR reports"
+      },
+      "resources": {
+        "name": "g2_top",
+        "Register": "26",
+        "Alu": "25",
+        "Lut": "175",
+        "T_Register": "41017(26)",
+        "T_Alu": "10141(25)",
+        "T_Lut": "54502(175)",
+        "T_MULTALU27X18": "77(0)",
+        "T_MULT12X12": "23(0)",
+        "T_MULT27X36": "37(0)",
+        "T_MULTADDALU12X12": "1(0)",
+        "T_Bsram": "316(0)",
+        "T_Ssram": "4159(0)",
+        "T_ROM16": "702(0)"
+      },
+      "programmed": false
+    },
+    "joint_history_fanout_max": 128,
+    "joint_synthesis_improvement_measured": true,
+    "joint_physical_improvement_measured": false
+  },
+  "current_pnr": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp_history128_lease_pnr3",
+    "started_at": "2026-10-23T16:58:37.345540+08:00",
+    "tool_pid": 16036,
+    "supervisor_pid": 65684,
+    "max_runtime_minutes": 60,
+    "max_no_progress_minutes": 35,
+    "stage": "placement",
+    "actual_options_checked": true,
+    "clock_constraints": 4,
+    "explicit_cdc_paths": 77,
+    "explicit_cdc_commands": 154,
+    "diagnostic_only": false,
+    "final_reports_available": false,
+    "programmed": false
   }
 }
