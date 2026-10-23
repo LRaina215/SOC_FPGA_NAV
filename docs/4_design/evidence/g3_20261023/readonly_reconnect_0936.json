@@ -1,0 +1,102 @@
+{
+  "recorded_at": "2026-10-23T09:40:05.408461+08:00",
+  "ports": [
+    {
+      "device": "COM11",
+      "description": "USB-Enhanced-SERIAL CH9102 (COM11)",
+      "vid": 6790,
+      "pid": 21972,
+      "serial_number": "5910012847",
+      "location": "1-4.2"
+    },
+    {
+      "device": "COM14",
+      "description": "USB Serial Port (COM14)",
+      "vid": 1027,
+      "pid": 24596,
+      "serial_number": "6",
+      "location": null
+    }
+  ],
+  "jtag": {
+    "recorded_at": "2026-10-23T09:37:10.409762+08:00",
+    "records": [
+      {
+        "name": "scan",
+        "args": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\Programmer\\bin\\programmer_cli.exe",
+          "--cable-index",
+          "1",
+          "--location",
+          "579",
+          "--scan"
+        ],
+        "returncode": 0,
+        "stdout": " Scanning!\n Target Cable: Gowin USB Cable(FT2CH)/0/579/null@2.5MHz\nDevice Info:\n \tFamily: GW5AT  \n\tName: GW5AT-75B GW5AT-75C GW5A-138B GW5A-138C GW5AT-138B GW5AT-138C  (One of them)  \n\tID: 0x0011081B  \n 1 device(s) found!\n Cost 0.41 second(s)\n  \n",
+        "stderr": ""
+      },
+      {
+        "name": "usercode",
+        "args": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\Programmer\\bin\\programmer_cli.exe",
+          "--cable-index",
+          "1",
+          "--location",
+          "579",
+          "--device",
+          "GW5AT-138C",
+          "--run",
+          "73"
+        ],
+        "returncode": 0,
+        "stdout": " Target Cable: Gowin USB Cable(FT2CH)/0/579/null@2.5MHz\n Target Device: GW5AT-138C(0x0011081B)\n Operation \"Read User Code\" for device#1...\n User Code is: 0x000099A6\n Finished.\n Cost 0.64 second(s)\n  \n",
+        "stderr": ""
+      }
+    ],
+    "writes": false,
+    "programmed": false,
+    "motion_commands": 0,
+    "scope": "read-only chain and UserCode; selected target is not independent part/revision identification, UserCode is not full image identity"
+  },
+  "passive_uart": {
+    "started_at": "2026-10-23T09:36:08.615381+08:00",
+    "source": "hardware_uart",
+    "port": "COM11",
+    "baud": 230400,
+    "tx_bytes": 0,
+    "requested_dtr": false,
+    "requested_rts": false,
+    "hardware_acceptance": "not_assessed",
+    "elapsed_s": 8.10899999999674,
+    "rx_bytes": 0,
+    "error": null,
+    "valid_frames": 0,
+    "crc_errors": 0,
+    "protocol_versions": {},
+    "timestamp_step_ms_histogram": {},
+    "sequence_events": {},
+    "flag_histograms": {
+      "status": {},
+      "fusion_flags": {},
+      "sensor_error": {},
+      "policy_fault": {},
+      "left_fault": {},
+      "right_fault": {}
+    },
+    "observed_values": {},
+    "limitations": [
+      "Existing image identity, sensor supply, axis mapping and physical stillness are not established by decoding.",
+      "Telemetry contains snapshots; sensor values are not necessarily simultaneous or newly sampled per packet.",
+      "Raw encoder deltas have no dedicated sample sequence. Do not sum repeated/missed snapshots as odometry.",
+      "Nominal physical-unit columns come from the existing decoder; they are not measured calibration.",
+      "No stationary-bias or physical-stop acceptance is inferred from these statistics."
+    ]
+  },
+  "current_physical_state": {
+    "user_answer": "should not all be powered; chassis not secured; BMI supply unknown",
+    "actuator_power_off_confirmed": false,
+    "download_or_motion_performed": false,
+    "awaiting": "physical disconnection of motor and servo power"
+  },
+  "scope": "read-only reconnection identity and link evidence, no sensor validity/calibration/stop or exact device-revision acceptance"
+}

@@ -18,6 +18,8 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 `--route-option 0|1|2`分别为默认、更深搜索、较快布线，预检回读。当前长布线重跑采用`--place-option 1 --route-option 2 --max-runtime-minutes 60 --max-no-progress-minutes 35`，其余时钟/CDC/资源门槛不变。预算默认0表示不启用；对本任务新PNR必须显式指定。`tool_runtime.json`保存进程和预算，观察日志/中间产物变化，CPU忙或监管心跳不算进展；超限只终止本次启动的工具，保存取消说明并返回未通过。`test_bounded_tool.py`验证真实子进程生命周期，不跑FPGA或物理仿真。
 
+`--capture-system-telemetry`可每30秒向`system_telemetry.jsonl`记录所属进程CPU/线程/工作集/私有内存/I/O及主机物理空闲/提交余量。依赖psutil，Windows提交值来自GlobalMemoryStatusEx；缺少观测记录错误，不伪造零值。系统观测文件明确排除在日志/产物进展集合之外，CPU、I/O或记录写入不会刷新静默预算；页错误累计也不能直接视为硬分页次数。当前一次延长诊断仍由总计划规定独立上限，不恢复定时监督。
+
 `--diagnostic-only`显式标记受控实现对照。采集器及最终写出的`g2_gate.json`均强制不准入，即使报告的资源/时序满足条件也不会成为生产通过结果；缺报告同样拒绝。基础SDC对照直接取SYN来源的两条50/100MHz时钟，省略`--cdc-reference-audit`，不删除或修改旧候选目录。它仅用于判断CDC候选约束是否参与长时间搜索，后续生产仍需完整26路径/52约束核验，不作烧录来源。输出策略的合成指标夹具合同不冒充真实FPGA报告。
 
 `--timing-driven 0|1`控制厂商PNR时序驱动优化，默认1。关闭时脚本要求`--diagnostic-only`，在创建输出目录前拒绝无诊断标志的请求；有效选项必须回读为0，实际`cmd.do`不再含`-timing`。它不更改SDC的50/100MHz时钟，也不等于满足时序，只用于隔离优化搜索的影响。预算与报告/物理CDC检查保持；关闭优化后完成的报告仍不得作为G2或部署准入。
