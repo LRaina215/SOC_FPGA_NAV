@@ -113,7 +113,7 @@ TCP 命令（`tools/xt_config.py`）：请求 `7E FF AA 55 | len | cmd | 数据 
 |---|---|---|
 | 板载 USB 串口（uart_bus_bridge，921600） | 可用（2026-10-01 上板通过：状态、目标点、模式、地图包、TARGET） | PC 把报文逐字写 `MBX.INJ_DATA`，写 `MBX.INJ_LEN` 后 `MBX.INJ_GO`，报文进入与网口相同的接收队列（源 IP 记 0）；FPGA 发出的报文（状态、地图应答）留在发送缓冲，经 `MBX.TX_SEQ` / `MBX.TXB_ADDR` / `MBX.TXB_Q` 读回（只保留最新一条）。`nav_host.py --link uart:COM5`；RK3588 经 USB 也可这样用 |
 | 专用导航主机串口（旧拟 P11 第 9 / 10 针，未冻结） | 尚未实现；与控制仓库 P11-39/40 的速度命令 UART 是不同协议 | 导航需要 GOAL/TARGET/MAP 等报文；不得将本节 `NV` 报文发给控制仓库的 `A5 5A 10` 接收器。是否新增串口由整车拓扑冻结决定 |
-| 网口 UDP（SFP 口，1000BASE-X） | RTL 已有，**IP 未生成，目前不可用** | FPGA 地址 `NETH.IP`（默认 192.168.2.100），端口 `NETH.UDP_PORT`（9000）；FPGA 回发到最近一次收到合法报文的源地址/端口（`NETH.CTRL.LEARN_PEER`），也可写 `NETH.PEER_*` 固定。`nav_host.py --link udp:192.168.2.100` |
+| 网口 UDP（SFP1，主机侧协议按实际电口模块匹配） | 2026-10-23独立SFP工程已生成IP并完成PNR；**尚未接入G2、未完成实物链路与NV应用验收** | FPGA 地址 `NETH.IP`（默认 192.168.2.100），端口 `NETH.UDP_PORT`（9000）；FPGA 回发到最近一次收到合法UDP报文的源地址/端口（`NETH.CTRL.LEARN_PEER`），也可写 `NETH.PEER_*` 固定。`nav_host.py --link udp:192.168.2.100`；独立回显通过不代表这些NV报文已在实板生效 |
 
 - 负载小端。公共头 4 字节：`'N' 'V' 版本=1 类型`。
 
@@ -129,10 +129,12 @@ TCP 命令（`tools/xt_config.py`）：请求 `7E FF AA 55 | len | cmd | 数据 
 | 0x42 MAP_END | 主机→FPGA | —（校验 CRC；通过即进入有图模式，等待 SET_POSE） |
 | 0x43 MAP_CLEAR | 主机→FPGA | —（回到无图模式） |
 | 0x80 STATUS | FPGA→主机 | uint8 mode, uint8 state, uint16 map_seq, int32 x, y, yaw_cdeg, goal_x, goal_y, int16 vx, wz, uint16 flags, uint16 保留, uint32 t_us, uint8 loc_state（0 无图 1 对准中 2 正常 3 退化 4 丢失）, uint8 loc_quality（%）, uint16 保留（5 Hz） |
-| 0x81 PATH | FPGA→主机 | uint8 n, 3 字节保留, n × {int32 x, int32 y}（预留） |
+| 0x81 PATH | FPGA→主机 | uint8 n, 3 字节保留, n × {int32 x, int32 y}（已有组包函数，固件应用尚未调用发送） |
 | 0x82 MAP_ACK | FPGA→主机 | uint32 next_offset, uint8 map_state（0 无 1 接收中 2 已加载 3 校验错 4 格式错）, 3 字节保留。每个 MAP_* 报文回一次，主机按 next_offset 重发 |
 
-- TARGET 的 `latency_ms` = RK3588 采图到发出报文的时间。FPGA 用"到达时刻 − latency"查历史位姿，把目标换算到里程计系，所以两边时钟不需要同步。目标 1.5 s 未更新判为丢失（跟踪 → 探索）。
+- TARGET 的 `latency_ms` = RK3588 采图到发出报文的时间。FPGA 用"到达时刻 − latency"查历史位姿，把目标换算到里程计系；该相对延时方案无需绝对时钟同步，但当前字段不包含发出后的网络/排队延时，实链路须测量其误差。目标1.5s未更新判为丢失；跟踪转探索由规划步执行，不能把这个超时当作全局链路失联制动。
+- 2026-10-23源码核对：STATUS为44字节NV报文，5Hz；`vx/wz`来自`nt->cmd`，是导航期望指令，不是实测车速；flags也不是带样本年龄的完整健康状态。MAP_ACK为12字节；TARGET为24字节（含4字节NV头）。PATH、实时地图上传、原始点云、BMI六轴/姿态、控制V2遥测均不能按现有STATUS已具备处理。控制遥测当前另走控制UART，转发至SFP须另实现并核对资源。
+- NV v1只有版本/类型头，没有通用命令序号、会话号、有效期或命令确认；MAP_ACK只确认地图接收。`QHXD_Web/yuntuo/bridge`已有UDP任务服务，使用`found=0`的TARGET促使网络层学习回包地址，但这不是FPGA侧命令租约。链路接通后的会话/失联行为和实测停稳回报需与N3共同验收，详见[RK3588准备情况](../5_teams/rk3588_design.md#01-2026-10-23网口与应用准备情况)。
 - STATUS.state：0 空闲 1 行进 2 到达 3 受阻 4 跟踪 5 探索 6 急停；flags：bit0 目标有效，bit2 地图正常，bit3 里程计正常。
 - 2026-10-21 本地 N1 候选的最终到达判定：估计位置进入目标容差后，要求新鲜里程计反馈（距当前小于100ms）下速度各轴绝对值≤20mm/s、角速度绝对值≤50mrad/s，持续500ms才报告 state=2；不再将目标600mm内卡住当作到达。中间航点保持途经语义。该逻辑已通过主机定例/回归，完整闭环与实机状态见 [实施结果](../4_design/nav_optimization_results.md)；旧镜像仍使用旧判定。
 - GOAL 的末端朝向在当前本地任务实现中尚未启用；`yaw_cdeg` 字段已能解析，`0x7FFFFFFF`哨兵继续有效。启用前须核对其他发送方是否默认发送0，不能把历史默认值自动当作新增航向要求。

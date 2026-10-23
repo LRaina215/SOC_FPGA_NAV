@@ -2,7 +2,7 @@
 报文格式见 docs/2_interface/icd.md，与 fw/nav/proto.c 一一对应。导航不依赖 RK3588：PC 用下面任一链路即可完成全部操作。
 
 链路（--link）：
-  udp:IP[:端口]   网口（默认 192.168.2.100:9000，SFP 主机口；需要先生成 1G Serial Ethernet IP，目前不可用）
+  udp:IP[:端口]   网口（默认 192.168.2.100:9000，SFP 主机口；独立IP已生成，联合接入与实板NV收发尚待验收）
   uart:COM5       板载 USB 串口（uart_bus_bridge）：报文写入 MBX.INJ_* 注入接收队列，状态/应答从发送缓冲回读；
                   RK3588 经 USB 接这个口时写成 uart:/dev/ttyACM0（docs/5_teams/rk3588_design.md 方案 R0）
 
