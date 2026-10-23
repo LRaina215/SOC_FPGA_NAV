@@ -624,12 +624,16 @@
       "tool_pid": 19028,
       "supervisor_pid": 27580,
       "controller_pid": 41864,
-      "max_runtime_minutes": 120,
+      "max_runtime_minutes": 150,
       "max_no_progress_minutes": 0,
       "started_at": "2026-10-24T01:06:48.371528+08:00",
       "diagnostic_only": false,
       "serdes_lane": "Q0 Lane2",
-      "evidence": "sfp_lane2_synthesis_cdc_revalidation.json"
+      "evidence": "sfp_lane2_synthesis_cdc_revalidation.json",
+      "absolute_deadline": "2026-10-24T03:36:48.371528+08:00",
+      "deadline_supervisor_pid": 33052,
+      "original_wrapper_suspended": true,
+      "effective_budget_evidence": "lane2_pnr150_deadline_20261024.json"
     }
   ],
   "best_measured_candidate": {
@@ -666,7 +670,19 @@
     "phase": "full_pnr_running",
     "evidence": "sfp_lane2_synthesis_cdc_revalidation.json",
     "maximum_future_pnr_runs": 1,
-    "deployment_accepted": false
+    "deployment_accepted": false,
+    "runtime_override": {
+      "total_minutes": 150,
+      "total_seconds": 9000,
+      "idle_minutes": 0,
+      "absolute_deadline": "2026-10-24T03:36:48.371528+08:00",
+      "supervisor_pid": 33052,
+      "original_wrapper_pid": 27580,
+      "original_wrapper_intentionally_suspended": true,
+      "tool_pid_unchanged": 19028,
+      "tool_creation_time_unchanged": true,
+      "evidence": "lane2_pnr150_deadline_20261024.json"
+    }
   },
   "superseded_pending_builds": [
     {
