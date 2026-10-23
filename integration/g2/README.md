@@ -82,3 +82,6 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 `pnr_from_netlist.py --clock-resource-plan integration/g2/clock_resource_plan_control_priority.json --routing-evidence`增加有物理依据的全局资源分配及完整警告/BSRAM位置输出。计划将PRIMARY4..7优先用于大负载控制复位/快照，较小导航CE/地址改普通布线；四条真实时钟由工具在其余PRIMARY选择。应用前核对前轮真实负载、源网表对象存在、索引无冲突，拒绝把真实时钟改普通布线。未改网表、SDC和原IO约束，物理采集器重新核对全局分配结果；实际PRIMARY分配、未布通数、BSRAM、时序和77条CDC/154条有效约束均待新报告。`BUFG[n]`的SR/CE到PRIMARY能力已由独立138C探针确认，不能由小探针推定联合布通。
 
 负载读取器已兼容RAM16SDP4在最后端口行闭合的语法，并计入RAD/WAD/S0/S1；旧脚本的RAM分类/读地址负载不完整。`test_physical_pin_parser.py`覆盖连续内联RAM与转义向量名；`test_clock_resource_plan.py`覆盖丢失对象和误把真实时钟改普通布线的拒绝。负载统计仍不能冒充工具的未布通网络名单。
+
+
+`clock_resource_plan_control_priority_v2.json`基于前轮PRIMARY实际落实、未布通802→273的结果，保留原8条约束，仅补充观测3892-CE与遥测960-CE的泛型BUFG请求。应用器要求已有实际负载/源对象；采集器要求两条实际LW并核对四真实时钟仍PRIMARY。Arora V不使用BUFS。前轮两条未列全局而较小导航信号占LW是待检假设，不证明273条失败的身份；120分钟/无静默终止的新轮仍需完整物理报告。

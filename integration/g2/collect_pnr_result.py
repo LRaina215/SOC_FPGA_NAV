@@ -141,10 +141,13 @@ def collect(build,top='g2_top'):
         plan=json.loads(plan_file.read_text(encoding='utf-8'))
         actual=global_audit(build)
         assigned={x['net']:x['resource'] for x in actual['global_nets']}
-        checks=[dict(net=x['net'],expected='PRIMARY' if x['action']=='promote' else 'not listed as global',
-                     actual=assigned.get(x['net'],'not listed as global'),
-                     passed=assigned.get(x['net'])=='PRIMARY' if x['action']=='promote' else x['net'] not in assigned)
-                for x in plan['actions']]
+        checks=[]
+        for x in plan['actions']:
+            expected='PRIMARY' if x['action']=='promote' else x.get('expected_resource','not listed as global')
+            actual_resource=assigned.get(x['net'],'not listed as global')
+            checks.append(dict(net=x['net'],expected=expected,actual=actual_resource,passed=actual_resource==expected))
+        for name in plan.get('real_primary_clocks',[]):
+            checks.append(dict(net=name,expected='PRIMARY',actual=assigned.get(name),passed=assigned.get(name)=='PRIMARY'))
         r['clock_resource_plan_physical']=dict(passed=all(x['passed'] for x in checks),checks=checks,
             scope='reported global assignment only; individual BUFG index and route delays require separate evidence')
         r['g2_resource_core_gate_pass']=r['g2_resource_core_gate_pass'] and r['clock_resource_plan_physical']['passed']

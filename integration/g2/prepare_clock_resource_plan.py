@@ -33,6 +33,18 @@ def apply(source, out, plan_file):
         rows.append(dict(action='promote',net=name,primary_index=index,reference=row))
         seen.add(name);indices.add(index)
     assert indices=={4,5,6,7},'reserve four control tracks, leaving four PRIMARY tracks for true clocks'
+    for item in plan.get('prefer_global',[]):
+        name=item['net']
+        assert name in nets and name in previous and name not in seen
+        row=previous[name];pins=row['direct_pin_counts']
+        assert sum(pins.values())>=800,(name,'global request lacks large measured load')
+        assert set(pins).isdisjoint({'CLK','CLKA','CLKB','CLOCK'})
+        assert set(item['signal_types'].split('|')) <= {'SR','CE','LOGIC'}
+        # BUFS is not supported on Arora V. Generic BUFG is documented and
+        # the small CE probe mapped it to LW. Actual LW use must be reported.
+        commands.append(f'CLOCK_LOC "{name}" BUFG = {item["signal_types"]};')
+        rows.append(dict(action='prefer_global',net=name,expected_resource='LW',reference=row))
+        seen.add(name)
     for name in plan['local']:
         assert name in nets and name in previous and name not in seen
         row=previous[name];pins=row['direct_pin_counts']
@@ -44,6 +56,7 @@ def apply(source, out, plan_file):
     cst.write_text(original+fragment,encoding='utf-8',newline='\n')
     result=dict(plan=plan,source=str(source),actions=rows,cst_fragment=fragment,
         logic_unchanged=True,clock_periods_unchanged=True,
+        real_primary_clocks=['clk50_d','rgmii_rxc_d','h_rx_clk','h_tx_clk'],
         scope='directed physical routing candidate; no timing, routability, full CDC or hardware acceptance claimed')
     (out/'clock_resource_plan.json').write_text(json.dumps(result,indent=2),encoding='utf-8',newline='\n')
     return result

@@ -1,0 +1,1018 @@
+{
+  "recorded_at": "2026-10-23T20:38:53.396670+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+  "baseline_build": "F:\\nav_integration_g2_20261023\\sfp_history128_lease_pnr3",
+  "vendor_finished_at": "2026-10-23T20:27:52+08:00",
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-23T18:51:35.185890+08:00",
+    "max_runtime_s": 7200.0,
+    "max_no_observable_progress_s": 0.0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 42320,
+    "elapsed_s": 5783.313000000024,
+    "no_observable_progress_s": 2.0160000000032596,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        2250725,
+        1792758472835807400
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        2250306,
+        1792758472835807400
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2411084,
+        1792753075289913700
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        14112952,
+        1792753075776838600
+      ],
+      [
+        "impl\\pnr\\g2_top.rpt.txt",
+        93231,
+        1792758470006251700
+      ],
+      [
+        "impl\\pnr\\g2_top.vo",
+        45745196,
+        1792758472828850400
+      ]
+    ],
+    "tool_exit": 1,
+    "ended_at": "2026-10-23T20:27:58.496981+08:00"
+  },
+  "vendor_total_s": 5766,
+  "vendor_placement_s": 375,
+  "vendor_routing_phase1_s": 5390,
+  "vendor_routing_s": 5391,
+  "peak_memory_mb": 2279,
+  "unrouted_nets": 273,
+  "baseline_unrouted_nets": 802,
+  "unrouted_count_reduction": 529,
+  "unrouted_count_reduction_percent": 65.96009975062344,
+  "count_comparison_scope": "Counts only: per-net failure lists are unavailable, so529 does not identify529 specific repaired nets or prove remaining273 are a subset of the old802.",
+  "primary_plan_report_check": {
+    "passed": true,
+    "checks": [
+      {
+        "net": "n2371_7",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "r2",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "u_control/model_thread/observation/n331_7",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_update",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_xt/n9903_3",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_match/u_ex/n7021_4",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_match/u_ex/rb_ra[0]",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_match/u_ex/rb_ra[1]",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      }
+    ],
+    "scope": "reported global assignment only; individual BUFG index and route delays require separate evidence"
+  },
+  "four_real_clocks_primary": true,
+  "global_resources": [
+    {
+      "net": "clk50_d",
+      "resource": "PRIMARY",
+      "drivers": [
+        {
+          "kind": "IBUF",
+          "name": "clk50_ibuf",
+          "ports": {
+            "I": "clk50",
+            "O": "clk50_d"
+          }
+        }
+      ],
+      "direct_pin_counts": {
+        "CLK": 45840,
+        "I": 1,
+        "CLKA": 219,
+        "CLKB": 223
+      },
+      "direct_load_kinds": {
+        "DFFCE": 13564,
+        "DFFPE": 117,
+        "DFFRE": 27029,
+        "DFFSE": 770,
+        "RAM16SDP4": 3069,
+        "MULT27X36": 25,
+        "SP": 64,
+        "INV": 1,
+        "MULTALU27X18": 61,
+        "pROM": 24,
+        "MULT12X12": 6,
+        "pROMX9": 22,
+        "SDPB": 119,
+        "SDPX9B": 323,
+        "RAM16SDP1": 1088,
+        "MULTADDALU12X12": 1
+      },
+      "load_examples": [
+        [
+          "DFFCE",
+          "hb_24_s0",
+          "CLK"
+        ],
+        [
+          "DFFCE",
+          "hb_23_s0",
+          "CLK"
+        ],
+        [
+          "DFFCE",
+          "hb_22_s0",
+          "CLK"
+        ],
+        [
+          "DFFCE",
+          "hb_21_s0",
+          "CLK"
+        ]
+      ]
+    },
+    {
+      "net": "rgmii_rxc_d",
+      "resource": "PRIMARY",
+      "drivers": [
+        {
+          "kind": "IBUF",
+          "name": "rgmii_rxc_ibuf",
+          "ports": {
+            "I": "rgmii_rxc",
+            "O": "rgmii_rxc_d"
+          }
+        }
+      ],
+      "direct_pin_counts": {
+        "CLK": 137,
+        "I": 1,
+        "CLKA": 2
+      },
+      "direct_load_kinds": {
+        "DFFRE": 134,
+        "INV": 1,
+        "DFFPE": 3,
+        "SDPB": 2
+      },
+      "load_examples": [
+        [
+          "DFFRE",
+          "u_lmac/rxd_p_2_s0",
+          "CLK"
+        ],
+        [
+          "DFFRE",
+          "u_lmac/rxd_p_1_s0",
+          "CLK"
+        ],
+        [
+          "DFFRE",
+          "u_lmac/rxd_p_0_s0",
+          "CLK"
+        ],
+        [
+          "DFFRE",
+          "u_lmac/dv_p_s0",
+          "CLK"
+        ]
+      ]
+    },
+    {
+      "net": "r2",
+      "resource": "PRIMARY",
+      "drivers": [
+        {
+          "kind": "DFFPE",
+          "name": "u_rs/r2_s1",
+          "ports": {
+            "D": "\\u_rs/r1 ",
+            "CLK": "clk50_d",
+            "CE": "VCC",
+            "PRESET": "n8_6",
+            "Q": "r2"
+          }
+        }
+      ],
+      "direct_pin_counts": {
+        "I0": 246,
+        "I1": 36,
+        "I2": 82,
+        "RESET": 5048,
+        "I": 1,
+        "I3": 18,
+        "PRESET": 12,
+        "SET": 330,
+        "CLEAR": 497,
+        "CE": 3
+      },
+      "direct_load_kinds": {
+        "LUT3": 130,
+        "LUT2": 92,
+        "LUT4": 160,
+        "DFFRE": 5049,
+        "INV": 1,
+        "DFFPE": 12,
+        "DFFSE": 330,
+        "DFFCE": 497,
+        "MULTALU27X18": 2
+      },
+      "load_examples": [
+        [
+          "LUT3",
+          "ub_rdata_5_s7",
+          "I0"
+        ],
+        [
+          "LUT2",
+          "u_ub/n1955_s1",
+          "I0"
+        ],
+        [
+          "LUT2",
+          "u_ub/n2405_s0",
+          "I0"
+        ],
+        [
+          "LUT3",
+          "u_ub/n2430_s1",
+          "I0"
+        ]
+      ]
+    },
+    {
+      "net": "h_rx_clk",
+      "resource": "PRIMARY",
+      "drivers": [],
+      "direct_pin_counts": {
+        "CLK": 607,
+        "CLKA": 3
+      },
+      "direct_load_kinds": {
+        "DFFCE": 477,
+        "DFFRE": 92,
+        "DFFPE": 36,
+        "RAM16SDP4": 2,
+        "SDPB": 3
+      },
+      "load_examples": [
+        [
+          "DFFCE",
+          "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/rx_even_d1_s0",
+          "CLK"
+        ],
+        [
+          "DFFCE",
+          "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/rx_even_d2_s0",
+          "CLK"
+        ],
+        [
+          "DFFCE",
+          "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/rx_decode_k_d1_s0",
+          "CLK"
+        ],
+        [
+          "DFFCE",
+          "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/rx_decode_k_d2_s0",
+          "CLK"
+        ]
+      ]
+    },
+    {
+      "net": "h_tx_clk",
+      "resource": "PRIMARY",
+      "drivers": [],
+      "direct_pin_counts": {
+        "CLK": 639,
+        "CLKB": 1
+      },
+      "direct_load_kinds": {
+        "DFFCE": 490,
+        "DFFRE": 101,
+        "DFFPE": 48,
+        "SDPX9B": 1
+      },
+      "load_examples": [
+        [
+          "DFFCE",
+          "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/gmii_tx_en_d1_s0",
+          "CLK"
+        ],
+        [
+          "DFFCE",
+          "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/gmii_tx_er_d1_s0",
+          "CLK"
+        ],
+        [
+          "DFFCE",
+          "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/gmii_txd_d1_7_s0",
+          "CLK"
+        ],
+        [
+          "DFFCE",
+          "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/gmii_txd_d1_6_s0",
+          "CLK"
+        ]
+      ]
+    },
+    {
+      "net": "n2371_7",
+      "resource": "PRIMARY",
+      "drivers": [
+        {
+          "kind": "LUT3",
+          "name": "u_control/n2371_s2",
+          "ports": {
+            "I0": "r2",
+            "I1": "\\u_control/n6_4 ",
+            "I2": "\\u_control/n6_5 ",
+            "F": "n2371_7"
+          }
+        }
+      ],
+      "direct_pin_counts": {
+        "CLEAR": 7529,
+        "PRESET": 101,
+        "RESET": 1447,
+        "I0": 9,
+        "SET": 83,
+        "I2": 10,
+        "I1": 8,
+        "D": 1
+      },
+      "direct_load_kinds": {
+        "DFFCE": 7530,
+        "DFFPE": 101,
+        "MULTALU27X18": 17,
+        "LUT4": 20,
+        "DFFRE": 1419,
+        "DFFSE": 83,
+        "LUT3": 7,
+        "MULT27X36": 8,
+        "MULT12X12": 2,
+        "SDPB": 1
+      },
+      "load_examples": [
+        [
+          "DFFCE",
+          "u_control/imu_telemetry_snapshot_95_s0",
+          "CLEAR"
+        ],
+        [
+          "DFFCE",
+          "u_control/imu_telemetry_snapshot_94_s0",
+          "CLEAR"
+        ],
+        [
+          "DFFCE",
+          "u_control/imu_telemetry_snapshot_93_s0",
+          "CLEAR"
+        ],
+        [
+          "DFFCE",
+          "u_control/imu_telemetry_snapshot_92_s0",
+          "CLEAR"
+        ]
+      ]
+    },
+    {
+      "net": "u_control/model_thread/observation/n331_7",
+      "resource": "PRIMARY",
+      "drivers": [
+        {
+          "kind": "LUT4",
+          "name": "u_control/model_thread/observation/n331_s2",
+          "ports": {
+            "I0": "\\u_control/model_status_flags_1 [6]",
+            "I1": "r2",
+            "I2": "\\u_control/n6_4 ",
+            "I3": "\\u_control/n6_5 ",
+            "F": "\\u_control/model_thread/observation/n331_7 "
+          }
+        }
+      ],
+      "direct_pin_counts": {
+        "I0": 3,
+        "CLEAR": 4380,
+        "PRESET": 1,
+        "RESET": 2
+      },
+      "direct_load_kinds": {
+        "LUT2": 1,
+        "LUT4": 2,
+        "DFFCE": 4380,
+        "DFFPE": 1,
+        "MULTALU27X18": 2
+      },
+      "load_examples": [
+        [
+          "LUT2",
+          "u_control/model_thread/observation/numerators[18]_63_s2",
+          "I0"
+        ],
+        [
+          "LUT4",
+          "u_control/model_thread/observation/words_s2863",
+          "I0"
+        ],
+        [
+          "LUT4",
+          "u_control/model_thread/observation/n5101_s107",
+          "I0"
+        ],
+        [
+          "DFFCE",
+          "u_control/model_thread/observation/initialized_s1",
+          "CLEAR"
+        ]
+      ]
+    },
+    {
+      "net": "u_control/model_thread/policy/snapshot_update",
+      "resource": "PRIMARY",
+      "drivers": [
+        {
+          "kind": "LUT4",
+          "name": "u_control/model_thread/policy/snapshot_update_s0",
+          "ports": {
+            "I0": "\\u_control/model_thread/policy/snapshot_update_18 ",
+            "I1": "\\u_control/model_thread/policy/snapshot_shift_select ",
+            "I2": "\\u_control/model_thread/policy/snapshot_update_16 ",
+            "I3": "model_ready",
+            "F": "\\u_control/model_thread/policy/snapshot_update "
+          }
+        }
+      ],
+      "direct_pin_counts": {
+        "CE": 4032
+      },
+      "direct_load_kinds": {
+        "DFFCE": 4032
+      },
+      "load_examples": [
+        [
+          "DFFCE",
+          "u_control/model_thread/policy/snapshot_4030_s0",
+          "CE"
+        ],
+        [
+          "DFFCE",
+          "u_control/model_thread/policy/snapshot_4029_s0",
+          "CE"
+        ],
+        [
+          "DFFCE",
+          "u_control/model_thread/policy/snapshot_4028_s0",
+          "CE"
+        ],
+        [
+          "DFFCE",
+          "u_control/model_thread/policy/snapshot_4027_s0",
+          "CE"
+        ]
+      ],
+      "selector_luts": 0,
+      "direct_snapshot_data_sinks": 0,
+      "snapshot_examples": []
+    },
+    {
+      "net": "r2_207",
+      "resource": "LW",
+      "drivers": [
+        {
+          "kind": "DFFPE",
+          "name": "u_sfp/u_hr/r2_s1",
+          "ports": {
+            "D": "\\u_sfp/u_hr/r1 ",
+            "CLK": "clk50_d",
+            "CE": "VCC",
+            "PRESET": "\\u_sfp/net_arst ",
+            "Q": "r2_207"
+          }
+        }
+      ],
+      "direct_pin_counts": {
+        "RESET": 751,
+        "I0": 23,
+        "I2": 8,
+        "I": 1,
+        "I3": 8,
+        "I1": 1
+      },
+      "direct_load_kinds": {
+        "DFFRE": 751,
+        "LUT3": 14,
+        "INV": 1,
+        "LUT4": 17,
+        "LUT2": 9
+      },
+      "load_examples": [
+        [
+          "DFFRE",
+          "u_nav/u_neth/st_rx_frames_31_s0",
+          "RESET"
+        ],
+        [
+          "DFFRE",
+          "u_nav/u_neth/st_rx_frames_30_s0",
+          "RESET"
+        ],
+        [
+          "DFFRE",
+          "u_nav/u_neth/st_rx_frames_29_s0",
+          "RESET"
+        ],
+        [
+          "DFFRE",
+          "u_nav/u_neth/st_rx_frames_28_s0",
+          "RESET"
+        ]
+      ]
+    },
+    {
+      "net": "u_soc/cpu_rst",
+      "resource": "LW",
+      "drivers": [
+        {
+          "kind": "LUT2",
+          "name": "u_soc/cpu_rst_s0",
+          "ports": {
+            "I0": "r2",
+            "I1": "\\u_soc/hold ",
+            "F": "\\u_soc/cpu_rst "
+          }
+        }
+      ],
+      "direct_pin_counts": {
+        "I2": 11,
+        "I0": 15,
+        "RESET": 210,
+        "I3": 7,
+        "I1": 2,
+        "SET": 5
+      },
+      "direct_load_kinds": {
+        "LUT4": 35,
+        "DFFRE": 210,
+        "DFFSE": 5
+      },
+      "load_examples": [
+        [
+          "LUT4",
+          "u_soc/n1122_s2",
+          "I2"
+        ],
+        [
+          "LUT4",
+          "u_soc/n1119_s2",
+          "I2"
+        ],
+        [
+          "LUT4",
+          "u_soc/n1116_s2",
+          "I2"
+        ],
+        [
+          "LUT4",
+          "u_soc/n1113_s2",
+          "I2"
+        ]
+      ]
+    },
+    {
+      "net": "u_nav/a_q_15_17",
+      "resource": "LW",
+      "drivers": [
+        {
+          "kind": "LUT4",
+          "name": "u_nav/a_q_15_s9",
+          "ports": {
+            "I0": "r2",
+            "I1": "ub_rdata_31_7",
+            "I2": "n12_4",
+            "I3": "\\u_nav/a_q_15_15 ",
+            "F": "\\u_nav/a_q_15_17 "
+          }
+        }
+      ],
+      "direct_pin_counts": {
+        "I0": 1,
+        "CE": 302
+      },
+      "direct_load_kinds": {
+        "LUT4": 1,
+        "DFFRE": 302
+      },
+      "load_examples": [
+        [
+          "LUT4",
+          "u_nav/lr_rx_ra_4_s6",
+          "I0"
+        ],
+        [
+          "DFFRE",
+          "u_nav/a_q_15_s0",
+          "CE"
+        ],
+        [
+          "DFFRE",
+          "u_nav/a_q_14_s0",
+          "CE"
+        ],
+        [
+          "DFFRE",
+          "u_nav/a_q_13_s0",
+          "CE"
+        ]
+      ]
+    },
+    {
+      "net": "u_nav/u_map/u_tv/n26746_4",
+      "resource": "LW",
+      "drivers": [
+        {
+          "kind": "LUT2",
+          "name": "u_nav/u_map/u_tv/n26746_s1",
+          "ports": {
+            "I0": "r2",
+            "I1": "\\u_nav/u_map/u_tv/s5 ",
+            "F": "\\u_nav/u_map/u_tv/n26746_4 "
+          }
+        }
+      ],
+      "direct_pin_counts": {
+        "CE": 162
+      },
+      "direct_load_kinds": {
+        "DFFRE": 158,
+        "MULTALU27X18": 2,
+        "MULT12X12": 2
+      },
+      "load_examples": [
+        [
+          "DFFRE",
+          "u_nav/u_map/u_tv/ph6_2_s0",
+          "CE"
+        ],
+        [
+          "DFFRE",
+          "u_nav/u_map/u_tv/ph6_1_s0",
+          "CE"
+        ],
+        [
+          "DFFRE",
+          "u_nav/u_map/u_tv/ph6_0_s0",
+          "CE"
+        ],
+        [
+          "DFFRE",
+          "u_nav/u_map/u_tv/sl6_13_s0",
+          "CE"
+        ]
+      ]
+    },
+    {
+      "net": "u_nav/u_map/u_tv/n26728_4",
+      "resource": "LW",
+      "drivers": [
+        {
+          "kind": "LUT2",
+          "name": "u_nav/u_map/u_tv/n26728_s1",
+          "ports": {
+            "I0": "r2",
+            "I1": "\\u_nav/u_map/u_tv/s4 ",
+            "F": "\\u_nav/u_map/u_tv/n26728_4 "
+          }
+        }
+      ],
+      "direct_pin_counts": {
+        "CE": 218
+      },
+      "direct_load_kinds": {
+        "DFFRE": 218
+      },
+      "load_examples": [
+        [
+          "DFFRE",
+          "u_nav/u_map/u_tv/ph5_2_s0",
+          "CE"
+        ],
+        [
+          "DFFRE",
+          "u_nav/u_map/u_tv/ph5_1_s0",
+          "CE"
+        ],
+        [
+          "DFFRE",
+          "u_nav/u_map/u_tv/ph5_0_s0",
+          "CE"
+        ],
+        [
+          "DFFRE",
+          "u_nav/u_map/u_tv/sl5_13_s0",
+          "CE"
+        ]
+      ]
+    },
+    {
+      "net": "u_nav/u_map/u_tv/n26292_4",
+      "resource": "LW",
+      "drivers": [
+        {
+          "kind": "LUT2",
+          "name": "u_nav/u_map/u_tv/n26292_s1",
+          "ports": {
+            "I0": "r2",
+            "I1": "\\u_nav/u_map/u_tv/s3 ",
+            "F": "\\u_nav/u_map/u_tv/n26292_4 "
+          }
+        }
+      ],
+      "direct_pin_counts": {
+        "I3": 8,
+        "CE": 387
+      },
+      "direct_load_kinds": {
+        "LUT4": 8,
+        "DFFRE": 387
+      },
+      "load_examples": [
+        [
+          "LUT4",
+          "u_nav/u_map/u_tv/n10612_s1",
+          "I3"
+        ],
+        [
+          "LUT4",
+          "u_nav/u_map/u_tv/n10838_s1",
+          "I3"
+        ],
+        [
+          "LUT4",
+          "u_nav/u_map/u_tv/n11064_s1",
+          "I3"
+        ],
+        [
+          "LUT4",
+          "u_nav/u_map/u_tv/n11290_s1",
+          "I3"
+        ]
+      ]
+    },
+    {
+      "net": "u_nav/u_map/u_tv/bm_wd_9",
+      "resource": "LW",
+      "drivers": [
+        {
+          "kind": "LUT3",
+          "name": "u_nav/u_map/u_tv/bm_wd_s4",
+          "ports": {
+            "I0": "r2",
+            "I1": "\\u_nav/u_map/u_tv/s8 ",
+            "I2": "\\u_nav/u_map/u_tv/n14261_13 ",
+            "F": "\\u_nav/u_map/u_tv/bm_wd_9 "
+          }
+        }
+      ],
+      "direct_pin_counts": {
+        "CE": 235
+      },
+      "direct_load_kinds": {
+        "DFFRE": 235
+      },
+      "load_examples": [
+        [
+          "DFFRE",
+          "u_nav/u_map/u_tv/bm_wa_13_s0",
+          "CE"
+        ],
+        [
+          "DFFRE",
+          "u_nav/u_map/u_tv/bm_wa_12_s0",
+          "CE"
+        ],
+        [
+          "DFFRE",
+          "u_nav/u_map/u_tv/bm_wa_11_s0",
+          "CE"
+        ],
+        [
+          "DFFRE",
+          "u_nav/u_map/u_tv/bm_wa_10_s0",
+          "CE"
+        ]
+      ]
+    },
+    {
+      "net": "u_nav/g_support.u_support/a1_13_6",
+      "resource": "LW",
+      "drivers": [
+        {
+          "kind": "LUT2",
+          "name": "u_nav/g_support.u_support/a1_13_s2",
+          "ports": {
+            "I0": "\\u_nav/n40_3 ",
+            "I1": "\\u_nav/n1866_4 ",
+            "F": "\\u_nav/g_support.u_support/a1_13_6 "
+          }
+        }
+      ],
+      "direct_pin_counts": {
+        "I3": 2,
+        "I1": 2,
+        "I2": 1,
+        "CE": 106,
+        "I": 1,
+        "RESET": 3
+      },
+      "direct_load_kinds": {
+        "LUT4": 2,
+        "LUT3": 2,
+        "LUT2": 1,
+        "DFFRE": 108,
+        "DFFSE": 1,
+        "INV": 1
+      },
+      "load_examples": [
+        [
+          "LUT4",
+          "u_nav/g_support.u_support/count_1_s2",
+          "I3"
+        ],
+        [
+          "LUT4",
+          "u_nav/g_support.u_support/seen_epoch_6_s3",
+          "I3"
+        ],
+        [
+          "LUT3",
+          "u_nav/g_support.u_support/query_base_9_s4",
+          "I1"
+        ],
+        [
+          "LUT2",
+          "u_nav/g_support.u_support/query_bit_3_s5",
+          "I1"
+        ]
+      ]
+    }
+  ],
+  "resources": {
+    "logic": {
+      "used": 90488.0,
+      "capacity": 138240.0
+    },
+    "register": {
+      "used": 42870.0,
+      "capacity": 139095.0
+    },
+    "bsram": {
+      "used": 334.0,
+      "capacity": 340.0
+    },
+    "dsp": {
+      "used": 163.5,
+      "capacity": 298.0
+    },
+    "io_port": {
+      "used": 51.0,
+      "capacity": 297.0
+    }
+  },
+  "cls": {
+    "used": 57590,
+    "capacity": 69120
+  },
+  "memory_reconciliation": {
+    "source_count": 316,
+    "wide_count": 18,
+    "actual_report_count": 334,
+    "post_pnr_primitive_count": 334,
+    "counts_reconciled": true,
+    "matched_split_pairs": 18,
+    "actual_by_top": {
+      "u_soc": 64,
+      "u_control": 44,
+      "u_nav": 226
+    }
+  },
+  "cdc": {
+    "lidar": {
+      "paths": 26,
+      "physical_passed": true,
+      "endpoints_match": true,
+      "effective_constraints_verified": false,
+      "required_constraints": 52
+    },
+    "sfp_host": {
+      "paths": 51,
+      "physical_passed": true,
+      "endpoints_match": true,
+      "effective_constraints_verified": false,
+      "required_constraints": 102
+    }
+  },
+  "direct_q_to_d_paths": 120,
+  "direct_connectivity_matches_baseline": true,
+  "timing_report_available": false,
+  "setup_violations": null,
+  "hold_violations": null,
+  "reset_pulse_verified": false,
+  "full_sfp_signoff": false,
+  "posp_requested": true,
+  "posp_generated": false,
+  "remaining_unrouted_endpoints_available": false,
+  "g2_passed": false,
+  "programmed": false,
+  "next_hypothesis": "The273 report has eight LW assignments but excludes the3892-CE observation and960-CE telemetry networks present in the old LW report. Request global routing for those two while retaining all prior PRIMARY/local constraints; no proof they belong to273 failed nets.",
+  "next_pnr": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_ce_pnr5",
+    "runtime": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-23T20:36:40.931552+08:00",
+      "max_runtime_s": 7200.0,
+      "max_no_observable_progress_s": 0.0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 56712,
+      "elapsed_s": 120.28200000000652,
+      "no_observable_progress_s": 2.0,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          2250020,
+          1792759118676490700
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          2249592,
+          1792759118676490700
+        ]
+      ]
+    },
+    "wrapper_pid": 49324,
+    "absolute_deadline": "2026-10-23T22:36:40.931552+08:00",
+    "stage": "placement",
+    "netlist_sdc_csr_unchanged": true,
+    "cst_added_commands": [
+      "CLOCK_LOC \"u_control/model_thread/observation/n15679_10\" BUFG = CE|LOGIC;\n",
+      "CLOCK_LOC \"u_control/telemetry_thread/snapshot_959_10\" BUFG = CE;\n"
+    ],
+    "final_report_available": false
+  }
+}
