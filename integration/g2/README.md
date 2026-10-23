@@ -60,7 +60,7 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 `audit_snapshot_fanout.py <联合SYN目录> --out <json>`用同一口径比较快照候选前后的真实联合网表：要求4032个快照Q位完整且无重复，追踪其D端直接LUT及输入负载，并单列CE/复位/时钟连接。统计局限于策略模块，子模块端口作为边界，不冒充全局扇出或实际布线状态；它不运行综合或仿真。
 
-`package_routing_repro.py <保留的PNR目录> --out <新目录>`把冻结网表/CST/SDC、完整有效选项、旧取消记录和便携有预算入口打成本地zip。Tcl输入路径相对解压目录，manifest强制diagnostic-only；没有执行工具、上传或硬件动作。当前包未按逻辑删减，不是已定位的最小故障电路或厂商bug证明；入口帮助/导入已检查，尚未独立执行整轮复现。保留原`.p/.db`在原目录，不将其当作新布局输入或拥塞证据。
+`package_routing_repro.py <保留的PNR目录> --out <新目录>`把冻结网表/CST/SDC、真实SFP的CSR/主机CDC、完整有效选项、原运行现场和便携有预算入口打成本地zip。Tcl输入路径相对解压目录，manifest强制diagnostic-only；没有执行工具、上传或硬件动作。当前包未按逻辑删减，不是已定位的最小故障电路或厂商bug证明；入口帮助/导入已检查，尚未独立执行整轮复现。保留原`.p/.db`在原目录，不将其当作新布局输入或拥塞证据。
 
 `collect_pnr_result.py`仅读取实际PNR报告，保留小数DSP用量；布线失败时记录未布通网络和缺失的时序，不用SYN频率填充Fmax。例：`python integration/g2/collect_pnr_result.py <build> --out <result.json>`。
 
@@ -85,3 +85,6 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 
 `clock_resource_plan_control_priority_v2.json`基于前轮PRIMARY实际落实、未布通802→273的结果，保留原8条约束，仅补充观测3892-CE与遥测960-CE的泛型BUFG请求。应用器要求已有实际负载/源对象；采集器要求两条实际LW并核对四真实时钟仍PRIMARY。Arora V不使用BUFS。前轮两条未列全局而较小导航信号占LW是待检假设，不证明273条失败的身份；120分钟/无静默终止的新轮仍需完整物理报告。
+
+
+两CE方案实际401未布通，较273版差；该config保留作失败复现，不作为当前较优实现。`package_routing_repro.py`现支持真实SFP：复制准确CSR/51主机CDC/全局计划与全部检查辅助，重写可迁移Tcl路径，保留原报告和p/db现场。默认120分钟总预算/静默0，强制diagnostic-only；仅本地打包，不运行工具、上传或下载硬件。`repro_sfp273_complete.zip`已验证输入保持、入口帮助和辅助导入，尚未执行完整独立复现；不能称为最小故障或工具bug证明。

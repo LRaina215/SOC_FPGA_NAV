@@ -877,8 +877,8 @@
   },
   "programmed": false,
   "g2_passed": false,
-  "next_step": "Compare actual global allocation, unrouted nets, BSRAM placement and complete timing. Full PCS/reset/IO review remains required.",
-  "updated_at": "2026-10-23T21:54:42.643291+08:00",
+  "next_step": "Keep273 candidate; additional CE plan failed to improve. Complete real-SFP local reproduction package is ready; no rerun, upload, or hardware action. Obtain per-net/placement evidence before further routing changes.",
+  "updated_at": "2026-10-23T22:18:09.847078+08:00",
   "slf_attribute_experiment": {
     "before_build": "F:\\nav_integration_g2_20261023\\sfp_history128_phyguard_lease_syn3",
     "after_build": "F:\\nav_integration_g2_20261023\\sfp_slf64_clockplan_syn4",
@@ -1069,18 +1069,18 @@
       "system_telemetry_file": "system_telemetry.jsonl",
       "telemetry_is_progress_evidence": false,
       "pid": 56712,
-      "elapsed_s": 4655.610000000044,
-      "no_observable_progress_s": 4212.875,
+      "elapsed_s": 5086.344000000041,
+      "no_observable_progress_s": 0.0,
       "observed_files": [
         [
           "gw_sh.log",
-          2250146,
-          1792759443446675800
+          2250819,
+          1792764085083680700
         ],
         [
           "impl\\pnr\\g2_top.log",
-          2249718,
-          1792759443446675800
+          2250327,
+          1792764078728036100
         ],
         [
           "impl\\pnr\\g2_top.db",
@@ -1091,72 +1091,40 @@
           "impl\\pnr\\g2_top.p",
           14112896,
           1792759415562910300
+        ],
+        [
+          "impl\\pnr\\g2_top.rpt.txt",
+          93260,
+          1792764075866558800
+        ],
+        [
+          "impl\\pnr\\g2_top.vo",
+          45745196,
+          1792764078720020500
         ]
-      ]
+      ],
+      "tool_exit": 1,
+      "ended_at": "2026-10-23T22:01:27.261120+08:00"
     },
     "wrapper_pid": 49324,
     "absolute_deadline": "2026-10-23T22:36:40.931552+08:00",
-    "stage": "Routing Phase0 completed",
+    "stage": "finished_pr0004_unrouted",
     "netlist_sdc_csr_unchanged": true,
     "cst_added_commands": [
       "CLOCK_LOC \"u_control/model_thread/observation/n15679_10\" BUFG = CE|LOGIC;\n",
       "CLOCK_LOC \"u_control/telemetry_thread/snapshot_959_10\" BUFG = CE;\n"
     ],
-    "final_report_available": false
+    "final_report_available": true,
+    "timing_report_available": false,
+    "unrouted_nets": 401,
+    "result_evidence": "sfp_ce_final_unrouted401.json"
   },
   "next_pnr_current_check": {
-    "checked_at": "2026-10-23T21:54:42.643291+08:00",
-    "runtime": {
-      "command": [
-        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
-        "run.tcl"
-      ],
-      "started_at": "2026-10-23T20:36:40.931552+08:00",
-      "max_runtime_s": 7200.0,
-      "max_no_observable_progress_s": 0.0,
-      "cancelled": false,
-      "programmed": false,
-      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
-      "system_telemetry_file": "system_telemetry.jsonl",
-      "telemetry_is_progress_evidence": false,
-      "pid": 56712,
-      "elapsed_s": 4655.610000000044,
-      "no_observable_progress_s": 4212.875,
-      "observed_files": [
-        [
-          "gw_sh.log",
-          2250146,
-          1792759443446675800
-        ],
-        [
-          "impl\\pnr\\g2_top.log",
-          2249718,
-          1792759443446675800
-        ],
-        [
-          "impl\\pnr\\g2_top.db",
-          2411084,
-          1792759415031189500
-        ],
-        [
-          "impl\\pnr\\g2_top.p",
-          14112896,
-          1792759415562910300
-        ]
-      ]
-    },
-    "stage": "Routing Phase0 completed",
-    "last_vendor_log_time": "2026-10-23T20:44:03.446676+08:00",
-    "reports": {
-      ".rpt.txt": false,
-      ".tr": false,
-      ".vo": false,
-      ".posp": false
-    },
-    "ce_global_assignment_verified": null,
-    "unrouted_nets": null,
-    "delta_from273": null,
-    "tool_running": true,
-    "programmed": false
+    "checked_at": "2026-10-23T22:18:09.847078+08:00",
+    "tool_running": false,
+    "ce_global_assignment_verified": true,
+    "unrouted_nets": 401,
+    "delta_from273": 128,
+    "result_evidence": "sfp_ce_final_unrouted401.json"
   }
 }
