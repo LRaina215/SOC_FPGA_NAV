@@ -54,6 +54,8 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 当前结论与原始路径见`docs/4_design/g2_joint_resources_20261022.md`，唯一当前状态表在`docs/1_plan/system_integration_plan_20261021.md`。
 
+`package_routing_repro.py <保留的PNR目录> --out <新目录>`把冻结网表/CST/SDC、完整有效选项、旧取消记录和便携有预算入口打成本地zip。Tcl输入路径相对解压目录，manifest强制diagnostic-only；没有执行工具、上传或硬件动作。当前包未按逻辑删减，不是已定位的最小故障电路或厂商bug证明；入口帮助/导入已检查，尚未独立执行整轮复现。保留原`.p/.db`在原目录，不将其当作新布局输入或拥塞证据。
+
 `collect_pnr_result.py`仅读取实际PNR报告，保留小数DSP用量；布线失败时记录未布通网络和缺失的时序，不用SYN频率填充Fmax。例：`python integration/g2/collect_pnr_result.py <build> --out <result.json>`。
 
 签核还检查已报告的Recovery、Removal及最小脉宽最差表；存在负裕量或缺失表时不宣布G2通过。表中负数计数仅为工具报告出的行，不当作全部违例端点数。IO/CDC与器件版本完整签核继续单列。
