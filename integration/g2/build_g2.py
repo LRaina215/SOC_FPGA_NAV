@@ -31,6 +31,7 @@ def main():
     ap.add_argument('--packed-weight9',action='store_true',help='lossless weight bitplanes in native9 modes; no weight/cycle change')
     ap.add_argument('--gyro-sum-exact-widths',action='store_true',help='exact live unsigned17 raw gyro sum, no gate/parameter/cycle change')
     ap.add_argument('--trig-block-rom',action='store_true',help='initialized navigation lookup tables in native BSRAM; values and read cycle unchanged')
+    ap.add_argument('--snapshot-mux-fanout',action='store_true',help='cycle-exact snapshot update with bounded data-mux selector fanout; CE/reset unchanged')
     ap.add_argument('--wide-split',type=int,choices=[0,1],default=0,help='explicit PNR wide-RAM split; 1 duplicates every 32/36-bit block')
     a=ap.parse_args()
     if a.command_units_pipeline and not a.command_lease:ap.error('--command-units-pipeline requires --command-lease')
@@ -103,6 +104,11 @@ def main():
         spec=importlib.util.spec_from_file_location('gyro_widths',ROOT/'control/tools/g2_gyro_sum_widths.py')
         generator=importlib.util.module_from_spec(spec);spec.loader.exec_module(generator)
         generator.generate(out/'control/imu_fusion.v')
+    if a.snapshot_mux_fanout:
+        import importlib.util
+        spec=importlib.util.spec_from_file_location('snapshot_fanout',ROOT/'control/tools/g2_snapshot_fanout.py')
+        generator=importlib.util.module_from_spec(spec);spec.loader.exec_module(generator)
+        generator.generate(out/'control/rl_policy_tick_v5.v')
     shutil.copyfile(ROOT/'integration/g2/command_lease_guard.v',out/'command_lease_guard.v')
     shutil.copyfile(ROOT/'integration/g2/nav_command_units.v',out/'nav_command_units.v')
     files=[nav/x for x in ALL_RTL+SOC+['rtl/net/rgmii_mac100.v']]
@@ -137,6 +143,7 @@ def main():
         packed_weight9=a.packed_weight9,
         gyro_sum_exact_widths=a.gyro_sum_exact_widths,
         trig_block_rom=a.trig_block_rom,
+        snapshot_mux_fanout=a.snapshot_mux_fanout,
         device='GW5AT-LV138PG484AC1/I0',device_version='C',clock_core_mhz=50,synthesis_frequency_hint_mhz=50,
         control_commit='6443f5678b4de222c22cbf331b8396f7c8df6a41',control_source=str(control),control_adapter='control_nav_adapter.patch',control_weights_changed=False,
         source_files=[str(p) for p in files],programmed=False,

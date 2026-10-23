@@ -35,12 +35,14 @@ def main():
     launch.add_argument('--start-now',action='store_true',help='explicit serial launch after the prior tool has exited')
     ap.add_argument('--gyro-sum-exact-widths',action='store_true',help='derive only the already-validated17-bit gyro sum from frozen RTL')
     ap.add_argument('--trig-block-rom',action='store_true',help='derive initialized navigation lookup storage from the frozen directed RTL')
+    ap.add_argument('--snapshot-mux-fanout',action='store_true',help='derive cycle-exact snapshot mux fanout from frozen scheduler RTL')
     a=ap.parse_args();src=a.source.resolve();out=a.out.resolve()
     assert (a.wait_pid is None or a.wait_pid>0) and out!=src and src not in out.parents and out not in src.parents
     manifest=json.loads((src/'manifest.json').read_text(encoding='utf-8'))
     assert manifest['stage']=='syn' and not manifest['control_weights_changed'] and not manifest['programmed']
     assert not a.gyro_sum_exact_widths or not manifest.get('gyro_sum_exact_widths',False),'source already contains this candidate'
     assert not a.trig_block_rom or (manifest['packing']=='directed' and not manifest.get('trig_block_rom',False)),'requires directed source without this candidate'
+    assert not a.snapshot_mux_fanout or not manifest.get('snapshot_mux_fanout',False),'source already contains snapshot candidate'
     original=(src/'run.tcl').read_text(encoding='utf-8')
     assert [s.strip()for s in original.splitlines()if s.strip().startswith('run ')]==['run syn']
     # Preserve the cancelled directory, including partial implementation files.
@@ -59,9 +61,17 @@ def main():
         from prepare_trig_block_rom import generate
         generate(out/'nav/rtl/common/nav_ram_sdp.v')
         manifest['trig_block_rom']=True
+    if a.snapshot_mux_fanout:
+        import importlib.util
+        generator_path=Path(__file__).resolve().parents[2]/'control/tools/g2_snapshot_fanout.py'
+        spec=importlib.util.spec_from_file_location('snapshot_fanout',generator_path)
+        generator=importlib.util.module_from_spec(spec);spec.loader.exec_module(generator)
+        generator.generate(out/'control/rl_policy_tick_v5.v')
+        manifest['snapshot_mux_fanout']=True
     expected=[]
     if a.gyro_sum_exact_widths:expected.append('control/imu_fusion.v')
     if a.trig_block_rom:expected.append('nav/rtl/common/nav_ram_sdp.v')
+    if a.snapshot_mux_fanout:expected.append('control/rl_policy_tick_v5.v')
     for name in manifest['source_files']:
         previous=Path(name);relative=previous.relative_to(src)
         if previous.read_bytes()!=(out/relative).read_bytes():modified.append(relative.as_posix())

@@ -54,6 +54,8 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 `--trig-block-rom`仅用于directed布局，将`nav_ram_sdp`中INIT_FILE非空的表使用原读写/初始/保持代码加block属性实现；当前共同工程仅四份1024×16正弦表，不改变数值或读取拍。`build_g2.py`和`retry_frozen_synthesis.py`均支持；后者只修改冻结输入中的`nav/rtl/common/nav_ram_sdp.v`，原控制/固件/权重保持。`audit_trig_routing.py <SYN-build> --out <json>`记录实际四表原语及局部ROM16地址引用，不作物理拥塞或全局扇出结论。`test_trig_block_rom.py --source <frozen-SYN> --out <new-dir>`覆盖两独立端口全部地址、初始零及使能保持，再综合并用真实厂商原语验证INIT；小模块2块不能代替联合占用。若仅报告字段解析出错而RTL/SYN已完成，可显式`--resume-vendor-init`，逐字核对所有保存输入/设置后继续，不重跑已完成阶段。
 
+`--snapshot-mux-fanout`由`control/tools/g2_snapshot_fanout.py`生成策略快照候选，仅将原捕获/移位更新提取为同拍独立过程，对数据选择信号使用`syn_maxfan=128`；CE/复位不加该属性，原控制源和125Hz保持。两个构建入口均支持，冻结派生逐字检查只有`control/rl_policy_tick_v5.v`改变。`test_snapshot_fanout.py --out <new-dir>`比较原/新快照、所有推理核心输入和发布/诊断输出，包括故障、超时、复位；核心测试替身不代表真实RL验证。`measure_snapshot_fanout.py --out <new-dir> [--only original|fanout128]`使用相同测试替身做小范围综合，只比较结构和模块内直接LUT输入负载，不报告产品时序；`--only`用于保留已完成一侧、不重复测试。`audit_global_muxes.py <PNR-build> --out <json>`追踪实际全局网络分配及其到快照D端的连接，不将高负载冒充未布通网络名单。
+
 当前结论与原始路径见`docs/4_design/g2_joint_resources_20261022.md`，唯一当前状态表在`docs/1_plan/system_integration_plan_20261021.md`。
 
 `package_routing_repro.py <保留的PNR目录> --out <新目录>`把冻结网表/CST/SDC、完整有效选项、旧取消记录和便携有预算入口打成本地zip。Tcl输入路径相对解压目录，manifest强制diagnostic-only；没有执行工具、上传或硬件动作。当前包未按逻辑删减，不是已定位的最小故障电路或厂商bug证明；入口帮助/导入已检查，尚未独立执行整轮复现。保留原`.p/.db`在原目录，不将其当作新布局输入或拥塞证据。

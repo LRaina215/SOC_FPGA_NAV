@@ -1,0 +1,1050 @@
+{
+  "recorded_at": "2026-10-23T13:48:49.245906+08:00",
+  "purpose": "Reduce measured snapshot data selector fanout without changing captured bits, core interface timing or policy period; routing benefit is unverified",
+  "failed_route_build": "F:\\nav_integration_g2_20261023\\trigblock_extended90_diagnostic",
+  "physical_global_audit": {
+    "build": "F:\\nav_integration_g2_20261023\\trigblock_extended90_diagnostic",
+    "global_nets": [
+      {
+        "net": "clk50_d",
+        "resource": "PRIMARY",
+        "drivers": [
+          {
+            "kind": "IBUF",
+            "name": "clk50_ibuf",
+            "ports": {
+              "I": "clk50",
+              "O": "clk50_d"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "CLK": 41032,
+          "I": 1,
+          "CLKA": 219,
+          "CLKB": 221
+        }
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "resource": "PRIMARY",
+        "drivers": [
+          {
+            "kind": "IBUF",
+            "name": "rgmii_rxc_ibuf",
+            "ports": {
+              "I": "rgmii_rxc",
+              "O": "rgmii_rxc_d"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "CLK": 137,
+          "I": 1,
+          "CLKA": 2
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/n6632_7",
+        "resource": "PRIMARY",
+        "drivers": [
+          {
+            "kind": "LUT3",
+            "name": "u_control/model_thread/policy/core/n6632_s3",
+            "ports": {
+              "I0": "u_control/model_thread/policy/state [0]",
+              "I1": "u_control/model_thread/policy/state [2]",
+              "I2": "u_control/model_thread/policy/state [1]",
+              "F": "u_control/model_thread/policy/n6632_7"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "I0": 996,
+          "I2": 4
+        },
+        "selector_luts": 1000,
+        "direct_snapshot_data_sinks": 996,
+        "snapshot_examples": [
+          [
+            "DFFCE",
+            "u_control/model_thread/policy/snapshot_3012_s0",
+            "D"
+          ],
+          [
+            "DFFCE",
+            "u_control/model_thread/policy/snapshot_3013_s0",
+            "D"
+          ],
+          [
+            "DFFCE",
+            "u_control/model_thread/policy/snapshot_3014_s0",
+            "D"
+          ]
+        ]
+      },
+      {
+        "net": "u_control/model_thread/policy/n6632_8",
+        "resource": "PRIMARY",
+        "drivers": [
+          {
+            "kind": "LUT3",
+            "name": "u_control/model_thread/policy/core/n6632_s4",
+            "ports": {
+              "I0": "u_control/model_thread/policy/state [0]",
+              "I1": "u_control/model_thread/policy/state [2]",
+              "I2": "u_control/model_thread/policy/state [1]",
+              "F": "u_control/model_thread/policy/n6632_8"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "I0": 1000
+        },
+        "selector_luts": 1000,
+        "direct_snapshot_data_sinks": 1000,
+        "snapshot_examples": [
+          [
+            "DFFCE",
+            "u_control/model_thread/policy/snapshot_2012_s0",
+            "D"
+          ],
+          [
+            "DFFCE",
+            "u_control/model_thread/policy/snapshot_2013_s0",
+            "D"
+          ],
+          [
+            "DFFCE",
+            "u_control/model_thread/policy/snapshot_2014_s0",
+            "D"
+          ]
+        ]
+      },
+      {
+        "net": "u_control/model_thread/policy/n6632_9",
+        "resource": "PRIMARY",
+        "drivers": [
+          {
+            "kind": "LUT3",
+            "name": "u_control/model_thread/policy/core/n6632_s5",
+            "ports": {
+              "I0": "u_control/model_thread/policy/state [0]",
+              "I1": "u_control/model_thread/policy/state [2]",
+              "I2": "u_control/model_thread/policy/state [1]",
+              "F": "u_control/model_thread/policy/n6632_9"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "I3": 332,
+          "I0": 668
+        },
+        "selector_luts": 1000,
+        "direct_snapshot_data_sinks": 1000,
+        "snapshot_examples": [
+          [
+            "DFFCE",
+            "u_control/model_thread/policy/snapshot_1012_s0",
+            "D"
+          ],
+          [
+            "DFFCE",
+            "u_control/model_thread/policy/snapshot_1013_s0",
+            "D"
+          ],
+          [
+            "DFFCE",
+            "u_control/model_thread/policy/snapshot_1014_s0",
+            "D"
+          ]
+        ]
+      },
+      {
+        "net": "u_control/model_thread/policy/n6632_10",
+        "resource": "PRIMARY",
+        "drivers": [
+          {
+            "kind": "LUT3",
+            "name": "u_control/model_thread/policy/core/n6632_s6",
+            "ports": {
+              "I0": "u_control/model_thread/policy/state [0]",
+              "I1": "u_control/model_thread/policy/state [2]",
+              "I2": "u_control/model_thread/policy/state [1]",
+              "F": "u_control/model_thread/policy/n6632_10"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "I3": 1000
+        },
+        "selector_luts": 1000,
+        "direct_snapshot_data_sinks": 1000,
+        "snapshot_examples": [
+          [
+            "DFFCE",
+            "u_control/model_thread/policy/snapshot_12_s0",
+            "D"
+          ],
+          [
+            "DFFCE",
+            "u_control/model_thread/policy/snapshot_13_s0",
+            "D"
+          ],
+          [
+            "DFFCE",
+            "u_control/model_thread/policy/snapshot_14_s0",
+            "D"
+          ]
+        ]
+      },
+      {
+        "net": "u_nav/a_q_15_6",
+        "resource": "PRIMARY",
+        "drivers": [
+          {
+            "kind": "LUT3",
+            "name": "u_nav/a_q_15_s2",
+            "ports": {
+              "I0": "r2",
+              "I1": "u_nav/a_q_15_7",
+              "I2": "u_nav/a_q_15_12",
+              "F": "u_nav/a_q_15_6"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "I2": 1,
+          "CE": 309
+        }
+      },
+      {
+        "net": "u_nav/u_match/u_lf/n15905_7",
+        "resource": "PRIMARY",
+        "drivers": [
+          {
+            "kind": "LUT2",
+            "name": "u_nav/u_match/u_lf/n15905_s2",
+            "ports": {
+              "I0": "r2",
+              "I1": "u_nav/u_match/u_lf/vb",
+              "F": "u_nav/u_match/u_lf/n15905_7"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "CE": 363
+        }
+      },
+      {
+        "net": "r2",
+        "resource": "LW",
+        "drivers": [
+          {
+            "kind": "DFFPE",
+            "name": "u_rs/r2_s1",
+            "ports": {
+              "D": "u_rs/r1",
+              "CLK": "clk50_d",
+              "CE": "VCC",
+              "PRESET": "n8_6",
+              "Q": "r2"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "I0": 263,
+          "I1": 36,
+          "I2": 88,
+          "RESET": 5376,
+          "I": 1,
+          "I3": 24,
+          "PRESET": 17,
+          "CLEAR": 497,
+          "SET": 329,
+          "CE": 3
+        }
+      },
+      {
+        "net": "u_control/n2371_7",
+        "resource": "LW",
+        "drivers": [
+          {
+            "kind": "LUT3",
+            "name": "u_control/n2371_s2",
+            "ports": {
+              "I0": "r2",
+              "I1": "u_control/n6_4",
+              "I2": "u_control/n6_5",
+              "F": "u_control/n2371_7"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "I2": 8,
+          "CLEAR": 7534,
+          "PRESET": 101,
+          "I0": 10,
+          "RESET": 1419,
+          "SET": 83,
+          "I1": 9,
+          "D": 1
+        }
+      },
+      {
+        "net": "u_control/model_thread/observation/n15679_10",
+        "resource": "LW",
+        "drivers": [
+          {
+            "kind": "LUT3",
+            "name": "u_control/model_thread/observation/n15680_s4",
+            "ports": {
+              "I0": "u_control/model_thread/observation/state [0]",
+              "I1": "u_control/model_thread/observation/state [1]",
+              "I2": "u_control/model_thread/observation/state [2]",
+              "F": "u_control/model_thread/observation/n15679_10"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "CE": 4000,
+          "D": 1
+        }
+      },
+      {
+        "net": "u_control/model_thread/observation/n21455_10",
+        "resource": "LW",
+        "drivers": [
+          {
+            "kind": "LUT3",
+            "name": "u_control/model_thread/observation/n30054_s1",
+            "ports": {
+              "I0": "u_control/model_status_flags_1 [6]",
+              "I1": "u_control/n2371_7",
+              "I2": "u_control/n23665_13",
+              "F": "u_control/model_thread/observation/n21455_10"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "CE": 438,
+          "RESET": 112
+        }
+      },
+      {
+        "net": "u_control/model_thread/observation/n331_7",
+        "resource": "LW",
+        "drivers": [
+          {
+            "kind": "LUT4",
+            "name": "u_control/model_thread/observation/n331_s2",
+            "ports": {
+              "I0": "u_control/model_status_flags_1 [6]",
+              "I1": "r2",
+              "I2": "u_control/n6_4",
+              "I3": "u_control/n6_5",
+              "F": "u_control/model_thread/observation/n331_7"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "I0": 3,
+          "CLEAR": 4360,
+          "PRESET": 1
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_0_7",
+        "resource": "LW",
+        "drivers": [
+          {
+            "kind": "LUT4",
+            "name": "u_control/model_thread/policy/snapshot_4031_s4",
+            "ports": {
+              "I0": "u_control/model_status_flags_1 [6]",
+              "I1": "u_control/model_thread/gowin_reg_fusion_seen_3",
+              "I2": "u_control/model_thread/n414_4",
+              "I3": "u_control/model_thread/policy/snapshot_4031_9",
+              "F": "u_control/model_thread/policy/snapshot_0_7"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "CE": 4032
+        }
+      },
+      {
+        "net": "u_control/telemetry_thread/snapshot_959_10",
+        "resource": "LW",
+        "drivers": [
+          {
+            "kind": "LUT4",
+            "name": "u_control/telemetry_thread/snapshot_959_s4",
+            "ports": {
+              "I0": "u_control/telemetry_thread/active",
+              "I1": "u_control/telemetry_thread/busy",
+              "I2": "u_control/telemetry_thread/n6520_14",
+              "I3": "u_control/telemetry_thread/n1297_4",
+              "F": "u_control/telemetry_thread/snapshot_959_10"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "CE": 960
+        }
+      },
+      {
+        "net": "u_nav/u_pf/n3967_6",
+        "resource": "LW",
+        "drivers": [
+          {
+            "kind": "LUT4",
+            "name": "u_nav/u_pf/n3967_s2",
+            "ports": {
+              "I0": "r2",
+              "I1": "u_nav/r_LIDAR_CTRL_Z [5]",
+              "I2": "u_nav/pt_ready_3",
+              "I3": "u_nav/pf_valid",
+              "F": "u_nav/u_pf/n3967_6"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "CE": 363
+        }
+      }
+    ],
+    "scope": "actual flat-netlist direct loads and reported global assignment; not route status, congestion or identification of the 483 unrouted nets"
+  },
+  "rtl_contract": {
+    "passed": true,
+    "cycles": 42000,
+    "publications": 34,
+    "writes": 10080,
+    "resets": 5,
+    "cases": [
+      "changing all snapshot bits every cycle",
+      "all core input timing/data",
+      "sensor/enable interruption",
+      "core error/saturation/ID mismatch",
+      "deadline",
+      "reset while active"
+    ],
+    "scope": "isolated policy scheduler/transfer equivalence with a core test double; no RL inference or physical routing acceptance",
+    "weights_changed": false,
+    "period_parameter_changed": false
+  },
+  "module_synthesis": [
+    {
+      "variant": "original",
+      "tool_exit": 0,
+      "errors": [],
+      "effective_options": {
+        "global_freq_mhz": 50.0,
+        "wide_split": 0,
+        "effective_options": "F:\\nav_integration_g2_20261023\\snapshot_fanout_syn1\\original\\effective_options.tcl",
+        "extra_options": {}
+      },
+      "resources": {
+        "name": "rl_policy_tick_v5",
+        "Register": "4371",
+        "Alu": "63",
+        "Lut": "4468",
+        "T_Register": "4480(4371)",
+        "T_Alu": "63(63)",
+        "T_Lut": "4591(4468)"
+      },
+      "top_direct_lut_loads": [
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "n1701_13",
+          "loads": 1000,
+          "driver": {
+            "kind": "LUT3",
+            "name": "n1701_s7",
+            "inputs": {
+              "I0": "state[1]",
+              "I1": "state[2]",
+              "I2": "state[0]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "n26_12",
+          "loads": 1000,
+          "driver": {
+            "kind": "LUT3",
+            "name": "n26_s7",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "n1701_12",
+          "loads": 1000,
+          "driver": {
+            "kind": "LUT3",
+            "name": "n1701_s6",
+            "inputs": {
+              "I0": "state[1]",
+              "I1": "state[2]",
+              "I2": "state[0]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "n26_11",
+          "loads": 1000,
+          "driver": {
+            "kind": "LUT3",
+            "name": "n26_s6",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "n1701_11",
+          "loads": 1000,
+          "driver": {
+            "kind": "LUT3",
+            "name": "n1701_s5",
+            "inputs": {
+              "I0": "state[1]",
+              "I1": "state[2]",
+              "I2": "state[0]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "n26_10",
+          "loads": 1000,
+          "driver": {
+            "kind": "LUT3",
+            "name": "n26_s5",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "n1701_10",
+          "loads": 1000,
+          "driver": {
+            "kind": "LUT3",
+            "name": "n1701_s4",
+            "inputs": {
+              "I0": "state[1]",
+              "I1": "state[2]",
+              "I2": "state[0]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "n26_9",
+          "loads": 1000,
+          "driver": {
+            "kind": "LUT3",
+            "name": "n26_s4",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "enable_d",
+          "loads": 116,
+          "driver": null
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "n1593_9",
+          "loads": 50,
+          "driver": {
+            "kind": "LUT4",
+            "name": "n1593_s4",
+            "inputs": {
+              "I0": "n27434_8",
+              "I1": "n27434_9",
+              "I2": "n27434_10",
+              "I3": "n1593_10"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "n27434_7",
+          "loads": 44,
+          "driver": {
+            "kind": "LUT4",
+            "name": "n27434_s2",
+            "inputs": {
+              "I0": "n27434_8",
+              "I1": "n27434_9",
+              "I2": "n27434_10",
+              "I3": "n27434_11"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "state[0]",
+          "loads": 42,
+          "driver": null
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "state[2]",
+          "loads": 41,
+          "driver": null
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "state[1]",
+          "loads": 41,
+          "driver": null
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "n23118_10",
+          "loads": 30,
+          "driver": {
+            "kind": "LUT4",
+            "name": "n23118_s5",
+            "inputs": {
+              "I0": "n27434_10",
+              "I1": "n27434_8",
+              "I2": "n23141_10",
+              "I3": "n26_6"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "n26_5",
+          "loads": 19,
+          "driver": {
+            "kind": "LUT3",
+            "name": "n26_s1",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "a0[8]",
+          "loads": 13,
+          "driver": null
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "a0[4]",
+          "loads": 12,
+          "driver": null
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "n54322_5",
+          "loads": 11,
+          "driver": {
+            "kind": "LUT4",
+            "name": "n54322_s2",
+            "inputs": {
+              "I0": "fault_d[0]",
+              "I1": "fault_d[1]",
+              "I2": "fault_d[2]",
+              "I3": "sensor_ok_d"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "n23069_7",
+          "loads": 11,
+          "driver": {
+            "kind": "LUT4",
+            "name": "n23069_s2",
+            "inputs": {
+              "I0": "completed_frames_d[8]",
+              "I1": "n23078_7",
+              "I2": "n23074_8",
+              "I3": "n23069_8"
+            }
+          }
+        }
+      ],
+      "source_result": "F:\\nav_integration_g2_20261023\\snapshot_fanout_syn1\\result.json"
+    },
+    {
+      "variant": "fanout128",
+      "tool_exit": 0,
+      "errors": [],
+      "effective_options": {
+        "global_freq_mhz": 50.0,
+        "wide_split": 0,
+        "effective_options": "F:\\nav_integration_g2_20261023\\snapshot_fanout_syn_retry1\\fanout128\\effective_options.tcl",
+        "extra_options": {}
+      },
+      "resources": {
+        "name": "rl_policy_tick_v5",
+        "Register": "4371",
+        "Alu": "63",
+        "Lut": "4487",
+        "T_Register": "4480(4371)",
+        "T_Alu": "63(63)",
+        "T_Lut": "4605(4487)"
+      },
+      "top_direct_lut_loads": [
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_37",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s33",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_36",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s32",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_35",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s31",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_34",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s30",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_33",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s29",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_32",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s28",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_31",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s27",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_30",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s26",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_29",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s25",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_28",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s24",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_27",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s23",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_26",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s22",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_25",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s21",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_24",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s20",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_23",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s19",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_22",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s18",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_21",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s17",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_20",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s16",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_19",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s15",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        },
+        {
+          "module": "rl_policy_tick_v5",
+          "net": "snapshot_shift_select_18",
+          "loads": 128,
+          "driver": {
+            "kind": "LUT3",
+            "name": "snapshot_shift_select_s14",
+            "inputs": {
+              "I0": "state[0]",
+              "I1": "state[2]",
+              "I2": "state[1]"
+            }
+          }
+        }
+      ],
+      "source_result": "F:\\nav_integration_g2_20261023\\snapshot_fanout_syn_retry1\\result.json"
+    }
+  ],
+  "module_total_delta": {
+    "registers": 0,
+    "luts": 14,
+    "alu": 0
+  },
+  "module_scope": "identical core test double; module-local direct LUT loads, no full inference or timing claim",
+  "preflight_failure": {
+    "build": "F:\\nav_integration_g2_20261023\\snapshot_fanout_syn1\\fanout128",
+    "stage": "validate settings",
+    "timeout_seconds": 60,
+    "synthesis_started": false,
+    "retried_only_unexecuted_candidate": true
+  },
+  "manual_evidence": [
+    {
+      "document": "SUG550-2.4E",
+      "printed_pages": "57-58",
+      "finding": "syn_maxfan applies to data mux control, but not clock/CE/reset/set"
+    },
+    {
+      "document": "SUG1541-1.0E",
+      "printed_page": 56,
+      "finding": "FloorPlanner Place View and MultiView require successfully completed PNR"
+    }
+  ],
+  "failed_route_limit": "Neither the failed report nor public Tcl command inventory yielded the 483 individual unrouted nets. Protected .p and binary .db were preserved, not decoded.",
+  "frozen_joint_job": {
+    "source": "F:\\nav_integration_g2_20261023\\directed_weight9_gyro17_trigblock_coverage50",
+    "build": "F:\\nav_integration_g2_20261023\\directed_trigblock_snapshot128_coverage50",
+    "wait_pid": null,
+    "programmed": false,
+    "source_frozen_before_wait": true,
+    "automatic_pnr": false,
+    "modified_rtl_inputs": [
+      "control/rl_policy_tick_v5.v"
+    ],
+    "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+    "phase": "not_started_host_memory",
+    "updated_at": "2026-10-23T13:49:05.481255+08:00",
+    "minimum_start_free_bytes": 2147483648,
+    "minimum_start_available_commit_bytes": 4294967296,
+    "free_bytes": 874749952,
+    "available_commit_bytes": 993660928
+  },
+  "programmed": false,
+  "g2_passed": false,
+  "weights_changed": false,
+  "policy_frequency_hz": 125
+}
