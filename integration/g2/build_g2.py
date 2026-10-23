@@ -33,11 +33,13 @@ def main():
     ap.add_argument('--trig-block-rom',action='store_true',help='initialized navigation lookup tables in native BSRAM; values and read cycle unchanged')
     ap.add_argument('--snapshot-mux-fanout',action='store_true',help='cycle-exact snapshot update with bounded data-mux selector fanout; CE/reset unchanged')
     ap.add_argument('--history-data-fanout',action='store_true',help='bound the observation initialized data-mux selector to 128 loads; attribute only')
+    ap.add_argument('--lease-output-select',action='store_true',help='cycle-exact stop selection after lease ramp arithmetic')
     ap.add_argument('--real-sfp',action='store_true',help='real Q0 SFP MAC/PCS/SerDes plus read-only full UART V2 telemetry')
     ap.add_argument('--prepare-only',action='store_true',help='freeze/preflight inputs only; run with bounded frozen synthesis supervisor')
     ap.add_argument('--wide-split',type=int,choices=[0,1],default=0,help='explicit PNR wide-RAM split; 1 duplicates every 32/36-bit block')
     a=ap.parse_args()
     if a.command_units_pipeline and not a.command_lease:ap.error('--command-units-pipeline requires --command-lease')
+    if a.lease_output_select and not a.command_lease:ap.error('--lease-output-select requires --command-lease')
     if a.packed_weight9 and a.packing not in ('control','both','ssram','hybrid','directed'):ap.error('--packed-weight9 requires a control storage layout')
     if a.trig_block_rom and a.packing!='directed':ap.error('--trig-block-rom requires directed storage')
     out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
@@ -122,6 +124,9 @@ def main():
         generator=importlib.util.module_from_spec(spec);spec.loader.exec_module(generator)
         generator.generate(out/'control/rl_observation_v5.v')
     shutil.copyfile(ROOT/'integration/g2/command_lease_guard.v',out/'command_lease_guard.v')
+    if a.lease_output_select:
+        from prepare_lease_output_select import generate
+        generate(out/'command_lease_guard.v')
     shutil.copyfile(ROOT/'integration/g2/nav_command_units.v',out/'nav_command_units.v')
     files=[nav/x for x in ALL_RTL+SOC+['rtl/net/rgmii_mac100.v']]
     if nav/'rtl/net/host_control_tx.v' not in files:files.append(nav/'rtl/net/host_control_tx.v')
@@ -169,6 +174,7 @@ def main():
         gyro_sum_exact_widths=a.gyro_sum_exact_widths,
         trig_block_rom=a.trig_block_rom,
         snapshot_mux_fanout=a.snapshot_mux_fanout,history_data_fanout=a.history_data_fanout,
+        lease_output_select=a.lease_output_select,
         real_sfp=a.real_sfp,full_control_telemetry=a.real_sfp,
         sfp_phy_link_guard=a.real_sfp,
         complete_sfp_cdc_acceptance=False,

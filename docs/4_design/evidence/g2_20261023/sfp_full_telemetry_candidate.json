@@ -107,6 +107,15 @@
         "synchronous release after RX clock returns",
         "SGMII PCS up but copper link down"
       ]
+    },
+    "sfp_client": {
+      "offline_contracts_passed": 6,
+      "signatures": [
+        "SFP1 at 0",
+        "SFP2 at 0x1300"
+      ],
+      "wrong_signature_writes": 0,
+      "hardware_accessed": false
     }
   },
   "pnr": {
@@ -118,7 +127,14 @@
     "lidar_paths": 26,
     "host_fifo_toggle_paths": 51,
     "expected_active_constraints": 154,
-    "final_reports_available": false
+    "final_reports_available": false,
+    "cancelled": true,
+    "elapsed_s": 2529.170999999973,
+    "no_observable_progress_s": 2100.4689999999828,
+    "reason": "no observable log/artifact progress within budget",
+    "tool_exit": 1,
+    "ended_at": "2026-10-23T16:45:27.428472+08:00",
+    "scope": "budget cancellation without final reports; not measured timing failure or memory over-capacity proof"
   },
   "limitations": [
     "334 is predicted physical BSRAM, not measured",
@@ -135,7 +151,7 @@
     "web_protocol": "3ff1af3",
     "web_windows_validation_fixes": "df1243c"
   },
-  "updated_at": "2026-10-23T16:42:29.773592+08:00",
+  "updated_at": "2026-10-23T16:50:55.128320+08:00",
   "history_fanout_candidate": {
     "generator": "control/tools/g2_history_fanout.py",
     "source_edit": "one syn_maxfan=128 synthesis attribute, no functional RTL edit",
@@ -209,8 +225,88 @@
       "sfp_management.v"
     ],
     "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
-    "phase": "waiting_for_prior_pnr",
-    "updated_at": "2026-10-23T16:36:25.084604+08:00",
-    "supervisor_pid": 42540
+    "phase": "synthesizing",
+    "updated_at": "2026-10-23T16:50:27.508757+08:00",
+    "minimum_start_free_bytes": 2147483648,
+    "minimum_start_available_commit_bytes": 4294967296,
+    "max_runtime_minutes": 40,
+    "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+    "tool_pid": 17972,
+    "synthesis_started_at": "2026-10-23T16:45:27.436472+08:00",
+    "elapsed_s": 300.06300000002375,
+    "free_bytes": 4775481344,
+    "available_commit_bytes": 7178752000
+  },
+  "lease_output_candidate": {
+    "equivalence": {
+      "passed": true,
+      "contracts": 24,
+      "compared_cycles": 63850,
+      "all_outputs_every_cycle": true,
+      "scope": "digital lease-guard equivalence, not actual braking or joint timing"
+    },
+    "module_synthesis": {
+      "runs": [
+        {
+          "variant": "original",
+          "estimated_fmax_mhz": 70.586,
+          "first_path": {
+            "Slack": "5.833",
+            "Data Arrival Time": "14.481",
+            "Data Required Time": "20.314",
+            "From": "dut/session_0_s0",
+            "To": "dut/out_yaw_q12_2_s1",
+            "Launch Clk": "clk[R]",
+            "Latch Clk": "clk[R]"
+          },
+          "resources": {
+            "name": "lease_timing",
+            "Register": "168",
+            "T_Register": "473(168)",
+            "T_Alu": "191(0)",
+            "T_Lut": "698(0)"
+          }
+        },
+        {
+          "variant": "output_select",
+          "estimated_fmax_mhz": 115.037,
+          "first_path": {
+            "Slack": "11.307",
+            "Data Arrival Time": "9.007",
+            "Data Required Time": "20.314",
+            "From": "dut/out_yaw_q12_0_s1",
+            "To": "dut/out_yaw_q12_15_s1",
+            "Launch Clk": "clk[R]",
+            "Latch Clk": "clk[R]"
+          },
+          "resources": {
+            "name": "lease_timing",
+            "Register": "168",
+            "T_Register": "473(168)",
+            "T_Alu": "192(0)",
+            "T_Lut": "745(0)"
+          }
+        }
+      ],
+      "input_launch_registers": 168,
+      "scope": "paired module SYN estimates, not joint physical timing",
+      "programmed": false
+    },
+    "job": {
+      "source": "F:\\nav_integration_g2_20261023\\sfp_history128_phyguard_syn2",
+      "build": "F:\\nav_integration_g2_20261023\\sfp_history128_phyguard_lease_syn3",
+      "wait_pid": 17972,
+      "programmed": false,
+      "source_frozen_before_wait": true,
+      "automatic_pnr": false,
+      "modified_rtl_inputs": [
+        "command_lease_guard.v"
+      ],
+      "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+      "phase": "waiting_for_prior_pnr",
+      "updated_at": "2026-10-23T16:49:09.519812+08:00"
+    },
+    "supervisor_pid": 38948,
+    "joint_benefit_measured": false
   }
 }

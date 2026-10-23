@@ -71,3 +71,7 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 `audit_cdc_first_stages.py <flat-vo> --out <audit.json> --emit-sdc <fragment.sdc>`核对四组共26条已知同步器的实际驱动、时钟与第一级单扇出到预期第二级。`pnr_from_netlist.py --cdc-reference-audit <audit.json>`显式启用隔离的第一同步级hold-only及8/18ns最大延迟候选；原SDC保留。新报告要求26条物理连接与参考相符、52条约束全部Actived，出现其他未审例外即拒绝。小型工具实测表明第二级setup/hold及源到第一级的最大延迟仍计时；不代表完整CDC、IO、偏斜或MTBF签核。
 
 `nav_count_feedback.v`为独立N3候选，尚未接入`g2_top`及正在运行的冻结PNR。固定名义65mm/1320CPR、10ms原始AB计数，左正/右负为前进；保留导航速度换算余数，并提供50窗计数变化的补充慢速证据、质量/超时/重叠/范围故障及粘滞连续性丢失。计数窗口不能观测门内往返、亚计数运动和打滑，不能单独确认物理停止；原PID/RL不受影响。`test_count_feedback.py`采用独立整数/分数模型，`measure_fusion_timing.py --module count-feedback`使用输入启动寄存器测量原型（测试寄存器不进产品）。接入及完整资源/时序、G3质量状态、原4500闭环和停止包络仍待完成。
+
+`--real-sfp`将实际Q0 Lane0 MAC/PCS/SerDes、CSR及只读CONTROL_V2引出接入共同工程。SFP2管理窗口为0x1300；使用`integration/sfp/sfp_client.py status --image joint --port <端口>`只读检查，指定`--mode`才重配。51条主机FIFO/toggle CDC与原26条分别核对，受保护厂商PCS/状态/复位仍须独立签核。
+
+`--history-data-fanout`只对观测history initialized的数据选择负载加syn_maxfan=128，模块配对负载1000→128。`--lease-output-select`要求command-lease，只把停止/正常目标选择放在两套相同approach计算之后，保留每拍状态及优先级；24项合同63850拍逐拍输出对照通过，模块综合最坏14.481→9.007ns。生成器只改构建副本，联合效果以冻结SYN/PNR证据为准。

@@ -1,4 +1,4 @@
-"""SFP diagnostic UART register reader/configurator and UDP echo client."""
+"""SFP1 diagnostic / SFP2 joint UART registers and standalone UDP echo."""
 import argparse
 import json
 import socket
@@ -9,6 +9,41 @@ REGISTERS = {0x00:"signature",0x04:"config",0x08:"status",0x0c:"partner",
              0x10:"diagnostic",0x14:"link_losses",0x20:"rx_frames",0x24:"rx_udp",
              0x28:"rx_errors",0x2c:"arp_requests",0x30:"tx_frames",
              0x34:"echoes",0x38:"echo_drops",0x40:"ipv4",0x44:"port"}
+JOINT_REGISTERS = {0x00:"signature",0x04:"config",0x08:"status",0x0c:"partner",
+                   0x10:"diagnostic",0x14:"link_losses",0x18:"capability",
+                   0x20:"telemetry_accepted",0x24:"telemetry_dropped",0x28:"telemetry_sent"}
+
+
+def inspect_registers(read, write, image="auto", mode=None, use_los=False,
+                      settle=3.0, sleep=time.sleep):
+    """Verify the image signature before any configuration write."""
+    candidates = [("joint",0x1300,0x53465032,JOINT_REGISTERS),
+                  ("standalone",0,0x53465031,REGISTERS)]
+    selected = next((item for item in candidates
+                     if (image=="auto" or image==item[0]) and read(item[1])==item[2]),None)
+    if selected is None:
+        raise RuntimeError("No matching SFP1/SFP2 signature; configuration was not written")
+    name,base,signature,registers = selected
+    if mode:
+        value={"basex-an":2,"basex-forced":0,"sgmii-an":3}[mode] | (4 if use_los else 0)
+        write(base+4,value)
+        sleep(settle)
+        if read(base)!=signature or read(base+4)!=value:
+            raise RuntimeError("SFP image/config readback does not match the requested value")
+    data={key:read(base+offset) for offset,key in registers.items()}
+    if data["signature"]!=signature:
+        raise RuntimeError("SFP image changed during register read")
+    diag=data["diagnostic"];status=data["status"]
+    data.update(image=name,register_base=base)
+    data["decoded"]={"mode":"SGMII" if data["config"]&1 else "1000BASE-X",
+                     "autoneg":bool(data["config"]&2),"honour_los":bool(data["config"]&4),
+                     "qpll_locked":bool(diag&1),"rx_locked":bool(diag&2),
+                     "aligned":bool(diag&4),"los":bool(diag&8),
+                     "link_ready":bool(diag&16),"ip_reset":bool(diag&32),
+                     "pcs_sync":bool(status&1),"pcs_link":bool(status&2),
+                     "an_complete":bool(status&4),
+                     "partner_phy_link":bool(status&256) if data["config"]&1 else None}
+    return data
 
 
 def registers(args):
@@ -22,21 +57,10 @@ def registers(args):
             if len(response)!=5 or response[0:1]!=b"D":
                 raise RuntimeError(f"No SFP register reply at {addr:04x}: {response.hex()}")
             return int.from_bytes(response[1:],"big")
-        if read(0)!=0x53465031:
-            raise RuntimeError("The loaded image is not SFP1; configuration was not written")
-        if args.mode:
-            values={"basex-an":2,"basex-forced":0,"sgmii-an":3}
-            value=values[args.mode] | (4 if args.use_los else 0)
-            dev.write(b"W"+struct.pack(">HI",4,value))
+        def write(addr,value):
+            dev.write(b"W"+struct.pack(">HI",addr,value))
             if dev.read(1)!=b"K": raise RuntimeError("Configuration write was not acknowledged")
-            time.sleep(args.settle)
-        data={name:read(addr) for addr,name in REGISTERS.items()}
-        diag=data["diagnostic"]
-        data["decoded"]={"mode":"SGMII" if data["config"]&1 else "1000BASE-X",
-                         "autoneg":bool(data["config"]&2),"honour_los":bool(data["config"]&4),
-                         "qpll_locked":bool(diag&1),"rx_locked":bool(diag&2),
-                         "aligned":bool(diag&4),"los":bool(diag&8),
-                         "link_ready":bool(diag&16),"ip_reset":bool(diag&32)}
+        data=inspect_registers(read,write,args.image,args.mode,args.use_los,args.settle)
         print(json.dumps(data,indent=2))
 
 
@@ -68,6 +92,8 @@ def main():
     sub=p.add_subparsers(dest="command",required=True)
     s=sub.add_parser("status")
     s.add_argument("--port",required=True,help="CH9102 serial port, e.g. COM11")
+    s.add_argument("--image",choices=("auto","standalone","joint"),default="auto",
+                   help="verify SFP1 at 0x0000 or joint SFP2 at 0x1300 before writes")
     s.add_argument("--mode",choices=("basex-an","basex-forced","sgmii-an"))
     s.add_argument("--use-los",action="store_true",help="Only applied with --mode")
     s.add_argument("--settle",type=float,default=3.0)
