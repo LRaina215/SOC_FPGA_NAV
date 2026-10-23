@@ -31,7 +31,9 @@ module sfp_management (
     nav_sync2 #(.W(11)) u_status(.clk(clk),.d(status_raw),.q(status));
     nav_sync2 #(.W(16)) u_partner(.clk(clk),.d(partner_raw),.q(partner));
     nav_sync2 #(.W(4)) u_diag(.clk(clk),.d(diagnostic_raw),.q(diagnostic));
-    wire link_complete=status[0] && status[1] && (!cfg[1] || status[2]);
+    // IPUG1021 Table 3-2: in SGMII, bit8 reports the partner PHY/copper link.
+    // PCS synchronization/AN alone can stay up while the RJ45 cable is unplugged.
+    wire link_complete=status[0] && status[1] && (!cfg[1] || status[2]) && (!cfg[0] || status[8]);
     reg [7:0] link_age;
     reg link_old;
     reg [31:0] link_losses;

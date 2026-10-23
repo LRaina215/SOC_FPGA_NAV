@@ -74,16 +74,39 @@
     "backend_full_fields_contract": {
       "passed": 1
     },
-    "backend_full_suite": {
+    "sfp_cdc_audit": {
+      "passed": 2,
+      "negative_cases": 5,
+      "hierarchy_bus_order": true
+    },
+    "backend_prior_failed_suite": {
       "passed": 4,
       "failed": 46,
       "interrupted": true,
       "observed_failure": "WinError32 during SQLite temporary database cleanup; not a full-suite pass"
     },
-    "sfp_cdc_audit": {
-      "passed": 2,
-      "negative_cases": 5,
-      "hierarchy_bus_order": true
+    "backend_full_suite": {
+      "passed": 52,
+      "failed": 0,
+      "warnings": 1,
+      "fixes": [
+        "close SQLite connection after transaction",
+        "close test-only SQLite read connection",
+        "Windows read-only process handle query instead of os.kill(pid,0)"
+      ]
+    },
+    "sfp_management": {
+      "passed": true,
+      "scope": "digital MAC boundary model; no vendor PCS, analog link or actuator acceptance",
+      "cases": [
+        "SFP2 registers",
+        "startup hold",
+        "mode reconfiguration",
+        "link-loss counters",
+        "missing RX clock asynchronous reset",
+        "synchronous release after RX clock returns",
+        "SGMII PCS up but copper link down"
+      ]
     }
   },
   "pnr": {
@@ -106,5 +129,88 @@
   "startup_failure": {
     "build": "F:/nav_integration_g2_20261023/sfp_web_pnr1",
     "cause": "JSON list versus in-memory tuple comparison; normalized and retried before any vendor PNR process started"
+  },
+  "commits": {
+    "nav_integration": "af2acea",
+    "web_protocol": "3ff1af3",
+    "web_windows_validation_fixes": "df1243c"
+  },
+  "updated_at": "2026-10-23T16:42:29.773592+08:00",
+  "history_fanout_candidate": {
+    "generator": "control/tools/g2_history_fanout.py",
+    "source_edit": "one syn_maxfan=128 synthesis attribute, no functional RTL edit",
+    "module_evidence": "F:/nav_integration_g2_20261023/history_fanout_module1/result.json",
+    "maximum_initialized_pin_load": [
+      1000,
+      128
+    ],
+    "initialized_registers": [
+      3,
+      23
+    ],
+    "module_ff": [
+      5463,
+      5483
+    ],
+    "module_lut": [
+      4947,
+      4984
+    ],
+    "bsram_delta": 0,
+    "joint_benefit_measured": false
+  },
+  "clock_resource_probe": {
+    "build": "F:/nav_integration_g2_20261023/clock_ce_route_probe",
+    "constraint": "CLOCK_LOC \"gate\" BUFG = CE;",
+    "tool_completed": true,
+    "actual_gate_resource": "LW",
+    "full_joint_override_applied": false,
+    "scope": "accepted syntax does not prove primary clock resource allocation or joint routing improvement"
+  },
+  "vendor_reference_direct_cdc": {
+    "evidence": "F:/nav_integration_g2_20261023/sfp_web_syn1/vendor_reference_direct_cdc_v2.json",
+    "standalone_direct_q_d_crossings": 94,
+    "vendor_pcs_paths": 20,
+    "single_second_register": 19,
+    "non_single_second": [
+      {
+        "source": "u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/gmii_col_s3",
+        "first": "u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/gmii_col_int_s0",
+        "source_clock": [
+          "tx_clk"
+        ],
+        "destination_clock": [
+          "rx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_mac_rx_ctrl/gmii_col_int_tmp_s3",
+            "I1"
+          ],
+          [
+            "u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_mac_rx_ctrl/gmii_col_int_tmp_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": false
+      }
+    ],
+    "scope": "old standalone physical netlist; no joint acceptance or blanket exception; vector coherence, combinational-source, status and reset paths remain separate"
+  },
+  "successor_synthesis": {
+    "source": "F:\\nav_integration_g2_20261023\\sfp_web_syn1",
+    "build": "F:\\nav_integration_g2_20261023\\sfp_history128_phyguard_syn2",
+    "wait_pid": 34204,
+    "programmed": false,
+    "source_frozen_before_wait": true,
+    "automatic_pnr": false,
+    "modified_rtl_inputs": [
+      "control/rl_observation_v5.v",
+      "sfp_management.v"
+    ],
+    "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+    "phase": "waiting_for_prior_pnr",
+    "updated_at": "2026-10-23T16:36:25.084604+08:00",
+    "supervisor_pid": 42540
   }
 }
