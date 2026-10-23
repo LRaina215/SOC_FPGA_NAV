@@ -1,0 +1,286 @@
+{
+  "written_at": "2026-10-23T15:25:12.580501+08:00",
+  "scope": "Read-only Web requirements and deployment audit; not physical SFP, motion, or browser-rendering acceptance",
+  "session": {
+    "id": "sess_c6a3bb04-b08b-4b24-9eec-3a7234bb389f",
+    "title": "RK3588",
+    "requested_export_exists": false,
+    "source": "C:/Users/Li/.zcode/cli/db/db.sqlite (read-only)",
+    "auxiliary_log": "C:/Users/Li/.zcode/cli/log/zcode-2026-10-23.jsonl",
+    "requirement_message_ids": [
+      "msg_mvj3oquc_5ea9f744-dd33-44d4-8844-237abf807914",
+      "msg_mvj3z2aq_e37168bf-22d7-4cc9-a079-61542b160bca",
+      "msg_mvkmc0b8_b5bf861a-e185-4ffc-b698-5a821acccb4d"
+    ],
+    "confirmed_requirements": [
+      "Layered task/nav/control architecture, no RK direct chassis velocities",
+      "Complete control telemetry in place of legacy C-board bridge",
+      "Web map/path W5 includes PATH and COSTMAP_TILE",
+      "Shared backend requirements for Web and MiniProgram",
+      "Real Astra RGB-D perception and annotated video"
+    ]
+  },
+  "rk_snapshot": {
+    "time": "2026-10-23T15:08:53.604011+08:00",
+    "branch": "yuntuo-fpga",
+    "commit": "2295129",
+    "clean": true,
+    "services": [
+      {
+        "Id": "qhxd-backend.service",
+        "ActiveState": "active",
+        "SubState": "running",
+        "ActiveEnterTimestamp": "Fri 2026-10-23 15:08:06 CST"
+      },
+      {
+        "Id": "yuntuo-fpga-bridge.service",
+        "ActiveState": "active",
+        "SubState": "running",
+        "ActiveEnterTimestamp": "Fri 2026-10-23 02:07:09 CST"
+      },
+      {
+        "Id": "yuntuo-mock-fpga.service",
+        "ActiveState": "active",
+        "SubState": "running",
+        "ActiveEnterTimestamp": "Fri 2026-10-23 02:07:06 CST"
+      },
+      {
+        "Id": "yuntuo-perception.service",
+        "ActiveState": "active",
+        "SubState": "running",
+        "ActiveEnterTimestamp": "Fri 2026-10-23 15:08:15 CST"
+      },
+      {
+        "Id": "yuntuo-llm.service",
+        "ActiveState": "active",
+        "SubState": "running",
+        "ActiveEnterTimestamp": "Fri 2026-10-23 03:54:08 CST"
+      },
+      {
+        "Id": "yuntuo-tts.service",
+        "ActiveState": "active",
+        "SubState": "running",
+        "ActiveEnterTimestamp": "Fri 2026-10-23 02:07:06 CST"
+      }
+    ],
+    "wired_interfaces": [
+      {
+        "name": "eth1",
+        "state": "DOWN",
+        "carrier": false,
+        "ipv4_count": 0
+      },
+      {
+        "name": "eth2",
+        "state": "DOWN",
+        "carrier": false,
+        "ipv4_count": 0
+      }
+    ],
+    "config": {
+      "YUNTUO_FPGA_LINK": "udp:127.0.0.1:9000",
+      "YUNTUO_FPGA_IS_MOCK": "true",
+      "YUNTUO_CONTROL_TELEMETRY": "udp:127.0.0.1:9104",
+      "YUNTUO_PRIOR_MAP": "",
+      "YUNTUO_TARGET_RATE_HZ": "12"
+    },
+    "mount_configuration_is_not_calibration_acceptance": true
+  },
+  "cloud_ssh_snapshot": {
+    "read_date": "2026-10-23",
+    "method": "existing authorized SSH identity, read-only systemctl show",
+    "nginx": "active/running",
+    "lingxun-cloud-gateway": "active/running",
+    "mediamtx.service": "inactive/dead",
+    "limitation": "Named unit state alone does not locate video process/container or establish video failure; health queried separately"
+  },
+  "http_snapshots": [
+    {
+      "endpoint": "http://100.113.173.115:8000/api/platform/status",
+      "read_at": "2026-10-23T15:10:05.688876+08:00",
+      "status": 200,
+      "selected_fields": {
+        "source": "mock",
+        "nav_link": "mock",
+        "control_link": "mock",
+        "nav_link_kind": "mock",
+        "status_rate_hz": 5.0,
+        "telemetry_rate_hz": 50.0
+      }
+    },
+    {
+      "endpoint": "http://100.113.173.115:8000/api/navigation/latest",
+      "read_at": "2026-10-23T15:10:05.722121+08:00",
+      "status": 200,
+      "selected_fields": {
+        "source": "fpga_bridge",
+        "frame_id": "map",
+        "map_version": "canvas",
+        "global_path": [],
+        "local_path": []
+      }
+    },
+    {
+      "endpoint": "http://100.113.173.115:8000/api/navigation/map/metadata",
+      "read_at": "2026-10-23T15:10:05.753157+08:00",
+      "status": 200,
+      "selected_fields": {
+        "map_id": "yuntuo_field",
+        "version": "canvas--1_-3_6_3",
+        "frame_id": "map",
+        "resolution": 0.1,
+        "width": 70,
+        "height": 60,
+        "origin": {
+          "x": -1.0,
+          "y": -3.0,
+          "yaw": 0.0
+        }
+      }
+    },
+    {
+      "endpoint": "http://100.113.173.115:8000/api/state/latest",
+      "read_at": "2026-10-23T15:10:05.801242+08:00",
+      "status": 200,
+      "selected_fields": {
+        "system_mode": {
+          "mode": "mock",
+          "updated_at": "2026-10-23T07:08:07.356798Z"
+        }
+      }
+    },
+    {
+      "endpoint": "https://lingxunrobot.cn/api/platform/status",
+      "read_at": "2026-10-23T15:10:06.389065+08:00",
+      "status": 200,
+      "selected_fields": {
+        "source": "mock",
+        "nav_link": "mock",
+        "control_link": "mock",
+        "nav_link_kind": "mock",
+        "status_rate_hz": 5.0,
+        "telemetry_rate_hz": 50.0
+      }
+    },
+    {
+      "endpoint": "https://lingxunrobot.cn/api/navigation/latest",
+      "read_at": "2026-10-23T15:10:06.876137+08:00",
+      "status": 200,
+      "selected_fields": {
+        "source": "fpga_bridge",
+        "frame_id": "map",
+        "map_version": "canvas",
+        "global_path": [],
+        "local_path": []
+      }
+    },
+    {
+      "endpoint": "https://lingxunrobot.cn/api/navigation/map/metadata",
+      "read_at": "2026-10-23T15:10:07.297160+08:00",
+      "status": 200,
+      "selected_fields": {
+        "map_id": "yuntuo_field",
+        "version": "canvas--1_-3_6_3",
+        "frame_id": "map",
+        "resolution": 0.1,
+        "width": 70,
+        "height": 60,
+        "origin": {
+          "x": -1.0,
+          "y": -3.0,
+          "yaw": 0.0
+        }
+      }
+    },
+    {
+      "endpoint": "https://lingxunrobot.cn/api/state/latest",
+      "read_at": "2026-10-23T15:10:07.839001+08:00",
+      "status": 200,
+      "selected_fields": {
+        "system_mode": {
+          "mode": "mock",
+          "updated_at": "2026-10-23T07:08:07.356798Z"
+        }
+      }
+    }
+  ],
+  "fresh_health_snapshots": [
+    {
+      "endpoint": "https://lingxunrobot.cn/api/gateway/health",
+      "read_at": "2026-10-23T15:25:12.581050+08:00",
+      "status": 200,
+      "selected_fields": {
+        "rk_online": true
+      }
+    },
+    {
+      "endpoint": "https://lingxunrobot.cn/api/perception/video_health",
+      "read_at": "2026-10-23T15:25:14.068942+08:00",
+      "status": 200,
+      "selected_fields": {
+        "perception": {
+          "model": "yolo26n_int8.rknn",
+          "detect_fps": 5.0,
+          "stream": {
+            "frames": 14953,
+            "pushed": 14953,
+            "dropped": 0,
+            "reconnects": 1,
+            "has_error": false
+          },
+          "running": true
+        }
+      }
+    }
+  ],
+  "source_files": {
+    "web_root": "D:/Desktop/SOC FPGA/QHXD_Web",
+    "web": [
+      "frontend/src/types.ts",
+      "frontend/src/components/TelemetryCard.vue",
+      "frontend/src/components/FieldMap.vue",
+      "frontend/src/components/StageCard.vue",
+      "backend/app/schemas.py",
+      "backend/app/services/mission_gateway.py",
+      "yuntuo/bridge/core.py",
+      "yuntuo/bridge/tasks.py",
+      "yuntuo/fpga_link/telemetry.py"
+    ],
+    "fpga": [
+      "fw/nav/proto.c",
+      "fw/app/nav_app.c",
+      "fw/nav/nav_task.c",
+      "control/fpga/src/main.v",
+      "control/fpga/src/uart_telemetry.v",
+      "integration/g2/control_nav_adapter.patch"
+    ]
+  },
+  "gaps": [
+    "NV PATH builder is not called by firmware; RK global_path/local_path currently empty",
+    "Current map is RK canvas; trail is historical pose, not planned path",
+    "Full UART control V2 is decoded by RK but not forwarded through SFP",
+    "STATUS velocity is commanded velocity, not measured velocity",
+    "Cancel/pause may announce stopped before fresh measured stop confirmation",
+    "General session/command ACK/TTL contract missing; map ACK is not a motion ACK",
+    "Real-mode readiness currently permits mock and control-link requirement defaults false",
+    "mapless navigation still reports frame_id=map",
+    "Battery/environment telemetry has no verified physical source"
+  ],
+  "proposed_payload_budget_Bps": {
+    "status": 220,
+    "control_V2": 12600,
+    "path": 4160,
+    "costmap": 32768,
+    "health_ack_reserve": 640,
+    "total": 50388,
+    "scope": "proposal, excludes protocol overhead/retries/map-download bursts; no measured transport or FPGA-resource acceptance"
+  },
+  "actions": {
+    "remote_mutations": false,
+    "motion_commands": false,
+    "hardware_programming": false,
+    "functional_tests_run": false,
+    "browser_visual_acceptance": false,
+    "secrets_stored_in_repository": false
+  }
+}
