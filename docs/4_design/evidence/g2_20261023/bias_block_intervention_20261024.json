@@ -1,0 +1,423 @@
+{
+  "recorded_at": "2026-10-24T06:40:59.523567+08:00",
+  "completed_correct_lane2_failure": "lane2_rowbanks_final_unrouted586.json",
+  "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+  "hypothesis": "replace measured702-ROM16 bias decoder/address network with exact native ROM within two-block physical budget; no failed-net attribution",
+  "module_probe": {
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+    "build": "F:\\nav_integration_g2_20261023\\bias_block_probe1",
+    "geometry": {
+      "words": 425,
+      "signed_width": 26
+    },
+    "all_original32bit_biases_identical": true,
+    "read_latency_cycles": 1,
+    "additional_read_cycles": 0,
+    "weights_or_algorithm_changed": false,
+    "programmed": false,
+    "deployment_accepted": false,
+    "runs": [
+      {
+        "variant": "original",
+        "effective_options": {
+          "global_freq_mhz": 50.0,
+          "wide_split": 0,
+          "effective_options": "F:\\nav_integration_g2_20261023\\bias_block_probe1\\original\\effective_options.tcl",
+          "extra_options": {}
+        },
+        "runtime": {
+          "started_at": "2026-10-24T06:37:17.889001+08:00",
+          "max_runtime_s": 180,
+          "max_owned_rss": 805306368,
+          "scope": "isolated425x26 exact signed bias ROM only",
+          "cancelled": false,
+          "pid": 34724,
+          "tool_exit": 0,
+          "elapsed_s": 2.6410000000032596
+        },
+        "resources": {
+          "name": "g2_top",
+          "Register": "26",
+          "Lut": "417",
+          "ROM16": "702",
+          "T_Register": "26(26)",
+          "T_Lut": "417(417)",
+          "T_ROM16": "702(702)"
+        },
+        "inventory": {
+          "primitives": {
+            "IBUF": 11,
+            "OBUF": 32,
+            "LUT3": 312,
+            "LUT4": 104,
+            "LUT2": 1,
+            "DFFRE": 26,
+            "ROM16": 702,
+            "MUX2_LUT5": 156,
+            "MUX2_LUT6": 52,
+            "MUX2_LUT7": 26,
+            "VCC": 1,
+            "GND": 1,
+            "GSR": 1
+          },
+          "bsram": 0,
+          "ff": 26,
+          "maximum_nonclock_load": 702,
+          "high_loads": [
+            {
+              "net": "addr_d[0]",
+              "loads": 702,
+              "pins": {
+                "AD": 702
+              }
+            },
+            {
+              "net": "addr_d[1]",
+              "loads": 702,
+              "pins": {
+                "AD": 702
+              }
+            },
+            {
+              "net": "addr_d[2]",
+              "loads": 702,
+              "pins": {
+                "AD": 702
+              }
+            },
+            {
+              "net": "addr_d[3]",
+              "loads": 702,
+              "pins": {
+                "AD": 702
+              }
+            },
+            {
+              "net": "addr_d[4]",
+              "loads": 338,
+              "pins": {
+                "I2": 312,
+                "I3": 26
+              }
+            },
+            {
+              "net": "addr_d[5]",
+              "loads": 208,
+              "pins": {
+                "I1": 25,
+                "I2": 27,
+                "S0": 156
+              }
+            },
+            {
+              "net": "addr_d[6]",
+              "loads": 79,
+              "pins": {
+                "I0": 1,
+                "I2": 1,
+                "I3": 25,
+                "S0": 52
+              }
+            },
+            {
+              "net": "addr_d[7]",
+              "loads": 53,
+              "pins": {
+                "I1": 1,
+                "I3": 1,
+                "I0": 25,
+                "S0": 26
+              }
+            },
+            {
+              "net": "addr_d[8]",
+              "loads": 26,
+              "pins": {
+                "I3": 26
+              }
+            },
+            {
+              "net": "en_d",
+              "loads": 26,
+              "pins": {
+                "CE": 26
+              }
+            },
+            {
+              "net": "n30_DOL_27_G[4]_9",
+              "loads": 26,
+              "pins": {
+                "I3": 26
+              }
+            },
+            {
+              "net": "q_d[30]",
+              "loads": 7,
+              "pins": {
+                "I": 7
+              }
+            },
+            {
+              "net": "addr[0]",
+              "loads": 1,
+              "pins": {
+                "I": 1
+              }
+            },
+            {
+              "net": "addr[1]",
+              "loads": 1,
+              "pins": {
+                "I": 1
+              }
+            },
+            {
+              "net": "addr[2]",
+              "loads": 1,
+              "pins": {
+                "I": 1
+              }
+            },
+            {
+              "net": "addr[3]",
+              "loads": 1,
+              "pins": {
+                "I": 1
+              }
+            }
+          ]
+        }
+      },
+      {
+        "variant": "block",
+        "effective_options": {
+          "global_freq_mhz": 50.0,
+          "wide_split": 0,
+          "effective_options": "F:\\nav_integration_g2_20261023\\bias_block_probe1\\block\\effective_options.tcl",
+          "extra_options": {}
+        },
+        "runtime": {
+          "started_at": "2026-10-24T06:37:22.125136+08:00",
+          "max_runtime_s": 180,
+          "max_owned_rss": 805306368,
+          "scope": "isolated425x26 exact signed bias ROM only",
+          "cancelled": false,
+          "pid": 45728,
+          "tool_exit": 0,
+          "elapsed_s": 2.1089999999967404
+        },
+        "resources": {
+          "name": "g2_top",
+          "Bsram": "1",
+          "T_Bsram": "1(1)"
+        },
+        "inventory": {
+          "primitives": {
+            "IBUF": 11,
+            "OBUF": 32,
+            "pROM": 1,
+            "VCC": 1,
+            "GND": 1,
+            "GSR": 1
+          },
+          "bsram": 1,
+          "ff": 0,
+          "maximum_nonclock_load": 7,
+          "high_loads": [
+            {
+              "net": "q_d[30]",
+              "loads": 7,
+              "pins": {
+                "I": 7
+              }
+            },
+            {
+              "net": "addr[0]",
+              "loads": 1,
+              "pins": {
+                "I": 1
+              }
+            },
+            {
+              "net": "addr[1]",
+              "loads": 1,
+              "pins": {
+                "I": 1
+              }
+            },
+            {
+              "net": "addr[2]",
+              "loads": 1,
+              "pins": {
+                "I": 1
+              }
+            },
+            {
+              "net": "addr[3]",
+              "loads": 1,
+              "pins": {
+                "I": 1
+              }
+            },
+            {
+              "net": "addr[4]",
+              "loads": 1,
+              "pins": {
+                "I": 1
+              }
+            },
+            {
+              "net": "addr[5]",
+              "loads": 1,
+              "pins": {
+                "I": 1
+              }
+            },
+            {
+              "net": "addr[6]",
+              "loads": 1,
+              "pins": {
+                "I": 1
+              }
+            },
+            {
+              "net": "addr[7]",
+              "loads": 1,
+              "pins": {
+                "I": 1
+              }
+            },
+            {
+              "net": "addr[8]",
+              "loads": 1,
+              "pins": {
+                "I": 1
+              }
+            },
+            {
+              "net": "addr_d[0]",
+              "loads": 1,
+              "pins": {
+                "AD": 1
+              }
+            },
+            {
+              "net": "addr_d[1]",
+              "loads": 1,
+              "pins": {
+                "AD": 1
+              }
+            },
+            {
+              "net": "addr_d[2]",
+              "loads": 1,
+              "pins": {
+                "AD": 1
+              }
+            },
+            {
+              "net": "addr_d[3]",
+              "loads": 1,
+              "pins": {
+                "AD": 1
+              }
+            },
+            {
+              "net": "addr_d[4]",
+              "loads": 1,
+              "pins": {
+                "AD": 1
+              }
+            },
+            {
+              "net": "addr_d[5]",
+              "loads": 1,
+              "pins": {
+                "AD": 1
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "checks": [
+      {
+        "variant": "rtl",
+        "result": "TEST PASSED checks=2968 reads=1864 holds=1110 all425signed_values=1"
+      },
+      {
+        "variant": "vendor",
+        "result": "TEST PASSED checks=2968 reads=1864 holds=1110 all425signed_values=1"
+      }
+    ],
+    "scope": "isolated bias ROM numeric, enabled-read and actual vendor INIT checks; full SYN/PNR still required",
+    "rom16_removed": 702,
+    "connection_pressure_reduced": true,
+    "physical_bsram_addition_still_pending": true
+  },
+  "actual_module_native_leaves": [
+    {
+      "path": "g2_top/bias_mem_bias_mem_0_0_s",
+      "module_type": "g2_top",
+      "primitive": "pROM",
+      "parameters": {
+        "BIT_WIDTH": "32",
+        "READ_MODE": "1'b0",
+        "RESET_MODE": "\"SYNC\""
+      }
+    }
+  ],
+  "physical_block_increment_prediction": 2,
+  "joint_source_count317_wide19_physical336_are_predictions": true,
+  "unchanged_original_biases425": true,
+  "only_rtl_change": "fc_v4_top.v bias_mem two storage attributes",
+  "control_algorithm_weights125hz_and_storage_capacity_preserved": true,
+  "full_synthesis": {
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_biasblock_syn8",
+    "wait_pid": null,
+    "programmed": false,
+    "source_frozen_before_wait": true,
+    "automatic_pnr": false,
+    "modified_rtl_inputs": [
+      "fc_v4_top.v"
+    ],
+    "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+    "phase": "synthesizing",
+    "updated_at": "2026-10-24T06:40:38.315814+08:00",
+    "minimum_start_free_bytes": 2147483648,
+    "minimum_start_available_commit_bytes": 4294967296,
+    "max_runtime_minutes": 40,
+    "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+    "tool_pid": 57444,
+    "synthesis_started_at": "2026-10-24T06:38:38.279857+08:00",
+    "elapsed_s": 120.03099999995902,
+    "free_bytes": 4317544448,
+    "available_commit_bytes": 6673276928
+  },
+  "continuation": {
+    "controller_pid": 65408,
+    "live_state": "F:\\nav_integration_g2_20261023\\lane2_biasblock_one_shot\\job.json",
+    "job": {
+      "started_at": "2026-10-24T06:39:10.424677+08:00",
+      "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_biasblock_syn8",
+      "baseline": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+      "pnr_out": "F:\\nav_integration_g2_20261023\\sfp_lane2_biasblock_pnr9",
+      "wait_pid": 62480,
+      "maximum_wait_seconds": 10800,
+      "recurring": false,
+      "maximum_pnr_runs": 1,
+      "programmed": false,
+      "deployment_accepted": false,
+      "phase": "waiting_for_existing_synthesis",
+      "updated_at": "2026-10-24T06:39:10.429657+08:00",
+      "wait_process_created_at": 1792795115.673592
+    },
+    "future_pnr": "F:\\nav_integration_g2_20261023\\sfp_lane2_biasblock_pnr9",
+    "maximum_future_pnr_runs": 1,
+    "pnr_budget_minutes": 150,
+    "pnr_idle_budget_minutes": 0
+  },
+  "programmed": false,
+  "g2_passed": false
+}

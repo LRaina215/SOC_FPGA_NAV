@@ -114,3 +114,6 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 
 `prove_row_address_alias.py`只允许SLF的rb_ra[0:1]因综合改名：要求实际唯一LUT3、全部引脚、INIT8'hCA/8组真值及唯一上游寄存器的全部输入/时钟/使能/reset/参数一致；其他计划驱动继续严格比较。`test_row_address_alias.py`使用保留的实际网表，两项真实别名通过、四项行为/范围变化拒绝。不是删除驱动核对或给时序新增例外。初次接续失败目录保留，修复后用新state重查既有SYN，只启动尚未创建的目标PNR，避免重复综合或覆盖现场。
+
+
+`prepare_bias_block_rom.py`只把冻结根fc_v4_top.v的425×26有符号bias_mem两项属性从distributed改block，原文件/数值/声明位宽/读使能/1拍延迟/MAC状态机保持。`measure_bias_block_rom.py <frozen-rowbanks-SYN> --out <new-dir>`以全部425个原始32位值为oracle，配对小模块SYN及RTL/厂商真实INIT检查：ROM16/LUT/FF 702/417/26→0、1个BIT_WIDTH32 pROM（宽拆分预测2物理块），最大负载702→7；两类检查各2968拍通过。首次有效读前原输出未定义，不强改INIT。`retry_frozen_synthesis.py --bias-block-rom --start-now`仍使用40分钟/既有内存保护；接续必须证明原BSRAM叶/参数全部保持、仅偏置新增、物理增量预测恰2且总≤336、全量ROM16消除，原行缓存/选择负载、104资产、控制合同/时钟/CDC仍重核。物理成本和收益只按完整PNR报告，不凭小模块或预测通过。

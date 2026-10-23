@@ -72,11 +72,11 @@ endmodule
 '''
 
 
-def run_syn(folder):
+def run_syn(folder, scope='isolated160x98 row memory only'):
     m = memory_status()
     assert m.avail_phys >= 1024**3 and m.avail_page >= 3*1024**3, 'small SYN host reserve'
     state = dict(started_at=datetime.now().astimezone().isoformat(), max_runtime_s=180,
-                 max_owned_rss=768*1024**2, scope='isolated160x98 row memory only', cancelled=False)
+                 max_owned_rss=768*1024**2, scope=scope, cancelled=False)
     started = time.monotonic()
     with (folder/'gw_sh.log').open('w', encoding='utf-8') as stream:
         p = subprocess.Popen([str(TOOL),'run.tcl'],cwd=folder,stdout=stream,stderr=subprocess.STDOUT,
@@ -127,9 +127,9 @@ def namespaced(text, suffix):
     return text
 
 
-def simulate(out, variant, files):
+def simulate(out, variant, files, bench=TB):
     folder=out/variant;folder.mkdir()
-    (folder/'tb.sv').write_text(TB,encoding='utf-8')
+    (folder/'tb.sv').write_text(bench,encoding='utf-8')
     def run(tool,args):
         with (folder/(tool+'_stdout.log')).open('w') as stream:
             subprocess.run(['cmd','/c',str(VIV/(tool+'.bat')),*args],cwd=folder,

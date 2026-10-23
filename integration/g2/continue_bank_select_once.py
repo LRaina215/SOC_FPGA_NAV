@@ -57,13 +57,24 @@ def validate_candidate(source, baseline, plan_file):
     assert not manifest['control_weights_changed'] and manifest['clock_core_mhz'] == 50
     lane2_proof = manifest.get('sfp_lane2_from_build')
     row_banks = manifest.get('slf_row_banks',False)
-    expected_changes = ['nav/rtl/common/nav_ram_sdp.v']
-    if lane2_proof and not row_banks:expected_changes += ['sfp_host_mac.v','ip/serdes.v']
+    bias_block = manifest.get('bias_block_rom',False)
+    expected_changes = ['fc_v4_top.v'] if bias_block else ['nav/rtl/common/nav_ram_sdp.v']
+    if lane2_proof and not row_banks and not bias_block:expected_changes += ['sfp_host_mac.v','ip/serdes.v']
     assert sorted(job['modified_rtl_inputs']) == sorted(expected_changes)
     original = Path(manifest['frozen_source_build'])
     ram = source/'nav/rtl/common/nav_ram_sdp.v'
     attribute = ' /* synthesis syn_maxfan=128 */'
-    if row_banks:
+    if bias_block:
+        from prepare_bias_block_rom import transform
+        assert (source/'fc_v4_top.v').read_text() == transform((original/'fc_v4_top.v').read_text()), 'bias delta exceeds two attributes'
+        assert ram.read_bytes() == (original/'nav/rtl/common/nav_ram_sdp.v').read_bytes(), 'inherited RAM implementation changed'
+        bias_probe = json.loads((source.parent/'bias_block_probe1/result.json').read_text())
+        assert Path(bias_probe['source']).resolve() == original.resolve()
+        assert bias_probe['all_original32bit_biases_identical'] and bias_probe['connection_pressure_reduced']
+        assert bias_probe['rom16_removed'] == 702 and [x['variant'] for x in bias_probe['checks']] == ['rtl','vendor']
+        probe = json.loads((source.parent/'slf_row_banks_probe1/result.json').read_text())
+        assert row_banks and json.loads((original/'manifest.json').read_text())['slf_row_banks']
+    elif row_banks:
         from prepare_slf_row_banks import transform
         assert ram.read_text() == transform((original/'nav/rtl/common/nav_ram_sdp.v').read_text()), 'RAM delta exceeds reviewed row banking'
         probe = json.loads((source.parent/'slf_row_banks_probe1/result.json').read_text())
@@ -95,12 +106,41 @@ def validate_candidate(source, baseline, plan_file):
     assert core['constraint_mhz'] == 50 and core['estimated_fmax_mhz'] >= 50, core
     old_mem = json.loads((original/'memory_inventory.json').read_text())
     new_mem = json.loads((source/'memory_inventory.json').read_text())
-    assert new_mem['expanded_bsram_count'] == old_mem['expanded_bsram_count'] == 316
-    assert new_mem['wide32_36_count'] == old_mem['wide32_36_count'] == 18
+    bias_memory_additions = []
+    if bias_block:
+        assert old_mem['expanded_bsram_count'] == 316 and old_mem['wide32_36_count'] == 18
+        old_keys = {r['path']:(r['primitive'],r['parameters']) for r in old_mem['leaves']}
+        new_keys = {r['path']:(r['primitive'],r['parameters']) for r in new_mem['leaves']}
+        assert all(new_keys.get(k) == v for k,v in old_keys.items()), 'an existing BSRAM changed'
+        bias_memory_additions = [r for r in new_mem['leaves'] if r['path'] not in old_keys]
+        assert 1 <= len(bias_memory_additions) <= 2 and all('u_control/model_thread/policy/core/' in r['path'] and 'bias_mem' in r['path'] for r in bias_memory_additions), 'unexpected new memory'
+        assert new_mem['predicted_split_bsram'] - old_mem['predicted_split_bsram'] == 2, 'bias physical budget must remain two blocks'
+    else:
+        assert new_mem['expanded_bsram_count'] == old_mem['expanded_bsram_count'] == 316
+        assert new_mem['wide32_36_count'] == old_mem['wide32_36_count'] == 18
+        assert memories_match(old_mem,new_mem), 'RAM primitive capacity/initialization changed'
     assert new_mem['predicted_split_bsram'] <= 336
     assert new_mem['primitive_types']['GTR12_QUAD'] == 1
-    assert memories_match(old_mem,new_mem), 'RAM primitive capacity/initialization changed'
     cells = read(source/'impl/gwsynthesis/g2_top.vg')
+    bias_rom_checks = None
+    if bias_block:
+        core_prefix = 'u_control/model_thread/policy/core/'
+        before_bias = read(original/'impl/gwsynthesis/g2_top.vg',lambda n:n in ('u_control','u_control/model_thread','u_control/model_thread/policy',core_prefix.rstrip('/')) or n.startswith(core_prefix))
+        def rom16(data):return sum(c['kind']=='ROM16' for n,c in data.items() if n.startswith(core_prefix))
+        assert rom16(before_bias) == 702 and rom16(cells) == 0, 'full SYN did not remove distributed bias ROM'
+        pin_directions = primitive_directions(LIBRARY)
+        def bias_address_loads(data):
+            counts = Counter(net for n,c in data.items() if n.startswith(core_prefix)
+                             for pin,nets in c['ports'].items() if pin_directions[c['kind']][pin] in ('input','inout')
+                             for net in nets)
+            return {core_prefix+f'bias_address[{i}]':counts[core_prefix+f'bias_address[{i}]'] for i in range(4)}
+        address_before,address_after = bias_address_loads(before_bias),bias_address_loads(cells)
+        assert set(address_before.values()) == {702}, address_before
+        assert all(0 < v <= 16 for v in address_after.values()), address_after
+        bias_rom_checks = dict(before_rom16=702,after_rom16=0,all_original425_signed_values_preserved=True,
+                               new_bsram_leaves=bias_memory_additions,physical_bsram_addition_prediction=2,
+                               low_address_loads_before=address_before,low_address_loads_after=address_after,
+                               probe_checks=bias_probe['checks'],read_cycles_added=0)
     row_store_checks = None
     if row_banks:
         row_prefix = 'u_nav/u_match/u_ex/u_rb/'
@@ -117,7 +157,8 @@ def validate_candidate(source, baseline, plan_file):
                         bank_select_registers=sum(c['kind'].startswith('DFF') and 'row_selected' in n for n,c in local.items()))
         old_row = read(original/'impl/gwsynthesis/g2_top.vg',lambda n:n in ('u_nav','u_nav/u_match','u_nav/u_match/u_ex',row_prefix.rstrip('/')) or n.startswith(row_prefix))
         a,b = row_pressure(old_row),row_pressure(cells)
-        assert b['maximum_nonclock_load'] < a['maximum_nonclock_load'] and b['maximum_nonclock_load'] <= 275,(a,b)
+        assert b['maximum_nonclock_load'] <= 275,(a,b)
+        assert (a == b if bias_block else b['maximum_nonclock_load'] < a['maximum_nonclock_load']), (a,b)
         assert b['distributed_words'] == 250 and b['bank_select_registers'] >= 4,b
         row_store_checks = dict(before=a,after=b,logical_bits_unchanged=15680,latency_cycles_unchanged=1,
                                 rtl_and_vendor_probe_checks=probe['checks'])
@@ -159,8 +200,10 @@ def validate_candidate(source, baseline, plan_file):
     assert sfp['passed'] and json.loads(json.dumps(sfp['paths'])) == old_sfp['paths']
     return dict(passed=True, source_bsram=new_mem['expanded_bsram_count'], wide_leaves=new_mem['wide32_36_count'],
                 predicted_physical_bsram=new_mem['predicted_split_bsram'], physical_count_is_prediction=True,
-                all_ram_parameters_match=not row_banks, all_bsram_parameters_match=True,
-                row_memory_storage_organization_changed=row_banks, unchanged_firmware_storage_assets=len(old_assets),
+                all_ram_parameters_match=not(row_banks or bias_block), all_bsram_parameters_match=not bias_block,
+                all_existing_bsram_parameters_match=True,bias_rom_checks=bias_rom_checks,
+                row_memory_storage_organization_changed=row_banks and not bias_block,row_banks_present=row_banks,
+                bias_storage_organization_changed=bias_block,unchanged_firmware_storage_assets=len(old_assets),
                 changed_rtl_inputs=changed, control_weights_and125hz_unchanged=True,
                 source_csr_and_clock_sdc_unchanged=row_banks or not bool(lane2_checks), sfp_lane2_checks=lane2_checks, core_synthesis_estimate=core,
                 selector_before=old, selector_after=new, clock_plan_sources_revalidated=names,
