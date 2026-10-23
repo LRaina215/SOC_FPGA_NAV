@@ -1,0 +1,774 @@
+{
+  "recorded_at": "2026-10-23T19:49:57.095691+08:00",
+  "physical_reference": "F:\\nav_integration_g2_20261023\\sfp_history128_lease_pnr3",
+  "direct_q_to_d_total": 120,
+  "existing_reviewed_connection_count": 77,
+  "additional_connection_count": 43,
+  "group_counts": {
+    "vendor_collision_branch": 1,
+    "vendor_configuration": 2,
+    "vendor_tx_config": 16,
+    "vendor_receiving": 1,
+    "status_monitor": 7,
+    "partner_monitor": 16
+  },
+  "single_second_register_shape_count": 42,
+  "groups": {
+    "vendor_collision_branch": [
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/gmii_col_s3",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/gmii_col_int_s0",
+        "source_clock": [
+          "h_tx_clk"
+        ],
+        "destination_clock": [
+          "h_rx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_mac_rx_ctrl/gmii_col_int_tmp_s3",
+            "I1"
+          ],
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_mac_rx_ctrl/gmii_col_int_tmp_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": false
+      }
+    ],
+    "vendor_configuration": [
+      {
+        "source": "u_sfp/cfg_1_s0",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_an_enable_d1_s0",
+        "source_clock": [
+          "clk50_d"
+        ],
+        "destination_clock": [
+          "h_rx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_an_enable_d2_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/cfg_0_s0",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_adv_ability_d1_0_s0",
+        "source_clock": [
+          "clk50_d"
+        ],
+        "destination_clock": [
+          "h_rx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_adv_ability_d2_0_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      }
+    ],
+    "vendor_tx_config": [
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/tx_config_15_s3",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d1_15_s0",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "h_tx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d2_15_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/tx_config_14_s2",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d1_14_s0",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "h_tx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d2_14_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/tx_config_13_s2",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d1_13_s0",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "h_tx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d2_13_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/tx_config_12_s2",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d1_12_s0",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "h_tx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d2_12_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/tx_config_11_s2",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d1_11_s0",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "h_tx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d2_11_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/tx_config_10_s2",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d1_10_s0",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "h_tx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d2_10_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/tx_config_9_s2",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d1_9_s0",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "h_tx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d2_9_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/tx_config_8_s2",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d1_8_s0",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "h_tx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d2_8_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/tx_config_7_s2",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d1_7_s0",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "h_tx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d2_7_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/tx_config_6_s2",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d1_6_s0",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "h_tx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d2_6_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/tx_config_5_s2",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d1_5_s0",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "h_tx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d2_5_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/tx_config_4_s2",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d1_4_s0",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "h_tx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d2_4_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/tx_config_3_s2",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d1_3_s0",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "h_tx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d2_3_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/tx_config_2_s2",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d1_2_s0",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "h_tx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d2_2_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/tx_config_1_s2",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d1_1_s0",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "h_tx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d2_1_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/tx_config_0_s2",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d1_0_s0",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "h_tx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/tx_config_d2_0_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      }
+    ],
+    "vendor_receiving": [
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_rx/receiving_s3",
+        "first": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/receiving_d1_s0",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "h_tx_clk"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_tx/receiving_d2_s0",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      }
+    ],
+    "status_monitor": [
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_15_s3",
+        "first": "u_sfp/u_status/s1_8_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_status/s2_8_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_12_s2",
+        "first": "u_sfp/u_status/s1_7_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_status/s2_7_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_11_s2",
+        "first": "u_sfp/u_status/s1_6_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_status/s2_6_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_10_s2",
+        "first": "u_sfp/u_status/s1_5_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_status/s2_5_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/page_received_s2",
+        "first": "u_sfp/u_status/s1_4_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_status/s2_4_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_an_complete_s3",
+        "first": "u_sfp/u_status/s1_2_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_status/s2_2_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_sync/sync_status_s3",
+        "first": "u_sfp/u_status/s1_0_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_status/s2_0_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      }
+    ],
+    "partner_monitor": [
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_14_s2",
+        "first": "u_sfp/u_partner/s1_14_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_partner/s2_14_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_13_s2",
+        "first": "u_sfp/u_partner/s1_13_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_partner/s2_13_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_12_s2",
+        "first": "u_sfp/u_partner/s1_12_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_partner/s2_12_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_11_s2",
+        "first": "u_sfp/u_partner/s1_11_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_partner/s2_11_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_10_s2",
+        "first": "u_sfp/u_partner/s1_10_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_partner/s2_10_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_9_s2",
+        "first": "u_sfp/u_partner/s1_9_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_partner/s2_9_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_8_s2",
+        "first": "u_sfp/u_partner/s1_8_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_partner/s2_8_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_7_s2",
+        "first": "u_sfp/u_partner/s1_7_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_partner/s2_7_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_6_s2",
+        "first": "u_sfp/u_partner/s1_6_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_partner/s2_6_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_5_s2",
+        "first": "u_sfp/u_partner/s1_5_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_partner/s2_5_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_4_s2",
+        "first": "u_sfp/u_partner/s1_4_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_partner/s2_4_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_3_s2",
+        "first": "u_sfp/u_partner/s1_3_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_partner/s2_3_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_2_s2",
+        "first": "u_sfp/u_partner/s1_2_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_partner/s2_2_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_1_s2",
+        "first": "u_sfp/u_partner/s1_1_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_partner/s2_1_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_0_s2",
+        "first": "u_sfp/u_partner/s1_0_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_partner/s2_0_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      },
+      {
+        "source": "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/u_ge_an/mr_lp_adv_ability_15_s3",
+        "first": "u_sfp/u_partner/s1_15_s1",
+        "source_clock": [
+          "h_rx_clk"
+        ],
+        "destination_clock": [
+          "clk50_d"
+        ],
+        "first_q_loads": [
+          [
+            "u_sfp/u_partner/s2_15_s1",
+            "D"
+          ]
+        ],
+        "single_second_register": true
+      }
+    ]
+  },
+  "accepted_for_timing_exceptions": false,
+  "timing_constraints_changed": false,
+  "scope": "Read-only inventory on the previous failed physical netlist. Direct register Q-to-D edges only, excluding combinational sources, memory buses, async resets, GTR and external IO. Single-second shape does not prove coherence, MTBF or CDC acceptance; new PNR must be rechecked.",
+  "next_review": [
+    "Vendor collision first stage fans out to LUT and DFF: do not apply a generic single-second exception.",
+    "Review configuration stability during reset and vendor 16-bit tx_config coherence/protocol.",
+    "Review status/partner stable publication and GTR/LOS/reset crossings separately.",
+    "No claim that these43 crossings explain802 unrouted nets; current PNR input remains frozen."
+  ]
+}

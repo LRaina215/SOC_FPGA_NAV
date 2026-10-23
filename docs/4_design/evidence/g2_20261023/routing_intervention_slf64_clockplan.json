@@ -878,7 +878,7 @@
   "programmed": false,
   "g2_passed": false,
   "next_step": "Compare actual global allocation, unrouted nets, BSRAM placement and complete timing. Full PCS/reset/IO review remains required.",
-  "updated_at": "2026-10-23T18:54:32.193683+08:00",
+  "updated_at": "2026-10-23T19:51:10.187281+08:00",
   "slf_attribute_experiment": {
     "before_build": "F:\\nav_integration_g2_20261023\\sfp_history128_phyguard_lease_syn3",
     "after_build": "F:\\nav_integration_g2_20261023\\sfp_slf64_clockplan_syn4",
@@ -983,23 +983,33 @@
       "system_telemetry_file": "system_telemetry.jsonl",
       "telemetry_is_progress_evidence": false,
       "pid": 42320,
-      "elapsed_s": 150.20300000003772,
-      "no_observable_progress_s": 54.03100000001723,
+      "elapsed_s": 3574.3280000000377,
+      "no_observable_progress_s": 3163.844000000041,
       "observed_files": [
         [
           "gw_sh.log",
-          2250002,
-          1792752790242668500
+          2250128,
+          1792753104152701000
         ],
         [
           "impl\\pnr\\g2_top.log",
-          2249583,
-          1792752790242668500
+          2249709,
+          1792753104152701000
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          2411084,
+          1792753075289913700
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          14112952,
+          1792753075776838600
         ]
       ]
     },
     "absolute_deadline": "2026-10-23T20:51:35.185890+08:00",
-    "stage": "placement",
+    "stage": "Routing Phase0 completed",
     "logical_netlist_equal_to_802_failure": true,
     "sdc_equal_to_802_failure": true,
     "csr_equal_to_802_failure": true,
@@ -1016,5 +1026,110 @@
     "diagnostic_only": false,
     "final_reports_available": false,
     "programmed": false
+  },
+  "current_check": {
+    "checked_at": "2026-10-23T19:51:10.187281+08:00",
+    "owned_tool_pid": 42320,
+    "wrapper_pid": 8884,
+    "tool_running": true,
+    "runtime": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-23T18:51:35.185890+08:00",
+      "max_runtime_s": 7200.0,
+      "max_no_observable_progress_s": 0.0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 42320,
+      "elapsed_s": 3574.3280000000377,
+      "no_observable_progress_s": 3163.844000000041,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          2250128,
+          1792753104152701000
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          2249709,
+          1792753104152701000
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          2411084,
+          1792753075289913700
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          14112952,
+          1792753075776838600
+        ]
+      ]
+    },
+    "latest_vendor_stage": "Routing Phase0 completed",
+    "latest_vendor_log_time": "2026-10-23T18:58:24.152701+08:00",
+    "final_reports": {
+      ".rpt.txt": false,
+      ".tr": false,
+      ".vo": false,
+      ".posp": false
+    },
+    "primary_adjustment_verified": null,
+    "unrouted_nets": null,
+    "unrouted_delta_from802": null,
+    "warning_type_counts": {
+      "PA1001": 18873
+    },
+    "errors": [],
+    "system_telemetry_last": {
+      "recorded_at": "2026-10-23T19:51:09.522108+08:00",
+      "pid": 42320,
+      "elapsed_s": 3574.3280000000377,
+      "no_observable_progress_s": 3163.844000000041,
+      "cpu_seconds": {
+        "user": 3478.78125,
+        "system": 62.953125,
+        "children_user": 0.0,
+        "children_system": 0.0
+      },
+      "threads": 22,
+      "memory": {
+        "rss": 414969856,
+        "vms": 2381238272,
+        "num_page_faults": 11247470,
+        "peak_wset": 2389983232,
+        "wset": 414969856,
+        "peak_paged_pool": 1074256,
+        "paged_pool": 1071688,
+        "peak_nonpaged_pool": 139712,
+        "nonpaged_pool": 124112,
+        "pagefile": 2381238272,
+        "peak_pagefile": 2475978752,
+        "private": 2381238272
+      },
+      "io": {
+        "read_count": 10820,
+        "write_count": 60528,
+        "read_bytes": 33165872,
+        "write_bytes": 24065489,
+        "other_count": 40124,
+        "other_bytes": 392150
+      },
+      "host_memory": {
+        "available_physical_bytes": 4928786432,
+        "total_physical_bytes": 16849293312,
+        "available_commit_bytes": 7166488576,
+        "commit_limit_bytes": 38071144448
+      }
+    },
+    "decision": "Keep this exact process within its existing120min total/no idle cancellation budget; no duplicate PNR or input change. No final report means PRIMARY and unrouted reduction remain unverified.",
+    "acceptance": false,
+    "programmed": false,
+    "absolute_deadline": "2026-10-23T20:51:35.185890+08:00"
   }
 }
