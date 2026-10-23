@@ -115,8 +115,32 @@
   ],
   "failures_do_not_start_pnr": true,
   "repeat_same_build": false,
-  "recurring_automation": false,
+  "recurring_automation": true,
   "hardware_programmed": false,
   "deployment_accepted": false,
-  "scope": "event-dependent one-shot build continuation, not autonomous model reasoning or periodic task wakeups; live state and final reports supersede this startup snapshot"
+  "scope": "Original one-shot startup evidence is retained above; user-authorized recurring heartbeat now supplies model stage review and next-step analysis. Live state and final reports supersede these snapshots; neither mechanism proves routing or G2 acceptance.",
+  "stage_followup": {
+    "authorized_at": "2026-10-24T00:03:00+08:00",
+    "automation_id": "fpga",
+    "name": "联合FPGA执行链分析与接续",
+    "kind": "heartbeat",
+    "status": "ACTIVE",
+    "interval_minutes": 15,
+    "target_thread_id": "01a15a14-f781-7b43-9d53-a8dca480c4e9",
+    "configuration_readback_verified": true,
+    "one_shot_controller_is_still_nonrecurring": true,
+    "responsibility": "Read actual job/process/report evidence, analyze stage completion or failure, advance authorized work, update plan/results and commit own changes; no duplicate builds or blind retries",
+    "latest_process_identity_check": "2026-10-24T00:02:00+08:00",
+    "same_live_processes": [
+      61020,
+      52280,
+      42344,
+      19908
+    ],
+    "latest_diagnostic_phase": "Routing Phase0 completed; no final report",
+    "diagnostic_deadline": "2026-10-24T00:53:52.545216+08:00",
+    "total_budget_seconds": 7200,
+    "idle_budget_seconds": 0,
+    "local_app_and_computer_must_remain_running": true
+  }
 }
