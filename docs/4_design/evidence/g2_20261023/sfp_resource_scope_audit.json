@@ -1,0 +1,268 @@
+{
+  "recorded_at": "2026-10-23T14:43:22.613474+08:00",
+  "referenced_thread": "01a15a0f-cd57-7742-bfe9-4e75a0630318",
+  "scope": "Read-only review of frozen joint scope and independent SFP evidence; no joint SFP implementation run or hardware action",
+  "joint_build": "F:\\nav_integration_g2_20261023\\directed_trigblock_snapshot128_retry1",
+  "joint_source_sfp_files": [],
+  "joint_serdes_primitives": {},
+  "joint_sfp_enabled": false,
+  "joint_top_inactive_branch": "h_rx_valid/data/last/error constant zero; h_rx/tx clocks are core; h_tx_ready is one",
+  "joint_retained_host_hierarchy": [
+    {
+      "path": "/g2_top/u_nav/u_neth",
+      "name": "u_neth",
+      "Register": "137",
+      "Alu": "48",
+      "Lut": "8",
+      "T_Register": "443(137)",
+      "T_Alu": "119(48)",
+      "T_Lut": "221(8)",
+      "T_Bsram": "1(0)",
+      "T_Ssram": "1(0)"
+    },
+    {
+      "path": "/g2_top/u_nav/u_mbx",
+      "name": "u_mbx",
+      "Register": "367",
+      "Alu": "136",
+      "Lut": "311",
+      "T_Register": "589(367)",
+      "T_Alu": "154(136)",
+      "T_Lut": "1475(311)",
+      "T_Bsram": "2(0)",
+      "T_Ssram": "524(0)"
+    }
+  ],
+  "joint_retained_host_bsram_leaves": [
+    {
+      "path": "g2_top/u_nav/u_neth/u_txf/mem_mem_0_0_s",
+      "module_type": "nav_async_fifo_2",
+      "primitive": "SDPB",
+      "parameters": {
+        "BIT_WIDTH_0": "1",
+        "BIT_WIDTH_1": "1",
+        "READ_MODE": "1'b0",
+        "RESET_MODE": "\"SYNC\"",
+        "BLK_SEL_0": "3'b000",
+        "BLK_SEL_1": "3'b000"
+      }
+    },
+    {
+      "path": "g2_top/u_nav/u_mbx/u_rxb/\\g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_0_s",
+      "module_type": "nav_ram_sdp_9",
+      "primitive": "SDPB",
+      "parameters": {
+        "BIT_WIDTH_0": "8",
+        "BIT_WIDTH_1": "8",
+        "READ_MODE": "1'b0",
+        "RESET_MODE": "\"SYNC\"",
+        "BLK_SEL_0": "3'b000",
+        "BLK_SEL_1": "3'b000"
+      }
+    },
+    {
+      "path": "g2_top/u_nav/u_mbx/u_rxb/\\g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s",
+      "module_type": "nav_ram_sdp_9",
+      "primitive": "SDPB",
+      "parameters": {
+        "BIT_WIDTH_0": "8",
+        "BIT_WIDTH_1": "8",
+        "READ_MODE": "1'b0",
+        "RESET_MODE": "\"SYNC\"",
+        "BLK_SEL_0": "3'b000",
+        "BLK_SEL_1": "3'b000"
+      }
+    }
+  ],
+  "sfp_physical_resources": {
+    "Logic": {
+      "used": 3570,
+      "capacity": 138240
+    },
+    "Register": {
+      "used": 3114,
+      "capacity": 139095
+    },
+    "BSRAM": {
+      "used": 5,
+      "capacity": 340
+    },
+    "GTR12_QUAD": {
+      "used": 1,
+      "capacity": 2
+    }
+  },
+  "sfp_synthesis_breakdown": [
+    {
+      "path": "/sfp_bringup_top/u_mac",
+      "name": "u_mac",
+      "Lut": "2",
+      "T_Register": "1080(0)",
+      "T_Alu": "38(0)",
+      "T_Lut": "1314(2)",
+      "T_Ssram": "2(0)"
+    },
+    {
+      "path": "/sfp_bringup_top/u_echo",
+      "name": "u_echo",
+      "Register": "97",
+      "Alu": "62",
+      "Lut": "45",
+      "T_Register": "1675(97)",
+      "T_Alu": "489(62)",
+      "T_Lut": "1112(45)",
+      "T_Bsram": "5(0)",
+      "T_Ssram": "3(0)"
+    },
+    {
+      "path": "/sfp_bringup_top/u_echo/u_payload",
+      "name": "u_payload",
+      "Lut": "1",
+      "Bsram": "1",
+      "T_Lut": "1(1)",
+      "T_Bsram": "1(1)"
+    },
+    {
+      "path": "/sfp_bringup_top/u_echo/u_net",
+      "name": "u_net",
+      "Register": "267",
+      "Alu": "176",
+      "Lut": "16",
+      "T_Register": "1578(267)",
+      "T_Alu": "427(176)",
+      "T_Lut": "1066(16)",
+      "T_Bsram": "4(0)",
+      "T_Ssram": "3(0)"
+    }
+  ],
+  "sfp_standalone_evidence": {
+    "date": "2026-10-23",
+    "scope": "Independent SFP bring-up, not G2 acceptance",
+    "build_directory": "F:\\nav_sfp_20261023\\build_v2",
+    "tested_rtl_matches_current_sources": true,
+    "inspection": {
+      "constrained_timing_passed": true,
+      "clocks": {
+        "core_clk": {
+          "required_mhz": 50.0,
+          "reported_fmax_mhz": 107.447
+        },
+        "rx_mac_clk": {
+          "required_mhz": 125.0,
+          "reported_fmax_mhz": 163.865
+        },
+        "tx_mac_clk": {
+          "required_mhz": 125.0,
+          "reported_fmax_mhz": 170.981
+        }
+      },
+      "minimum_reported_slack_ns": {
+        "setup": 1.897,
+        "hold": 0.176,
+        "recovery": 2.996,
+        "removal": 0.363,
+        "pulse_width": 1.127
+      },
+      "resources": {
+        "Logic": 3570,
+        "Register": 3114,
+        "BSRAM": 5,
+        "GTR12_QUAD": 1
+      },
+      "actuator_outputs_tied_to_ground": [
+        "M1_DIR1",
+        "M1_DIR2",
+        "M1_PWM",
+        "M2_DIR1",
+        "M2_DIR2",
+        "M2_PWM",
+        "SERVO1",
+        "SERVO2",
+        "SERVO3",
+        "SERVO4"
+      ],
+      "csr_passed_to_pnr": true,
+      "bitstream": "F:\\nav_sfp_20261023\\build_v2\\impl\\pnr\\sfp_bringup.fs",
+      "physical_cdc_skew_signoff": false,
+      "hardware_tested": false,
+      "note": "Independent-clock paths use vendor-reference exceptions; not joint G2 acceptance"
+    },
+    "echo_simulation": {
+      "passed": true,
+      "scope": "New echo logic + existing ARP/UDP/CDC at MAC byte interface",
+      "echoed_payload_lengths": [
+        1,
+        18,
+        1472,
+        255,
+        21
+      ],
+      "mac_frames": 6,
+      "covered": "random TX backpressure, busy drop, 1472/1473 limit, CRC error, truncation, wrong port, recovery",
+      "vendor_pcs_serdes_simulated": false,
+      "hardware_tested": false
+    },
+    "control_simulation": {
+      "passed": true,
+      "scope": "UART transactions, top reset/config, LOS/link recovery, actuator constants",
+      "vendor_mac_stubbed": true,
+      "hardware_tested": false
+    },
+    "programmed": false
+  },
+  "joint_sfp_delta": null,
+  "joint_sfp_delta_reason": "Reuse current host net_port/mailbox, reactivate optimized RX/TX data paths, remove diagnostic-only echo/UART duplication, and measure actual combined mapping",
+  "previous_physical_bsram": 331,
+  "work_limit": 336,
+  "device_limit": 340,
+  "running_pnr": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-23T14:20:29.053068+08:00",
+    "max_runtime_s": 3600.0,
+    "max_no_observable_progress_s": 2100.0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 60864,
+    "elapsed_s": 1351.8910000000033,
+    "no_observable_progress_s": 762.9369999999763,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        1038,
+        1792737017399286800
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        592,
+        1792737017400293200
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2247620,
+        1792736989089799800
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        13019293,
+        1792736989591131200
+      ]
+    ]
+  },
+  "running_pnr_scope": "baseline without SFP; may measure snapshot structure benefit but cannot qualify the complete RK3588 link system",
+  "physical_constraint_manual": "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/doc/EN/SUG1541-1.0E_Gowin Software Physical Constraints User Guide.pdf",
+  "assisted_implementation": [
+    "data mux fanout restructuring already measured in SYN",
+    "evidence-directed primitive/group region constraints",
+    "BSRAM/DSP and clock placement review",
+    "full clock and CDC timing closure"
+  ],
+  "manual_wire_routing_verified": false,
+  "programmed": false,
+  "full_system_gate_passed": false
+}
