@@ -1,0 +1,192 @@
+{
+  "recorded_at": "2026-10-24T01:46:38.346853+08:00",
+  "user_report": {
+    "vehicle_powered": true,
+    "vehicle_supported": true,
+    "RK3588_online": true,
+    "zcode_still_performing_LLM_optimization": true,
+    "source": "latest direct user message in this chat; physical support/power not inferred from USB"
+  },
+  "authorization": {
+    "necessary_vehicle_tests_after_joint_deployment_gates": true,
+    "no_repeat_permission_required": true,
+    "scope": "本次连续夜间联调；按已确认支撑工况分级测试",
+    "reconfirm_facts_only_on_relevant_changes_or_conflicting_evidence": true,
+    "not_a_waiver_of_routing_timing_CDC_IO_PCS_checks": true,
+    "keep4500_weights125hz": true
+  },
+  "referenced_chat": {
+    "thread_id": "01a15a0f-cd57-7742-bfe9-4e75a0630318",
+    "host": "local",
+    "title": "查找并跟进 Zcode 会话",
+    "read_latest_turn": true,
+    "final_delivery": "SFP1/P6/U11/Q0 Lane2, 1000Mb/s full duplex; 100/100 echo at five lengths, RX errors/echo drops/link losses zero; standalone diagnostic only; RK static test IP temporary"
+  },
+  "rk_readiness": {
+    "observed_at": "2026-10-24T01:43:08.330342+08:00",
+    "host": "100.113.173.115",
+    "port": 22,
+    "ssh_port_reachable": true,
+    "banner": "SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.13",
+    "authenticated_this_turn": false,
+    "remote_state_changed": false,
+    "udp_retest_performed": false
+  },
+  "read_only_board_probe": {
+    "started_at": "2026-10-24T01:44:14.097053+08:00",
+    "build": "F:\\nav_sfp_20261023\\build_lane2_v3",
+    "port": "COM11",
+    "steps": [
+      {
+        "name": "usercode_before",
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\Programmer\\bin\\programmer_cli.exe",
+          "--cable-index",
+          "1",
+          "--location",
+          "579",
+          "--device",
+          "GW5AT-138C",
+          "--run",
+          "73"
+        ],
+        "returncode": 0
+      }
+    ],
+    "flash_written": false,
+    "motion_commands": 0,
+    "programmed": false,
+    "full_previous_image_identity_proven": false,
+    "usercode_before": 37371,
+    "snapshots": [
+      {
+        "signature": 1397116977,
+        "config": 2,
+        "status": 23,
+        "partner": 416,
+        "diagnostic": 23,
+        "link_losses": 0,
+        "rx_frames": 197,
+        "rx_udp": 126,
+        "rx_errors": 0,
+        "arp_requests": 2,
+        "tx_frames": 128,
+        "echoes": 126,
+        "echo_drops": 0,
+        "ipv4": 3232236132,
+        "port": 9000,
+        "image": "standalone",
+        "register_base": 0,
+        "decoded": {
+          "mode": "1000BASE-X",
+          "autoneg": true,
+          "honour_los": false,
+          "qpll_locked": true,
+          "rx_locked": true,
+          "aligned": true,
+          "los": false,
+          "link_ready": true,
+          "ip_reset": false,
+          "pcs_sync": true,
+          "pcs_link": true,
+          "an_complete": true,
+          "partner_phy_link": null
+        },
+        "recorded_at": "2026-10-24T01:44:18.602823+08:00"
+      },
+      {
+        "signature": 1397116977,
+        "config": 2,
+        "status": 23,
+        "partner": 416,
+        "diagnostic": 23,
+        "link_losses": 0,
+        "rx_frames": 197,
+        "rx_udp": 126,
+        "rx_errors": 0,
+        "arp_requests": 2,
+        "tx_frames": 128,
+        "echoes": 126,
+        "echo_drops": 0,
+        "ipv4": 3232236132,
+        "port": 9000,
+        "image": "standalone",
+        "register_base": 0,
+        "decoded": {
+          "mode": "1000BASE-X",
+          "autoneg": true,
+          "honour_los": false,
+          "qpll_locked": true,
+          "rx_locked": true,
+          "aligned": true,
+          "los": false,
+          "link_ready": true,
+          "ip_reset": false,
+          "pcs_sync": true,
+          "pcs_link": true,
+          "an_complete": true,
+          "partner_phy_link": null
+        },
+        "recorded_at": "2026-10-24T01:44:20.614848+08:00"
+      },
+      {
+        "signature": 1397116977,
+        "config": 2,
+        "status": 23,
+        "partner": 416,
+        "diagnostic": 23,
+        "link_losses": 0,
+        "rx_frames": 197,
+        "rx_udp": 126,
+        "rx_errors": 0,
+        "arp_requests": 2,
+        "tx_frames": 128,
+        "echoes": 126,
+        "echo_drops": 0,
+        "ipv4": 3232236132,
+        "port": 9000,
+        "image": "standalone",
+        "register_base": 0,
+        "decoded": {
+          "mode": "1000BASE-X",
+          "autoneg": true,
+          "honour_los": false,
+          "qpll_locked": true,
+          "rx_locked": true,
+          "aligned": true,
+          "los": false,
+          "link_ready": true,
+          "ip_reset": false,
+          "pcs_sync": true,
+          "pcs_link": true,
+          "an_complete": true,
+          "partner_phy_link": null
+        },
+        "recorded_at": "2026-10-24T01:44:22.625879+08:00"
+      }
+    ],
+    "completed": true,
+    "ended_at": "2026-10-24T01:44:22.648880+08:00"
+  },
+  "interpretation": {
+    "usercode_and_signature_are_not_full_bitstream_identity": true,
+    "three_snapshots_are_status_recheck_not_new_udp_acceptance": true,
+    "echo126_is_earlier_cumulative_total": true,
+    "standalone_ready_is_not_joint_G2_pass": true,
+    "vehicle_motion_or_BMI_validation_not_performed_this_turn": true
+  },
+  "conditional_test_sequence": [
+    "Actual full routing/resource/timing/CDC/reset/IO/PCS gates pass",
+    "Read current electronic state and preserve current recovery material; load accepted joint image to SRAM and verify",
+    "Zero-command/startup, BMI/encoder freshness, complete telemetry and RK communication",
+    "Enable/command-validity/link-loss stop checks, then bounded low-amplitude short actions under confirmed support conditions",
+    "Record stop responses; do not equate supported-wheel results with ground braking distance or terrain acceptance"
+  ],
+  "existing_pnr_preserved": true,
+  "user_zcode_processes_not_interrupted": true,
+  "automation": {
+    "id": "fpga",
+    "updated_and_read_back": true
+  },
+  "g2_passed": false
+}
