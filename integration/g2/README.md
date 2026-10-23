@@ -48,6 +48,8 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 前一工具已结束时可显式使用互斥的`--start-now`；`--gyro-sum-exact-widths`仅在冻结输入副本上派生已验证的17位求和，校验来源尚未含该候选、所有RTL输入中仅`control/imu_fusion.v`改变，并写入manifest/job。旧SYN结果/内存清单不复制成新结果；50MHz预检、内存/40分钟保护、原固件和权重保持。派生来源、已完成报告及后续PNR进度统一见总计划。
 
+`--trig-block-rom`仅用于directed布局，将`nav_ram_sdp`中INIT_FILE非空的表使用原读写/初始/保持代码加block属性实现；当前共同工程仅四份1024×16正弦表，不改变数值或读取拍。`build_g2.py`和`retry_frozen_synthesis.py`均支持；后者只修改冻结输入中的`nav/rtl/common/nav_ram_sdp.v`，原控制/固件/权重保持。`audit_trig_routing.py <SYN-build> --out <json>`记录实际四表原语及局部ROM16地址引用，不作物理拥塞或全局扇出结论。`test_trig_block_rom.py --source <frozen-SYN> --out <new-dir>`覆盖两独立端口全部地址、初始零及使能保持，再综合并用真实厂商原语验证INIT；小模块2块不能代替联合占用。若仅报告字段解析出错而RTL/SYN已完成，可显式`--resume-vendor-init`，逐字核对所有保存输入/设置后继续，不重跑已完成阶段。
+
 当前结论与原始路径见`docs/4_design/g2_joint_resources_20261022.md`，唯一当前状态表在`docs/1_plan/system_integration_plan_20261021.md`。
 
 `collect_pnr_result.py`仅读取实际PNR报告，保留小数DSP用量；布线失败时记录未布通网络和缺失的时序，不用SYN频率填充Fmax。例：`python integration/g2/collect_pnr_result.py <build> --out <result.json>`。

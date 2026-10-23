@@ -30,10 +30,12 @@ def main():
     ap.add_argument('--action-map-exact-widths',action='store_true',help='exact private gain arithmetic widths, no quantization or latency change')
     ap.add_argument('--packed-weight9',action='store_true',help='lossless weight bitplanes in native9 modes; no weight/cycle change')
     ap.add_argument('--gyro-sum-exact-widths',action='store_true',help='exact live unsigned17 raw gyro sum, no gate/parameter/cycle change')
+    ap.add_argument('--trig-block-rom',action='store_true',help='initialized navigation lookup tables in native BSRAM; values and read cycle unchanged')
     ap.add_argument('--wide-split',type=int,choices=[0,1],default=0,help='explicit PNR wide-RAM split; 1 duplicates every 32/36-bit block')
     a=ap.parse_args()
     if a.command_units_pipeline and not a.command_lease:ap.error('--command-units-pipeline requires --command-lease')
     if a.packed_weight9 and a.packing not in ('control','both','ssram','hybrid','directed'):ap.error('--packed-weight9 requires a control storage layout')
+    if a.trig_block_rom and a.packing!='directed':ap.error('--trig-block-rom requires directed storage')
     out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
     nav=out/'nav';nav.mkdir()
     shutil.copytree(ROOT/'rtl',nav/'rtl')
@@ -55,6 +57,9 @@ def main():
     elif a.packing=='directed':
         for name in ('nav_ram_sdp','nav_ram_sp','nav_ram_banked'):
             shutil.copyfile(ROOT/f'integration/g2/{name}_directed.v',nav/f'rtl/common/{name}.v')
+    if a.trig_block_rom:
+        from prepare_trig_block_rom import generate
+        generate(nav/'rtl/common/nav_ram_sdp.v')
     fw=out/'fw';shutil.copytree(ROOT/'fw',fw,ignore=shutil.ignore_patterns('build','__pycache__'))
     if a.nav=='coverage':
         for p in fw.rglob('*'):
@@ -131,6 +136,7 @@ def main():
         action_map_exact_widths=a.action_map_exact_widths,
         packed_weight9=a.packed_weight9,
         gyro_sum_exact_widths=a.gyro_sum_exact_widths,
+        trig_block_rom=a.trig_block_rom,
         device='GW5AT-LV138PG484AC1/I0',device_version='C',clock_core_mhz=50,synthesis_frequency_hint_mhz=50,
         control_commit='6443f5678b4de222c22cbf331b8396f7c8df6a41',control_source=str(control),control_adapter='control_nav_adapter.patch',control_weights_changed=False,
         source_files=[str(p) for p in files],programmed=False,

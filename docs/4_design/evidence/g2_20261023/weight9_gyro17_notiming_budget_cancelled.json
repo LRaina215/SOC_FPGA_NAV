@@ -1,0 +1,68 @@
+{
+  "checked_at": "2026-10-23T07:57:39.805504+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\weight9_gyro17_notiming_diagnostic",
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-23T06:54:32.606694+08:00",
+    "max_runtime_s": 3600.0,
+    "max_no_observable_progress_s": 2100.0,
+    "cancelled": true,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "pid": 27260,
+    "elapsed_s": 2760.8910000000033,
+    "no_observable_progress_s": 2100.0,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        1056,
+        1792710331911368700
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        601,
+        1792710331911368700
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2369920,
+        1792710300543593300
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        13713991,
+        1792710301093904500
+      ]
+    ],
+    "reason": "no observable log/artifact progress within budget",
+    "tool_exit": 1,
+    "ended_at": "2026-10-23T07:40:33.499196+08:00"
+  },
+  "g2_gate": {
+    "build": "F:\\nav_integration_g2_20261023\\weight9_gyro17_notiming_diagnostic",
+    "g2_resource_core_gate_pass": false,
+    "programmed": false,
+    "reason": "required implementation report unavailable",
+    "missing_report": "F:\\nav_integration_g2_20261023\\weight9_gyro17_notiming_diagnostic\\impl\\pnr\\g2_top.rpt.txt",
+    "diagnostic_only": true,
+    "scope": "diagnostic implementation comparison only; never G2 or deployment acceptance"
+  },
+  "last_stage": "Routing Phase0 completed",
+  "reports_present": {
+    ".rpt.txt": false,
+    ".tr": false,
+    ".vo": false
+  },
+  "diagnostic_only": true,
+  "finding": "Disabling timing-driven optimization also did not obtain final reports within the same budget. Neither CDC candidate removal nor this optimization toggle alone resolved the observed search.",
+  "placement_access": {
+    "p": "GOWIN pragma protect/encrypted header observed; no plaintext cell map",
+    "db": "binary undocumented placement data; no validated reader available",
+    "current_physical_congestion_or_local_distribution": "not verified"
+  },
+  "scope": "budget cancellation; no new actual BSRAM/Fmax, internal deadlock or unique cause established",
+  "programmed": false
+}
