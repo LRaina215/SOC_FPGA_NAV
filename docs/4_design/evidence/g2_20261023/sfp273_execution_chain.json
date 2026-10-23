@@ -118,7 +118,7 @@
   "recurring_automation": true,
   "hardware_programmed": false,
   "deployment_accepted": false,
-  "scope": "Original one-shot startup evidence is retained above; user-authorized recurring heartbeat now supplies model stage review and next-step analysis. Live state and final reports supersede these snapshots; neither mechanism proves routing or G2 acceptance.",
+  "scope": "Historical Lane0 one-shot startup evidence retained. The old queued SYN and controller were superseded before tool launch after verified SFP1 Lane2 mapping; follow sfp_lane2_execution_chain.json and its live state. No joint acceptance.",
   "stage_followup": {
     "authorized_at": "2026-10-24T00:03:00+08:00",
     "automation_id": "fpga",
@@ -142,5 +142,14 @@
     "total_budget_seconds": 7200,
     "idle_budget_seconds": 0,
     "local_app_and_computer_must_remain_running": true
+  },
+  "superseded_after_lane_mapping_audit": {
+    "at": "2026-10-24T00:22:27.580739+08:00",
+    "reason": "Verified board SFP1 is Q0 Lane2; old Lane0 is PCIe. Supersede queued tools before launch; preserve running diagnostic as Lane0 comparison only.",
+    "old_queued_synthesis_and_controller_stopped_before_tool_start": true,
+    "current_evidence": "sfp_lane2_execution_chain.json",
+    "current_live_state_file": "F:\\nav_integration_g2_20261023\\lane2_bankselect128_one_shot\\job.json",
+    "current_controller_pid": 52448,
+    "current_synthesis_waiter_pid": 54004
   }
 }

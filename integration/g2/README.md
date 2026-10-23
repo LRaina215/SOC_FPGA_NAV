@@ -72,7 +72,7 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 `nav_count_feedback.v`为独立N3候选，尚未接入`g2_top`及正在运行的冻结PNR。固定名义65mm/1320CPR、10ms原始AB计数，左正/右负为前进；保留导航速度换算余数，并提供50窗计数变化的补充慢速证据、质量/超时/重叠/范围故障及粘滞连续性丢失。计数窗口不能观测门内往返、亚计数运动和打滑，不能单独确认物理停止；原PID/RL不受影响。`test_count_feedback.py`采用独立整数/分数模型，`measure_fusion_timing.py --module count-feedback`使用输入启动寄存器测量原型（测试寄存器不进产品）。接入及完整资源/时序、G3质量状态、原4500闭环和停止包络仍待完成。
 
-`--real-sfp`将实际Q0 Lane0 MAC/PCS/SerDes、CSR及只读CONTROL_V2引出接入共同工程。SFP2管理窗口为0x1300；使用`integration/sfp/sfp_client.py status --image joint --port <端口>`只读检查，指定`--mode`才重配。51条主机FIFO/toggle CDC与原26条分别核对，受保护厂商PCS/状态/复位仍须独立签核。
+`--real-sfp`将实际SFP1/Q0 Lane2 MAC/PCS/SerDes、CSR及只读CONTROL_V2引出接入共同工程。SFP2管理窗口为0x1300；使用`integration/sfp/sfp_client.py status --image joint --port <端口>`只读检查，指定`--mode`才重配。51条主机FIFO/toggle CDC与原26条分别核对，受保护厂商PCS/状态/复位仍须独立签核。
 
 `--history-data-fanout`只对观测history initialized的数据选择负载加syn_maxfan=128，模块配对负载1000→128。`--lease-output-select`要求command-lease，只把停止/正常目标选择放在两套相同approach计算之后，保留每拍状态及优先级；24项合同63850拍逐拍输出对照通过，模块综合最坏14.481→9.007ns。生成器只改构建副本，联合效果以冻结SYN/PNR证据为准。
 
@@ -102,3 +102,6 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 `continue_bank_select_once.py --synthesis <queued-SYN> --baseline <273-PNR> --wait-pid <existing-SYN-owner> --pnr-out <new-full-PNR> --state-dir <new-state-dir>`为一次性事件依赖接续，不创建定时任务或重复SYN。先核对等待进程身份，最多等3小时；SYN完成后独立进程核对精确属性差异、全部RAM参数/容量、实际选择负载、核心SYN估计、8个全局计划驱动与26＋51条源CDC连接，未完成/失败/不满足门槛就停止并保存原因。大字典随检查进程退出释放。通过后按2/4GiB启动门槛，只启动1轮完整功能120分钟/静默0 PNR；不覆盖已有目录，不下载，也不以包装退出码授予接受。`job.json`是实时阶段，`pre_pnr_checks.json`及`routing_result.json`保存后续实际证据；退出0只表示单次流程收尾，仍待审查。
 
 `pnr_from_netlist.py --routing-evidence`现在同时追加200网格拥塞与100条高扇出只读报告请求，原时钟和时序例外保持；生成manifest记录实际追加命令。失败PNR仍可能没有tr，缺报告继续未知。
+
+
+`retry_frozen_synthesis.py --sfp-lane2-from-build <proved-standalone-build> --bank-select-data-fanout`从旧完整冻结源采用已核对的SFP1 Lane2生成包装/CSR及映射注释，其他源逐字保持；只改联合SDC两条125MHz时钟源，拒绝导入独立整域异步例外。保护MAC须字节相同，配置须只启用Q0 Lane2/REFCLK1/loopback OFF。`prepare_sfp_lane2.py`在冻结和PNR前均核对来源；一次性接续还要求实际SYN的GTR Lane2 RX/TX输出分别驱动h_rx_clk/h_tx_clk。旧Lane0候选只留历史路由对照，不能用于SFP1物理验收。Lane2修正与银行复制同轮时，PNR变化不作单因素收益结论。

@@ -55,7 +55,10 @@ def validate_candidate(source, baseline, plan_file):
     manifest = json.loads((source/'manifest.json').read_text())
     assert manifest['bank_select_data_fanout'] and manifest['real_sfp'] and manifest['full_control_telemetry']
     assert not manifest['control_weights_changed'] and manifest['clock_core_mhz'] == 50
-    assert job['modified_rtl_inputs'] == ['nav/rtl/common/nav_ram_sdp.v']
+    lane2_proof = manifest.get('sfp_lane2_from_build')
+    expected_changes = ['nav/rtl/common/nav_ram_sdp.v']
+    if lane2_proof:expected_changes += ['sfp_host_mac.v','ip/serdes.v']
+    assert sorted(job['modified_rtl_inputs']) == sorted(expected_changes)
     original = Path(manifest['frozen_source_build'])
     ram = source/'nav/rtl/common/nav_ram_sdp.v'
     attribute = ' /* synthesis syn_maxfan=128 */'
@@ -64,8 +67,13 @@ def validate_candidate(source, baseline, plan_file):
     changed = [str(Path(n).relative_to(source)).replace('\\','/') for n in manifest['source_files']
                if Path(n).read_bytes() != (original/Path(n).relative_to(source)).read_bytes()]
     assert changed == job['modified_rtl_inputs'], changed
-    assert (source/'ip/serdes.csr').read_bytes() == (baseline/'ip/serdes.csr').read_bytes()
-    assert (source/'g2.sdc').read_bytes() == (original/'g2.sdc').read_bytes()
+    lane2_checks = None
+    if lane2_proof:
+        from prepare_sfp_lane2 import verify_frozen
+        lane2_checks = verify_frozen(source,original,lane2_proof)
+    else:
+        assert (source/'ip/serdes.csr').read_bytes() == (baseline/'ip/serdes.csr').read_bytes()
+        assert (source/'g2.sdc').read_bytes() == (original/'g2.sdc').read_bytes()
     summary = json.loads((source/'synthesis_summary.json').read_text())
     assert not summary['errors'] and summary['actual_synthesis_global_freq_mhz'] == 50
     core, = [c for c in summary['synthesis_timing']['clocks'] if c['name'] == 'clk50']
@@ -78,6 +86,9 @@ def validate_candidate(source, baseline, plan_file):
     assert new_mem['primitive_types']['GTR12_QUAD'] == 1
     assert memories_match(old_mem,new_mem), 'RAM primitive capacity/initialization changed'
     cells = read(source/'impl/gwsynthesis/g2_top.vg')
+    if lane2_checks:
+        from prepare_sfp_lane2 import verify_synthesized_clock_pins
+        lane2_checks['actual_synthesized_clock_pins'] = verify_synthesized_clock_pins(cells)
     old_cells = read(baseline/'g2_top.vg')
     old, new = bank_load(old_cells), bank_load(cells)
     assert new['maximum'] <= 128 and new['maximum'] < old['maximum'], (old,new)
@@ -107,7 +118,7 @@ def validate_candidate(source, baseline, plan_file):
     return dict(passed=True, source_bsram=new_mem['expanded_bsram_count'], wide_leaves=new_mem['wide32_36_count'],
                 predicted_physical_bsram=new_mem['predicted_split_bsram'], physical_count_is_prediction=True,
                 all_ram_parameters_match=True, changed_rtl_inputs=changed, control_weights_and125hz_unchanged=True,
-                source_csr_and_clock_sdc_unchanged=True, core_synthesis_estimate=core,
+                source_csr_and_clock_sdc_unchanged=not bool(lane2_checks), sfp_lane2_checks=lane2_checks, core_synthesis_estimate=core,
                 selector_before=old, selector_after=new, clock_plan_sources_revalidated=names,
                 lidar26_source_connections_match=True, host51_source_connections_match=True,
                 deployment_accepted=False)

@@ -41,6 +41,7 @@ def main():
     ap.add_argument('--lease-output-select',action='store_true',help='derive only the cycle-checked late lease stop selection')
     ap.add_argument('--slf-read-address-fanout',action='store_true',help='experimental attribute only; first full SYN retained275 RAM-input loads, so improvement must be measured')
     ap.add_argument('--bank-select-data-fanout',action='store_true',help='apply measured128 fanout limit at bank-read selector register; module576->128, full SYN/PNR still required')
+    ap.add_argument('--sfp-lane2-from-build',type=Path,help='adopt proved SFP1 Lane2 generated wrapper/CSR; preserve other frozen RTL and joint timing requirements')
     a=ap.parse_args();src=a.source.resolve();out=a.out.resolve()
     assert (a.wait_pid is None or a.wait_pid>0) and out!=src and src not in out.parents and out not in src.parents
     manifest=json.loads((src/'manifest.json').read_text(encoding='utf-8'))
@@ -98,6 +99,12 @@ def main():
     if a.bank_select_data_fanout:
         from prepare_bank_select_fanout import generate
         generate(out/'nav/rtl/common/nav_ram_sdp.v');manifest['bank_select_data_fanout']=True
+    if a.sfp_lane2_from_build:
+        assert manifest.get('real_sfp') and not manifest.get('sfp_lane2_from_build')
+        from prepare_sfp_lane2 import adopt, verify_frozen
+        expected += adopt(out,src,a.sfp_lane2_from_build)
+        manifest['sfp_lane2_from_build']=str(a.sfp_lane2_from_build.resolve())
+        manifest['sfp_lane2_input_checks']=verify_frozen(out,src,a.sfp_lane2_from_build)
     if a.gyro_sum_exact_widths:expected.append('control/imu_fusion.v')
     if a.trig_block_rom:expected.append('nav/rtl/common/nav_ram_sdp.v')
     if a.snapshot_mux_fanout:expected.append('control/rl_policy_tick_v5.v')

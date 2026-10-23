@@ -1,0 +1,135 @@
+{
+  "recorded_at": "2026-10-24T00:22:27.580739+08:00",
+  "reason": "Verified board SFP1 is Q0 Lane2; old Lane0 is PCIe. Supersede queued tools before launch; preserve running diagnostic as Lane0 comparison only.",
+  "mapping_correction_document": "docs/4_design/sfp_mapping_correction_20261024.md",
+  "independent_proof_build": "F:/nav_sfp_20261023/build_lane2_v3",
+  "independent_udp_result": "docs/4_design/evidence/sfp_20261023/rk_udp_lane2_pass.json",
+  "independent_test_is_not_joint_acceptance": true,
+  "superseded": [
+    {
+      "build": "sfp273_bankselect128_syn5",
+      "pid": 42344,
+      "tool_had_started": false
+    },
+    {
+      "build": "bankselect128_one_shot",
+      "pid": 19908,
+      "tool_had_started": false
+    }
+  ],
+  "preserved_diagnostic": {
+    "build": "sfp273_without_match_retry1_diagnostic",
+    "pid": 61020,
+    "collector_pid": 52280,
+    "lane": "Q0 Lane0",
+    "diagnostic_only": true,
+    "runtime": {
+      "command": [
+        "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/bin/gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-23T22:53:52.545216+08:00",
+      "max_runtime_s": 7200,
+      "max_no_observable_progress_s": 0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 61020,
+      "elapsed_s": 5285.938000000024,
+      "no_observable_progress_s": 4809.1720000000205,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          1809417,
+          1792767708289100700
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          1808950,
+          1792767708289100700
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          2086684,
+          1792767675150040900
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          12235046,
+          1792767675651520200
+        ]
+      ]
+    }
+  },
+  "new_synthesis": {
+    "pid": 54004,
+    "job": {
+      "source": "F:\\nav_integration_g2_20261023\\sfp_history128_phyguard_lease_syn3",
+      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_syn6",
+      "wait_pid": 52280,
+      "programmed": false,
+      "source_frozen_before_wait": true,
+      "automatic_pnr": false,
+      "modified_rtl_inputs": [
+        "nav/rtl/common/nav_ram_sdp.v",
+        "sfp_host_mac.v",
+        "ip/serdes.v"
+      ],
+      "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+      "phase": "waiting_for_prior_pnr",
+      "updated_at": "2026-10-24T00:19:59.854034+08:00"
+    },
+    "input_checks": {
+      "lane": "Q0 Lane2",
+      "proof_build": "F:\\nav_sfp_20261023\\build_lane2_v3",
+      "exact_generated_csr_and_wrapper": true,
+      "protected_mac_unchanged": true,
+      "outer_mac_function_unchanged": true,
+      "joint_clock_periods_unchanged": true,
+      "standalone_exceptions_not_imported": true,
+      "io_cst_unchanged": true,
+      "joint_hardware_accepted": false,
+      "changed_rtl_inputs": [
+        "nav/rtl/common/nav_ram_sdp.v",
+        "sfp_host_mac.v",
+        "ip/serdes.v"
+      ],
+      "exactly_three_rtl_differences": true,
+      "identical_memory_or_firmware_assets": 104
+    }
+  },
+  "new_controller": {
+    "pid": 52448,
+    "job": {
+      "started_at": "2026-10-24T00:20:27.033936+08:00",
+      "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_syn6",
+      "baseline": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+      "pnr_out": "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_pnr7",
+      "wait_pid": 54004,
+      "maximum_wait_seconds": 10800,
+      "recurring": false,
+      "maximum_pnr_runs": 1,
+      "programmed": false,
+      "deployment_accepted": false,
+      "phase": "waiting_for_existing_synthesis",
+      "updated_at": "2026-10-24T00:20:27.037445+08:00",
+      "wait_process_created_at": 1792772397.8367505
+    },
+    "maximum_full_pnr_runs": 1,
+    "actual_synthesized_lane2_clock_pins_required": true
+  },
+  "new_synthesis_and_pnr_have_no_results_yet": true,
+  "original_control_weights125hz_unchanged": true,
+  "previous273_is_lane0_historical_comparator_only": true,
+  "cannot_isolate_bank_fanout_pnr_effect_from_lane_mapping_change": true,
+  "automation": {
+    "id": "fpga",
+    "status": "ACTIVE",
+    "target_thread_id": "01a15a14-f781-7b43-9d53-a8dca480c4e9",
+    "updated_prompt_readback": true
+  },
+  "programmed": false,
+  "deployment_accepted": false
+}
