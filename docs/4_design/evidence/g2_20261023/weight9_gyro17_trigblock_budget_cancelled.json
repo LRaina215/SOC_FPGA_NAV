@@ -1,0 +1,73 @@
+{
+  "checked_at": "2026-10-23T09:15:15.745758+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\weight9_gyro17_trigblock_place1_route2_cdc50",
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-23T08:24:19.583043+08:00",
+    "max_runtime_s": 3600.0,
+    "max_no_observable_progress_s": 2100.0,
+    "cancelled": true,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "pid": 38120,
+    "elapsed_s": 2732.9370000000345,
+    "no_observable_progress_s": 2100.0630000000237,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        1116,
+        1792715691365154500
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        631,
+        1792715691365154500
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2248060,
+        1792715659607403100
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        13028911,
+        1792715660147655800
+      ]
+    ],
+    "reason": "no observable log/artifact progress within budget",
+    "tool_exit": 1,
+    "ended_at": "2026-10-23T09:09:52.511408+08:00"
+  },
+  "g2_gate": {
+    "build": "F:\\nav_integration_g2_20261023\\weight9_gyro17_trigblock_place1_route2_cdc50",
+    "g2_resource_core_gate_pass": false,
+    "programmed": false,
+    "reason": "required implementation report unavailable",
+    "missing_report": "F:\\nav_integration_g2_20261023\\weight9_gyro17_trigblock_place1_route2_cdc50\\impl\\pnr\\g2_top.rpt.txt",
+    "diagnostic_only": false
+  },
+  "last_stage": "Routing Phase0 completed",
+  "reports_present": {
+    ".rpt.txt": false,
+    ".tr": false,
+    ".vo": false
+  },
+  "preserved_artifacts": [
+    "F:\\nav_integration_g2_20261023\\weight9_gyro17_trigblock_place1_route2_cdc50\\impl\\pnr\\cmd.do",
+    "F:\\nav_integration_g2_20261023\\weight9_gyro17_trigblock_place1_route2_cdc50\\impl\\pnr\\device.cfg",
+    "F:\\nav_integration_g2_20261023\\weight9_gyro17_trigblock_place1_route2_cdc50\\impl\\pnr\\g2_top.db",
+    "F:\\nav_integration_g2_20261023\\weight9_gyro17_trigblock_place1_route2_cdc50\\impl\\pnr\\g2_top.log",
+    "F:\\nav_integration_g2_20261023\\weight9_gyro17_trigblock_place1_route2_cdc50\\impl\\pnr\\g2_top.p"
+  ],
+  "finding": "Native trig storage reduced actual SYN resources but this qualified PNR still failed to produce final reports within the no-progress budget. Routing cause remains unresolved.",
+  "scope": "budget cancellation, not measured timing failure;331 remains a physical-resource prediction and52.885MHz remains a synthesis estimate",
+  "monitoring": {
+    "automation_id": "automation-2",
+    "status": "deleted at explicit user request",
+    "replacement_build_started": false
+  },
+  "programmed": false
+}
