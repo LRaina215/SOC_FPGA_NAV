@@ -47,7 +47,7 @@ def supervise(build,deadline,*,require_gowin=True,poll_s=2,record_s=30):
     state=previous.copy();last_signature=previous.get('observed_files',[])
     last_progress=started.timestamp()+previous.get('elapsed_s',0)-previous.get('no_observable_progress_s',0)
     extension=dict(recorded_at=datetime.now().astimezone().isoformat(),deadline=deadline.isoformat(),
-        authorized_reason='human explicitly extended this same running PNR to today13:00',
+        authorized_reason='human explicitly extended this same running PNR to the recorded absolute deadline and disabled the idle timeout',
         original_wrapper_pid=wrapper.pid,original_wrapper_created=wrapper_created,tool_pid=tool.pid,tool_created=tool_created,
         supervisor_pid=os.getpid(),previous_runtime=previous,tool_restarted=False,automatic_programming=False,
         scope='one absolute-deadline extension; CPU/telemetry never count as routing progress')
