@@ -135,6 +135,19 @@ def collect(build,top='g2_top'):
         r['sfp_complete_cdc_acceptance']=False
         r['g2_resource_core_gate_pass']=False
         r['scope']='complete SFP candidate: 26 lidar and 51 host paths checked separately; vendor PCS/status/reset/IO acceptance pending'
+    plan_file=build/'clock_resource_plan.json'
+    if plan_file.exists():
+        from audit_global_muxes import audit as global_audit
+        plan=json.loads(plan_file.read_text(encoding='utf-8'))
+        actual=global_audit(build)
+        assigned={x['net']:x['resource'] for x in actual['global_nets']}
+        checks=[dict(net=x['net'],expected='PRIMARY' if x['action']=='promote' else 'not listed as global',
+                     actual=assigned.get(x['net'],'not listed as global'),
+                     passed=assigned.get(x['net'])=='PRIMARY' if x['action']=='promote' else x['net'] not in assigned)
+                for x in plan['actions']]
+        r['clock_resource_plan_physical']=dict(passed=all(x['passed'] for x in checks),checks=checks,
+            scope='reported global assignment only; individual BUFG index and route delays require separate evidence')
+        r['g2_resource_core_gate_pass']=r['g2_resource_core_gate_pass'] and r['clock_resource_plan_physical']['passed']
     return diagnostic_policy(r)
 
 

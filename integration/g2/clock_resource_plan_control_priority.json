@@ -1,0 +1,41 @@
+{
+  "reference_physical_build": "F:/nav_integration_g2_20261023/sfp_history128_lease_pnr3",
+  "hypothesis": "Large control reset/snapshot networks should receive PRIMARY tracks before modest navigation CE and row-address data networks. This is not an identified 802-net root cause.",
+  "promote": [
+    {
+      "net": "n2371_7",
+      "primary_index": 4,
+      "signal_types": "SR|LOGIC"
+    },
+    {
+      "net": "r2",
+      "primary_index": 5,
+      "signal_types": "SR|CE|LOGIC"
+    },
+    {
+      "net": "u_control/model_thread/observation/n331_7",
+      "primary_index": 6,
+      "signal_types": "SR|LOGIC"
+    },
+    {
+      "net": "u_control/model_thread/policy/snapshot_update",
+      "primary_index": 7,
+      "signal_types": "CE"
+    }
+  ],
+  "local": [
+    "u_nav/u_xt/n9903_3",
+    "u_nav/u_match/u_ex/n7021_4",
+    "u_nav/u_match/u_ex/rb_ra[0]",
+    "u_nav/u_match/u_ex/rb_ra[1]"
+  ],
+  "manual": "Gowin SUG1541-1.0E section2.8, pages18-19; BUFG[n] and LOCAL_CLOCK, no BUFS on Arora V",
+  "probe": "F:/nav_integration_g2_20261023/clock_index_sr_ce_probe_retry1",
+  "probe_actual_primary": [
+    "clk_d",
+    "sr",
+    "gate"
+  ],
+  "probe_scope": "actual 138C implementation confirms indexed CE/SR PRIMARY routing; not full-design routability or timing proof",
+  "logic_and_clock_periods_unchanged": true
+}

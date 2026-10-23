@@ -16,7 +16,7 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 `pnr_from_netlist.py`也可读取SYN-only构建，从实际PRJ/有效配置获取频率；`--replicate-resources 0|1`显式覆盖工具高负载资源复制，否则保持来源设置。`--place-option`默认1（可布线优先），2为时序优先，均在预检回读。实际PNR二进制复制标志为`-replicate`。这是物理实现试验，不改RTL算法或权重，仍须重测实际占用/布线/时序。示例：`python integration/g2/pnr_from_netlist.py <SYN-build> --wide-split 1 --replicate-resources 1 --place-option 2 --out <new-build>`。
 
-`--route-option 0|1|2`分别为默认、更深搜索、较快布线，预检回读。当前长布线重跑采用`--place-option 1 --route-option 2 --max-runtime-minutes 60 --max-no-progress-minutes 35`，其余时钟/CDC/资源门槛不变。预算默认0表示不启用；对本任务新PNR必须显式指定。`tool_runtime.json`保存进程和预算，观察日志/中间产物变化，CPU忙或监管心跳不算进展；超限只终止本次启动的工具，保存取消说明并返回未通过。`test_bounded_tool.py`验证真实子进程生命周期，不跑FPGA或物理仿真。
+`--route-option 0|1|2`分别为默认、更深搜索、较快布线，预检回读。布线轮次必须显式记录预算，历史60/35分钟取消与延长后的自然失败分开保存。本次用户要求继续介入后的轮次采用`--place-option 1 --route-option 2 --max-runtime-minutes 120 --max-no-progress-minutes 0`，其余时钟/CDC/资源门槛不变。预算默认0表示不启用；对本任务新PNR必须显式指定。`tool_runtime.json`保存进程和预算，观察日志/中间产物变化，CPU忙或监管心跳不算进展；超限只终止本次启动的工具，保存取消说明并返回未通过。`test_bounded_tool.py`验证真实子进程生命周期，不跑FPGA或物理仿真。
 
 `--capture-system-telemetry`可每30秒向`system_telemetry.jsonl`记录所属进程CPU/线程/工作集/私有内存/I/O及主机物理空闲/提交余量。依赖psutil，Windows提交值来自GlobalMemoryStatusEx；缺少观测记录错误，不伪造零值。系统观测文件明确排除在日志/产物进展集合之外，CPU、I/O或记录写入不会刷新静默预算；页错误累计也不能直接视为硬分页次数。当前一次延长诊断仍由总计划规定独立上限，不恢复定时监督。
 
@@ -75,3 +75,10 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 `--real-sfp`将实际Q0 Lane0 MAC/PCS/SerDes、CSR及只读CONTROL_V2引出接入共同工程。SFP2管理窗口为0x1300；使用`integration/sfp/sfp_client.py status --image joint --port <端口>`只读检查，指定`--mode`才重配。51条主机FIFO/toggle CDC与原26条分别核对，受保护厂商PCS/状态/复位仍须独立签核。
 
 `--history-data-fanout`只对观测history initialized的数据选择负载加syn_maxfan=128，模块配对负载1000→128。`--lease-output-select`要求command-lease，只把停止/正常目标选择放在两套相同approach计算之后，保留每拍状态及优先级；24项合同63850拍逐拍输出对照通过，模块综合最坏14.481→9.007ns。生成器只改构建副本，联合效果以冻结SYN/PNR证据为准。
+
+
+`retry_frozen_synthesis.py --slf-read-address-fanout`只在冻结构建副本的`slf_extract.v`读地址线上增加`/* synthesis syn_maxfan=64 */`，不改表达式、寄存器、初值或容量。`audit_slf_read_fanout.py <before-SYN> <after-SYN> --out <json>`核对源码仅此属性差异，并统计实际行缓存RAM地址脚负载；首次联合实验`sfp_slf64_clockplan_syn4`已测得负载仍275、未达到64；该方案未用于后续PNR。属性存在不构成收益，不重复相同实验。
+
+`pnr_from_netlist.py --clock-resource-plan integration/g2/clock_resource_plan_control_priority.json --routing-evidence`增加有物理依据的全局资源分配及完整警告/BSRAM位置输出。计划将PRIMARY4..7优先用于大负载控制复位/快照，较小导航CE/地址改普通布线；四条真实时钟由工具在其余PRIMARY选择。应用前核对前轮真实负载、源网表对象存在、索引无冲突，拒绝把真实时钟改普通布线。未改网表、SDC和原IO约束，物理采集器重新核对全局分配结果；实际PRIMARY分配、未布通数、BSRAM、时序和77条CDC/154条有效约束均待新报告。`BUFG[n]`的SR/CE到PRIMARY能力已由独立138C探针确认，不能由小探针推定联合布通。
+
+负载读取器已兼容RAM16SDP4在最后端口行闭合的语法，并计入RAD/WAD/S0/S1；旧脚本的RAM分类/读地址负载不完整。`test_physical_pin_parser.py`覆盖连续内联RAM与转义向量名；`test_clock_resource_plan.py`覆盖丢失对象和误把真实时钟改普通布线的拒绝。负载统计仍不能冒充工具的未布通网络名单。

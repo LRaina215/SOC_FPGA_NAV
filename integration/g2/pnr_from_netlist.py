@@ -18,12 +18,18 @@ def main():
     ap.add_argument('--sfp-cdc-reference',type=Path,help='explicit 51-path host FIFO/toggle SYN candidate, rechecked physically after PNR')
     ap.add_argument('--diagnostic-only',action='store_true',help='controlled implementation comparison; force G2 acceptance false regardless of measured timing')
     ap.add_argument('--capture-system-telemetry',action='store_true',help='record owned process and host memory every30s; never treat these samples as routing progress')
+    ap.add_argument('--clock-resource-plan',type=Path,help='reviewed explicit PRIMARY4..7 control plan based on completed physical load evidence')
+    ap.add_argument('--routing-evidence',action='store_true',help='enable all vendor warnings and documented BSRAM placement output')
     ap.add_argument('--out',type=Path,required=True);a=ap.parse_args()
     if a.max_runtime_minutes<0 or a.max_no_progress_minutes<0:ap.error('runtime budgets must be nonnegative')
     if a.timing_driven==0 and not a.diagnostic_only:ap.error('--timing-driven 0 requires --diagnostic-only; never a production acceptance run')
     src=a.source.resolve();out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
     for old,new in [('impl/gwsynthesis/g2_top.vg','g2_top.vg'),('g2.cst','g2.cst'),('g2.sdc','g2.sdc')]:
         shutil.copyfile(src/old,out/new)
+    clock_plan=None
+    if a.clock_resource_plan:
+        from prepare_clock_resource_plan import apply
+        clock_plan=apply(src,out,a.clock_resource_plan)
     # A frozen SerDes netlist still requires the exact CSR during PNR.
     csr=src/'ip/serdes.csr'
     if csr.exists():
@@ -81,9 +87,11 @@ def main():
         'set_option -timing_driven '+str(a.timing_driven)]
     tcl += ['set_option -'+x+' 1' for x in ['use_sspi_as_gpio','use_mspi_as_gpio','use_ready_as_gpio','use_done_as_gpio','use_i2c_as_gpio','use_cpu_as_gpio']]
     if csr.exists():tcl.insert(1,f'set_csr {{{(out/"ip/serdes.csr").as_posix()}}}')
+    evidence_options={'show_all_warn':1,'gen_posp':1} if a.routing_evidence else {}
+    tcl += [f'set_option -{name} {value}' for name,value in evidence_options.items()]
     from preflight import validate
     tool=Path(r'D:\Gowin2\Gowin_V1.9.12.04_x64\IDE\bin\gw_sh.exe')
-    effective=validate(tool,out,tcl,frequency,a.wide_split,{'replicate_resources':replicate,'place_option':a.place_option,'route_option':a.route_option,'timing_driven':a.timing_driven})
+    effective=validate(tool,out,tcl,frequency,a.wide_split,{'replicate_resources':replicate,'place_option':a.place_option,'route_option':a.route_option,'timing_driven':a.timing_driven,**evidence_options})
     tcl += ['run pnr','exit'];(out/'run.tcl').write_text('\n'.join(tcl)+'\n',encoding='utf-8',newline='\n')
     (out/'manifest.json').write_text(json.dumps(dict(source=str(src),frozen_netlist=True,wide_split=a.wide_split,
         original_pnr_command=cmd,replicate_resources=replicate,place_option=a.place_option,route_option=a.route_option,effective_options=effective,
@@ -91,6 +99,7 @@ def main():
         cdc_reference_audit=str(cdc_reference) if cdc_reference else None,
         sfp_cdc_reference=str(a.sfp_cdc_reference) if a.sfp_cdc_reference else None,
         diagnostic_only=a.diagnostic_only,timing_driven=a.timing_driven,capture_system_telemetry=a.capture_system_telemetry,
+        clock_resource_plan=clock_plan,routing_evidence=a.routing_evidence,
         source_manifest=json.loads((src/'manifest.json').read_text()),programmed=False),indent=2))
     from bounded_tool import run_tool
     r=run_tool([str(tool),'run.tcl'],out,max_runtime_s=a.max_runtime_minutes*60,

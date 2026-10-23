@@ -7,8 +7,10 @@ import argparse,json,re
 from collections import Counter,defaultdict
 from pathlib import Path
 
-INPUTS=set('I I0 I1 I2 I3 D CE CEN RESET SET CLEAR PRESET S SE WRE OCE DI AD ADA ADB DIA DIB CEA CEB RESETA RESETB OCEA OCEB WREA WREB BLKSEL BLKSELA BLKSELB A B C AIN BIN CIN CASI ASIGN BSIGN ACCLOAD ALUSEL MODESEL ADDNSUB CE0 CE1 CE2 CE3'.split())
-CELLS=re.compile(r'^(\w+)\s+(\\\S+|\w+)\s*\(\s*\n(.*?)^\);',re.M|re.S)
+INPUTS=set('I I0 I1 I2 I3 D CE CEN RESET SET CLEAR PRESET S S0 S1 SE WRE OCE DI AD ADA ADB RAD WAD DIA DIB CEA CEB RESETA RESETB OCEA OCEB WREA WREB BLKSEL BLKSELA BLKSELB A B C AIN BIN CIN CASI ASIGN BSIGN ACCLOAD ALUSEL MODESEL ADDNSUB CE0 CE1 CE2 CE3'.split())
+# RAM16SDP4 ends its instance on the last port line: .DO({...}));
+# Requiring a standalone closing line silently swallowed consecutive RAM cells.
+CELLS=re.compile(r'^(?!module\b)(\w+)\s+(\\\S+|\w+)\s*\(\s*\n(.*?)\);[ \t]*\r?$',re.M|re.S)
 PORTS=re.compile(r'\.([A-Z][A-Z0-9_]*)\(([^()]*)\)')
 NETS=re.compile(r"(?<![A-Za-z0-9_'])"+r'(\\[^\s,{}]+|[A-Za-z_][A-Za-z0-9_$]*)\s*(?:\[(\d+)(?::(\d+))?\])?')
 

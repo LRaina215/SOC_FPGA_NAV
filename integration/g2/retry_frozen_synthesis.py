@@ -39,6 +39,7 @@ def main():
     ap.add_argument('--history-data-fanout',action='store_true',help='derive only the verified initialized data-mux fanout attribute')
     ap.add_argument('--sfp-phy-link-guard',action='store_true',help='require partner copper link in SGMII mode; explicit frozen one-line change')
     ap.add_argument('--lease-output-select',action='store_true',help='derive only the cycle-checked late lease stop selection')
+    ap.add_argument('--slf-read-address-fanout',action='store_true',help='experimental attribute only; first full SYN retained275 RAM-input loads, so improvement must be measured')
     a=ap.parse_args();src=a.source.resolve();out=a.out.resolve()
     assert (a.wait_pid is None or a.wait_pid>0) and out!=src and src not in out.parents and out not in src.parents
     manifest=json.loads((src/'manifest.json').read_text(encoding='utf-8'))
@@ -49,6 +50,7 @@ def main():
     assert not a.history_data_fanout or not manifest.get('history_data_fanout',False),'source already contains history candidate'
     assert not a.sfp_phy_link_guard or (manifest.get('real_sfp') and not manifest.get('sfp_phy_link_guard'))
     assert not a.lease_output_select or (manifest.get('command_lease') and not manifest.get('lease_output_select'))
+    assert not a.slf_read_address_fanout or not manifest.get('slf_read_address_fanout')
     original=(src/'run.tcl').read_text(encoding='utf-8')
     assert [s.strip()for s in original.splitlines()if s.strip().startswith('run ')]==['run syn']
     # Preserve the cancelled directory, including partial implementation files.
@@ -88,12 +90,16 @@ def main():
     if a.lease_output_select:
         from prepare_lease_output_select import generate
         generate(out/'command_lease_guard.v');manifest['lease_output_select']=True
+    if a.slf_read_address_fanout:
+        from prepare_slf_read_fanout import generate
+        generate(out/'nav/rtl/match/slf_extract.v');manifest['slf_read_address_fanout']=True
     if a.gyro_sum_exact_widths:expected.append('control/imu_fusion.v')
     if a.trig_block_rom:expected.append('nav/rtl/common/nav_ram_sdp.v')
     if a.snapshot_mux_fanout:expected.append('control/rl_policy_tick_v5.v')
     if a.history_data_fanout:expected.append('control/rl_observation_v5.v')
     if a.sfp_phy_link_guard:expected.append('sfp_management.v')
     if a.lease_output_select:expected.append('command_lease_guard.v')
+    if a.slf_read_address_fanout:expected.append('nav/rtl/match/slf_extract.v')
     for name in manifest['source_files']:
         previous=Path(name);relative=previous.relative_to(src)
         if previous.read_bytes()!=(out/relative).read_bytes():modified.append(relative.as_posix())
