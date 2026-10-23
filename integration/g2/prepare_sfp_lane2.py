@@ -56,7 +56,17 @@ def verify_frozen(out, original, proof):
         assert (out/'ip'/name).read_bytes() == (proof/'ip'/name).read_bytes(), ('Lane2 input mismatch', name)
     assert (out/'sfp_host_mac.v').read_bytes() == (proof/'sfp_host_mac.v').read_bytes()
     assert (out/'g2.cst').read_bytes() == (original/'g2.cst').read_bytes(), 'IO mapping unexpectedly changed'
-    assert (out/'g2.sdc').read_text() == lane2_sdc((original/'g2.sdc').read_text()), 'joint clocks/exceptions changed beyond Lane2 pins'
+    previous_sdc = (original/'g2.sdc').read_text()
+    if '/LANE2_PCS_RX_O_FABRIC_CLK' in previous_sdc:
+        # A later implementation-only candidate may already start from Lane2.
+        assert previous_sdc.count('/LANE2_PCS_RX_O_FABRIC_CLK') == 1
+        assert previous_sdc.count('/LANE2_PCS_TX_O_FABRIC_CLK') == 1
+        assert '/LANE0_PCS_' not in previous_sdc
+        assert 'set_false_path' not in previous_sdc and 'set_clock_groups' not in previous_sdc
+        expected_sdc = previous_sdc
+    else:
+        expected_sdc = lane2_sdc(previous_sdc)
+    assert (out/'g2.sdc').read_text() == expected_sdc, 'joint clocks/exceptions changed beyond Lane2 pins'
     return dict(lane='Q0 Lane2', proof_build=str(proof.resolve()), exact_generated_csr_and_wrapper=True,
                 protected_mac_unchanged=True, outer_mac_function_unchanged=True,
                 joint_clock_periods_unchanged=True, standalone_exceptions_not_imported=True,

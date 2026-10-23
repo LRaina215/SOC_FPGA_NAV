@@ -1,0 +1,418 @@
+{
+  "recorded_at": "2026-10-24T03:55:46.022639+08:00",
+  "previous_pnr_final_evidence": "lane2_pnr150_cancelled_20261024.json",
+  "hypothesis": "registered selection of ten independent distributed row banks reduces measured combinational address/mux pressure; physical congestion cause remains unknown",
+  "source_build": "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_syn6",
+  "module_probe": {
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_syn6",
+    "build": "F:\\nav_integration_g2_20261023\\slf_row_banks_probe1",
+    "geometry": {
+      "DW": 98,
+      "DEPTH": 160,
+      "banks": 10,
+      "bank_depth": 16
+    },
+    "logical_stored_bits": 15680,
+    "latency_cycles": 1,
+    "programmed": false,
+    "deployment_accepted": false,
+    "scope": "isolated row-store connectivity and functional simulation; no physical congestion diagnosis",
+    "runs": [
+      {
+        "variant": "original",
+        "runtime": {
+          "started_at": "2026-10-24T03:51:33.910510+08:00",
+          "max_runtime_s": 180,
+          "max_owned_rss": 805306368,
+          "scope": "isolated160x98 row memory only",
+          "cancelled": false,
+          "pid": 40564,
+          "tool_exit": 0,
+          "elapsed_s": 3.155999999959022
+        },
+        "effective_options": {
+          "global_freq_mhz": 50.0,
+          "wide_split": 0,
+          "effective_options": "F:\\nav_integration_g2_20261023\\slf_row_banks_probe1\\original\\effective_options.tcl",
+          "extra_options": {}
+        },
+        "resources": {
+          "name": "g2_top",
+          "T_Register": "98(0)",
+          "T_Lut": "700(0)",
+          "T_Ssram": "275(0)"
+        },
+        "inventory": {
+          "primitives": {
+            "IBUF": 117,
+            "OBUF": 98,
+            "LUT3": 308,
+            "LUT4": 392,
+            "DFFRE": 98,
+            "RAM16SDP4": 275,
+            "MUX2_LUT6": 98,
+            "MUX2_LUT5": 196,
+            "VCC": 2,
+            "GND": 2,
+            "GSR": 1
+          },
+          "bsram": 0,
+          "ff": 98,
+          "maximum_nonclock_load": 686,
+          "high_loads": [
+            {
+              "net": "raddr_d[7]",
+              "loads": 686,
+              "pins": {
+                "I0": 294,
+                "I2": 392
+              }
+            },
+            {
+              "net": "raddr_d[6]",
+              "loads": 392,
+              "pins": {
+                "I3": 392
+              }
+            },
+            {
+              "net": "raddr_d[0]",
+              "loads": 275,
+              "pins": {
+                "RAD": 275
+              }
+            },
+            {
+              "net": "raddr_d[1]",
+              "loads": 275,
+              "pins": {
+                "RAD": 275
+              }
+            },
+            {
+              "net": "raddr_d[2]",
+              "loads": 275,
+              "pins": {
+                "RAD": 275
+              }
+            },
+            {
+              "net": "raddr_d[3]",
+              "loads": 275,
+              "pins": {
+                "RAD": 275
+              }
+            },
+            {
+              "net": "waddr_d[0]",
+              "loads": 275,
+              "pins": {
+                "WAD": 275
+              }
+            },
+            {
+              "net": "waddr_d[1]",
+              "loads": 275,
+              "pins": {
+                "WAD": 275
+              }
+            },
+            {
+              "net": "waddr_d[2]",
+              "loads": 275,
+              "pins": {
+                "WAD": 275
+              }
+            },
+            {
+              "net": "waddr_d[3]",
+              "loads": 275,
+              "pins": {
+                "WAD": 275
+              }
+            },
+            {
+              "net": "raddr_d[5]",
+              "loads": 196,
+              "pins": {
+                "S0": 196
+              }
+            },
+            {
+              "net": "raddr_d[4]",
+              "loads": 98,
+              "pins": {
+                "S0": 98
+              }
+            },
+            {
+              "net": "re_d",
+              "loads": 98,
+              "pins": {
+                "CE": 98
+              }
+            },
+            {
+              "net": "u_ram/g_distributed.mem_2436",
+              "loads": 25,
+              "pins": {
+                "WRE": 25
+              }
+            },
+            {
+              "net": "u_ram/g_distributed.mem_2438",
+              "loads": 25,
+              "pins": {
+                "WRE": 25
+              }
+            },
+            {
+              "net": "u_ram/g_distributed.mem_2440",
+              "loads": 25,
+              "pins": {
+                "WRE": 25
+              }
+            }
+          ]
+        }
+      },
+      {
+        "variant": "banked",
+        "runtime": {
+          "started_at": "2026-10-24T03:51:38.601597+08:00",
+          "max_runtime_s": 180,
+          "max_owned_rss": 805306368,
+          "scope": "isolated160x98 row memory only",
+          "cancelled": false,
+          "pid": 39508,
+          "tool_exit": 0,
+          "elapsed_s": 3.172000000020489
+        },
+        "effective_options": {
+          "global_freq_mhz": 50.0,
+          "wide_split": 0,
+          "effective_options": "F:\\nav_integration_g2_20261023\\slf_row_banks_probe1\\banked\\effective_options.tcl",
+          "extra_options": {}
+        },
+        "resources": {
+          "name": "g2_top",
+          "T_Register": "989(0)",
+          "T_Lut": "624(0)",
+          "T_Ssram": "250(0)"
+        },
+        "inventory": {
+          "primitives": {
+            "IBUF": 117,
+            "OBUF": 98,
+            "LUT3": 519,
+            "LUT4": 103,
+            "LUT2": 2,
+            "DFFRE": 989,
+            "RAM16SDP4": 250,
+            "MUX2_LUT5": 196,
+            "MUX2_LUT6": 98,
+            "VCC": 2,
+            "GND": 2,
+            "GSR": 1
+          },
+          "bsram": 0,
+          "ff": 989,
+          "maximum_nonclock_load": 250,
+          "high_loads": [
+            {
+              "net": "raddr_d[0]",
+              "loads": 250,
+              "pins": {
+                "RAD": 250
+              }
+            },
+            {
+              "net": "raddr_d[1]",
+              "loads": 250,
+              "pins": {
+                "RAD": 250
+              }
+            },
+            {
+              "net": "raddr_d[2]",
+              "loads": 250,
+              "pins": {
+                "RAD": 250
+              }
+            },
+            {
+              "net": "raddr_d[3]",
+              "loads": 250,
+              "pins": {
+                "RAD": 250
+              }
+            },
+            {
+              "net": "waddr_d[0]",
+              "loads": 250,
+              "pins": {
+                "WAD": 250
+              }
+            },
+            {
+              "net": "waddr_d[1]",
+              "loads": 250,
+              "pins": {
+                "WAD": 250
+              }
+            },
+            {
+              "net": "waddr_d[2]",
+              "loads": 250,
+              "pins": {
+                "WAD": 250
+              }
+            },
+            {
+              "net": "waddr_d[3]",
+              "loads": 250,
+              "pins": {
+                "WAD": 250
+              }
+            },
+            {
+              "net": "u_ram/g_slf_row_banks.row_selected_0_14",
+              "loads": 128,
+              "pins": {
+                "I2": 128
+              }
+            },
+            {
+              "net": "u_ram/g_slf_row_banks.row_selected_0_16",
+              "loads": 128,
+              "pins": {
+                "I2": 128
+              }
+            },
+            {
+              "net": "u_ram/g_slf_row_banks.row_selected[0]",
+              "loads": 109,
+              "pins": {
+                "I2": 107,
+                "I0": 2
+              }
+            },
+            {
+              "net": "u_ram/g_slf_row_banks.row_selected[1]",
+              "loads": 100,
+              "pins": {
+                "I0": 1,
+                "S0": 99
+              }
+            },
+            {
+              "net": "u_ram/g_slf_row_banks.row_selected[2]",
+              "loads": 100,
+              "pins": {
+                "I0": 2,
+                "S0": 98
+              }
+            },
+            {
+              "net": "u_ram/g_slf_row_banks.row_selected[3]",
+              "loads": 100,
+              "pins": {
+                "I1": 1,
+                "I0": 98,
+                "I2": 1
+              }
+            },
+            {
+              "net": "u_ram/g_slf_row_banks.row_selected_1_9",
+              "loads": 99,
+              "pins": {
+                "I0": 1,
+                "I1": 1,
+                "S0": 97
+              }
+            },
+            {
+              "net": "u_ram/n1228_3",
+              "loads": 98,
+              "pins": {
+                "CE": 98
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "checks": [
+      {
+        "variant": "rtl",
+        "result": "TEST PASSED checks=9012 reads=4684 writes=4269 collisions=176 holds=4328"
+      },
+      {
+        "variant": "vendor",
+        "result": "TEST PASSED checks=9012 reads=4684 writes=4269 collisions=176 holds=4328"
+      }
+    ],
+    "bsram_unchanged": true,
+    "connection_pressure_reduced": true
+  },
+  "logical_bits": 15680,
+  "unchanged_latency_cycles": 1,
+  "register_cost": 891,
+  "source_delta": [
+    "nav/rtl/common/nav_ram_sdp.v"
+  ],
+  "source_control_weights125hz_unchanged": true,
+  "full_synthesis": {
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_syn6",
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+    "wait_pid": null,
+    "programmed": false,
+    "source_frozen_before_wait": true,
+    "automatic_pnr": false,
+    "modified_rtl_inputs": [
+      "nav/rtl/common/nav_ram_sdp.v"
+    ],
+    "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+    "phase": "synthesizing",
+    "updated_at": "2026-10-24T03:55:32.824489+08:00",
+    "minimum_start_free_bytes": 2147483648,
+    "minimum_start_available_commit_bytes": 4294967296,
+    "max_runtime_minutes": 40,
+    "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+    "tool_pid": 32556,
+    "synthesis_started_at": "2026-10-24T03:53:32.790205+08:00",
+    "elapsed_s": 120.04699999996228,
+    "free_bytes": 4437823488,
+    "available_commit_bytes": 6810935296
+  },
+  "continuation": {
+    "controller_pid": 58284,
+    "live_state_file": "F:\\nav_integration_g2_20261023\\lane2_rowbanks_one_shot\\job.json",
+    "state": {
+      "started_at": "2026-10-24T03:53:50.227811+08:00",
+      "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+      "baseline": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+      "pnr_out": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_pnr8",
+      "wait_pid": 22984,
+      "maximum_wait_seconds": 10800,
+      "recurring": false,
+      "maximum_pnr_runs": 1,
+      "programmed": false,
+      "deployment_accepted": false,
+      "phase": "waiting_for_existing_synthesis",
+      "updated_at": "2026-10-24T03:53:50.231455+08:00",
+      "wait_process_created_at": 1792785209.3695483
+    },
+    "pnr_budget_minutes": 150,
+    "pnr_idle_budget_minutes": 0,
+    "maximum_future_pnr_runs": 1
+  },
+  "automation": {
+    "id": "fpga",
+    "status": "ACTIVE",
+    "same15min_schedule": true,
+    "current_entry": "F:\\nav_integration_g2_20261023\\lane2_rowbanks_one_shot\\job.json"
+  },
+  "programmed": false,
+  "deployment_accepted": false
+}

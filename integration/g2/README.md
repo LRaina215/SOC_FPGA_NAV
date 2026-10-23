@@ -108,3 +108,6 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 
 `revalidate_lidar_cdc.py`重新计26条实际源→首级→第二级的数据/时钟/使能及首级Q唯一负载。生成RESET编号变化仅在唯一具名驱动相同、驱动全部输入相同、包含INIT的完整复位模块定义相同时被视为别名；不跳过RESET检查，不新增时序例外。`test_lidar_reset_alias.py`对保留的实际Lane2/273冻结网表做6项正负回归，拒绝数据/时钟/负载/复位输入/INIT变化。失败接续保留原state，修复后复用既有SYN、使用新state创建尚未存在的PNR目录，不重复综合。
+
+
+`prepare_slf_row_banks.py`只给实际160×98/AW8行缓存增加十个16词分布式银行，寄存选择与银行读同拍更新，原1拍延迟/read-first/re保持/初值和15680bit容量保持；其他几何原样。`measure_slf_row_banks.py <frozen-Lane2-SYN> --out <new-dir>`先做RTL对照，再各180秒/所属768MiB上限的小模块SYN及厂商真实原语对照。首轮负载686→250、RAM16 275→250、LUT−76/FF＋891、BSRAM0保持，两种仿真各9012拍通过；不证明物理拥塞根因。`retry_frozen_synthesis.py --slf-row-banks --start-now`只派生这一个RTL差异，完整SYN仍40分钟与原2/4GiB门槛。`continue_bank_select_once.py --max-runtime-minutes 150`可接续当前唯一候选；核对探针来源、104资产、BSRAM参数、全片行缓存实际负载/250个RAM16、原地图选择≤128、8驱动/26＋51 CDC及Lane2时钟。已是Lane2的输入必须保持SDC完全相同，不能重新导入独立例外。通过才运行一轮有预算PNR，任何失败留证据并停止，不自动无限重试或授予部署。

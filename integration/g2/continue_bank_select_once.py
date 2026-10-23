@@ -56,17 +56,32 @@ def validate_candidate(source, baseline, plan_file):
     assert manifest['bank_select_data_fanout'] and manifest['real_sfp'] and manifest['full_control_telemetry']
     assert not manifest['control_weights_changed'] and manifest['clock_core_mhz'] == 50
     lane2_proof = manifest.get('sfp_lane2_from_build')
+    row_banks = manifest.get('slf_row_banks',False)
     expected_changes = ['nav/rtl/common/nav_ram_sdp.v']
-    if lane2_proof:expected_changes += ['sfp_host_mac.v','ip/serdes.v']
+    if lane2_proof and not row_banks:expected_changes += ['sfp_host_mac.v','ip/serdes.v']
     assert sorted(job['modified_rtl_inputs']) == sorted(expected_changes)
     original = Path(manifest['frozen_source_build'])
     ram = source/'nav/rtl/common/nav_ram_sdp.v'
     attribute = ' /* synthesis syn_maxfan=128 */'
-    assert ram.read_text().count(attribute) == 1
-    assert ram.read_text().replace(attribute,'') == (original/'nav/rtl/common/nav_ram_sdp.v').read_text(), 'RAM delta exceeds one attribute'
+    if row_banks:
+        from prepare_slf_row_banks import transform
+        assert ram.read_text() == transform((original/'nav/rtl/common/nav_ram_sdp.v').read_text()), 'RAM delta exceeds reviewed row banking'
+        probe = json.loads((source.parent/'slf_row_banks_probe1/result.json').read_text())
+        assert Path(probe['source']).resolve() == original.resolve()
+        assert probe['bsram_unchanged'] and probe['connection_pressure_reduced']
+        assert [x['variant'] for x in probe['checks']] == ['rtl','vendor']
+    else:
+        assert ram.read_text().count(attribute) == 1
+        assert ram.read_text().replace(attribute,'') == (original/'nav/rtl/common/nav_ram_sdp.v').read_text(), 'RAM delta exceeds one attribute'
     changed = [str(Path(n).relative_to(source)).replace('\\','/') for n in manifest['source_files']
                if Path(n).read_bytes() != (original/Path(n).relative_to(source)).read_bytes()]
     assert changed == job['modified_rtl_inputs'], changed
+    def assets(root):
+        return {p.relative_to(root):p for p in root.rglob('*') if p.is_file()
+                and p.suffix.lower() in ('.hex','.mem','.bin','.mif') and 'impl' not in p.relative_to(root).parts}
+    old_assets,new_assets = assets(original),assets(source)
+    assert old_assets.keys() == new_assets.keys() and len(old_assets) == 104, 'firmware/storage asset set changed'
+    assert all(p.read_bytes() == new_assets[n].read_bytes() for n,p in old_assets.items()), 'firmware/storage content changed'
     lane2_checks = None
     if lane2_proof:
         from prepare_sfp_lane2 import verify_frozen
@@ -86,6 +101,26 @@ def validate_candidate(source, baseline, plan_file):
     assert new_mem['primitive_types']['GTR12_QUAD'] == 1
     assert memories_match(old_mem,new_mem), 'RAM primitive capacity/initialization changed'
     cells = read(source/'impl/gwsynthesis/g2_top.vg')
+    row_store_checks = None
+    if row_banks:
+        row_prefix = 'u_nav/u_match/u_ex/u_rb/'
+        # Reuse the same directional inventory on just the complete row store.
+        def row_pressure(data):
+            directions = primitive_directions(LIBRARY)
+            local = {n:c for n,c in data.items() if n.startswith(row_prefix)}
+            assert local, 'full SLF row store absent'
+            loads = Counter(net for c in local.values() for pin,nets in c['ports'].items()
+                            if directions[c['kind']][pin] in ('input','inout') and pin not in ('CLK','CLKA','CLKB')
+                            for net in nets if net not in ('VCC','GND'))
+            return dict(cells=len(local),maximum_nonclock_load=max(loads.values()),
+                        distributed_words=sum(c['kind']=='RAM16SDP4' for c in local.values()),
+                        bank_select_registers=sum(c['kind'].startswith('DFF') and 'row_selected' in n for n,c in local.items()))
+        old_row = read(original/'impl/gwsynthesis/g2_top.vg',lambda n:n in ('u_nav','u_nav/u_match','u_nav/u_match/u_ex',row_prefix.rstrip('/')) or n.startswith(row_prefix))
+        a,b = row_pressure(old_row),row_pressure(cells)
+        assert b['maximum_nonclock_load'] < a['maximum_nonclock_load'] and b['maximum_nonclock_load'] <= 275,(a,b)
+        assert b['distributed_words'] == 250 and b['bank_select_registers'] >= 4,b
+        row_store_checks = dict(before=a,after=b,logical_bits_unchanged=15680,latency_cycles_unchanged=1,
+                                rtl_and_vendor_probe_checks=probe['checks'])
     if lane2_checks:
         from prepare_sfp_lane2 import verify_synthesized_clock_pins
         lane2_checks['actual_synthesized_clock_pins'] = verify_synthesized_clock_pins(cells)
@@ -116,9 +151,12 @@ def validate_candidate(source, baseline, plan_file):
     assert sfp['passed'] and json.loads(json.dumps(sfp['paths'])) == old_sfp['paths']
     return dict(passed=True, source_bsram=new_mem['expanded_bsram_count'], wide_leaves=new_mem['wide32_36_count'],
                 predicted_physical_bsram=new_mem['predicted_split_bsram'], physical_count_is_prediction=True,
-                all_ram_parameters_match=True, changed_rtl_inputs=changed, control_weights_and125hz_unchanged=True,
-                source_csr_and_clock_sdc_unchanged=not bool(lane2_checks), sfp_lane2_checks=lane2_checks, core_synthesis_estimate=core,
+                all_ram_parameters_match=not row_banks, all_bsram_parameters_match=True,
+                row_memory_storage_organization_changed=row_banks, unchanged_firmware_storage_assets=len(old_assets),
+                changed_rtl_inputs=changed, control_weights_and125hz_unchanged=True,
+                source_csr_and_clock_sdc_unchanged=row_banks or not bool(lane2_checks), sfp_lane2_checks=lane2_checks, core_synthesis_estimate=core,
                 selector_before=old, selector_after=new, clock_plan_sources_revalidated=names,
+                row_store_checks=row_store_checks,
                 lidar_revalidation=lidar_revalidation,
                 lidar26_source_connections_match=True, host51_source_connections_match=True,
                 deployment_accepted=False)
@@ -132,9 +170,12 @@ def main():
     p.add_argument('--pnr-out',type=Path,required=True)
     p.add_argument('--state-dir',type=Path,required=True)
     p.add_argument('--check-only',action='store_true',help='internal isolated validation process; never starts a tool')
+    p.add_argument('--max-runtime-minutes',type=float,default=120,help='explicit budget for the one future PNR, not an extension of an existing process')
     a = p.parse_args()
+    assert 0 < a.max_runtime_minutes <= 150, 'future PNR must retain an explicit bounded budget'
     source,baseline,out,state_dir = map(lambda p:p.resolve(),(a.synthesis,a.baseline,a.pnr_out,a.state_dir))
     if a.check_only:
+        shutil.copyfile(Path(__file__),state_dir/'validator_source.py')
         evidence = validate_candidate(source,baseline,state_dir/'clock_plan_frozen.json')
         (state_dir/'pre_pnr_checks.json').write_text(json.dumps(evidence,indent=2),encoding='utf-8',newline='\n')
         return 0
@@ -181,7 +222,7 @@ def main():
         # This creates exactly one new implementation from the complete SYN.
         command = [sys.executable,'-X','utf8',str(ROOT/'integration/g2/pnr_from_netlist.py'),str(source),
                    '--out',str(out),'--wide-split','1','--replicate-resources','1','--place-option','1',
-                   '--route-option','2','--max-runtime-minutes','120','--max-no-progress-minutes','0',
+                   '--route-option','2','--max-runtime-minutes',str(a.max_runtime_minutes),'--max-no-progress-minutes','0',
                    '--cdc-reference-audit',str(baseline/'cdc_reference_audit.json'),
                    '--sfp-cdc-reference',str(baseline/'sfp_cdc_reference.json'),
                    '--clock-resource-plan',str(plan),'--routing-evidence','--capture-system-telemetry']

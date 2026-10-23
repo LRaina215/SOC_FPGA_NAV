@@ -41,6 +41,7 @@ def main():
     ap.add_argument('--lease-output-select',action='store_true',help='derive only the cycle-checked late lease stop selection')
     ap.add_argument('--slf-read-address-fanout',action='store_true',help='experimental attribute only; first full SYN retained275 RAM-input loads, so improvement must be measured')
     ap.add_argument('--bank-select-data-fanout',action='store_true',help='apply measured128 fanout limit at bank-read selector register; module576->128, full SYN/PNR still required')
+    ap.add_argument('--slf-row-banks',action='store_true',help='partition only the verified160x98 row store into ten16-word distributed banks; same latency/capacity')
     ap.add_argument('--sfp-lane2-from-build',type=Path,help='adopt proved SFP1 Lane2 generated wrapper/CSR; preserve other frozen RTL and joint timing requirements')
     a=ap.parse_args();src=a.source.resolve();out=a.out.resolve()
     assert (a.wait_pid is None or a.wait_pid>0) and out!=src and src not in out.parents and out not in src.parents
@@ -54,6 +55,7 @@ def main():
     assert not a.lease_output_select or (manifest.get('command_lease') and not manifest.get('lease_output_select'))
     assert not a.slf_read_address_fanout or not manifest.get('slf_read_address_fanout')
     assert not a.bank_select_data_fanout or not manifest.get('bank_select_data_fanout')
+    assert not a.slf_row_banks or not manifest.get('slf_row_banks')
     original=(src/'run.tcl').read_text(encoding='utf-8')
     assert [s.strip()for s in original.splitlines()if s.strip().startswith('run ')]==['run syn']
     # Preserve the cancelled directory, including partial implementation files.
@@ -99,6 +101,9 @@ def main():
     if a.bank_select_data_fanout:
         from prepare_bank_select_fanout import generate
         generate(out/'nav/rtl/common/nav_ram_sdp.v');manifest['bank_select_data_fanout']=True
+    if a.slf_row_banks:
+        from prepare_slf_row_banks import generate
+        generate(out/'nav/rtl/common/nav_ram_sdp.v');manifest['slf_row_banks']=True
     if a.sfp_lane2_from_build:
         assert manifest.get('real_sfp') and not manifest.get('sfp_lane2_from_build')
         from prepare_sfp_lane2 import adopt, verify_frozen
@@ -113,6 +118,7 @@ def main():
     if a.lease_output_select:expected.append('command_lease_guard.v')
     if a.slf_read_address_fanout:expected.append('nav/rtl/match/slf_extract.v')
     if a.bank_select_data_fanout:expected.append('nav/rtl/common/nav_ram_sdp.v')
+    if a.slf_row_banks:expected.append('nav/rtl/common/nav_ram_sdp.v')
     for name in manifest['source_files']:
         previous=Path(name);relative=previous.relative_to(src)
         if previous.read_bytes()!=(out/relative).read_bytes():modified.append(relative.as_posix())
