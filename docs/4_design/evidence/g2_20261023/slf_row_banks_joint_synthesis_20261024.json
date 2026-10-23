@@ -1,0 +1,582 @@
+{
+  "recorded_at": "2026-10-24T04:08:24.312646+08:00",
+  "source_build": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+  "synthesis_job": {
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_syn6",
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+    "wait_pid": null,
+    "programmed": false,
+    "source_frozen_before_wait": true,
+    "automatic_pnr": false,
+    "modified_rtl_inputs": [
+      "nav/rtl/common/nav_ram_sdp.v"
+    ],
+    "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+    "phase": "synthesis_complete",
+    "updated_at": "2026-10-24T04:03:26.307827+08:00",
+    "minimum_start_free_bytes": 2147483648,
+    "minimum_start_available_commit_bytes": 4294967296,
+    "max_runtime_minutes": 40,
+    "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+    "tool_pid": 32556,
+    "synthesis_started_at": "2026-10-24T03:53:32.790205+08:00",
+    "elapsed_s": 570.1719999999623,
+    "free_bytes": 4244697088,
+    "available_commit_bytes": 6645063680,
+    "tool_exit": 0,
+    "joint_pnr_measured": false
+  },
+  "resources_before": {
+    "name": "g2_top",
+    "Register": "26",
+    "Alu": "25",
+    "Lut": "175",
+    "T_Register": "41032(26)",
+    "T_Alu": "10141(25)",
+    "T_Lut": "54574(175)",
+    "T_MULTALU27X18": "77(0)",
+    "T_MULT12X12": "23(0)",
+    "T_MULT27X36": "37(0)",
+    "T_MULTADDALU12X12": "1(0)",
+    "T_Bsram": "316(0)",
+    "T_Ssram": "4159(0)",
+    "T_ROM16": "702(0)"
+  },
+  "resources_after": {
+    "name": "g2_top",
+    "Register": "26",
+    "Alu": "25",
+    "Lut": "175",
+    "T_Register": "41923(26)",
+    "T_Alu": "10141(25)",
+    "T_Lut": "54477(175)",
+    "T_MULTALU27X18": "77(0)",
+    "T_MULT12X12": "23(0)",
+    "T_MULT27X36": "37(0)",
+    "T_MULTADDALU12X12": "1(0)",
+    "T_Bsram": "316(0)",
+    "T_Ssram": "4134(0)",
+    "T_ROM16": "702(0)"
+  },
+  "actual_synthesis_checks": {
+    "passed": true,
+    "source_bsram": 316,
+    "wide_leaves": 18,
+    "predicted_physical_bsram": 334,
+    "physical_count_is_prediction": true,
+    "all_ram_parameters_match": false,
+    "all_bsram_parameters_match": true,
+    "row_memory_storage_organization_changed": true,
+    "unchanged_firmware_storage_assets": 104,
+    "changed_rtl_inputs": [
+      "nav/rtl/common/nav_ram_sdp.v"
+    ],
+    "control_weights_and125hz_unchanged": true,
+    "source_csr_and_clock_sdc_unchanged": true,
+    "sfp_lane2_checks": {
+      "lane": "Q0 Lane2",
+      "proof_build": "F:\\nav_sfp_20261023\\build_lane2_v3",
+      "exact_generated_csr_and_wrapper": true,
+      "protected_mac_unchanged": true,
+      "outer_mac_function_unchanged": true,
+      "joint_clock_periods_unchanged": true,
+      "standalone_exceptions_not_imported": true,
+      "io_cst_unchanged": true,
+      "joint_hardware_accepted": false,
+      "actual_synthesized_clock_pins": {
+        "LANE2_PCS_RX_O_FABRIC_CLK": "h_rx_clk",
+        "LANE2_PCS_TX_O_FABRIC_CLK": "h_tx_clk"
+      }
+    },
+    "core_synthesis_estimate": {
+      "name": "clk50",
+      "constraint_mhz": 50.0,
+      "estimated_fmax_mhz": 54.372,
+      "levels": 20,
+      "entity": "TOP"
+    },
+    "selector_before": {
+      "registers": [
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_4_s0",
+          "loads": 36
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_3_s0",
+          "loads": 72
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_2_s0",
+          "loads": 144
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_1_s0",
+          "loads": 288
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_0_s0",
+          "loads": 576
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_5_s0",
+          "loads": 18
+        }
+      ],
+      "maximum": 576
+    },
+    "selector_after": {
+      "registers": [
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_4_s1",
+          "loads": 37
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_3_s1",
+          "loads": 73
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_2_s1",
+          "loads": 74
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_1_s1",
+          "loads": 35
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_0_s1",
+          "loads": 67
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_5_s1",
+          "loads": 19
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_2_s2",
+          "loads": 72
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_1_s2",
+          "loads": 65
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_1_s3",
+          "loads": 128
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_0_s2",
+          "loads": 66
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_0_s3",
+          "loads": 128
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_0_s4",
+          "loads": 128
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_0_s5",
+          "loads": 128
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_1_s4",
+          "loads": 64
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_0_s6",
+          "loads": 65
+        }
+      ],
+      "maximum": 128
+    },
+    "clock_plan_sources_revalidated": [
+      "n2371_7",
+      "r2",
+      "u_control/model_thread/observation/n331_7",
+      "u_control/model_thread/policy/snapshot_update",
+      "u_nav/u_xt/n9903_3",
+      "u_nav/u_match/u_ex/n7021_4",
+      "u_nav/u_match/u_ex/rb_ra[0]",
+      "u_nav/u_match/u_ex/rb_ra[1]"
+    ],
+    "row_store_checks": {
+      "before": {
+        "cells": 1369,
+        "maximum_nonclock_load": 686,
+        "distributed_words": 275,
+        "bank_select_registers": 0
+      },
+      "after": {
+        "cells": 2169,
+        "maximum_nonclock_load": 250,
+        "distributed_words": 250,
+        "bank_select_registers": 9
+      },
+      "logical_bits_unchanged": 15680,
+      "latency_cycles_unchanged": 1,
+      "rtl_and_vendor_probe_checks": [
+        {
+          "variant": "rtl",
+          "result": "TEST PASSED checks=9012 reads=4684 writes=4269 collisions=176 holds=4328"
+        },
+        {
+          "variant": "vendor",
+          "result": "TEST PASSED checks=9012 reads=4684 writes=4269 collisions=176 holds=4328"
+        }
+      ]
+    },
+    "proved_row_address_driver_aliases": [
+      {
+        "net": "u_nav/u_match/u_ex/rb_ra[0]",
+        "old_driver": "u_nav/u_match/u_ex/rb_ra_0_s107",
+        "new_driver": "u_nav/u_match/u_ex/rb_ra_0_s10",
+        "kind": "LUT3",
+        "init": "8'hCA",
+        "ports_identical": true,
+        "truth_table_cases": 8,
+        "input_registers": [
+          {
+            "pin": "I0",
+            "net": "u_nav/u_match/u_ex/u[0]",
+            "register": "u_nav/u_match/u_ex/u_0_s0",
+            "register_inputs_and_parameters_identical": true
+          },
+          {
+            "pin": "I1",
+            "net": "u_nav/u_match/u_ex/fu[0]",
+            "register": "u_nav/u_match/u_ex/fu_0_s2",
+            "register_inputs_and_parameters_identical": true
+          },
+          {
+            "pin": "I2",
+            "net": "u_nav/u_match/u_ex/flushing",
+            "register": "u_nav/u_match/u_ex/flushing_s0",
+            "register_inputs_and_parameters_identical": true
+          }
+        ],
+        "scope": "two proved generated LUT name aliases only; no clock exception or physical acceptance added"
+      },
+      {
+        "net": "u_nav/u_match/u_ex/rb_ra[1]",
+        "old_driver": "u_nav/u_match/u_ex/rb_ra_1_s1",
+        "new_driver": "u_nav/u_match/u_ex/rb_ra_1_s10",
+        "kind": "LUT3",
+        "init": "8'hCA",
+        "ports_identical": true,
+        "truth_table_cases": 8,
+        "input_registers": [
+          {
+            "pin": "I0",
+            "net": "u_nav/u_match/u_ex/u[1]",
+            "register": "u_nav/u_match/u_ex/u_1_s0",
+            "register_inputs_and_parameters_identical": true
+          },
+          {
+            "pin": "I1",
+            "net": "u_nav/u_match/u_ex/fu[1]",
+            "register": "u_nav/u_match/u_ex/fu_1_s0",
+            "register_inputs_and_parameters_identical": true
+          },
+          {
+            "pin": "I2",
+            "net": "u_nav/u_match/u_ex/flushing",
+            "register": "u_nav/u_match/u_ex/flushing_s0",
+            "register_inputs_and_parameters_identical": true
+          }
+        ],
+        "scope": "two proved generated LUT name aliases only; no clock exception or physical acceptance added"
+      }
+    ],
+    "lidar_revalidation": {
+      "passed": true,
+      "paths": 26,
+      "changed_reset_pin_connections": 0,
+      "proved_reset_aliases": [],
+      "source_first_second_data_clock_enable_and_single_fanout_rechecked": true,
+      "exception_endpoints_and_budgets_unchanged": true,
+      "scope": "known SYN connectivity and proved reset alias only; no physical/reset-release/MTBF signoff"
+    },
+    "lidar26_source_connections_match": true,
+    "host51_source_connections_match": true,
+    "deployment_accepted": false
+  },
+  "initial_continuation_failure": {
+    "started_at": "2026-10-24T03:53:50.227811+08:00",
+    "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+    "baseline": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+    "pnr_out": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_pnr8",
+    "wait_pid": 22984,
+    "maximum_wait_seconds": 10800,
+    "recurring": false,
+    "maximum_pnr_runs": 1,
+    "programmed": false,
+    "deployment_accepted": false,
+    "phase": "stopped_prerequisite_or_execution_error",
+    "updated_at": "2026-10-24T04:03:38.878985+08:00",
+    "wait_process_created_at": 1792785209.3695483,
+    "error_type": "CalledProcessError",
+    "error": "Command '['D:\\\\Anaconda\\\\python.exe', '-X', 'utf8', 'D:\\\\Desktop\\\\SOC FPGA\\\\nav\\\\integration\\\\g2\\\\continue_bank_select_once.py', '--synthesis', 'F:\\\\nav_integration_g2_20261023\\\\sfp_lane2_rowbanks_syn7', '--baseline', 'F:\\\\nav_integration_g2_20261023\\\\sfp_clockpriority_pnr4', '--wait-pid', '22984', '--pnr-out', 'F:\\\\nav_integration_g2_20261023\\\\sfp_lane2_rowbanks_pnr8', '--state-dir', 'F:\\\\nav_integration_g2_20261023\\\\lane2_rowbanks_one_shot', '--check-only']' returned non-zero exit status 1."
+  },
+  "initial_failure_log": "Traceback (most recent call last):\n  File \"D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\continue_bank_select_once.py\", line 250, in <module>\n    if __name__ == '__main__':raise SystemExit(main())\n                                               ^^^^^^\n  File \"D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\continue_bank_select_once.py\", line 179, in main\n    evidence = validate_candidate(source,baseline,state_dir/'clock_plan_frozen.json')\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\continue_bank_select_once.py\", line 144, in validate_candidate\n    assert old_drivers[net] == new_drivers[net], ('routing-plan source changed',net)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ('routing-plan source changed', 'u_nav/u_match/u_ex/rb_ra[0]')\n",
+  "address_alias_regressions": {
+    "passed": true,
+    "cases": [
+      {
+        "case": "actual_alias_bit0",
+        "passed": true,
+        "proof": {
+          "net": "u_nav/u_match/u_ex/rb_ra[0]",
+          "old_driver": "u_nav/u_match/u_ex/rb_ra_0_s107",
+          "new_driver": "u_nav/u_match/u_ex/rb_ra_0_s10",
+          "kind": "LUT3",
+          "init": "8'hCA",
+          "ports_identical": true,
+          "truth_table_cases": 8,
+          "input_registers": [
+            {
+              "pin": "I0",
+              "net": "u_nav/u_match/u_ex/u[0]",
+              "register": "u_nav/u_match/u_ex/u_0_s0",
+              "register_inputs_and_parameters_identical": true
+            },
+            {
+              "pin": "I1",
+              "net": "u_nav/u_match/u_ex/fu[0]",
+              "register": "u_nav/u_match/u_ex/fu_0_s2",
+              "register_inputs_and_parameters_identical": true
+            },
+            {
+              "pin": "I2",
+              "net": "u_nav/u_match/u_ex/flushing",
+              "register": "u_nav/u_match/u_ex/flushing_s0",
+              "register_inputs_and_parameters_identical": true
+            }
+          ],
+          "scope": "two proved generated LUT name aliases only; no clock exception or physical acceptance added"
+        }
+      },
+      {
+        "case": "actual_alias_bit1",
+        "passed": true,
+        "proof": {
+          "net": "u_nav/u_match/u_ex/rb_ra[1]",
+          "old_driver": "u_nav/u_match/u_ex/rb_ra_1_s1",
+          "new_driver": "u_nav/u_match/u_ex/rb_ra_1_s10",
+          "kind": "LUT3",
+          "init": "8'hCA",
+          "ports_identical": true,
+          "truth_table_cases": 8,
+          "input_registers": [
+            {
+              "pin": "I0",
+              "net": "u_nav/u_match/u_ex/u[1]",
+              "register": "u_nav/u_match/u_ex/u_1_s0",
+              "register_inputs_and_parameters_identical": true
+            },
+            {
+              "pin": "I1",
+              "net": "u_nav/u_match/u_ex/fu[1]",
+              "register": "u_nav/u_match/u_ex/fu_1_s0",
+              "register_inputs_and_parameters_identical": true
+            },
+            {
+              "pin": "I2",
+              "net": "u_nav/u_match/u_ex/flushing",
+              "register": "u_nav/u_match/u_ex/flushing_s0",
+              "register_inputs_and_parameters_identical": true
+            }
+          ],
+          "scope": "two proved generated LUT name aliases only; no clock exception or physical acceptance added"
+        }
+      },
+      {
+        "case": "wrong_lut_input",
+        "rejected": true,
+        "reason": "address driver pins changed"
+      },
+      {
+        "case": "changed_upstream_enable",
+        "rejected": true,
+        "reason": "address source register/clock/enable/reset changed"
+      },
+      {
+        "case": "changed_lut_init",
+        "rejected": true,
+        "reason": "address LUT function changed"
+      },
+      {
+        "case": "unreviewed_alias_target",
+        "rejected": true,
+        "reason": "unreviewed alias target"
+      }
+    ]
+  },
+  "current_continuation": {
+    "started_at": "2026-10-24T04:06:26.665928+08:00",
+    "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+    "baseline": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+    "pnr_out": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_pnr8",
+    "wait_pid": 22984,
+    "maximum_wait_seconds": 10800,
+    "recurring": false,
+    "maximum_pnr_runs": 1,
+    "programmed": false,
+    "deployment_accepted": false,
+    "phase": "full_pnr_running",
+    "updated_at": "2026-10-24T04:06:41.771221+08:00",
+    "pre_pnr_checks_passed": true,
+    "command": [
+      "D:\\Anaconda\\python.exe",
+      "-X",
+      "utf8",
+      "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\pnr_from_netlist.py",
+      "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+      "--out",
+      "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_pnr8",
+      "--wide-split",
+      "1",
+      "--replicate-resources",
+      "1",
+      "--place-option",
+      "1",
+      "--route-option",
+      "2",
+      "--max-runtime-minutes",
+      "150.0",
+      "--max-no-progress-minutes",
+      "0",
+      "--cdc-reference-audit",
+      "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4\\cdc_reference_audit.json",
+      "--sfp-cdc-reference",
+      "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4\\sfp_cdc_reference.json",
+      "--clock-resource-plan",
+      "F:\\nav_integration_g2_20261023\\lane2_rowbanks_checked_retry1\\clock_plan_frozen.json",
+      "--routing-evidence",
+      "--capture-system-telemetry"
+    ],
+    "pnr_wrapper_pid": 57496
+  },
+  "current_processes": [
+    {
+      "pid": 56008,
+      "created": 1792786012.232107,
+      "status": "running",
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ]
+    },
+    {
+      "pid": 57496,
+      "created": 1792786001.7655451,
+      "status": "running",
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\pnr_from_netlist.py",
+        "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+        "--out",
+        "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_pnr8",
+        "--wide-split",
+        "1",
+        "--replicate-resources",
+        "1",
+        "--place-option",
+        "1",
+        "--route-option",
+        "2",
+        "--max-runtime-minutes",
+        "150.0",
+        "--max-no-progress-minutes",
+        "0",
+        "--cdc-reference-audit",
+        "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4\\cdc_reference_audit.json",
+        "--sfp-cdc-reference",
+        "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4\\sfp_cdc_reference.json",
+        "--clock-resource-plan",
+        "F:\\nav_integration_g2_20261023\\lane2_rowbanks_checked_retry1\\clock_plan_frozen.json",
+        "--routing-evidence",
+        "--capture-system-telemetry"
+      ]
+    },
+    {
+      "pid": 2328,
+      "created": 1792785986.3535929,
+      "status": "running",
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "integration/g2/continue_bank_select_once.py",
+        "--synthesis",
+        "F:/nav_integration_g2_20261023/sfp_lane2_rowbanks_syn7",
+        "--baseline",
+        "F:/nav_integration_g2_20261023/sfp_clockpriority_pnr4",
+        "--wait-pid",
+        "22984",
+        "--pnr-out",
+        "F:/nav_integration_g2_20261023/sfp_lane2_rowbanks_pnr8",
+        "--state-dir",
+        "F:/nav_integration_g2_20261023/lane2_rowbanks_checked_retry1",
+        "--max-runtime-minutes",
+        "150"
+      ]
+    }
+  ],
+  "pnr_build": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_pnr8",
+  "pnr_runtime_snapshot": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-24T04:06:52.158314+08:00",
+    "max_runtime_s": 9000.0,
+    "max_no_observable_progress_s": 0.0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 56008,
+    "elapsed_s": 90.23399999999674,
+    "no_observable_progress_s": 84.09400000004098,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        2250296,
+        1792786018206727200
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        2249874,
+        1792786018206727200
+      ]
+    ]
+  },
+  "absolute_deadline": "2026-10-24T06:36:52.158314+08:00",
+  "same_inputs_as_previous_lane2_pnr": {
+    "g2.cst": true,
+    "g2.sdc": true,
+    "ip/serdes.csr": true
+  },
+  "effective_pnr_command": "-d F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_pnr8\\g2_top.vg\n-p GW5AT-138C-PBGA484A-1\n-pn GW5AT-LV138PG484AC1/I0\n-cst F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_pnr8\\g2.cst\n-cfg F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_pnr8\\impl\\pnr\\device.cfg\n-sdc F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_pnr8\\g2.sdc\n-bit\n-tr\n-ph\n-posp\n-o\n-warning_all\n-timing\n-ireg_not_in_iob\n-oreg_not_in_iob\n-ioreg_not_in_iob\n-replicate\n-cst_error\n-convert_sdp32_36_to_sdp16_18\n-place_option 1\n-route_option 2\n-retiming_resource none\n-clock_route_order 0\n-correct_hold 1\n-route_maxfan 23\n-global_freq 50.000\n-csr F:/nav_integration_g2_20261023/sfp_lane2_rowbanks_pnr8/ip/serdes.csr\n",
+  "hold_only_commands": 77,
+  "max_delay_commands": 77,
+  "clock_periods_ns": [
+    20,
+    10,
+    8,
+    8
+  ],
+  "physical_bsram334_is_prediction_only": true,
+  "actual_physical_resources": null,
+  "actual_unrouted_nets": null,
+  "actual_timing": null,
+  "physical_and_effective_cdc_constraints_pending": true,
+  "full_sfp_acceptance_pending43_and_PCS_reset_IO": true,
+  "programmed": false,
+  "g2_passed": false,
+  "automation_entry": "F:\\nav_integration_g2_20261023\\lane2_rowbanks_checked_retry1\\job.json",
+  "scope": "actual complete SYN connectivity, assets and PNR launch; not physical route/timing or vehicle acceptance"
+}

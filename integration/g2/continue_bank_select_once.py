@@ -139,13 +139,21 @@ def validate_candidate(source, baseline, plan_file):
     old_drivers,new_drivers = driver_index(old_cells),driver_index(cells)
     plan = json.loads(Path(plan_file).read_text())
     names = [r['net'] for r in plan['promote']]+plan['local']
+    from revalidate_lidar_cdc import revalidate, definitions
+    old_definitions = definitions(baseline/'g2_top.vg')
+    new_definitions = definitions(source/'impl/gwsynthesis/g2_top.vg')
+    address_aliases = []
     for net in names:
         assert len(old_drivers[net]) == len(new_drivers[net]) == 1, ('routing-plan source missing',net)
-        assert old_drivers[net] == new_drivers[net], ('routing-plan source changed',net)
+        if old_drivers[net] != new_drivers[net] and row_banks:
+            from prove_row_address_alias import prove
+            address_aliases.append(prove(net,[c for _,c in old_drivers[net]],[c for _,c in new_drivers[net]],
+                                         old_cells,cells,old_definitions,new_definitions))
+        else:
+            assert old_drivers[net] == new_drivers[net], ('routing-plan source changed',net)
     reference = json.loads((baseline/'cdc_reference_audit.json').read_text())
-    from revalidate_lidar_cdc import revalidate, definitions
     lidar_revalidation = revalidate(old_cells,cells,reference,directions,
-        definitions(baseline/'g2_top.vg'),definitions(source/'impl/gwsynthesis/g2_top.vg'))
+        old_definitions,new_definitions)
     sfp = audit_sfp(source/'impl/gwsynthesis/g2_top.vg',True)
     old_sfp = json.loads((baseline/'sfp_cdc_reference.json').read_text())
     assert sfp['passed'] and json.loads(json.dumps(sfp['paths'])) == old_sfp['paths']
@@ -157,6 +165,7 @@ def validate_candidate(source, baseline, plan_file):
                 source_csr_and_clock_sdc_unchanged=row_banks or not bool(lane2_checks), sfp_lane2_checks=lane2_checks, core_synthesis_estimate=core,
                 selector_before=old, selector_after=new, clock_plan_sources_revalidated=names,
                 row_store_checks=row_store_checks,
+                proved_row_address_driver_aliases=address_aliases,
                 lidar_revalidation=lidar_revalidation,
                 lidar26_source_connections_match=True, host51_source_connections_match=True,
                 deployment_accepted=False)

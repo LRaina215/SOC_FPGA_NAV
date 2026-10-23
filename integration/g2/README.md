@@ -111,3 +111,6 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 
 `prepare_slf_row_banks.py`只给实际160×98/AW8行缓存增加十个16词分布式银行，寄存选择与银行读同拍更新，原1拍延迟/read-first/re保持/初值和15680bit容量保持；其他几何原样。`measure_slf_row_banks.py <frozen-Lane2-SYN> --out <new-dir>`先做RTL对照，再各180秒/所属768MiB上限的小模块SYN及厂商真实原语对照。首轮负载686→250、RAM16 275→250、LUT−76/FF＋891、BSRAM0保持，两种仿真各9012拍通过；不证明物理拥塞根因。`retry_frozen_synthesis.py --slf-row-banks --start-now`只派生这一个RTL差异，完整SYN仍40分钟与原2/4GiB门槛。`continue_bank_select_once.py --max-runtime-minutes 150`可接续当前唯一候选；核对探针来源、104资产、BSRAM参数、全片行缓存实际负载/250个RAM16、原地图选择≤128、8驱动/26＋51 CDC及Lane2时钟。已是Lane2的输入必须保持SDC完全相同，不能重新导入独立例外。通过才运行一轮有预算PNR，任何失败留证据并停止，不自动无限重试或授予部署。
+
+
+`prove_row_address_alias.py`只允许SLF的rb_ra[0:1]因综合改名：要求实际唯一LUT3、全部引脚、INIT8'hCA/8组真值及唯一上游寄存器的全部输入/时钟/使能/reset/参数一致；其他计划驱动继续严格比较。`test_row_address_alias.py`使用保留的实际网表，两项真实别名通过、四项行为/范围变化拒绝。不是删除驱动核对或给时序新增例外。初次接续失败目录保留，修复后用新state重查既有SYN，只启动尚未创建的目标PNR，避免重复综合或覆盖现场。

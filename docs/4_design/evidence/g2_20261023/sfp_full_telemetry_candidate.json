@@ -153,7 +153,7 @@
     "history_phy_guard": "0985e15",
     "lease_sfp_client": "214d3c6"
   },
-  "updated_at": "2026-10-24T03:55:46.022639+08:00",
+  "updated_at": "2026-10-24T04:08:24.312646+08:00",
   "history_fanout_candidate": {
     "generator": "control/tools/g2_history_fanout.py",
     "source_edit": "one syn_maxfan=128 synthesis attribute, no functional RTL edit",
@@ -459,28 +459,18 @@
     "joint_physical_improvement_measured": false
   },
   "current_pnr": {
-    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_pnr7",
-    "source": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
-    "started_at": "2026-10-23T22:53:52.545216+08:00",
-    "tool_pid": 61020,
-    "supervisor_pid": 52280,
-    "max_runtime_minutes": 120,
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_pnr8",
+    "phase": "full_pnr_running",
+    "tool_pid": 56008,
+    "wrapper_pid": 57496,
+    "controller_pid": 2328,
+    "started_at": "2026-10-24T04:06:52.158314+08:00",
+    "absolute_deadline": "2026-10-24T06:36:52.158314+08:00",
+    "max_runtime_minutes": 150,
     "max_no_progress_minutes": 0,
-    "absolute_deadline": "2026-10-24T00:53:52.545216+08:00",
-    "stage": "routing",
-    "running": true,
-    "diagnostic_only": true,
-    "logical_netlist_unchanged": false,
-    "original_control_algorithm_weights_hz_unchanged": true,
-    "partition": "u_nav/u_match",
-    "programmed": false,
-    "final_reports_available": false,
-    "result_evidence": "sfp273_partition_diagnosis.json",
-    "last_reported_completed_phase": "Routing Phase0",
-    "phase": "cancelled_at150min_total_budget",
-    "cancelled": true,
-    "actual_unrouted_nets": null,
-    "evidence": "lane2_pnr150_cancelled_20261024.json"
+    "diagnostic_only": false,
+    "serdes_lane": "Q0 Lane2",
+    "evidence": "slf_row_banks_joint_synthesis_20261024.json"
   },
   "previous_pnr": {
     "build": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_ce_pnr5",
@@ -619,16 +609,47 @@
       "programmed": false,
       "final_reports_available": false,
       "result_evidence": "sfp273_partition_diagnosis.json"
+    },
+    {
+      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_pnr7",
+      "source": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+      "started_at": "2026-10-23T22:53:52.545216+08:00",
+      "tool_pid": 61020,
+      "supervisor_pid": 52280,
+      "max_runtime_minutes": 120,
+      "max_no_progress_minutes": 0,
+      "absolute_deadline": "2026-10-24T00:53:52.545216+08:00",
+      "stage": "routing",
+      "running": true,
+      "diagnostic_only": true,
+      "logical_netlist_unchanged": false,
+      "original_control_algorithm_weights_hz_unchanged": true,
+      "partition": "u_nav/u_match",
+      "programmed": false,
+      "final_reports_available": false,
+      "result_evidence": "sfp273_partition_diagnosis.json",
+      "last_reported_completed_phase": "Routing Phase0",
+      "phase": "cancelled_at150min_total_budget",
+      "cancelled": true,
+      "actual_unrouted_nets": null,
+      "evidence": "lane2_pnr150_cancelled_20261024.json"
     }
   ],
   "pending_builds": [
     {
-      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
-      "stage": "synthesizing",
-      "supervisor_pid": 22984,
-      "tool_pid": 32556,
-      "max_runtime_minutes": 40,
-      "evidence": "slf_row_banks_intervention_20261024.json"
+      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_pnr8",
+      "phase": "full_pnr_running",
+      "tool_pid": 56008,
+      "wrapper_pid": 57496,
+      "controller_pid": 2328,
+      "started_at": "2026-10-24T04:06:52.158314+08:00",
+      "absolute_deadline": "2026-10-24T06:36:52.158314+08:00",
+      "max_runtime_minutes": 150,
+      "max_no_progress_minutes": 0,
+      "diagnostic_only": false,
+      "serdes_lane": "Q0 Lane2",
+      "evidence": "slf_row_banks_joint_synthesis_20261024.json",
+      "stage": "pnr"
     }
   ],
   "best_measured_candidate": {
@@ -660,10 +681,10 @@
     "physical_split_count_not_yet_measured": true
   },
   "one_shot_continuation": {
-    "controller_pid": 58284,
-    "live_state_file": "F:\\nav_integration_g2_20261023\\lane2_rowbanks_one_shot\\job.json",
-    "phase": "waiting_for_existing_synthesis",
-    "evidence": "slf_row_banks_intervention_20261024.json",
+    "controller_pid": 2328,
+    "live_state_file": "F:\\nav_integration_g2_20261023\\lane2_rowbanks_checked_retry1\\job.json",
+    "phase": "full_pnr_running",
+    "evidence": "slf_row_banks_joint_synthesis_20261024.json",
     "maximum_future_pnr_runs": 1,
     "pnr_out": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_pnr8",
     "pnr_budget_minutes": 150,
@@ -721,7 +742,15 @@
       98,
       989
     ],
-    "full_synthesis_pending": true,
-    "physical_result_pending": true
+    "full_synthesis_pending": false,
+    "physical_result_pending": true,
+    "full_synthesis_max_load": [
+      686,
+      250
+    ],
+    "source_bsram": 316,
+    "wide_leaves": 18,
+    "predicted_split_bsram": 334,
+    "full_synthesis_evidence": "slf_row_banks_joint_synthesis_20261024.json"
   }
 }
