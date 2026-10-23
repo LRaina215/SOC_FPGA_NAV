@@ -13,7 +13,9 @@ from synthesis_connectivity import read
 def apply(source, out, plan_file):
     source,out=Path(source),Path(out)
     plan=json.loads(Path(plan_file).read_text(encoding='utf-8'))
-    measured=audit(Path(plan['reference_physical_build']))
+    requested=[r['net'] for r in plan['promote']]+[r['net'] for r in plan.get('prefer_global',[])]+plan['local']
+    assert len(requested)==len(set(requested)), 'duplicate routing target'
+    measured=audit(Path(plan['reference_physical_build']),requested)
     previous={r['net']:r for r in measured['global_nets']}
     cells=read(out/'g2_top.vg')
     nets={net for cell in cells.values() for values in cell['ports'].values() for net in values}
@@ -40,6 +42,8 @@ def apply(source, out, plan_file):
         assert sum(pins.values())>=800,(name,'global request lacks large measured load')
         assert set(pins).isdisjoint({'CLK','CLKA','CLKB','CLOCK'})
         assert set(item['signal_types'].split('|')) <= {'SR','CE','LOGIC'}
+        if item['signal_types']=='CE':assert set(pins)=={'CE'}, 'CE request includes non-CE consumers'
+        if item['signal_types']=='LOGIC':assert all(p.startswith('I') for p in pins), 'data request includes state control consumers'
         # BUFS is not supported on Arora V. Generic BUFG is documented and
         # the small CE probe mapped it to LW. Actual LW use must be reported.
         commands.append(f'CLOCK_LOC "{name}" BUFG = {item["signal_types"]};')

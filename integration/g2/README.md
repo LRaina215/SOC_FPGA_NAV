@@ -117,3 +117,7 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 
 `prepare_bias_block_rom.py`只把冻结根fc_v4_top.v的425×26有符号bias_mem两项属性从distributed改block，原文件/数值/声明位宽/读使能/1拍延迟/MAC状态机保持。`measure_bias_block_rom.py <frozen-rowbanks-SYN> --out <new-dir>`以全部425个原始32位值为oracle，配对小模块SYN及RTL/厂商真实INIT检查：ROM16/LUT/FF 702/417/26→0、1个BIT_WIDTH32 pROM（宽拆分预测2物理块），最大负载702→7；两类检查各2968拍通过。首次有效读前原输出未定义，不强改INIT。`retry_frozen_synthesis.py --bias-block-rom --start-now`仍使用40分钟/既有内存保护；接续必须证明原BSRAM叶/参数全部保持、仅偏置新增、物理增量预测恰2且总≤336、全量ROM16消除，原行缓存/选择负载、104资产、控制合同/时钟/CDC仍重核。物理成本和收益只按完整PNR报告，不凭小模块或预测通过。
+
+偏置映射的完整PNR实际2950条未布通/336块，较正确Lane2行缓存版本586条/334块退化，已拒绝续用，保留生成器和失败证据。下一轮`clock_resource_plan_lane2_telemetry.json`直接复用586条版本的完整SYN，不重新综合或改RTL/SDC/CSR：基于该轮物理962数据脚/960 CE脚，增加两条遥测BUFG请求，并将303/365脚的两条导航LW网转LOCAL，原8项约束保持。该配置区别于旧Lane0两CE失败对照，仍是待物理验证的分配假设。
+
+`continue_bank_select_once.py --synthesis <已完成SYN> --baseline <原静态CDC参考> --clock-resource-plan <计划> --pnr-out <新目录> --state-dir <新目录> --max-runtime-minutes 150`在源已完成时无需提供失效PID；未完成仍须指定现有监管PID。新计划必须逐字绑定正确Lane2参考的原SYN网表，全部12条目标唯一驱动/104资产/存储参数/77条已知SYN CDC仍检查。分配器可额外审计报告中未列全局的具名目标，缺少全局分配明确记为null；CE与数据请求必须分别匹配实际CE或LUT输入，LOCAL拒绝时钟和复位脚。`test_measured_clock_plan.py --out <新目录>`用真实冻结网表检查一项有效计划及四项角色/复位/重复目标拒绝；原时钟安全回归保持。请求LW不代表实际获得LW，必须核对下一轮最终报告。

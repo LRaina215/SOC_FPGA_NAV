@@ -16,7 +16,7 @@ def bits(expression):
     return result
 
 
-def audit(build):
+def audit(build, requested_nets=()):
     p=Path(build)/'impl/pnr';report=(p/'g2_top.rpt.txt').read_text()
     section=report.split('6. Global Clock Signals',1)[1].split('7. Pinout',1)[0]
     global_nets={line.split('|')[0].strip():line.split('|')[1].strip()for line in section.splitlines()if '| PRIMARY'in line or '| LW 'in line}
@@ -30,7 +30,11 @@ def audit(build):
             elif pin in ('F','Q','O','DO','DOUT'):
                 for bit in bits(net):drivers[bit].append(dict(kind=kind,name=name,ports=ports))
     rows=[]
-    for net,resource in global_nets.items():
+    # Explicit additional targets may use ordinary routing in the report.
+    # Keep that absence visible rather than labelling them as global nets.
+    targets=dict(global_nets)
+    for net in requested_nets:targets.setdefault(net,None)
+    for net,resource in targets.items():
         row=dict(net=net,resource=resource,drivers=drivers[net],direct_pin_counts=dict(collections.Counter(x[2]for x in users[net])),
             direct_load_kinds=dict(collections.Counter(x[0]for x in users[net])),load_examples=users[net][:4])
         if net.startswith('u_control/model_thread/policy/')and resource=='PRIMARY':

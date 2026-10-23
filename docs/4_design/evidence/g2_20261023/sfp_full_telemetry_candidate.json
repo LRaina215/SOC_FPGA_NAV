@@ -153,7 +153,7 @@
     "history_phy_guard": "0985e15",
     "lease_sfp_client": "214d3c6"
   },
-  "updated_at": "2026-10-24T06:50:01.382359+08:00",
+  "updated_at": "2026-10-24T07:40:54.147380+08:00",
   "history_fanout_candidate": {
     "generator": "control/tools/g2_history_fanout.py",
     "source_edit": "one syn_maxfan=128 synthesis attribute, no functional RTL edit",
@@ -459,46 +459,25 @@
     "joint_physical_improvement_measured": false
   },
   "current_pnr": {
-    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_biasblock_pnr9",
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_telemetryglobal_pnr10",
     "phase": "full_pnr_running",
-    "tool_pid": 62516,
-    "wrapper_pid": 11184,
-    "controller_pid": 65408,
-    "started_at": "2026-10-24T06:48:48.182022+08:00",
-    "absolute_deadline": "2026-10-24T09:18:48.182022+08:00",
+    "tool_pid": 32164,
+    "wrapper_pid": 49464,
+    "controller_pid": 21352,
+    "started_at": "2026-10-24T07:38:34.107948+08:00",
+    "absolute_deadline": "2026-10-24T10:08:34.107948+08:00",
     "max_runtime_minutes": 150,
     "max_no_progress_minutes": 0,
     "diagnostic_only": false,
     "serdes_lane": "Q0 Lane2",
-    "evidence": "bias_block_joint_synthesis_20261024.json"
+    "evidence": "lane2_telemetry_clock_intervention_20261024.json"
   },
   "previous_pnr": {
-    "build": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_ce_pnr5",
-    "source": "F:\\nav_integration_g2_20261023\\sfp_history128_phyguard_lease_syn3",
-    "started_at": "2026-10-23T20:36:40.931552+08:00",
-    "tool_pid": 56712,
-    "supervisor_pid": 49324,
-    "max_runtime_minutes": 120,
-    "max_no_progress_minutes": 0,
-    "absolute_deadline": "2026-10-23T22:36:40.931552+08:00",
-    "stage": "finished_pr0004_unrouted",
-    "running": false,
-    "clock_plan": "clock_resource_plan_control_priority_v2.json",
-    "logical_netlist_unchanged": true,
-    "explicit_cdc_paths": 77,
-    "explicit_cdc_commands": 154,
-    "final_reports_available": true,
-    "programmed": false,
-    "last_checked_at": "2026-10-23T21:54:42.643291+08:00",
-    "ce_global_assignment_verified": true,
-    "unrouted_nets": 401,
-    "ended_at": "2026-10-23T22:01:27.261120+08:00",
-    "tool_exit": 1,
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_biasblock_pnr9",
+    "unrouted_nets": 2950,
+    "physical_bsram": 336,
     "cancelled": false,
-    "delta_from273": 128,
-    "actual_bsram": 334,
-    "timing_report_available": false,
-    "result_evidence": "sfp_ce_final_unrouted401.json"
+    "evidence": "lane2_biasblock_final_unrouted2950.json"
   },
   "pnr_history": [
     {
@@ -653,23 +632,30 @@
       "ended_at": "2026-10-24T06:23:23.741522+08:00",
       "result_evidence": "lane2_rowbanks_final_unrouted586.json",
       "g2_passed": false
+    },
+    {
+      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_biasblock_pnr9",
+      "unrouted_nets": 2950,
+      "physical_bsram": 336,
+      "cancelled": false,
+      "correct_lane2": true,
+      "evidence": "lane2_biasblock_final_unrouted2950.json"
     }
   ],
   "pending_builds": [
     {
-      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_biasblock_pnr9",
+      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_telemetryglobal_pnr10",
       "phase": "full_pnr_running",
-      "tool_pid": 62516,
-      "wrapper_pid": 11184,
-      "controller_pid": 65408,
-      "started_at": "2026-10-24T06:48:48.182022+08:00",
-      "absolute_deadline": "2026-10-24T09:18:48.182022+08:00",
+      "tool_pid": 32164,
+      "wrapper_pid": 49464,
+      "controller_pid": 21352,
+      "started_at": "2026-10-24T07:38:34.107948+08:00",
+      "absolute_deadline": "2026-10-24T10:08:34.107948+08:00",
       "max_runtime_minutes": 150,
       "max_no_progress_minutes": 0,
       "diagnostic_only": false,
       "serdes_lane": "Q0 Lane2",
-      "evidence": "bias_block_joint_synthesis_20261024.json",
-      "stage": "pnr"
+      "evidence": "lane2_telemetry_clock_intervention_20261024.json"
     }
   ],
   "best_measured_candidate": {
@@ -701,16 +687,9 @@
     "physical_split_count_not_yet_measured": true
   },
   "one_shot_continuation": {
-    "controller_pid": 65408,
-    "live_state_file": "F:\\nav_integration_g2_20261023\\lane2_biasblock_one_shot\\job.json",
-    "phase": "full_pnr_running",
-    "maximum_future_pnr_runs": 1,
-    "pnr_out": "F:\\nav_integration_g2_20261023\\sfp_lane2_biasblock_pnr9",
-    "pnr_budget_minutes": 150,
-    "pnr_idle_budget_minutes": 0,
-    "deployment_accepted": false,
-    "evidence": "bias_block_joint_synthesis_20261024.json",
-    "pre_pnr_checks_passed": true
+    "controller_pid": 21352,
+    "live_state": "F:\\nav_integration_g2_20261023\\lane2_telemetry_global_one_shot\\job.json",
+    "phase": "full_pnr_running"
   },
   "superseded_pending_builds": [
     {
@@ -801,5 +780,21 @@
     "full_bias_low_address_loads_before": 702,
     "full_bias_low_address_loads_after": 1,
     "result_evidence": "bias_block_joint_synthesis_20261024.json"
+  },
+  "telemetry_clock_intervention": {
+    "evidence": "lane2_telemetry_clock_intervention_20261024.json",
+    "reused_source": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7"
+  },
+  "previous_one_shot_continuation_snapshot": {
+    "controller_pid": 65408,
+    "live_state_file": "F:\\nav_integration_g2_20261023\\lane2_biasblock_one_shot\\job.json",
+    "phase": "full_pnr_running",
+    "maximum_future_pnr_runs": 1,
+    "pnr_out": "F:\\nav_integration_g2_20261023\\sfp_lane2_biasblock_pnr9",
+    "pnr_budget_minutes": 150,
+    "pnr_idle_budget_minutes": 0,
+    "deployment_accepted": false,
+    "evidence": "bias_block_joint_synthesis_20261024.json",
+    "pre_pnr_checks_passed": true
   }
 }

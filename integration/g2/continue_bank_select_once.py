@@ -179,19 +179,31 @@ def validate_candidate(source, baseline, plan_file):
         return result
     old_drivers,new_drivers = driver_index(old_cells),driver_index(cells)
     plan = json.loads(Path(plan_file).read_text())
-    names = [r['net'] for r in plan['promote']]+plan['local']
+    names = [r['net'] for r in plan['promote']]+[r['net'] for r in plan.get('prefer_global',[])]+plan['local']
+    assert len(names)==len(set(names)), 'duplicate routing-plan target'
+    driver_reference = plan.get('driver_reference_build')
+    if driver_reference:
+        driver_file=Path(driver_reference)/'g2_top.vg'
+        assert driver_file.read_bytes()==(source/'impl/gwsynthesis/g2_top.vg').read_bytes(), 'clock-only candidate must reuse the exact measured SYN netlist'
+        # The historical 273 run remains the bank/CDC reference. New physical
+        # routing targets instead bind to the exact correct-Lane2 source.
+        # Exact bytes have just been verified; reuse the parsed cells rather
+        # than allocating a third large full-design dictionary.
+        routing_old_cells,routing_old_drivers=cells,new_drivers
+    else:
+        routing_old_cells,routing_old_drivers=old_cells,old_drivers
     from revalidate_lidar_cdc import revalidate, definitions
     old_definitions = definitions(baseline/'g2_top.vg')
     new_definitions = definitions(source/'impl/gwsynthesis/g2_top.vg')
     address_aliases = []
     for net in names:
-        assert len(old_drivers[net]) == len(new_drivers[net]) == 1, ('routing-plan source missing',net)
-        if old_drivers[net] != new_drivers[net] and row_banks:
+        assert len(routing_old_drivers[net]) == len(new_drivers[net]) == 1, ('routing-plan source missing',net)
+        if routing_old_drivers[net] != new_drivers[net] and row_banks and not driver_reference:
             from prove_row_address_alias import prove
             address_aliases.append(prove(net,[c for _,c in old_drivers[net]],[c for _,c in new_drivers[net]],
                                          old_cells,cells,old_definitions,new_definitions))
         else:
-            assert old_drivers[net] == new_drivers[net], ('routing-plan source changed',net)
+            assert routing_old_drivers[net] == new_drivers[net], ('routing-plan source changed',net)
     reference = json.loads((baseline/'cdc_reference_audit.json').read_text())
     lidar_revalidation = revalidate(old_cells,cells,reference,directions,
         old_definitions,new_definitions)
@@ -207,6 +219,7 @@ def validate_candidate(source, baseline, plan_file):
                 changed_rtl_inputs=changed, control_weights_and125hz_unchanged=True,
                 source_csr_and_clock_sdc_unchanged=row_banks or not bool(lane2_checks), sfp_lane2_checks=lane2_checks, core_synthesis_estimate=core,
                 selector_before=old, selector_after=new, clock_plan_sources_revalidated=names,
+                clock_plan_exact_source_reference=driver_reference,
                 row_store_checks=row_store_checks,
                 proved_row_address_driver_aliases=address_aliases,
                 lidar_revalidation=lidar_revalidation,
@@ -218,10 +231,11 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument('--synthesis',type=Path,required=True)
     p.add_argument('--baseline',type=Path,required=True)
-    p.add_argument('--wait-pid',type=int,required=True)
+    p.add_argument('--wait-pid',type=int,help='required only while the source SYN is still running')
     p.add_argument('--pnr-out',type=Path,required=True)
     p.add_argument('--state-dir',type=Path,required=True)
     p.add_argument('--check-only',action='store_true',help='internal isolated validation process; never starts a tool')
+    p.add_argument('--clock-resource-plan',type=Path,help='explicit measured routing plan; default retains the original control priority plan')
     p.add_argument('--max-runtime-minutes',type=float,default=120,help='explicit budget for the one future PNR, not an extension of an existing process')
     a = p.parse_args()
     assert 0 < a.max_runtime_minutes <= 150, 'future PNR must retain an explicit bounded budget'
@@ -242,10 +256,11 @@ def main():
         (state_dir/'job.json').write_text(json.dumps(state,indent=2),encoding='utf-8',newline='\n')
         print(json.dumps(dict(phase=phase,**extra)),flush=True)
     try:
-        shutil.copyfile(ROOT/'integration/g2/clock_resource_plan_control_priority.json',state_dir/'clock_plan_frozen.json')
+        shutil.copyfile(a.clock_resource_plan or ROOT/'integration/g2/clock_resource_plan_control_priority.json',state_dir/'clock_plan_frozen.json')
         shutil.copyfile(Path(__file__),state_dir/'controller_source.py')
         syn_job = json.loads((source/'job.json').read_text())
         if syn_job['phase'] != 'synthesis_complete':
+            assert a.wait_pid is not None and a.wait_pid>0, 'running SYN requires its existing supervisor PID'
             prior = psutil.Process(a.wait_pid)
             command = prior.cmdline()
             assert any('retry_frozen_synthesis.py' in x for x in command) and str(source).replace('\\','/') in [x.replace('\\','/') for x in command], command
@@ -256,8 +271,9 @@ def main():
         # Let the large parsed netlist dictionaries exit before starting PNR.
         check_command = [sys.executable,'-X','utf8',str(Path(__file__)),
                          '--synthesis',str(source),'--baseline',str(baseline),
-                         '--wait-pid',str(a.wait_pid),'--pnr-out',str(out),
+                         '--pnr-out',str(out),
                          '--state-dir',str(state_dir),'--check-only']
+        if a.wait_pid is not None:check_command += ['--wait-pid',str(a.wait_pid)]
         with (state_dir/'validation.log').open('w',encoding='utf-8') as stream:
             subprocess.run(check_command,cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT,
                            creationflags=subprocess.CREATE_NO_WINDOW,timeout=300,check=True)

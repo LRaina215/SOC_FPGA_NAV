@@ -1,0 +1,28 @@
+{
+  "reference_physical_build": "F:/nav_integration_g2_20261023/sfp_lane2_rowbanks_pnr8",
+  "driver_reference_build": "F:/nav_integration_g2_20261023/sfp_lane2_rowbanks_pnr8",
+  "hypothesis": "The correct-Lane2 586-net physical result leaves telemetry shift selection (962 data pins) and snapshot enable (960 CE pins) off global resources. Request global routing for these two measured nets and release two smaller LW consumers (303 and 365 pins). This is an allocation experiment, not identification of the failed nets.",
+  "promote": [
+    {"net": "n2371_7", "primary_index": 4, "signal_types": "SR|LOGIC"},
+    {"net": "r2", "primary_index": 5, "signal_types": "SR|CE|LOGIC"},
+    {"net": "u_control/model_thread/observation/n331_7", "primary_index": 6, "signal_types": "SR|LOGIC"},
+    {"net": "u_control/model_thread/policy/snapshot_update", "primary_index": 7, "signal_types": "CE"}
+  ],
+  "prefer_global": [
+    {"net": "u_control/telemetry_thread/n1315_4", "signal_types": "LOGIC"},
+    {"net": "u_control/telemetry_thread/snapshot_959_10", "signal_types": "CE"}
+  ],
+  "local": [
+    "u_nav/u_xt/n9903_3",
+    "u_nav/u_match/u_ex/n7021_4",
+    "u_nav/u_match/u_ex/rb_ra[0]",
+    "u_nav/u_match/u_ex/rb_ra[1]",
+    "u_nav/a_q_15_17",
+    "u_nav/u_map/u_tv/n25284_7"
+  ],
+  "manual": "Gowin SUG1541-1.0E section2.8: indexed/generic BUFG and LOCAL_CLOCK; no BUFS on Arora V",
+  "generic_ce_probe": "F:/nav_integration_g2_20261023/clock_ce_route_probe",
+  "logic_and_clock_periods_unchanged": true,
+  "reuse_exact_synthesis": "F:/nav_integration_g2_20261023/sfp_lane2_rowbanks_syn7",
+  "rejected_bias_mapping_result": "F:/nav_integration_g2_20261023/sfp_lane2_biasblock_pnr9"
+}
