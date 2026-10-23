@@ -108,10 +108,9 @@ def validate_candidate(source, baseline, plan_file):
         assert len(old_drivers[net]) == len(new_drivers[net]) == 1, ('routing-plan source missing',net)
         assert old_drivers[net] == new_drivers[net], ('routing-plan source changed',net)
     reference = json.loads((baseline/'cdc_reference_audit.json').read_text())
-    for row in reference['paths']:
-        for key in ('source_register','first_register','second_register'):
-            name = row[key]
-            assert cells.get(name) == old_cells.get(name) and name in cells, ('lidar CDC source changed',name)
+    from revalidate_lidar_cdc import revalidate, definitions
+    lidar_revalidation = revalidate(old_cells,cells,reference,directions,
+        definitions(baseline/'g2_top.vg'),definitions(source/'impl/gwsynthesis/g2_top.vg'))
     sfp = audit_sfp(source/'impl/gwsynthesis/g2_top.vg',True)
     old_sfp = json.loads((baseline/'sfp_cdc_reference.json').read_text())
     assert sfp['passed'] and json.loads(json.dumps(sfp['paths'])) == old_sfp['paths']
@@ -120,6 +119,7 @@ def validate_candidate(source, baseline, plan_file):
                 all_ram_parameters_match=True, changed_rtl_inputs=changed, control_weights_and125hz_unchanged=True,
                 source_csr_and_clock_sdc_unchanged=not bool(lane2_checks), sfp_lane2_checks=lane2_checks, core_synthesis_estimate=core,
                 selector_before=old, selector_after=new, clock_plan_sources_revalidated=names,
+                lidar_revalidation=lidar_revalidation,
                 lidar26_source_connections_match=True, host51_source_connections_match=True,
                 deployment_accepted=False)
 

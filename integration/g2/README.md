@@ -105,3 +105,6 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 
 `retry_frozen_synthesis.py --sfp-lane2-from-build <proved-standalone-build> --bank-select-data-fanout`从旧完整冻结源采用已核对的SFP1 Lane2生成包装/CSR及映射注释，其他源逐字保持；只改联合SDC两条125MHz时钟源，拒绝导入独立整域异步例外。保护MAC须字节相同，配置须只启用Q0 Lane2/REFCLK1/loopback OFF。`prepare_sfp_lane2.py`在冻结和PNR前均核对来源；一次性接续还要求实际SYN的GTR Lane2 RX/TX输出分别驱动h_rx_clk/h_tx_clk。旧Lane0候选只留历史路由对照，不能用于SFP1物理验收。Lane2修正与银行复制同轮时，PNR变化不作单因素收益结论。
+
+
+`revalidate_lidar_cdc.py`重新计26条实际源→首级→第二级的数据/时钟/使能及首级Q唯一负载。生成RESET编号变化仅在唯一具名驱动相同、驱动全部输入相同、包含INIT的完整复位模块定义相同时被视为别名；不跳过RESET检查，不新增时序例外。`test_lidar_reset_alias.py`对保留的实际Lane2/273冻结网表做6项正负回归，拒绝数据/时钟/负载/复位输入/INIT变化。失败接续保留原state，修复后复用既有SYN、使用新state创建尚未存在的PNR目录，不重复综合。

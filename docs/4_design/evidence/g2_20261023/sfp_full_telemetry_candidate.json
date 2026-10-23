@@ -619,41 +619,17 @@
   ],
   "pending_builds": [
     {
-      "build": "F:\\nav_integration_g2_20261023\\sfp273_without_match_retry1_diagnostic",
-      "source": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
-      "started_at": "2026-10-23T22:53:52.545216+08:00",
-      "tool_pid": 61020,
-      "supervisor_pid": 52280,
+      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_pnr7",
+      "stage": "pnr",
+      "tool_pid": 19028,
+      "supervisor_pid": 27580,
+      "controller_pid": 41864,
       "max_runtime_minutes": 120,
       "max_no_progress_minutes": 0,
-      "absolute_deadline": "2026-10-24T00:53:52.545216+08:00",
-      "stage": "routing",
-      "running": true,
-      "diagnostic_only": true,
-      "logical_netlist_unchanged": false,
-      "original_control_algorithm_weights_hz_unchanged": true,
-      "partition": "u_nav/u_match",
-      "programmed": false,
-      "final_reports_available": false,
-      "result_evidence": "sfp273_partition_diagnosis.json",
-      "last_reported_completed_phase": "Routing Phase0"
-    },
-    {
-      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_syn6",
-      "stage": "waiting_for_prior_pnr",
-      "supervisor_pid": 54004,
-      "wait_pid": 52280,
-      "kind": "full_joint_lane2_synthesis",
-      "evidence": "sfp_lane2_execution_chain.json",
-      "automatic_pnr": false
-    },
-    {
-      "build": "F:\\nav_integration_g2_20261023\\lane2_bankselect128_one_shot",
-      "phase": "waiting_for_existing_synthesis",
-      "supervisor_pid": 52448,
-      "wait_pid": 54004,
-      "kind": "one_shot_checked_lane2_pnr_continuation",
-      "evidence": "sfp_lane2_execution_chain.json"
+      "started_at": "2026-10-24T01:06:48.371528+08:00",
+      "diagnostic_only": false,
+      "serdes_lane": "Q0 Lane2",
+      "evidence": "sfp_lane2_synthesis_cdc_revalidation.json"
     }
   ],
   "best_measured_candidate": {
@@ -676,14 +652,19 @@
       64
     ],
     "full_joint_synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_syn6",
-    "phase": "waiting_for_prior_pnr",
-    "lane2_evidence": "sfp_lane2_execution_chain.json"
+    "phase": "synthesis_complete",
+    "lane2_evidence": "sfp_lane2_execution_chain.json",
+    "actual_full_synthesis_max_load_before": 576,
+    "actual_full_synthesis_max_load_after": 128,
+    "synthesis_bsram": 316,
+    "predicted_split_bsram": 334,
+    "physical_split_count_not_yet_measured": true
   },
   "one_shot_continuation": {
-    "controller_pid": 52448,
-    "live_state_file": "F:\\nav_integration_g2_20261023\\lane2_bankselect128_one_shot\\job.json",
-    "phase": "waiting_for_existing_synthesis",
-    "evidence": "sfp_lane2_execution_chain.json",
+    "controller_pid": 41864,
+    "live_state_file": "F:\\nav_integration_g2_20261023\\lane2_bankselect128_checked_retry1\\job.json",
+    "phase": "full_pnr_running",
+    "evidence": "sfp_lane2_synthesis_cdc_revalidation.json",
     "maximum_future_pnr_runs": 1,
     "deployment_accepted": false
   },
@@ -715,5 +696,13 @@
     "lane": "Q0 Lane2",
     "independent_link_short_test_passed": true,
     "joint_passed": false
+  },
+  "completed_matcher_diagnostic": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp273_without_match_retry1_diagnostic",
+    "cancelled": true,
+    "reason": "120min maximum runtime",
+    "actual_unrouted_nets": null,
+    "final_reports_available": false,
+    "evidence": "sfp273_partition_diagnosis.json"
   }
 }

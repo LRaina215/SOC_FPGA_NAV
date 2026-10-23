@@ -606,5 +606,81 @@
   "external_upload_performed": false,
   "periodic_monitor_recreated": false,
   "g2_passed": false,
-  "prepared_lossless_full_candidate": "sfp273_bank_select_intervention.json"
+  "prepared_lossless_full_candidate": "sfp273_bank_select_intervention.json",
+  "final_result_20261024": {
+    "recorded_at": "2026-10-24T00:53:54.577456+08:00",
+    "build": "F:\\nav_integration_g2_20261023\\sfp273_without_match_retry1_diagnostic",
+    "pnr_report_available": false,
+    "timing_report_available": false,
+    "reported_unrouted_nets": null,
+    "congestion_grids": [],
+    "high_fanout_nets": [],
+    "actual_report_commands": [],
+    "bsram_placement_available": false,
+    "runtime": {
+      "command": [
+        "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/bin/gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-23T22:53:52.545216+08:00",
+      "max_runtime_s": 7200,
+      "max_no_observable_progress_s": 0,
+      "cancelled": true,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 61020,
+      "elapsed_s": 7202.016000000003,
+      "no_observable_progress_s": 6725.188000000024,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          1809417,
+          1792767708289100700
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          1808950,
+          1792767708289100700
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          2086684,
+          1792767675150040900
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          12235046,
+          1792767675651520200
+        ]
+      ],
+      "reason": "maximum runtime exceeded",
+      "tool_exit": 1,
+      "ended_at": "2026-10-24T00:53:54.560231+08:00"
+    },
+    "job": {
+      "build": "F:\\nav_integration_g2_20261023\\sfp273_without_match_retry1_diagnostic",
+      "source": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+      "diagnostic_only": true,
+      "queued_at": "2026-10-23T22:53:52.520192+08:00",
+      "phase": "finished",
+      "minimum_free_bytes": 2147483648,
+      "minimum_commit_reserve_bytes": 4294967296,
+      "memory_wait_minutes": 10,
+      "programmed": false,
+      "free_bytes": 3792470016,
+      "commit_reserve_bytes": 7191052288,
+      "updated_at": "2026-10-24T00:53:54.577456+08:00",
+      "started_at": "2026-10-23T22:53:52.544231+08:00",
+      "ended_at": "2026-10-24T00:53:54.577456+08:00",
+      "tool_exit": 1,
+      "cancelled": true,
+      "deployment_accepted": false
+    },
+    "per_net_failure_list_available": false,
+    "deployment_accepted": false,
+    "scope": "actual vendor-reported grids/fanout only; missing reports remain unknown; congested grids and high fanout do not identify failed nets"
+  },
+  "interpretation_after_budget": "120min matcher-removal comparison produced no final report, failed-net count, congestion or placement evidence. Cannot attribute/clear matcher, infer BSRAM shortage or prove deadlock; no identical retry."
 }

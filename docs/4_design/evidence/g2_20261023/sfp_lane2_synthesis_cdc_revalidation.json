@@ -1,0 +1,299 @@
+{
+  "recorded_at": "2026-10-24T01:08:53.695663+08:00",
+  "diagnostic_final_result": {
+    "recorded_at": "2026-10-24T00:53:54.577456+08:00",
+    "build": "F:\\nav_integration_g2_20261023\\sfp273_without_match_retry1_diagnostic",
+    "pnr_report_available": false,
+    "timing_report_available": false,
+    "reported_unrouted_nets": null,
+    "congestion_grids": [],
+    "high_fanout_nets": [],
+    "actual_report_commands": [],
+    "bsram_placement_available": false,
+    "runtime": {
+      "command": [
+        "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/bin/gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-23T22:53:52.545216+08:00",
+      "max_runtime_s": 7200,
+      "max_no_observable_progress_s": 0,
+      "cancelled": true,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 61020,
+      "elapsed_s": 7202.016000000003,
+      "no_observable_progress_s": 6725.188000000024,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          1809417,
+          1792767708289100700
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          1808950,
+          1792767708289100700
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          2086684,
+          1792767675150040900
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          12235046,
+          1792767675651520200
+        ]
+      ],
+      "reason": "maximum runtime exceeded",
+      "tool_exit": 1,
+      "ended_at": "2026-10-24T00:53:54.560231+08:00"
+    },
+    "job": {
+      "build": "F:\\nav_integration_g2_20261023\\sfp273_without_match_retry1_diagnostic",
+      "source": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+      "diagnostic_only": true,
+      "queued_at": "2026-10-23T22:53:52.520192+08:00",
+      "phase": "finished",
+      "minimum_free_bytes": 2147483648,
+      "minimum_commit_reserve_bytes": 4294967296,
+      "memory_wait_minutes": 10,
+      "programmed": false,
+      "free_bytes": 3792470016,
+      "commit_reserve_bytes": 7191052288,
+      "updated_at": "2026-10-24T00:53:54.577456+08:00",
+      "started_at": "2026-10-23T22:53:52.544231+08:00",
+      "ended_at": "2026-10-24T00:53:54.577456+08:00",
+      "tool_exit": 1,
+      "cancelled": true,
+      "deployment_accepted": false
+    },
+    "per_net_failure_list_available": false,
+    "deployment_accepted": false,
+    "scope": "actual vendor-reported grids/fanout only; missing reports remain unknown; congested grids and high fanout do not identify failed nets"
+  },
+  "initial_continuation_failure": {
+    "job": {
+      "started_at": "2026-10-24T00:20:27.033936+08:00",
+      "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_syn6",
+      "baseline": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+      "pnr_out": "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_pnr7",
+      "wait_pid": 54004,
+      "maximum_wait_seconds": 10800,
+      "recurring": false,
+      "maximum_pnr_runs": 1,
+      "programmed": false,
+      "deployment_accepted": false,
+      "phase": "stopped_prerequisite_or_execution_error",
+      "updated_at": "2026-10-24T01:00:04.835168+08:00",
+      "wait_process_created_at": 1792772397.8367505,
+      "error_type": "CalledProcessError",
+      "error": "Command '['D:\\\\Anaconda\\\\python.exe', '-X', 'utf8', 'D:\\\\Desktop\\\\SOC FPGA\\\\nav\\\\integration\\\\g2\\\\continue_bank_select_once.py', '--synthesis', 'F:\\\\nav_integration_g2_20261023\\\\sfp_lane2_bankselect128_syn6', '--baseline', 'F:\\\\nav_integration_g2_20261023\\\\sfp_clockpriority_pnr4', '--wait-pid', '54004', '--pnr-out', 'F:\\\\nav_integration_g2_20261023\\\\sfp_lane2_bankselect128_pnr7', '--state-dir', 'F:\\\\nav_integration_g2_20261023\\\\lane2_bankselect128_one_shot', '--check-only']' returned non-zero exit status 1."
+    },
+    "validation_error": "Traceback (most recent call last):\n  File \"D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\continue_bank_select_once.py\", line 209, in <module>\n    if __name__ == '__main__':raise SystemExit(main())\n                                               ^^^^^^\n  File \"D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\continue_bank_select_once.py\", line 138, in main\n    evidence = validate_candidate(source,baseline,state_dir/'clock_plan_frozen.json')\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\continue_bank_select_once.py\", line 114, in validate_candidate\n    assert cells.get(name) == old_cells.get(name) and name in cells, ('lidar CDC source changed',name)\n                                                      ^^^^^^^^^^^^^\nAssertionError: ('lidar CDC source changed', 'u_nav/u_netl/u_rxf/wp_b_11_s0')\n",
+    "changed_cells": 36,
+    "only_changed_pin": "RESET",
+    "verified_cause": "one generated output alias changed r2_205 to r2_203; same u_lrr/r2_s1 DFFPE and byte-equivalent reset module including INIT"
+  },
+  "synthesis": {
+    "job": {
+      "source": "F:\\nav_integration_g2_20261023\\sfp_history128_phyguard_lease_syn3",
+      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_syn6",
+      "wait_pid": 52280,
+      "programmed": false,
+      "source_frozen_before_wait": true,
+      "automatic_pnr": false,
+      "modified_rtl_inputs": [
+        "nav/rtl/common/nav_ram_sdp.v",
+        "sfp_host_mac.v",
+        "ip/serdes.v"
+      ],
+      "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+      "phase": "synthesis_complete",
+      "updated_at": "2026-10-24T00:59:55.842427+08:00",
+      "minimum_start_free_bytes": 2147483648,
+      "minimum_start_available_commit_bytes": 4294967296,
+      "max_runtime_minutes": 40,
+      "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+      "tool_pid": 31356,
+      "synthesis_started_at": "2026-10-24T00:53:54.610524+08:00",
+      "elapsed_s": 330.09399999998277,
+      "free_bytes": 3677687808,
+      "available_commit_bytes": 6730694656,
+      "tool_exit": 0,
+      "joint_pnr_measured": false
+    },
+    "source_bsram": 316,
+    "wide_leaves": 18,
+    "predicted_split_bsram": 334,
+    "split_is_prediction": true,
+    "core": {
+      "name": "clk50",
+      "constraint_mhz": 50.0,
+      "estimated_fmax_mhz": 54.372,
+      "levels": 20,
+      "entity": "TOP"
+    },
+    "first_path": {
+      "Slack": "1.608",
+      "Data Arrival Time": "18.706",
+      "Data Required Time": "20.314",
+      "From": "u_control/model_thread/policy/actions_27_s1",
+      "To": "u_control/model_thread/actuator_map/lk_us_4_s0",
+      "Launch Clk": "clk50[R]",
+      "Latch Clk": "clk50[R]"
+    },
+    "selector_max_before": 576,
+    "selector_max_after": 128
+  },
+  "prerequisites": {
+    "lidar": {
+      "passed": true,
+      "paths": 26,
+      "changed_reset_pin_connections": 36,
+      "proved_reset_aliases": [
+        {
+          "old_net": "r2_205",
+          "new_net": "r2_203",
+          "driver": "u_lrr/r2_s1",
+          "kind": "DFFPE",
+          "all_driver_inputs_identical": true,
+          "module_definition_including_init_identical": true
+        }
+      ],
+      "source_first_second_data_clock_enable_and_single_fanout_rechecked": true,
+      "exception_endpoints_and_budgets_unchanged": true,
+      "scope": "known SYN connectivity and proved reset alias only; no physical/reset-release/MTBF signoff"
+    },
+    "host51_source_connections_match": true,
+    "ram_parameters_match": true,
+    "lane2": {
+      "lane": "Q0 Lane2",
+      "proof_build": "F:\\nav_sfp_20261023\\build_lane2_v3",
+      "exact_generated_csr_and_wrapper": true,
+      "protected_mac_unchanged": true,
+      "outer_mac_function_unchanged": true,
+      "joint_clock_periods_unchanged": true,
+      "standalone_exceptions_not_imported": true,
+      "io_cst_unchanged": true,
+      "joint_hardware_accepted": false,
+      "actual_synthesized_clock_pins": {
+        "LANE2_PCS_RX_O_FABRIC_CLK": "h_rx_clk",
+        "LANE2_PCS_TX_O_FABRIC_CLK": "h_tx_clk"
+      }
+    },
+    "clock_sources": [
+      "n2371_7",
+      "r2",
+      "u_control/model_thread/observation/n331_7",
+      "u_control/model_thread/policy/snapshot_update",
+      "u_nav/u_xt/n9903_3",
+      "u_nav/u_match/u_ex/n7021_4",
+      "u_nav/u_match/u_ex/rb_ra[0]",
+      "u_nav/u_match/u_ex/rb_ra[1]"
+    ],
+    "original4500_weights125hz_unchanged": true
+  },
+  "regression": {
+    "tests": 6,
+    "passed": 6,
+    "scope": "actual frozen source connectivity: positive alias, wrong data, wrong clock, extra first-Q load, reset driver input, reset INIT",
+    "runtime_s": 10.904
+  },
+  "continuation": {
+    "controller_pid": 41864,
+    "live_state_file": "F:\\nav_integration_g2_20261023\\lane2_bankselect128_checked_retry1\\job.json",
+    "job": {
+      "started_at": "2026-10-24T01:06:21.179297+08:00",
+      "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_syn6",
+      "baseline": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+      "pnr_out": "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_pnr7",
+      "wait_pid": 54004,
+      "maximum_wait_seconds": 10800,
+      "recurring": false,
+      "maximum_pnr_runs": 1,
+      "programmed": false,
+      "deployment_accepted": false,
+      "phase": "full_pnr_running",
+      "updated_at": "2026-10-24T01:06:37.015688+08:00",
+      "pre_pnr_checks_passed": true,
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\pnr_from_netlist.py",
+        "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_syn6",
+        "--out",
+        "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_pnr7",
+        "--wide-split",
+        "1",
+        "--replicate-resources",
+        "1",
+        "--place-option",
+        "1",
+        "--route-option",
+        "2",
+        "--max-runtime-minutes",
+        "120",
+        "--max-no-progress-minutes",
+        "0",
+        "--cdc-reference-audit",
+        "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4\\cdc_reference_audit.json",
+        "--sfp-cdc-reference",
+        "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4\\sfp_cdc_reference.json",
+        "--clock-resource-plan",
+        "F:\\nav_integration_g2_20261023\\lane2_bankselect128_checked_retry1\\clock_plan_frozen.json",
+        "--routing-evidence",
+        "--capture-system-telemetry"
+      ],
+      "pnr_wrapper_pid": 27580
+    },
+    "one_full_pnr_reuses_completed_syn": true,
+    "tool_runtime": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-24T01:06:48.371528+08:00",
+      "max_runtime_s": 7200.0,
+      "max_no_observable_progress_s": 0.0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 19028,
+      "elapsed_s": 120.23399999999674,
+      "no_observable_progress_s": 112.125,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          2249968,
+          1792775215061589900
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          2249531,
+          1792775215061589900
+        ]
+      ]
+    },
+    "absolute_deadline": "2026-10-24T03:06:48.371528+08:00",
+    "actual_command_flags_readback": true,
+    "actual_sdc_clocks_mhz": [
+      50,
+      100,
+      125,
+      125
+    ],
+    "hold_only_commands": 77,
+    "max_delay_commands": 77,
+    "csr_matches_proved_lane2": true
+  },
+  "pnr_final_reports_not_yet_available": true,
+  "programmed": false,
+  "g2_passed": false
+}
