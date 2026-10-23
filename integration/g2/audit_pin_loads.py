@@ -29,7 +29,7 @@ def main():
                     if len(examples[bit])<3:examples[bit].append(kind+' '+name.lstrip('\\')+'.'+pin)
     result=dict(netlist=str(a.netlist),cells_scanned=n,direct_load_pins=sum(counts.values()),
         top_direct_loads=[dict(net=net,pins=count,port_counts=dict(pins[net]),examples=examples[net]) for net,count in counts.most_common(24)],
-        scope='direct input-pin references only; excludes clocks/constants, does not resolve assign aliases, does not identify the 411 unrouted nets')
+        scope='direct input-pin references only; excludes clocks/constants, does not resolve assign aliases or identify unrouted nets')
     a.out.parent.mkdir(parents=True,exist_ok=True);a.out.write_text(json.dumps(result,indent=2),encoding='utf-8')
     print(json.dumps(dict(cells_scanned=n,top_direct_loads=result['top_direct_loads'][:8]),ensure_ascii=False))
 

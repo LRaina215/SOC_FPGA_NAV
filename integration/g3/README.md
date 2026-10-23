@@ -1,6 +1,6 @@
 # 现有板静态接入与BMI诊断
 
-当前进度统一见[总计划](../../docs/1_plan/system_integration_plan_20261021.md)。用户2026-10-23授权必要实机测试；约04时确认整车未供电、原控制接线未改，仅归当时。09:35接续时用户尚不能确认执行器全部断电，车体未固定、BMI供电未知；随后明确回复“执行器电源已实际断开，仅保留开发板USB”。本次尚未下载；独立B1输入已冻结，排队等现有G2退出及内存门槛满足后构建，不自动编程。若安排实际下载时供电状态有变化，重新核对，不把这一答复当作长期固定事实。
+当前进度统一见[总计划](../../docs/1_plan/system_integration_plan_20261021.md)。用户2026-10-23授权必要实机测试；早先供电状态仅归当时。B1独立构建于11:11完成；12:47前用户再次确认执行器仍实际断电、仅留板USB，12:48完成临时SRAM采集，12:49已恢复保存的99A6原控制候选，未写Flash、未发运动命令。BMI供电来源未测，逐地址观察器尚未接受，不能据计数0认定器件不应答。
 
 控制依据是`control/README.md`、`control/fpga/md/BMI088_OLED.md`和实际`main.cst`：BMI SDA=P11-7/F18、SCL=P11-8/E18；控制TX=P11-40/A16、RX=P11-39/A15，现行源码230400/100Hz。板载CH9102的L21/M21属于另一串口。控制README早先表格和历史7000/SPI/9–10记录不能取代当前源码；当前物理供电/小板上拉电压没有因这些引脚记录而得到测量确认。
 
@@ -55,4 +55,14 @@
 
 必要合同：`test_i2c_id_observer.py --out <新目录>`验证独立合成总线的ACK/NACK、错误ID、过滤、STOP/复位；`test_feedback_probe.py --out <新目录>`通过实际原UART线级解码3帧/378字节，核对原编码器正负计数、六轴极值/原子保持、序号/年龄、I2C计数、坏CRC恢复与十路恒低。时钟/串口参数缩放、BMI发布为测试注入，不是实物或物理时序通过。已通过记录见[专项证据](../../docs/4_design/evidence/g3_20261023/feedback_probe_offline.json)。
 
-`build_feedback_probe.py --out <新目录> [--prepare-only]`冻结七个源与实际引脚，独立138C/50MHz，单次总预算300秒/静默180秒，不下载。`run_prepared_probe.py <冻结目录> --after-runtime <现有构建的tool_runtime.json>`只排队一次：前项结束、所属进程退出、物理空闲≥2GiB且提交余量≥4GiB后执行；默认等待95分钟，可用`--wait-until <带时区绝对时间>`显式指定最多4小时后的截止。`--resume-waiting`仅允许旧队列已退出、尚未有impl的等待任务，先保留旧job/launch记录。用户延长本轮G2至13:00后，当前B1等待截止同步为13:15，构建仍只300/180秒，不自动编程、不恢复定时监督。当前冻结目录`F:/nav_hardware_20261023/feedback_probe_build1`。读取脚本`read_feedback_probe.py --port <明确端口> --seconds 30 --out <新目录>`只接收，支持标为离线的`--replay`；当前尚无B1实测数据。
+`build_feedback_probe.py --out <新目录> [--prepare-only]`冻结七个源与实际引脚，独立138C/50MHz，单次总预算300秒/静默180秒，不下载。`run_prepared_probe.py <冻结目录> --after-runtime <现有构建的tool_runtime.json>`只排队一次：前项结束、所属进程退出、物理空闲≥2GiB且提交余量≥4GiB后执行；默认等待95分钟，可用`--wait-until <带时区绝对时间>`显式指定最多4小时后的截止。`--resume-waiting`仅允许旧队列已退出、尚未有impl的等待任务，先保留旧job/launch记录。用户延长本轮G2至13:00后，B1等待截止同步为13:15，11:09实际开始、11:11完成，构建仍只300/180秒，不自动编程、不恢复定时监督。冻结目录`F:/nav_hardware_20261023/feedback_probe_build1`。读取脚本`read_feedback_probe.py --port <明确端口> --seconds 30 --out <新目录>`只接收，支持标为离线的`--replay`。
+
+## 12:48 B1实际采集与诊断限制
+
+`audit_feedback_probe.py <实际构建> --out <结果>`核对实际报告、全部19个物理引脚、十路执行器OBUF接实际GND、无时序例外、50MHz与setup/hold/复位/脉宽。当前实际Fmax88.359MHz，setup/hold0，Recovery13.650ns、Removal2.369ns、最小脉宽7.983ns，0 BSRAM，独立门槛通过。报告解析首次误取目录标题导致缺失复位/脉宽，门槛拒绝；修正为正文锚定后取得实际正裕量，未因此重构建。
+
+`run_feedback_probe_session.py`仅在15分钟内实际执行器断电确认、实际构建通过、现有UserCode99A6及保存恢复候选存在时执行一次SRAM诊断；程序下载一旦尝试，无论采集是否成功均在finally恢复候选并读UserCode。该确认参数来自人类现场答复，脚本不会电气检测供电。操作2仅SRAM Program，不使用Flash命令、不接受UART运动命令；恢复UserCode一致不证明完整原镜像身份。
+
+实测3022帧、CRC0、相邻序号/编码器发布序号均+1、时间均+10ms；两轮原始delta/位置/非法跳变均0，编码器年龄均9ms。只确认采集路径与静态输入，不能证明编码器有运动响应或物理停止。2315份快照读到加速度ID1E、陀螺ID0F为0份、完整六轴发布0；原始零值仍属占位。新增观察器四地址的ACK/NACK/ID计数全0，与原驱动已读ID矛盾，所以逐地址计数不接受，不据此判68或69的真实结果。12:49恢复99A6，原始字节/CSV留在`F:/nav_hardware_20261023/feedback_session_1248/capture`。见[完整实测、构建及恢复证据](../../docs/4_design/evidence/g3_20261023/feedback_probe_hardware_1248.json)。
+
+针对矛盾新增必要检查：`test_i2c_id_observer.py --original-master`使用未改原BMI/I2C及模型从机，通过初始化地址回退/ID解码；`test_observer_physical_netlist.py --build <B1构建> --observer-cone --out <新目录>`从实际网表反向选出观察器逻辑，切在已核对的IOBUF输出，930原语、830参数原文保持，无悬空驱动，全部LUT/DFF INIT保留；理想总线下合同通过。它没有实际总线波形、SDF或完整设计接受结论。全设计75123实例超过BASIC50000仿真许可，在启动前被阻止；切取逻辑是正常模块分析。较早提取夹具因转义实例名尾空格漏INIT而失败，已保存并修正，不能归因厂商映射。当前仍未解释实板计数0；下一步优先从原I2C完成事件提供独立事务结果，并核对小板实际供电/接口或采集总线波形，不用这些0解除故障或接受停止。

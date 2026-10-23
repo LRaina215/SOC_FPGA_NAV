@@ -1,0 +1,324 @@
+{
+  "recorded_at": "2026-10-23T13:01:28.447190+08:00",
+  "build_gate": {
+    "build": "F:\\nav_hardware_20261023\\feedback_probe_build1",
+    "constraint_mhz": 50.0,
+    "actual_fmax_mhz": 88.359,
+    "violations": {
+      "setup": 0,
+      "hold": 0
+    },
+    "worst_reported_secondary_slacks_ns": {
+      "recovery": 13.65,
+      "removal": 2.369,
+      "pulse": 7.983
+    },
+    "physical_pins": {
+      "clk": "W19",
+      "reset_n": "D21",
+      "M1_ENCA": "D14",
+      "M1_ENCB": "F13",
+      "M2_ENCA": "D15",
+      "M2_ENCB": "F14",
+      "uart_txd": "M21",
+      "M1_PWM": "D17",
+      "M1_DIR1": "B20",
+      "M1_DIR2": "B17",
+      "M2_PWM": "C17",
+      "M2_DIR1": "B18",
+      "M2_DIR2": "A20",
+      "SERVO1": "C18",
+      "SERVO2": "C19",
+      "SERVO3": "E19",
+      "SERVO4": "D19",
+      "BMI088_SDA": "F18",
+      "BMI088_SCL": "E18"
+    },
+    "pins_match": true,
+    "actuator_obuf_inputs": {
+      "M1_PWM": "GND",
+      "M1_DIR1": "GND",
+      "M1_DIR2": "GND",
+      "M2_PWM": "GND",
+      "M2_DIR1": "GND",
+      "M2_DIR2": "GND",
+      "SERVO1": "GND",
+      "SERVO2": "GND",
+      "SERVO3": "GND",
+      "SERVO4": "GND"
+    },
+    "all_ten_actuators_physical_ground": true,
+    "bsram_primitives": 0,
+    "errors": [],
+    "timing_exceptions": [],
+    "bitstream_present": true,
+    "device_c_report": true,
+    "programmed": false,
+    "scope": "independent B1 diagnostic only; no joint G2, original control deployment, calibrated IMU or physical-stop acceptance",
+    "diagnostic_build_gate_pass": true
+  },
+  "session": {
+    "started_at": "2026-10-23T12:48:04.850553+08:00",
+    "power_confirmation_recorded_at": "2026-10-23T12:47:53+08:00",
+    "power_statement": "human confirmed actuators physically disconnected; board USB only",
+    "build": "F:\\nav_hardware_20261023\\feedback_probe_build1",
+    "port": "COM11",
+    "steps": [
+      {
+        "name": "scan",
+        "args": [
+          "D:/Gowin2/Gowin_V1.9.12.04_x64/Programmer/bin/programmer_cli.exe",
+          "--cable-index",
+          "1",
+          "--location",
+          "579",
+          "--scan"
+        ],
+        "returncode": 0
+      },
+      {
+        "name": "usercode_before",
+        "args": [
+          "D:/Gowin2/Gowin_V1.9.12.04_x64/Programmer/bin/programmer_cli.exe",
+          "--cable-index",
+          "1",
+          "--location",
+          "579",
+          "--device",
+          "GW5AT-138C",
+          "--run",
+          "73"
+        ],
+        "returncode": 0
+      },
+      {
+        "name": "program_probe",
+        "args": [
+          "D:/Gowin2/Gowin_V1.9.12.04_x64/Programmer/bin/programmer_cli.exe",
+          "--cable-index",
+          "1",
+          "--location",
+          "579",
+          "--device",
+          "GW5AT-138C",
+          "--run",
+          "2",
+          "--fsFile",
+          "F:\\nav_hardware_20261023\\feedback_probe_build1\\impl\\pnr\\feedback_probe.fs"
+        ],
+        "returncode": 0
+      },
+      {
+        "name": "usercode_probe",
+        "args": [
+          "D:/Gowin2/Gowin_V1.9.12.04_x64/Programmer/bin/programmer_cli.exe",
+          "--cable-index",
+          "1",
+          "--location",
+          "579",
+          "--device",
+          "GW5AT-138C",
+          "--run",
+          "73"
+        ],
+        "returncode": 0
+      },
+      {
+        "name": "capture",
+        "args": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:\\Desktop\\SOC FPGA\\nav\\integration\\g3\\read_feedback_probe.py",
+          "--port",
+          "COM11",
+          "--seconds",
+          "30",
+          "--out",
+          "F:\\nav_hardware_20261023\\feedback_session_1248\\capture"
+        ],
+        "returncode": 0
+      },
+      {
+        "name": "restore_control",
+        "args": [
+          "D:/Gowin2/Gowin_V1.9.12.04_x64/Programmer/bin/programmer_cli.exe",
+          "--cable-index",
+          "1",
+          "--location",
+          "579",
+          "--device",
+          "GW5AT-138C",
+          "--run",
+          "2",
+          "--fsFile",
+          "F:\\nav_hardware_20261023\\restore_control_99a6.fs"
+        ],
+        "returncode": 0
+      },
+      {
+        "name": "usercode_restored",
+        "args": [
+          "D:/Gowin2/Gowin_V1.9.12.04_x64/Programmer/bin/programmer_cli.exe",
+          "--cable-index",
+          "1",
+          "--location",
+          "579",
+          "--device",
+          "GW5AT-138C",
+          "--run",
+          "73"
+        ],
+        "returncode": 0
+      }
+    ],
+    "flash_written": false,
+    "motion_commands": 0,
+    "uart_tx_bytes": 0,
+    "restore_candidate": "F:\\nav_hardware_20261023\\restore_control_99a6.fs",
+    "full_prior_image_identity_proven": false,
+    "scope": "temporary independent diagnostic; not joint G2 or physical-stop acceptance",
+    "probe_programming_attempted": true,
+    "restored_usercode_99a6": true,
+    "ended_at": "2026-10-23T12:49:03.798826+08:00",
+    "error": null
+  },
+  "capture": {
+    "recorded_at": "2026-10-23T12:48:51.121720+08:00",
+    "source": "hardware_uart",
+    "port": "COM11",
+    "tx_bytes": 0,
+    "error": null,
+    "diagnostic_frames": 3022,
+    "crc_errors": 0,
+    "distinct_encoder_publications": 3022,
+    "distinct_bmi_publications": 0,
+    "last_frame": {
+      "timestamp_ms": 33069,
+      "sequence": 3306,
+      "status": 10,
+      "error_code": 1,
+      "operation": 3,
+      "accel_address": 25,
+      "gyro_address": 105,
+      "accel_id": 30,
+      "gyro_id": 0,
+      "last_read": 30,
+      "bmi_sample_sequence": 0,
+      "bmi_age_ms": 65535,
+      "encoder_sample_sequence": 3306,
+      "encoder_age_ms": 9,
+      "left_delta": 0,
+      "right_delta": 0,
+      "left_position": 0,
+      "right_position": 0,
+      "left_invalid": 0,
+      "right_invalid": 0,
+      "id_seen": 0,
+      "encoder_flags": 1,
+      "ax_raw": 0,
+      "ay_raw": 0,
+      "az_raw": 0,
+      "gx_raw": 0,
+      "gy_raw": 0,
+      "gz_raw": 0,
+      "ack_18": 0,
+      "nack_18": 0,
+      "id_reads_18": 0,
+      "last_id_18": 0,
+      "ack_19": 0,
+      "nack_19": 0,
+      "id_reads_19": 0,
+      "last_id_19": 0,
+      "ack_68": 0,
+      "nack_68": 0,
+      "id_reads_68": 0,
+      "last_id_68": 0,
+      "ack_69": 0,
+      "nack_69": 0,
+      "id_reads_69": 0,
+      "last_id_69": 0,
+      "bmi_initialized_sample": false,
+      "bmi_fresh_50ms": false
+    },
+    "scope": "raw diagnostic snapshots; no fusion/calibration, exact gate-edge position, motion or physical-stop acceptance"
+  },
+  "sequence_steps": [
+    1
+  ],
+  "timestamp_steps_ms": [
+    10
+  ],
+  "encoder_publication_steps": [
+    1
+  ],
+  "encoder_age_ms_values": [
+    9
+  ],
+  "raw_encoder_values": {
+    "left_delta": [
+      0
+    ],
+    "right_delta": [
+      0
+    ],
+    "left_position": [
+      0
+    ],
+    "right_position": [
+      0
+    ],
+    "left_invalid": [
+      0
+    ],
+    "right_invalid": [
+      0
+    ]
+  },
+  "accel_id_1e_snapshots": 2315,
+  "gyro_id_0f_snapshots": 0,
+  "all_observer_counts_zero": true,
+  "per_address_observer_accepted": false,
+  "original_master_contract": {
+    "passed": true,
+    "build": "F:\\nav_hardware_20261023\\observer_original_master1",
+    "cases": [
+      "original unmodified BMI/I2C master, register ID, address fallback and model slave"
+    ],
+    "scope": "RTL observer contract with original master and model slave; not hardware waveform, electrical or vendor-netlist validation",
+    "programmed": false
+  },
+  "physical_observer_cone_contract": {
+    "passed": true,
+    "validation_executed": true,
+    "blocked_reason": null,
+    "physical_netlist": "F:\\nav_hardware_20261023\\feedback_probe_build1\\impl\\pnr\\feedback_probe.vo",
+    "vendor_library": "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\simlib\\gw5a\\prim_sim.v",
+    "build": "F:\\nav_hardware_20261023\\observer_physical_cone5",
+    "cone": {
+      "selected_primitives": 930,
+      "selected_parameter_statements": 830,
+      "all_lut_dff_init_preserved": true,
+      "full_primitives": 6544,
+      "boundaries": [
+        "BMI088_SCL_in",
+        "BMI088_SDA_in",
+        "clk_d",
+        "reset_n_d"
+      ],
+      "unresolved_drivers": []
+    },
+    "scope": "exact physical observer cone, cut at IOBUF outputs; ideal bus only, no SDF, full-design or actual board waveform validation",
+    "programmed": false
+  },
+  "raw_capture": "F:\\nav_hardware_20261023\\feedback_session_1248\\capture\\rx.bin",
+  "csv": "F:\\nav_hardware_20261023\\feedback_session_1248\\capture\\frames.csv",
+  "scope": "actual temporary B1 capture; complete six-axis0; address observer contradicts driver ID evidence and is not accepted; quiet encoder input is not physical-stop or motion validation",
+  "replay_attempts": {
+    "full_netlist": "blocked before simulation by BASIC50000 instance limit,75123 instances",
+    "cone1": "fixture compile error: duplicate ANSI declarations",
+    "cone2_and4": "invalid fixture: escaped-name INIT parameter whitespace omitted; not evidence of hardware mapping failure",
+    "cone3": "fixture hierarchy reference error",
+    "cone5": "valid selected cone,930 primitives and830 parameter statements retained; ideal bus passes"
+  }
+}
