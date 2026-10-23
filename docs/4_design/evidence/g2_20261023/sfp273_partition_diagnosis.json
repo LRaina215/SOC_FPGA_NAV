@@ -1,0 +1,599 @@
+{
+  "recorded_at": "2026-10-23T22:57:41.756565+08:00",
+  "baseline": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+  "baseline_unrouted_nets": 273,
+  "baseline_g2_passed": false,
+  "baseline_frozen_netlist_still_matches_source": true,
+  "topology_file": "F:/nav_integration_g2_20261023/sfp273_topology.json",
+  "topology_explicit_cells": 116595,
+  "module_inventory": [
+    {
+      "path": "u_control/model_thread",
+      "cells": 31270,
+      "bsram": 41,
+      "ram16": 234,
+      "mux": 1023,
+      "ff": 12754,
+      "primitives": {
+        "LUT2": 1290,
+        "LUT3": 10879,
+        "LUT4": 2884,
+        "DFFCE": 10725,
+        "DFFPE": 73,
+        "DFFRE": 1950,
+        "MULT27X36": 18,
+        "MULTALU27X18": 35,
+        "ALU": 1329,
+        "INV": 54,
+        "VCC": 13,
+        "GND": 13,
+        "MUX2_LUT5": 631,
+        "MUX2_LUT6": 271,
+        "MUX2_LUT7": 121,
+        "DFFSE": 6,
+        "pROM": 20,
+        "ROM16": 702,
+        "RAM16SDP4": 234,
+        "MULT12X12": 1,
+        "pROMX9": 21
+      }
+    },
+    {
+      "path": "u_nav/u_match",
+      "cells": 15677,
+      "bsram": 82,
+      "ram16": 1107,
+      "mux": 2429,
+      "ff": 4012,
+      "primitives": {
+        "LUT4": 1818,
+        "LUT3": 3522,
+        "LUT2": 583,
+        "DFFRE": 3846,
+        "DFFCE": 56,
+        "DFFSE": 110,
+        "MULT27X36": 9,
+        "MULTALU27X18": 10,
+        "MULTADDALU12X12": 1,
+        "ALU": 2050,
+        "MUX2_LUT5": 1357,
+        "INV": 15,
+        "RAM16SDP4": 1043,
+        "MUX2_LUT6": 670,
+        "VCC": 12,
+        "GND": 12,
+        "SDPX9B": 72,
+        "MUX2_LUT7": 268,
+        "MUX2_LUT8": 134,
+        "SDPB": 8,
+        "MULT12X12": 15,
+        "RAM16SDP1": 64,
+        "pROM": 2
+      }
+    },
+    {
+      "path": "u_nav/u_map",
+      "cells": 11413,
+      "bsram": 69,
+      "ram16": 1072,
+      "mux": 996,
+      "ff": 3138,
+      "primitives": {
+        "LUT2": 1563,
+        "LUT4": 1017,
+        "LUT3": 2270,
+        "DFFRE": 3104,
+        "ALU": 1260,
+        "INV": 5,
+        "DFFSE": 14,
+        "DFFCE": 20,
+        "MUX2_LUT5": 568,
+        "SDPX9B": 50,
+        "MUX2_LUT6": 276,
+        "MUX2_LUT7": 119,
+        "VCC": 8,
+        "GND": 8,
+        "SDPB": 19,
+        "MULTALU27X18": 5,
+        "MULT12X12": 2,
+        "RAM16SDP1": 1024,
+        "MUX2_LUT8": 33,
+        "RAM16SDP4": 48
+      }
+    },
+    {
+      "path": "u_nav/u_mbx",
+      "cells": 5338,
+      "bsram": 2,
+      "ram16": 792,
+      "mux": 1440,
+      "ff": 866,
+      "primitives": {
+        "LUT2": 56,
+        "LUT4": 204,
+        "LUT3": 1800,
+        "DFFRE": 771,
+        "DFFCE": 95,
+        "ALU": 154,
+        "INV": 8,
+        "RAM16SDP4": 792,
+        "MUX2_LUT5": 768,
+        "MUX2_LUT6": 384,
+        "MUX2_LUT7": 192,
+        "MUX2_LUT8": 96,
+        "VCC": 8,
+        "GND": 8,
+        "SDPB": 2
+      }
+    },
+    {
+      "path": "u_control/wheel_control",
+      "cells": 5228,
+      "bsram": 0,
+      "ram16": 0,
+      "mux": 0,
+      "ff": 1956,
+      "primitives": {
+        "LUT3": 720,
+        "LUT4": 963,
+        "LUT2": 481,
+        "DFFRE": 1956,
+        "MULT27X36": 6,
+        "MULTALU27X18": 2,
+        "ALU": 1024,
+        "INV": 66,
+        "VCC": 5,
+        "GND": 5
+      }
+    },
+    {
+      "path": "u_nav",
+      "cells": 4436,
+      "bsram": 0,
+      "ram16": 0,
+      "mux": 0,
+      "ff": 551,
+      "primitives": {
+        "LUT2": 150,
+        "LUT4": 3140,
+        "LUT3": 411,
+        "DFFRE": 493,
+        "DFFCE": 58,
+        "ALU": 181,
+        "INV": 1,
+        "VCC": 1,
+        "GND": 1
+      }
+    },
+    {
+      "path": "u_nav/u_netl",
+      "cells": 3775,
+      "bsram": 3,
+      "ram16": 86,
+      "mux": 96,
+      "ff": 1614,
+      "primitives": {
+        "LUT2": 237,
+        "LUT3": 564,
+        "LUT4": 569,
+        "DFFRE": 1571,
+        "ALU": 560,
+        "INV": 16,
+        "SDPB": 2,
+        "VCC": 15,
+        "GND": 15,
+        "DFFCE": 37,
+        "DFFSE": 6,
+        "RAM16SDP4": 86,
+        "MUX2_LUT5": 64,
+        "MUX2_LUT6": 32,
+        "SDPX9B": 1
+      }
+    },
+    {
+      "path": "u_nav/u_neth",
+      "cells": 3611,
+      "bsram": 4,
+      "ram16": 3,
+      "mux": 0,
+      "ff": 1642,
+      "primitives": {
+        "LUT2": 237,
+        "LUT3": 350,
+        "LUT4": 728,
+        "DFFRE": 1592,
+        "ALU": 591,
+        "INV": 32,
+        "SDPB": 3,
+        "VCC": 12,
+        "GND": 12,
+        "DFFCE": 42,
+        "DFFSE": 8,
+        "RAM16SDP4": 3,
+        "SDPX9B": 1
+      }
+    }
+  ],
+  "new_pressure_candidates": [
+    {
+      "net": "u_control/telemetry_thread/n1315_4",
+      "sink_bits": 962,
+      "pins": {
+        "I2": 837,
+        "I3": 65,
+        "I0": 32,
+        "I1": 28
+      },
+      "sink_modules": {
+        "u_control/telemetry_thread": 962
+      },
+      "drivers": [
+        {
+          "cell": "u_control/telemetry_thread/n1315_s1",
+          "kind": "LUT4",
+          "pin": "F",
+          "bit": 0
+        }
+      ],
+      "sink_examples": [
+        {
+          "cell": "u_control/telemetry_thread/n1315_s0",
+          "kind": "LUT3",
+          "pin": "I2",
+          "bit": 0
+        },
+        {
+          "cell": "u_control/telemetry_thread/n1316_s0",
+          "kind": "LUT3",
+          "pin": "I2",
+          "bit": 0
+        },
+        {
+          "cell": "u_control/telemetry_thread/n1317_s0",
+          "kind": "LUT3",
+          "pin": "I2",
+          "bit": 0
+        },
+        {
+          "cell": "u_control/telemetry_thread/n1318_s0",
+          "kind": "LUT3",
+          "pin": "I2",
+          "bit": 0
+        }
+      ],
+      "clock_pin_load": false
+    },
+    {
+      "net": "u_nav/u_match/u_ex/rb_ra[6]",
+      "sink_bits": 686,
+      "pins": {
+        "I0": 294,
+        "I3": 98,
+        "I2": 294
+      },
+      "sink_modules": {
+        "u_nav/u_match": 686
+      },
+      "drivers": [
+        {
+          "cell": "u_nav/u_match/u_ex/rb_ra_6_s1",
+          "kind": "LUT3",
+          "pin": "F",
+          "bit": 0
+        }
+      ],
+      "sink_examples": [
+        {
+          "cell": "u_nav/u_match/u_ex/u_rb/g_distributed.mem_DOL_0_G[0]_s3",
+          "kind": "LUT4",
+          "pin": "I0",
+          "bit": 0
+        },
+        {
+          "cell": "u_nav/u_match/u_ex/u_rb/g_distributed.mem_DOL_0_G[0]_s4",
+          "kind": "LUT4",
+          "pin": "I0",
+          "bit": 0
+        },
+        {
+          "cell": "u_nav/u_match/u_ex/u_rb/g_distributed.mem_DOL_0_G[0]_s5",
+          "kind": "LUT4",
+          "pin": "I0",
+          "bit": 0
+        },
+        {
+          "cell": "u_nav/u_match/u_ex/u_rb/g_distributed.mem_DOL_0_G[0]_s6",
+          "kind": "LUT4",
+          "pin": "I3",
+          "bit": 0
+        }
+      ],
+      "clock_pin_load": false
+    },
+    {
+      "net": "u_nav/u_match/u_sm/g_banked.selected[0]",
+      "sink_bits": 576,
+      "pins": {
+        "I2": 576
+      },
+      "sink_modules": {
+        "u_nav/u_match": 576
+      },
+      "drivers": [
+        {
+          "cell": "u_nav/u_match/u_sm/g_banked.selected_0_s0",
+          "kind": "DFFRE",
+          "pin": "Q",
+          "bit": 0
+        }
+      ],
+      "sink_examples": [
+        {
+          "cell": "u_nav/u_match/u_sm/rdata_13_s153",
+          "kind": "LUT3",
+          "pin": "I2",
+          "bit": 0
+        },
+        {
+          "cell": "u_nav/u_match/u_sm/rdata_13_s154",
+          "kind": "LUT3",
+          "pin": "I2",
+          "bit": 0
+        },
+        {
+          "cell": "u_nav/u_match/u_sm/rdata_13_s155",
+          "kind": "LUT3",
+          "pin": "I2",
+          "bit": 0
+        },
+        {
+          "cell": "u_nav/u_match/u_sm/rdata_13_s156",
+          "kind": "LUT3",
+          "pin": "I2",
+          "bit": 0
+        }
+      ],
+      "clock_pin_load": false
+    },
+    {
+      "net": "u_nav/u_match/u_ex/rb_ra[7]",
+      "sink_bits": 392,
+      "pins": {
+        "I3": 294,
+        "I2": 98
+      },
+      "sink_modules": {
+        "u_nav/u_match": 392
+      },
+      "drivers": [
+        {
+          "cell": "u_nav/u_match/u_ex/rb_ra_7_s1",
+          "kind": "LUT3",
+          "pin": "F",
+          "bit": 0
+        }
+      ],
+      "sink_examples": [
+        {
+          "cell": "u_nav/u_match/u_ex/u_rb/g_distributed.mem_DOL_0_G[0]_s3",
+          "kind": "LUT4",
+          "pin": "I3",
+          "bit": 0
+        },
+        {
+          "cell": "u_nav/u_match/u_ex/u_rb/g_distributed.mem_DOL_0_G[0]_s4",
+          "kind": "LUT4",
+          "pin": "I3",
+          "bit": 0
+        },
+        {
+          "cell": "u_nav/u_match/u_ex/u_rb/g_distributed.mem_DOL_0_G[0]_s5",
+          "kind": "LUT4",
+          "pin": "I3",
+          "bit": 0
+        },
+        {
+          "cell": "u_nav/u_match/u_ex/u_rb/g_distributed.mem_DOL_0_G[0]_s6",
+          "kind": "LUT4",
+          "pin": "I2",
+          "bit": 0
+        }
+      ],
+      "clock_pin_load": false
+    }
+  ],
+  "failed_net_endpoints_available": false,
+  "physical_congestion_for273_available": false,
+  "parser_fix": {
+    "issue": "escaped named module ports were not included in hierarchy binding",
+    "missing_driver_candidates_before": 373,
+    "after": 62,
+    "external_inputs": 16,
+    "remaining_sfp_opaque_boundary_candidates": 46,
+    "unclassified_primitive_ports": 0,
+    "multiple_explicit_drivers": 0,
+    "classification_scope": "remaining boundaries are not proved floating hardware inputs",
+    "regression_tests_passed": 4,
+    "host51_reference_rechecked": true
+  },
+  "report_access": {
+    "local_software_manual": "SUG100-4.4.7E section6.4",
+    "local_timing_manual": "SUG940-2.0.5E section5.5.3",
+    "physical_view_manual": "SUG1541-1.0E sections3.3/Back-annotate",
+    "failed_pnr_show_place_view_documented": false,
+    "report_commands": [
+      "report_route_congestion -max_grids 200",
+      "report_high_fanout_nets -max_nets 100 -min_fanout 100"
+    ],
+    "reports_requested_not_yet_measured": true,
+    "historical_parser_check": {
+      "historical_fixture": "F:\\nav_integration_g2_20261022\\directed_static_coverage_rep1_effective50",
+      "historical_grids": 10,
+      "historical_fanout_rows": 10,
+      "historical_max_congestion": 0.889,
+      "failed273_keeps_missing_timing_unknown": true,
+      "waiting_keeps_missing_unrouted_unknown": true,
+      "scope": "parser validation only; old grid locations do not identify current273 congestion"
+    },
+    "official_reference": "https://cdn.gowinsemi.com.cn/SUG940E.pdf"
+  },
+  "first_attempt": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp273_without_match_diagnostic",
+    "phase": "input_parse_failure_not_routing_failure",
+    "runtime": {
+      "command": [
+        "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/bin/gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-23T22:51:45.726198+08:00",
+      "max_runtime_s": 7200,
+      "max_no_observable_progress_s": 0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 36284,
+      "elapsed_s": 6.10999999998603,
+      "no_observable_progress_s": 0.0,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          29221,
+          1792767109498688600
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          28775,
+          1792767109498688600
+        ]
+      ],
+      "tool_exit": 1,
+      "ended_at": "2026-10-23T22:51:51.830502+08:00"
+    },
+    "vendor_error_count": 204,
+    "first_errors": [
+      "ERROR  (PA2101) : \"F:\\nav_integration_g2_20261023\\sfp273_without_match_diagnostic\\g2_top.vg\":926935 | Object 'clk50_d' is already defined",
+      "ERROR  (PA2101) : \"F:\\nav_integration_g2_20261023\\sfp273_without_match_diagnostic\\g2_top.vg\":926936 | Object 'r2' is already defined",
+      "ERROR  (PA2101) : \"F:\\nav_integration_g2_20261023\\sfp273_without_match_diagnostic\\g2_top.vg\":926937 | Object 'p_MATCH_SM_WDATA_Z' is already defined"
+    ],
+    "cause": "generator split on literal ); but actual header closed with a newline between ) and ;",
+    "fixed_by": "recognize whitespace-separated header terminator; require stub contains only110 GND cells",
+    "preserved": true
+  },
+  "diagnostic": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp273_without_match_retry1_diagnostic",
+    "partition": {
+      "source": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+      "target": "u_nav/u_match",
+      "type": "slf_match",
+      "replaced_by": "constant-zero output primitives; no emulation of matcher functionality",
+      "removed_explicit_cells": 15677,
+      "removed_primitives": {
+        "LUT4": 1818,
+        "LUT3": 3522,
+        "LUT2": 583,
+        "DFFRE": 3846,
+        "DFFCE": 56,
+        "DFFSE": 110,
+        "MULT27X36": 9,
+        "MULTALU27X18": 10,
+        "MULTADDALU12X12": 1,
+        "ALU": 2050,
+        "MUX2_LUT5": 1357,
+        "INV": 15,
+        "RAM16SDP4": 1043,
+        "MUX2_LUT6": 670,
+        "VCC": 12,
+        "GND": 12,
+        "SDPX9B": 72,
+        "MUX2_LUT7": 268,
+        "MUX2_LUT8": 134,
+        "SDPB": 8,
+        "MULT12X12": 15,
+        "RAM16SDP1": 64,
+        "pROM": 2
+      },
+      "replacement_output_bits": 110,
+      "unaffected_explicit_cells": 100918,
+      "identical_control_explicit_cells": 45947,
+      "outside_cells_and_pins_identical": true,
+      "original_sdc_prefix_unchanged": true,
+      "original_csr_identical": true,
+      "removed_local_constraints": [
+        "CLOCK_LOC \"u_nav/u_match/u_ex/n7021_4\" LOCAL_CLOCK;",
+        "CLOCK_LOC \"u_nav/u_match/u_ex/rb_ra[0]\" LOCAL_CLOCK;",
+        "CLOCK_LOC \"u_nav/u_match/u_ex/rb_ra[1]\" LOCAL_CLOCK;"
+      ],
+      "report_requests": [
+        "report_route_congestion -max_grids 200",
+        "report_high_fanout_nets -max_nets 100 -min_fanout 100"
+      ],
+      "interpretation": "Screening only. Pruning and global placement changes confound precise attribution; a pass does not prove matcher fault, and a fail does not exonerate it."
+    },
+    "job": {
+      "build": "F:\\nav_integration_g2_20261023\\sfp273_without_match_retry1_diagnostic",
+      "source": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+      "diagnostic_only": true,
+      "queued_at": "2026-10-23T22:53:52.520192+08:00",
+      "phase": "pnr",
+      "minimum_free_bytes": 2147483648,
+      "minimum_commit_reserve_bytes": 4294967296,
+      "memory_wait_minutes": 10,
+      "programmed": false,
+      "free_bytes": 3792470016,
+      "commit_reserve_bytes": 7191052288,
+      "updated_at": "2026-10-23T22:53:52.544231+08:00",
+      "started_at": "2026-10-23T22:53:52.544231+08:00"
+    },
+    "runtime": {
+      "command": [
+        "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/bin/gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-23T22:53:52.545216+08:00",
+      "max_runtime_s": 7200,
+      "max_no_observable_progress_s": 0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 61020,
+      "elapsed_s": 210.39100000000326,
+      "no_observable_progress_s": 92.14100000000326,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          1809291,
+          1792767350428082200
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          1808824,
+          1792767350428082200
+        ]
+      ]
+    },
+    "wrapper_pid": 52280,
+    "absolute_deadline": "2026-10-24T00:53:52.545216+08:00",
+    "stage": "placement",
+    "final_report_available": false,
+    "diagnostic_only": true,
+    "programmed": false,
+    "source_control_and_weights_unchanged": true,
+    "policy_period_hz": 125,
+    "downstream_pruning_and_replacement_can_change_whole_placement": true,
+    "last_checked_at": "2026-10-23T22:57:41.756565+08:00"
+  },
+  "next_steps": [
+    "Collect actual routing count, resource pruning,200 congestion grids,100 fanout rows,BSRAM positions and timing when this diagnostic ends.",
+    "If removal helps, narrow inside matcher to row buffer and banked read selection; do not attribute failed nets from a module pass alone.",
+    "If it still fails, use remaining modules and actual reports to choose one further diagnostic; do not declare matcher exonerated.",
+    "Only choose lossless full-design changes after these results; restore entire matcher, complete clocks/CDC and all deployment gates."
+  ],
+  "hardware_download_performed": false,
+  "external_upload_performed": false,
+  "periodic_monitor_recreated": false,
+  "g2_passed": false
+}

@@ -88,3 +88,9 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 
 两CE方案实际401未布通，较273版差；该config保留作失败复现，不作为当前较优实现。`package_routing_repro.py`现支持真实SFP：复制准确CSR/51主机CDC/全局计划与全部检查辅助，重写可迁移Tcl路径，保留原报告和p/db现场。默认120分钟总预算/静默0，强制diagnostic-only；仅本地打包，不运行工具、上传或下载硬件。`repro_sfp273_complete.zip`已验证输入保持、入口帮助和辅助导入，尚未执行完整独立复现；不能称为最小故障或工具bug证明。
+
+`audit_routing_topology.py <frozen-vg> --library <gw5a/prim_sim.v> --out <json>`按设备原语真实输入/输出方向展开源网表，保存模块负载、数据选择和跨模块连接，拒绝漏分类原语端口。`synthesis_connectivity.py`现支持转义命名端口（例如`.\g_lane[0].we (net)`）；旧版本漏读这类CPU/SerDes层次连接。顶层外部输入和不透明IP边界的缺少显式驱动不按悬空硬件解释；显式源拓扑、物理扇出与逐网布线状态须分别记录。
+
+`partition_routing_diagnostic.py <273-PNR-build> --out <new-dir> --prepare-only`从273版派生唯一匹配器内部移除对照，保持其外部所有显式单元/引脚、原控制参数、原时钟/SDC/CSR；只删除该模块3条失效LOCAL_CLOCK。替换输出恒零，不模拟匹配器功能，PNR可能裁剪下游、重新安排全片位置；不把通过当模块故障证明。`--run-prepared`只启动已有未实现目录，等待最多10分钟达到2GiB物理/4GiB可用提交，再按120分钟/静默0运行，结束保存门禁与诊断报告，永不下载或接受。首次输入头解析错误保留，新retry1已修正`)`与`;`可分行的语法，并强制新模块只有110个GND单元。
+
+诊断SDC只追加`report_route_congestion -max_grids 200`和`report_high_fanout_nets -max_nets 100 -min_fanout 100`。`collect_routing_diagnostic.py <build> --out <json>`读取厂商真实拥塞网格/高扇出/未布通报告，缺失值保持未知、不授予部署接受。旧成功报告仅用于读取格式检查，不能将旧网格位置移用到新失败候选。新诊断即使布通，完整工程仍须恢复匹配器、重新通过全部物理门槛。

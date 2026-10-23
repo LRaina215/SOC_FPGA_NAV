@@ -8,7 +8,7 @@ from pathlib import Path
 from audit_netlist_memories import MODULE
 
 CELL = re.compile(r'^\s{2}(\w+)\s+(\\\S+|[^\s(]+)\s*\(\s*\n(.*?)^\);', re.M|re.S)
-PORT = re.compile(r'\.([A-Za-z_][A-Za-z0-9_]*)\(([^()]*)\)')
+PORT = re.compile(r'\.([A-Za-z_][A-Za-z0-9_]*|\\\S+)\s*\(([^()]*)\)')
 DECL = re.compile(r'^\s*(input|output|inout|wire)\s+(?:\[(\d+):(\d+)\]\s+)?(\\\S+|\w+)\s*;', re.M)
 TOKEN = re.compile(r"\s*(?:(\d+)'([bhd])([0-9a-fA-FxXzZ]+)|(\\[^\s,{}]+|[A-Za-z_][A-Za-z0-9_$]*)(?:\s*\[(\d+)(?::(\d+))?\])?|([{},]))")
 
@@ -22,7 +22,9 @@ def read(path, keep=lambda hierarchy: True):
             assert not re.search(r'^\s*assign\s', body, re.M), 'assign requires explicit alias support'
             declarations = {n.lstrip('\\'): (d, int(hi) if hi else None, int(lo) if lo else None)
                             for d, hi, lo, n in DECL.findall(body)}
-            cache[kind] = declarations, [(t, n.lstrip('\\'), dict(PORT.findall(p))) for t,n,p in CELL.findall(body)]
+            cache[kind] = declarations, [(t, n.lstrip('\\'),
+                {pin.lstrip('\\'): expression for pin, expression in PORT.findall(p)})
+                for t,n,p in CELL.findall(body)]
         return cache[kind]
     def walk(kind, hierarchy, bindings):
         declarations, instances = definition(kind)

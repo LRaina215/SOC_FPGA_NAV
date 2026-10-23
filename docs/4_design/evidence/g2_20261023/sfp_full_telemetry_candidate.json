@@ -153,7 +153,7 @@
     "history_phy_guard": "0985e15",
     "lease_sfp_client": "214d3c6"
   },
-  "updated_at": "2026-10-23T22:18:09.847078+08:00",
+  "updated_at": "2026-10-23T22:57:41.756565+08:00",
   "history_fanout_candidate": {
     "generator": "control/tools/g2_history_fanout.py",
     "source_edit": "one syn_maxfan=128 synthesis attribute, no functional RTL edit",
@@ -459,6 +459,25 @@
     "joint_physical_improvement_measured": false
   },
   "current_pnr": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp273_without_match_retry1_diagnostic",
+    "source": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+    "started_at": "2026-10-23T22:53:52.545216+08:00",
+    "tool_pid": 61020,
+    "supervisor_pid": 52280,
+    "max_runtime_minutes": 120,
+    "max_no_progress_minutes": 0,
+    "absolute_deadline": "2026-10-24T00:53:52.545216+08:00",
+    "stage": "placement",
+    "running": true,
+    "diagnostic_only": true,
+    "logical_netlist_unchanged": false,
+    "original_control_algorithm_weights_hz_unchanged": true,
+    "partition": "u_nav/u_match",
+    "programmed": false,
+    "final_reports_available": false,
+    "result_evidence": "sfp273_partition_diagnosis.json"
+  },
+  "previous_pnr": {
     "build": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_ce_pnr5",
     "source": "F:\\nav_integration_g2_20261023\\sfp_history128_phyguard_lease_syn3",
     "started_at": "2026-10-23T20:36:40.931552+08:00",
@@ -485,38 +504,6 @@
     "actual_bsram": 334,
     "timing_report_available": false,
     "result_evidence": "sfp_ce_final_unrouted401.json"
-  },
-  "previous_pnr": {
-    "build": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
-    "source": "F:\\nav_integration_g2_20261023\\sfp_history128_phyguard_lease_syn3",
-    "started_at": "2026-10-23T18:51:35.185890+08:00",
-    "tool_pid": 42320,
-    "supervisor_pid": 8884,
-    "max_runtime_minutes": 120,
-    "max_no_progress_minutes": 0,
-    "absolute_deadline": "2026-10-23T20:51:35.185890+08:00",
-    "stage": "finished_pr0004_unrouted",
-    "running": false,
-    "actual_options_checked": true,
-    "clock_constraints": 4,
-    "explicit_cdc_paths": 77,
-    "explicit_cdc_commands": 154,
-    "diagnostic_only": false,
-    "logical_netlist_unchanged": true,
-    "clock_resource_plan": "clock_resource_plan_control_priority.json",
-    "evidence": "routing_intervention_slf64_clockplan.json",
-    "final_reports_available": true,
-    "programmed": false,
-    "last_checked_at": "2026-10-23T19:51:10.187281+08:00",
-    "primary_adjustment_verified": true,
-    "unrouted_nets": 273,
-    "unrouted_delta_from802": -529,
-    "ended_at": "2026-10-23T20:27:58.496981+08:00",
-    "tool_exit": 1,
-    "cancelled": false,
-    "actual_bsram": 334,
-    "timing_report_available": false,
-    "result_evidence": "sfp_clockpriority_final_unrouted273.json"
   },
   "pnr_history": [
     {
@@ -608,9 +595,48 @@
       "actual_bsram": 334,
       "timing_report_available": false,
       "result_evidence": "sfp_ce_final_unrouted401.json"
+    },
+    {
+      "build": "F:\\nav_integration_g2_20261023\\sfp273_without_match_retry1_diagnostic",
+      "source": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+      "started_at": "2026-10-23T22:53:52.545216+08:00",
+      "tool_pid": 61020,
+      "supervisor_pid": 52280,
+      "max_runtime_minutes": 120,
+      "max_no_progress_minutes": 0,
+      "absolute_deadline": "2026-10-24T00:53:52.545216+08:00",
+      "stage": "placement",
+      "running": true,
+      "diagnostic_only": true,
+      "logical_netlist_unchanged": false,
+      "original_control_algorithm_weights_hz_unchanged": true,
+      "partition": "u_nav/u_match",
+      "programmed": false,
+      "final_reports_available": false,
+      "result_evidence": "sfp273_partition_diagnosis.json"
     }
   ],
-  "pending_builds": [],
+  "pending_builds": [
+    {
+      "build": "F:\\nav_integration_g2_20261023\\sfp273_without_match_retry1_diagnostic",
+      "source": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+      "started_at": "2026-10-23T22:53:52.545216+08:00",
+      "tool_pid": 61020,
+      "supervisor_pid": 52280,
+      "max_runtime_minutes": 120,
+      "max_no_progress_minutes": 0,
+      "absolute_deadline": "2026-10-24T00:53:52.545216+08:00",
+      "stage": "placement",
+      "running": true,
+      "diagnostic_only": true,
+      "logical_netlist_unchanged": false,
+      "original_control_algorithm_weights_hz_unchanged": true,
+      "partition": "u_nav/u_match",
+      "programmed": false,
+      "final_reports_available": false,
+      "result_evidence": "sfp273_partition_diagnosis.json"
+    }
+  ],
   "best_measured_candidate": {
     "build": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
     "unrouted_nets": 273,
