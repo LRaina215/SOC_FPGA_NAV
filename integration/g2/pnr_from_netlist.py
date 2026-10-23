@@ -62,6 +62,14 @@ def main():
         assert actual['passed'] and json.loads(json.dumps(actual['paths']))==sfp_reference['paths'],'SFP reference differs from this frozen netlist'
         (out/'sfp_cdc_reference.json').write_text(json.dumps(sfp_reference,indent=2),encoding='utf-8')
         with (out/'g2.sdc').open('a',encoding='utf-8',newline='\n') as file:file.write('\n'+sfp_fragment(sfp_reference))
+    report_commands=[]
+    if a.routing_evidence:
+        # Printing more grids/nets changes no clock or exception requirement.
+        # A failed router may still omit the timing report; never invent data.
+        report_commands=['report_route_congestion -max_grids 200',
+                         'report_high_fanout_nets -max_nets 100 -min_fanout 100']
+        with (out/'g2.sdc').open('a',encoding='utf-8',newline='\n') as file:
+            file.write('\n# Detailed routing evidence; constraints unchanged.\n'+'\n'.join(report_commands)+'\n')
     command=src/'impl/pnr/cmd.do';cmd=command.read_text(encoding='utf-8') if command.exists() else None
     if cmd:
         frequency=float(re.search(r'-global_freq\s+(\S+)',cmd)[1]);replicate=int(bool(re.search(r'(?m)^-replicate(?:_resources)?(?:\s|$)',cmd)))
@@ -99,7 +107,7 @@ def main():
         cdc_reference_audit=str(cdc_reference) if cdc_reference else None,
         sfp_cdc_reference=str(a.sfp_cdc_reference) if a.sfp_cdc_reference else None,
         diagnostic_only=a.diagnostic_only,timing_driven=a.timing_driven,capture_system_telemetry=a.capture_system_telemetry,
-        clock_resource_plan=clock_plan,routing_evidence=a.routing_evidence,
+        clock_resource_plan=clock_plan,routing_evidence=a.routing_evidence,routing_report_commands=report_commands,
         source_manifest=json.loads((src/'manifest.json').read_text()),programmed=False),indent=2))
     from bounded_tool import run_tool
     r=run_tool([str(tool),'run.tcl'],out,max_runtime_s=a.max_runtime_minutes*60,

@@ -40,6 +40,7 @@ def collect(build,top='g2_top'):
     for name in ('Logic','Register','BSRAM','DSP','I/O Port'):
         m=re.search(r'^\s*'+re.escape(name)+r'\s*\|\s*([\d.]+)/([\d.]+)',s,re.M)
         if m:r[name.lower().replace('/','').replace(' ','_')]=dict(used=float(m[1]),capacity=float(m[2]))
+    r['resources']={key:r[key] for key in ('logic','register','bsram','dsp','io_port') if key in r}
     for key,tag in [('setup_violations','Setup'),('hold_violations','Hold')]:
         m=re.search(r'<Numbers of '+tag+r' Violated Endpoints>:\s*(\d+)',t)
         r[key]=int(m[1]) if m else None

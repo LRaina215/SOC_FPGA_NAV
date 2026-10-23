@@ -1,0 +1,122 @@
+{
+  "recorded_at": "2026-10-23T23:37:02.785111+08:00",
+  "one_shot_controller_pid": 19908,
+  "live_state_file": "F:\\nav_integration_g2_20261023\\bankselect128_one_shot\\job.json",
+  "state_snapshot": {
+    "started_at": "2026-10-23T23:35:00.302206+08:00",
+    "synthesis": "F:\\nav_integration_g2_20261023\\sfp273_bankselect128_syn5",
+    "baseline": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+    "pnr_out": "F:\\nav_integration_g2_20261023\\sfp273_bankselect128_pnr6",
+    "wait_pid": 42344,
+    "maximum_wait_seconds": 10800,
+    "recurring": false,
+    "maximum_pnr_runs": 1,
+    "programmed": false,
+    "deployment_accepted": false,
+    "phase": "waiting_for_existing_synthesis",
+    "updated_at": "2026-10-23T23:35:00.305195+08:00",
+    "wait_process_created_at": 1792768639.736236
+  },
+  "current_dependency": {
+    "diagnostic_pnr_pid": 61020,
+    "diagnostic_collector_pid": 52280,
+    "diagnostic_runtime": {
+      "command": [
+        "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/bin/gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-23T22:53:52.545216+08:00",
+      "max_runtime_s": 7200,
+      "max_no_observable_progress_s": 0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 61020,
+      "elapsed_s": 2583.1410000000033,
+      "no_observable_progress_s": 2106.375,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          1809417,
+          1792767708289100700
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          1808950,
+          1792767708289100700
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          2086684,
+          1792767675150040900
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          12235046,
+          1792767675651520200
+        ]
+      ]
+    },
+    "full_synthesis_waiter_pid": 42344,
+    "full_synthesis_has_started": false
+  },
+  "sequence": [
+    "existing diagnostic PNR61020 ends within its existing120min budget",
+    "existing collector52280 finishes reports",
+    "existing waiter42344 runs the frozen complete bankselect128 SYN with40min/memory protection",
+    "isolated process validates actual source/resource/fanout/clock/CDC evidence",
+    "only if every prerequisite passes, start exactly one complete PNR in sfp273_bankselect128_pnr6",
+    "collect routing/congestion/timing/resource evidence, stop for review; never program"
+  ],
+  "pre_pnr_requirements": {
+    "source_only_exact_RAM_attribute": true,
+    "control_weights_and125hz_unchanged": true,
+    "complete_matcher_and_real_sfp_and_full_V2": true,
+    "source_bsram": 316,
+    "wide_leaves": 18,
+    "all_RAM_parameters_identical": true,
+    "predicted_split_bsram_max": 336,
+    "prediction_is_not_physical_acceptance": true,
+    "actual_bank_select_max_load": 128,
+    "actual_bank_select_reduction_required": true,
+    "core_synthesis_estimate_min_mhz": 50,
+    "synthesis_estimate_is_not_physical_Fmax": true,
+    "clock_plan_eight_sources_rechecked": true,
+    "lidar26_and_host51_source_connections_match": true,
+    "accurate_CSR_and_base_SDC_match": true
+  },
+  "future_pnr_options": {
+    "max_runs": 1,
+    "total_minutes": 120,
+    "silent_minutes": 0,
+    "place": 1,
+    "route": 2,
+    "wide_split": 1,
+    "replicate": 1,
+    "timing_driven": 1,
+    "core_mhz": 50,
+    "lidar_rx_mhz": 100,
+    "sfp_rx_tx_mhz": 125,
+    "explicit_CDC_candidate_commands": 154,
+    "reported_congestion_grids_requested": 200,
+    "high_fanout_rows_requested": 100
+  },
+  "checks_completed_now": {
+    "actual_baseline_bank_select_load576_reconfirmed": true,
+    "unfinished_SYN_rejected": true,
+    "eight_clock_plan_baseline_drivers_unique": true,
+    "worker_command_identity_checked": true
+  },
+  "checks_not_yet_possible": [
+    "future full SYN output/resource/fanout checks",
+    "future complete PNR reports and physical timing/CDC"
+  ],
+  "failures_do_not_start_pnr": true,
+  "repeat_same_build": false,
+  "recurring_automation": false,
+  "hardware_programmed": false,
+  "deployment_accepted": false,
+  "scope": "event-dependent one-shot build continuation, not autonomous model reasoning or periodic task wakeups; live state and final reports supersede this startup snapshot"
+}

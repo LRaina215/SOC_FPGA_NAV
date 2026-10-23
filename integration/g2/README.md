@@ -98,3 +98,7 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 `prepare_bank_select_fanout.py`在银行读选择的实际寄存器驱动上加`syn_maxfan=128`，不改变语句/初值/使能/容量；不同于先前无效的SLF地址线属性。`measure_bank_select_fanout.py <frozen-SYN> --out <new-dir>`对真实64×1024×18几何配对模块SYN，每版180秒/所属工作集768MiB上限；这是小模块探针，完整SYN仍保持2/4GiB启动与40分钟预算。实测最大选择负载576→128、BSRAM64保持、FF+9/LUT+15，不承诺联合布线改善。
 
 `verify_bank_select_replication.py <actual-vg> --out <json>`从实际LUT/寄存器INIT计算选择器的转移函数，对64状态×64银行地址×两种读使能穷举8192组；原6/复制15个寄存器各49152/122880次检查通过，确认复制后D反馈实现的保持与更新仍相同。它只证明该选择器，不宣称验证了整张RAM或物理时序。`retry_frozen_synthesis.py --bank-select-data-fanout --wait-pid <prior-PNR-wrapper>`只改冻结副本的导航RAM属性，在原PNR报告采集退出后串行联合SYN；实际源叶/宽叶、选择器负载和路径仍要重新核对，再决定下一轮完整PNR，不复用删除匹配器的诊断输入。
+
+`continue_bank_select_once.py --synthesis <queued-SYN> --baseline <273-PNR> --wait-pid <existing-SYN-owner> --pnr-out <new-full-PNR> --state-dir <new-state-dir>`为一次性事件依赖接续，不创建定时任务或重复SYN。先核对等待进程身份，最多等3小时；SYN完成后独立进程核对精确属性差异、全部RAM参数/容量、实际选择负载、核心SYN估计、8个全局计划驱动与26＋51条源CDC连接，未完成/失败/不满足门槛就停止并保存原因。大字典随检查进程退出释放。通过后按2/4GiB启动门槛，只启动1轮完整功能120分钟/静默0 PNR；不覆盖已有目录，不下载，也不以包装退出码授予接受。`job.json`是实时阶段，`pre_pnr_checks.json`及`routing_result.json`保存后续实际证据；退出0只表示单次流程收尾，仍待审查。
+
+`pnr_from_netlist.py --routing-evidence`现在同时追加200网格拥塞与100条高扇出只读报告请求，原时钟和时序例外保持；生成manifest记录实际追加命令。失败PNR仍可能没有tr，缺报告继续未知。
