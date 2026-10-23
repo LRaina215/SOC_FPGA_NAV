@@ -1,0 +1,336 @@
+{
+  "recorded_at": "2026-10-23T18:34:37.093731+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\sfp_history128_lease_pnr3",
+  "source_synthesis": "F:\\nav_integration_g2_20261023\\sfp_history128_phyguard_lease_syn3",
+  "result": "natural_pnr_failure_unrouted",
+  "vendor_error": [
+    "ERROR  (PR0004) : There are total 802 unrouted nets"
+  ],
+  "unrouted_nets": 802,
+  "vendor_log_finished_at": "2026-10-23T18:03:19+08:00",
+  "runtime": {
+    "started_at": "2026-10-23T16:58:37.345540+08:00",
+    "ended_at": "2026-10-23T18:03:28.888834+08:00",
+    "pid": 16036,
+    "tool_exit": 1,
+    "cancelled": false,
+    "elapsed_s": 3891.5432941913605,
+    "max_runtime_s": 7200.0,
+    "max_no_observable_progress_s": 0,
+    "absolute_deadline": "2026-10-23T18:58:37.345540+08:00"
+  },
+  "vendor_elapsed": {
+    "total_s": 3873,
+    "placement_s": 378,
+    "routing_s": 3495,
+    "routing_phase1_s": 3494,
+    "peak_memory_mb": 2292
+  },
+  "owned_processes_absent_at_check": {
+    "checked_at": "2026-10-23T18:34:37.093731+08:00",
+    "pids": [
+      16036,
+      65684,
+      32124
+    ]
+  },
+  "actual_resources": {
+    "logic": {
+      "used": 90483.0,
+      "capacity": 138240.0
+    },
+    "register": {
+      "used": 42870.0,
+      "capacity": 139095.0
+    },
+    "bsram": {
+      "used": 334.0,
+      "capacity": 340.0
+    },
+    "dsp": {
+      "used": 163.5,
+      "capacity": 298.0
+    },
+    "io_port": {
+      "used": 51.0,
+      "capacity": 297.0
+    }
+  },
+  "additional_report_resources": {
+    "cls": {
+      "used": 57543,
+      "capacity": 69120
+    },
+    "lut": 54352,
+    "alu": 10475,
+    "rom16": 702,
+    "ssram": 4159,
+    "gtr12_quad": {
+      "used": 1,
+      "capacity": 2
+    },
+    "primary": {
+      "used": 8,
+      "capacity": 8
+    },
+    "lw": {
+      "used": 8,
+      "capacity": 8
+    }
+  },
+  "memory_reconciliation": {
+    "source_count": 316,
+    "wide_count": 18,
+    "predicted_count": 334,
+    "actual_report_count": 334,
+    "post_pnr_primitive_count": 334,
+    "counts_reconciled": true,
+    "matched_split_pairs": 18,
+    "actual_by_top": {
+      "u_soc": 64,
+      "u_control": 44,
+      "u_nav": 226
+    },
+    "wide_by_top": {
+      "u_control": 1,
+      "u_nav": 17
+    }
+  },
+  "clock_resource_allocations": {
+    "primary": [
+      {
+        "net": "clk50_d",
+        "location": "PTR0 PTR1 PTR2 PTR3 PBR0 PBR1 PBR2 PBR3"
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "location": "PBR1 PBR2"
+      },
+      {
+        "net": "h_rx_clk",
+        "location": "PTR0 PTR1 PBR0 PBR1"
+      },
+      {
+        "net": "h_tx_clk",
+        "location": "PTR1 PBR0 PBR1"
+      },
+      {
+        "net": "u_nav/u_xt/n9903_3",
+        "location": "PBR0 PBR1"
+      },
+      {
+        "net": "u_nav/u_match/u_ex/n7021_4",
+        "location": "PTR0"
+      },
+      {
+        "net": "u_nav/u_match/u_ex/rb_ra[0]",
+        "location": "PTR0 PBR0"
+      },
+      {
+        "net": "u_nav/u_match/u_ex/rb_ra[1]",
+        "location": "PTR0 PBR0"
+      }
+    ],
+    "lw": [
+      {
+        "net": "r2",
+        "location": "-"
+      },
+      {
+        "net": "r2_207",
+        "location": "-"
+      },
+      {
+        "net": "n2371_7",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n15679_10",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n331_7",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_update",
+        "location": "-"
+      },
+      {
+        "net": "u_control/telemetry_thread/snapshot_959_10",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/a_q_15_17",
+        "location": "-"
+      }
+    ]
+  },
+  "physical_direct_pin_loads": [
+    {
+      "net": "n2371_7",
+      "pins": 9188,
+      "port_counts": {
+        "CLEAR": 7529,
+        "PRESET": 101,
+        "RESET": 1447,
+        "I0": 9,
+        "SET": 83,
+        "I2": 10,
+        "I1": 8,
+        "D": 1
+      },
+      "examples": [
+        "DFFCE u_control/imu_telemetry_snapshot_95_s0.CLEAR",
+        "DFFCE u_control/imu_telemetry_snapshot_94_s0.CLEAR",
+        "DFFCE u_control/imu_telemetry_snapshot_93_s0.CLEAR"
+      ]
+    },
+    {
+      "net": "r2",
+      "pins": 6273,
+      "port_counts": {
+        "I0": 246,
+        "I1": 36,
+        "I2": 82,
+        "RESET": 5048,
+        "I": 1,
+        "I3": 18,
+        "PRESET": 12,
+        "SET": 330,
+        "CLEAR": 497,
+        "CE": 3
+      },
+      "examples": [
+        "LUT3 ub_rdata_5_s7.I0",
+        "LUT2 u_ub/n1955_s1.I0",
+        "LUT2 u_ub/n2405_s0.I0"
+      ]
+    },
+    {
+      "net": "u_control/model_thread/observation/n331_7",
+      "pins": 4386,
+      "port_counts": {
+        "I0": 3,
+        "CLEAR": 4380,
+        "PRESET": 1,
+        "RESET": 2
+      },
+      "examples": [
+        "LUT2 u_control/model_thread/observation/numerators[18]_63_s2.I0",
+        "LUT4 u_control/model_thread/observation/words_s2863.I0",
+        "LUT4 u_control/model_thread/observation/n5101_s107.I0"
+      ]
+    },
+    {
+      "net": "u_control/model_thread/policy/snapshot_update",
+      "pins": 4032,
+      "port_counts": {
+        "CE": 4032
+      },
+      "examples": [
+        "DFFCE u_control/model_thread/policy/snapshot_4030_s0.CE",
+        "DFFCE u_control/model_thread/policy/snapshot_4029_s0.CE",
+        "DFFCE u_control/model_thread/policy/snapshot_4028_s0.CE"
+      ]
+    },
+    {
+      "net": "u_control/model_thread/observation/n15679_10",
+      "pins": 3893,
+      "port_counts": {
+        "CE": 3892,
+        "D": 1
+      },
+      "examples": [
+        "DFFCE u_control/model_thread/observation/current_flat_671_s0.CE",
+        "DFFCE u_control/model_thread/observation/current_flat_666_s0.CE",
+        "DFFCE u_control/model_thread/observation/current_flat_665_s0.CE"
+      ]
+    },
+    {
+      "net": "u_control/telemetry_thread/n1315_4",
+      "pins": 962,
+      "port_counts": {
+        "I2": 837,
+        "I3": 65,
+        "I0": 32,
+        "I1": 28
+      },
+      "examples": [
+        "LUT3 u_control/telemetry_thread/n1315_s0.I2",
+        "LUT3 u_control/telemetry_thread/n1316_s0.I2",
+        "LUT3 u_control/telemetry_thread/n1317_s0.I2"
+      ]
+    },
+    {
+      "net": "u_control/telemetry_thread/snapshot_959_10",
+      "pins": 960,
+      "port_counts": {
+        "CE": 960
+      },
+      "examples": [
+        "DFFCE u_control/telemetry_thread/snapshot_959_s1.CE",
+        "DFFCE u_control/telemetry_thread/snapshot_958_s1.CE",
+        "DFFCE u_control/telemetry_thread/snapshot_957_s1.CE"
+      ]
+    },
+    {
+      "net": "u_control/wheel_control/n88_3",
+      "pins": 868,
+      "port_counts": {
+        "I0": 3,
+        "RESET": 865
+      },
+      "examples": [
+        "LUT4 u_control/wheel_control/left_control/n12679_s1.I0",
+        "DFFRE u_control/wheel_control/left_control/ramped_target_mmps_31_s0.RESET",
+        "DFFRE u_control/wheel_control/left_control/ramped_target_mmps_30_s0.RESET"
+      ]
+    }
+  ],
+  "load_scope": "Direct pin connectivity only; not identified unrouted nets or proof of congestion root cause.",
+  "cdc": {
+    "lidar": {
+      "physical_paths": 26,
+      "physical_connectivity_passed": true,
+      "endpoints_match_reference": true,
+      "errors": [],
+      "required_active_constraints": 52,
+      "active_constraints_verified": false
+    },
+    "sfp_host": {
+      "physical_paths": 51,
+      "physical_connectivity_passed": true,
+      "endpoints_match_reference": true,
+      "errors": [],
+      "required_active_constraints": 102,
+      "active_constraints_verified": false
+    }
+  },
+  "active_constraint_scope": "154 required commands remain unverified because no .tr was produced; this is not evidence that constraints were ignored.",
+  "timing_report_available": false,
+  "setup_violations": null,
+  "hold_violations": null,
+  "actual_clock_fmax": null,
+  "reset_pulse_checks_verified": false,
+  "g2_resource_core_gate_pass": false,
+  "bsram_work_gate_336": true,
+  "programmed": false,
+  "original_4500_algorithm_weights_125hz_unchanged": true,
+  "artifact_paths": {
+    "log": "F:\\nav_integration_g2_20261023\\sfp_history128_lease_pnr3\\impl\\pnr\\g2_top.log",
+    "report": "F:\\nav_integration_g2_20261023\\sfp_history128_lease_pnr3\\impl\\pnr\\g2_top.rpt.txt",
+    "physical_netlist": "F:\\nav_integration_g2_20261023\\sfp_history128_lease_pnr3\\impl\\pnr\\g2_top.vo",
+    "gate": "F:\\nav_integration_g2_20261023\\sfp_history128_lease_pnr3\\g2_gate.json",
+    "memories": "F:\\nav_integration_g2_20261023\\sfp_history128_lease_pnr3\\physical_memories.json",
+    "loads": "F:\\nav_integration_g2_20261023\\sfp_history128_lease_pnr3\\physical_pin_loads.json",
+    "deadline": "F:\\nav_integration_g2_20261023\\sfp_history128_lease_pnr3\\deadline_extension.json"
+  },
+  "interpretation": [
+    "This run ended before the 120-minute deadline; cancellation and the former 35-minute inactivity limit did not cause this failure.",
+    "Actual BSRAM count meets the <=336 work gate; placement/connectivity pressure may remain despite available memory blocks.",
+    "High reset/enable fanout and full PRIMARY/LW allocations are confirmed, but the report does not identify the 802 failed nets.",
+    "The old 483-net failure excluded real SFP and used a different netlist; it is not an isolated before/after comparison.",
+    "No new build is running for this candidate. Do not repeat the same netlist/options merely to wait longer."
+  ]
+}
