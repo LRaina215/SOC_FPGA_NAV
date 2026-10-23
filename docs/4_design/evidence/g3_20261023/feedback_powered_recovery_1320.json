@@ -1,0 +1,917 @@
+{
+  "recorded_at": "2026-10-23T13:24:35.591682+08:00",
+  "human_statement": "我现在给整车都上电了，你可以继续按照你的计划测试，并且我给车垫高了，做好了安全措施",
+  "previous_condition": "12:48: actuators disconnected, board USB only; complete six-axis publications 0",
+  "input_control": "same feedback_probe_build1 bitstream as 12:48; no sensor RTL or bitstream rebuild",
+  "build_gate": {
+    "build": "F:\\nav_hardware_20261023\\feedback_probe_build1",
+    "constraint_mhz": 50.0,
+    "actual_fmax_mhz": 88.359,
+    "violations": {
+      "setup": 0,
+      "hold": 0
+    },
+    "worst_reported_secondary_slacks_ns": {
+      "recovery": 13.65,
+      "removal": 2.369,
+      "pulse": 7.983
+    },
+    "physical_pins": {
+      "clk": "W19",
+      "reset_n": "D21",
+      "M1_ENCA": "D14",
+      "M1_ENCB": "F13",
+      "M2_ENCA": "D15",
+      "M2_ENCB": "F14",
+      "uart_txd": "M21",
+      "M1_PWM": "D17",
+      "M1_DIR1": "B20",
+      "M1_DIR2": "B17",
+      "M2_PWM": "C17",
+      "M2_DIR1": "B18",
+      "M2_DIR2": "A20",
+      "SERVO1": "C18",
+      "SERVO2": "C19",
+      "SERVO3": "E19",
+      "SERVO4": "D19",
+      "BMI088_SDA": "F18",
+      "BMI088_SCL": "E18"
+    },
+    "pins_match": true,
+    "actuator_obuf_inputs": {
+      "M1_PWM": "GND",
+      "M1_DIR1": "GND",
+      "M1_DIR2": "GND",
+      "M2_PWM": "GND",
+      "M2_DIR1": "GND",
+      "M2_DIR2": "GND",
+      "SERVO1": "GND",
+      "SERVO2": "GND",
+      "SERVO3": "GND",
+      "SERVO4": "GND"
+    },
+    "all_ten_actuators_physical_ground": true,
+    "bsram_primitives": 0,
+    "errors": [],
+    "timing_exceptions": [],
+    "bitstream_present": true,
+    "device_c_report": true,
+    "programmed": false,
+    "scope": "independent B1 diagnostic only; no joint G2, original control deployment, calibrated IMU or physical-stop acceptance",
+    "diagnostic_build_gate_pass": true
+  },
+  "session": {
+    "started_at": "2026-10-23T13:20:20.584654+08:00",
+    "power_confirmation_recorded_at": "2026-10-23T13:19:51+08:00",
+    "power_statement": "human confirmed whole vehicle powered and elevated with safety measures",
+    "build": "F:\\nav_hardware_20261023\\feedback_probe_build1",
+    "port": "COM11",
+    "power_state": "powered-supported",
+    "restore_policy": "leave zero-output diagnostic; no automatic control restoration while powered",
+    "steps": [
+      {
+        "name": "scan",
+        "args": [
+          "D:/Gowin2/Gowin_V1.9.12.04_x64/Programmer/bin/programmer_cli.exe",
+          "--cable-index",
+          "1",
+          "--location",
+          "579",
+          "--scan"
+        ],
+        "returncode": 0
+      },
+      {
+        "name": "usercode_before",
+        "args": [
+          "D:/Gowin2/Gowin_V1.9.12.04_x64/Programmer/bin/programmer_cli.exe",
+          "--cable-index",
+          "1",
+          "--location",
+          "579",
+          "--device",
+          "GW5AT-138C",
+          "--run",
+          "73"
+        ],
+        "returncode": 0
+      },
+      {
+        "name": "program_probe",
+        "args": [
+          "D:/Gowin2/Gowin_V1.9.12.04_x64/Programmer/bin/programmer_cli.exe",
+          "--cable-index",
+          "1",
+          "--location",
+          "579",
+          "--device",
+          "GW5AT-138C",
+          "--run",
+          "2",
+          "--fsFile",
+          "F:\\nav_hardware_20261023\\feedback_probe_build1\\impl\\pnr\\feedback_probe.fs"
+        ],
+        "returncode": 0
+      },
+      {
+        "name": "usercode_probe",
+        "args": [
+          "D:/Gowin2/Gowin_V1.9.12.04_x64/Programmer/bin/programmer_cli.exe",
+          "--cable-index",
+          "1",
+          "--location",
+          "579",
+          "--device",
+          "GW5AT-138C",
+          "--run",
+          "73"
+        ],
+        "returncode": 0
+      },
+      {
+        "name": "capture",
+        "args": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:\\Desktop\\SOC FPGA\\nav\\integration\\g3\\read_feedback_probe.py",
+          "--port",
+          "COM11",
+          "--seconds",
+          "30",
+          "--out",
+          "F:\\nav_hardware_20261023\\feedback_powered_1322\\capture"
+        ],
+        "returncode": 0
+      }
+    ],
+    "flash_written": false,
+    "motion_commands": 0,
+    "uart_tx_bytes": 0,
+    "restore_candidate": "F:\\nav_hardware_20261023\\restore_control_99a6.fs",
+    "full_prior_image_identity_proven": false,
+    "scope": "temporary independent diagnostic; not joint G2 or physical-stop acceptance",
+    "probe_programming_attempted": true,
+    "control_restore_skipped_while_powered": true,
+    "zero_output_diagnostic_programmed": true,
+    "ended_at": "2026-10-23T13:21:06.286177+08:00",
+    "error": null
+  },
+  "first_capture_summary": {
+    "recorded_at": "2026-10-23T13:21:06.246921+08:00",
+    "source": "hardware_uart",
+    "port": "COM11",
+    "tx_bytes": 0,
+    "error": null,
+    "diagnostic_frames": 3023,
+    "crc_errors": 0,
+    "distinct_encoder_publications": 3023,
+    "distinct_bmi_publications": 3023,
+    "last_frame": {
+      "timestamp_ms": 33369,
+      "sequence": 3336,
+      "status": 13,
+      "error_code": 0,
+      "operation": 18,
+      "accel_address": 25,
+      "gyro_address": 105,
+      "accel_id": 30,
+      "gyro_id": 15,
+      "last_read": 0,
+      "bmi_sample_sequence": 3325,
+      "bmi_age_ms": 3,
+      "encoder_sample_sequence": 3336,
+      "encoder_age_ms": 9,
+      "left_delta": 0,
+      "right_delta": 0,
+      "left_position": -2,
+      "right_position": 0,
+      "left_invalid": 0,
+      "right_invalid": 0,
+      "id_seen": 10,
+      "encoder_flags": 1,
+      "ax_raw": 1132,
+      "ay_raw": -216,
+      "az_raw": 10762,
+      "gx_raw": 4,
+      "gy_raw": 8,
+      "gz_raw": 6,
+      "ack_18": 0,
+      "nack_18": 1,
+      "id_reads_18": 0,
+      "last_id_18": 0,
+      "ack_19": 6664,
+      "nack_19": 0,
+      "id_reads_19": 1,
+      "last_id_19": 30,
+      "ack_68": 0,
+      "nack_68": 1,
+      "id_reads_68": 0,
+      "last_id_68": 0,
+      "ack_69": 6661,
+      "nack_69": 0,
+      "id_reads_69": 1,
+      "last_id_69": 15,
+      "bmi_initialized_sample": true,
+      "bmi_fresh_50ms": true
+    },
+    "scope": "raw diagnostic snapshots; no fusion/calibration, exact gate-edge position, motion or physical-stop acceptance"
+  },
+  "first_capture_analysis": {
+    "capture": "F:\\nav_hardware_20261023\\feedback_powered_1322\\capture",
+    "frames": 3023,
+    "crc_errors": 0,
+    "first_timestamp_ms": 3149,
+    "last_timestamp_ms": 33369,
+    "frame_step_histogram": {
+      "1": 3022
+    },
+    "timestamp_step_ms_histogram": {
+      "10": 3022
+    },
+    "bmi_publication_step_histogram": {
+      "1": 3022
+    },
+    "valid_bmi_frames": 3023,
+    "fresh_bmi_frames": 3023,
+    "unique_bmi_samples": 3023,
+    "bmi_age_ms": {
+      "count": 3023,
+      "mean": 3.0,
+      "population_std": 0.0,
+      "min": 3,
+      "max": 3
+    },
+    "error_frame_count": 0,
+    "raw_axes": {
+      "ax_raw": {
+        "count": 3023,
+        "mean": 1130.7019517036058,
+        "population_std": 31.026492252005553,
+        "min": 784,
+        "max": 1396
+      },
+      "ay_raw": {
+        "count": 3023,
+        "mean": -231.29639431028778,
+        "population_std": 27.643161361577008,
+        "min": -438,
+        "max": 30
+      },
+      "az_raw": {
+        "count": 3023,
+        "mean": 10775.595104201124,
+        "population_std": 45.27641575039744,
+        "min": 9995,
+        "max": 11336
+      },
+      "gx_raw": {
+        "count": 3023,
+        "mean": 1.6794574925570624,
+        "population_std": 8.91204484232882,
+        "min": -43,
+        "max": 72
+      },
+      "gy_raw": {
+        "count": 3023,
+        "mean": 0.09295401918623883,
+        "population_std": 9.704377981516409,
+        "min": -33,
+        "max": 30
+      },
+      "gz_raw": {
+        "count": 3023,
+        "mean": 0.8706582864703937,
+        "population_std": 10.189673695130535,
+        "min": -46,
+        "max": 40
+      }
+    },
+    "nominal_units": {
+      "ax_g": {
+        "count": 3023,
+        "mean": 0.10354413477139247,
+        "population_std": 0.0028412538692312783,
+        "min": 0.07179487179487179,
+        "max": 0.12783882783882783
+      },
+      "ay_g": {
+        "count": 3023,
+        "mean": -0.021180988489953097,
+        "population_std": 0.0025314250331114475,
+        "min": -0.04010989010989011,
+        "max": 0.0027472527472527475
+      },
+      "az_g": {
+        "count": 3023,
+        "mean": 0.9867761084433265,
+        "population_std": 0.004146191918534572,
+        "min": 0.9152930402930403,
+        "max": 1.0380952380952382
+      },
+      "gx_dps": {
+        "count": 3023,
+        "mean": 0.10250595047345352,
+        "population_std": 0.5439480494585461,
+        "min": -2.62451171875,
+        "max": 4.39453125
+      },
+      "gy_dps": {
+        "count": 3023,
+        "mean": 0.005673463085097585,
+        "population_std": 0.5923082264109136,
+        "min": -2.01416015625,
+        "max": 1.8310546875
+      },
+      "gz_dps": {
+        "count": 3023,
+        "mean": 0.05314076455507774,
+        "population_std": 0.6219283261188071,
+        "min": -2.8076171875,
+        "max": 2.44140625
+      }
+    },
+    "acceleration_norm_g": {
+      "count": 3023,
+      "mean": 0.9924271356348391,
+      "population_std": 0.0041427663252066906,
+      "min": 0.9193910892047495,
+      "max": 1.0407955662115018
+    },
+    "saturated_axis_values": 0,
+    "encoder": {
+      "left": {
+        "position_first": -2,
+        "position_last": -2,
+        "position_range": [
+          -2,
+          -2
+        ],
+        "nonzero_delta_frames": 0,
+        "invalid_first": 0,
+        "invalid_last": 0
+      },
+      "right": {
+        "position_first": 0,
+        "position_last": 0,
+        "position_range": [
+          0,
+          0
+        ],
+        "nonzero_delta_frames": 0,
+        "invalid_first": 0,
+        "invalid_last": 0
+      }
+    },
+    "first_frame": {
+      "timestamp_ms": 3149,
+      "sequence": 314,
+      "status": 13,
+      "error_code": 0,
+      "operation": 18,
+      "accel_address": 25,
+      "gyro_address": 105,
+      "accel_id": 30,
+      "gyro_id": 15,
+      "last_read": 255,
+      "bmi_sample_sequence": 303,
+      "bmi_age_ms": 3,
+      "encoder_sample_sequence": 314,
+      "encoder_age_ms": 9,
+      "left_delta": 0,
+      "right_delta": 0,
+      "left_position": -2,
+      "right_position": 0,
+      "left_invalid": 0,
+      "right_invalid": 0,
+      "id_seen": 10,
+      "encoder_flags": 1,
+      "ax_raw": 1176,
+      "ay_raw": -222,
+      "az_raw": 10812,
+      "gx_raw": 0,
+      "gy_raw": -6,
+      "gz_raw": -6,
+      "ack_18": 0,
+      "nack_18": 1,
+      "id_reads_18": 0,
+      "last_id_18": 0,
+      "ack_19": 620,
+      "nack_19": 0,
+      "id_reads_19": 1,
+      "last_id_19": 30,
+      "ack_68": 0,
+      "nack_68": 1,
+      "id_reads_68": 0,
+      "last_id_68": 0,
+      "ack_69": 617,
+      "nack_69": 0,
+      "id_reads_69": 1,
+      "last_id_69": 15,
+      "bmi_initialized_sample": true,
+      "bmi_fresh_50ms": true
+    },
+    "last_frame": {
+      "timestamp_ms": 33369,
+      "sequence": 3336,
+      "status": 13,
+      "error_code": 0,
+      "operation": 18,
+      "accel_address": 25,
+      "gyro_address": 105,
+      "accel_id": 30,
+      "gyro_id": 15,
+      "last_read": 0,
+      "bmi_sample_sequence": 3325,
+      "bmi_age_ms": 3,
+      "encoder_sample_sequence": 3336,
+      "encoder_age_ms": 9,
+      "left_delta": 0,
+      "right_delta": 0,
+      "left_position": -2,
+      "right_position": 0,
+      "left_invalid": 0,
+      "right_invalid": 0,
+      "id_seen": 10,
+      "encoder_flags": 1,
+      "ax_raw": 1132,
+      "ay_raw": -216,
+      "az_raw": 10762,
+      "gx_raw": 4,
+      "gy_raw": 8,
+      "gz_raw": 6,
+      "ack_18": 0,
+      "nack_18": 1,
+      "id_reads_18": 0,
+      "last_id_18": 0,
+      "ack_19": 6664,
+      "nack_19": 0,
+      "id_reads_19": 1,
+      "last_id_19": 30,
+      "ack_68": 0,
+      "nack_68": 1,
+      "id_reads_68": 0,
+      "last_id_68": 0,
+      "ack_69": 6661,
+      "nack_69": 0,
+      "id_reads_69": 1,
+      "last_id_69": 15,
+      "bmi_initialized_sample": true,
+      "bmi_fresh_50ms": true
+    },
+    "conversion_basis": "existing project config: 10920 raw/g and 16.384 raw/(degree/s); no new calibration",
+    "scope": "observed raw sample continuity and fluctuations; no independent stationary truth, temperature/axis calibration, fusion or physical-stop acceptance",
+    "gyro_first_last_200_raw": {
+      "gx_raw": {
+        "first": {
+          "count": 200,
+          "mean": 1.29,
+          "population_std": 8.658285049592672,
+          "min": -26,
+          "max": 31
+        },
+        "last": {
+          "count": 200,
+          "mean": 1.94,
+          "population_std": 8.408115127660896,
+          "min": -28,
+          "max": 28
+        }
+      },
+      "gy_raw": {
+        "first": {
+          "count": 200,
+          "mean": 0.02,
+          "population_std": 9.674688625480409,
+          "min": -28,
+          "max": 25
+        },
+        "last": {
+          "count": 200,
+          "mean": -0.09,
+          "population_std": 9.159798032707926,
+          "min": -33,
+          "max": 27
+        }
+      },
+      "gz_raw": {
+        "first": {
+          "count": 200,
+          "mean": -0.765,
+          "population_std": 10.035924222511847,
+          "min": -24,
+          "max": 24
+        },
+        "last": {
+          "count": 200,
+          "mean": 0.8,
+          "population_std": 10.47091209016674,
+          "min": -27,
+          "max": 36
+        }
+      }
+    }
+  },
+  "longer_capture_summary": {
+    "recorded_at": "2026-10-23T13:22:41.343641+08:00",
+    "source": "hardware_uart",
+    "port": "COM11",
+    "tx_bytes": 0,
+    "error": null,
+    "diagnostic_frames": 6013,
+    "crc_errors": 0,
+    "distinct_encoder_publications": 6013,
+    "distinct_bmi_publications": 6013,
+    "last_frame": {
+      "timestamp_ms": 128429,
+      "sequence": 12842,
+      "status": 13,
+      "error_code": 0,
+      "operation": 18,
+      "accel_address": 25,
+      "gyro_address": 105,
+      "accel_id": 30,
+      "gyro_id": 15,
+      "last_read": 0,
+      "bmi_sample_sequence": 12831,
+      "bmi_age_ms": 3,
+      "encoder_sample_sequence": 12842,
+      "encoder_age_ms": 9,
+      "left_delta": 0,
+      "right_delta": 0,
+      "left_position": -2,
+      "right_position": 0,
+      "left_invalid": 0,
+      "right_invalid": 0,
+      "id_seen": 10,
+      "encoder_flags": 1,
+      "ax_raw": 1140,
+      "ay_raw": -225,
+      "az_raw": 10801,
+      "gx_raw": 13,
+      "gy_raw": 13,
+      "gz_raw": 2,
+      "ack_18": 0,
+      "nack_18": 1,
+      "id_reads_18": 0,
+      "last_id_18": 0,
+      "ack_19": 25676,
+      "nack_19": 0,
+      "id_reads_19": 1,
+      "last_id_19": 30,
+      "ack_68": 0,
+      "nack_68": 1,
+      "id_reads_68": 0,
+      "last_id_68": 0,
+      "ack_69": 25673,
+      "nack_69": 0,
+      "id_reads_69": 1,
+      "last_id_69": 15,
+      "bmi_initialized_sample": true,
+      "bmi_fresh_50ms": true
+    },
+    "scope": "raw diagnostic snapshots; no fusion/calibration, exact gate-edge position, motion or physical-stop acceptance"
+  },
+  "longer_capture_analysis": {
+    "capture": "F:\\nav_hardware_20261023\\feedback_powered_stability_1321",
+    "frames": 6013,
+    "crc_errors": 0,
+    "first_timestamp_ms": 68309,
+    "last_timestamp_ms": 128429,
+    "frame_step_histogram": {
+      "1": 6012
+    },
+    "timestamp_step_ms_histogram": {
+      "10": 6012
+    },
+    "bmi_publication_step_histogram": {
+      "1": 6012
+    },
+    "valid_bmi_frames": 6013,
+    "fresh_bmi_frames": 6013,
+    "unique_bmi_samples": 6013,
+    "bmi_age_ms": {
+      "count": 6013,
+      "mean": 3.0,
+      "population_std": 0.0,
+      "min": 3,
+      "max": 3
+    },
+    "error_frame_count": 0,
+    "raw_axes": {
+      "ax_raw": {
+        "count": 6013,
+        "mean": 1132.7709961749542,
+        "population_std": 25.419676049067444,
+        "min": 946,
+        "max": 1475
+      },
+      "ay_raw": {
+        "count": 6013,
+        "mean": -251.21969067021453,
+        "population_std": 27.449188922389506,
+        "min": -517,
+        "max": 89
+      },
+      "az_raw": {
+        "count": 6013,
+        "mean": 10775.443705305172,
+        "population_std": 29.04732770278834,
+        "min": 10231,
+        "max": 11299
+      },
+      "gx_raw": {
+        "count": 6013,
+        "mean": 1.8992183602195243,
+        "population_std": 8.614852701337368,
+        "min": -40,
+        "max": 55
+      },
+      "gy_raw": {
+        "count": 6013,
+        "mean": -0.011807749875270248,
+        "population_std": 9.6037245537067,
+        "min": -40,
+        "max": 35
+      },
+      "gz_raw": {
+        "count": 6013,
+        "mean": 0.8438383502411442,
+        "population_std": 9.880866648700358,
+        "min": -40,
+        "max": 47
+      }
+    },
+    "nominal_units": {
+      "ax_g": {
+        "count": 6013,
+        "mean": 0.10373360770832915,
+        "population_std": 0.0023278091620025135,
+        "min": 0.08663003663003663,
+        "max": 0.13507326007326007
+      },
+      "ay_g": {
+        "count": 6013,
+        "mean": -0.023005466178591075,
+        "population_std": 0.0025136619892298082,
+        "min": -0.04734432234432234,
+        "max": 0.00815018315018315
+      },
+      "az_g": {
+        "count": 6013,
+        "mean": 0.9867622440755653,
+        "population_std": 0.0026600116943945413,
+        "min": 0.9369047619047619,
+        "max": 1.0347069597069598
+      },
+      "gx_dps": {
+        "count": 6013,
+        "mean": 0.11591908936886745,
+        "population_std": 0.5258088806968608,
+        "min": -2.44140625,
+        "max": 3.35693359375
+      },
+      "gy_dps": {
+        "count": 6013,
+        "mean": -0.0007206878585980376,
+        "population_std": 0.58616482871745,
+        "min": -2.44140625,
+        "max": 2.13623046875
+      },
+      "gz_dps": {
+        "count": 6013,
+        "mean": 0.05150380555671046,
+        "population_std": 0.6030802397888402,
+        "min": -2.44140625,
+        "max": 2.86865234375
+      }
+    },
+    "acceleration_norm_g": {
+      "count": 6013,
+      "mean": 0.9924724687941093,
+      "population_std": 0.0026173871238275984,
+      "min": 0.9419274054027018,
+      "max": 1.0396335671850438
+    },
+    "saturated_axis_values": 0,
+    "encoder": {
+      "left": {
+        "position_first": -2,
+        "position_last": -2,
+        "position_range": [
+          -2,
+          -2
+        ],
+        "nonzero_delta_frames": 0,
+        "invalid_first": 0,
+        "invalid_last": 0
+      },
+      "right": {
+        "position_first": 0,
+        "position_last": 0,
+        "position_range": [
+          0,
+          0
+        ],
+        "nonzero_delta_frames": 0,
+        "invalid_first": 0,
+        "invalid_last": 0
+      }
+    },
+    "first_frame": {
+      "timestamp_ms": 68309,
+      "sequence": 6830,
+      "status": 13,
+      "error_code": 0,
+      "operation": 18,
+      "accel_address": 25,
+      "gyro_address": 105,
+      "accel_id": 30,
+      "gyro_id": 15,
+      "last_read": 0,
+      "bmi_sample_sequence": 6819,
+      "bmi_age_ms": 3,
+      "encoder_sample_sequence": 6830,
+      "encoder_age_ms": 9,
+      "left_delta": 0,
+      "right_delta": 0,
+      "left_position": -2,
+      "right_position": 0,
+      "left_invalid": 0,
+      "right_invalid": 0,
+      "id_seen": 10,
+      "encoder_flags": 1,
+      "ax_raw": 1118,
+      "ay_raw": -271,
+      "az_raw": 10790,
+      "gx_raw": -15,
+      "gy_raw": -10,
+      "gz_raw": 8,
+      "ack_18": 0,
+      "nack_18": 1,
+      "id_reads_18": 0,
+      "last_id_18": 0,
+      "ack_19": 13652,
+      "nack_19": 0,
+      "id_reads_19": 1,
+      "last_id_19": 30,
+      "ack_68": 0,
+      "nack_68": 1,
+      "id_reads_68": 0,
+      "last_id_68": 0,
+      "ack_69": 13649,
+      "nack_69": 0,
+      "id_reads_69": 1,
+      "last_id_69": 15,
+      "bmi_initialized_sample": true,
+      "bmi_fresh_50ms": true
+    },
+    "last_frame": {
+      "timestamp_ms": 128429,
+      "sequence": 12842,
+      "status": 13,
+      "error_code": 0,
+      "operation": 18,
+      "accel_address": 25,
+      "gyro_address": 105,
+      "accel_id": 30,
+      "gyro_id": 15,
+      "last_read": 0,
+      "bmi_sample_sequence": 12831,
+      "bmi_age_ms": 3,
+      "encoder_sample_sequence": 12842,
+      "encoder_age_ms": 9,
+      "left_delta": 0,
+      "right_delta": 0,
+      "left_position": -2,
+      "right_position": 0,
+      "left_invalid": 0,
+      "right_invalid": 0,
+      "id_seen": 10,
+      "encoder_flags": 1,
+      "ax_raw": 1140,
+      "ay_raw": -225,
+      "az_raw": 10801,
+      "gx_raw": 13,
+      "gy_raw": 13,
+      "gz_raw": 2,
+      "ack_18": 0,
+      "nack_18": 1,
+      "id_reads_18": 0,
+      "last_id_18": 0,
+      "ack_19": 25676,
+      "nack_19": 0,
+      "id_reads_19": 1,
+      "last_id_19": 30,
+      "ack_68": 0,
+      "nack_68": 1,
+      "id_reads_68": 0,
+      "last_id_68": 0,
+      "ack_69": 25673,
+      "nack_69": 0,
+      "id_reads_69": 1,
+      "last_id_69": 15,
+      "bmi_initialized_sample": true,
+      "bmi_fresh_50ms": true
+    },
+    "conversion_basis": "existing project config: 10920 raw/g and 16.384 raw/(degree/s); no new calibration",
+    "scope": "observed raw sample continuity and fluctuations; no independent stationary truth, temperature/axis calibration, fusion or physical-stop acceptance",
+    "gyro_first_last_200_raw": {
+      "gx_raw": {
+        "first": {
+          "count": 200,
+          "mean": 2.04,
+          "population_std": 7.861831847603967,
+          "min": -21,
+          "max": 24
+        },
+        "last": {
+          "count": 200,
+          "mean": 2.44,
+          "population_std": 8.917196868971773,
+          "min": -20,
+          "max": 26
+        }
+      },
+      "gy_raw": {
+        "first": {
+          "count": 200,
+          "mean": -0.035,
+          "population_std": 10.167781223059434,
+          "min": -37,
+          "max": 30
+        },
+        "last": {
+          "count": 200,
+          "mean": -0.165,
+          "population_std": 9.109762620397966,
+          "min": -29,
+          "max": 24
+        }
+      },
+      "gz_raw": {
+        "first": {
+          "count": 200,
+          "mean": 1.43,
+          "population_std": 9.35922539529848,
+          "min": -20,
+          "max": 29
+        },
+        "last": {
+          "count": 200,
+          "mean": 1.505,
+          "population_std": 10.529481231285803,
+          "min": -27,
+          "max": 31
+        }
+      }
+    }
+  },
+  "current_board": {
+    "usercode": "4B28",
+    "mode": "independent zero-actuator diagnostic retained",
+    "control_restored": false,
+    "flash_written": false,
+    "motion_commands": 0
+  },
+  "confirmed": [
+    "Complete six-axis publications restored with whole vehicle power under same diagnostic image",
+    "Both capture windows: all valid/fresh, CRC0, sequence and publication increments1, timestamp increments10ms, age3ms",
+    "Actual addresses19/69 IDs1E/0F; passive observer agrees in powered condition",
+    "No encoder position changes or invalid transitions inside either capture window"
+  ],
+  "unverified": [
+    "Which actual supply, interface selection, pull-up or other electrical change explains USB-only failure",
+    "Cause of passive observer zero counts under the earlier USB-only condition",
+    "Exact independent stationary truth, temperature, installation-axis and scale calibration",
+    "Board fusion/calibration ready, moving encoder response, actuator or physical-stop acceptance",
+    "Prior to capture left position reached -2; exact event timing and cause not recorded"
+  ],
+  "next_steps": [
+    "Defer completion-event probe because current original-driver/observer path recovered without RTL changes",
+    "Keep raw data for axis and startup-bias/fusion checks; do not write new calibration constants from this observation",
+    "Preserve independent G2 gate failure:483unrouted and no timing report; no joint-image deployment"
+  ],
+  "scope": "Powered supported raw acquisition; not G2, fusion, navigation or physical-stop acceptance",
+  "session_failure_cleanup_contract": {
+    "path": "F:\\nav_hardware_20261023\\powered_cleanup_contract_1325\\result.json",
+    "passed": true,
+    "cases": [
+      {
+        "mode": "powered-supported",
+        "simulated_capture_failure": "TimeoutExpired",
+        "returned_failure": true,
+        "control_restore_calls": 0,
+        "hardware_invoked": false
+      },
+      {
+        "mode": "actuators-disconnected",
+        "simulated_capture_failure": "TimeoutExpired",
+        "returned_failure": true,
+        "control_restore_calls": 1,
+        "hardware_invoked": false
+      }
+    ],
+    "scope": "mocked failure cleanup contract, no hardware programming; current powered mode must not restore active control"
+  }
+}
