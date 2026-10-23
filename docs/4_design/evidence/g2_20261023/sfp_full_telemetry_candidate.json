@@ -153,7 +153,7 @@
     "history_phy_guard": "0985e15",
     "lease_sfp_client": "214d3c6"
   },
-  "updated_at": "2026-10-23T22:57:41.756565+08:00",
+  "updated_at": "2026-10-23T23:19:07.949006+08:00",
   "history_fanout_candidate": {
     "generator": "control/tools/g2_history_fanout.py",
     "source_edit": "one syn_maxfan=128 synthesis attribute, no functional RTL edit",
@@ -467,7 +467,7 @@
     "max_runtime_minutes": 120,
     "max_no_progress_minutes": 0,
     "absolute_deadline": "2026-10-24T00:53:52.545216+08:00",
-    "stage": "placement",
+    "stage": "routing",
     "running": true,
     "diagnostic_only": true,
     "logical_netlist_unchanged": false,
@@ -475,7 +475,8 @@
     "partition": "u_nav/u_match",
     "programmed": false,
     "final_reports_available": false,
-    "result_evidence": "sfp273_partition_diagnosis.json"
+    "result_evidence": "sfp273_partition_diagnosis.json",
+    "last_reported_completed_phase": "Routing Phase0"
   },
   "previous_pnr": {
     "build": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_ce_pnr5",
@@ -626,7 +627,7 @@
       "max_runtime_minutes": 120,
       "max_no_progress_minutes": 0,
       "absolute_deadline": "2026-10-24T00:53:52.545216+08:00",
-      "stage": "placement",
+      "stage": "routing",
       "running": true,
       "diagnostic_only": true,
       "logical_netlist_unchanged": false,
@@ -634,7 +635,17 @@
       "partition": "u_nav/u_match",
       "programmed": false,
       "final_reports_available": false,
-      "result_evidence": "sfp273_partition_diagnosis.json"
+      "result_evidence": "sfp273_partition_diagnosis.json",
+      "last_reported_completed_phase": "Routing Phase0"
+    },
+    {
+      "build": "F:\\nav_integration_g2_20261023\\sfp273_bankselect128_syn5",
+      "stage": "waiting_for_prior_pnr",
+      "supervisor_pid": 42344,
+      "wait_pid": 52280,
+      "kind": "full_joint_synthesis",
+      "evidence": "sfp273_bank_select_intervention.json",
+      "automatic_pnr": false
     }
   ],
   "best_measured_candidate": {
@@ -642,5 +653,18 @@
     "unrouted_nets": 273,
     "g2_passed": false,
     "result_evidence": "sfp_clockpriority_final_unrouted273.json"
+  },
+  "bank_select_intervention": {
+    "evidence": "sfp273_bank_select_intervention.json",
+    "module_loads": [
+      576,
+      128
+    ],
+    "module_bsram": [
+      64,
+      64
+    ],
+    "full_joint_synthesis": "F:\\nav_integration_g2_20261023\\sfp273_bankselect128_syn5",
+    "phase": "waiting_for_prior_pnr"
   }
 }

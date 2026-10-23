@@ -1,0 +1,191 @@
+{
+  "recorded_at": "2026-10-23T23:19:07.949006+08:00",
+  "baseline": "F:/nav_integration_g2_20261023/sfp_clockpriority_pnr4",
+  "baseline_unrouted_nets": 273,
+  "intervention": "data-selector register replication requested with syn_maxfan128 at the measured576-load driver; no reset/CE/clock fanout constraint",
+  "source_only_attribute_change": true,
+  "algorithm_weights_and125hz_unchanged": true,
+  "measurements": [
+    {
+      "variant": "original",
+      "geometry": {
+        "DW": 18,
+        "AW": 16,
+        "DEPTH": 65536,
+        "banks": 64
+      },
+      "resources": {
+        "name": "g2_top",
+        "T_Register": "6(0)",
+        "T_Lut": "754(0)",
+        "T_Bsram": "64(0)"
+      },
+      "runtime": {
+        "started_at": "2026-10-23T23:14:25.015880+08:00",
+        "max_runtime_s": 180,
+        "max_owned_working_set_bytes": 805306368,
+        "cancelled": false,
+        "start_free_bytes": 2065063936,
+        "start_commit_reserve_bytes": 5827592192,
+        "scope": "one bounded64-bank module SYN; other tool processes never terminated",
+        "pid": 40680,
+        "tool_exit": 0,
+        "peak_observed_owned_rss": 136871936,
+        "elapsed_s": 3.625,
+        "ended_at": "2026-10-23T23:14:28.641127+08:00"
+      },
+      "max_selected_load": 576,
+      "selected_registers": 6,
+      "bsram": 64,
+      "ff": 6
+    },
+    {
+      "variant": "fanout128",
+      "geometry": {
+        "DW": 18,
+        "AW": 16,
+        "DEPTH": 65536,
+        "banks": 64
+      },
+      "resources": {
+        "name": "g2_top",
+        "T_Register": "15(0)",
+        "T_Lut": "769(0)",
+        "T_Bsram": "64(0)"
+      },
+      "runtime": {
+        "started_at": "2026-10-23T23:14:29.845117+08:00",
+        "max_runtime_s": 180,
+        "max_owned_working_set_bytes": 805306368,
+        "cancelled": false,
+        "start_free_bytes": 2040270848,
+        "start_commit_reserve_bytes": 5803667456,
+        "scope": "one bounded64-bank module SYN; other tool processes never terminated",
+        "pid": 58616,
+        "tool_exit": 0,
+        "peak_observed_owned_rss": 136556544,
+        "elapsed_s": 3.625,
+        "ended_at": "2026-10-23T23:14:33.478210+08:00"
+      },
+      "max_selected_load": 128,
+      "selected_registers": 15,
+      "bsram": 64,
+      "ff": 15
+    }
+  ],
+  "fanout_reduced": true,
+  "bsram_unchanged": true,
+  "actual_synthesized_selector_proofs": [
+    {
+      "netlist": "F:\\nav_integration_g2_20261023\\bank_select_fanout128_probe\\original\\impl\\gwsynthesis\\g2_top.vg",
+      "selector_registers": 6,
+      "state_address_enable_cases": 8192,
+      "register_transition_checks": 49152,
+      "all_initial_zero": true,
+      "clock_reset_match": true,
+      "read_hold_and_update_exact": true,
+      "passed": true,
+      "scope": "exhaustive actual SYN selector-cone induction; not RAM data or PNR verification"
+    },
+    {
+      "netlist": "F:\\nav_integration_g2_20261023\\bank_select_fanout128_probe\\fanout128\\impl\\gwsynthesis\\g2_top.vg",
+      "selector_registers": 15,
+      "state_address_enable_cases": 8192,
+      "register_transition_checks": 122880,
+      "all_initial_zero": true,
+      "clock_reset_match": true,
+      "read_hold_and_update_exact": true,
+      "passed": true,
+      "scope": "exhaustive actual SYN selector-cone induction; not RAM data or PNR verification"
+    }
+  ],
+  "proof_boundary": "Selector initial state, clock/reset and update/hold transition only; whole RAM data and physical PNR remain separate.",
+  "full_candidate": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp273_bankselect128_syn5",
+    "source": "F:\\nav_integration_g2_20261023\\sfp_history128_phyguard_lease_syn3",
+    "job": {
+      "source": "F:\\nav_integration_g2_20261023\\sfp_history128_phyguard_lease_syn3",
+      "build": "F:\\nav_integration_g2_20261023\\sfp273_bankselect128_syn5",
+      "wait_pid": 52280,
+      "programmed": false,
+      "source_frozen_before_wait": true,
+      "automatic_pnr": false,
+      "modified_rtl_inputs": [
+        "nav/rtl/common/nav_ram_sdp.v"
+      ],
+      "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+      "phase": "waiting_for_prior_pnr",
+      "updated_at": "2026-10-23T23:17:21.640519+08:00"
+    },
+    "supervisor_pid": 42344,
+    "waits_for_completed_pnr_collector_pid": 52280,
+    "modified_rtl_inputs": [
+      "nav/rtl/common/nav_ram_sdp.v"
+    ],
+    "source_frozen": true,
+    "real_sfp": true,
+    "full_control_telemetry": true,
+    "complete_matcher_present": true,
+    "control_weights_changed": false,
+    "automatic_pnr": false,
+    "max_synthesis_minutes": 40,
+    "minimum_start_physical_gib": 2,
+    "minimum_start_commit_gib": 4,
+    "actual_joint_resources": null,
+    "actual_joint_fanout": null
+  },
+  "current_partition": {
+    "build": "F:/nav_integration_g2_20261023/sfp273_without_match_retry1_diagnostic",
+    "runtime": {
+      "command": [
+        "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/bin/gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-23T22:53:52.545216+08:00",
+      "max_runtime_s": 7200,
+      "max_no_observable_progress_s": 0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 61020,
+      "elapsed_s": 1501.9850000000442,
+      "no_observable_progress_s": 1025.219000000041,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          1809417,
+          1792767708289100700
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          1808950,
+          1792767708289100700
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          2086684,
+          1792767675150040900
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          12235046,
+          1792767675651520200
+        ]
+      ]
+    },
+    "stage": "routing; last reported completion is Phase0",
+    "final_report_available": false
+  },
+  "next_steps": [
+    "After the existing diagnostic is collected, run only the queued full-design SYN with the original matcher restored.",
+    "Reconcile all source BSRAM leaves/wide splitting, actual selector loads and current critical paths before PNR.",
+    "If the full candidate retains capacity and produces the measured structural improvement, derive a full PNR with revalidated273 PRIMARY/local constraints and complete50/100/125/125MHz/CDC candidates; preserve both comparison failures.",
+    "Only deploy after full routing0, all timing/CDC/reset/pulse/IO gates; no partial-design or SYN success accepted."
+  ],
+  "joint_routability_improvement_proven": false,
+  "g2_passed": false,
+  "hardware_programmed": false,
+  "periodic_monitor_recreated": false
+}

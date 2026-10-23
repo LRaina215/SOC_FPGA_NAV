@@ -94,3 +94,7 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 `partition_routing_diagnostic.py <273-PNR-build> --out <new-dir> --prepare-only`从273版派生唯一匹配器内部移除对照，保持其外部所有显式单元/引脚、原控制参数、原时钟/SDC/CSR；只删除该模块3条失效LOCAL_CLOCK。替换输出恒零，不模拟匹配器功能，PNR可能裁剪下游、重新安排全片位置；不把通过当模块故障证明。`--run-prepared`只启动已有未实现目录，等待最多10分钟达到2GiB物理/4GiB可用提交，再按120分钟/静默0运行，结束保存门禁与诊断报告，永不下载或接受。首次输入头解析错误保留，新retry1已修正`)`与`;`可分行的语法，并强制新模块只有110个GND单元。
 
 诊断SDC只追加`report_route_congestion -max_grids 200`和`report_high_fanout_nets -max_nets 100 -min_fanout 100`。`collect_routing_diagnostic.py <build> --out <json>`读取厂商真实拥塞网格/高扇出/未布通报告，缺失值保持未知、不授予部署接受。旧成功报告仅用于读取格式检查，不能将旧网格位置移用到新失败候选。新诊断即使布通，完整工程仍须恢复匹配器、重新通过全部物理门槛。
+
+`prepare_bank_select_fanout.py`在银行读选择的实际寄存器驱动上加`syn_maxfan=128`，不改变语句/初值/使能/容量；不同于先前无效的SLF地址线属性。`measure_bank_select_fanout.py <frozen-SYN> --out <new-dir>`对真实64×1024×18几何配对模块SYN，每版180秒/所属工作集768MiB上限；这是小模块探针，完整SYN仍保持2/4GiB启动与40分钟预算。实测最大选择负载576→128、BSRAM64保持、FF+9/LUT+15，不承诺联合布线改善。
+
+`verify_bank_select_replication.py <actual-vg> --out <json>`从实际LUT/寄存器INIT计算选择器的转移函数，对64状态×64银行地址×两种读使能穷举8192组；原6/复制15个寄存器各49152/122880次检查通过，确认复制后D反馈实现的保持与更新仍相同。它只证明该选择器，不宣称验证了整张RAM或物理时序。`retry_frozen_synthesis.py --bank-select-data-fanout --wait-pid <prior-PNR-wrapper>`只改冻结副本的导航RAM属性，在原PNR报告采集退出后串行联合SYN；实际源叶/宽叶、选择器负载和路径仍要重新核对，再决定下一轮完整PNR，不复用删除匹配器的诊断输入。
