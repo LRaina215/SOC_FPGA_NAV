@@ -1,0 +1,63 @@
+{
+  "checked_at": "2026-10-23T08:25:13.714624+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\weight9_gyro17_trigblock_place1_route2_cdc50",
+  "frozen_source": "F:\\nav_integration_g2_20261023\\directed_weight9_gyro17_trigblock_coverage50",
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-23T08:24:19.583043+08:00",
+    "max_runtime_s": 3600.0,
+    "max_no_observable_progress_s": 2100.0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "pid": 38120,
+    "elapsed_s": 30.04700000002049,
+    "no_observable_progress_s": 24.03200000000652,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        920,
+        1792715064650682900
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        435,
+        1792715064650682900
+      ]
+    ]
+  },
+  "process": {
+    "ProcessId": 38120,
+    "ParentProcessId": 33984,
+    "CommandLine": "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe run.tcl"
+  },
+  "effective_options": {
+    "global_freq_mhz": 50.0,
+    "wide_split": 1,
+    "effective_options": "F:\\nav_integration_g2_20261023\\weight9_gyro17_trigblock_place1_route2_cdc50\\effective_options.tcl",
+    "extra_options": {
+      "replicate_resources": 1,
+      "place_option": 1,
+      "route_option": 2,
+      "timing_driven": 1
+    }
+  },
+  "actual_pnr_command": "-d F:\\nav_integration_g2_20261023\\weight9_gyro17_trigblock_place1_route2_cdc50\\g2_top.vg\n-p GW5AT-138C-PBGA484A-1\n-pn GW5AT-LV138PG484AC1/I0\n-cst F:\\nav_integration_g2_20261023\\weight9_gyro17_trigblock_place1_route2_cdc50\\g2.cst\n-cfg F:\\nav_integration_g2_20261023\\weight9_gyro17_trigblock_place1_route2_cdc50\\impl\\pnr\\device.cfg\n-sdc F:\\nav_integration_g2_20261023\\weight9_gyro17_trigblock_place1_route2_cdc50\\g2.sdc\n-bit\n-tr\n-ph\n-o\n-timing\n-ireg_not_in_iob\n-oreg_not_in_iob\n-ioreg_not_in_iob\n-replicate\n-cst_error\n-convert_sdp32_36_to_sdp16_18\n-place_option 1\n-route_option 2\n-retiming_resource none\n-clock_route_order 0\n-correct_hold 1\n-route_maxfan 23\n-global_freq 50.000\n",
+  "sdc_same_bytes_as_previous_qualified_candidate": true,
+  "cst_same_bytes_as_previous_qualified_candidate": true,
+  "netlist_same_bytes_as_completed_synthesis": true,
+  "first_stage_reference_register_presence_precheck_passed": true,
+  "hold_only_candidate_commands": 26,
+  "max_delay_candidate_commands": 26,
+  "clock_constraints": [
+    "clk50:50MHz",
+    "rgmii_rxc:100MHz"
+  ],
+  "diagnostic_only": false,
+  "physical_cdc_and52_active_constraints": "pending actual physical reports",
+  "scope": "qualified candidate PNR started; neither synthesis estimate nor process start constitutes G2 or deployment acceptance",
+  "programmed": false
+}

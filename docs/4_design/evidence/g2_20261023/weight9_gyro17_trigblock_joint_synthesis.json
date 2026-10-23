@@ -1,0 +1,109 @@
+{
+  "checked_at": "2026-10-23T08:25:13.714624+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\directed_weight9_gyro17_trigblock_coverage50",
+  "source": "F:\\nav_integration_g2_20261023\\directed_weight9_gyro17_coverage50",
+  "job": {
+    "source": "F:\\nav_integration_g2_20261023\\directed_weight9_gyro17_coverage50",
+    "build": "F:\\nav_integration_g2_20261023\\directed_weight9_gyro17_trigblock_coverage50",
+    "wait_pid": null,
+    "programmed": false,
+    "source_frozen_before_wait": true,
+    "automatic_pnr": false,
+    "modified_rtl_inputs": [
+      "nav/rtl/common/nav_ram_sdp.v"
+    ],
+    "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+    "phase": "synthesis_complete",
+    "updated_at": "2026-10-23T08:08:55.485927+08:00",
+    "minimum_start_free_bytes": 2147483648,
+    "minimum_start_available_commit_bytes": 4294967296,
+    "max_runtime_minutes": 40,
+    "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+    "tool_pid": 46388,
+    "synthesis_started_at": "2026-10-23T07:58:57.895667+08:00",
+    "elapsed_s": 570.1719999999623,
+    "free_bytes": 3852644352,
+    "available_commit_bytes": 7967580160,
+    "tool_exit": 0,
+    "joint_pnr_measured": false
+  },
+  "errors": [],
+  "actual_synthesis_global_freq_mhz": 50.0,
+  "before_resources": {
+    "T_Register": 38215,
+    "T_Alu": 9488,
+    "T_Lut": 52417,
+    "T_Bsram": 309,
+    "T_Ssram": 3855,
+    "T_ROM16": 3650,
+    "T_MULTALU27X18": 77,
+    "T_MULT12X12": 23,
+    "T_MULT27X36": 37,
+    "T_MULTADDALU12X12": 1
+  },
+  "after_resources": {
+    "T_Register": 38111,
+    "T_Alu": 9486,
+    "T_Lut": 50757,
+    "T_Bsram": 313,
+    "T_Ssram": 3855,
+    "T_ROM16": 702,
+    "T_MULTALU27X18": 77,
+    "T_MULT12X12": 23,
+    "T_MULT27X36": 37,
+    "T_MULTADDALU12X12": 1
+  },
+  "resource_delta": {
+    "T_Register": -104,
+    "T_Alu": -2,
+    "T_Lut": -1660,
+    "T_Bsram": 4,
+    "T_Ssram": 0,
+    "T_ROM16": -2948,
+    "T_MULTALU27X18": 0,
+    "T_MULT12X12": 0,
+    "T_MULT27X36": 0,
+    "T_MULTADDALU12X12": 0
+  },
+  "synthesis_timing": {
+    "clocks": [
+      {
+        "name": "clk50",
+        "constraint_mhz": 50.0,
+        "estimated_fmax_mhz": 52.885,
+        "levels": 24,
+        "entity": "TOP"
+      },
+      {
+        "name": "rgmii_rxc",
+        "constraint_mhz": 50.0,
+        "estimated_fmax_mhz": 98.656,
+        "levels": 6,
+        "entity": "TOP"
+      }
+    ],
+    "first_path": {
+      "Slack": "1.091",
+      "Data Arrival Time": "19.223",
+      "Data Required Time": "20.314",
+      "From": "u_command_lease/age_ms_6_s3",
+      "To": "u_command_lease/out_yaw_q12_11_s1",
+      "Launch Clk": "clk50[R]",
+      "Latch Clk": "clk50[R]"
+    },
+    "scope": "synthesis estimate only; actual PNR resource/timing acceptance must come from PNR reports"
+  },
+  "by_top_instance": {
+    "u_soc": 64,
+    "u_control": 43,
+    "u_nav": 206
+  },
+  "wide_leaves": 18,
+  "predicted_physical_bsram": 331,
+  "trig_structure": "four functional tables folded into two containers, each with two pROMs; no remaining trig ROM16/LUT/mux cells",
+  "source_modified_rtl_inputs": [
+    "nav/rtl/common/nav_ram_sdp.v"
+  ],
+  "scope": "completed joint SYN only; no actual new PNR BSRAM or Fmax, no G2 acceptance",
+  "programmed": false
+}

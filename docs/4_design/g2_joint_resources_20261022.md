@@ -358,3 +358,24 @@ DSP、SSRAM/ROM16计数未变，物理宽拆分后327仍是预测；RX综合估�
 07:58:57.896串行启动`F:/nav_integration_g2_20261023/directed_weight9_gyro17_trigblock_coverage50`联合SYN。以已成功的权重＋gyro17冻结输入派生，逐RTL确认只有`nav/rtl/common/nav_ram_sdp.v`改变，其余控制/原固件/权重保持；不从当前工作区重取源。保留有效50MHz、宽拆分1、40分钟SYN及提交余量保护，不并行启动其他昂贵构建。四表预计增加4块源BSRAM，309→313，18个宽叶若保持则物理预测331；这些尚未实测。见[冻结派生与启动](evidence/g2_20261023/weight9_gyro17_trigblock_started.json)。
 
 下一步以真实联合SYN核对表原语是否消除、资源/宽叶和长路径；若确有结构改善且资源有余量，再启动一轮恢复完整52条CDC候选/50–100MHz要求、时序驱动开启的有预算PNR。不得将本次SYN或331预测宣布G2通过。原4500数值、权重和125Hz周期保持；未进行新实机动作。
+
+### 08:08查表联合综合完成；08:24恢复完整候选约束PNR
+
+冻结派生的`directed_weight9_gyro17_trigblock_coverage50`于08:08:55.486完成SYN，厂商退出0、错误0，有效提示50MHz。实际存储313叶（CPU64/控制43/导航206），32/36位宽叶仍18（控制1/导航17），物理宽拆分预测331，尚无新物理占用。逐RTL输入只有导航RAM包装文件改变，原控制/固件/权重和此前已验证的优化标志保留。见[实际联合综合对照](evidence/g2_20261023/weight9_gyro17_trigblock_joint_synthesis.json)、[313叶逐项清单](evidence/g2_20261023/weight9_gyro17_trigblock_memories.json)。
+
+| 联合SYN指标 | 权重＋gyro17 | 加查表BSRAM | 差额 |
+|---|---:|---:|---:|
+| 源BSRAM / 宽叶 | 309 / 18 | 313 / 18 | +4 / 0 |
+| ROM16 | 3650 | 702 | −2948 |
+| LUT / 总寄存器 | 52417 / 38215 | 50757 / 38111 | −1660 / −104 |
+| ALU | 9488 | 9486 | −2 |
+| SSRAM | 3855 | 3855 | 0 |
+| 核心估计Fmax / 最坏到达 | 52.885MHz / 19.223ns | 52.885MHz / 19.223ns | 无变化 |
+
+DSP各原语数量不变；上述全局差额包含优化器重新映射，不直接等同于四表旧层次内的全部局部LUT/FF计数。实际新网表中四表所有ROM16及表内LUT/多级MUX均已移除，形成4个pROM；Gowin将每对sin模块折叠进cos层次，两个容器各2个原生ROM，不把层次消失称为功能表删减。审计脚本现区分功能表数量和综合容器数量，并针对该实际结构检查。见[新查表原语/层次证据](evidence/g2_20261023/weight9_gyro17_trigblock_connectivity.json)。
+
+最坏SYN仍为命令年龄age_ms_6_s3→out_yaw_q12_11_s1，裕量1.091ns；RX估计98.656MHz仍归50MHz全局提示。这轮确认的是分布式资源/地址连接的具体减少，尚不能证明物理拥塞消失或实际50/100MHz通过。
+
+有实际结构改善且逐叶资源预测低于336门槛，故于08:24:19.583串行启动`F:/nav_integration_g2_20261023/weight9_gyro17_trigblock_place1_route2_cdc50`。网表与新完成SYN逐字节相同；SDC/CST与此前完整候选相同，保留50/100MHz、26条hold-only及26条8/18ns最大延迟，实际timing_driven1、复制1、拆分1、place1/route2/global50均回读。引用寄存器存在预检通过，不等于物理CDC核验。见[启动与实际命令/约束](evidence/g2_20261023/weight9_gyro17_trigblock_pnr_started.json)。
+
+本次不是诊断禁入运行，但也尚未接受：仍必须等实际物理BSRAM、核心/RX与全局setup/hold、复位/脉宽、26条物理CDC连接及52条Actived约束全部核对；缺报告不通过。60分钟总预算、35分钟无可观察进展预算保持。旧三轮失败与现场保留，无新实机操作。

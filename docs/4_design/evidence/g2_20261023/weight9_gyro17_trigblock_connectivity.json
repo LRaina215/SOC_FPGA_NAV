@@ -1,0 +1,36 @@
+{
+  "build": "F:\\nav_integration_g2_20261023\\directed_weight9_gyro17_trigblock_coverage50",
+  "netlist": "F:\\nav_integration_g2_20261023\\directed_weight9_gyro17_trigblock_coverage50\\impl\\gwsynthesis\\g2_top.vg",
+  "tables": [
+    {
+      "path": "u_nav/u_match/u_cos",
+      "module_type": "nav_ram_sdp_25",
+      "primitive_counts": {
+        "pROM": 2,
+        "VCC": 1,
+        "GND": 1
+      },
+      "local_ROM16_address_loads": {}
+    },
+    {
+      "path": "u_nav/u_tr/u_cos",
+      "module_type": "nav_ram_sdp_28",
+      "primitive_counts": {
+        "pROM": 2,
+        "VCC": 1,
+        "GND": 1
+      },
+      "local_ROM16_address_loads": {}
+    }
+  ],
+  "expected_functional_table_count": 4,
+  "synthesis_container_count": 2,
+  "native_block_rom": true,
+  "hierarchy_note": "sin module folded into cos; each remaining container has two independent native ROMs",
+  "total_table_primitives": {
+    "pROM": 4,
+    "VCC": 2,
+    "GND": 2
+  },
+  "scope": "actual SYN primitive connectivity; local AD pin references only, no alias merge, physical congestion or timing acceptance"
+}

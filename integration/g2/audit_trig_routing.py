@@ -35,9 +35,18 @@ def audit(build):
                     local_ROM16_address_loads=dict(loads.most_common())))
             walk(child,full)
     walk('g2_top','')
-    assert len(rows)==4,('expected exactly four frozen navigation trig tables',rows)
+    totals=sum((Counter(x['primitive_counts'])for x in rows),Counter())
+    native=json.loads((build/'manifest.json').read_text()).get('trig_block_rom',False)
+    if native:
+        # Gowin folds each sin hierarchy into its neighboring cos module. The
+        # two native ROMs, with their independent read ports, remain per pair.
+        assert {r['path'] for r in rows}=={'u_nav/u_match/u_cos','u_nav/u_tr/u_cos'},rows
+        assert all(r['primitive_counts'].get('pROM')==2 and not r['primitive_counts'].get('ROM16') for r in rows),rows
+    else:assert len(rows)==4,('expected exactly four frozen navigation trig tables',rows)
     return dict(build=str(build),netlist=str(path),tables=rows,
-        total_table_primitives=dict(sum((Counter(x['primitive_counts'])for x in rows),Counter())),
+        expected_functional_table_count=4,synthesis_container_count=len(rows),native_block_rom=native,
+        hierarchy_note='sin module folded into cos; each remaining container has two independent native ROMs' if native else 'four separate SYN table containers',
+        total_table_primitives=dict(totals),
         scope='actual SYN primitive connectivity; local AD pin references only, no alias merge, physical congestion or timing acceptance')
 
 
