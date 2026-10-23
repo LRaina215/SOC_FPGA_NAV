@@ -13,6 +13,13 @@ def diagnostic_policy(result):
     return result
 
 
+def has_real_sfp(manifest):
+    while manifest:
+        if manifest.get('real_sfp'):return True
+        manifest=manifest.get('source_manifest')
+    return False
+
+
 def collect(build,top='g2_top'):
     p=build/'impl/pnr';report=p/(top+'.rpt.txt');timing=p/(top+'.tr')
     s=report.read_text(encoding='utf-8');t=timing.read_text(encoding='utf-8') if timing.exists() else ''
@@ -103,9 +110,31 @@ def collect(build,top='g2_top'):
         r['cdc_first_stage_candidate']=dict(physical_audit=physical,endpoints_match_reference=endpoints_match,
             required_active_constraints=len(reviewed),missing_active_constraints=missing,passed=cdc_pass,
             scope='only audited first-stage hold exceptions and explicit max delays; no full CDC/IO/MTBF signoff')
+    sfp_file=build/'sfp_cdc_reference.json'
+    if sfp_file.exists():
+        from audit_sfp_cdc import audit as audit_sfp,sdc_fragment as sfp_fragment
+        reference=json.loads(sfp_file.read_text(encoding='utf-8'))
+        commands=[x for x in sfp_fragment(reference).splitlines() if x.startswith('set_')]
+        physical_netlist=p/(top+'.vo')
+        physical=audit_sfp(physical_netlist) if physical_netlist.exists() else dict(passed=False,paths=[],errors=['physical netlist unavailable'])
+        def sfp_endpoints(data):return {(x['source_register'],x['first_register'],x['second_register'],x['source_clock'],x['target_clock']) for x in data['paths']}
+        active={' '.join(x.split()) for x in re.findall(r'^\s*TC_\S+\s+Actived\s+(.+?)\s*$',t,re.M)}
+        missing=[x for x in commands if ' '.join(x.split()) not in active]
+        matches=physical['passed'] and sfp_endpoints(physical)==sfp_endpoints(reference)
+        r['sfp_host_cdc_candidate']=dict(physical_audit=physical,endpoints_match_reference=matches,
+            required_active_constraints=len(commands),missing_active_constraints=missing,passed=bool(matches and not missing))
+        reviewed+=commands
+        cdc_pass=cdc_pass and r['sfp_host_cdc_candidate']['passed']
     r['unreviewed_timing_exceptions']=[x for x in exception_commands if ' '.join(x.split()) not in {' '.join(y.split()) for y in reviewed}]
     r['g2_resource_core_gate_pass']=r['routing_passed'] and r['bsram_work_gate_336'] and r['core_50mhz_timing_pass'] and r['receive_100mhz_report_pass'] and r['reported_reset_pulse_checks_pass'] and r['setup_violations']==0 and r['hold_violations']==0 and cdc_pass and not r['unreviewed_timing_exceptions']
     r['scope']='actual reported resource/core timing; physical device revision, IO/CDC signoff and G3/vehicle acceptance remain separate'
+    if has_real_sfp(r['manifest']):
+        r['sfp_125mhz_report_pass']=all(any(c['name']==name and c['constraint_mhz']==125 and c['actual_fmax_mhz']>=125 for c in clocks) and domain_clean(name) for name in ('sfp_rx_clk','sfp_tx_clk'))
+        # The 51 new host FIFO/toggle paths do not cover vendor PCS and reset/IO.
+        # Keep acceptance closed until those remaining crossings are reviewed.
+        r['sfp_complete_cdc_acceptance']=False
+        r['g2_resource_core_gate_pass']=False
+        r['scope']='complete SFP candidate: 26 lidar and 51 host paths checked separately; vendor PCS/status/reset/IO acceptance pending'
     return diagnostic_policy(r)
 
 

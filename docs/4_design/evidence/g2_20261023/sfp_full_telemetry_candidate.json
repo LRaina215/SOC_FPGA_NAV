@@ -1,0 +1,110 @@
+{
+  "recorded_at": "2026-10-23T16:08:08.146179+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\sfp_web_syn1",
+  "original_control_algorithm_weights_hz_unchanged": true,
+  "programmed": false,
+  "synthesis": {
+    "synthesis_report_bsram": "316(0)",
+    "expanded_bsram_count": 316,
+    "by_top_instance": {
+      "u_soc": 64,
+      "u_control": 43,
+      "u_nav": 209
+    },
+    "wide32_36_count": 18,
+    "predicted_split_bsram": 334
+  },
+  "synthesis_timing": {
+    "clocks": [
+      {
+        "name": "clk50",
+        "constraint_mhz": 50.0,
+        "estimated_fmax_mhz": 52.07,
+        "levels": 24,
+        "entity": "TOP"
+      },
+      {
+        "name": "rgmii_rxc",
+        "constraint_mhz": 50.0,
+        "estimated_fmax_mhz": 98.656,
+        "levels": 6,
+        "entity": "TOP"
+      }
+    ],
+    "first_path": {
+      "Slack": "0.795",
+      "Data Arrival Time": "19.519",
+      "Data Required Time": "20.314",
+      "From": "u_command_lease/age_ms_6_s3",
+      "To": "u_command_lease/out_forward_q12_10_s1",
+      "Launch Clk": "clk50[R]",
+      "Latch Clk": "clk50[R]"
+    },
+    "scope": "synthesis estimate only; actual PNR resource/timing acceptance must come from PNR reports"
+  },
+  "serdes_primitive_count": 1,
+  "tests": {
+    "digital_uart_udp": {
+      "passed": true,
+      "control_packets": 8,
+      "mailbox_packets": 3,
+      "uart_bitwise_equivalent": true,
+      "complete_v2_bytes_preserved": true,
+      "exercised": [
+        "unknown peer",
+        "two slots full",
+        "random TX backpressure",
+        "mailbox during telemetry",
+        "stale queued frame",
+        "reset recovery"
+      ],
+      "scope": "UART and MAC-byte/UDP digital boundary; not vendor analog SerDes or real-board acceptance"
+    },
+    "actual_rtl_packets_web_decode": {
+      "passed": true,
+      "rtl_uart_udp_to_actual_web_decoder_packets": 8,
+      "all_fields_roundtrip": true,
+      "scope": "actual RTL captured packets through production RK decoder, not physical SFP"
+    },
+    "web_suite": {
+      "passed": 46,
+      "skipped": 1,
+      "python": "F:/yuntuo_test_env_20261023/Scripts/python.exe"
+    },
+    "backend_full_fields_contract": {
+      "passed": 1
+    },
+    "backend_full_suite": {
+      "passed": 4,
+      "failed": 46,
+      "interrupted": true,
+      "observed_failure": "WinError32 during SQLite temporary database cleanup; not a full-suite pass"
+    },
+    "sfp_cdc_audit": {
+      "passed": 2,
+      "negative_cases": 5,
+      "hierarchy_bus_order": true
+    }
+  },
+  "pnr": {
+    "build": "F:/nav_integration_g2_20261023/sfp_web_pnr2",
+    "started_at": "2026-10-23T16:03:18+08:00",
+    "tool_pid": 34204,
+    "max_runtime_min": 60,
+    "max_no_progress_min": 35,
+    "lidar_paths": 26,
+    "host_fifo_toggle_paths": 51,
+    "expected_active_constraints": 154,
+    "final_reports_available": false
+  },
+  "limitations": [
+    "334 is predicted physical BSRAM, not measured",
+    "vendor PCS/status/reset/IO CDC review pending",
+    "PATH, COSTMAP, session/command ACK and verified stop state not implemented",
+    "no RK/cloud deployment or hardware programming"
+  ],
+  "startup_failure": {
+    "build": "F:/nav_integration_g2_20261023/sfp_web_pnr1",
+    "cause": "JSON list versus in-memory tuple comparison; normalized and retried before any vendor PNR process started"
+  }
+}

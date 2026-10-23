@@ -20,6 +20,8 @@
  *                  uint8 loc_state(0 无图 1 对准中 2 正常 3 退化 4 丢失), uint8 loc_quality(%), uint16 rsv
  *   0x81 PATH      uint8 n, uint8 rsv[3], n × {int32 x_mm, int32 y_mm}（n <= 32，已降采样）
  *   0x82 MAP_ACK   uint32 next_offset, uint8 map_state(0 无 1 接收中 2 已加载 3 校验错 4 格式错), uint8 rsv[3]
+ *   0x83 CONTROL_V2 126 bytes: unmodified A5 5A 02 78 +120-byte payload+CRC16 LE.
+ *                  Produced by the read-only UART byte tap, not reconstructed by firmware.
  */
 #ifndef NAV_PROTO_H
 #define NAV_PROTO_H
@@ -33,7 +35,7 @@
 enum {
     MSG_GOAL = 0x10, MSG_WAYPOINTS = 0x11, MSG_SET_POSE = 0x12, MSG_TARGET = 0x20, MSG_MODE = 0x30,
     MSG_MAP_BEGIN = 0x40, MSG_MAP_DATA = 0x41, MSG_MAP_END = 0x42, MSG_MAP_CLEAR = 0x43,
-    MSG_STATUS = 0x80, MSG_PATH = 0x81, MSG_MAP_ACK = 0x82,
+    MSG_STATUS = 0x80, MSG_PATH = 0x81, MSG_MAP_ACK = 0x82, MSG_CONTROL_V2 = 0x83,
 };
 
 /* STATUS.state */

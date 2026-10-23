@@ -1,0 +1,73 @@
+// Board SFP1: Q0 Lane0, REFCLK1=125MHz. See generate_ip.py for vendor files.
+module sfp_host_mac (
+    input wire clk, input wire rst,
+    input wire cfg_sgmii, input wire cfg_an, input wire cfg_use_los,
+    input wire sfp_los, output wire sfp_tx_disable,
+    output wire rx_clk, output wire rx_valid, output wire [7:0] rx_data,
+    output wire rx_last, output wire rx_error,
+    output wire tx_clk, input wire tx_valid, input wire [7:0] tx_data,
+    input wire tx_last, output wire tx_ready,
+    output wire [10:0] status, output wire [15:0] partner,
+    output wire qpll_ok, output wire rx_lock, output wire aligned
+);
+    wire los;
+    nav_sync2 u_los (.clk(clk), .d(sfp_los), .q(los));
+    assign sfp_tx_disable = rst;
+    // IPUG1021: full duplex bit9; AN bit2; soft-reset/loopback/isolate all zero.
+    wire [14:0] configuration = 15'h0200 | (cfg_an ? 15'h0004 : 15'h0000);
+    SfpSerDes u_serdes (
+        .diag_qpll_ok(qpll_ok), .diag_rx_lock(rx_lock), .diag_align(aligned),
+        .Giga_Serial_Ethernet_Top_clk_in_i(clk),
+        .Giga_Serial_Ethernet_Top_rstn_i(~rst),
+        .Giga_Serial_Ethernet_Top_signal_detect_i(~cfg_use_los | ~los),
+        .Giga_Serial_Ethernet_Top_basex_link_timer_i(9'd488),
+        .Giga_Serial_Ethernet_Top_sgmii_link_timer_i(9'd49),
+        .Giga_Serial_Ethernet_Top_basex_or_sgmii_i(cfg_sgmii),
+        .Giga_Serial_Ethernet_Top_sgmii_mode_i(1'b0),
+        .Giga_Serial_Ethernet_Top_repeater_mode_i(1'b0),
+        .Giga_Serial_Ethernet_Top_configuration_vector_i(configuration),
+        .Giga_Serial_Ethernet_Top_status_vector_o(status),
+        .Giga_Serial_Ethernet_Top_link_partner_ability_base_o(partner),
+        .Giga_Serial_Ethernet_Top_rx_mac_clk_o(rx_clk),
+        .Giga_Serial_Ethernet_Top_rx_mac_valid_o(rx_valid),
+        .Giga_Serial_Ethernet_Top_rx_mac_data_o(rx_data),
+        .Giga_Serial_Ethernet_Top_rx_mac_last_o(rx_last),
+        .Giga_Serial_Ethernet_Top_rx_mac_error_o(rx_error),
+        .Giga_Serial_Ethernet_Top_tx_mac_clk_o(tx_clk),
+        .Giga_Serial_Ethernet_Top_tx_mac_valid_i(tx_valid),
+        .Giga_Serial_Ethernet_Top_tx_mac_data_i(tx_data),
+        .Giga_Serial_Ethernet_Top_tx_mac_last_i(tx_last),
+        .Giga_Serial_Ethernet_Top_tx_mac_error_i(1'b0),
+        .Giga_Serial_Ethernet_Top_tx_mac_ready_o(tx_ready),
+        .Giga_Serial_Ethernet_Top_tx_collision_o(),
+        .Giga_Serial_Ethernet_Top_tx_retransmit_o(),
+        .Giga_Serial_Ethernet_Top_rx_fcs_fwd_ena_i(1'b0),
+        .Giga_Serial_Ethernet_Top_rx_jumbo_ena_i(1'b0),
+        .Giga_Serial_Ethernet_Top_rx_statistics_valid_o(),
+        .Giga_Serial_Ethernet_Top_rx_statistics_vector_o(),
+        .Giga_Serial_Ethernet_Top_rx_pause_req_o(),
+        .Giga_Serial_Ethernet_Top_rx_pause_val_o(),
+        .Giga_Serial_Ethernet_Top_tx_pause_req_i(1'b0),
+        .Giga_Serial_Ethernet_Top_tx_pause_val_i(16'd0),
+        .Giga_Serial_Ethernet_Top_tx_pause_source_addr_i(48'd0),
+        .Giga_Serial_Ethernet_Top_tx_ifg_delay_ena_i(1'b0),
+        .Giga_Serial_Ethernet_Top_tx_ifg_delay_i(8'd0),
+        .Giga_Serial_Ethernet_Top_tx_fcs_fwd_ena_i(1'b0),
+        .Giga_Serial_Ethernet_Top_tx_statistics_valid_o(),
+        .Giga_Serial_Ethernet_Top_tx_statistics_vector_o(),
+        .Giga_Serial_Ethernet_Top_miim_hs_clk_i(clk),
+        .Giga_Serial_Ethernet_Top_miim_rstn_i(~rst),
+        .Giga_Serial_Ethernet_Top_miim_phyad_i(5'd0),
+        .Giga_Serial_Ethernet_Top_miim_regad_i(5'd0),
+        .Giga_Serial_Ethernet_Top_miim_wrdata_i(16'd0),
+        .Giga_Serial_Ethernet_Top_miim_wren_i(1'b0),
+        .Giga_Serial_Ethernet_Top_miim_rden_i(1'b0),
+        .Giga_Serial_Ethernet_Top_miim_rddata_o(),
+        .Giga_Serial_Ethernet_Top_miim_rddata_valid_o(),
+        .Giga_Serial_Ethernet_Top_miim_busy_o(),
+        .Giga_Serial_Ethernet_Top_mdc_o(),
+        .Giga_Serial_Ethernet_Top_mdio_in_i(1'b1),
+        .Giga_Serial_Ethernet_Top_mdio_out_o(),
+        .Giga_Serial_Ethernet_Top_mdio_oen_o()
+    );
+endmodule

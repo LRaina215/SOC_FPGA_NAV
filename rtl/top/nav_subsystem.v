@@ -10,7 +10,8 @@
 module nav_subsystem #(
     parameter integer CLK_HZ = 100000000,  // 核心时钟频率（须为 1 MHz 整数倍；串口分频等按此换算）
     parameter SIN_INIT = "sin_lut.hex",
-    parameter integer SUPPORT_COVERAGE_ENABLE = 1
+    parameter integer SUPPORT_COVERAGE_ENABLE = 1,
+    parameter integer HOST_EXTENSION_ENABLE = 0
 ) (
     input  wire        clk,             // 核心时钟 100 MHz
     input  wire        rst,
@@ -36,6 +37,10 @@ module nav_subsystem #(
     input  wire        h_rx_valid, input wire [7:0] h_rx_data, input wire h_rx_last, input wire h_rx_error,
     input  wire        h_tx_clk, input wire h_tx_rst,
     output wire        h_tx_valid, output wire [7:0] h_tx_data, output wire h_tx_last, input wire h_tx_ready,
+    input wire h_core_rst,
+    input wire control_tap_valid,control_tap_first,control_tap_last,
+    input wire [7:0] control_tap_data,
+    output wire [31:0] control_tx_accepted,control_tx_dropped,control_tx_sent,
 
     // IMU 串口
     input  wire        imu_rx,
@@ -139,8 +144,9 @@ module nav_subsystem #(
     wire [15:0] h_tx_len;
     wire [10:0] h_pl_addr;
     wire [7:0]  h_pl_q;
+    wire host_rst = HOST_EXTENSION_ENABLE ? h_core_rst : rst;
     net_port #(.RX_AW(12), .TX_AW(11), .PL_AW(11)) u_neth (
-        .clk(clk), .rst(rst), .time_us(time_us),
+        .clk(clk), .rst(host_rst), .time_us(time_us),
         .rx_mac_clk(h_rx_clk), .rx_mac_rst(h_rx_rst), .rx_mac_valid(h_rx_valid), .rx_mac_data(h_rx_data),
         .rx_mac_last(h_rx_last), .rx_mac_error(h_rx_error),
         .tx_mac_clk(h_tx_clk), .tx_mac_rst(h_tx_rst), .tx_mac_valid(h_tx_valid), .tx_mac_data(h_tx_data),
@@ -170,8 +176,24 @@ module nav_subsystem #(
     wire [31:0] mb_ts, mb_src_ip, mb_word, mb_drop;
     wire [9:0]  mb_twords;
     reg         mb_rd;
+    wire mb_go,mb_busy,mb_pl_re;
+    wire [15:0] mb_tx_len;
+    wire [10:0] mb_pl_addr;
+    wire [7:0] mb_pl_q;
+    generate if(HOST_EXTENSION_ENABLE) begin:g_host_extension
+        host_control_tx u_control_tx(
+            .clk(clk),.rst(host_rst),.peer_valid(neth_peer_ip!=0 && neth_peer_port!=0),.time_us(time_us),
+            .tap_valid(control_tap_valid),.tap_first(control_tap_first),.tap_last(control_tap_last),.tap_data(control_tap_data),
+            .mb_go(mb_go),.mb_len(mb_tx_len),.mb_busy(mb_busy),.mb_re(mb_pl_re),.mb_addr(mb_pl_addr),.mb_q(mb_pl_q),
+            .tx_go(h_tx_go),.tx_len(h_tx_len),.tx_busy(h_tx_busy),.pl_re(h_pl_re),.pl_addr(h_pl_addr),.pl_q(h_pl_q),
+            .accepted(control_tx_accepted),.dropped(control_tx_dropped),.sent(control_tx_sent));
+    end else begin:g_legacy_host
+        assign h_tx_go=mb_go;assign h_tx_len=mb_tx_len;assign mb_busy=h_tx_busy;
+        assign mb_pl_re=h_pl_re;assign mb_pl_addr=h_pl_addr;assign h_pl_q=mb_pl_q;
+        assign control_tx_accepted=0;assign control_tx_dropped=0;assign control_tx_sent=0;
+    end endgenerate
     host_mbx #(.RX_AW(12), .DQ_AW(4), .TX_WAW(9)) u_mbx (
-        .clk(clk), .rst(rst),
+        .clk(clk), .rst(host_rst),
         .e_valid(hu_valid), .e_data(hu_data), .e_last(hu_last), .e_err(hu_err), .e_src_ip(hu_src_ip),
         .e_src_port(hu_src_port), .e_len(hu_len), .e_ts(hu_ts),
         .inj_we(p_MBX_INJ_DATA), .inj_wdata(wd_q), .inj_go(p_MBX_INJ_GO), .inj_len(r_MBX_INJ_LEN[15:0]), .now_us(time_us),
@@ -181,14 +203,14 @@ module nav_subsystem #(
         .rx_pop(p_MBX_RX_POP), .rx_irq(mb_irq), .st_drop(mb_drop),
         .tx_we(p_MBX_TX_DATA), .tx_wdata(wd_q), .tx_go_in(p_MBX_TX_GO), .tx_len_in(r_MBX_TX_LEN[15:0]),
         .tx_words(mb_twords),
-        .tx_go(h_tx_go), .tx_len(h_tx_len), .tx_busy(h_tx_busy), .pl_re(h_pl_re), .pl_addr(h_pl_addr), .pl_q(h_pl_q)
+        .tx_go(mb_go), .tx_len(mb_tx_len), .tx_busy(mb_busy), .pl_re(mb_pl_re), .pl_addr(mb_pl_addr), .pl_q(mb_pl_q)
     );
     assign i_MBX_RX_STAT     = {mb_avail, 7'd0, mb_pkts, mb_len};
     assign i_MBX_RX_DATA     = mb_word;
     assign i_MBX_RX_TS       = mb_ts;
     assign i_MBX_RX_SRC_IP   = mb_src_ip;
     assign i_MBX_RX_SRC_PORT = {16'd0, mb_src_port};
-    assign i_MBX_TX_STAT     = {16'd0, 2'd0, mb_twords, 3'd0, h_tx_busy};
+    assign i_MBX_TX_STAT     = {16'd0, 2'd0, mb_twords, 3'd0, mb_busy};
 
     // ================================================================ 雷达点云链路
     wire        x_valid, x_ready, x_sof, x_eof, frm_start, frm_ready, pose_wait;

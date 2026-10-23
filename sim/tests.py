@@ -66,7 +66,7 @@ TESTS['tb_control_pid_reference'] = {
     'top':'tb_control_pid_reference',
 }
 
-NET = ["rtl/net/udp_rx.v", "rtl/net/udp_tx.v", "rtl/net/raw_cap.v", "rtl/net/net_port.v", "rtl/net/host_mbx.v"]
+NET = ["rtl/net/udp_rx.v", "rtl/net/udp_tx.v", "rtl/net/raw_cap.v", "rtl/net/net_port.v", "rtl/net/host_mbx.v", "rtl/net/host_control_tx.v"]
 
 TESTS["tb_net"] = {
     "pre": ["sim/gen/gen_net.py"],

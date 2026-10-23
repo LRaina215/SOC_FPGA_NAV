@@ -1,10 +1,9 @@
-// ACX750 (GW5AT-LV138PG484A) 板级顶层：导航子系统单独上板联调用。
-// 整车工程中请把 nav_subsystem 并入整车顶层，本文件可作连线参考。
+// ACX750 (GW5AT-LV138PG484A) 导航与原4500控制的联合顶层。
 //
 // 时钟：板载 50 MHz（W19）。定义 NAV_USE_PLL 时经 Gowin_PLL_Nav 倍频到 100 MHz，否则核心直接跑 50 MHz。
 // 雷达网口：RJ45 / RTL8211F（RGMII）。rtl/net/rgmii_mac100.v：百兆 MAC + PHY 复位 + MDIO 把自协商限制到百兆。
-// 主机网口：SFP1（收发器第 0 通道，参考时钟 MGT_CLK1 125 MHz）。定义 NAV_USE_SFP 时例化
-//           IP "Gowin_1GSERETH_Host"（1000BASE-X，开启 MAC 功能），否则悬空。
+// 主机网口：定义 G2_REAL_SFP 时启用 Q0 Lane0 / REFCLK1 125 MHz 的真实 MAC/SerDes，
+//           与导航邮箱共用网栈，旁路复制完整原控制UART遥测。未定义时仅保留旧资源诊断配置。
 // 调试：板载 USB 串口（L21/M21）接 uart_bus_bridge，PC 用 tools/nav_uart.py 读写全部寄存器；
 //       地址 0xE000–0xFFFF 转到软核调试口（装载程序、读控制台）。
 // 软核：nav_soc（PicoRV32，片上 RAM 128 KB，上电运行 fw/build/rv/nav 的镜像），经 nav_bus_arb m0 访问导航子系统。
@@ -52,7 +51,6 @@ module g2_top (
 `endif
     wire rst;
     nav_rst_sync u_rs (.clk(clk), .arst(~key_rst_n | ~pll_lock), .rst(rst));
-    assign sfp1_tx_dis = 1'b0;
 
     // ---------------- 总线：调试串口桥（软核接入后接 m0） ----------------
     wire        u_req, u_we, u_ack;
@@ -112,22 +110,32 @@ module g2_top (
     // ---------------- 主机口 MAC（SFP） ----------------
     wire       h_rx_clk, h_rx_valid, h_rx_last, h_rx_err, h_tx_clk, h_tx_valid, h_tx_last, h_tx_ready;
     wire [7:0] h_rx_data, h_tx_data;
-`ifdef NAV_USE_SFP
-    // 1G Serial Ethernet（PCS+MAC）与 SerDes 由 IP 生成器一起产生，顶层封装名 Gowin_1GSERETH_Host
-    Gowin_1GSERETH_Host u_hmac (
-        .rstn(~rst), .signal_detect(~sfp1_los),
-        .rx_mac_clk(h_rx_clk), .rx_mac_valid(h_rx_valid), .rx_mac_data(h_rx_data), .rx_mac_last(h_rx_last),
-        .rx_mac_error(h_rx_err),
-        .tx_mac_clk(h_tx_clk), .tx_mac_valid(h_tx_valid), .tx_mac_data(h_tx_data), .tx_mac_last(h_tx_last),
-        .tx_mac_error(1'b0), .tx_mac_ready(h_tx_ready)
-    );
+    wire h_rx_rst,h_tx_rst,h_core_rst;
+    wire sfp_sel,sfp_ack,nav_ack;
+    wire [31:0] sfp_rdata,nav_rdata;
+    wire tap_valid,tap_first,tap_last;
+    wire [7:0] tap_data;
+    wire [31:0] telemetry_accepted,telemetry_dropped,telemetry_sent;
+    assign s_ack=sfp_sel ? sfp_ack : nav_ack;
+    assign s_rdata=sfp_sel ? sfp_rdata : nav_rdata;
+`ifdef G2_REAL_SFP
+    assign sfp_sel=s_addr[15:8]==8'h13;
+    sfp_management u_sfp(
+        .clk(clk),.rst(rst),.req(s_req && sfp_sel),.we(s_we),.addr(s_addr[7:0]),.wdata(s_wdata),
+        .ack(sfp_ack),.rdata(sfp_rdata),.telemetry_accepted(telemetry_accepted),
+        .telemetry_dropped(telemetry_dropped),.telemetry_sent(telemetry_sent),
+        .sfp_los(sfp1_los),.sfp_tx_disable(sfp1_tx_dis),
+        .rx_clk(h_rx_clk),.rx_valid(h_rx_valid),.rx_data(h_rx_data),.rx_last(h_rx_last),.rx_error(h_rx_err),
+        .tx_clk(h_tx_clk),.tx_valid(h_tx_valid),.tx_data(h_tx_data),.tx_last(h_tx_last),.tx_ready(h_tx_ready),
+        .host_rst(h_core_rst),.rx_rst(h_rx_rst),.tx_rst(h_tx_rst));
 `else
-    assign h_rx_clk = clk; assign h_rx_valid = 1'b0; assign h_rx_data = 8'd0; assign h_rx_last = 1'b0;
-    assign h_rx_err = 1'b0; assign h_tx_clk = clk; assign h_tx_ready = 1'b1;
+    assign sfp_sel=0;assign sfp_ack=0;assign sfp_rdata=0;
+    assign sfp1_tx_dis=0;
+    assign h_rx_clk=clk;assign h_rx_valid=0;assign h_rx_data=0;assign h_rx_last=0;
+    assign h_rx_err=0;assign h_tx_clk=clk;assign h_tx_ready=1;
+    assign h_core_rst=rst;assign h_rx_rst=rst;assign h_tx_rst=rst;
+    assign tap_valid=0;assign tap_first=0;assign tap_last=0;assign tap_data=0;
 `endif
-    wire h_rx_rst, h_tx_rst;
-    nav_rst_sync u_hrr (.clk(h_rx_clk), .arst(rst), .rst(h_rx_rst));
-    nav_rst_sync u_htr (.clk(h_tx_clk), .arst(rst), .rst(h_tx_rst));
 
     // ---------------- 导航子系统 ----------------
     wire irq, ch_valid, ch_stop, ch_wdog;
@@ -172,20 +180,30 @@ module g2_top (
     control4500_core u_control(
         .clk(clk),.reset_n(~rst),.nav_forward_q12(nav_forward_q12),.nav_yaw_q12(nav_yaw_q12),
         .feedback_valid(odo_valid),.feedback_vx_mmps(odo_vx),.feedback_wz_mradps(odo_wz),
+`ifdef G2_REAL_SFP
+        .telemetry_valid(tap_valid),.telemetry_first(tap_first),.telemetry_last(tap_last),.telemetry_data(tap_data),
+`endif
         .UART_RXD(1'b1),.UART_TXD(control_txd),.IRIN(IRIN),.sck(sck),.sda(sda),
         .BMI088_SCL(BMI088_SCL),.BMI088_SDA(BMI088_SDA),
         .M1_ENCA(M1_ENCA),.M1_ENCB(M1_ENCB),.M2_ENCA(M2_ENCA),.M2_ENCB(M2_ENCB),
         .M1_PWM(M1_PWM),.M1_DIR1(M1_DIR1),.M1_DIR2(M1_DIR2),
         .M2_PWM(M2_PWM),.M2_DIR1(M2_DIR1),.M2_DIR2(M2_DIR2),
         .SERVO1(SERVO1),.SERVO2(SERVO2),.SERVO3(SERVO3),.SERVO4(SERVO4));
-    nav_subsystem #(.CLK_HZ(CLK_HZ), .SIN_INIT("sin_lut.hex"),.SUPPORT_COVERAGE_ENABLE(`G2_COVERAGE)) u_nav (
+    nav_subsystem #(.CLK_HZ(CLK_HZ), .SIN_INIT("sin_lut.hex"),.SUPPORT_COVERAGE_ENABLE(`G2_COVERAGE)
+`ifdef G2_REAL_SFP
+        ,.HOST_EXTENSION_ENABLE(1)
+`endif
+    ) u_nav (
         .clk(clk), .rst(rst),
-        .bus_req(s_req), .bus_we(s_we), .bus_addr(s_addr), .bus_wdata(s_wdata), .bus_ack(s_ack), .bus_rdata(s_rdata),
+        .bus_req(s_req && !sfp_sel), .bus_we(s_we), .bus_addr(s_addr), .bus_wdata(s_wdata), .bus_ack(nav_ack), .bus_rdata(nav_rdata),
         .irq(irq),
         .l_rx_clk(l_rx_clk), .l_rx_rst(l_rx_rst), .l_rx_valid(l_rx_valid), .l_rx_data(l_rx_data),
         .l_rx_last(l_rx_last), .l_rx_error(l_rx_err),
         .l_tx_clk(l_tx_clk), .l_tx_rst(l_tx_rst), .l_tx_valid(l_tx_valid), .l_tx_data(l_tx_data),
         .l_tx_last(l_tx_last), .l_tx_ready(l_tx_ready), .l_phy_stat(l_phy_stat), .l_rx_neg(l_rx_neg),
+        .h_core_rst(h_core_rst),.control_tap_valid(tap_valid),.control_tap_first(tap_first),
+        .control_tap_last(tap_last),.control_tap_data(tap_data),
+        .control_tx_accepted(telemetry_accepted),.control_tx_dropped(telemetry_dropped),.control_tx_sent(telemetry_sent),
         .h_rx_clk(h_rx_clk), .h_rx_rst(h_rx_rst), .h_rx_valid(h_rx_valid), .h_rx_data(h_rx_data),
         .h_rx_last(h_rx_last), .h_rx_error(h_rx_err),
         .h_tx_clk(h_tx_clk), .h_tx_rst(h_tx_rst), .h_tx_valid(h_tx_valid), .h_tx_data(h_tx_data),

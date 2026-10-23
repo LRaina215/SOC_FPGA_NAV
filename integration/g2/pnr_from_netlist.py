@@ -15,6 +15,7 @@ def main():
     ap.add_argument('--max-runtime-minutes',type=float,default=0,help='0 disables; time budget is not proof of deadlock')
     ap.add_argument('--max-no-progress-minutes',type=float,default=0,help='0 disables; observe tool log/artifacts, not CPU activity')
     ap.add_argument('--cdc-reference-audit',type=Path,help='explicit 26-path physical connectivity audit; hold-only first-stage candidate')
+    ap.add_argument('--sfp-cdc-reference',type=Path,help='explicit 51-path host FIFO/toggle SYN candidate, rechecked physically after PNR')
     ap.add_argument('--diagnostic-only',action='store_true',help='controlled implementation comparison; force G2 acceptance false regardless of measured timing')
     ap.add_argument('--capture-system-telemetry',action='store_true',help='record owned process and host memory every30s; never treat these samples as routing progress')
     ap.add_argument('--out',type=Path,required=True);a=ap.parse_args()
@@ -23,6 +24,10 @@ def main():
     src=a.source.resolve();out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
     for old,new in [('impl/gwsynthesis/g2_top.vg','g2_top.vg'),('g2.cst','g2.cst'),('g2.sdc','g2.sdc')]:
         shutil.copyfile(src/old,out/new)
+    # A frozen SerDes netlist still requires the exact CSR during PNR.
+    csr=src/'ip/serdes.csr'
+    if csr.exists():
+        (out/'ip').mkdir();shutil.copyfile(csr,out/'ip/serdes.csr')
     cdc_reference=a.cdc_reference_audit or (src/'cdc_reference_audit.json' if (src/'cdc_reference_audit.json').exists() else None)
     if cdc_reference:
         reference=json.loads(cdc_reference.read_text(encoding='utf-8'))
@@ -44,6 +49,13 @@ def main():
         if a.cdc_reference_audit:
             assert 'set_false_path' not in (out/'g2.sdc').read_text(encoding='utf-8'),'source SDC already has exceptions'
             with (out/'g2.sdc').open('a',encoding='utf-8',newline='\n') as file:file.write('\n'+fragment)
+    if a.sfp_cdc_reference:
+        from audit_sfp_cdc import audit as audit_sfp,sdc_fragment as sfp_fragment
+        sfp_reference=json.loads(a.sfp_cdc_reference.read_text(encoding='utf-8'))
+        actual=audit_sfp(out/'g2_top.vg',synthesis=True)
+        assert actual['passed'] and json.loads(json.dumps(actual['paths']))==sfp_reference['paths'],'SFP reference differs from this frozen netlist'
+        (out/'sfp_cdc_reference.json').write_text(json.dumps(sfp_reference,indent=2),encoding='utf-8')
+        with (out/'g2.sdc').open('a',encoding='utf-8',newline='\n') as file:file.write('\n'+sfp_fragment(sfp_reference))
     command=src/'impl/pnr/cmd.do';cmd=command.read_text(encoding='utf-8') if command.exists() else None
     if cmd:
         frequency=float(re.search(r'-global_freq\s+(\S+)',cmd)[1]);replicate=int(bool(re.search(r'(?m)^-replicate(?:_resources)?(?:\s|$)',cmd)))
@@ -68,6 +80,7 @@ def main():
         'set_option -place_option '+str(a.place_option),'set_option -route_option '+str(a.route_option),
         'set_option -timing_driven '+str(a.timing_driven)]
     tcl += ['set_option -'+x+' 1' for x in ['use_sspi_as_gpio','use_mspi_as_gpio','use_ready_as_gpio','use_done_as_gpio','use_i2c_as_gpio','use_cpu_as_gpio']]
+    if csr.exists():tcl.insert(1,f'set_csr {{{(out/"ip/serdes.csr").as_posix()}}}')
     from preflight import validate
     tool=Path(r'D:\Gowin2\Gowin_V1.9.12.04_x64\IDE\bin\gw_sh.exe')
     effective=validate(tool,out,tcl,frequency,a.wide_split,{'replicate_resources':replicate,'place_option':a.place_option,'route_option':a.route_option,'timing_driven':a.timing_driven})
@@ -76,6 +89,7 @@ def main():
         original_pnr_command=cmd,replicate_resources=replicate,place_option=a.place_option,route_option=a.route_option,effective_options=effective,
         max_runtime_minutes=a.max_runtime_minutes,max_no_progress_minutes=a.max_no_progress_minutes,
         cdc_reference_audit=str(cdc_reference) if cdc_reference else None,
+        sfp_cdc_reference=str(a.sfp_cdc_reference) if a.sfp_cdc_reference else None,
         diagnostic_only=a.diagnostic_only,timing_driven=a.timing_driven,capture_system_telemetry=a.capture_system_telemetry,
         source_manifest=json.loads((src/'manifest.json').read_text()),programmed=False),indent=2))
     from bounded_tool import run_tool

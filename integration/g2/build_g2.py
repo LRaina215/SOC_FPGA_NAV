@@ -32,6 +32,8 @@ def main():
     ap.add_argument('--gyro-sum-exact-widths',action='store_true',help='exact live unsigned17 raw gyro sum, no gate/parameter/cycle change')
     ap.add_argument('--trig-block-rom',action='store_true',help='initialized navigation lookup tables in native BSRAM; values and read cycle unchanged')
     ap.add_argument('--snapshot-mux-fanout',action='store_true',help='cycle-exact snapshot update with bounded data-mux selector fanout; CE/reset unchanged')
+    ap.add_argument('--real-sfp',action='store_true',help='real Q0 SFP MAC/PCS/SerDes plus read-only full UART V2 telemetry')
+    ap.add_argument('--prepare-only',action='store_true',help='freeze/preflight inputs only; run with bounded frozen synthesis supervisor')
     ap.add_argument('--wide-split',type=int,choices=[0,1],default=0,help='explicit PNR wide-RAM split; 1 duplicates every 32/36-bit block')
     a=ap.parse_args()
     if a.command_units_pipeline and not a.command_lease:ap.error('--command-units-pipeline requires --command-lease')
@@ -77,6 +79,7 @@ def main():
     shutil.copyfile(ROOT/'rtl/plan/sin_lut.hex',out/'sin_lut.hex')
     top=(ROOT/'integration/g2/g2_top.v').read_text(encoding='utf-8')
     top=top.replace('`include "soc_cfg.vh"','`define NAV_SOC_RAM_KB 128\n`define G2_COVERAGE '+str(int(a.nav=='coverage')))
+    if a.real_sfp:top='`define G2_REAL_SFP\n'+top
     if a.command_lease:top='`define G2_COMMAND_LEASE\n'+top
     if a.command_units_pipeline:top='`define G2_UNITS_PIPELINE\n'+top
     (out/'g2_top.v').write_text(top,encoding='utf-8')
@@ -84,6 +87,9 @@ def main():
     shutil.copyfile(ROOT/'integration/g2/g2.sdc',out/'g2.sdc')
     from prepare_control import prepare as prepare_control
     prepare_control(out)
+    if a.real_sfp:
+        from prepare_telemetry_tap import prepare as telemetry_tap
+        telemetry_tap(out)
     if a.observation_pipeline:
         import importlib.util
         spec=importlib.util.spec_from_file_location('observation_pipeline',ROOT/'control/tools/g2_observation_pipeline.py')
@@ -112,6 +118,7 @@ def main():
     shutil.copyfile(ROOT/'integration/g2/command_lease_guard.v',out/'command_lease_guard.v')
     shutil.copyfile(ROOT/'integration/g2/nav_command_units.v',out/'nav_command_units.v')
     files=[nav/x for x in ALL_RTL+SOC+['rtl/net/rgmii_mac100.v']]
+    if nav/'rtl/net/host_control_tx.v' not in files:files.append(nav/'rtl/net/host_control_tx.v')
     files += [p for p in (out/'control').glob('*.v') if p.name!='main.v']
     files += [out/'control4500_core.v',out/'command_lease_guard.v',out/'nav_command_units.v',out/'g2_top.v']
     if a.packing in ('control','both','ssram','hybrid','directed'):
@@ -119,7 +126,19 @@ def main():
         prepare(out,directed=a.packing=='directed',packed9=a.packed_weight9)
         files=[p for p in files if p!=out/'control/fc_v4_top.v']
         files += [out/'fc_v4_top.v',out/'fixed4500_weight_rom.v']
+    if a.real_sfp:
+        import importlib.util
+        spec=importlib.util.spec_from_file_location('joint_sfp_ip',ROOT/'integration/sfp/generate_ip.py')
+        generator=importlib.util.module_from_spec(spec);spec.loader.exec_module(generator)
+        ip=generator.generate(out/'ip')
+        for origin in ('integration/sfp/sfp_host_mac.v','integration/g2/sfp_management.v'):
+            dest=out/Path(origin).name;shutil.copyfile(ROOT/origin,dest);files.append(dest)
+        files += [ip/'serdes.v',ip/'giga_serial_ethernet.v']
+        with (out/'g2.sdc').open('a',encoding='utf-8',newline='\n') as f:
+            f.write('\ncreate_clock -name sfp_rx_clk -period 8.000 [get_pins {u_sfp/u_mac/u_serdes/gtr12_quad_inst0/LANE0_PCS_RX_O_FABRIC_CLK}]\n')
+            f.write('create_clock -name sfp_tx_clk -period 8.000 [get_pins {u_sfp/u_mac/u_serdes/gtr12_quad_inst0/LANE0_PCS_TX_O_FABRIC_CLK}]\n')
     tcl=['set_device -device_version C GW5AT-LV138PG484AC1/I0']
+    if a.real_sfp:tcl += [f'set_csr {{{(out/"ip/serdes.csr").as_posix()}}}']
     tcl += [f'add_file -type verilog {{{p.as_posix()}}}' for p in files]
     tcl += [f'add_file -type cst {{{(out/"g2.cst").as_posix()}}}',
             f'add_file -type sdc {{{(out/"g2.sdc").as_posix()}}}',
@@ -143,13 +162,15 @@ def main():
         packed_weight9=a.packed_weight9,
         gyro_sum_exact_widths=a.gyro_sum_exact_widths,
         trig_block_rom=a.trig_block_rom,
-        snapshot_mux_fanout=a.snapshot_mux_fanout,
+        snapshot_mux_fanout=a.snapshot_mux_fanout,real_sfp=a.real_sfp,full_control_telemetry=a.real_sfp,
+        complete_sfp_cdc_acceptance=False,
         device='GW5AT-LV138PG484AC1/I0',device_version='C',clock_core_mhz=50,synthesis_frequency_hint_mhz=50,
         control_commit='6443f5678b4de222c22cbf331b8396f7c8df6a41',control_source=str(control),control_adapter='control_nav_adapter.patch',control_weights_changed=False,
         source_files=[str(p) for p in files],programmed=False,
         effective_options=effective,scope='G2 resource gate, not complete G3 nav IMU adaptation or real vehicle acceptance')
     (out/'manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
     print('joint build prepared: '+str(out),flush=True)
+    if a.prepare_only:return 0
     with (out/'gw_sh.log').open('w',encoding='utf-8') as log:
         result=subprocess.run([tool,'run.tcl'],cwd=out,stdout=log,stderr=subprocess.STDOUT)
     text=(out/'gw_sh.log').read_text(encoding='utf-8',errors='replace')

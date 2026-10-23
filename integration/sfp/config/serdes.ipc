@@ -1,0 +1,45 @@
+[General]
+ipc_version=4
+target_device=gw5at138c-007
+type=Serdes
+version=1.2
+
+[Config]
+LANG=0
+Q0_BIAS=7
+Synthesis_tool=GowinSynthesis
+file=serdes
+module=SfpSerDes
+global_reset_enable=false
+
+[All_access]
+Q0_LANE0_RX=Q0_LANE0_RX -> Q0_MUX0 -> Q0_REFCLK1
+Q0_LANE0_TX=Q0_LANE0_TX -> Q0_QPLL1 -> Q0_MUX0 -> Q0_REFCLK1
+
+[1G%20Serial%20Ethernet%3Agiga_serial_ethernet%3AGiga_Serial_Ethernet_Top]
+ATT=7
+BOOST=9
+ChannelSel=Q0 Lane0
+DIFFERENTIAL_SWING=900mV
+EnableMac=true
+EnablePhyMiim=false
+Equalization_Mode=Auto
+FFEMODE=Auto
+FFE_C0=40
+FFE_C1=0
+FFE_CM=0
+LANG=0
+Line_Rate=1.25
+Loopback_Mode=OFF
+PLL_Selection=QPLL1
+Reference_CLK_Frequency=125
+Reference_CLK_Source=Q0 REFCLK1
+SD_THRESHOLD=100mV
+Synthesis_tool=GowinSynthesis
+div=20
+file=giga_serial_ethernet
+ifChangedAllOfBias=true
+module=Giga_Serial_Ethernet_Top
+target_device=gw5at138c-007
+type=giga_serial_ethernet
+version=1.0

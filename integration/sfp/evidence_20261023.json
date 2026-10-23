@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-23",
+  "scope": "Independent SFP bring-up, not G2 acceptance",
+  "build_directory": "F:\\nav_sfp_20261023\\build_v2",
+  "tested_rtl_matches_current_sources": true,
+  "inspection": {
+    "constrained_timing_passed": true,
+    "clocks": {
+      "core_clk": {
+        "required_mhz": 50.0,
+        "reported_fmax_mhz": 107.447
+      },
+      "rx_mac_clk": {
+        "required_mhz": 125.0,
+        "reported_fmax_mhz": 163.865
+      },
+      "tx_mac_clk": {
+        "required_mhz": 125.0,
+        "reported_fmax_mhz": 170.981
+      }
+    },
+    "minimum_reported_slack_ns": {
+      "setup": 1.897,
+      "hold": 0.176,
+      "recovery": 2.996,
+      "removal": 0.363,
+      "pulse_width": 1.127
+    },
+    "resources": {
+      "Logic": 3570,
+      "Register": 3114,
+      "BSRAM": 5,
+      "GTR12_QUAD": 1
+    },
+    "actuator_outputs_tied_to_ground": [
+      "M1_DIR1",
+      "M1_DIR2",
+      "M1_PWM",
+      "M2_DIR1",
+      "M2_DIR2",
+      "M2_PWM",
+      "SERVO1",
+      "SERVO2",
+      "SERVO3",
+      "SERVO4"
+    ],
+    "csr_passed_to_pnr": true,
+    "bitstream": "F:\\nav_sfp_20261023\\build_v2\\impl\\pnr\\sfp_bringup.fs",
+    "physical_cdc_skew_signoff": false,
+    "hardware_tested": false,
+    "note": "Independent-clock paths use vendor-reference exceptions; not joint G2 acceptance"
+  },
+  "echo_simulation": {
+    "passed": true,
+    "scope": "New echo logic + existing ARP/UDP/CDC at MAC byte interface",
+    "echoed_payload_lengths": [
+      1,
+      18,
+      1472,
+      255,
+      21
+    ],
+    "mac_frames": 6,
+    "covered": "random TX backpressure, busy drop, 1472/1473 limit, CRC error, truncation, wrong port, recovery",
+    "vendor_pcs_serdes_simulated": false,
+    "hardware_tested": false
+  },
+  "control_simulation": {
+    "passed": true,
+    "scope": "UART transactions, top reset/config, LOS/link recovery, actuator constants",
+    "vendor_mac_stubbed": true,
+    "hardware_tested": false
+  },
+  "programmed": false
+}
