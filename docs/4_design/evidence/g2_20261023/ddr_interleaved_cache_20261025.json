@@ -1,0 +1,109 @@
+{
+  "recorded_at": "2026-10-25T04:11:21.934972+08:00",
+  "candidate": "optional four interleaved1024x18 cache banks; only physical cache organization/fill/eviction scheduling changes",
+  "proof_paths": {
+    "full": "F:\\nav_integration_g2_20261023\\ddr_shared_interleaved_probe1\\result.json",
+    "bound": "F:\\nav_integration_g2_20261023\\ddr_shared_interleaved_bound_probe1\\result.json",
+    "rtl": "F:\\nav_integration_g2_20261023\\ddr_interleaved_cache_rtl1\\result.json",
+    "syn": "F:\\nav_integration_g2_20261023\\ddr_interleaved_cache_syn1\\result.json",
+    "mapped": "F:\\nav_integration_g2_20261023\\ddr_interleaved_cache_mapped1\\result.json",
+    "nav": "F:\\nav_integration_g2_20261023\\ddr_full_subsystem_interleaved_probe1\\result.json"
+  },
+  "source_comparisons": [
+    {
+      "baseline": "F:\\nav_integration_g2_20261023\\ddr_shared_maps_cold_probe1",
+      "candidate": "F:\\nav_integration_g2_20261023\\ddr_shared_interleaved_probe1",
+      "changed_RTL": [
+        "nav_ddr_struct_cache_fast.v"
+      ],
+      "all_other_copied_RTL_headers_and_assets_byte_equal": true
+    },
+    {
+      "baseline": "F:\\nav_integration_g2_20261023\\ddr_full_subsystem_probe3",
+      "candidate": "F:\\nav_integration_g2_20261023\\ddr_full_subsystem_interleaved_probe1",
+      "changed_RTL": [
+        "nav_ddr_struct_cache_fast.v"
+      ],
+      "all_other_copied_RTL_headers_and_assets_byte_equal": true
+    }
+  ],
+  "logical_cache_lines": 256,
+  "valid_cells_per_line": 14,
+  "cell_bits": 18,
+  "padded_words_retained": 4096,
+  "unchanged_native_format": "row*19+column/14;18bit cells, no compression/quantization",
+  "fill_cycles_before": 14,
+  "fill_cycles_after": 4,
+  "eviction_RAM_read_capture_cycles_before": 28,
+  "eviction_RAM_read_capture_cycles_after": 8,
+  "full_original_candidates": 245,
+  "prior_words": 2618,
+  "all_numeric_scores_and_map_words_match": true,
+  "shared_elevation_words": 16384,
+  "shared_elevation_operations": 412500,
+  "maximum_full_frame_UPDATE_model_us_before": 3795.1,
+  "maximum_full_frame_UPDATE_model_us_after": 3714.78,
+  "maximum_worst_shape_model_UPDATE_us_before": 4052.16,
+  "maximum_worst_shape_model_UPDATE_us_after": 3966.72,
+  "rejected_slow_service_model_us": 10937.44,
+  "heavy_EVAL_model_us_before": 131459.76,
+  "heavy_EVAL_model_us_after": 125364.4,
+  "heavy_EVAL_relative_improvement_percent": 4.63667361023633,
+  "original_on_chip_heavy_EVAL_us": 69224.9,
+  "original_on_chip_timing_not_recovered": true,
+  "RTL_capacity_checks": {
+    "checks": 198912,
+    "peek_checks": 2048,
+    "backing_checks": 65536,
+    "cycles": 1425829
+  },
+  "vendor_primitive_capacity_checks": {
+    "checks": 199168,
+    "peek_checks": 2048,
+    "backing_checks": 65536,
+    "cycles": 1434529
+  },
+  "mapped_extra_all256_resident_lines_dirty": true,
+  "actual_module_synthesis_resources": {
+    "name": "g2_top",
+    "Register": "335",
+    "Alu": "36",
+    "Lut": "820",
+    "MULT12X12": "2",
+    "Bsram": "4",
+    "Ssram": "64",
+    "T_Register": "335(335)",
+    "T_Alu": "36(36)",
+    "T_Lut": "820(820)",
+    "T_MULT12X12": "2(2)",
+    "T_Bsram": "4(4)",
+    "T_Ssram": "64(64)"
+  },
+  "full_NAV_checks": {
+    "checks": 75,
+    "MMIO_ops": 1005,
+    "elevation_reads": 64,
+    "max_polls": 14,
+    "longest_bus_cycles": 150642
+  },
+  "CPU_HOLD": [
+    {
+      "capacity_KiB": 128,
+      "highest_word": 32767,
+      "DDR_marker_retained": 1
+    }
+  ],
+  "source_RAM_actual": 4,
+  "wide_leaf_actual": 0,
+  "physical_RAM_of_whole_joint_verified": false,
+  "overall_storage_net_saving_prediction": 67,
+  "whole_RAM_prediction": 259,
+  "full_joint_synthesis_started": false,
+  "full_joint_pnr_started": false,
+  "real_DDR_service_bound_verified": false,
+  "real_worst_UPDATE_5ms_verified": false,
+  "programmed": false,
+  "actual_controller_simulation_continues_unmodified": "F:\\nav_integration_g2_20261023\\ddr_actual_c_phy_probe1",
+  "default_serial_cache_baseline_retained": true,
+  "preferred_next_candidate_derivation": "integration/g2/ddr3/interleave_struct_cache.py:derive"
+}

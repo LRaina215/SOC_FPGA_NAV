@@ -167,3 +167,10 @@ verified. NAV protocol reset must accompany physical DDR cold reset; CPU-only
 HOLD is independent. EVAL131ms/prior50ms waiting remains a performance gate.
 Installed E:/modelsim_ae compiles the unchanged protected Gowin DQS unit but
 vsim cannot check out a valid license; do not claim real controller simulation.
+
+
+### Optional interleaved structure cache (04:12)
+
+`interleave_struct_cache.py` retains four1024x18 banks,256 lines and the existing14x18 packed native format. It stripes each line across all four banks: fill4 cycles rather than14; eviction RAM read/capture8 rather than28. The complete matcher, shared worst-shape UPDATE and full NAV probes select it only with `--interleaved-cache`; defaults preserve the serial baseline. `probe_interleaved_cache.py` binds the tested generated text before isolated synthesis and checks the actual vendor primitive netlist over the full map capacity and synchronous peek port.
+
+Measured modeled worst-shape UPDATE4.05216→3.96672ms; heavy EVAL131.45976→125.36440ms. The slow-service10.93744ms counterexample remains rejected. Neither modeled improvement nor four actual SYN RAM leaves establishes physical resource/timing acceptance or actual DDR WCET. The real C controller probe remains independent and unmodified. Evidence: `docs/4_design/evidence/g2_20261023/ddr_interleaved_cache_20261025.json`.

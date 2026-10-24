@@ -17,7 +17,7 @@ from derive_ddr_full_subsystem import subsystem,matcher,elevation,map_top
 FROZEN=Path('F:/nav_integration_g2_20261023/sfp_lane2_private_snapshot_syn11_retry1')
 
 
-def run(out):
+def run(out,interleaved=False):
     assert not out.exists();out.mkdir()
     manifest=json.loads((FROZEN/'manifest.json').read_text());nav=FROZEN/'nav'
     names=[]
@@ -38,6 +38,9 @@ def run(out):
     for name in ['nav_ddr_native.v','nav_ddr_row_stream.v','nav_ddr_dual_step.v','nav_ddr_health.v','nav_ddr_admission.v']:
         shutil.copyfile(HERE/name,out/name);names.append(name)
     def text(rel):return (nav/rel).read_text(encoding='utf-8-sig')
+    cache_derivation=derive_fast_cache
+    if interleaved:
+        from interleave_struct_cache import derive as cache_derivation
     generated={
         'nav_subsystem_ddr_full.v':subsystem(text('rtl/top/nav_subsystem.v')),
         'slf_match_ddr_full.v':matcher(derive_matcher(derive(text('rtl/match/slf_match.v')))),
@@ -46,7 +49,7 @@ def run(out):
         'trav_v3_ce.v':derive_traversability(text('rtl/map/trav_v3.v')),
         'nav_ddr_structure_store_full.v':share_store(derive_store((HERE/'nav_ddr_structure_store.v').read_text())),
         'nav_slf_row_update_full.v':derive_row_engine((HERE/'nav_slf_row_update.v').read_text()),
-        'nav_ddr_struct_cache_fast.v':derive_fast_cache((HERE/'nav_ddr_struct_cache.v').read_text()),
+        'nav_ddr_struct_cache_fast.v':cache_derivation((HERE/'nav_ddr_struct_cache.v').read_text()),
         'nav_ddr_em_cache.v':derive_cache((HERE/'nav_ddr_map_cache.v').read_text())}
     for n,s in generated.items():(out/n).write_text(s,encoding='utf8');names.append(n)
     row=Path('F:/nav_integration_g2_20261023/ddr_map_row_update_probe7');assert json.loads((row/'functional_result.json').read_text())['passed']
@@ -71,10 +74,12 @@ def run(out):
         scope='complete original NAV subsystem with shared DDR map adapters and modeled service; scripted MMIO master',
         CPU_HOLD=[{k:int(v) for k,v in re.findall(r'(\w+)=(\d+)',l)} for l in s.splitlines() if l.startswith('CPU_HOLD_PROOF')],
         actual_CPU_firmware_tested=False,actual_SFP_data_tested=False,actual_DDR_service_bound_verified=False,
+        interleaved_cache_banks=interleaved,
         full_joint_control_actuator_path_verified=False,full_joint_implementation=False,programmed=False)
     (out/'result.json').write_text(json.dumps(result,indent=2));print(json.dumps(result,indent=2))
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--out',type=Path,required=True)
-    run(p.parse_args().out.resolve())
+    p.add_argument('--interleaved-cache',action='store_true')
+    a=p.parse_args();run(a.out.resolve(),a.interleaved_cache)

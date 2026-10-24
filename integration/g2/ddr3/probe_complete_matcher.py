@@ -20,7 +20,7 @@ from audit_netlist_memories import inventory as memory_inventory
 FROZEN = Path('F:/nav_integration_g2_20261023/sfp_lane2_private_snapshot_syn11_retry1/nav')
 
 
-def run(out, row_probe, quick=False, mmio=False, dirty=False, shared=False):
+def run(out, row_probe, quick=False, mmio=False, dirty=False, shared=False, interleaved=False):
     assert not out.exists()
     out.mkdir(parents=True)
     assert json.loads((row_probe/'functional_result.json').read_text())['passed']
@@ -30,7 +30,10 @@ def run(out, row_probe, quick=False, mmio=False, dirty=False, shared=False):
         shutil.copyfile(HERE/n, out/n)
     (out/'nav_ddr_structure_store_full.v').write_text(derive_store((HERE/'nav_ddr_structure_store.v').read_text()),encoding='utf-8')
     (out/'nav_slf_row_update_full.v').write_text(derive_row_engine((HERE/'nav_slf_row_update.v').read_text()),encoding='utf-8')
-    (out/'nav_ddr_struct_cache_fast.v').write_text(derive_fast_cache((HERE/'nav_ddr_struct_cache.v').read_text()),encoding='utf-8')
+    cache_derivation = derive_fast_cache
+    if interleaved:
+        from interleave_struct_cache import derive as cache_derivation
+    (out/'nav_ddr_struct_cache_fast.v').write_text(cache_derivation((HERE/'nav_ddr_struct_cache.v').read_text()),encoding='utf-8')
     names+=['nav_ddr_structure_store_full.v','nav_slf_row_update_full.v','nav_ddr_struct_cache_fast.v']
     shutil.copyfile(row_probe/'slf_lf_ce.v', out/'slf_lf_ce.v')
     original = (FROZEN/'rtl/match/slf_match.v').read_text(encoding='utf-8-sig')
@@ -211,6 +214,7 @@ def run(out, row_probe, quick=False, mmio=False, dirty=False, shared=False):
         subsystem_MMIO_backpressure_connected=mmio, full_subsystem_simulated=False,
         real_worst_update_under_5ms_verified=False,
         elevation_map_integrated=False, shared_native_transport_verified=shared,
+        interleaved_cache_banks=interleaved,
         full_joint_implementation=False, programmed=False)
     (out/'result.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
     print(json.dumps(result,indent=2))
@@ -219,6 +223,7 @@ def run(out, row_probe, quick=False, mmio=False, dirty=False, shared=False):
 def synthesize(tested,out):
     proof=json.loads((tested/'result.json').read_text())
     assert proof['passed'] and not proof['quick'] and proof['subsystem_MMIO_backpressure_connected']
+    assert not proof.get('interleaved_cache_banks',False), 'interleaved candidate needs its own audited synthesis path'
     expected={
         'slf_match_ddr.v':derive((FROZEN/'rtl/match/slf_match.v').read_text(encoding='utf-8-sig')),
         'nav_ddr_structure_store_full.v':derive_store((HERE/'nav_ddr_structure_store.v').read_text()),
@@ -268,8 +273,9 @@ if __name__=='__main__':
     p.add_argument('--mmio',action='store_true')
     p.add_argument('--dirty-before-update',action='store_true')
     p.add_argument('--shared-native',action='store_true')
+    p.add_argument('--interleaved-cache',action='store_true')
     a=p.parse_args()
     if a.synthesis_after:synthesize(a.synthesis_after.resolve(),a.out.resolve())
     else:
         assert a.row_probe is not None
-        run(a.out.resolve(),a.row_probe.resolve(),a.quick,a.mmio,a.dirty_before_update,a.shared_native)
+        run(a.out.resolve(),a.row_probe.resolve(),a.quick,a.mmio,a.dirty_before_update,a.shared_native,a.interleaved_cache)

@@ -14,15 +14,18 @@ from derive_ddr_matcher import HERE,derive_store,derive_row_engine,derive_fast_c
 from derive_ddr_shared import derive_store as share_store,derive_cache
 
 
-def run(out,row):
+def run(out,row,interleaved=False):
     assert not out.exists();out.mkdir()
     assert json.loads((row/'functional_result.json').read_text())['passed']
     names=['nav_ddr_native.v','nav_ddr_row_stream.v','nav_ddr_struct_cache.v']
     for n in names:shutil.copyfile(HERE/n,out/n)
+    cache_derivation=derive_fast_cache
+    if interleaved:
+        from interleave_struct_cache import derive as cache_derivation
     for n,src in [
         ('nav_ddr_structure_store_full.v',share_store(derive_store((HERE/'nav_ddr_structure_store.v').read_text()))),
         ('nav_slf_row_update_full.v',derive_row_engine((HERE/'nav_slf_row_update.v').read_text())),
-        ('nav_ddr_struct_cache_fast.v',derive_fast_cache((HERE/'nav_ddr_struct_cache.v').read_text())),
+        ('nav_ddr_struct_cache_fast.v',cache_derivation((HERE/'nav_ddr_struct_cache.v').read_text())),
         ('nav_ddr_em_cache.v',derive_cache((HERE/'nav_ddr_map_cache.v').read_text()))]:
         (out/n).write_text(src);names.append(n)
     shutil.copyfile(row/'slf_lf_ce.v',out/'slf_lf_ce.v');names.append('slf_lf_ce.v')
@@ -94,10 +97,12 @@ def run(out,row):
         elevation_checks=[{k:int(v) for k,v in re.findall(r'(\w+)=(\d+)',l)} for l in s.splitlines() if l.startswith('EM_BOUND_PROOF')],
         scope='all8 accepted row workloads, full dirty SM barrier, dirty EM eviction/handover and modeled native service',
         original_point_transform_tested=False,full_matcher_tested=False,
+        interleaved_cache_banks=interleaved,
         real_worst_update_under_5ms_verified=False,physical_resources_verified=False,full_joint_implementation=False,programmed=False)
     (out/'result.json').write_text(json.dumps(result,indent=2));print(json.dumps(result,indent=2))
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--out',type=Path,required=True);p.add_argument('--row-probe',type=Path,required=True)
-    a=p.parse_args();run(a.out.resolve(),a.row_probe.resolve())
+    p.add_argument('--interleaved-cache',action='store_true')
+    a=p.parse_args();run(a.out.resolve(),a.row_probe.resolve(),a.interleaved_cache)
