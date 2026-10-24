@@ -1,0 +1,530 @@
+{
+  "recorded_at": "2026-10-24T09:54:18.806646+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_telemetryglobal_pnr10",
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-24T07:38:34.107948+08:00",
+    "max_runtime_s": 9000.0,
+    "max_no_observable_progress_s": 0.0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 32164,
+    "elapsed_s": 7855.061999999976,
+    "no_observable_progress_s": 0.0,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        2251173,
+        1792806565930659900
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        2250727,
+        1792806565930659900
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2428564,
+        1792799394112708900
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        14224786,
+        1792799394774946700
+      ],
+      [
+        "impl\\pnr\\g2_top.rpt.txt",
+        93290,
+        1792806563222741300
+      ],
+      [
+        "impl\\pnr\\g2_top.vo",
+        45974316,
+        1792806565920655900
+      ]
+    ],
+    "tool_exit": 1,
+    "ended_at": "2026-10-24T09:49:29.168932+08:00"
+  },
+  "natural_vendor_routing_failure": true,
+  "original_owners_exited": true,
+  "reused_pids_not_touched": [
+    {
+      "pid": 49464,
+      "original_created": 1792798702.7510073,
+      "current_created": 1792806682.1483552
+    }
+  ],
+  "unrouted_nets": 544,
+  "resources": {
+    "logic": {
+      "used": 90308.0,
+      "capacity": 138240.0
+    },
+    "register": {
+      "used": 43794.0,
+      "capacity": 139095.0
+    },
+    "bsram": {
+      "used": 334.0,
+      "capacity": 340.0
+    },
+    "dsp": {
+      "used": 163.5,
+      "capacity": 298.0
+    },
+    "io_port": {
+      "used": 51.0,
+      "capacity": 297.0
+    }
+  },
+  "physical_bsram": 334,
+  "physical_memory_audit": {
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+    "physical": "F:\\nav_integration_g2_20261023\\sfp_lane2_telemetryglobal_pnr10",
+    "source_count": 316,
+    "wide_split_enabled": true,
+    "wide_count": 18,
+    "wide_by_primitive": {
+      "pROMX9": 1,
+      "SDPX9B": 10,
+      "SDPB": 7
+    },
+    "wide_by_top": {
+      "u_control": 1,
+      "u_nav": 17
+    },
+    "predicted_count": 334,
+    "actual_report_count": 334,
+    "post_pnr_primitive_count": 334,
+    "counts_reconciled": true,
+    "matched_split_pairs": 18,
+    "source_by_primitive": {
+      "SP": 64,
+      "pROM": 24,
+      "pROMX9": 21,
+      "SDPB": 55,
+      "SDPX9B": 152
+    },
+    "actual_by_primitive": {
+      "SP": 64,
+      "pROM": 24,
+      "pROMX9": 22,
+      "SDPB": 62,
+      "SDPX9B": 162
+    },
+    "actual_by_top": {
+      "u_soc": 64,
+      "u_control": 44,
+      "u_nav": 226
+    },
+    "missing_source_instances": [],
+    "scope": "post-PNR storage accounting only; routing failure and timing acceptance remain separate"
+  },
+  "physical_global_routing": [
+    {
+      "net": "clk50_d",
+      "resource": "PRIMARY",
+      "direct_pin_counts": {
+        "CLK": 46739,
+        "I": 1,
+        "CLKA": 219,
+        "CLKB": 223
+      },
+      "drivers": [
+        {
+          "name": "clk50_ibuf",
+          "kind": "IBUF"
+        }
+      ]
+    },
+    {
+      "net": "rgmii_rxc_d",
+      "resource": "PRIMARY",
+      "direct_pin_counts": {
+        "CLK": 137,
+        "I": 1,
+        "CLKA": 2
+      },
+      "drivers": [
+        {
+          "name": "rgmii_rxc_ibuf",
+          "kind": "IBUF"
+        }
+      ]
+    },
+    {
+      "net": "r2",
+      "resource": "PRIMARY",
+      "direct_pin_counts": {
+        "I0": 245,
+        "I1": 36,
+        "I2": 82,
+        "RESET": 5048,
+        "I": 1,
+        "I3": 18,
+        "PRESET": 12,
+        "SET": 330,
+        "CLEAR": 497,
+        "CE": 3
+      },
+      "drivers": [
+        {
+          "name": "u_rs/r2_s1",
+          "kind": "DFFPE"
+        }
+      ]
+    },
+    {
+      "net": "h_rx_clk",
+      "resource": "PRIMARY",
+      "direct_pin_counts": {
+        "CLK": 607,
+        "CLKA": 3
+      },
+      "drivers": []
+    },
+    {
+      "net": "h_tx_clk",
+      "resource": "PRIMARY",
+      "direct_pin_counts": {
+        "CLK": 639,
+        "CLKB": 1
+      },
+      "drivers": []
+    },
+    {
+      "net": "n2371_7",
+      "resource": "PRIMARY",
+      "direct_pin_counts": {
+        "I2": 11,
+        "CLEAR": 7529,
+        "PRESET": 101,
+        "RESET": 1447,
+        "I0": 9,
+        "SET": 83,
+        "I1": 9,
+        "D": 1
+      },
+      "drivers": [
+        {
+          "name": "u_control/n2371_s2",
+          "kind": "LUT3"
+        }
+      ]
+    },
+    {
+      "net": "u_control/model_thread/observation/n331_7",
+      "resource": "PRIMARY",
+      "direct_pin_counts": {
+        "I0": 3,
+        "CLEAR": 4380,
+        "PRESET": 1,
+        "RESET": 2
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/observation/n331_s2",
+          "kind": "LUT4"
+        }
+      ]
+    },
+    {
+      "net": "u_control/model_thread/policy/snapshot_update",
+      "resource": "PRIMARY",
+      "direct_pin_counts": {
+        "CE": 4032
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/policy/snapshot_update_s0",
+          "kind": "LUT4"
+        }
+      ]
+    },
+    {
+      "net": "r2_207",
+      "resource": "LW",
+      "direct_pin_counts": {
+        "RESET": 751,
+        "I0": 23,
+        "I2": 8,
+        "I": 1,
+        "I3": 8,
+        "I1": 1
+      },
+      "drivers": [
+        {
+          "name": "u_sfp/u_hr/r2_s1",
+          "kind": "DFFPE"
+        }
+      ]
+    },
+    {
+      "net": "u_soc/cpu_rst",
+      "resource": "LW",
+      "direct_pin_counts": {
+        "I2": 11,
+        "I0": 15,
+        "RESET": 210,
+        "I3": 7,
+        "I1": 2,
+        "SET": 5
+      },
+      "drivers": [
+        {
+          "name": "u_soc/cpu_rst_s0",
+          "kind": "LUT2"
+        }
+      ]
+    },
+    {
+      "net": "u_control/telemetry_thread/n1315_4",
+      "resource": "LW",
+      "direct_pin_counts": {
+        "I2": 837,
+        "I3": 65,
+        "I0": 32,
+        "I1": 28
+      },
+      "drivers": [
+        {
+          "name": "u_control/telemetry_thread/n1315_s1",
+          "kind": "LUT4"
+        }
+      ]
+    },
+    {
+      "net": "u_control/telemetry_thread/snapshot_959_10",
+      "resource": "LW",
+      "direct_pin_counts": {
+        "CE": 960
+      },
+      "drivers": [
+        {
+          "name": "u_control/telemetry_thread/snapshot_959_s4",
+          "kind": "LUT4"
+        }
+      ]
+    },
+    {
+      "net": "u_nav/u_map/u_tv/n26292_4",
+      "resource": "LW",
+      "direct_pin_counts": {
+        "I3": 8,
+        "CE": 387
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_map/u_tv/n26292_s1",
+          "kind": "LUT2"
+        }
+      ]
+    },
+    {
+      "net": "u_nav/u_map/u_tv/n25518_4",
+      "resource": "LW",
+      "direct_pin_counts": {
+        "CE": 521
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_map/u_tv/n25518_s1",
+          "kind": "LUT2"
+        }
+      ]
+    },
+    {
+      "net": "u_nav/u_map/u_tv/n24910_7",
+      "resource": "LW",
+      "direct_pin_counts": {
+        "I0": 1,
+        "CE": 398
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_map/u_tv/n24910_s2",
+          "kind": "LUT2"
+        }
+      ]
+    },
+    {
+      "net": "u_nav/g_support.u_support/a1_13_6",
+      "resource": "LW",
+      "direct_pin_counts": {
+        "I3": 2,
+        "I1": 2,
+        "I2": 1,
+        "CE": 106,
+        "I": 1,
+        "RESET": 3
+      },
+      "drivers": [
+        {
+          "name": "u_nav/g_support.u_support/a1_13_s2",
+          "kind": "LUT2"
+        }
+      ]
+    },
+    {
+      "net": "u_control/model_thread/observation/n15679_10",
+      "resource": null,
+      "direct_pin_counts": {
+        "CE": 3892,
+        "D": 1
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/observation/n15713_s4",
+          "kind": "LUT3"
+        }
+      ]
+    }
+  ],
+  "clock_plan_reported_checks": {
+    "passed": true,
+    "checks": [
+      {
+        "net": "n2371_7",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "r2",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "u_control/model_thread/observation/n331_7",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_update",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "u_control/telemetry_thread/n1315_4",
+        "expected": "LW",
+        "actual": "LW",
+        "passed": true
+      },
+      {
+        "net": "u_control/telemetry_thread/snapshot_959_10",
+        "expected": "LW",
+        "actual": "LW",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_xt/n9903_3",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_match/u_ex/n7021_4",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_match/u_ex/rb_ra[0]",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_match/u_ex/rb_ra[1]",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/a_q_15_17",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25284_7",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "clk50_d",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "h_rx_clk",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "h_tx_clk",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      }
+    ],
+    "scope": "reported global assignment only; individual BUFG index and route delays require separate evidence"
+  },
+  "known_physical_connections": {
+    "lidar": {
+      "paths": 26,
+      "endpoints_match_reference": true,
+      "required_active_constraints": 52,
+      "constraints_effectiveness_verified": false
+    },
+    "host": {
+      "paths": 51,
+      "endpoints_match_reference": true,
+      "required_active_constraints": 102,
+      "constraints_effectiveness_verified": false
+    }
+  },
+  "vendor_time": {
+    "total": "2h10m38s",
+    "placement": "0h11m14s",
+    "routing_phase1": "1h59m23s",
+    "peak_memory_MB": 2196
+  },
+  "comparison": {
+    "reference": "sfp_lane2_rowbanks_pnr8",
+    "reference_unrouted": 586,
+    "reduction": 42,
+    "same_input_netlist_sdc_csr": true,
+    "only_input_change": "four added clock-resource constraints",
+    "both_telemetry_targets_really_on_LW": true,
+    "observation3892CE_plus1D_lost_LW": true,
+    "scope": "aggregate change after full placement; no per-failed-net identity or unique congestion cause"
+  },
+  "setup_violations": null,
+  "hold_violations": null,
+  "timing_report_available": false,
+  "failed_net_identity_available": false,
+  "physical_position_report_available": false,
+  "congestion_report_available": false,
+  "programmed": false,
+  "deployment_accepted": false
+}

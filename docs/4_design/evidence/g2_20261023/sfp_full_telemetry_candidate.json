@@ -153,7 +153,7 @@
     "history_phy_guard": "0985e15",
     "lease_sfp_client": "214d3c6"
   },
-  "updated_at": "2026-10-24T07:40:54.147380+08:00",
+  "updated_at": "2026-10-24T09:54:18.806646+08:00",
   "history_fanout_candidate": {
     "generator": "control/tools/g2_history_fanout.py",
     "source_edit": "one syn_maxfan=128 synthesis attribute, no functional RTL edit",
@@ -460,17 +460,13 @@
   },
   "current_pnr": {
     "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_telemetryglobal_pnr10",
-    "phase": "full_pnr_running",
-    "tool_pid": 32164,
-    "wrapper_pid": 49464,
-    "controller_pid": 21352,
-    "started_at": "2026-10-24T07:38:34.107948+08:00",
-    "absolute_deadline": "2026-10-24T10:08:34.107948+08:00",
-    "max_runtime_minutes": 150,
-    "max_no_progress_minutes": 0,
-    "diagnostic_only": false,
-    "serdes_lane": "Q0 Lane2",
-    "evidence": "lane2_telemetry_clock_intervention_20261024.json"
+    "phase": "natural_routing_failure",
+    "unrouted_nets": 544,
+    "physical_bsram": 334,
+    "ended_at": "2026-10-24T09:49:29.168932+08:00",
+    "cancelled": false,
+    "active": false,
+    "evidence": "lane2_telemetry_final_unrouted544.json"
   },
   "previous_pnr": {
     "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_biasblock_pnr9",
@@ -640,24 +636,19 @@
       "cancelled": false,
       "correct_lane2": true,
       "evidence": "lane2_biasblock_final_unrouted2950.json"
-    }
-  ],
-  "pending_builds": [
+    },
     {
       "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_telemetryglobal_pnr10",
-      "phase": "full_pnr_running",
-      "tool_pid": 32164,
-      "wrapper_pid": 49464,
-      "controller_pid": 21352,
-      "started_at": "2026-10-24T07:38:34.107948+08:00",
-      "absolute_deadline": "2026-10-24T10:08:34.107948+08:00",
-      "max_runtime_minutes": 150,
-      "max_no_progress_minutes": 0,
-      "diagnostic_only": false,
-      "serdes_lane": "Q0 Lane2",
-      "evidence": "lane2_telemetry_clock_intervention_20261024.json"
+      "phase": "natural_routing_failure",
+      "unrouted_nets": 544,
+      "physical_bsram": 334,
+      "ended_at": "2026-10-24T09:49:29.168932+08:00",
+      "cancelled": false,
+      "active": false,
+      "evidence": "lane2_telemetry_final_unrouted544.json"
     }
   ],
+  "pending_builds": [],
   "best_measured_candidate": {
     "build": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
     "unrouted_nets": 273,
@@ -687,9 +678,9 @@
     "physical_split_count_not_yet_measured": true
   },
   "one_shot_continuation": {
-    "controller_pid": 21352,
     "live_state": "F:\\nav_integration_g2_20261023\\lane2_telemetry_global_one_shot\\job.json",
-    "phase": "full_pnr_running"
+    "phase": "one_pnr_finished_review_required",
+    "active": false
   },
   "superseded_pending_builds": [
     {
@@ -757,13 +748,12 @@
     "physical_result_evidence": "lane2_rowbanks_final_unrouted586.json"
   },
   "best_completed_correct_lane2_candidate": {
-    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_pnr8",
-    "unrouted_nets": 586,
-    "bsram": 334,
-    "serdes_lane": "Q0 Lane2",
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_telemetryglobal_pnr10",
+    "unrouted_nets": 544,
+    "physical_bsram": 334,
     "timing_report_available": false,
-    "g2_passed": false,
-    "evidence": "lane2_rowbanks_final_unrouted586.json"
+    "deployment_accepted": false,
+    "evidence": "lane2_telemetry_final_unrouted544.json"
   },
   "bias_block_intervention": {
     "evidence": "bias_block_intervention_20261024.json",
@@ -796,5 +786,26 @@
     "deployment_accepted": false,
     "evidence": "bias_block_joint_synthesis_20261024.json",
     "pre_pnr_checks_passed": true
-  }
+  },
+  "last_running_pnr_snapshot": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_telemetryglobal_pnr10",
+    "phase": "full_pnr_running",
+    "tool_pid": 32164,
+    "wrapper_pid": 49464,
+    "controller_pid": 21352,
+    "started_at": "2026-10-24T07:38:34.107948+08:00",
+    "absolute_deadline": "2026-10-24T10:08:34.107948+08:00",
+    "max_runtime_minutes": 150,
+    "max_no_progress_minutes": 0,
+    "diagnostic_only": false,
+    "serdes_lane": "Q0 Lane2",
+    "evidence": "lane2_telemetry_clock_intervention_20261024.json"
+  },
+  "next_prepared_candidate": {
+    "live_state": "F:\\nav_integration_g2_20261023\\lane2_telemetry_observation_preparation\\job.json",
+    "phase": "prepared_not_started_host_memory",
+    "tool_started": false,
+    "evidence": "lane2_observation_clock_preparation_20261024.json"
+  },
+  "recurring_supervision_active": false
 }

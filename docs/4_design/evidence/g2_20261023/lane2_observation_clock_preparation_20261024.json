@@ -1,0 +1,86 @@
+{
+  "recorded_at": "2026-10-24T09:54:18.806646+08:00",
+  "phase": "prepared_not_started_host_memory",
+  "plan": {
+    "reference_physical_build": "F:/nav_integration_g2_20261023/sfp_lane2_telemetryglobal_pnr10",
+    "driver_reference_build": "F:/nav_integration_g2_20261023/sfp_lane2_telemetryglobal_pnr10",
+    "hypothesis": "The 544-net correct-Lane2 report confirms both telemetry nets on LW, but the observation net with3892 CE and1 data input lost LW. Preserve those telemetry requests, explicitly request observation CE|LOGIC, and release a measured395-pin navigation LW consumer. This is a physical allocation experiment, not identification of the failed nets.",
+    "promote": [
+      {
+        "net": "n2371_7",
+        "primary_index": 4,
+        "signal_types": "SR|LOGIC"
+      },
+      {
+        "net": "r2",
+        "primary_index": 5,
+        "signal_types": "SR|CE|LOGIC"
+      },
+      {
+        "net": "u_control/model_thread/observation/n331_7",
+        "primary_index": 6,
+        "signal_types": "SR|LOGIC"
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_update",
+        "primary_index": 7,
+        "signal_types": "CE"
+      }
+    ],
+    "prefer_global": [
+      {
+        "net": "u_control/telemetry_thread/n1315_4",
+        "signal_types": "LOGIC"
+      },
+      {
+        "net": "u_control/telemetry_thread/snapshot_959_10",
+        "signal_types": "CE"
+      },
+      {
+        "net": "u_control/model_thread/observation/n15679_10",
+        "signal_types": "CE|LOGIC"
+      }
+    ],
+    "local": [
+      "u_nav/u_xt/n9903_3",
+      "u_nav/u_match/u_ex/n7021_4",
+      "u_nav/u_match/u_ex/rb_ra[0]",
+      "u_nav/u_match/u_ex/rb_ra[1]",
+      "u_nav/a_q_15_17",
+      "u_nav/u_map/u_tv/n25284_7",
+      "u_nav/u_map/u_tv/n26292_4"
+    ],
+    "manual": "Gowin SUG1541-1.0E section2.8: indexed/generic BUFG and LOCAL_CLOCK; no BUFS on Arora V",
+    "generic_ce_probe": "F:/nav_integration_g2_20261023/clock_ce_route_probe",
+    "logic_and_clock_periods_unchanged": true,
+    "reuse_exact_synthesis": "F:/nav_integration_g2_20261023/sfp_lane2_rowbanks_syn7",
+    "rejected_bias_mapping_result": "F:/nav_integration_g2_20261023/sfp_lane2_biasblock_pnr9",
+    "comparison_candidate": "F:/nav_integration_g2_20261023/sfp_lane2_telemetryglobal_pnr10"
+  },
+  "reference_result": "lane2_telemetry_final_unrouted544.json",
+  "source": "F:/nav_integration_g2_20261023/sfp_lane2_rowbanks_syn7",
+  "intended_output": "F:/nav_integration_g2_20261023/sfp_lane2_telemetry_observation_pnr11",
+  "intended_controller_state": "F:/nav_integration_g2_20261023/lane2_telemetry_observation_one_shot",
+  "source_and14_target_pre_pnr_checks_pending": true,
+  "tool_started": false,
+  "synthesis_rerun": false,
+  "host_memory": {
+    "recorded_at": "2026-10-24T09:54:18.806646+08:00",
+    "physical_free_bytes": 2240172032,
+    "available_commit_bytes": 3600781312,
+    "minimum_start_free_bytes": 2147483648,
+    "minimum_start_commit_bytes": 4294967296
+  },
+  "observed_start_rejection": {
+    "physical_free_GiB": 2.0504798889160156,
+    "available_commit_GiB": 3.3100929260253906
+  },
+  "active_builds": [],
+  "recurring_supervision_deleted_by_user_request": true,
+  "future_pnr_budget_minutes": 150,
+  "future_no_progress_budget_minutes": 0,
+  "control_algorithm_weights125hz_and_capacity_preserved": true,
+  "programmed": false,
+  "deployment_accepted": false,
+  "next_step": "When host memory passes, run complete source/assets/storage/14 drivers/77 known CDC/Lane2 clock checks, then at most one new PNR; do not restore recurring supervision."
+}

@@ -290,17 +290,8 @@
       "evidence": "lane2_pnr150_deadline_20261024.json"
     }
   },
-  "latest_update_at": "2026-10-24T07:40:54.147380+08:00",
-  "latest_pnr_final_result": {
-    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_bankselect128_pnr7",
-    "cancelled": true,
-    "ended_at": "2026-10-24T03:36:50.893475+08:00",
-    "total_seconds": 9002.5219476223,
-    "actual_unrouted_nets": null,
-    "actual_resources": null,
-    "final_reports_available": false,
-    "evidence": "lane2_pnr150_cancelled_20261024.json"
-  },
+  "latest_update_at": "2026-10-24T09:54:18.806646+08:00",
+  "latest_pnr_final_result": "lane2_telemetry_final_unrouted544.json",
   "successor_row_banks": {
     "evidence": "slf_row_banks_intervention_20261024.json",
     "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
@@ -325,19 +316,20 @@
   "successor_telemetry_clock": {
     "current_pnr": {
       "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_telemetryglobal_pnr10",
-      "phase": "full_pnr_running",
-      "tool_pid": 32164,
-      "wrapper_pid": 49464,
-      "controller_pid": 21352,
-      "started_at": "2026-10-24T07:38:34.107948+08:00",
-      "absolute_deadline": "2026-10-24T10:08:34.107948+08:00",
-      "max_runtime_minutes": 150,
-      "max_no_progress_minutes": 0,
-      "diagnostic_only": false,
-      "serdes_lane": "Q0 Lane2",
-      "evidence": "lane2_telemetry_clock_intervention_20261024.json"
+      "phase": "natural_routing_failure",
+      "active": false
     },
     "live_state": "F:\\nav_integration_g2_20261023\\lane2_telemetry_global_one_shot\\job.json",
-    "reused_synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7"
-  }
+    "reused_synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+    "pending": false,
+    "final_result": "lane2_telemetry_final_unrouted544.json",
+    "unrouted_nets": 544,
+    "physical_bsram": 334
+  },
+  "next_prepared_observation_allocation": {
+    "live_state": "F:\\nav_integration_g2_20261023\\lane2_telemetry_observation_preparation\\job.json",
+    "phase": "prepared_not_started_host_memory",
+    "tool_started": false
+  },
+  "recurring_supervision_active": false
 }

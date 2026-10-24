@@ -1,0 +1,56 @@
+{
+  "reference_physical_build": "F:/nav_integration_g2_20261023/sfp_lane2_telemetryglobal_pnr10",
+  "driver_reference_build": "F:/nav_integration_g2_20261023/sfp_lane2_telemetryglobal_pnr10",
+  "hypothesis": "The 544-net correct-Lane2 report confirms both telemetry nets on LW, but the observation net with3892 CE and1 data input lost LW. Preserve those telemetry requests, explicitly request observation CE|LOGIC, and release a measured395-pin navigation LW consumer. This is a physical allocation experiment, not identification of the failed nets.",
+  "promote": [
+    {
+      "net": "n2371_7",
+      "primary_index": 4,
+      "signal_types": "SR|LOGIC"
+    },
+    {
+      "net": "r2",
+      "primary_index": 5,
+      "signal_types": "SR|CE|LOGIC"
+    },
+    {
+      "net": "u_control/model_thread/observation/n331_7",
+      "primary_index": 6,
+      "signal_types": "SR|LOGIC"
+    },
+    {
+      "net": "u_control/model_thread/policy/snapshot_update",
+      "primary_index": 7,
+      "signal_types": "CE"
+    }
+  ],
+  "prefer_global": [
+    {
+      "net": "u_control/telemetry_thread/n1315_4",
+      "signal_types": "LOGIC"
+    },
+    {
+      "net": "u_control/telemetry_thread/snapshot_959_10",
+      "signal_types": "CE"
+    },
+    {
+      "net": "u_control/model_thread/observation/n15679_10",
+      "signal_types": "CE|LOGIC"
+    }
+  ],
+  "local": [
+    "u_nav/u_xt/n9903_3",
+    "u_nav/u_match/u_ex/n7021_4",
+    "u_nav/u_match/u_ex/rb_ra[0]",
+    "u_nav/u_match/u_ex/rb_ra[1]",
+    "u_nav/a_q_15_17",
+    "u_nav/u_map/u_tv/n25284_7",
+    "u_nav/u_map/u_tv/n26292_4"
+  ],
+  "manual": "Gowin SUG1541-1.0E section2.8: indexed/generic BUFG and LOCAL_CLOCK; no BUFS on Arora V",
+  "generic_ce_probe": "F:/nav_integration_g2_20261023/clock_ce_route_probe",
+  "logic_and_clock_periods_unchanged": true,
+  "reuse_exact_synthesis": "F:/nav_integration_g2_20261023/sfp_lane2_rowbanks_syn7",
+  "rejected_bias_mapping_result": "F:/nav_integration_g2_20261023/sfp_lane2_biasblock_pnr9",
+  "comparison_candidate": "F:/nav_integration_g2_20261023/sfp_lane2_telemetryglobal_pnr10"
+}
