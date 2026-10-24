@@ -136,4 +136,11 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 `clock_resource_plan_lane2_obsreuse.json`保留正确Lane2的544条物理参考的12项分配，只将观测复位名n331_7映射到n971_7。`revalidate_observation_routing.py`证明这一个具名LUT4别名的全部输入、INIT16'hEFFF/16项真值、四个唯一上游驱动/参数；其余11个目标和四真实时钟源严格相同。应用器只在该证明通过后借用原物理网络的负载证据，不能用任意别名跳过检查。`test_observation_routing.py --out <new-folder>`的实际正例和7项负例已通过。
 
-`continue_bank_select_once.py --synthesis <obsreuse-SYN> --baseline <fixed-CDC-reference> --pnr-out <new-dir> --state-dir <new-state> --clock-resource-plan <obsreuse-plan> --max-runtime-minutes 150`只运行一次；`validate_observation_reuse.py`重计全部26＋51已知CDC、实际Lane2 RX/TX时钟，保留原存储/104资产与所有功能。自动名变化的36个雷达RESET连接仍需已有完整驱动/模块INIT证明。完整网表仿真许可缺口和43额外跨域/PCS/复位/IO继续待签核。源检查通过不能代替PNR的真实资源、时序、分配与154条有效命令；本次不恢复周期监督，也不进行硬件操作。
+`continue_bank_select_once.py --synthesis <obsreuse-SYN> --baseline <fixed-CDC-reference> --pnr-out <new-dir> --state-dir <new-state> --clock-resource-plan <obsreuse-plan>`只运行一次，默认总时限0/静默0（不设截止）；`validate_observation_reuse.py`重计全部26＋51已知CDC、实际Lane2 RX/TX时钟，保留原存储/104资产与所有功能。自动名变化的36个雷达RESET连接仍需已有完整驱动/模块INIT证明。完整网表仿真许可缺口和43额外跨域/PCS/复位/IO继续待签核。源检查通过不能代替PNR的真实资源、时序、分配与154条有效命令；本次不恢复周期监督，也不进行硬件操作。
+
+
+### PNR时间策略（2026-10-24 13:19用户更新）
+
+当前及后续PNR默认不设总时限和无进展时限。`continue_bank_select_once.py`的`--max-runtime-minutes`默认0；其PNR子进程始终传入`--max-no-progress-minutes 0`，`pnr_from_netlist.py`两个原默认也均为0。历史运行的120/150分钟记录保持原样；正数时限仅用于用户后来明确改变策略的运行。综合和前置检查的限时不变。
+
+`adopt_pnr_deadline.py <build> --no-deadline`对已有PNR先核对PID创建时间、父包装命令及工作目录，然后仅暂停该包装的旧限时循环，保留同一Gowin工具。新监管器将有效时限置0并记录`runtime_override.json`；工具退出后恢复原包装完成采集，不重启工具、不新增PNR或周期任务。当前PNR12已实际接管：工具54424保持、新监管27664、原包装58396有意暂停。实际运行时记录和交接文件优先于启动命令/manifest里的150分钟快照。`--deadline`保留为未来明确授权的有截止运行入口；两种选项互斥。进程交接3项实际回归通过，其中无截止案例超过原包装截止后正常自然退出且原PID保持。

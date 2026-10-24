@@ -84,3 +84,10 @@
 26条雷达source→first→second的数据/时钟/使能及首级单扇出重计通过；36处`r2_205→r2_203`仍由同一u_lrr/r2_s1驱动，D/CLK/CE/PRESET及完整模块INIT相同，保留严格别名证明。51条主机FIFO/toggle连接与原参考匹配。旧273仅用作这些固定连接参考，物理比较采用正确Lane2的544条PNR10；本轮保留其12条分配选择，仅同步上述复位别名，不叠加14目标观测CE新方案。完整网表仿真许可缺口和额外43 CDC/PCS/复位/IO签核仍待，源连接通过不是物理签核。
 
 `sfp_lane2_obsreuse_pnr12`于11:09:02.663实际启动，工具54424/包装58396/控制55032，实时入口`F:/nav_integration_g2_20261023/lane2_obsreuse_one_shot/job.json`。150分钟/静默0，截止13:39:02.663，由原bounded_tool直接监管；没有重复综合、第二轮PNR或恢复定时监督。实际cmd.do回读timing1/place1/route2/复制1/拆分1/global50/hold修正及正确Lane2 CSR，SDC保持20/10/8/8ns、77条hold-only＋77条max-delay和200网格/100高扇出报告请求，CST12项已解析，当前布局。启动首份工具采样物理空闲约3.47GiB、提交余量4.09GiB；CPU/心跳只作健康信息。新轮实际占用、未布通数、分配、时序/154有效约束和真实首级延迟均待报告；334只为预测，未下载。见[启动及完整前置证明](evidence/g2_20261023/observation_reuse_pnr_start_20261024.json)。
+
+
+## 最新运行策略：PNR无截止
+
+**13:20 按用户最新指令取消本轮及以后PNR时间上限：** 同一工具54424（11:09:02创建）保留运行，未重启、未暂停。13:19:29新预算监管27664接管，原包装58396有意暂停以取消其旧150分钟判断；外层55032继续等待。实际`tool_runtime.json`已回读max_runtime_s=0、max_no_observable_progress_s=0、absolute_deadline=null；旧13:39:02截止已失效。权威交接记录为`F:/nav_integration_g2_20261023/sfp_lane2_obsreuse_pnr12/runtime_override.json`。工具自然结束后监管器恢复58396执行原报告采集；不能因包装暂停误判卡死、提前恢复旧包装或另起第二监管器。原命令/manifest中的150只是启动时历史快照，不能覆盖实际无限时设置。
+
+后续PNR默认总时限0、静默时限0；`continue_bank_select_once.py`默认已改0并允许显式0，`pnr_from_netlist.py`原默认即0。只有用户后续改变此指令才再设置正数预算；综合40分钟、前置检查/主机内存门槛及所有物理/时序/CDC接受条件保持。一次性进程交接验证3项通过，包含超过原包装2秒截止后仍自然退出且原PID不变/包装恢复的无截止案例。此变更未修改RTL/网表/SDC/CST/CSR或厂商PNR参数，未恢复定时监督、未操作硬件。最近工具日志仍为Routing Phase0完成，没有最终报告；无截止不等于已收敛或已接受。见[无限时策略与实际接管证明](evidence/g2_20261023/pnr_runtime_policy_20261024.json)。

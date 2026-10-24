@@ -1,7 +1,8 @@
-"""Extend one running PNR without restarting it; retain an absolute deadline.
+"""Change one running PNR budget without restarting its tool.
 
 The original Python wrapper is suspended while this supervisor owns the budget,
 then resumed after the tool exits so its original report collector can finish.
+An explicit no-deadline request disables both wall-time and idle cancellation.
 """
 import argparse,contextlib,ctypes,json,os,time,traceback
 from ctypes import wintypes
@@ -18,7 +19,7 @@ class MemoryStatus(ctypes.Structure):
 def supervise(build,deadline,*,require_gowin=True,poll_s=2,record_s=30):
     build=Path(build).resolve();runtime=build/'tool_runtime.json'
     previous=json.loads(runtime.read_text());started=datetime.fromisoformat(previous['started_at'])
-    if deadline.tzinfo is None or deadline<=datetime.now().astimezone():raise ValueError('future timezone-aware deadline required')
+    if deadline is not None and (deadline.tzinfo is None or deadline<=datetime.now().astimezone()):raise ValueError('future timezone-aware deadline required')
     if previous.get('ended_at'):raise ValueError('tool already finished; no restart permitted')
     tool=psutil.Process(previous['pid']);wrapper=tool.parent()
     if abs(tool.create_time()-started.timestamp())>30:raise ValueError('tool PID identity changed')
@@ -46,16 +47,19 @@ def supervise(build,deadline,*,require_gowin=True,poll_s=2,record_s=30):
         return result
     state=previous.copy();last_signature=previous.get('observed_files',[])
     last_progress=started.timestamp()+previous.get('elapsed_s',0)-previous.get('no_observable_progress_s',0)
-    extension=dict(recorded_at=datetime.now().astimezone().isoformat(),deadline=deadline.isoformat(),
-        authorized_reason='human explicitly extended this same running PNR to the recorded absolute deadline and disabled the idle timeout',
+    extension=dict(recorded_at=datetime.now().astimezone().isoformat(),deadline=deadline.isoformat() if deadline else None,
+        no_deadline=deadline is None,
+        authorized_reason=('human explicitly removed this running PNR deadline and future PNR time limits' if deadline is None else
+            'human explicitly extended this same running PNR to the recorded absolute deadline and disabled the idle timeout'),
         original_wrapper_pid=wrapper.pid,original_wrapper_created=wrapper_created,tool_pid=tool.pid,tool_created=tool_created,
         supervisor_pid=os.getpid(),previous_runtime=previous,tool_restarted=False,automatic_programming=False,
-        scope='one absolute-deadline extension; CPU/telemetry never count as routing progress')
-    extension_file=build/'deadline_extension.json'
+        scope='one owned-tool budget handoff; CPU/telemetry never count as routing progress')
+    extension_file=build/('runtime_override.json' if deadline is None else 'deadline_extension.json')
     if extension_file.exists():raise ValueError('extension already recorded; inspect existing supervisor')
-    state.update(max_runtime_s=(deadline-started).total_seconds(),max_no_observable_progress_s=0,
-        absolute_deadline=deadline.isoformat(),deadline_supervisor_pid=os.getpid(),cancelled=False,
-        runtime_budget_source='deadline_extension.json; original wrapper suspended until tool exits')
+    state.update(max_runtime_s=(deadline-started).total_seconds() if deadline else 0,max_no_observable_progress_s=0,
+        absolute_deadline=deadline.isoformat() if deadline else None,deadline_supervisor_pid=os.getpid(),cancelled=False,
+        no_deadline=deadline is None,
+        runtime_budget_source=extension_file.name+'; original wrapper suspended until tool exits')
     paused=False;last_record=0;tool_exit=None;failure=None
     def save():
         state.update(elapsed_s=time.time()-started.timestamp(),no_observable_progress_s=max(0,time.time()-last_progress),observed_files=last_signature)
@@ -78,7 +82,7 @@ def supervise(build,deadline,*,require_gowin=True,poll_s=2,record_s=30):
         while k.WaitForSingleObject(handle,0)==258:
             now=time.time();current=signature()
             if current!=last_signature:last_signature=current;last_progress=now
-            if now>=deadline.timestamp():
+            if deadline is not None and now>=deadline.timestamp():
                 state.update(cancelled=True,reason='human-authorized absolute deadline reached')
                 if not k.TerminateProcess(handle,124):raise ctypes.WinError(ctypes.get_last_error())
                 k.WaitForSingleObject(handle,10000)
@@ -110,10 +114,14 @@ def supervise(build,deadline,*,require_gowin=True,poll_s=2,record_s=30):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('build',type=Path);p.add_argument('--deadline',required=True);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('build',type=Path)
+    budget=p.add_mutually_exclusive_group(required=True)
+    budget.add_argument('--deadline',help='future timezone-aware absolute deadline')
+    budget.add_argument('--no-deadline',action='store_true',help='disable total and idle time limits without restarting the owned tool')
+    a=p.parse_args()
     with(a.build/'deadline_supervisor_stdout.log').open('a',encoding='utf-8')as log,contextlib.redirect_stdout(log),contextlib.redirect_stderr(log):
         try:
-            state=supervise(a.build,datetime.fromisoformat(a.deadline));print(json.dumps(state))
+            state=supervise(a.build,None if a.no_deadline else datetime.fromisoformat(a.deadline));print(json.dumps(state))
             return 0 if state['tool_exit']==0 and not state['cancelled']else 2
         except Exception:traceback.print_exc();return 2
 

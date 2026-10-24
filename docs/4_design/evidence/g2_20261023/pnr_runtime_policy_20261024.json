@@ -1,0 +1,160 @@
+{
+  "recorded_at": "2026-10-24T13:21:37.940874+08:00",
+  "scope": "current and future PNR wall-time/idle limits only; synthesis and validation limits unchanged",
+  "authorized_by": "human explicitly requested continuing this PNR without a cutoff and no future PNR deadlines",
+  "current_build": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_pnr12",
+  "max_runtime_minutes": 0,
+  "max_runtime_s": 0,
+  "max_no_progress_minutes": 0,
+  "absolute_deadline": null,
+  "original_150_minute_deadline_cancelled": true,
+  "old_deadline": "2026-10-24T13:39:02.663834+08:00",
+  "running_tool_pid": 54424,
+  "running_tool_created_at": "2026-10-24T11:09:02.734667+08:00",
+  "tool_restarted": false,
+  "tool_suspended": false,
+  "original_wrapper_pid": 58396,
+  "original_wrapper_suspended": true,
+  "runtime_supervisor_pid": 27664,
+  "runtime_supervisor_created_at": "2026-10-24T13:19:29.021508+08:00",
+  "waiting_controller_pid": 55032,
+  "authority_file": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_pnr12\\runtime_override.json",
+  "effective_runtime_snapshot": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-24T11:09:02.663834+08:00",
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 54424,
+    "elapsed_s": 7947.331770181656,
+    "no_observable_progress_s": 7224.128770112991,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        2120470,
+        1792812065621681800
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        2120045,
+        1792812065621681800
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2409064,
+        1792812030308119000
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        14120232,
+        1792812030863173200
+      ]
+    ],
+    "absolute_deadline": null,
+    "deadline_supervisor_pid": 27664,
+    "no_deadline": true,
+    "runtime_budget_source": "runtime_override.json; original wrapper suspended until tool exits"
+  },
+  "handoff_record": {
+    "recorded_at": "2026-10-24T13:19:29.645627+08:00",
+    "deadline": null,
+    "no_deadline": true,
+    "authorized_reason": "human explicitly removed this running PNR deadline and future PNR time limits",
+    "original_wrapper_pid": 58396,
+    "original_wrapper_created": 1792811321.7908657,
+    "tool_pid": 54424,
+    "tool_created": 1792811342.7346673,
+    "supervisor_pid": 27664,
+    "previous_runtime": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-24T11:09:02.663834+08:00",
+      "max_runtime_s": 9000.0,
+      "max_no_observable_progress_s": 0.0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 54424,
+      "elapsed_s": 7815.843999999983,
+      "no_observable_progress_s": 7092.641000000003,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          2120470,
+          1792812065621681800
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          2120045,
+          1792812065621681800
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          2409064,
+          1792812030308119000
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          14120232,
+          1792812030863173200
+        ]
+      ]
+    },
+    "tool_restarted": false,
+    "automatic_programming": false,
+    "scope": "one owned-tool budget handoff; CPU/telemetry never count as routing progress",
+    "phase": "supervising_same_tool",
+    "wrapper_suspended": true
+  },
+  "disposable_process_regression_tests": {
+    "passed": true,
+    "cases": [
+      {
+        "case": "natural",
+        "pid_preserved": true,
+        "wrapper_resumed": true,
+        "cancelled": false,
+        "exit": 0
+      },
+      {
+        "case": "deadline",
+        "pid_preserved": true,
+        "wrapper_resumed": true,
+        "cancelled": true,
+        "exit": 124
+      },
+      {
+        "case": "no_deadline",
+        "pid_preserved": true,
+        "wrapper_resumed": true,
+        "cancelled": false,
+        "exit": 0
+      }
+    ],
+    "scope": "disposable process lifecycle contract; no Gowin run, app-close guarantee or hardware test"
+  },
+  "future_default": {
+    "controller": "integration/g2/continue_bank_select_once.py",
+    "max_runtime_minutes": 0,
+    "no_progress_minutes": 0,
+    "entrypoint_pnr_from_netlist_already_defaults_to0": true,
+    "positive_budget_only_if_human_changes_this_policy": true
+  },
+  "source_rtl_netlist_sdc_cst_csr_and_vendor_options_unchanged": true,
+  "original_wrapper_resumes_after_tool_exit_to_collect_reports": true,
+  "telemetry_does_not_prove_routing_convergence": true,
+  "routing_resource_timing_cdc_and_deployment_gates_unchanged": true,
+  "programmed": false,
+  "recurring_supervision_active": false
+}

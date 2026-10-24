@@ -8,6 +8,7 @@ import argparse
 from collections import Counter, defaultdict
 from datetime import datetime
 import json
+import math
 from pathlib import Path
 import re
 import shutil
@@ -239,9 +240,9 @@ def main():
     p.add_argument('--state-dir',type=Path,required=True)
     p.add_argument('--check-only',action='store_true',help='internal isolated validation process; never starts a tool')
     p.add_argument('--clock-resource-plan',type=Path,help='explicit measured routing plan; default retains the original control priority plan')
-    p.add_argument('--max-runtime-minutes',type=float,default=120,help='explicit budget for the one future PNR, not an extension of an existing process')
+    p.add_argument('--max-runtime-minutes',type=float,default=0,help='0 (default) leaves PNR running without a deadline; positive value only for an explicit bounded run')
     a = p.parse_args()
-    assert 0 < a.max_runtime_minutes <= 150, 'future PNR must retain an explicit bounded budget'
+    assert math.isfinite(a.max_runtime_minutes) and a.max_runtime_minutes >= 0, 'PNR runtime must be finite and nonnegative; 0 disables the limit'
     source,baseline,out,state_dir = map(lambda p:p.resolve(),(a.synthesis,a.baseline,a.pnr_out,a.state_dir))
     if a.check_only:
         shutil.copyfile(Path(__file__),state_dir/'validator_source.py')
