@@ -20,8 +20,16 @@ module tb_actual_c;
  always@(posedge memory_clk)begin mem_period=$realtime-mem_last;mem_last=$realtime;end
  always@(posedge ui)begin ui_period=$realtime-ui_last;ui_last=$realtime;end
  integer cyc=0,refreshes=0,activates=0,reads=0,writes=0;
+ reg write_leveling=0;
+ // Observe public DRAM pins and native phase; no forced training state.
+ always@(resetn) $display("DDR_RESET_PIN time_us=%0.6f value=%b cke=%b",$realtime/1000.0,resetn,cke);
+ always@(cal) $display("CALIBRATION_PIN time_us=%0.6f value=%b reads=%0d writes=%0d",$realtime/1000.0,cal,reads,writes);
  always@(posedge ui)cyc=cyc+1;
  always@(posedge ck)if(resetn && cke && !cs)case({ras,cas,wen})
+ 3'b000:begin
+   if(ba==1)write_leveling=da[7];
+   $display("DRAM_MRS time_us=%0.6f bank=%0d addr=%h write_leveling=%b cal=%b",$realtime/1000.0,ba,da,write_leveling,cal);
+ end
  3'b001:refreshes=refreshes+1;3'b011:activates=activates+1;3'b100:writes=writes+1;3'b101:reads=reads+1;endcase
  initial begin #(RESET_HOLD_NS);rst_n=1;end
  initial begin repeat(40) begin #100000; $display("PROGRESS time=%0t lock=%b stop=%b reset=%b cal=%b ui=%0d ref=%0d act=%0d rd=%0d wr=%0d memory_period_ns=%0.3f ui_period_ns=%0.3f",$time,pll_lock,pll_stop,ddr_rst,cal,cyc,refreshes,activates,reads,writes,mem_period,ui_period);end $fatal(1,"calibration/probe watchdog");end
