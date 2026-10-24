@@ -142,3 +142,16 @@ an end-to-end performance acceptance. nav_ddr_health.v is independently
 tested but not yet wired to joint stopping. Shared SM/EM arbitration, actual
 DDR worst service/5ms proof, cold initialization and full fault/CDC admission
 remain required before a joint build. No full SYN/PNR was started.
+
+
+03:29: derive_ddr_shared.py now adds the53-bit elevation cache to the same
+physical native port, drains the WHOLE in-flight elevation eviction/read-fill
+before row ownership, and initializes all65536 structure words at cold boot
+using the row clear/fence. --shared-native in probe_complete_matcher.py and
+probe_map_pipeline.py verifies both arithmetic pipelines with this arbitration.
+probe_shared_update_bound.py retains every8-case worst-shape row vector and
+the slower-service counterexample: positive4.05216ms, negative10.93738ms.
+nav_ddr_admission.v plus the unchanged original safety_guard passes20 isolated
+checks, not the complete G2 stop/actuator path. Complete cold flags/guard
+wiring,64-poll CPU behavior, prior mode transitions and actual DDR service
+proof remain required. There is no full joint SYN/PNR or actual5ms acceptance.

@@ -11,7 +11,7 @@ from derive_ddr_elevation import derive,derive_traversability,derive_map
 FROZEN=Path('F:/nav_integration_g2_20261023/sfp_lane2_private_snapshot_syn11_retry1/nav')
 
 
-def run(out,one_frame=False):
+def run(out,one_frame=False,shared=False):
     assert not out.exists();out.mkdir()
     for rel,fn in [('rtl/map/elev_map.v',derive),('rtl/map/trav_v3.v',derive_traversability),('rtl/map/map_subsys.v',derive_map)]:
         source=(FROZEN/rel).read_text(encoding='utf-8-sig')
@@ -62,6 +62,9 @@ def run(out,one_frame=False):
     one('if (errs == 0 && fi == n_flt) $display("TEST PASSED");',
         'if (errs == 0 && (n_flt<0||fi == n_flt)) $display("TEST PASSED frames=%0d filtered_points=%0d cost_words=%0d",n_frm,fi,n_frm*NCELL);')
     one('        #200ms;', '        #2000ms; // Test budget, NOT a navigation/UPDATE admission threshold.')
+    if shared:
+        from probe_shared_pipeline import prepare
+        tb=prepare(out,HERE,names,tb)
     (out/'tb_map_ddr.sv').write_text(tb,encoding='utf-8')
     commands=[('xvlog',names),('xvlog',['-sv','native_service_model.sv','tb_map_ddr.sv']),
         ('xelab',['-debug','off','-timescale','1ns/1ps','tb_lidar_map','-s','snap']),('xsim',['snap','-runall'])]
@@ -75,11 +78,13 @@ def run(out,one_frame=False):
         metrics={k:int(v) for k,v in re.findall(r'(\w+)=(\d+)',re.search(r'TEST PASSED[^\r\n]*',s)[0])},
         timing=[{k:float(v) if '.' in v else int(v) for k,v in re.findall(r'(\w+)=([\d.]+)',l)} for l in s.splitlines() if l.startswith('MAP_FRAME')],
         scope='actual original point pipeline/elevation/four-pass traversal with native-service model',
-        shared_structure_arbitration_verified=False,hardware_service_bound_verified=False,
+        shared_pipeline=[{k:int(v) for k,v in re.findall(r'(\w+)=(\d+)',l)} for l in s.splitlines() if l.startswith('SHARED_PIPELINE')],
+        shared_structure_arbitration_verified=shared,hardware_service_bound_verified=False,
         full_joint_implementation=False,programmed=False)
     (out/'result.json').write_text(json.dumps(result,indent=2));print(json.dumps(result,indent=2))
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--out',type=Path,required=True);p.add_argument('--one-frame',action='store_true')
-    a=p.parse_args();run(a.out.resolve(),a.one_frame)
+    p.add_argument('--shared-native',action='store_true')
+    a=p.parse_args();run(a.out.resolve(),a.one_frame,a.shared_native)

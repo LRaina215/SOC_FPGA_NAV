@@ -1,0 +1,305 @@
+{
+  "updated_at": "2026-10-25T03:28:48.343916+08:00",
+  "complete_matcher_and_shared_transport": {
+    "tested_at": "2026-10-25T03:22:12.783994+08:00",
+    "passed": true,
+    "quick": false,
+    "update": [
+      {
+        "frame": 0,
+        "cycles": 187525,
+        "us_at_50MHz": 3750.5
+      },
+      {
+        "frame": 1,
+        "cycles": 189755,
+        "us_at_50MHz": 3795.1
+      },
+      {
+        "frame": 2,
+        "cycles": 188716,
+        "us_at_50MHz": 3774.32
+      },
+      {
+        "frame": 3,
+        "cycles": 187228,
+        "us_at_50MHz": 3744.56
+      },
+      {
+        "frame": 4,
+        "cycles": 187884,
+        "us_at_50MHz": 3757.68
+      }
+    ],
+    "evaluation": [
+      {
+        "points": 2259,
+        "candidates": 245,
+        "cycles": 573429,
+        "us_at_50MHz": 11468.58
+      },
+      {
+        "points": 1977,
+        "candidates": 245,
+        "cycles": 749102,
+        "us_at_50MHz": 14982.04
+      },
+      {
+        "points": 1777,
+        "candidates": 245,
+        "cycles": 1080216,
+        "us_at_50MHz": 21604.32
+      },
+      {
+        "points": 2055,
+        "candidates": 245,
+        "cycles": 1205003,
+        "us_at_50MHz": 24100.06
+      },
+      {
+        "points": 2247,
+        "candidates": 245,
+        "cycles": 3606562,
+        "us_at_50MHz": 72131.24
+      },
+      {
+        "points": 2055,
+        "candidates": 245,
+        "cycles": 4050232,
+        "us_at_50MHz": 81004.64
+      },
+      {
+        "points": 2247,
+        "candidates": 245,
+        "cycles": 6572988,
+        "us_at_50MHz": 131459.76
+      }
+    ],
+    "mmio": [
+      {
+        "bus_writes": 7796,
+        "prior_pulses": 3898,
+        "longest_write_wait_cycles": 133
+      }
+    ],
+    "dirty_combined": [
+      {
+        "dirty_lines": 1280,
+        "extra_prior_writes": 1280
+      }
+    ],
+    "shared_native": [
+      {
+        "em_ops": 428392,
+        "em_reads": 214196,
+        "em_writes": 214196,
+        "update_overlaps": 5,
+        "backing_words": 16384
+      }
+    ],
+    "clear": [
+      {
+        "cycles": 150656,
+        "us_at_50MHz": 3013.12
+      }
+    ],
+    "metrics": {
+      "frames": 5,
+      "candidates": 245,
+      "priors": 2618,
+      "update_max_cycles": 189755
+    },
+    "scope": "complete SLF command paths using original golden vectors and modeled native service",
+    "full245_candidates_tested": true,
+    "prior_write_backpressure_port_tested": true,
+    "original_point_transform_and_all_dirty_cache_combined": true,
+    "subsystem_MMIO_backpressure_connected": true,
+    "full_subsystem_simulated": false,
+    "real_worst_update_under_5ms_verified": false,
+    "elevation_map_integrated": false,
+    "shared_native_transport_verified": true,
+    "full_joint_implementation": false,
+    "programmed": false,
+    "cold_structure": [
+      {
+        "structure_words": 65536
+      }
+    ]
+  },
+  "point_elevation_four_pass_shared": {
+    "tested_at": "2026-10-25T03:24:53.113063+08:00",
+    "passed": true,
+    "one_frame": false,
+    "metrics": {
+      "frames": 8,
+      "filtered_points": 56037,
+      "cost_words": 131072
+    },
+    "timing": [
+      {
+        "frame": 0,
+        "cycles": 1077686,
+        "us_at_50MHz": 21553.72
+      },
+      {
+        "frame": 1,
+        "cycles": 992142,
+        "us_at_50MHz": 19842.84
+      },
+      {
+        "frame": 2,
+        "cycles": 1074774,
+        "us_at_50MHz": 21495.48
+      },
+      {
+        "frame": 3,
+        "cycles": 1184318,
+        "us_at_50MHz": 23686.36
+      },
+      {
+        "frame": 4,
+        "cycles": 1102518,
+        "us_at_50MHz": 22050.36
+      },
+      {
+        "frame": 5,
+        "cycles": 1066606,
+        "us_at_50MHz": 21332.12
+      },
+      {
+        "frame": 6,
+        "cycles": 1078046,
+        "us_at_50MHz": 21560.92
+      },
+      {
+        "frame": 7,
+        "cycles": 1055334,
+        "us_at_50MHz": 21106.68
+      }
+    ],
+    "scope": "actual original point pipeline/elevation/four-pass traversal with native-service model",
+    "shared_pipeline": [
+      {
+        "updates": 8,
+        "dirty_writes": 2048,
+        "live_EM_overlaps": 8
+      }
+    ],
+    "shared_structure_arbitration_verified": true,
+    "hardware_service_bound_verified": false,
+    "full_joint_implementation": false,
+    "programmed": false
+  },
+  "worst_shape_update_models": {
+    "tested_at": "2026-10-25T03:27:19.307894+08:00",
+    "passed": true,
+    "timing": [
+      {
+        "case": 0,
+        "cycles": 120426,
+        "us_at_50MHz": 2408.52,
+        "drain_and_start_cycles": 10636,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 1,
+        "cycles": 120512,
+        "us_at_50MHz": 2410.24,
+        "drain_and_start_cycles": 10647,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 2,
+        "cycles": 117048,
+        "us_at_50MHz": 2340.96,
+        "drain_and_start_cycles": 10679,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 3,
+        "cycles": 117778,
+        "us_at_50MHz": 2355.56,
+        "drain_and_start_cycles": 10648,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 4,
+        "cycles": 100896,
+        "us_at_50MHz": 2017.92,
+        "drain_and_start_cycles": 10656,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 5,
+        "cycles": 200183,
+        "us_at_50MHz": 4003.66,
+        "drain_and_start_cycles": 10701,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 6,
+        "cycles": 202608,
+        "us_at_50MHz": 4052.16,
+        "drain_and_start_cycles": 10685,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 7,
+        "cycles": 546869,
+        "us_at_50MHz": 10937.38,
+        "drain_and_start_cycles": 13750,
+        "expected_meets_5ms": 0
+      }
+    ],
+    "metrics": {
+      "cases": 8,
+      "client_checks": 298249,
+      "backing_words": 524288,
+      "positive_max_cycles": 202608,
+      "negative_cycles": 546869,
+      "maximum_drain_start_cycles": 13750
+    },
+    "elevation_checks": [
+      {
+        "client_checks": 24
+      }
+    ],
+    "scope": "all8 accepted row workloads, full dirty SM barrier, dirty EM eviction/handover and modeled native service",
+    "original_point_transform_tested": false,
+    "full_matcher_tested": false,
+    "real_worst_update_under_5ms_verified": false,
+    "physical_resources_verified": false,
+    "full_joint_implementation": false,
+    "programmed": false
+  },
+  "guard_plus_original_safety_endpoint": {
+    "tested_at": "2026-10-25T03:25:08.776092+08:00",
+    "passed": true,
+    "metrics": {
+      "checks": 20,
+      "original_safety_zero_verified": 1,
+      "fault_survives_warm_reset": 1
+    },
+    "scope": "DDR admission plus exact original navigation safety_guard, not complete G2/control/actuator path",
+    "full_joint_stop_integration_verified": false,
+    "actual_DDR_timing_verified": false,
+    "programmed": false
+  },
+  "tested_sources_text_match_current_generators": true,
+  "physical_DDR_controllers_used_per_probe": 1,
+  "storage_only_net_saving_prediction": 67,
+  "physical_resources_verified": false,
+  "latest_shared_rtl_synthesis_measured": false,
+  "full_joint_synthesis_started": false,
+  "pnr_started": false,
+  "real_worst_update_under_5ms_verified": false,
+  "new_CDC_and_UI_clock_signed_off": false,
+  "full_joint_stop_path_signed_off": false,
+  "programmed": false,
+  "remaining": [
+    "connect complete subsystem cold flags/independent guard/stop path with original CPU warm reset",
+    "verify actual 64-poll elevation and prior/mode transitions; EVAL slower than original",
+    "obtain compatible unmodified vendor DQS simulator and prove real refresh/precharge/service envelope",
+    "prepare unique full SYN only after all5ms/source/numeric/initialization gates, derive actual clock/CDC/resource plan before unlimited PNR"
+  ]
+}

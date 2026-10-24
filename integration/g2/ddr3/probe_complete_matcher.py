@@ -20,7 +20,7 @@ from audit_netlist_memories import inventory as memory_inventory
 FROZEN = Path('F:/nav_integration_g2_20261023/sfp_lane2_private_snapshot_syn11_retry1/nav')
 
 
-def run(out, row_probe, quick=False, mmio=False, dirty=False):
+def run(out, row_probe, quick=False, mmio=False, dirty=False, shared=False):
     assert not out.exists()
     out.mkdir(parents=True)
     assert json.loads((row_probe/'functional_result.json').read_text())['passed']
@@ -178,6 +178,9 @@ def run(out, row_probe, quick=False, mmio=False, dirty=False):
             'if(prior_pulses!=n_prior+prep_prior_pulses||bus_writes!=2*(n_prior+prep_prior_pulses))')
         one('        if (errs == 0) $display("TEST PASSED frames=',
             '        $display("DIRTY_COMBINED dirty_lines=%0d extra_prior_writes=%0d",dirty_lines_checked,prep_prior_pulses);\n        if (errs == 0) $display("TEST PASSED frames=')
+    if shared:
+        from probe_shared_maps import prepare
+        tb=prepare(out,HERE,names,tb)
     (out/'tb_complete_matcher.sv').write_text(tb, encoding='utf-8')
     viv = Path('E:/2026.1/Vivado/bin')
     commands = [('xvlog', names+['slf_lf_ce.v', 'slf_match_ddr.v', 'slf_extract.v', 'nav_ram_sdp.v']),
@@ -198,6 +201,8 @@ def run(out, row_probe, quick=False, mmio=False, dirty=False):
         quick=quick, update=lines('FULL_UPDATE'), evaluation=lines('SLF_TIMING'),
         mmio=lines('MMIO_PROOF'),
         dirty_combined=lines('DIRTY_COMBINED'),
+        shared_native=lines('SHARED_PROOF'),
+        cold_structure=lines('COLD_INIT_PROOF'),
         clear=lines('FULL_CLEAR'),
         metrics={k:int(v) for k,v in re.findall(r'(\w+)=(\d+)', re.search(r'TEST PASSED[^\r\n]*',s)[0])},
         scope='complete SLF command paths using original golden vectors and modeled native service',
@@ -205,7 +210,8 @@ def run(out, row_probe, quick=False, mmio=False, dirty=False):
         original_point_transform_and_all_dirty_cache_combined=dirty,
         subsystem_MMIO_backpressure_connected=mmio, full_subsystem_simulated=False,
         real_worst_update_under_5ms_verified=False,
-        elevation_map_integrated=False, full_joint_implementation=False, programmed=False)
+        elevation_map_integrated=False, shared_native_transport_verified=shared,
+        full_joint_implementation=False, programmed=False)
     (out/'result.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
     print(json.dumps(result,indent=2))
 
@@ -261,8 +267,9 @@ if __name__=='__main__':
     p.add_argument('--synthesis-after',type=Path)
     p.add_argument('--mmio',action='store_true')
     p.add_argument('--dirty-before-update',action='store_true')
+    p.add_argument('--shared-native',action='store_true')
     a=p.parse_args()
     if a.synthesis_after:synthesize(a.synthesis_after.resolve(),a.out.resolve())
     else:
         assert a.row_probe is not None
-        run(a.out.resolve(),a.row_probe.resolve(),a.quick,a.mmio,a.dirty_before_update)
+        run(a.out.resolve(),a.row_probe.resolve(),a.quick,a.mmio,a.dirty_before_update,a.shared_native)
