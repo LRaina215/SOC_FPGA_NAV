@@ -1,0 +1,299 @@
+{
+  "updated_at": "2026-10-25T03:10:30.113671+08:00",
+  "scope": "complete map arithmetic and isolated adapters, modeled native service; not complete joint G2",
+  "complete_matcher": {
+    "tested_at": "2026-10-25T02:51:38.275770+08:00",
+    "passed": true,
+    "quick": false,
+    "update": [
+      {
+        "frame": 0,
+        "cycles": 187506,
+        "us_at_50MHz": 3750.12
+      },
+      {
+        "frame": 1,
+        "cycles": 189824,
+        "us_at_50MHz": 3796.48
+      },
+      {
+        "frame": 2,
+        "cycles": 188545,
+        "us_at_50MHz": 3770.9
+      },
+      {
+        "frame": 3,
+        "cycles": 187297,
+        "us_at_50MHz": 3745.94
+      },
+      {
+        "frame": 4,
+        "cycles": 187793,
+        "us_at_50MHz": 3755.86
+      }
+    ],
+    "evaluation": [
+      {
+        "points": 2259,
+        "candidates": 245,
+        "cycles": 572126,
+        "us_at_50MHz": 11442.52
+      },
+      {
+        "points": 1977,
+        "candidates": 245,
+        "cycles": 747659,
+        "us_at_50MHz": 14953.18
+      },
+      {
+        "points": 1777,
+        "candidates": 245,
+        "cycles": 1079280,
+        "us_at_50MHz": 21585.6
+      },
+      {
+        "points": 2055,
+        "candidates": 245,
+        "cycles": 1203643,
+        "us_at_50MHz": 24072.86
+      },
+      {
+        "points": 2247,
+        "candidates": 245,
+        "cycles": 3485482,
+        "us_at_50MHz": 69709.64
+      },
+      {
+        "points": 2055,
+        "candidates": 245,
+        "cycles": 3820896,
+        "us_at_50MHz": 76417.92
+      },
+      {
+        "points": 2247,
+        "candidates": 245,
+        "cycles": 6053748,
+        "us_at_50MHz": 121074.96
+      }
+    ],
+    "mmio": [
+      {
+        "bus_writes": 7796,
+        "prior_pulses": 3898,
+        "longest_write_wait_cycles": 91
+      }
+    ],
+    "dirty_combined": [
+      {
+        "dirty_lines": 1280,
+        "extra_prior_writes": 1280
+      }
+    ],
+    "clear": [
+      {
+        "cycles": 150599,
+        "us_at_50MHz": 3011.98
+      }
+    ],
+    "metrics": {
+      "frames": 5,
+      "candidates": 245,
+      "priors": 2618,
+      "update_max_cycles": 189824
+    },
+    "scope": "complete SLF command paths using original golden vectors and modeled native service",
+    "full245_candidates_tested": true,
+    "prior_write_backpressure_port_tested": true,
+    "original_point_transform_and_all_dirty_cache_combined": true,
+    "subsystem_MMIO_backpressure_connected": true,
+    "full_subsystem_simulated": false,
+    "real_worst_update_under_5ms_verified": false,
+    "elevation_map_integrated": false,
+    "full_joint_implementation": false,
+    "programmed": false
+  },
+  "elevation": {
+    "tested_at": "2026-10-25T03:01:29.370719+08:00",
+    "passed": true,
+    "metrics": {
+      "frames": 4,
+      "points": 2052,
+      "complete53bit_words": 65536,
+      "backing_words": 16384
+    },
+    "clear": [
+      {
+        "cycles": 335975,
+        "us_at_50MHz": 6719.5
+      }
+    ],
+    "frames": [
+      {
+        "frame": 0,
+        "cycles": 357075
+      },
+      {
+        "frame": 1,
+        "cycles": 351696
+      },
+      {
+        "frame": 2,
+        "cycles": 351584
+      },
+      {
+        "frame": 3,
+        "cycles": 351664
+      }
+    ],
+    "scope": "original elevation point arithmetic/CPU reads plus modeled DDR cache/native service",
+    "full_capacity": 16384,
+    "word_bits": 53,
+    "traversability_scan_verified": false,
+    "shared_structure_arbitration_verified": false,
+    "hardware_service_bound_verified": false,
+    "full_joint_implementation": false,
+    "programmed": false
+  },
+  "point_elevation_traversability": {
+    "tested_at": "2026-10-25T03:06:30.449886+08:00",
+    "passed": true,
+    "one_frame": false,
+    "metrics": {
+      "frames": 8,
+      "filtered_points": 56037,
+      "cost_words": 131072
+    },
+    "timing": [
+      {
+        "frame": 0,
+        "cycles": 895750,
+        "us_at_50MHz": 17915.0
+      },
+      {
+        "frame": 1,
+        "cycles": 811182,
+        "us_at_50MHz": 16223.64
+      },
+      {
+        "frame": 2,
+        "cycles": 893814,
+        "us_at_50MHz": 17876.28
+      },
+      {
+        "frame": 3,
+        "cycles": 1002774,
+        "us_at_50MHz": 20055.48
+      },
+      {
+        "frame": 4,
+        "cycles": 921222,
+        "us_at_50MHz": 18424.44
+      },
+      {
+        "frame": 5,
+        "cycles": 885350,
+        "us_at_50MHz": 17707.0
+      },
+      {
+        "frame": 6,
+        "cycles": 896742,
+        "us_at_50MHz": 17934.84
+      },
+      {
+        "frame": 7,
+        "cycles": 874198,
+        "us_at_50MHz": 17483.96
+      }
+    ],
+    "scope": "actual original point pipeline/elevation/four-pass traversal with native-service model",
+    "shared_structure_arbitration_verified": false,
+    "hardware_service_bound_verified": false,
+    "full_joint_implementation": false,
+    "programmed": false
+  },
+  "independent_health": {
+    "tested_at": "2026-10-25T02:48:25.476437+08:00",
+    "passed": true,
+    "metrics": {
+      "checks": 11,
+      "ui_stop_detect_core_cycles_max": 520
+    },
+    "scope": "independent core-clock DDR health observer only",
+    "joint_stop_integration_verified": false,
+    "actual_DDR_timing_verified": false
+  },
+  "isolated_matcher_synthesis": {
+    "tested": "F:\\nav_integration_g2_20261023\\ddr_complete_matcher_fast_probe2",
+    "runtime": {
+      "started_at": "2026-10-25T02:48:58.624388+08:00",
+      "max_runtime_s": 180,
+      "max_owned_rss": 805306368,
+      "scope": "isolated complete SLF DDR adapter; no joint G2 SYN/PNR",
+      "cancelled": false,
+      "pid": 29916,
+      "tool_exit": 0,
+      "elapsed_s": 32.53099999995902
+    },
+    "startup_available_physical": 3670499328,
+    "startup_available_commit": 6708191232,
+    "resources": {
+      "name": "g2_top",
+      "Register": "818",
+      "Alu": "417",
+      "Lut": "924",
+      "MULTALU27X18": "4",
+      "MULT27X36": "2",
+      "MULTADDALU12X12": "1",
+      "T_Register": "6881(818)",
+      "T_Alu": "2202(417)",
+      "T_Lut": "7790(924)",
+      "T_MULTALU27X18": "10(4)",
+      "T_MULT12X12": "19(0)",
+      "T_MULT27X36": "9(2)",
+      "T_MULTADDALU12X12": "1(1)",
+      "T_Bsram": "28(0)",
+      "T_Ssram": "988(0)"
+    },
+    "old_full_map_removed": true,
+    "cache_narrow_leaves": 4
+  },
+  "synthesis_inventory": {
+    "expanded_bsram_count": 28,
+    "wide32_36_count": 4,
+    "predicted_split_bsram": 32,
+    "by_top_instance": {
+      "u_pb": 8,
+      "u_cos": 2,
+      "u_store": 18
+    }
+  },
+  "baseline_heaviest_evaluation_us": 69224.9,
+  "new_heaviest_evaluation_us": 121074.96,
+  "slower_permitted_service_counterexample_us": 10934.56,
+  "storage_only_net_saving_prediction": 67,
+  "whole_joint_physical_prediction_before_other_adapter_costs": 259,
+  "physical_resources_verified": false,
+  "real_worst_update_under_5ms_verified": false,
+  "shared_structure_elevation_arbitration_verified": false,
+  "full_joint_synthesis_started": false,
+  "pnr_started": false,
+  "programmed": false,
+  "vendor_DQS_compatibility": {
+    "key_owners": [],
+    "file": "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\simlib\\gw5a\\DQS_sim_V.vp",
+    "checked_at": "2026-10-25T02:53:41.043898+08:00",
+    "compatible": false,
+    "scope": "compile provided encrypted DQS unchanged; no replacement or decryption",
+    "compile_exit": 0,
+    "protected_body_ignored": true,
+    "functional_DQS_model_loaded": false,
+    "actual_controller_service_bound_verified": false
+  },
+  "simulator_download_status": "official MyAltera sign-in required; no installer downloaded; user path question pending",
+  "next": [
+    "one physical native controller with shared SM/EM arbitration and bounded UPDATE takeover",
+    "connect independent PLL/UI-stop guard and cold-init/stop behavior",
+    "real controller service proof with compatible unmodified vendor DQS model",
+    "evaluate worst mode/prior/CPU polling and final sources/resources/clock/CDC before joint build"
+  ]
+}
