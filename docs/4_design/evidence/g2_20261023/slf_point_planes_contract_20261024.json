@@ -1,0 +1,467 @@
+{
+  "recorded_at": "2026-10-24T15:28:37.789648+08:00",
+  "phase": "module_packing_verified_full_synthesis_running",
+  "physical_baseline": "F:/nav_integration_g2_20261023/sfp_lane2_obsreuse_pnr12",
+  "physical_baseline_unrouted": 257,
+  "physical_baseline_bsram": 334,
+  "probe": {
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_syn9",
+    "build": "F:\\nav_integration_g2_20261023\\slf_point_planes_probe1",
+    "geometry": {
+      "words": 4096,
+      "width": 36,
+      "logical_bits": 147456
+    },
+    "read_latency_cycles": 1,
+    "read_first": true,
+    "capacity_unchanged": true,
+    "programmed": false,
+    "deployment_accepted": false,
+    "scope": "isolated memory RTL/vendor cycles and actual module PNR; joint effects still require full SYN/PNR",
+    "runs": [
+      {
+        "variant": "original",
+        "runtime": {
+          "command": [
+            "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+            "run.tcl"
+          ],
+          "started_at": "2026-10-24T15:22:20.760043+08:00",
+          "max_runtime_s": 0,
+          "max_no_observable_progress_s": 0,
+          "cancelled": false,
+          "programmed": false,
+          "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+          "pid": 22940,
+          "elapsed_s": 40.04599999997299,
+          "no_observable_progress_s": 12.0,
+          "observed_files": [
+            [
+              "gw_sh.log",
+              3587,
+              1792826565526933100
+            ],
+            [
+              "impl\\pnr\\g2_top.log",
+              766,
+              1792826565527473200
+            ],
+            [
+              "impl\\pnr\\g2_top.db",
+              12196,
+              1792826544606877200
+            ],
+            [
+              "impl\\pnr\\g2_top.p",
+              38099,
+              1792826544610882800
+            ],
+            [
+              "impl\\pnr\\g2_top.pr",
+              82269909,
+              1792826565476126900
+            ]
+          ],
+          "tool_exit": 0,
+          "ended_at": "2026-10-24T15:23:00.806116+08:00"
+        },
+        "effective_options": {
+          "global_freq_mhz": 50.0,
+          "wide_split": 1,
+          "effective_options": "F:\\nav_integration_g2_20261023\\slf_point_planes_probe1\\original\\effective_options.tcl",
+          "extra_options": {}
+        },
+        "synthesis_resources": {
+          "name": "g2_top",
+          "T_Register": "4(0)",
+          "T_Lut": "164(0)",
+          "T_Bsram": "8(0)"
+        },
+        "inventory": {
+          "primitives": {
+            "IBUF": 63,
+            "OBUF": 36,
+            "LUT3": 148,
+            "LUT4": 16,
+            "DFFRE": 4,
+            "SDPX9B": 8,
+            "MUX2_LUT5": 72,
+            "MUX2_LUT6": 36,
+            "VCC": 2,
+            "GND": 2,
+            "GSR": 1
+          },
+          "bsram": 8,
+          "ff": 4,
+          "maximum_nonclock_load": 74,
+          "high_loads": [
+            {
+              "net": "u_ram/g_banked.selected[0]",
+              "loads": 74,
+              "pins": {
+                "I2": 73,
+                "I0": 1
+              }
+            },
+            {
+              "net": "u_ram/g_banked.selected[1]",
+              "loads": 73,
+              "pins": {
+                "I0": 1,
+                "S0": 72
+              }
+            },
+            {
+              "net": "u_ram/g_banked.selected_0_9",
+              "loads": 72,
+              "pins": {
+                "I2": 71,
+                "I0": 1
+              }
+            },
+            {
+              "net": "u_ram/g_banked.selected[2]",
+              "loads": 37,
+              "pins": {
+                "I1": 1,
+                "S0": 36
+              }
+            },
+            {
+              "net": "re_d",
+              "loads": 12,
+              "pins": {
+                "I2": 5,
+                "I3": 3,
+                "I1": 4
+              }
+            },
+            {
+              "net": "raddr_d[9]",
+              "loads": 10,
+              "pins": {
+                "I1": 4,
+                "I2": 1,
+                "I3": 4,
+                "I0": 1
+              }
+            },
+            {
+              "net": "raddr_d[10]",
+              "loads": 9,
+              "pins": {
+                "I1": 3,
+                "I2": 4,
+                "I0": 2
+              }
+            },
+            {
+              "net": "raddr_d[11]",
+              "loads": 9,
+              "pins": {
+                "I0": 6,
+                "I2": 2,
+                "I3": 1
+              }
+            },
+            {
+              "net": "raddr_d[0]",
+              "loads": 8,
+              "pins": {
+                "ADB": 8
+              }
+            },
+            {
+              "net": "raddr_d[1]",
+              "loads": 8,
+              "pins": {
+                "ADB": 8
+              }
+            },
+            {
+              "net": "raddr_d[2]",
+              "loads": 8,
+              "pins": {
+                "ADB": 8
+              }
+            },
+            {
+              "net": "raddr_d[3]",
+              "loads": 8,
+              "pins": {
+                "ADB": 8
+              }
+            },
+            {
+              "net": "raddr_d[4]",
+              "loads": 8,
+              "pins": {
+                "ADB": 8
+              }
+            },
+            {
+              "net": "raddr_d[5]",
+              "loads": 8,
+              "pins": {
+                "ADB": 8
+              }
+            },
+            {
+              "net": "raddr_d[6]",
+              "loads": 8,
+              "pins": {
+                "ADB": 8
+              }
+            },
+            {
+              "net": "raddr_d[7]",
+              "loads": 8,
+              "pins": {
+                "ADB": 8
+              }
+            }
+          ]
+        },
+        "actual_physical_bsram": 16
+      },
+      {
+        "variant": "planes",
+        "runtime": {
+          "command": [
+            "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+            "run.tcl"
+          ],
+          "started_at": "2026-10-24T15:23:02.615876+08:00",
+          "max_runtime_s": 0,
+          "max_no_observable_progress_s": 0,
+          "cancelled": false,
+          "programmed": false,
+          "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+          "pid": 37276,
+          "elapsed_s": 40.06199999997625,
+          "no_observable_progress_s": 12.0,
+          "observed_files": [
+            [
+              "gw_sh.log",
+              3583,
+              1792826607517688500
+            ],
+            [
+              "impl\\pnr\\g2_top.log",
+              762,
+              1792826607519714000
+            ],
+            [
+              "impl\\pnr\\g2_top.db",
+              8916,
+              1792826586366572700
+            ],
+            [
+              "impl\\pnr\\g2_top.p",
+              23360,
+              1792826586368553800
+            ],
+            [
+              "impl\\pnr\\g2_top.pr",
+              81977751,
+              1792826607489675100
+            ]
+          ],
+          "tool_exit": 0,
+          "ended_at": "2026-10-24T15:23:42.666992+08:00"
+        },
+        "effective_options": {
+          "global_freq_mhz": 50.0,
+          "wide_split": 1,
+          "effective_options": "F:\\nav_integration_g2_20261023\\slf_point_planes_probe1\\planes\\effective_options.tcl",
+          "extra_options": {}
+        },
+        "synthesis_resources": {
+          "name": "g2_top",
+          "T_Register": "2(0)",
+          "T_Lut": "82(0)",
+          "T_Bsram": "8(0)"
+        },
+        "inventory": {
+          "primitives": {
+            "IBUF": 63,
+            "OBUF": 36,
+            "LUT3": 82,
+            "DFFRE": 2,
+            "SDPX9B": 8,
+            "MUX2_LUT5": 36,
+            "VCC": 2,
+            "GND": 2,
+            "GSR": 1
+          },
+          "bsram": 8,
+          "ff": 2,
+          "maximum_nonclock_load": 73,
+          "high_loads": [
+            {
+              "net": "u_ram/g_slf_point_planes.point_selected[0]",
+              "loads": 73,
+              "pins": {
+                "I2": 72,
+                "I0": 1
+              }
+            },
+            {
+              "net": "u_ram/g_slf_point_planes.point_selected[1]",
+              "loads": 37,
+              "pins": {
+                "I1": 1,
+                "S0": 36
+              }
+            },
+            {
+              "net": "raddr_d[0]",
+              "loads": 8,
+              "pins": {
+                "ADB": 8
+              }
+            },
+            {
+              "net": "raddr_d[1]",
+              "loads": 8,
+              "pins": {
+                "ADB": 8
+              }
+            },
+            {
+              "net": "raddr_d[2]",
+              "loads": 8,
+              "pins": {
+                "ADB": 8
+              }
+            },
+            {
+              "net": "raddr_d[3]",
+              "loads": 8,
+              "pins": {
+                "ADB": 8
+              }
+            },
+            {
+              "net": "raddr_d[4]",
+              "loads": 8,
+              "pins": {
+                "ADB": 8
+              }
+            },
+            {
+              "net": "raddr_d[5]",
+              "loads": 8,
+              "pins": {
+                "ADB": 8
+              }
+            },
+            {
+              "net": "raddr_d[6]",
+              "loads": 8,
+              "pins": {
+                "ADB": 8
+              }
+            },
+            {
+              "net": "raddr_d[7]",
+              "loads": 8,
+              "pins": {
+                "ADB": 8
+              }
+            },
+            {
+              "net": "raddr_d[8]",
+              "loads": 8,
+              "pins": {
+                "ADB": 8
+              }
+            },
+            {
+              "net": "raddr_d[9]",
+              "loads": 8,
+              "pins": {
+                "ADB": 8
+              }
+            },
+            {
+              "net": "waddr_d[0]",
+              "loads": 8,
+              "pins": {
+                "ADA": 8
+              }
+            },
+            {
+              "net": "waddr_d[1]",
+              "loads": 8,
+              "pins": {
+                "ADA": 8
+              }
+            },
+            {
+              "net": "waddr_d[2]",
+              "loads": 8,
+              "pins": {
+                "ADA": 8
+              }
+            },
+            {
+              "net": "waddr_d[3]",
+              "loads": 8,
+              "pins": {
+                "ADA": 8
+              }
+            }
+          ]
+        },
+        "actual_physical_bsram": 8
+      }
+    ],
+    "checks": [
+      {
+        "variant": "rtl",
+        "result": "TEST PASSED checks=28682 reads=20469 writes=8145 collisions=4098 holds=8213 all4096addresses=1 init_nonzero=1"
+      },
+      {
+        "variant": "vendor",
+        "result": "TEST PASSED checks=28682 reads=20469 writes=8145 collisions=4098 holds=8213 all4096addresses=1 init_nonzero=1"
+      }
+    ],
+    "actual_module_bsram_saved": 8,
+    "all_cycles_passed": true,
+    "joint_physical_reduction_not_yet_measured": true
+  },
+  "full_candidate": {
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_syn9",
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_pointplanes_syn10",
+    "wait_pid": null,
+    "programmed": false,
+    "source_frozen_before_wait": true,
+    "automatic_pnr": false,
+    "modified_rtl_inputs": [
+      "nav/rtl/common/nav_ram_sdp.v"
+    ],
+    "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+    "phase": "synthesizing",
+    "updated_at": "2026-10-24T15:28:31.240093+08:00",
+    "minimum_start_free_bytes": 2147483648,
+    "minimum_start_available_commit_bytes": 4294967296,
+    "max_runtime_minutes": 40,
+    "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+    "tool_pid": 53612,
+    "synthesis_started_at": "2026-10-24T15:25:01.169925+08:00",
+    "elapsed_s": 210.06300000002375,
+    "free_bytes": 3836461056,
+    "available_commit_bytes": 5853556736
+  },
+  "full_physical_bsram_prediction": 326,
+  "full_physical_count_measured": false,
+  "user_policy": {
+    "pnr_total_time_limit_s": 0,
+    "pnr_no_progress_time_limit_s": 0,
+    "requested_check_interval_minutes": 30,
+    "notification": "meaningful change, completion, failure, or required user action only"
+  },
+  "programmed": false,
+  "deployment_accepted": false
+}

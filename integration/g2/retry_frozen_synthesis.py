@@ -44,6 +44,7 @@ def main():
     ap.add_argument('--slf-row-banks',action='store_true',help='partition only the verified160x98 row store into ten16-word distributed banks; same latency/capacity')
     ap.add_argument('--bias-block-rom',action='store_true',help='map the verified original425x26 signed bias ROM to BSRAM; attributes only, same values/read schedule')
     ap.add_argument('--observation-reuse-prefetch',action='store_true',help='share exact observation scaling and prefetch on existing state edges; retain all external cycles')
+    ap.add_argument('--slf-point-planes',action='store_true',help='pack only the full4096x36 point store into1024x18 planes; same values/capacity/read cycles')
     ap.add_argument('--sfp-lane2-from-build',type=Path,help='adopt proved SFP1 Lane2 generated wrapper/CSR; preserve other frozen RTL and joint timing requirements')
     a=ap.parse_args();src=a.source.resolve();out=a.out.resolve()
     assert (a.wait_pid is None or a.wait_pid>0) and out!=src and src not in out.parents and out not in src.parents
@@ -60,6 +61,7 @@ def main():
     assert not a.slf_row_banks or not manifest.get('slf_row_banks')
     assert not a.bias_block_rom or not manifest.get('bias_block_rom')
     assert not a.observation_reuse_prefetch or not manifest.get('observation_reuse_prefetch')
+    assert not a.slf_point_planes or not manifest.get('slf_point_planes')
     original=(src/'run.tcl').read_text(encoding='utf-8')
     assert [s.strip()for s in original.splitlines()if s.strip().startswith('run ')]==['run syn']
     # Preserve the cancelled directory, including partial implementation files.
@@ -123,6 +125,15 @@ def main():
         assert (out/'control/rl_observation_v5.v').read_text()==(src.parent/'observation_reuse_prefetch_probe2/reused/observation.v').read_text()
         manifest.update(observation_reuse_prefetch=True,observation_module_probe=str(probe_path),
                         observation_vendor_simulation_available=probe['vendor_verification_available'])
+    if a.slf_point_planes:
+        from prepare_slf_point_planes import generate
+        probe_path=src.parent/'slf_point_planes_probe1/result.json'
+        probe=json.loads(probe_path.read_text())
+        assert Path(probe['source']).resolve()==src and probe['all_cycles_passed']
+        assert probe['actual_module_bsram_saved']==8 and len(probe['checks'])==2
+        assert all('TEST PASSED' in row['result'] and 'all4096addresses=1' in row['result'] for row in probe['checks'])
+        generate(out/'nav/rtl/common/nav_ram_sdp.v')
+        manifest.update(slf_point_planes=True,slf_point_planes_probe=str(probe_path))
     if a.sfp_lane2_from_build:
         assert manifest.get('real_sfp') and not manifest.get('sfp_lane2_from_build')
         from prepare_sfp_lane2 import adopt, verify_frozen
@@ -140,6 +151,7 @@ def main():
     if a.slf_row_banks:expected.append('nav/rtl/common/nav_ram_sdp.v')
     if a.bias_block_rom:expected.append('fc_v4_top.v')
     if a.observation_reuse_prefetch:expected.append('control/rl_observation_v5.v')
+    if a.slf_point_planes:expected.append('nav/rtl/common/nav_ram_sdp.v')
     for name in manifest['source_files']:
         previous=Path(name);relative=previous.relative_to(src)
         if previous.read_bytes()!=(out/relative).read_bytes():modified.append(relative.as_posix())

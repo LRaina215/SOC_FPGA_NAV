@@ -17,7 +17,10 @@ def apply(source, out, plan_file):
     assert len(requested)==len(set(requested)), 'duplicate routing target'
     aliases=plan.get('reference_net_aliases',{})
     driver_proof=None
-    if aliases:
+    if plan.get('point_planes_driver_revalidation'):
+        from revalidate_point_planes_routing import validate
+        driver_proof=validate(source,plan)
+    elif aliases:
         from revalidate_observation_routing import validate
         driver_proof=validate(source,plan)
     reference_name=lambda n:aliases.get(n,n)

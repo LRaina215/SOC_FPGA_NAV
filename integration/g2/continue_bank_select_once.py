@@ -54,6 +54,9 @@ def validate_candidate(source, baseline, plan_file):
     job = json.loads((source/'job.json').read_text())
     assert job['phase'] == 'synthesis_complete' and job['tool_exit'] == 0, ('SYN not complete',job)
     manifest = json.loads((source/'manifest.json').read_text())
+    if manifest.get('slf_point_planes'):
+        from validate_point_planes import validate
+        return validate(source,baseline,plan_file)
     if manifest.get('observation_reuse_prefetch'):
         from validate_observation_reuse import validate
         return validate(source,baseline,plan_file)
