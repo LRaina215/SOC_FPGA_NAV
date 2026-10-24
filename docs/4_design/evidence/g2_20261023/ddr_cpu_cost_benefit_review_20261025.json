@@ -1,0 +1,193 @@
+{
+  "reviewed_at": "2026-10-25T01:05:05.369110+08:00",
+  "decision": "defer_cpu_only_ddr_full_synthesis_before_start_keep_verified_candidate",
+  "cpu_only": {
+    "original_cpu_actual_physical": 64,
+    "backend_synthesis_blocks": 28,
+    "ddr_source_blocks": 16,
+    "ddr_wide_leaves": 16,
+    "ddr_physical_conservative_prediction": 32,
+    "total_prediction": 60,
+    "predicted_net_saving": 4,
+    "whole_design_prediction": 322,
+    "physical_verified": false,
+    "baseline_test_cycles": 73819,
+    "ddr_test_cycles": 181165,
+    "test_cycle_ratio": 2.4541784635391974,
+    "real_navigation_latency_verified": false,
+    "added_module_lut_gross": 4548,
+    "added_module_ff_gross": 6606,
+    "gross_is_not_full_design_net_delta": true
+  },
+  "actual_reference_storage": [
+    {
+      "name": "CPU",
+      "path": "g2_top/u_soc",
+      "physical_reference_blocks": 64,
+      "logical_payload_bits": 1048576,
+      "payload_fraction_of_18k_capacity": 0.8888888888888888,
+      "ideal_bitcount_lower_bound": 57,
+      "lower_bound_is_not_implementation_prediction": true
+    },
+    {
+      "name": "matching_structure_map",
+      "path": "g2_top/u_nav/u_match/u_sm",
+      "physical_reference_blocks": 64,
+      "logical_payload_bits": 1179648,
+      "payload_fraction_of_18k_capacity": 1.0,
+      "ideal_bitcount_lower_bound": 64,
+      "lower_bound_is_not_implementation_prediction": true
+    },
+    {
+      "name": "elevation_map",
+      "path": "g2_top/u_nav/u_map/u_em/u_ram",
+      "physical_reference_blocks": 48,
+      "logical_payload_bits": 868352,
+      "payload_fraction_of_18k_capacity": 0.9814814814814815,
+      "ideal_bitcount_lower_bound": 48,
+      "lower_bound_is_not_implementation_prediction": true
+    },
+    {
+      "name": "projection_ray_lookup",
+      "path": "g2_top/u_nav/u_pp/u_lut",
+      "physical_reference_blocks": 20,
+      "logical_payload_bits": 345600,
+      "payload_fraction_of_18k_capacity": 0.9375,
+      "ideal_bitcount_lower_bound": 19,
+      "lower_bound_is_not_implementation_prediction": true
+    },
+    {
+      "name": "lidar_ping_pong_frames",
+      "path": "g2_top/u_nav/u_xt/u_fb",
+      "physical_reference_blocks": 19,
+      "logical_payload_bits": 307200,
+      "payload_fraction_of_18k_capacity": 0.8771929824561403,
+      "ideal_bitcount_lower_bound": 17,
+      "lower_bound_is_not_implementation_prediction": true
+    }
+  ],
+  "inventory_source": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1\\memory_inventory.json",
+  "alternative": {
+    "recommendation": "retain_onchip_CPU_evaluate_DDR_backed_navigation_maps_with_local_working_cache",
+    "target_maps_actual_reference_blocks": 112,
+    "ddr_fixed_physical_prediction": 32,
+    "remaining_budget_before_cache_and_arbitration": 80,
+    "remaining_budget_is_not_net_savings": true,
+    "net_savings_verified": false,
+    "implementation_started": false,
+    "required_checks": [
+      "full original map capacity and all values retained",
+      "random read-modify-write hazards and forwarding",
+      "matching candidate access locality and worst misses",
+      "line/tile prefetch and writeback ordering",
+      "simultaneous lidar ingestion and map scans",
+      "exact numeric behavior and navigation deadlines",
+      "125Hz control and stop priority unchanged",
+      "DDR calibration/reset/fault behavior",
+      "actual RAM/LUT/FF/global clock and CDC/IO resources"
+    ]
+  },
+  "routing_causality": {
+    "ram_reduction_is_not_proven_routing_fix": true,
+    "pnr12": {
+      "unrouted": 257,
+      "physical_ram": 334
+    },
+    "pnr13": {
+      "unrouted": 270,
+      "physical_ram": 326
+    },
+    "failed_net_identity_or_congestion_location_available": false
+  },
+  "stopped_queue": {
+    "controller_pid": 59196,
+    "started_at": "2026-10-25T00:38:19.453467+08:00",
+    "source": "F:\\nav_integration_g2_20261023\\lane2_ddr_cpu_prepared1",
+    "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_ddr_cpu_syn12",
+    "wait_pnr": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+    "wait_identity": {
+      "pid": 32852,
+      "created_at": 1792852465.5492747,
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "integration/g2/continue_bank_select_once.py",
+        "--synthesis",
+        "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "--baseline",
+        "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+        "--pnr-out",
+        "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+        "--state-dir",
+        "F:\\nav_integration_g2_20261023\\lane2_observation_lw_one_shot",
+        "--clock-resource-plan",
+        "integration/g2/clock_resource_plan_lane2_observation_lw.json",
+        "--max-runtime-minutes",
+        "0"
+      ]
+    },
+    "maximum_synthesis_runs": 1,
+    "maximum_pnr_runs": 0,
+    "automatic_pnr": false,
+    "programmed": false,
+    "waited_pnr_termination_deadline": null,
+    "waited_pnr_untouched": true,
+    "phase": "deferred_before_synthesis_cost_benefit_review",
+    "updated_at": "2026-10-25T01:03:50.835657+08:00",
+    "controller_stopped_before_build": true,
+    "synthesis_started": false,
+    "reason": "CPU-only DDR migration predicts only 4 physical BSRAM saved, adds controller/cache logic and clock/CDC burden, and synthetic CPU program took 2.454x cycles; retain candidate but prioritize larger-benefit feasibility work.",
+    "stopped_controller_identity": {
+      "pid": 59196,
+      "created_at": 1792859899.2633545,
+      "command": [
+        "D:/Anaconda/python.exe",
+        "-X",
+        "utf8",
+        "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\ddr3\\run_serial_synthesis.py",
+        "F:/nav_integration_g2_20261023/lane2_ddr_cpu_prepared1",
+        "--out",
+        "F:/nav_integration_g2_20261023/sfp_lane2_ddr_cpu_syn12",
+        "--state-dir",
+        "F:/nav_integration_g2_20261023/lane2_ddr_cpu_chain",
+        "--wait-pid",
+        "32852",
+        "--wait-pnr",
+        "F:/nav_integration_g2_20261023/sfp_lane2_observation_lw_pnr15"
+      ],
+      "console_children": [
+        {
+          "pid": 63756,
+          "create_time": 1792859899.269094,
+          "cmdline": [
+            "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+            "0x4"
+          ],
+          "ppid": 59196,
+          "name": "conhost.exe"
+        }
+      ],
+      "no_synthesis_child": true
+    },
+    "current_pnr_pid": 33684,
+    "current_pnr_untouched": true,
+    "current_pnr_total_runtime_limit_s": 0,
+    "current_pnr_idle_limit_s": 0
+  },
+  "current_pnr": {
+    "pid": 33684,
+    "started_at": "2026-10-24T22:35:10.373678+08:00",
+    "elapsed_s": 8982.170999999973,
+    "max_runtime_s": 0.0,
+    "max_no_progress_s": 0.0,
+    "tool_exit": null,
+    "untouched": true
+  },
+  "no_rtl_or_active_build_input_changes": true,
+  "no_hardware_actions": true,
+  "references": [
+    "https://cdn.gowinsemi.com.cn/UG300E.pdf",
+    "https://www.gowinsemi.com/upload/database_doc/2009/document/696a8c052f84e.pdf"
+  ]
+}

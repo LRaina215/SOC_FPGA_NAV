@@ -31,13 +31,13 @@ and top connections, preserves every original storage asset and adds DDR-only
 pins. The source SDC has no new false-path exceptions. This is a full-SYN
 candidate, not a physically signed-off or downloadable design.
 
-The existing chain is already running. Read its job before taking action:
+The CPU-only full-SYN queue was withdrawn before it started after the
+2026-10-25 01:03 cost-benefit review. Its preserved state is:
 
 `F:/nav_integration_g2_20261023/lane2_ddr_cpu_chain/job.json`
 
-It waits for the identified PNR15 collector and then invokes the existing
-40-minute SYN runner once, with the original 2/4 GiB startup and runtime
-memory gates. Do not launch a duplicate. It never cancels the waited PNR,
-sets a PNR deadline, programs hardware or starts PNR automatically. Actual
-RAM mapping, clocks/global resources, CDC/reset/IO constraints and navigation
-latency must be reviewed after SYN before a fresh PNR can be considered.
+Do not relaunch it automatically. The verified candidate remains available,
+but the estimated saving is only four physical blocks and the synthetic
+CPU program took 2.454 times as many cycles. The active PNR15 is untouched
+and has no total or idle deadline. See the design report for the larger-map
+DDR feasibility direction and its unverified latency/cache requirements.
