@@ -5,8 +5,8 @@
   "active_pnr": {
     "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_pnr12",
     "live_state": "F:\\nav_integration_g2_20261023\\lane2_obsreuse_one_shot\\job.json",
-    "phase": "full_pnr_running",
-    "active": true,
+    "phase": "natural_routing_failure",
+    "active": false,
     "tool_pid": 54424,
     "tool_created_at": "2026-10-24T11:09:02.734667+08:00",
     "wrapper_pid": 58396,
@@ -21,13 +21,17 @@
     "evidence": "observation_reuse_pnr_start_20261024.json",
     "no_deadline": true,
     "runtime_supervisor_pid": 27664,
-    "original_wrapper_suspended": true,
+    "original_wrapper_suspended": false,
     "effective_runtime_authority": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_pnr12\\runtime_override.json",
     "original_launch_limits": {
       "max_runtime_minutes": 150,
       "deadline": "2026-10-24T13:39:02.663834+08:00",
       "superseded": true
-    }
+    },
+    "unrouted_nets": 257,
+    "physical_bsram": 334,
+    "final_result": "lane2_obsreuse_final_unrouted257.json",
+    "original_tool_and_supervisors_finished": true
   },
   "comparison": {
     "correct_lane2_physical_baseline": "sfp_lane2_telemetryglobal_pnr10",
@@ -1576,5 +1580,7 @@
   "recurring_supervision_active": false,
   "scope": "one bounded complete-candidate PNR; clocks/functional contracts preserved; no recurring automation or hardware action",
   "latest_runtime_policy_update": "2026-10-24T13:21:37.940874+08:00",
-  "effective_runtime_policy": "pnr_runtime_policy_20261024.json"
+  "effective_runtime_policy": "pnr_runtime_policy_20261024.json",
+  "latest_update_at": "2026-10-24T15:12:43.745679+08:00",
+  "latest_pnr_result": "lane2_obsreuse_final_unrouted257.json"
 }

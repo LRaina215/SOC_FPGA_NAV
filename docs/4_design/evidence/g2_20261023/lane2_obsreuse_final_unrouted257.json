@@ -1,0 +1,813 @@
+{
+  "recorded_at": "2026-10-24T15:12:43.745679+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_pnr12",
+  "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_syn9",
+  "phase": "natural_routing_failure",
+  "active": false,
+  "tool_exit": 1,
+  "cancelled": false,
+  "printed_vendor_finished_at": "2026-10-24T15:06:08+08:00",
+  "collection_finished_at": "2026-10-24T15:06:34.105385+08:00",
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-24T11:09:02.663834+08:00",
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 54424,
+    "elapsed_s": 14251.441551208496,
+    "no_observable_progress_s": 24.879439115524292,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        2121075,
+        1792825568771050200
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        2120650,
+        1792825568771050200
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2409064,
+        1792812030308119000
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        14120232,
+        1792812030863173200
+      ],
+      [
+        "impl\\pnr\\g2_top.rpt.txt",
+        93299,
+        1792825565248087900
+      ],
+      [
+        "impl\\pnr\\g2_top.vo",
+        45564298,
+        1792825568747048700
+      ]
+    ],
+    "absolute_deadline": null,
+    "deadline_supervisor_pid": 27664,
+    "no_deadline": true,
+    "runtime_budget_source": "runtime_override.json; original wrapper suspended until tool exits",
+    "tool_exit": 1,
+    "ended_at": "2026-10-24T15:06:34.105385+08:00"
+  },
+  "vendor_runtime": {
+    "total": {
+      "cpu": "3h 56m 50s",
+      "elapsed": "3h 56m 50s"
+    },
+    "placement": {
+      "cpu": "0h 11m 21s",
+      "elapsed": "0h 11m 21s"
+    },
+    "routing": {
+      "cpu": "3h 45m 29s",
+      "elapsed": "3h 45m 29s"
+    },
+    "phase1": {
+      "cpu": "3h 45m 28s",
+      "elapsed": "3h 45m 28s"
+    },
+    "peak_memory_mb": 2272
+  },
+  "unrouted_nets": 257,
+  "correct_lane2_comparison": {
+    "previous_build": "F:\\nav_integration_g2_20261023\\sfp_lane2_telemetryglobal_pnr10",
+    "previous_unrouted": 544,
+    "current_unrouted": 257,
+    "reduction": 287,
+    "reduction_percent": 52.75735294117647,
+    "allocation_requests_semantically_preserved": true,
+    "only_rtl_input_change": "control/rl_observation_v5.v",
+    "automatic_placement_and_global_allocation_also_changed": true,
+    "reduction_not_a_per_net_failure_identity_or_unique_cause": true
+  },
+  "physical_resources": {
+    "logic": {
+      "used": 89897.0,
+      "capacity": 138240.0
+    },
+    "register": {
+      "used": 43651.0,
+      "capacity": 139095.0
+    },
+    "bsram": {
+      "used": 334.0,
+      "capacity": 340.0
+    },
+    "dsp": {
+      "used": 151.5,
+      "capacity": 298.0
+    },
+    "io_port": {
+      "used": 51.0,
+      "capacity": 297.0
+    }
+  },
+  "cls": {
+    "used": 57320,
+    "capacity": 69120
+  },
+  "primary": {
+    "used": 8,
+    "capacity": 8
+  },
+  "lw": {
+    "used": 8,
+    "capacity": 8
+  },
+  "memory_accounting": {
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_syn9",
+    "physical": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_pnr12",
+    "source_count": 316,
+    "wide_split_enabled": true,
+    "wide_count": 18,
+    "wide_by_primitive": {
+      "pROMX9": 1,
+      "SDPX9B": 10,
+      "SDPB": 7
+    },
+    "wide_by_top": {
+      "u_control": 1,
+      "u_nav": 17
+    },
+    "predicted_count": 334,
+    "actual_report_count": 334,
+    "post_pnr_primitive_count": 334,
+    "counts_reconciled": true,
+    "matched_split_pairs": 18,
+    "source_by_primitive": {
+      "SP": 64,
+      "pROM": 24,
+      "pROMX9": 21,
+      "SDPB": 55,
+      "SDPX9B": 152
+    },
+    "actual_by_primitive": {
+      "SP": 64,
+      "pROM": 24,
+      "pROMX9": 22,
+      "SDPB": 62,
+      "SDPX9B": 162
+    },
+    "actual_by_top": {
+      "u_soc": 64,
+      "u_control": 44,
+      "u_nav": 226
+    },
+    "missing_source_instances": [],
+    "scope": "post-PNR storage accounting only; routing failure and timing acceptance remain separate"
+  },
+  "global_allocation": {
+    "passed": true,
+    "checks": [
+      {
+        "net": "n2371_7",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "r2",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "u_control/model_thread/observation/n971_7",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_update",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "u_control/telemetry_thread/n1315_4",
+        "expected": "LW",
+        "actual": "LW",
+        "passed": true
+      },
+      {
+        "net": "u_control/telemetry_thread/snapshot_959_10",
+        "expected": "LW",
+        "actual": "LW",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_xt/n9903_3",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_match/u_ex/n7021_4",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_match/u_ex/rb_ra[0]",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_match/u_ex/rb_ra[1]",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/a_q_15_17",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25284_7",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "clk50_d",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "h_rx_clk",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "h_tx_clk",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      }
+    ],
+    "scope": "reported global assignment only; individual BUFG index and route delays require separate evidence"
+  },
+  "actual_global_loads": [
+    {
+      "net": "clk50_d",
+      "resource": "PRIMARY",
+      "pin_counts": {
+        "CLK": 46587,
+        "I": 1,
+        "CLKA": 219,
+        "CLKB": 223
+      }
+    },
+    {
+      "net": "rgmii_rxc_d",
+      "resource": "PRIMARY",
+      "pin_counts": {
+        "CLK": 137,
+        "I": 1,
+        "CLKA": 2
+      }
+    },
+    {
+      "net": "r2",
+      "resource": "PRIMARY",
+      "pin_counts": {
+        "I0": 246,
+        "I1": 36,
+        "I2": 82,
+        "RESET": 5049,
+        "I": 1,
+        "I3": 18,
+        "PRESET": 12,
+        "SET": 330,
+        "CLEAR": 497,
+        "CE": 3
+      }
+    },
+    {
+      "net": "h_rx_clk",
+      "resource": "PRIMARY",
+      "pin_counts": {
+        "CLK": 607,
+        "CLKA": 3
+      }
+    },
+    {
+      "net": "h_tx_clk",
+      "resource": "PRIMARY",
+      "pin_counts": {
+        "CLK": 639,
+        "CLKB": 1
+      }
+    },
+    {
+      "net": "n2371_7",
+      "resource": "PRIMARY",
+      "pin_counts": {
+        "I2": 13,
+        "CLEAR": 7530,
+        "PRESET": 101,
+        "RESET": 1437,
+        "I0": 9,
+        "SET": 83,
+        "I1": 9,
+        "D": 1
+      }
+    },
+    {
+      "net": "u_control/model_thread/observation/n971_7",
+      "resource": "PRIMARY",
+      "pin_counts": {
+        "I3": 1,
+        "I0": 3,
+        "CLEAR": 4312,
+        "PRESET": 1,
+        "RESET": 2
+      }
+    },
+    {
+      "net": "u_control/model_thread/policy/snapshot_update",
+      "resource": "PRIMARY",
+      "pin_counts": {
+        "CE": 4032
+      }
+    },
+    {
+      "net": "r2_205",
+      "resource": "LW",
+      "pin_counts": {
+        "RESET": 751,
+        "I0": 23,
+        "I2": 8,
+        "I": 1,
+        "I3": 8,
+        "I1": 1
+      }
+    },
+    {
+      "net": "u_control/model_thread/observation/n12472_10",
+      "resource": "LW",
+      "pin_counts": {
+        "D": 1,
+        "CE": 3892
+      }
+    },
+    {
+      "net": "u_control/telemetry_thread/n1315_4",
+      "resource": "LW",
+      "pin_counts": {
+        "I2": 837,
+        "I3": 56,
+        "I0": 41,
+        "I1": 29
+      }
+    },
+    {
+      "net": "u_control/telemetry_thread/snapshot_959_10",
+      "resource": "LW",
+      "pin_counts": {
+        "CE": 960
+      }
+    },
+    {
+      "net": "u_nav/u_xt/n7923_5",
+      "resource": "LW",
+      "pin_counts": {
+        "CE": 416
+      }
+    },
+    {
+      "net": "u_nav/u_map/u_tv/n26292_4",
+      "resource": "LW",
+      "pin_counts": {
+        "I3": 8,
+        "CE": 387
+      }
+    },
+    {
+      "net": "u_nav/u_map/u_tv/n25518_4",
+      "resource": "LW",
+      "pin_counts": {
+        "CE": 521
+      }
+    },
+    {
+      "net": "u_nav/u_map/u_tv/n24910_7",
+      "resource": "LW",
+      "pin_counts": {
+        "I0": 1,
+        "CE": 398
+      }
+    }
+  ],
+  "top_physical_direct_loads": [
+    {
+      "net": "n2371_7",
+      "pins": 9183,
+      "port_counts": {
+        "I2": 13,
+        "CLEAR": 7530,
+        "PRESET": 101,
+        "RESET": 1437,
+        "I0": 9,
+        "SET": 83,
+        "I1": 9,
+        "D": 1
+      },
+      "examples": [
+        "LUT4 u_control/command_yaw_q12_0_s3.I2",
+        "DFFCE u_control/imu_telemetry_snapshot_95_s0.CLEAR",
+        "DFFCE u_control/imu_telemetry_snapshot_94_s0.CLEAR"
+      ]
+    },
+    {
+      "net": "r2",
+      "pins": 6274,
+      "port_counts": {
+        "I0": 246,
+        "I1": 36,
+        "I2": 82,
+        "RESET": 5049,
+        "I": 1,
+        "I3": 18,
+        "PRESET": 12,
+        "SET": 330,
+        "CLEAR": 497,
+        "CE": 3
+      },
+      "examples": [
+        "LUT3 ub_rdata_5_s7.I0",
+        "LUT4 u_ub/n1933_s0.I0",
+        "LUT2 u_ub/n1955_s1.I0"
+      ]
+    },
+    {
+      "net": "u_control/model_thread/observation/n971_7",
+      "pins": 4319,
+      "port_counts": {
+        "I3": 1,
+        "I0": 3,
+        "CLEAR": 4312,
+        "PRESET": 1,
+        "RESET": 2
+      },
+      "examples": [
+        "LUT4 u_control/model_thread/observation/n523_s0.I3",
+        "LUT2 u_control/model_thread/observation/left_numerator_63_s2.I0",
+        "LUT4 u_control/model_thread/observation/n2152_s88.I0"
+      ]
+    },
+    {
+      "net": "u_control/model_thread/policy/snapshot_update",
+      "pins": 4032,
+      "port_counts": {
+        "CE": 4032
+      },
+      "examples": [
+        "DFFCE u_control/model_thread/policy/snapshot_4030_s0.CE",
+        "DFFCE u_control/model_thread/policy/snapshot_4029_s0.CE",
+        "DFFCE u_control/model_thread/policy/snapshot_4028_s0.CE"
+      ]
+    },
+    {
+      "net": "u_control/model_thread/observation/n12472_10",
+      "pins": 3893,
+      "port_counts": {
+        "D": 1,
+        "CE": 3892
+      },
+      "examples": [
+        "DFFCE u_control/model_thread/observation/valid_s0.D",
+        "DFFCE u_control/model_thread/observation/current_flat_671_s0.CE",
+        "DFFCE u_control/model_thread/observation/current_flat_666_s0.CE"
+      ]
+    },
+    {
+      "net": "u_control/telemetry_thread/n1315_4",
+      "pins": 963,
+      "port_counts": {
+        "I2": 837,
+        "I3": 56,
+        "I0": 41,
+        "I1": 29
+      },
+      "examples": [
+        "LUT3 u_control/telemetry_thread/n1315_s0.I2",
+        "LUT3 u_control/telemetry_thread/n1316_s0.I2",
+        "LUT3 u_control/telemetry_thread/n1317_s0.I2"
+      ]
+    },
+    {
+      "net": "u_control/telemetry_thread/snapshot_959_10",
+      "pins": 960,
+      "port_counts": {
+        "CE": 960
+      },
+      "examples": [
+        "DFFCE u_control/telemetry_thread/snapshot_959_s1.CE",
+        "DFFCE u_control/telemetry_thread/snapshot_958_s1.CE",
+        "DFFCE u_control/telemetry_thread/snapshot_957_s1.CE"
+      ]
+    },
+    {
+      "net": "u_control/wheel_control/n88_3",
+      "pins": 868,
+      "port_counts": {
+        "I0": 3,
+        "RESET": 865
+      },
+      "examples": [
+        "LUT4 u_control/wheel_control/left_control/n12679_s1.I0",
+        "DFFRE u_control/wheel_control/left_control/ramped_target_mmps_31_s0.RESET",
+        "DFFRE u_control/wheel_control/left_control/ramped_target_mmps_30_s0.RESET"
+      ]
+    },
+    {
+      "net": "u_control/wheel_control/n88_3_120",
+      "pins": 868,
+      "port_counts": {
+        "I0": 3,
+        "RESET": 865
+      },
+      "examples": [
+        "LUT4 u_control/wheel_control/right_control/n12679_s1.I0",
+        "DFFRE u_control/wheel_control/right_control/ramped_target_mmps_31_s0.RESET",
+        "DFFRE u_control/wheel_control/right_control/ramped_target_mmps_30_s0.RESET"
+      ]
+    },
+    {
+      "net": "r2_205",
+      "pins": 792,
+      "port_counts": {
+        "RESET": 751,
+        "I0": 23,
+        "I2": 8,
+        "I": 1,
+        "I3": 8,
+        "I1": 1
+      },
+      "examples": [
+        "DFFRE u_nav/u_neth/st_rx_frames_31_s0.RESET",
+        "DFFRE u_nav/u_neth/st_rx_frames_30_s0.RESET",
+        "DFFRE u_nav/u_neth/st_rx_frames_29_s0.RESET"
+      ]
+    },
+    {
+      "net": "u_control/model_thread/policy/core/bias_address[0]",
+      "pins": 702,
+      "port_counts": {
+        "AD": 702
+      },
+      "examples": [
+        "ROM16 u_control/model_thread/policy/core/n348_n348_0_0_s.AD",
+        "ROM16 u_control/model_thread/policy/core/n348_n348_0_1_s.AD",
+        "ROM16 u_control/model_thread/policy/core/n348_n348_0_2_s.AD"
+      ]
+    },
+    {
+      "net": "u_control/model_thread/policy/core/bias_address[1]",
+      "pins": 702,
+      "port_counts": {
+        "AD": 702
+      },
+      "examples": [
+        "ROM16 u_control/model_thread/policy/core/n348_n348_0_0_s.AD",
+        "ROM16 u_control/model_thread/policy/core/n348_n348_0_1_s.AD",
+        "ROM16 u_control/model_thread/policy/core/n348_n348_0_2_s.AD"
+      ]
+    },
+    {
+      "net": "u_control/model_thread/policy/core/bias_address[2]",
+      "pins": 702,
+      "port_counts": {
+        "AD": 702
+      },
+      "examples": [
+        "ROM16 u_control/model_thread/policy/core/n348_n348_0_0_s.AD",
+        "ROM16 u_control/model_thread/policy/core/n348_n348_0_1_s.AD",
+        "ROM16 u_control/model_thread/policy/core/n348_n348_0_2_s.AD"
+      ]
+    },
+    {
+      "net": "u_control/model_thread/policy/core/bias_address[3]",
+      "pins": 702,
+      "port_counts": {
+        "AD": 702
+      },
+      "examples": [
+        "ROM16 u_control/model_thread/policy/core/n348_n348_0_0_s.AD",
+        "ROM16 u_control/model_thread/policy/core/n348_n348_0_1_s.AD",
+        "ROM16 u_control/model_thread/policy/core/n348_n348_0_2_s.AD"
+      ]
+    },
+    {
+      "net": "u_control/model_thread/policy/core/n1466_7",
+      "pins": 604,
+      "port_counts": {
+        "CLEAR": 601,
+        "PRESET": 2,
+        "RESET": 1
+      },
+      "examples": [
+        "DFFCE u_control/model_thread/policy/core/done_s0.CLEAR",
+        "DFFCE u_control/model_thread/policy/core/error_flags_4_s0.CLEAR",
+        "DFFCE u_control/model_thread/policy/core/error_flags_3_s0.CLEAR"
+      ]
+    },
+    {
+      "net": "u_nav/u_map/u_tv/n25518_4",
+      "pins": 521,
+      "port_counts": {
+        "CE": 521
+      },
+      "examples": [
+        "DFFRE u_nav/u_map/u_tv/ph3_2_s0.CE",
+        "DFFRE u_nav/u_map/u_tv/ph3_1_s0.CE",
+        "DFFRE u_nav/u_map/u_tv/ph3_0_s0.CE"
+      ]
+    },
+    {
+      "net": "u_nav/mb_pl_addr[10]",
+      "pins": 513,
+      "port_counts": {
+        "I1": 1,
+        "I2": 512
+      },
+      "examples": [
+        "LUT4 u_nav/g_host_extension.u_control_tx/n199_s31.I1",
+        "LUT3 u_nav/u_mbx/u_txs/g_distributed.mem_DOL_0_G[0]_s31.I2",
+        "LUT3 u_nav/u_mbx/u_txs/g_distributed.mem_DOL_0_G[0]_s32.I2"
+      ]
+    },
+    {
+      "net": "u_nav/u_rf/gowin_reg_r_MBX_TXB_ADDR_Z[8]_1",
+      "pins": 512,
+      "port_counts": {
+        "I2": 512
+      },
+      "examples": [
+        "LUT3 u_nav/u_mbx/u_txs/g_distributed.mem_DOL_0_G[0]_s47.I2",
+        "LUT3 u_nav/u_mbx/u_txs/g_distributed.mem_DOL_0_G[0]_s48.I2",
+        "LUT3 u_nav/u_mbx/u_txs/g_distributed.mem_DOL_0_G[0]_s49.I2"
+      ]
+    },
+    {
+      "net": "u_nav/u_mbx/gowin_reg_mb_twords[3]_2",
+      "pins": 512,
+      "port_counts": {
+        "WAD": 512
+      },
+      "examples": [
+        "RAM16SDP4 u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_0_s.WAD",
+        "RAM16SDP4 u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_1_s.WAD",
+        "RAM16SDP4 u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_2_s.WAD"
+      ]
+    },
+    {
+      "net": "u_nav/u_mbx/gowin_reg_mb_twords[2]_2",
+      "pins": 512,
+      "port_counts": {
+        "WAD": 512
+      },
+      "examples": [
+        "RAM16SDP4 u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_0_s.WAD",
+        "RAM16SDP4 u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_1_s.WAD",
+        "RAM16SDP4 u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_2_s.WAD"
+      ]
+    },
+    {
+      "net": "u_nav/u_mbx/gowin_reg_mb_twords[1]_2",
+      "pins": 512,
+      "port_counts": {
+        "WAD": 512
+      },
+      "examples": [
+        "RAM16SDP4 u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_0_s.WAD",
+        "RAM16SDP4 u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_1_s.WAD",
+        "RAM16SDP4 u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_2_s.WAD"
+      ]
+    },
+    {
+      "net": "u_nav/u_mbx/gowin_reg_mb_twords[0]_2",
+      "pins": 512,
+      "port_counts": {
+        "WAD": 512
+      },
+      "examples": [
+        "RAM16SDP4 u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_0_s.WAD",
+        "RAM16SDP4 u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_1_s.WAD",
+        "RAM16SDP4 u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_2_s.WAD"
+      ]
+    },
+    {
+      "net": "u_nav/u_map/u_tv/bm_ra[13]",
+      "pins": 512,
+      "port_counts": {
+        "I2": 512
+      },
+      "examples": [
+        "LUT3 u_nav/u_map/u_tv/u_bm/g_distributed.mem_DOL_511_G[0]_s2494.I2",
+        "LUT3 u_nav/u_map/u_tv/u_bm/g_distributed.mem_DOL_511_G[0]_s2495.I2",
+        "LUT3 u_nav/u_map/u_tv/u_bm/g_distributed.mem_DOL_511_G[0]_s2496.I2"
+      ]
+    },
+    {
+      "net": "u_nav/u_map/u_tv/bm_ra[0]",
+      "pins": 512,
+      "port_counts": {
+        "RAD": 512
+      },
+      "examples": [
+        "RAM16SDP1 u_nav/u_map/u_tv/u_bm/g_distributed.mem_g_distributed.mem_0_0_s.RAD",
+        "RAM16SDP1 u_nav/u_map/u_tv/u_bm/g_distributed.mem_g_distributed.mem_1_0_s.RAD",
+        "RAM16SDP1 u_nav/u_map/u_tv/u_bm/g_distributed.mem_g_distributed.mem_2_0_s.RAD"
+      ]
+    }
+  ],
+  "lidar_physical26": {
+    "passed": true,
+    "endpoints_match_reference": true,
+    "paths": 26
+  },
+  "host_physical51": {
+    "passed": true,
+    "endpoints_match_reference": true,
+    "paths": 51
+  },
+  "timing_report_available": false,
+  "setup_violations": null,
+  "hold_violations": null,
+  "clocks50_100_125_125_not_signed_off": true,
+  "active154_constraints_and_first_stage_delays_unverified": true,
+  "reset_recovery_removal_and_pulse_widths": {
+    "recovery": {
+      "available": false,
+      "reported_rows": 0,
+      "worst_slack_ns": null,
+      "negative_reported_rows": null
+    },
+    "removal": {
+      "available": false,
+      "reported_rows": 0,
+      "worst_slack_ns": null,
+      "negative_reported_rows": null
+    },
+    "minimum_pulse_width": {
+      "available": false,
+      "reported_rows": 0,
+      "worst_slack_ns": null,
+      "negative_reported_rows": null
+    }
+  },
+  "per_net_failure_list_available": false,
+  "full_sfp_cdc_and_pcs_reset_io_acceptance": false,
+  "native_observation_netlist_simulation_gap_remains": true,
+  "retrospective_activity": {
+    "previous_evidence": "pnr12_activity_inspection_20261024_1500.json",
+    "later_returned_naturally": true,
+    "permanent_block_during_whole_run_not_supported": true,
+    "repetitive_search_or_busy_loop_during_silent_period_unverified": true
+  },
+  "function_sampling_request": {
+    "initial_check_at": "2026-10-24T15:06:20+08:00",
+    "target_already_exited": true,
+    "wpr_and_xperf_available_on_host": true,
+    "private_vendor_symbols_not_verified": true,
+    "etw_session_not_started": true,
+    "no_debugger_attachment": true,
+    "no_stack_samples_acquired": true,
+    "cannot_reconstruct_expired_thread_stack": true
+  },
+  "old_guard_and_collector_processes_finished": true,
+  "scene_preserved": true,
+  "future_pnr_deadline_policy": "no total or idle time limit; do not restore old150-minute cutoff",
+  "next_step": "use257 as the correct-Lane2 physical baseline; review actual source/load/allocation evidence before a justified next change; do not rerun identical inputs",
+  "programmed": false,
+  "deployment_accepted": false,
+  "recurring_supervision_active": false,
+  "unrouted_net_locations_or_congestion_grids_available": false
+}

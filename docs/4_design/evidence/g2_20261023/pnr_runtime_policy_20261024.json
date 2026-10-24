@@ -9,15 +9,15 @@
   "absolute_deadline": null,
   "original_150_minute_deadline_cancelled": true,
   "old_deadline": "2026-10-24T13:39:02.663834+08:00",
-  "running_tool_pid": 54424,
+  "running_tool_pid": null,
   "running_tool_created_at": "2026-10-24T11:09:02.734667+08:00",
   "tool_restarted": false,
   "tool_suspended": false,
   "original_wrapper_pid": 58396,
-  "original_wrapper_suspended": true,
-  "runtime_supervisor_pid": 27664,
+  "original_wrapper_suspended": false,
+  "runtime_supervisor_pid": null,
   "runtime_supervisor_created_at": "2026-10-24T13:19:29.021508+08:00",
-  "waiting_controller_pid": 55032,
+  "waiting_controller_pid": null,
   "authority_file": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_pnr12\\runtime_override.json",
   "effective_runtime_snapshot": {
     "command": [
@@ -33,18 +33,18 @@
     "system_telemetry_file": "system_telemetry.jsonl",
     "telemetry_is_progress_evidence": false,
     "pid": 54424,
-    "elapsed_s": 7947.331770181656,
-    "no_observable_progress_s": 7224.128770112991,
+    "elapsed_s": 14251.441551208496,
+    "no_observable_progress_s": 24.879439115524292,
     "observed_files": [
       [
         "gw_sh.log",
-        2120470,
-        1792812065621681800
+        2121075,
+        1792825568771050200
       ],
       [
         "impl\\pnr\\g2_top.log",
-        2120045,
-        1792812065621681800
+        2120650,
+        1792825568771050200
       ],
       [
         "impl\\pnr\\g2_top.db",
@@ -55,12 +55,24 @@
         "impl\\pnr\\g2_top.p",
         14120232,
         1792812030863173200
+      ],
+      [
+        "impl\\pnr\\g2_top.rpt.txt",
+        93299,
+        1792825565248087900
+      ],
+      [
+        "impl\\pnr\\g2_top.vo",
+        45564298,
+        1792825568747048700
       ]
     ],
     "absolute_deadline": null,
     "deadline_supervisor_pid": 27664,
     "no_deadline": true,
-    "runtime_budget_source": "runtime_override.json; original wrapper suspended until tool exits"
+    "runtime_budget_source": "runtime_override.json; original wrapper suspended until tool exits",
+    "tool_exit": 1,
+    "ended_at": "2026-10-24T15:06:34.105385+08:00"
   },
   "handoff_record": {
     "recorded_at": "2026-10-24T13:19:29.645627+08:00",
@@ -114,8 +126,11 @@
     "tool_restarted": false,
     "automatic_programming": false,
     "scope": "one owned-tool budget handoff; CPU/telemetry never count as routing progress",
-    "phase": "supervising_same_tool",
-    "wrapper_suspended": true
+    "phase": "tool_finished",
+    "wrapper_suspended": false,
+    "finished_at": "2026-10-24T15:06:34.106399+08:00",
+    "tool_exit": 1,
+    "error": null
   },
   "disposable_process_regression_tests": {
     "passed": true,
@@ -156,5 +171,11 @@
   "telemetry_does_not_prove_routing_convergence": true,
   "routing_resource_timing_cdc_and_deployment_gates_unchanged": true,
   "programmed": false,
-  "recurring_supervision_active": false
+  "recurring_supervision_active": false,
+  "latest_update_at": "2026-10-24T15:12:43.745679+08:00",
+  "current_build_has_ended": true,
+  "current_build_final_result": "lane2_obsreuse_final_unrouted257.json",
+  "former_running_tool_pid": 54424,
+  "completed_runtime_supervisor_pid": 27664,
+  "completed_controller_pid": 55032
 }
