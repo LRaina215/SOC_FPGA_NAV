@@ -2,6 +2,7 @@
 from collections import Counter
 import json
 from pathlib import Path
+import re
 
 from audit_routing_topology import primitive_directions
 from audit_sfp_cdc import audit as audit_sfp
@@ -13,6 +14,20 @@ from revalidate_observation_routing import parameters
 from synthesis_connectivity import read
 
 POINT='g2_top/u_nav/u_match/u_pb/'
+
+
+def zero_initialization(overrides,defaults):
+    expected={f'INIT_RAM_{i:02X}' for i in range(64)}
+    assert set(defaults)==expected and all(v==0 for v in defaults.values()), 'vendor SDP defaults differ'
+    assert set(overrides)<=expected, 'unexpected initialization parameter'
+    effective=dict(defaults)
+    for key,value in overrides.items():
+        match=re.fullmatch(r"288'h([0-9a-fA-F]+)",value)
+        assert match, ('unsupported initialization value',key,value)
+        effective[key]=int(match[1],16)
+    assert all(v==0 for v in effective.values()), 'point RAM contains a nonzero initialized word'
+    return dict(explicit_zero_init_parameters=len(overrides),default_zero_init_parameters=64-len(overrides),
+                effective_initialized_bits=18432,all_effective_init_bits_zero=True)
 
 
 def validate(source,baseline,plan_file):
@@ -77,12 +92,21 @@ def validate(source,baseline,plan_file):
     point_cells={n:c for n,c in after.items() if n.startswith(POINT.removeprefix('g2_top/'))}
     ram_cells=[c for c in point_cells.values() if c['kind']=='SDPX9B']
     assert len(ram_cells)==8
+    primitive=re.search(r'\bmodule\s+SDPX9B\b(.*?)\bendmodule\b',LIBRARY.read_text(),re.S)[1]
+    default_pairs=re.findall(r"parameter\s+(INIT_RAM_[0-9A-F]{2})\s*=\s*288'h([0-9a-fA-F]+)\s*;",primitive)
+    assert len(default_pairs)==64
+    defaults={k:int(v,16) for k,v in default_pairs}
+    init_rows=[]
     for cell in ram_cells:
         assert cell['ports']['CLKA']==cell['ports']['CLKB']==['clk50_d']
         assert cell['ports']['RESET']==['GND']
         init={k:v for k,v in parameters(cell,new_defs).items()
               if k.startswith('INIT_RAM_')}
-        assert len(init)==64 and all(int(v.split("'h")[1],16)==0 for v in init.values()), 'full point RAM initialization changed'
+        init_rows.append(dict(name=cell['name'],**zero_initialization(init,defaults)))
+    # An omitted zero default is valid; an explicit changed bit must be rejected.
+    try:zero_initialization({'INIT_RAM_00':"288'h1"},defaults)
+    except AssertionError:initialization_negative_rejected=True
+    else:raise AssertionError('nonzero point INIT mutation accepted')
     reference=json.loads((baseline/'cdc_reference_audit.json').read_text())
     lidar=revalidate(before,after,reference,directions,old_defs,new_defs)
     sfp=audit_sfp(source/'impl/gwsynthesis/g2_top.vg',True)
@@ -103,6 +127,8 @@ def validate(source,baseline,plan_file):
                 source_bsram=316,wide_leaves=10,predicted_physical_bsram=326,physical_count_is_prediction=True,
                 unchanged_other_bsram_leaves=308,point_store_bits=147456,point_source_leaves=new_point,
                 point_module_actual_physical_before=16,point_module_actual_physical_after=8,point_module_checks=probe['checks'],
+                point_initialization_checks=init_rows,initialization_defaults_library=str(LIBRARY),
+                nonzero_initialization_mutation_rejected=initialization_negative_rejected,
                 full_joint_physical_reduction_not_yet_measured=True,core_synthesis_estimate=core,global_resource_delta=delta,
                 control_weights_and125hz_unchanged=True,source_csr_and_clock_sdc_unchanged=True,
                 routing_driver_revalidation=route,clock_plan_sources_revalidated=[r['net'] for r in route['targets']],

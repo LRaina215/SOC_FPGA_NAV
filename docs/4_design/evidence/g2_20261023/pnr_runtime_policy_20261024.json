@@ -2,77 +2,51 @@
   "recorded_at": "2026-10-24T13:21:37.940874+08:00",
   "scope": "current and future PNR wall-time/idle limits only; synthesis and validation limits unchanged",
   "authorized_by": "human explicitly requested continuing this PNR without a cutoff and no future PNR deadlines",
-  "current_build": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_pnr12",
+  "current_build": "F:\\nav_integration_g2_20261023\\sfp_lane2_pointplanes_pnr13",
   "max_runtime_minutes": 0,
   "max_runtime_s": 0,
   "max_no_progress_minutes": 0,
   "absolute_deadline": null,
   "original_150_minute_deadline_cancelled": true,
   "old_deadline": "2026-10-24T13:39:02.663834+08:00",
-  "running_tool_pid": null,
-  "running_tool_created_at": "2026-10-24T11:09:02.734667+08:00",
+  "running_tool_pid": 67368,
+  "running_tool_created_at": "2026-10-24T15:37:45.923724+08:00",
   "tool_restarted": false,
   "tool_suspended": false,
-  "original_wrapper_pid": 58396,
+  "original_wrapper_pid": 64916,
   "original_wrapper_suspended": false,
   "runtime_supervisor_pid": null,
-  "runtime_supervisor_created_at": "2026-10-24T13:19:29.021508+08:00",
-  "waiting_controller_pid": null,
-  "authority_file": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_pnr12\\runtime_override.json",
+  "runtime_supervisor_created_at": null,
+  "waiting_controller_pid": 39044,
+  "authority_file": "F:\\nav_integration_g2_20261023\\sfp_lane2_pointplanes_pnr13\\tool_runtime.json",
   "effective_runtime_snapshot": {
     "command": [
       "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
       "run.tcl"
     ],
-    "started_at": "2026-10-24T11:09:02.663834+08:00",
-    "max_runtime_s": 0,
-    "max_no_observable_progress_s": 0,
+    "started_at": "2026-10-24T15:37:45.830808+08:00",
+    "max_runtime_s": 0.0,
+    "max_no_observable_progress_s": 0.0,
     "cancelled": false,
     "programmed": false,
     "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
     "system_telemetry_file": "system_telemetry.jsonl",
     "telemetry_is_progress_evidence": false,
-    "pid": 54424,
-    "elapsed_s": 14251.441551208496,
-    "no_observable_progress_s": 24.879439115524292,
+    "pid": 67368,
+    "elapsed_s": 120.29700000002049,
+    "no_observable_progress_s": 112.15700000000652,
     "observed_files": [
       [
         "gw_sh.log",
-        2121075,
-        1792825568771050200
+        2086864,
+        1792827472658020800
       ],
       [
         "impl\\pnr\\g2_top.log",
-        2120650,
-        1792825568771050200
-      ],
-      [
-        "impl\\pnr\\g2_top.db",
-        2409064,
-        1792812030308119000
-      ],
-      [
-        "impl\\pnr\\g2_top.p",
-        14120232,
-        1792812030863173200
-      ],
-      [
-        "impl\\pnr\\g2_top.rpt.txt",
-        93299,
-        1792825565248087900
-      ],
-      [
-        "impl\\pnr\\g2_top.vo",
-        45564298,
-        1792825568747048700
+        2086430,
+        1792827472658020800
       ]
-    ],
-    "absolute_deadline": null,
-    "deadline_supervisor_pid": 27664,
-    "no_deadline": true,
-    "runtime_budget_source": "runtime_override.json; original wrapper suspended until tool exits",
-    "tool_exit": 1,
-    "ended_at": "2026-10-24T15:06:34.105385+08:00"
+    ]
   },
   "handoff_record": {
     "recorded_at": "2026-10-24T13:19:29.645627+08:00",
@@ -171,11 +145,79 @@
   "telemetry_does_not_prove_routing_convergence": true,
   "routing_resource_timing_cdc_and_deployment_gates_unchanged": true,
   "programmed": false,
-  "recurring_supervision_active": false,
-  "latest_update_at": "2026-10-24T15:12:43.745679+08:00",
-  "current_build_has_ended": true,
-  "current_build_final_result": "lane2_obsreuse_final_unrouted257.json",
+  "recurring_supervision_active": true,
+  "latest_update_at": "2026-10-24T15:39:55.411300+08:00",
+  "current_build_has_ended": false,
+  "current_build_final_result": null,
   "former_running_tool_pid": 54424,
   "completed_runtime_supervisor_pid": 27664,
-  "completed_controller_pid": 55032
+  "completed_controller_pid": 55032,
+  "automation_id": "fpga",
+  "supervision_interval_minutes": 30,
+  "supervision_authorized_by": "human requested proceeding after optimization and checking every half hour once routing starts, without a termination cutoff",
+  "supervision_authorized_at": "2026-10-24T15:31:35.932957+08:00",
+  "next_candidate": "F:/nav_integration_g2_20261023/sfp_lane2_pointplanes_syn10",
+  "next_pnr": "F:/nav_integration_g2_20261023/sfp_lane2_pointplanes_pnr13",
+  "next_controller_pid": 39044,
+  "next_job": "F:\\nav_integration_g2_20261023\\lane2_pointplanes_checked_retry1\\job.json",
+  "completed_previous_build": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_pnr12",
+    "final_result": "lane2_obsreuse_final_unrouted257.json",
+    "effective_runtime_snapshot": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-24T11:09:02.663834+08:00",
+      "max_runtime_s": 0,
+      "max_no_observable_progress_s": 0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 54424,
+      "elapsed_s": 14251.441551208496,
+      "no_observable_progress_s": 24.879439115524292,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          2121075,
+          1792825568771050200
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          2120650,
+          1792825568771050200
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          2409064,
+          1792812030308119000
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          14120232,
+          1792812030863173200
+        ],
+        [
+          "impl\\pnr\\g2_top.rpt.txt",
+          93299,
+          1792825565248087900
+        ],
+        [
+          "impl\\pnr\\g2_top.vo",
+          45564298,
+          1792825568747048700
+        ]
+      ],
+      "absolute_deadline": null,
+      "deadline_supervisor_pid": 27664,
+      "no_deadline": true,
+      "runtime_budget_source": "runtime_override.json; original wrapper suspended until tool exits",
+      "tool_exit": 1,
+      "ended_at": "2026-10-24T15:06:34.105385+08:00"
+    },
+    "authority_file": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_pnr12\\runtime_override.json"
+  }
 }
