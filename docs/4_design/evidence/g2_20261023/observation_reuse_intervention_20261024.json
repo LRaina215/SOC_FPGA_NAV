@@ -1,6 +1,6 @@
 {
   "recorded_at": "2026-10-24T10:58:08.638738+08:00",
-  "phase": "module_measured_joint_synthesis_running",
+  "phase": "joint_synthesis_complete_pnr_not_started",
   "cause_assessment": {
     "proven_root_cause": false,
     "failed_net_identities_and_locations_available": false,
@@ -161,17 +161,19 @@
         "control/rl_observation_v5.v"
       ],
       "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
-      "phase": "synthesizing",
-      "updated_at": "2026-10-24T10:57:40.340702+08:00",
+      "phase": "synthesis_complete",
+      "updated_at": "2026-10-24T10:59:34.012746+08:00",
       "minimum_start_free_bytes": 2147483648,
       "minimum_start_available_commit_bytes": 4294967296,
       "max_runtime_minutes": 40,
       "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
       "tool_pid": 62296,
       "synthesis_started_at": "2026-10-24T10:49:40.210716+08:00",
-      "elapsed_s": 480.14000000001397,
-      "free_bytes": 3432599552,
-      "available_commit_bytes": 4085542912
+      "elapsed_s": 570.1560000000172,
+      "free_bytes": 3140378624,
+      "available_commit_bytes": 3916775424,
+      "tool_exit": 0,
+      "joint_pnr_measured": false
     },
     "supervisor_pid": 21416,
     "supervisor_created_at": "2026-10-24T10:49:37.5870588+08:00",
@@ -182,17 +184,59 @@
     "asset_sets_equal": true,
     "asset_contents_equal": true,
     "sdc_cst_csr_and_other_rtl_unchanged": true,
-    "resource_and_timing_result_available": false,
+    "resource_and_timing_result_available": true,
     "inherited_json_audits_are_not_current_measurements": true,
     "pre_pnr_checks_pending": [
-      "new source exact difference",
-      "actual memories and resource benefit",
-      "reset/CE and allocation drivers",
+      "new reset/CE and allocation drivers",
       "26 lidar and51 host CDC connections",
       "actual Lane2 RX/TX clock sources",
-      "valid constraints and complete timing"
+      "valid constraints and complete physical timing"
     ],
-    "automatic_pnr": false
+    "automatic_pnr": false,
+    "actual_source_bsram": 316,
+    "actual_wide_leaves": 18,
+    "predicted_physical_bsram": 334,
+    "all_memory_paths_types_parameters_unchanged": true,
+    "global_resource_delta": {
+      "T_Lut": -505,
+      "T_Alu": 94,
+      "T_Register": -77,
+      "T_MULTALU27X18": -12,
+      "T_MULT12X12": 0,
+      "T_MULT27X36": 0,
+      "T_MULTADDALU12X12": 0,
+      "T_Bsram": 0,
+      "T_Ssram": 0,
+      "T_ROM16": 0
+    },
+    "synthesis_timing": {
+      "clocks": [
+        {
+          "name": "clk50",
+          "constraint_mhz": 50.0,
+          "estimated_fmax_mhz": 54.372,
+          "levels": 20,
+          "entity": "TOP"
+        },
+        {
+          "name": "rgmii_rxc",
+          "constraint_mhz": 50.0,
+          "estimated_fmax_mhz": 98.656,
+          "levels": 6,
+          "entity": "TOP"
+        }
+      ],
+      "first_path": {
+        "Slack": "1.608",
+        "Data Arrival Time": "18.706",
+        "Data Required Time": "20.314",
+        "From": "u_control/model_thread/policy/actions_27_s1",
+        "To": "u_control/model_thread/actuator_map/lk_us_4_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]"
+      },
+      "scope": "synthesis estimate only; actual PNR resource/timing acceptance must come from PNR reports"
+    }
   },
   "next_steps": [
     "read actual joint SYN; check resources/timing and unchanged memories/assets",
@@ -207,5 +251,7 @@
   "recurring_supervision_active": false,
   "programmed": false,
   "deployment_accepted": false,
-  "gates": "unrouted0; actualBSRAM<=336/340;50/100/125/125MHz;all setup/hold0;CDC/constraints/PCS/reset/pulse/IO complete"
+  "gates": "unrouted0; actualBSRAM<=336/340;50/100/125/125MHz;all setup/hold0;CDC/constraints/PCS/reset/pulse/IO complete",
+  "latest_update_at": "2026-10-24T11:01:27.648136+08:00",
+  "joint_synthesis_result": "observation_reuse_joint_synthesis_20261024.json"
 }

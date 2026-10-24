@@ -1,0 +1,158 @@
+{
+  "recorded_at": "2026-10-24T11:01:27.648136+08:00",
+  "phase": "joint_synthesis_complete_pnr_not_started",
+  "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+  "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_syn9",
+  "job": {
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_syn9",
+    "wait_pid": null,
+    "programmed": false,
+    "source_frozen_before_wait": true,
+    "automatic_pnr": false,
+    "modified_rtl_inputs": [
+      "control/rl_observation_v5.v"
+    ],
+    "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+    "phase": "synthesis_complete",
+    "updated_at": "2026-10-24T10:59:34.012746+08:00",
+    "minimum_start_free_bytes": 2147483648,
+    "minimum_start_available_commit_bytes": 4294967296,
+    "max_runtime_minutes": 40,
+    "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+    "tool_pid": 62296,
+    "synthesis_started_at": "2026-10-24T10:49:40.210716+08:00",
+    "elapsed_s": 570.1560000000172,
+    "free_bytes": 3140378624,
+    "available_commit_bytes": 3916775424,
+    "tool_exit": 0,
+    "joint_pnr_measured": false
+  },
+  "modified_rtl_inputs": [
+    "control/rl_observation_v5.v"
+  ],
+  "resources": [
+    {
+      "variant": "baseline",
+      "global_resources": {
+        "T_Lut": 54477,
+        "T_Alu": 10141,
+        "T_Register": 41923,
+        "T_MULTALU27X18": 77,
+        "T_MULT12X12": 23,
+        "T_MULT27X36": 37,
+        "T_MULTADDALU12X12": 1,
+        "T_Bsram": 316,
+        "T_Ssram": 4134,
+        "T_ROM16": 702
+      },
+      "observation_resources": {
+        "T_Lut": 5055,
+        "T_Alu": 133,
+        "T_Register": 5420,
+        "T_MULTALU27X18": 16,
+        "T_MULT12X12": 0,
+        "T_MULT27X36": 0,
+        "T_MULTADDALU12X12": 0,
+        "T_Bsram": 0,
+        "T_Ssram": 0,
+        "T_ROM16": 0
+      }
+    },
+    {
+      "variant": "candidate",
+      "global_resources": {
+        "T_Lut": 53972,
+        "T_Alu": 10235,
+        "T_Register": 41846,
+        "T_MULTALU27X18": 65,
+        "T_MULT12X12": 23,
+        "T_MULT27X36": 37,
+        "T_MULTADDALU12X12": 1,
+        "T_Bsram": 316,
+        "T_Ssram": 4134,
+        "T_ROM16": 702
+      },
+      "observation_resources": {
+        "T_Lut": 4633,
+        "T_Alu": 227,
+        "T_Register": 5343,
+        "T_MULTALU27X18": 4,
+        "T_MULT12X12": 0,
+        "T_MULT27X36": 0,
+        "T_MULTADDALU12X12": 0,
+        "T_Bsram": 0,
+        "T_Ssram": 0,
+        "T_ROM16": 0
+      }
+    }
+  ],
+  "global_delta": {
+    "T_Lut": -505,
+    "T_Alu": 94,
+    "T_Register": -77,
+    "T_MULTALU27X18": -12,
+    "T_MULT12X12": 0,
+    "T_MULT27X36": 0,
+    "T_MULTADDALU12X12": 0,
+    "T_Bsram": 0,
+    "T_Ssram": 0,
+    "T_ROM16": 0
+  },
+  "global_lut_plus_alu_delta": -411,
+  "source_bsram": 316,
+  "wide_leaves": 18,
+  "predicted_physical_bsram_with_split": 334,
+  "physical_bsram_measured_for_this_candidate": false,
+  "all_memory_paths_types_parameters_unchanged": true,
+  "firmware_storage_assets_unchanged": 104,
+  "synthesis_timing": {
+    "clocks": [
+      {
+        "name": "clk50",
+        "constraint_mhz": 50.0,
+        "estimated_fmax_mhz": 54.372,
+        "levels": 20,
+        "entity": "TOP"
+      },
+      {
+        "name": "rgmii_rxc",
+        "constraint_mhz": 50.0,
+        "estimated_fmax_mhz": 98.656,
+        "levels": 6,
+        "entity": "TOP"
+      }
+    ],
+    "first_path": {
+      "Slack": "1.608",
+      "Data Arrival Time": "18.706",
+      "Data Required Time": "20.314",
+      "From": "u_control/model_thread/policy/actions_27_s1",
+      "To": "u_control/model_thread/actuator_map/lk_us_4_s0",
+      "Launch Clk": "clk50[R]",
+      "Latch Clk": "clk50[R]"
+    },
+    "scope": "synthesis estimate only; actual PNR resource/timing acceptance must come from PNR reports"
+  },
+  "synthesis_timing_unchanged": true,
+  "original4500_all_weights125hz_capacity_interfaces_stop_priority_retained": true,
+  "rtl_proof": "56000 cycles,4 encoder sign combinations,32 primary complete frames; see intervention record",
+  "native_netlist_simulation_available": false,
+  "native_simulation_gap": "65333 instances exceed installed50000 limit; simulation did not start",
+  "limitations": [
+    "SYN estimate is not PNR frequency",
+    "resource reduction does not identify failed nets or prove routability",
+    "old inherited JSON audits do not validate new generated names",
+    "new clock/reset/CE and77 known CDC drivers must be proved before PNR; complete extra CDC/PCS/reset/IO still pending"
+  ],
+  "best_completed_physical_result": {
+    "unrouted_nets": 544,
+    "bsram": 334,
+    "accepted": false,
+    "evidence": "lane2_telemetry_final_unrouted544.json"
+  },
+  "automatic_pnr": false,
+  "recurring_supervision_active": false,
+  "programmed": false,
+  "deployment_accepted": false
+}
