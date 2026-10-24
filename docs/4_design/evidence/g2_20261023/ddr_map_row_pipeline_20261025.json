@@ -1,0 +1,435 @@
+{
+  "updated_at": "2026-10-25T02:13:39.366312+08:00",
+  "task": "continuous-row full-capacity map UPDATE before joint SYN/PNR",
+  "contracts": {
+    "original_4500": true,
+    "all_weights": true,
+    "control_hz": 125,
+    "cpu_onchip_bytes": 131072,
+    "structure_cells": 65536,
+    "structure_word_bits": 18,
+    "elevation_cells": 16384,
+    "elevation_word_bits": 53,
+    "original_point_buffer_bits": 147456,
+    "complete_matcher_required": true,
+    "stop_priority_unchanged": true
+  },
+  "implementation": {
+    "native_beats_per_row": 19,
+    "previous_padded_beats_per_row": 32,
+    "words_per_full_beat": 14,
+    "cell_bits": 18,
+    "no_quantization": true,
+    "read_write_bytes_per_update": 311296,
+    "layout": "SM line=row*19+col//14, word18=(col%14)*18; old cache32-bit layout is incompatible until adapted",
+    "core_hz": 50000000,
+    "ui_hz": 100000000,
+    "descriptor_crossing": "one per row, two beat credits",
+    "first_cell_record_preserved": true,
+    "all_18bits_preserved": true,
+    "clock_enabled_original_LF": true,
+    "LF_write_enable_and_read_return_hold_fixed": true,
+    "complete_matcher_integrated": false
+  },
+  "rtl": {
+    "tested_at": "2026-10-25T02:08:31.710031+08:00",
+    "passed": true,
+    "timing": [
+      {
+        "case": 0,
+        "records": 1024,
+        "cycles": 110179,
+        "us_at_50MHz": 2203.58,
+        "refresh_phase": 0,
+        "ready_period": 8,
+        "read_delay": 12,
+        "stalls": 25433,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 1,
+        "records": 1024,
+        "cycles": 110125,
+        "us_at_50MHz": 2202.5,
+        "refresh_phase": 389,
+        "ready_period": 8,
+        "read_delay": 12,
+        "stalls": 25368,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 2,
+        "records": 1024,
+        "cycles": 106621,
+        "us_at_50MHz": 2132.42,
+        "refresh_phase": 200,
+        "ready_period": 8,
+        "read_delay": 12,
+        "stalls": 24152,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 3,
+        "records": 1024,
+        "cycles": 107432,
+        "us_at_50MHz": 2148.64,
+        "refresh_phase": 27,
+        "ready_period": 8,
+        "read_delay": 12,
+        "stalls": 24188,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 4,
+        "records": 0,
+        "cycles": 90464,
+        "us_at_50MHz": 1809.28,
+        "refresh_phase": 0,
+        "ready_period": 8,
+        "read_delay": 12,
+        "stalls": 23116,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 5,
+        "records": 1024,
+        "cycles": 189845,
+        "us_at_50MHz": 3796.9,
+        "refresh_phase": 101,
+        "ready_period": 16,
+        "read_delay": 20,
+        "stalls": 104542,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 6,
+        "records": 1024,
+        "cycles": 192031,
+        "us_at_50MHz": 3840.62,
+        "refresh_phase": 389,
+        "ready_period": 16,
+        "read_delay": 20,
+        "stalls": 105424,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 7,
+        "records": 1024,
+        "cycles": 533401,
+        "us_at_50MHz": 10668.02,
+        "refresh_phase": 200,
+        "ready_period": 32,
+        "read_delay": 80,
+        "stalls": 445371,
+        "expected_meets_5ms": 0
+      }
+    ],
+    "metrics": {
+      "cases": 8,
+      "words": 524288,
+      "maximum_update_cycles": 533401,
+      "reads": 39064,
+      "writes": 38912,
+      "refresh_cycles": 200757,
+      "command_stalls": 2021268
+    },
+    "scope": "full-size update/LF RTL with original LF arithmetic and service-envelope native model",
+    "actual_point_transform_integrated": false,
+    "vendor_service_bound_verified": false,
+    "all_legal_native_service_schedules_meet_5ms": false,
+    "complete_joint_candidate": false,
+    "programmed": false
+  },
+  "original_transform": {
+    "tested_at": "2026-10-25T02:12:00.273440+08:00",
+    "passed": true,
+    "timing": [
+      {
+        "frame": 0,
+        "points": 2259,
+        "cycles": 177122,
+        "us_at_50MHz": 3542.44
+      },
+      {
+        "frame": 1,
+        "points": 1977,
+        "cycles": 179518,
+        "us_at_50MHz": 3590.36
+      },
+      {
+        "frame": 2,
+        "points": 1777,
+        "cycles": 178233,
+        "us_at_50MHz": 3564.66
+      },
+      {
+        "frame": 3,
+        "points": 2055,
+        "cycles": 176856,
+        "us_at_50MHz": 3537.12
+      },
+      {
+        "frame": 4,
+        "points": 2247,
+        "cycles": 177384,
+        "us_at_50MHz": 3547.68
+      }
+    ],
+    "metrics": {
+      "frames": 5,
+      "full_words": 327680,
+      "maximum_cycles": 179518
+    },
+    "scope": "original point stream/extractor/transform plus streaming UPDATE vs unchanged original matcher; native service model",
+    "complete_matcher": false,
+    "scoring_coherence_verified": false,
+    "vendor_service_bound_verified": false,
+    "full_joint_implementation": false,
+    "programmed": false
+  },
+  "module_synthesis": {
+    "tested": "F:\\nav_integration_g2_20261023\\ddr_map_row_update_probe6",
+    "runtime": {
+      "started_at": "2026-10-25T02:04:01.019049+08:00",
+      "max_runtime_s": 180,
+      "max_owned_rss": 805306368,
+      "scope": "isolated full-size streaming update/LF only; no G2 SYN/PNR",
+      "cancelled": false,
+      "pid": 6696,
+      "tool_exit": 0,
+      "elapsed_s": 12.905999999959022
+    },
+    "effective_options": {
+      "global_freq_mhz": 50.0,
+      "wide_split": 0,
+      "effective_options": "F:\\nav_integration_g2_20261023\\ddr_map_row_update_syn1\\effective_options.tcl",
+      "extra_options": {}
+    },
+    "startup_available_physical": 3947962368,
+    "startup_available_commit": 6768123904,
+    "resources": {
+      "name": "g2_top",
+      "Register": "185",
+      "Alu": "55",
+      "Lut": "642",
+      "Bsram": "6",
+      "Ssram": "98",
+      "T_Register": "2712(185)",
+      "T_Alu": "1480(55)",
+      "T_Lut": "3066(642)",
+      "T_MULTALU27X18": "6(0)",
+      "T_MULT12X12": "17(0)",
+      "T_MULT27X36": "7(0)",
+      "T_Bsram": "14(6)",
+      "T_Ssram": "98(98)"
+    },
+    "inventory": {
+      "primitives": {
+        "IBUF": 309,
+        "OBUF": 327,
+        "LUT3": 995,
+        "LUT4": 1682,
+        "LUT2": 375,
+        "DFFRE": 2605,
+        "DFFSE": 3,
+        "SDPB": 8,
+        "SDPX9B": 4,
+        "RAM16SDP4": 98,
+        "ALU": 1480,
+        "MUX2_LUT5": 90,
+        "MUX2_LUT6": 44,
+        "MUX2_LUT7": 22,
+        "INV": 14,
+        "DFFCE": 100,
+        "MULT27X36": 7,
+        "MULTALU27X18": 6,
+        "MULT12X12": 17,
+        "VCC": 5,
+        "GND": 5,
+        "DPX9B": 2,
+        "DFFPE": 4,
+        "GSR": 1
+      },
+      "bsram": 14,
+      "ff": 2712,
+      "maximum_nonclock_load": 495,
+      "high_loads": [
+        {
+          "net": "u_dma/beats_RAMOUT_47_G[0]_12",
+          "loads": 495,
+          "pins": {
+            "I3": 494,
+            "I1": 1
+          }
+        },
+        {
+          "net": "u_lf/n3462_7",
+          "loads": 365,
+          "pins": {
+            "CE": 365
+          }
+        },
+        {
+          "net": "u_dma/data_sent[0]",
+          "loads": 265,
+          "pins": {
+            "I1": 4,
+            "I2": 257,
+            "I0": 1,
+            "I3": 2,
+            "CIN": 1
+          }
+        },
+        {
+          "net": "u_dma/completed[0]",
+          "loads": 258,
+          "pins": {
+            "I2": 250,
+            "I0": 4,
+            "I1": 4
+          }
+        },
+        {
+          "net": "u_lf/n21411_6",
+          "loads": 186,
+          "pins": {
+            "CE": 186
+          }
+        },
+        {
+          "net": "rst_d",
+          "loads": 144,
+          "pins": {
+            "I0": 13,
+            "I3": 1,
+            "I1": 26,
+            "I2": 5,
+            "RESET": 94,
+            "SET": 1,
+            "PRESET": 4
+          }
+        },
+        {
+          "net": "u_lf/n22441_6",
+          "loads": 107,
+          "pins": {
+            "CE": 107
+          }
+        },
+        {
+          "net": "heads",
+          "loads": 96,
+          "pins": {
+            "WAD": 96
+          }
+        },
+        {
+          "net": "heads_2",
+          "loads": 96,
+          "pins": {
+            "WAD": 96
+          }
+        },
+        {
+          "net": "heads_3",
+          "loads": 96,
+          "pins": {
+            "WAD": 96
+          }
+        },
+        {
+          "net": "heads_4",
+          "loads": 96,
+          "pins": {
+            "WAD": 96
+          }
+        },
+        {
+          "net": "ra[15]",
+          "loads": 91,
+          "pins": {
+            "I2": 89,
+            "I1": 1,
+            "DI": 1
+          }
+        },
+        {
+          "net": "dma_row[7]",
+          "loads": 90,
+          "pins": {
+            "I2": 88,
+            "DI": 1,
+            "A": 1
+          }
+        },
+        {
+          "net": "u_lf/n22849_6",
+          "loads": 84,
+          "pins": {
+            "I0": 1,
+            "CE": 83
+          }
+        },
+        {
+          "net": "u_lf/n23515_6",
+          "loads": 83,
+          "pins": {
+            "CE": 83
+          }
+        },
+        {
+          "net": "u_lf/n23681_6",
+          "loads": 83,
+          "pins": {
+            "CE": 83
+          }
+        }
+      ]
+    },
+    "programmed": false,
+    "full_joint_implementation": false,
+    "physical_resources_verified": false
+  },
+  "memory": {
+    "source": 14,
+    "wide": 4,
+    "conservative_physical_prediction": 18,
+    "physical_verified": false,
+    "retained_touch_source": 4,
+    "retained_LF_source": 4,
+    "retained_LF_wide": 4,
+    "new_row_buffers": 4,
+    "new_record_nodes": 2,
+    "conservative_replacement_storage_prediction": 45,
+    "conservative_net_saving_prediction": 67,
+    "conservative_whole_joint_prediction": 259,
+    "caveat": "cache7 plus new buffers4/nodes2 plus predicted DDR32; existing touch/LF retained; other adapters may add storage"
+  },
+  "gate": {
+    "model_data_passed": true,
+    "positive_profile_max_us": 3840.62,
+    "service_counterexample_us": 10668.02,
+    "real_worst_update_under_5ms_verified": false,
+    "vendor_service_bound_verified": false,
+    "native_order_supported_by_primary_guide": true,
+    "full_netlist_simulation_verified": false,
+    "full_mapped_license_error": "BASIC tier design56028 instances exceeds50000; simulation did not run",
+    "DDR_chip_model_missing_from_official_reference": true,
+    "joint_synthesis_started": false,
+    "pnr_started": false,
+    "programmed": false
+  },
+  "external_evidence": {
+    "guide": "https://www.gowinsemi.com/upload/database_doc/2009/document/696a8c052f84e.pdf",
+    "refdesign": "https://www.gowinsemi.com/upload/database_doc/2010/document/67cebaccb9842.zip",
+    "local_refdesign": "F:\\nav_integration_g2_20261023\\ddr_map_vendor_service_review",
+    "reference_target": "GW5AST-138B-FCPBGA676A, not current C/484",
+    "service_max_published": false
+  },
+  "next_actions": [
+    "adapt the random-read cache to the packed18-bit row format, prove invalidate/coherence at UPDATE entry/exit",
+    "prove actual controller service upper bound including native queuing, refresh precharge, read/write turnaround and other map arbitration",
+    "finish high-elevation/traversability scan and initialization/reset/fault admission; do not approve whole matcher from UPDATE-only probe",
+    "launch one full SYN only after all5ms/resource/source/clock/CDC gates pass, then one unlimited PNR checked every30minutes"
+  ]
+}

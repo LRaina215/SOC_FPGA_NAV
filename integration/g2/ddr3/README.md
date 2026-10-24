@@ -73,3 +73,32 @@ estimate is112 removed blocks minus7 cache blocks minus32 predicted DDR blocks
 =73 blocks saved; new streaming/node/FIFO storage must be deducted as added.
 No new joint SYN or PNR has been started. PNR15 ended naturally at184 unrouted
 nets/326 RAM blocks; the original unlimited-PNR policy remains in force.
+
+Continuous-row UPDATE prototype (latest):
+
+- `nav_ddr_row_stream.v` transports a full256-word row per descriptor, with
+  two native beat credits and separate input/output ping-pong rows. It packs
+  fourteen full18-bit cells per BL8 beat:19 beats/row, no quantization.
+- `nav_slf_row_update.v` keeps first-cell semantics, row buckets and a
+  clock-enabled derivative of the unchanged LF arithmetic. Pause holds both
+  pending writes and the previous synchronous read result.
+- `probe_row_update.py` prepares the exact LF derivative, runs full-map gold
+  tests and measures this isolated module. `--mapped-after` requires a valid
+  simulation license; the full netlist attempt exceeded BASIC's50000-instance
+  limit and did not run. Do not record it as a pass.
+- `probe_row_transform.py` compares UPDATE against the unchanged real matcher
+  with the existing five point-stream vectors and original extraction/transform.
+  Its derived matcher retains the old scoring RAM and is UPDATE-ONLY.
+
+Accepted experiments: `ddr_map_row_update_probe7`524288 words and
+`ddr_map_row_transform_probe1`327680 words; positive native-model profiles
+at most3.84062ms, original-transform case at most3.59036ms. A slower legal
+native-service profile needs10.66802ms. These are NOT a verified hardware
+worst-case5ms bound. Full joint synthesis/PNR remains gated.
+
+The row layout (row*19+column/14,18-bit slots) is incompatible with the old
+32-bit-slot cache prototype. Adapt and prove coherence before combining them.
+Isolated SYN14 sourceRAM/4 wide leaves predicts18 physical blocks including
+retained touch/LF storage. Keeping the existing7 cache blocks plus6 new row/
+node blocks plus predicted32 DDR blocks gives a conservative67-block saving;
+remaining adapters can add storage. No whole-joint physical count is accepted.
