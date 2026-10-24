@@ -12,12 +12,16 @@ OPTIONS={
     'User_Interface':'Controller','Memory_Type':'Components','Memory_Clock':400,
     'CLK_Ratio':'1:4','Dq_Width':32,'Dram_Width':16,'Ecc':'false',
     'Rank_Address':1,'Bank_Address':3,'Row_Address':15,'Column_Address':10,
-    'SIM':'false','Burst_Mode':8,'Burst_Type':'SEQ','CAS_Latency':5,'CW_Latency':5,
+    # F60C1A0004-M79 (1866 bin): tAA/tRCD/tRP >=13.91ns. At 400MHz
+    # CL6/CWL5 is the supported pair; CL5 gives only12.5ns. Density is4Gb,
+    # so tRFC>=260ns. Use2x refresh for the complete industrial temperature
+    # range;7.8us is only valid when case temperature remains <=85C.
+    'SIM':'false','Burst_Mode':8,'Burst_Type':'SEQ','CAS_Latency':6,'CW_Latency':5,
     'Additive_Latency':0,'Wrire_Recovery':6,'Rtt_Nom':40,'Rtt_Wr':'OFF',
     'Addr_Cmd_Mode':'1T','OUTPUT_DRV':'LOW','User_Refresh':'false',
-    'tRTP_Period':7500,'tRP_Period':12500,'tWTR_Period':7500,'tRC_Period':55000,
-    'tRAS_Period':37500,'tRCD_Period':12500,'tFAW_Period':40000,'tRRD_Period':7500,
-    'tCKE_Period':75000,'tREFI_Period':7800000,'tRFC_Period':160000,'tDLLK':512,
+    'tRTP_Period':10000,'tRP_Period':15000,'tWTR_Period':10000,'tRC_Period':55000,
+    'tRAS_Period':37500,'tRCD_Period':15000,'tFAW_Period':40000,'tRRD_Period':10000,
+    'tCKE_Period':75000,'tREFI_Period':3900000,'tRFC_Period':260000,'tDLLK':512,
     'Debug_Parameter_Enable':'false','Debug_Port_Enable':'false',
     'MC_BSRAM':'true','MC_SSRAM':'false','MC_REG':'false','AXI4_Interface':'false'
 }
@@ -37,7 +41,9 @@ def inspect(out):
     params=list(out.rglob('gwmc_param.v'));assert len(params)==1,params
     s=params[0].read_text()
     required={'DQ_WIDTH':'32','DRAM_WIDTH':'16','nCK_PER_CLK':'4','ROW_WIDTH':'15',
-        'COL_WIDTH':'10','BANK_WIDTH':'3','RANK_WIDTH':'1','tCK':'2500'}
+        'COL_WIDTH':'10','BANK_WIDTH':'3','RANK_WIDTH':'1','tCK':'2500',
+        'CL':'6','CWL':'5','tRCD':'15000','tRP':'15000',
+        'tREFI':'3900000','tRFC':'260000','tRTP':'10000','tWTR':'10000','tRRD':'10000'}
     for k,value in required.items():
         assert re.search(r'parameter\s+'+k+r'\s*=\s*'+value+r'\s*;',s),k
     xml=out/'ip/nav_ddr3_phy/temp/DDR3/nav_ddr3_phy_syn_rsc.xml'
@@ -59,6 +65,11 @@ def generate(out,mc_ssram=False):
     assert not out.exists()
     assert not mc_ssram, ('This installed C-device native-interface configurator did not retain MC_SSRAM '
         'in two readbacks. Do not repeat generation or count a requested mode as effective.')
+    import sys
+    sys.path.insert(0,str(Path(__file__).resolve().parent.parent))
+    from retry_frozen_synthesis import memory_status
+    memory=memory_status()
+    assert memory.avail_phys>=2*1024**3 and memory.avail_page>=4*1024**3,'2/4 GiB startup gate'
     spec=ET.parse(IDE/'ipcore/DDR3/ddr3.ipspec').getroot()
     assert any(d.text=='GW5AT-138C-*' for d in spec.find('devices'))
     supported={x.get('tclcommand') for x in spec.find('options')}

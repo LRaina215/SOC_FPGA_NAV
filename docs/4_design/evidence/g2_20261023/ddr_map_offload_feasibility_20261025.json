@@ -1,0 +1,332 @@
+{
+  "recorded_at": "2026-10-25T01:46:52.418264+08:00",
+  "scope": "map-offload resource and latency feasibility; not a connected G2 implementation",
+  "original_contract": {
+    "cpu_onchip_ram_blocks": 64,
+    "cpu_capacity_bytes": 131072,
+    "matching_map_words": 65536,
+    "matching_word_bits": 18,
+    "elevation_map_words": 16384,
+    "elevation_word_bits": 53,
+    "point_buffer_words": 4096,
+    "point_buffer_word_bits": 36,
+    "original4500_unchanged": true,
+    "all_original_weights_unchanged": true,
+    "control_period_hz": 125,
+    "interface_and_stop_priority_unchanged": true
+  },
+  "resource_accounting": {
+    "reference_pnr": "sfp_lane2_observation_lw_pnr15",
+    "reference_total": 326,
+    "removed_maps": 112,
+    "cache_arbitration_mailbox_synthesis_blocks": 7,
+    "cache_wide_leaves": 0,
+    "cache_resources": {
+      "name": "g2_top",
+      "Register": "4",
+      "Lut": "294",
+      "T_Register": "1556(4)",
+      "T_Alu": "8(0)",
+      "T_Lut": "1972(294)",
+      "T_Bsram": "7(0)",
+      "T_Ssram": "96(0)"
+    },
+    "ddr_ip_source_blocks": 16,
+    "ddr_wide_leaves": 16,
+    "ddr_conservative_physical_prediction": 32,
+    "ddr_resources": {
+      "name": "Nav_DDR3_PHY",
+      "Register": "5751",
+      "Alu": "190",
+      "Lut": "2964",
+      "Bsram": "16",
+      "T_Register": "5751(5751)",
+      "T_Alu": "190(190)",
+      "T_Lut": "2964(2964)",
+      "T_Bsram": "16(16)"
+    },
+    "replacement_storage_prediction": 39,
+    "storage_only_predicted_net_saving": 73,
+    "storage_only_total_prediction": 253,
+    "full_algorithm_adapters_and_streaming_buffers_included": false,
+    "complete_joint_physical_resources_verified": false,
+    "additional_row_update_nodes_target_blocks": 2,
+    "additional_nodes_not_synthesized": true,
+    "module_optimization": {
+      "before_bsram": 8,
+      "after_bsram": 7,
+      "before_lut": 5431,
+      "after_lut": 1972,
+      "before_ff": 3090,
+      "after_ff": 1556,
+      "before_max_load": 2298,
+      "after_max_load": 762
+    }
+  },
+  "cache_functional": {
+    "tested_at": "2026-10-25T01:31:22.016628+08:00",
+    "passed": true,
+    "metrics": {
+      "sm_checks": 200706,
+      "em_checks": 53250,
+      "sm_max_cycles": 76,
+      "em_max_cycles": 64,
+      "native_lines": 56575,
+      "native_min_cycles": 5,
+      "native_max_cycles": 12,
+      "native_total_cycles": 431408,
+      "reads": 40191,
+      "writes": 16384
+    },
+    "programmed": false,
+    "scope": "full map capacities, cache/native RTL plus behavioral initialized DDR; not PHY, integration or timing admission",
+    "backing_initialization_tested": false,
+    "algorithm_adapters_implemented": false,
+    "hardware_latency_bound_verified": false
+  },
+  "cache_vendor_mapped": {
+    "tested_at": "2026-10-25T01:38:17.927252+08:00",
+    "passed": true,
+    "synthesis": "F:\\nav_integration_g2_20261023\\ddr_map_cache_syn2",
+    "primitive_library": "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\simlib\\gw5a\\prim_sim.v",
+    "metrics": {
+      "sm_checks": 200706,
+      "em_checks": 53250,
+      "sm_max_cycles": 76,
+      "em_max_cycles": 64,
+      "reads": 40191,
+      "writes": 16384
+    },
+    "native_cycle_monitor_omitted": true,
+    "programmed": false,
+    "scope": "actual synthesized cache/native/mailbox netlist and vendor primitives; behavioral DDR backing, no PHY/timing acceptance"
+  },
+  "access_evaluation": {
+    "source": "F:\\nav_integration_g2_20261023\\ddr_map_access_evaluation2\\result.json",
+    "existing_RTL_checked_rows": 7,
+    "candidate_results_preserved": true,
+    "worst_original_vector": {
+      "name": "prior_4",
+      "candidate_major_512_misses": 332588,
+      "point_major_512_misses": 4282
+    },
+    "adversarial": [
+      {
+        "name": "tracking_spread",
+        "samples": 1024,
+        "valid": 1024,
+        "candidates": 245,
+        "original_ms_at_50mhz": 105.5981,
+        "constructed_not_field_trace": true,
+        "cache_models": [
+          {
+            "accesses": 2258944,
+            "hits": 1387204,
+            "clean_read_misses": 871740,
+            "order": "candidate_major",
+            "entries": 512,
+            "miss_only_added_ms_at_1us_per_line": 871.74
+          },
+          {
+            "accesses": 2258944,
+            "hits": 2242835,
+            "clean_read_misses": 16109,
+            "order": "point_major",
+            "entries": 512,
+            "miss_only_added_ms_at_1us_per_line": 16.109
+          }
+        ]
+      },
+      {
+        "name": "tracking_cache_conflicts",
+        "samples": 1024,
+        "valid": 1024,
+        "candidates": 245,
+        "original_ms_at_50mhz": 105.5981,
+        "constructed_not_field_trace": true,
+        "cache_models": [
+          {
+            "accesses": 2258944,
+            "hits": 1736880,
+            "clean_read_misses": 522064,
+            "order": "candidate_major",
+            "entries": 512,
+            "miss_only_added_ms_at_1us_per_line": 522.064
+          },
+          {
+            "accesses": 2258944,
+            "hits": 2241769,
+            "clean_read_misses": 17175,
+            "order": "point_major",
+            "entries": 512,
+            "miss_only_added_ms_at_1us_per_line": 17.175
+          }
+        ]
+      },
+      {
+        "name": "alignment_first_batch",
+        "samples": 1024,
+        "valid": 1024,
+        "candidates": 256,
+        "original_ms_at_50mhz": 110.33096,
+        "constructed_not_field_trace": true,
+        "cache_models": [
+          {
+            "accesses": 2360320,
+            "hits": 1451047,
+            "clean_read_misses": 909273,
+            "order": "candidate_major",
+            "entries": 512,
+            "miss_only_added_ms_at_1us_per_line": 909.273
+          },
+          {
+            "accesses": 2360320,
+            "hits": 2307929,
+            "clean_read_misses": 52391,
+            "order": "point_major",
+            "entries": 512,
+            "miss_only_added_ms_at_1us_per_line": 52.391
+          }
+        ]
+      },
+      {
+        "name": "legal_arbitrary_candidate_interface",
+        "samples": 1024,
+        "valid": 1024,
+        "candidates": 256,
+        "original_ms_at_50mhz": 110.33096,
+        "constructed_not_field_trace": true,
+        "cache_models": [
+          {
+            "accesses": 2360320,
+            "hits": 1451311,
+            "clean_read_misses": 909009,
+            "order": "candidate_major",
+            "entries": 512,
+            "miss_only_added_ms_at_1us_per_line": 909.009
+          },
+          {
+            "accesses": 2360320,
+            "hits": 1437403,
+            "clean_read_misses": 922917,
+            "order": "point_major",
+            "entries": 512,
+            "miss_only_added_ms_at_1us_per_line": 922.917
+          }
+        ]
+      }
+    ],
+    "no_new_matching_RTL_implemented": true,
+    "baseline_plus_miss_cost_is_not_WCET": true
+  },
+  "timing": {
+    "baseline_max_256_candidate_cycles": 5516548,
+    "baseline_max_ms_at_50mhz": 110.33096,
+    "nominal_245_candidate_ms_at_50mhz": 105.5981,
+    "control125hz_is_not_full_navigation_8ms_deadline": true,
+    "ordinary_cache_full_read_lower_bound_us": 5242.88,
+    "existing_update_wait_us": 5000,
+    "ordinary_cache_scan_admitted": false,
+    "continuous_row_pipeline_required": true,
+    "conditional_streaming_budget": {
+      "map_words": 65536,
+      "bytes_read_plus_written": 524288,
+      "full_read_row_batches": 256,
+      "full_write_row_batches": 256,
+      "copy_core_cycles": 131072,
+      "existing_compute_core_cycles": 80964,
+      "serial_copy_plus_existing_compute_us": 4240.72,
+      "software_update_wait_us": 5000,
+      "remaining_all_added_overheads_us": 759.2799999999997,
+      "assumed_refresh_interval_ns": 3900,
+      "assumed_refresh_busy_ns": 260,
+      "refresh_reserve_us": 333.84,
+      "remaining_after_refresh_for_all_DMA_CDC_arbitration_and_bucket_us": 425.43999999999977,
+      "additional_bucket_and_adapter_cycles_measured": false,
+      "copy_word_per_cycle_architecture_implemented": false,
+      "refresh_reserve_is_only_configured_nominal_not_system_WCET": true,
+      "ordinary_request_ack_cache_min_read_interval_cycles": 4,
+      "ordinary_full_map_read_lower_bound_us": 5242.88,
+      "ordinary_cache_scan_meets_5ms": false
+    },
+    "all_external_ready_and_completion_bounds_verified": false,
+    "end_to_end_latency_admitted": false,
+    "unchanged_RAM_clients_can_accept_variable_latency": false
+  },
+  "update_bucketing_arithmetic": {
+    "batches": 32,
+    "samples_per_batch": 1024,
+    "full_map_words_compared": 2097152,
+    "unique_records_checked": 22358,
+    "maximum_records_in_one_row": 253,
+    "matches_existing_StructMap_update": true,
+    "first_point_rule_preserved": true,
+    "all_original_18bits_preserved": true,
+    "scope": "row bucketing/update arithmetic only, not full SLF or RTL/physical equivalence"
+  },
+  "component_timing_correction": {
+    "old_phy": "ddr3_c_phy4",
+    "new_phy": "F:\\nav_integration_g2_20261023\\ddr3_map_c_phy7_timingfix",
+    "old_values": {
+      "CL": 5,
+      "tRCD_ps": 12500,
+      "tRP_ps": 12500,
+      "tRFC_ps": 160000,
+      "tREFI_ps": 7800000
+    },
+    "new_readback": {
+      "DQ_WIDTH": "32",
+      "DRAM_WIDTH": "16",
+      "nCK_PER_CLK": "4",
+      "ROW_WIDTH": "15",
+      "COL_WIDTH": "10",
+      "BANK_WIDTH": "3",
+      "RANK_WIDTH": "1",
+      "tCK": "2500",
+      "CL": "6",
+      "CWL": "5",
+      "tRCD": "15000",
+      "tRP": "15000",
+      "tREFI": "3900000",
+      "tRFC": "260000",
+      "tRTP": "10000",
+      "tWTR": "10000",
+      "tRRD": "10000"
+    },
+    "longsys_datasheet": "F:\\nav_integration_g2_20261023\\ddr_map_component_review\\longsys_4gb_series_rev1.pdf",
+    "verified_table_page": 26,
+    "verified_1866_speed_bin_page": 21,
+    "full_industrial_temperature_refresh_used": true,
+    "exact_1p5V_electrical_validation_still_required": true,
+    "old_frozen_inputs_retained_but_not_admitted": true,
+    "old_phy_read_only_negative_check": {
+      "passed": true,
+      "rejected_with": "configuration readback CAS_Latency",
+      "no_regeneration": true
+    }
+  },
+  "gate": {
+    "resource_potential_significant": true,
+    "cache_functional_passed": true,
+    "complete_RL_or_navigation_passed": false,
+    "end_to_end_WCET_passed": false,
+    "clock_and_CDC_IO_passed": false,
+    "DDR_training_or_board_access_passed": false,
+    "joint_synthesis_started": false,
+    "joint_pnr_started": false,
+    "programmed": false
+  },
+  "current_pnr": {
+    "ended_naturally": true,
+    "unrouted": 184,
+    "physical_ram": 326,
+    "deadline_s": 0,
+    "idle_s": 0,
+    "interrupted": false
+  },
+  "references": [
+    "https://www.gowinsemi.com/upload/database_doc/2009/document/696a8c052f84e.pdf",
+    "https://cdn.semikey.com/upload/pdfs/77/d9/77d9020a62852eebb6aa0dd48ee4c19c.pdf",
+    "https://datasheet.lcsc.com/datasheet/pdf/5e2df080dfcb13b81d7052fc4932805f.pdf?productCode=C5126839"
+  ]
+}

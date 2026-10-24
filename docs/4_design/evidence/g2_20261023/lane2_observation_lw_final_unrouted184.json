@@ -1,0 +1,755 @@
+{
+  "recorded_at": "2026-10-25T01:31:47.912761+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+  "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-24T22:35:10.373678+08:00",
+    "max_runtime_s": 0.0,
+    "max_no_observable_progress_s": 0.0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 33684,
+    "elapsed_s": 9114.32799999998,
+    "no_observable_progress_s": 2.0,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        2087707,
+        1792861620384519000
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        2087264,
+        1792861620384519000
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2405664,
+        1792853193268311400
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        14102012,
+        1792853193921603900
+      ],
+      [
+        "impl\\pnr\\g2_top.rpt.txt",
+        93300,
+        1792861617919406000
+      ],
+      [
+        "impl\\pnr\\g2_top.vo",
+        45497576,
+        1792861620378497100
+      ]
+    ],
+    "tool_exit": 1,
+    "ended_at": "2026-10-25T01:07:04.699703+08:00"
+  },
+  "collector_completed_at": "2026-10-25T01:07:14.632390+08:00",
+  "processes_exited": [
+    33684,
+    53456,
+    32852
+  ],
+  "natural_failure": true,
+  "error": "PR0004",
+  "unrouted_nets": 184,
+  "vendor_times": {
+    "total": "2h31m36s",
+    "placement": "11m15s",
+    "routing_phase1": "2h20m19s",
+    "peak_memory_mb": 2264
+  },
+  "actual_resources": {
+    "logic": {
+      "used": 89813.0,
+      "capacity": 138240.0
+    },
+    "register": {
+      "used": 43646.0,
+      "capacity": 139095.0
+    },
+    "bsram": {
+      "used": 326.0,
+      "capacity": 340.0
+    },
+    "dsp": {
+      "used": 151.5,
+      "capacity": 298.0
+    },
+    "io_port": {
+      "used": 51.0,
+      "capacity": 297.0
+    }
+  },
+  "actual_cls": {
+    "used": 57316,
+    "capacity": 69120
+  },
+  "physical_memory_reconciliation": {
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+    "physical": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+    "source_count": 316,
+    "wide_split_enabled": true,
+    "wide_count": 10,
+    "wide_by_primitive": {
+      "pROMX9": 1,
+      "SDPX9B": 2,
+      "SDPB": 7
+    },
+    "wide_by_top": {
+      "u_control": 1,
+      "u_nav": 9
+    },
+    "predicted_count": 326,
+    "actual_report_count": 326,
+    "post_pnr_primitive_count": 326,
+    "counts_reconciled": true,
+    "matched_split_pairs": 10,
+    "source_by_primitive": {
+      "SP": 64,
+      "pROM": 24,
+      "pROMX9": 21,
+      "SDPB": 55,
+      "SDPX9B": 152
+    },
+    "actual_by_primitive": {
+      "SP": 64,
+      "pROM": 24,
+      "pROMX9": 22,
+      "SDPB": 62,
+      "SDPX9B": 154
+    },
+    "actual_by_top": {
+      "u_soc": 64,
+      "u_control": 44,
+      "u_nav": 218
+    },
+    "added_instances": [
+      {
+        "name": "u_control/model_thread/ik/gowin_add_rom_lh_rom_lh_0_0_s",
+        "primitive": "pROMX9",
+        "parameters": {
+          "READ_MODE": "1'b0",
+          "BIT_WIDTH": "18",
+          "RESET_MODE": "\"SYNC\""
+        }
+      },
+      {
+        "name": "u_nav/u_map/u_tv/gowin_add_SDPX9B_lb1_lb1_0_0_s",
+        "primitive": "SDPX9B",
+        "parameters": {
+          "READ_MODE": "1'b0",
+          "BIT_WIDTH_0": "18",
+          "BIT_WIDTH_1": "18",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        }
+      },
+      {
+        "name": "u_nav/u_map/u_tv/gowin_add_SDPX9B_lb1_lb1_0_1_s",
+        "primitive": "SDPX9B",
+        "parameters": {
+          "READ_MODE": "1'b0",
+          "BIT_WIDTH_0": "18",
+          "BIT_WIDTH_1": "18",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        }
+      },
+      {
+        "name": "u_nav/u_map/u_tv/gowin_add_SDPB_lb3_lb3_0_0_s",
+        "primitive": "SDPB",
+        "parameters": {
+          "READ_MODE": "1'b0",
+          "BIT_WIDTH_0": "16",
+          "BIT_WIDTH_1": "16",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        }
+      },
+      {
+        "name": "u_nav/u_map/u_tv/gowin_add_SDPB_lb3_lb3_0_1_s",
+        "primitive": "SDPB",
+        "parameters": {
+          "READ_MODE": "1'b0",
+          "BIT_WIDTH_0": "16",
+          "BIT_WIDTH_1": "16",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        }
+      },
+      {
+        "name": "u_nav/u_map/u_tv/gowin_add_SDPB_vc_vc_0_0_s",
+        "primitive": "SDPB",
+        "parameters": {
+          "READ_MODE": "1'b0",
+          "BIT_WIDTH_0": "16",
+          "BIT_WIDTH_1": "16",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        }
+      },
+      {
+        "name": "u_nav/u_match/u_lf/gowin_add_SDPB_lb1_lb1_0_0_s",
+        "primitive": "SDPB",
+        "parameters": {
+          "READ_MODE": "1'b0",
+          "BIT_WIDTH_0": "16",
+          "BIT_WIDTH_1": "16",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        }
+      },
+      {
+        "name": "u_nav/u_match/u_lf/gowin_add_SDPB_lb1_lb1_0_1_s",
+        "primitive": "SDPB",
+        "parameters": {
+          "READ_MODE": "1'b0",
+          "BIT_WIDTH_0": "16",
+          "BIT_WIDTH_1": "16",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        }
+      },
+      {
+        "name": "u_nav/u_match/u_lf/gowin_add_SDPB_lb3_lb3_0_0_s",
+        "primitive": "SDPB",
+        "parameters": {
+          "READ_MODE": "1'b0",
+          "BIT_WIDTH_0": "16",
+          "BIT_WIDTH_1": "16",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        }
+      },
+      {
+        "name": "u_nav/u_match/u_lf/gowin_add_SDPB_lb3_lb3_0_1_s",
+        "primitive": "SDPB",
+        "parameters": {
+          "READ_MODE": "1'b0",
+          "BIT_WIDTH_0": "16",
+          "BIT_WIDTH_1": "16",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        }
+      }
+    ],
+    "missing_source_instances": [],
+    "wide_details": [
+      {
+        "source": "u_control/model_thread/ik/rom_lh_rom_lh_0_0_s",
+        "source_primitive": "pROMX9",
+        "source_parameters": {
+          "BIT_WIDTH": "36",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\""
+        },
+        "original_after_pnr": {
+          "primitive": "pROMX9",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH": "18",
+            "RESET_MODE": "\"SYNC\""
+          }
+        },
+        "added_name": "u_control/model_thread/ik/gowin_add_rom_lh_rom_lh_0_0_s",
+        "added_after_pnr": {
+          "primitive": "pROMX9",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH": "18",
+            "RESET_MODE": "\"SYNC\""
+          }
+        }
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb1_lb1_0_0_s",
+        "source_primitive": "SDPX9B",
+        "source_parameters": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPX9B",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "18",
+            "BIT_WIDTH_1": "18",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": "u_nav/u_map/u_tv/gowin_add_SDPX9B_lb1_lb1_0_0_s",
+        "added_after_pnr": {
+          "primitive": "SDPX9B",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "18",
+            "BIT_WIDTH_1": "18",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        }
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb1_lb1_0_1_s",
+        "source_primitive": "SDPX9B",
+        "source_parameters": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPX9B",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "18",
+            "BIT_WIDTH_1": "18",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": "u_nav/u_map/u_tv/gowin_add_SDPX9B_lb1_lb1_0_1_s",
+        "added_after_pnr": {
+          "primitive": "SDPX9B",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "18",
+            "BIT_WIDTH_1": "18",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        }
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb3_lb3_0_0_s",
+        "source_primitive": "SDPB",
+        "source_parameters": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "16",
+            "BIT_WIDTH_1": "16",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": "u_nav/u_map/u_tv/gowin_add_SDPB_lb3_lb3_0_0_s",
+        "added_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "16",
+            "BIT_WIDTH_1": "16",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        }
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb3_lb3_0_1_s",
+        "source_primitive": "SDPB",
+        "source_parameters": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "16",
+            "BIT_WIDTH_1": "16",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": "u_nav/u_map/u_tv/gowin_add_SDPB_lb3_lb3_0_1_s",
+        "added_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "16",
+            "BIT_WIDTH_1": "16",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        }
+      },
+      {
+        "source": "u_nav/u_map/u_tv/vc_vc_0_0_s",
+        "source_primitive": "SDPB",
+        "source_parameters": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "16",
+            "BIT_WIDTH_1": "16",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": "u_nav/u_map/u_tv/gowin_add_SDPB_vc_vc_0_0_s",
+        "added_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "16",
+            "BIT_WIDTH_1": "16",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb1_lb1_0_0_s",
+        "source_primitive": "SDPB",
+        "source_parameters": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "16",
+            "BIT_WIDTH_1": "16",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": "u_nav/u_match/u_lf/gowin_add_SDPB_lb1_lb1_0_0_s",
+        "added_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "16",
+            "BIT_WIDTH_1": "16",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb1_lb1_0_1_s",
+        "source_primitive": "SDPB",
+        "source_parameters": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "16",
+            "BIT_WIDTH_1": "16",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": "u_nav/u_match/u_lf/gowin_add_SDPB_lb1_lb1_0_1_s",
+        "added_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "16",
+            "BIT_WIDTH_1": "16",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb3_lb3_0_0_s",
+        "source_primitive": "SDPB",
+        "source_parameters": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "16",
+            "BIT_WIDTH_1": "16",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": "u_nav/u_match/u_lf/gowin_add_SDPB_lb3_lb3_0_0_s",
+        "added_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "16",
+            "BIT_WIDTH_1": "16",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb3_lb3_0_1_s",
+        "source_primitive": "SDPB",
+        "source_parameters": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "16",
+            "BIT_WIDTH_1": "16",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": "u_nav/u_match/u_lf/gowin_add_SDPB_lb3_lb3_0_1_s",
+        "added_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "16",
+            "BIT_WIDTH_1": "16",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        }
+      }
+    ],
+    "scope": "post-PNR storage accounting only; routing failure and timing acceptance remain separate"
+  },
+  "allocation_checks": {
+    "passed": true,
+    "checks": [
+      {
+        "net": "n2371_7",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "r2",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "u_control/model_thread/observation/n971_7",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_update",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "u_control/telemetry_thread/n1315_4",
+        "expected": "LW",
+        "actual": "LW",
+        "passed": true
+      },
+      {
+        "net": "u_control/telemetry_thread/snapshot_959_10",
+        "expected": "LW",
+        "actual": "LW",
+        "passed": true
+      },
+      {
+        "net": "u_control/model_thread/observation/n12472_10",
+        "expected": "LW",
+        "actual": "LW",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_xt/n9903_3",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_match/u_ex/n7021_4",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_match/u_ex/rb_ra[0]",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_match/u_ex/rb_ra[1]",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/a_q_15_17",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25284_7",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "u_nav/u_pt/n5285_4",
+        "expected": "not listed as global",
+        "actual": "not listed as global",
+        "passed": true
+      },
+      {
+        "net": "clk50_d",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "h_rx_clk",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      },
+      {
+        "net": "h_tx_clk",
+        "expected": "PRIMARY",
+        "actual": "PRIMARY",
+        "passed": true
+      }
+    ],
+    "scope": "reported global assignment only; individual BUFG index and route delays require separate evidence"
+  },
+  "lidar_connections": {
+    "passed": true,
+    "count": 26
+  },
+  "host_connections": {
+    "passed": true,
+    "count": 51
+  },
+  "same_frozen_inputs_as_pnr14": {
+    "g2_top.vg": true,
+    "g2.sdc": true,
+    "ip/serdes.csr": true
+  },
+  "comparisons": {
+    "pnr14": {
+      "unrouted": 377,
+      "bsram": 326,
+      "reduction": 193,
+      "reduction_percent": 51.19363395225464
+    },
+    "previous_best_lane2": {
+      "unrouted": 257,
+      "bsram": 334,
+      "reduction": 73,
+      "reduction_percent": 28.404669260700388
+    }
+  },
+  "causality": "same netlist/SDC/CSR; observation LW and projection LOCAL intervention improved the aggregate result but does not identify failed nets or prove a unique cause",
+  "timing_report_available": false,
+  "setup_violations": null,
+  "hold_violations": null,
+  "core50_lidar100_sfp125_125_verified": false,
+  "effective154_constraints_and_delays_verified": false,
+  "extra43_pcs_reset_pulse_io_verified": false,
+  "failed_net_identities_or_congestion_positions_available": false,
+  "sfp_complete_cdc_acceptance": false,
+  "routing_passed": false,
+  "deployment_accepted": false,
+  "programmed": false,
+  "next_work": "evaluate DDR-backed full maps, retain on-chip CPU; CPU-only DDR queue remains deferred; no unchanged rerun or new joint PNR"
+}
