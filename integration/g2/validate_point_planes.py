@@ -31,10 +31,11 @@ def zero_initialization(overrides,defaults):
 
 
 def validate(source,baseline,plan_file):
-    from continue_bank_select_once import bank_load
+    from continue_bank_select_once import bank_load,memories_match
     source,baseline=Path(source),Path(baseline)
     manifest=json.loads((source/'manifest.json').read_text());job=json.loads((source/'job.json').read_text())
     original=Path(manifest['frozen_source_build'])
+    private_reset=manifest.get('snapshot_private_reset',False)
     assert job['phase']=='synthesis_complete' and job['tool_exit']==0
     for flag in ('slf_point_planes','observation_reuse_prefetch','slf_row_banks','bank_select_data_fanout',
                  'real_sfp','full_control_telemetry'):
@@ -42,10 +43,24 @@ def validate(source,baseline,plan_file):
     assert not manifest['control_weights_changed'] and not manifest.get('bias_block_rom')
     assert manifest['clock_core_mhz']==50
     ram='nav/rtl/common/nav_ram_sdp.v'
-    assert (source/ram).read_text()==transform((original/ram).read_text())
+    expected_inputs=[ram]
+    if private_reset:
+        from prepare_snapshot_private_reset import transform as private_transform
+        policy='control/rl_policy_tick_v5.v';expected_inputs=[policy]
+        assert (source/policy).read_text()==private_transform((original/policy).read_text())
+        assert (source/ram).read_bytes()==(original/ram).read_bytes()
+        private_probe=json.loads(Path(manifest['snapshot_private_reset_probe']).read_text())
+        assert Path(private_probe['source']).resolve()==original.resolve() and private_probe['passed']
+        assert private_probe['actual_module_system_reset_loads_removed']==4032
+        assert 'TEST PASSED PRIVATE_RESET cycles=42000' in private_probe['checks'][0]['result']
+        consumer=(source/'fc_v4_top.v').read_text()
+        assert consumer.count('wr_data')==2
+        assert 'if (wr_en && !busy && ((!wr_history && wr_addr < 28) || (wr_history && wr_addr < 140)))\n            input_mem[write_address] <= wr_data;' in consumer
+    else:
+        assert (source/ram).read_text()==transform((original/ram).read_text())
     changed=[Path(n).relative_to(source).as_posix() for n in manifest['source_files']
              if Path(n).read_bytes()!=(original/Path(n).relative_to(source)).read_bytes()]
-    assert changed==job['modified_rtl_inputs']==[ram]
+    assert changed==job['modified_rtl_inputs']==expected_inputs
     def assets(root):
         return {p.relative_to(root):p for p in root.rglob('*') if p.is_file() and p.suffix.lower() in
                 ('.hex','.mem','.bin','.mif') and 'impl' not in p.relative_to(root).parts}
@@ -54,7 +69,9 @@ def validate(source,baseline,plan_file):
     for name in ('g2.cst','g2.sdc','ip/serdes.csr'):
         assert (source/name).read_bytes()==(original/name).read_bytes()
     probe=json.loads(Path(manifest['slf_point_planes_probe']).read_text())
-    assert Path(probe['source']).resolve()==original.resolve() and probe['all_cycles_passed']
+    point_base=Path(probe['source'])
+    assert point_base.resolve()==original.resolve() or private_reset
+    assert (source/ram).read_text()==transform((point_base/ram).read_text()) and probe['all_cycles_passed']
     assert probe['actual_module_bsram_saved']==8 and len(probe['checks'])==2
     assert [r['actual_physical_bsram'] for r in probe['runs']]==[16,8]
     assert all('all4096addresses=1 init_nonzero=1' in row['result'] for row in probe['checks'])
@@ -64,13 +81,15 @@ def validate(source,baseline,plan_file):
     old_point=[r for r in old['leaves'] if r['path'].startswith(POINT)]
     new_point=[r for r in new['leaves'] if r['path'].startswith(POINT)]
     assert len(old_point)==len(new_point)==8
-    assert all(r['primitive']=='SDPX9B' and r['parameters']['BIT_WIDTH_0']=='36' and
-               r['parameters']['BIT_WIDTH_1']=='36' for r in old_point)
+    old_width='18' if private_reset else '36'
+    assert all(r['primitive']=='SDPX9B' and r['parameters']['BIT_WIDTH_0']==old_width and
+               r['parameters']['BIT_WIDTH_1']==old_width for r in old_point)
     assert all(r['primitive']=='SDPX9B' and r['parameters']['BIT_WIDTH_0']=='18' and
                r['parameters']['BIT_WIDTH_1']=='18' and r['parameters']['READ_MODE']=="1'b0" for r in new_point)
     assert old['expanded_bsram_count']==new['expanded_bsram_count']==316
-    assert old['wide32_36_count']==18 and new['wide32_36_count']==10
-    assert old['predicted_split_bsram']==334 and new['predicted_split_bsram']==326<=336
+    assert old['wide32_36_count']==(10 if private_reset else 18) and new['wide32_36_count']==10
+    assert old['predicted_split_bsram']==(326 if private_reset else 334) and new['predicted_split_bsram']==326<=336
+    if private_reset:assert memories_match(old,new), 'private reset candidate changed a RAM'
     assert new['primitive_types']['GTR12_QUAD']==1
     summary=json.loads((source/'synthesis_summary.json').read_text())
     prior=json.loads((original/'synthesis_summary.json').read_text())
@@ -88,6 +107,31 @@ def validate(source,baseline,plan_file):
     lane=verify_frozen(source,original,manifest['sfp_lane2_from_build'])
     lane['actual_synthesized_clock_pins']=verify_synthesized_clock_pins(after)
     directions=primitive_directions(LIBRARY)
+    private_checks=None
+    if private_reset:
+        prefix='u_control/model_thread/policy/snapshot_'
+        def snapshot_pins(data):
+            registers={n:c for n,c in data.items() if n.startswith(prefix) and c['kind'].startswith('DFF')}
+            assert len(registers)==4032
+            assert all(c['ports']['CLK']==['clk50_d'] for c in registers.values())
+            resets=[net for c in registers.values() for pin,nets in c['ports'].items()
+                    if pin in ('CLEAR','RESET','PRESET','SET') for net in nets if net not in ('GND','VCC')]
+            return registers,Counter(resets)
+        old_regs,old_resets=snapshot_pins(before);new_regs,new_resets=snapshot_pins(after)
+        assert sum(old_resets.values())==4032 and sum(new_resets.values())==24,(old_resets,new_resets)
+        assert old_resets.get('n2371_7')==4032 and new_resets.get('n2371_7',0)==0
+        retained=[]
+        for net in new_resets:
+            driver,=[c for c in after.values() if c['ports'].get('F')==[net]]
+            assert driver['kind']=='LUT2'
+            assert driver['ports']['I0'][0].startswith('u_control/model_thread/policy/snapshot_shift_select')
+            assert driver['ports']['I1'][0].startswith('u_control/model_thread/policy/snapshot_update')
+            retained.append(driver)
+        private_checks=dict(snapshot_registers_retained=4032,system_reset_loads_before=4032,system_reset_loads_after=0,
+                            remaining_data_zero_fill_clear_pins=24,remaining_clear_drivers=retained,
+                            write_before_read_rtl_checks=private_probe['checks'],all_other_source_text_unchanged=True,
+                            core_stop_state_and_fault_resets_preserved=True,
+                            actual_fc_consumer_ignores_data_without_valid_write=True)
     # All new storage clocks must still be the original core clock.
     point_cells={n:c for n,c in after.items() if n.startswith(POINT.removeprefix('g2_top/'))}
     ram_cells=[c for c in point_cells.values() if c['kind']=='SDPX9B']
@@ -133,6 +177,7 @@ def validate(source,baseline,plan_file):
                 control_weights_and125hz_unchanged=True,source_csr_and_clock_sdc_unchanged=True,
                 routing_driver_revalidation=route,clock_plan_sources_revalidated=[r['net'] for r in route['targets']],
                 routing_positive_negative_checks=routing_regressions,
+                private_snapshot_reset_checks=private_checks,
                 sfp_lane2_checks=lane,lidar_revalidation=lidar,lidar26_source_connections_match=True,
                 host51_source_connections_match=True,host_cdc_audit=sfp,selector_after=selectors,row_store_checks=row_after,
                 deployment_accepted=False,recurring_supervision_active=False)

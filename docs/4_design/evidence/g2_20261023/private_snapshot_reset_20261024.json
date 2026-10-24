@@ -1,0 +1,385 @@
+{
+  "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_pointplanes_syn10",
+  "build": "F:\\nav_integration_g2_20261023\\snapshot_private_reset_probe2",
+  "changed_input": "control/rl_policy_tick_v5.v",
+  "private_buffer_bits": 4032,
+  "capacity_and_load_cycles_unchanged": true,
+  "algorithm_weights_and125hz_unchanged": true,
+  "programmed": false,
+  "deployment_accepted": false,
+  "checks": [
+    {
+      "variant": "rtl",
+      "result": "TEST PASSED PRIVATE_RESET cycles=42000 publications=30 writes=9661 resets=8"
+    }
+  ],
+  "runs": [
+    {
+      "variant": "original",
+      "runtime": {
+        "started_at": "2026-10-24T19:05:42.126154+08:00",
+        "max_runtime_s": 180,
+        "max_owned_rss": 805306368,
+        "scope": "isolated private snapshot reset comparison with identical core stub",
+        "cancelled": false,
+        "pid": 31172,
+        "tool_exit": 0,
+        "elapsed_s": 14.420999999972992
+      },
+      "effective_options": {
+        "global_freq_mhz": 50.0,
+        "wide_split": 0,
+        "effective_options": "F:\\nav_integration_g2_20261023\\snapshot_private_reset_probe2\\original\\effective_options.tcl",
+        "extra_options": {}
+      },
+      "resources": {
+        "name": "g2_top",
+        "Register": "4371",
+        "Alu": "63",
+        "Lut": "4487",
+        "T_Register": "4480(4371)",
+        "T_Alu": "63(63)",
+        "T_Lut": "4605(4487)"
+      },
+      "snapshot_registers": 4032,
+      "snapshot_variable_reset_loads": 4032,
+      "inventory": {
+        "primitives": {
+          "IBUF": 4037,
+          "OBUF": 351,
+          "LUT3": 4136,
+          "LUT4": 313,
+          "LUT2": 153,
+          "DFFCE": 4480,
+          "ALU": 63,
+          "INV": 3,
+          "VCC": 2,
+          "GND": 2,
+          "GSR": 1
+        },
+        "bsram": 0,
+        "ff": 4480,
+        "maximum_nonclock_load": 4371,
+        "high_loads": [
+          {
+            "net": "n311_6",
+            "loads": 4371,
+            "pins": {
+              "CLEAR": 4371
+            }
+          },
+          {
+            "net": "snapshot_update",
+            "loads": 4032,
+            "pins": {
+              "CE": 4032
+            }
+          },
+          {
+            "net": "snapshot_shift_select_10",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_11",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_12",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_13",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_14",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_15",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_16",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_17",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_18",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_19",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_20",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_21",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_22",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_23",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          }
+        ]
+      }
+    },
+    {
+      "variant": "private",
+      "runtime": {
+        "started_at": "2026-10-24T19:05:59.028739+08:00",
+        "max_runtime_s": 180,
+        "max_owned_rss": 805306368,
+        "scope": "isolated private snapshot reset comparison with identical core stub",
+        "cancelled": false,
+        "pid": 58748,
+        "tool_exit": 0,
+        "elapsed_s": 15.46899999998277
+      },
+      "effective_options": {
+        "global_freq_mhz": 50.0,
+        "wide_split": 0,
+        "effective_options": "F:\\nav_integration_g2_20261023\\snapshot_private_reset_probe2\\private\\effective_options.tcl",
+        "extra_options": {}
+      },
+      "resources": {
+        "name": "g2_top",
+        "Register": "4371",
+        "Alu": "63",
+        "Lut": "4454",
+        "T_Register": "4480(4371)",
+        "T_Alu": "63(63)",
+        "T_Lut": "4574(4454)"
+      },
+      "snapshot_registers": 4032,
+      "snapshot_variable_reset_loads": 24,
+      "inventory": {
+        "primitives": {
+          "IBUF": 4037,
+          "OBUF": 351,
+          "LUT3": 4136,
+          "LUT4": 268,
+          "LUT2": 167,
+          "DFFRE": 4032,
+          "DFFCE": 448,
+          "ALU": 63,
+          "INV": 3,
+          "VCC": 2,
+          "GND": 2,
+          "GSR": 1
+        },
+        "bsram": 0,
+        "ff": 4480,
+        "maximum_nonclock_load": 4032,
+        "high_loads": [
+          {
+            "net": "snapshot_update",
+            "loads": 4032,
+            "pins": {
+              "CE": 4032
+            }
+          },
+          {
+            "net": "n13289_6",
+            "loads": 339,
+            "pins": {
+              "CLEAR": 339
+            }
+          },
+          {
+            "net": "snapshot_shift_select_10",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_11",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_12",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_13",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_14",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_15",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_16",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_17",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_18",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_19",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_20",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_21",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_22",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          },
+          {
+            "net": "snapshot_shift_select_23",
+            "loads": 128,
+            "pins": {
+              "I2": 128
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "passed": true,
+  "actual_module_system_reset_loads_removed": 4032,
+  "remaining_data_zero_fill_clear_pins": 24,
+  "remaining_clear_drivers": [
+    {
+      "name": "n311_s1",
+      "kind": "LUT2",
+      "ports": {
+        "F": [
+          "n311_4"
+        ],
+        "I0": [
+          "snapshot_shift_select_7"
+        ],
+        "I1": [
+          "snapshot_update_5"
+        ]
+      }
+    }
+  ],
+  "actual_module_variable_control_pins_removed": 4008,
+  "joint_benefit_not_yet_measured": true,
+  "first_resource_assertion": "initial checker overcounted24 data zero-fill CLEAR pins as external reset; classified using actual drivers without rerunning SYN",
+  "follow_up": {
+    "first_preflight_directory": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11",
+    "first_attempt_no_synthesis": true,
+    "settings_preflight_timeout_s": 60,
+    "retry_synthesis_directory": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+    "synthesis_started_at": "2026-10-24T19:10:45.714019+08:00",
+    "supervisor_pid": 18704,
+    "tool_pid": 28808,
+    "controller_pid": 19448,
+    "state_dir": "F:\\nav_integration_g2_20261023\\lane2_private_snapshot_one_shot",
+    "planned_pnr": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_pnr14",
+    "full_326_physical_count_still_pending": true
+  },
+  "actual_consumer_source_check": {
+    "file": "F:/nav_integration_g2_20261023/sfp_lane2_pointplanes_syn10/fc_v4_top.v",
+    "wr_data_uses": 2,
+    "only_non_declaration_use": "input_mem write guarded by wr_en and not busy and valid address",
+    "invalid_write_data_cannot_affect_consumer": true
+  }
+}

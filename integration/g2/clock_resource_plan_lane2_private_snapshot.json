@@ -1,0 +1,51 @@
+{
+  "reference_physical_build": "F:/nav_integration_g2_20261023/sfp_lane2_pointplanes_pnr13",
+  "structural_driver_reference_build": "F:/nav_integration_g2_20261023/sfp_lane2_pointplanes_syn10",
+  "target_source_build": "F:/nav_integration_g2_20261023/sfp_lane2_private_snapshot_syn11_retry1",
+  "reference_net_aliases": {},
+  "hypothesis": "Only the private4032bit snapshot reset is removed after proving complete overwrite before valid reads. Preserve all12 routing requests and4 true clocks; verify actual root reset load reduction and retain326 RAM capacity. Counts do not identify the270 failed nets.",
+  "promote": [
+    {
+      "net": "n2371_7",
+      "primary_index": 4,
+      "signal_types": "SR|LOGIC"
+    },
+    {
+      "net": "r2",
+      "primary_index": 5,
+      "signal_types": "SR|CE|LOGIC"
+    },
+    {
+      "net": "u_control/model_thread/observation/n971_7",
+      "primary_index": 6,
+      "signal_types": "SR|LOGIC"
+    },
+    {
+      "net": "u_control/model_thread/policy/snapshot_update",
+      "primary_index": 7,
+      "signal_types": "CE"
+    }
+  ],
+  "prefer_global": [
+    {
+      "net": "u_control/telemetry_thread/n1315_4",
+      "signal_types": "LOGIC"
+    },
+    {
+      "net": "u_control/telemetry_thread/snapshot_959_10",
+      "signal_types": "CE"
+    }
+  ],
+  "local": [
+    "u_nav/u_xt/n9903_3",
+    "u_nav/u_match/u_ex/n7021_4",
+    "u_nav/u_match/u_ex/rb_ra[0]",
+    "u_nav/u_match/u_ex/rb_ra[1]",
+    "u_nav/a_q_15_17",
+    "u_nav/u_map/u_tv/n25284_7"
+  ],
+  "logic_and_clock_periods_unchanged_by_plan": true,
+  "new_observation_global_request_not_added": true,
+  "manual": "Gowin SUG1541-1.0E section2.8; same PRIMARY/LW requests and LOCAL choices as physical PNR10",
+  "point_planes_driver_revalidation": true
+}

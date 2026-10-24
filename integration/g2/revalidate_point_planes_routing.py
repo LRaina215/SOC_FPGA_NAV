@@ -17,7 +17,8 @@ def validate(source,plan,before=None,after=None,old_defs=None,new_defs=None):
     template=json.loads((ROOT/'integration/g2/clock_resource_plan_lane2_obsreuse.json').read_text())
     for group in ('promote','prefer_global','local'):
         assert plan[group]==template[group], ('routing choices changed',group)
-    assert physical.name=='sfp_lane2_obsreuse_pnr12'
+    expected='sfp_lane2_pointplanes_pnr13' if manifest.get('snapshot_private_reset') else 'sfp_lane2_obsreuse_pnr12'
+    assert physical.name==expected
     assert (physical/'g2_top.vg').read_bytes()==(original/'impl/gwsynthesis/g2_top.vg').read_bytes()
     before=read(original/'impl/gwsynthesis/g2_top.vg') if before is None else before
     after=read(source/'impl/gwsynthesis/g2_top.vg') if after is None else after
