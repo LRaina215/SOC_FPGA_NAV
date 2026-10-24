@@ -155,3 +155,15 @@ nav_ddr_admission.v plus the unchanged original safety_guard passes20 isolated
 checks, not the complete G2 stop/actuator path. Complete cold flags/guard
 wiring,64-poll CPU behavior, prior mode transitions and actual DDR service
 proof remain required. There is no full joint SYN/PNR or actual5ms acceptance.
+
+
+03:43: derive_ddr_full_subsystem.py composes the entire frozen NAV with the
+shared maps, real cold flags and unmaskable memory fault input to its original
+safety endpoint. probe_full_subsystem.py verifies75 checks/1001 scripted MMIO
+transactions,64 elevation queries (maximum14 polls), original128KiB CPU HOLD
+and map retention, mode ordering during clear and UI-stop fault handling.
+The actual navigation CPU application/SFP payload and joint actuators are not
+verified. NAV protocol reset must accompany physical DDR cold reset; CPU-only
+HOLD is independent. EVAL131ms/prior50ms waiting remains a performance gate.
+Installed E:/modelsim_ae compiles the unchanged protected Gowin DQS unit but
+vsim cannot check out a valid license; do not claim real controller simulation.

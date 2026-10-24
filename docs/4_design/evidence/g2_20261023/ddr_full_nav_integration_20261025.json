@@ -1,0 +1,87 @@
+{
+  "updated_at": "2026-10-25T03:43:31.892011+08:00",
+  "full_NAV_subsystem": {
+    "tested_at": "2026-10-25T03:38:18.872851+08:00",
+    "passed": true,
+    "metrics": {
+      "checks": 75,
+      "MMIO_ops": 1001,
+      "elevation_reads": 64,
+      "max_polls": 14,
+      "longest_bus_cycles": 150656
+    },
+    "cold": [
+      {
+        "cycles": 702514,
+        "us_at_50MHz": 14050.28
+      }
+    ],
+    "mode": [
+      {
+        "wait_cycles": 150660
+      }
+    ],
+    "scope": "complete original NAV subsystem with shared DDR map adapters and modeled service; scripted MMIO master",
+    "CPU_HOLD": [
+      {
+        "capacity_KiB": 128,
+        "highest_word": 32767,
+        "DDR_marker_retained": 1
+      }
+    ],
+    "actual_CPU_firmware_tested": false,
+    "actual_SFP_data_tested": false,
+    "actual_DDR_service_bound_verified": false,
+    "full_joint_control_actuator_path_verified": false,
+    "full_joint_implementation": false,
+    "programmed": false
+  },
+  "generated_NAV_source_matches_tested": true,
+  "original_CPU_regfile_safety_and_four_boot_assets_exact": true,
+  "ModelSim_status": {
+    "checked_at": "2026-10-25T03:41:24.653623+08:00",
+    "simulator": "E:\\modelsim_ae\\win32aloem\\vsim.exe",
+    "operations": [
+      {
+        "tool": "vlib",
+        "exit": 0
+      },
+      {
+        "tool": "vlog",
+        "exit": 0
+      },
+      {
+        "tool": "vlog",
+        "exit": 0
+      },
+      {
+        "tool": "vsim",
+        "exit": 4
+      }
+    ],
+    "actual_controller_service_bound_verified": false,
+    "protected_unit_compiled": true,
+    "functional_DQS_loaded": false,
+    "usable_simulation_license": false,
+    "license_error": "Unable to checkout a license / Invalid license environment",
+    "installed_edition": "ModelSim - Intel FPGA Edition AE 20.1.1.720, 2020.1",
+    "installer_found": "C:/Users/Li/Downloads/ModelSimSetup-20.1.1.720-windows.exe",
+    "installer_help_error": "WinError740 elevation required; no elevation attempted",
+    "next": "User install legitimate Starter(modelsim_ase) or provide existing valid AE license path; do not request download/login again"
+  },
+  "full_joint_source_prepared": false,
+  "full_joint_synthesis_started": false,
+  "pnr_started": false,
+  "real_worst_update_under_5ms_verified": false,
+  "physical_CDC_IO_and_clock_signoff": false,
+  "new_timing_exceptions": 0,
+  "original4500_weights_125Hz_and_capacities_unchanged": true,
+  "programmed": false,
+  "scope_limits": [
+    "scripted NAV MMIO, not the running CPU navigation firmware or SFP payload path",
+    "CPU HOLD exercised with original128KiB SoC and retained map marker; no end-to-end RL/control/actuator test",
+    "mode writes serialized during actual clear; heaviest EVAL131ms versus original69ms and HAL50ms waiting still needs acceptance",
+    "NAV reset must accompany physical DDR cold reset; CPU-only debug HOLD leaves memory running",
+    "all DDR service timings are behavior-model results, not a protected controller worst bound"
+  ]
+}
