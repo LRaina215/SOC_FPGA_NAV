@@ -123,3 +123,12 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 `continue_bank_select_once.py --synthesis <已完成SYN> --baseline <原静态CDC参考> --clock-resource-plan <计划> --pnr-out <新目录> --state-dir <新目录> --max-runtime-minutes 150`在源已完成时无需提供失效PID；未完成仍须指定现有监管PID。新计划必须逐字绑定正确Lane2参考的原SYN网表，全部12条目标唯一驱动/104资产/存储参数/77条已知SYN CDC仍检查。分配器可额外审计报告中未列全局的具名目标，缺少全局分配明确记为null；CE与数据请求必须分别匹配实际CE或LUT输入，LOCAL拒绝时钟和复位脚。`test_measured_clock_plan.py --out <新目录>`用真实冻结网表检查一项有效计划及四项角色/复位/重复目标拒绝；原时钟安全回归保持。请求LW不代表实际获得LW，必须核对下一轮最终报告。
 
 遥测分配轮实际544条未布通/334块，两条遥测确实LW，原四真时钟及四控制PRIMARY保持；仍无.tr或逐网失败名单。新准备配置`clock_resource_plan_lane2_telemetry_observation.json`基于该实际报告：观测网3892 CE＋1 D未列全局，以CE|LOGIC请求；395脚的导航LW改LOCAL，前12条约束保持。该14目标配置尚未启动，须在2GiB物理空闲/4GiB提交余量后重做完整前置核对；不把准备完成当作约束已落实。用户已关闭定时监督，准备记录不包含新的调度或后台构建。检查旧构建是否退出时同时核对PID与创建时间，避免把操作系统复用的PID当作原工具进程。
+
+
+### 精确观测复用与提前准备（2026-10-24）
+
+`prepare_observation_reuse.py`只接受既有轮速流水/initialized数据扇出属性的冻结观测源；保存原始输入并共享精确缩放，`prefetch=True`在既有状态边沿准备操作数，保持所有输出拍。它保留原64步共享除法器、轮速64位路径、舍入/饱和与28当前值/五帧历史。普通24位比例最大13的全范围证明允许精确28位表示，不是量化。
+
+`measure_observation_reuse.py <frozen-SYN> --out <new-probe> --prefetch --reuse-baseline <verified-original-probe>`进行四符号RTL逐拍对照及配对模块SYN；`--resume`仅复用已验证且源码/包装相同的结果。`--retry-preflight`允许一次保留现场的设置回读重试，不重复已完成SYN。实际提前准备探针56000拍/主实例32帧通过，模块LUT−395、ALU＋101、FF−77、MULTALU27X18为16→4、BSRAM0，时钟估计75.317→81.542MHz。实例数65333超过本地Vivado BASIC50000许可，候选网表对原RTL仿真未启动，记录为验证缺口；不能仅凭退出状态或RTL通过宣称网表验证完成。
+
+`retry_frozen_synthesis.py <frozen-SYN> --out <new-build> --start-now --observation-reuse-prefetch`要求该原始探针的实际RTL/资源证据，生成与已测候选逐字相同的单RTL差异，核对其他输入并进行一次40分钟联合SYN。它不自动PNR，不恢复定时监督；新综合网名/驱动、存储参数、CDC和真实Lane2时钟必须重新证明，旧接续器尚不会接受这个新源差异。联合资源和PNR结论以实际报告为准。见[结构简化与证据](../../docs/4_design/g2_structural_simplification_20261024.md)。

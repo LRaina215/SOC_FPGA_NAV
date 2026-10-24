@@ -1,0 +1,211 @@
+{
+  "recorded_at": "2026-10-24T10:58:08.638738+08:00",
+  "phase": "module_measured_joint_synthesis_running",
+  "cause_assessment": {
+    "proven_root_cause": false,
+    "failed_net_identities_and_locations_available": false,
+    "known_pressure": "high direct loads, wide state/history and near-full BSRAM; these do not identify the failed nets",
+    "counterexample": "bias ROM mapping reduced logic but worsened correct-Lane2 unrouted count586 to2950"
+  },
+  "best_completed_correct_lane2": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_telemetryglobal_pnr10",
+    "unrouted_nets": 544,
+    "physical_bsram": 334,
+    "accepted": false,
+    "evidence": "lane2_telemetry_final_unrouted544.json"
+  },
+  "implementation": {
+    "generator": "integration/g2/prepare_observation_reuse.py",
+    "modified_input": "control/rl_observation_v5.v",
+    "description": "capture original raw inputs; share exact selected-lane scaling; prepare operands on existing state edges",
+    "original_already_has_shared_divider": true,
+    "divider64_rounding_saturation_wheel_pipeline_unchanged": true,
+    "observation_lanes": 28,
+    "history_frames": 5,
+    "external_output_cycles_unchanged": true,
+    "normal_scaling_bound_proof": [
+      {
+        "gain": 1,
+        "min": -8388608,
+        "max": 8388607,
+        "signed28_sufficient": true
+      },
+      {
+        "gain": 2,
+        "min": -16777216,
+        "max": 16777214,
+        "signed28_sufficient": true
+      },
+      {
+        "gain": 3,
+        "min": -25165824,
+        "max": 25165821,
+        "signed28_sufficient": true
+      },
+      {
+        "gain": 5,
+        "min": -41943040,
+        "max": 41943035,
+        "signed28_sufficient": true
+      },
+      {
+        "gain": 13,
+        "min": -109051904,
+        "max": 109051891,
+        "signed28_sufficient": true
+      }
+    ]
+  },
+  "retained_contracts": {
+    "original4500_and_all_weights": true,
+    "inference_hz": 125,
+    "storage_capacity": true,
+    "interfaces_and_stop_priority": true,
+    "real_sfp1": "Q0 Lane2",
+    "full_control_v2": true
+  },
+  "module_comparison": {
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+    "probe1": "F:\\nav_integration_g2_20261023\\observation_reuse_probe1",
+    "probe2": "F:\\nav_integration_g2_20261023\\observation_reuse_prefetch_probe2",
+    "selected_variant": "prefetch",
+    "rows": [
+      {
+        "variant": "original",
+        "lut": 4985,
+        "alu": 133,
+        "registers": 5483,
+        "MULTALU27X18": 16,
+        "bsram": 0,
+        "synthesis_estimated_fmax_mhz": 75.317,
+        "maximum_nonclock_direct_load": 4200
+      },
+      {
+        "variant": "reused",
+        "lut": 4590,
+        "alu": 234,
+        "registers": 5406,
+        "MULTALU27X18": 4,
+        "bsram": 0,
+        "synthesis_estimated_fmax_mhz": 81.542,
+        "maximum_nonclock_direct_load": 4200
+      }
+    ],
+    "direct_reuse_rejected": {
+      "lut": 4703,
+      "alu": 234,
+      "registers": 5342,
+      "MULTALU27X18": 4,
+      "bsram": 0,
+      "synthesis_estimated_fmax_mhz": 51.56,
+      "reason": "weaker timing margin than original75.317MHz and prefetched81.542MHz"
+    },
+    "selected_delta": {
+      "lut": -395,
+      "alu": 101,
+      "lut_plus_alu": -294,
+      "registers": -77,
+      "MULTALU27X18": -12,
+      "bsram": 0
+    },
+    "scope": "isolated module SYN with actual encoder signs-1/-1; not whole-chip savings, physical DSP blocks or PNR frequency"
+  },
+  "rtl_verification": {
+    "result": {
+      "variant": "rtl",
+      "result": "TEST PASSED cycles=56000 frames=32 signed24_extremes=1 changing_inputs=1 busy_capture=1 reset_busy=1"
+    },
+    "cycles_per_variant": 56000,
+    "primary_complete_frames": 32,
+    "encoder_sign_combinations": 4,
+    "all_outputs_compared_each_cycle": true,
+    "coverage": [
+      "signed24 extremes",
+      "wheel extremes",
+      "changing live inputs",
+      "busy capture",
+      "reset while busy"
+    ],
+    "exhaustive_sequential_equivalence_claimed": false
+  },
+  "vendor_verification": {
+    "available": false,
+    "simulation_started": false,
+    "license_maximum_instances": 50000,
+    "paired_netlists_reported_instances": 135490,
+    "candidate_vs_rtl_reported_instances": 65333,
+    "log": "F:\\nav_integration_g2_20261023\\observation_reuse_prefetch_probe2\\vendor_candidate_against_rtl\\xsim.log",
+    "functional_mismatch_observed": false,
+    "verification_pass_claimed": false,
+    "scope": "joint resource evaluation only until the verification gap is closed"
+  },
+  "settings_only_retry": {
+    "first_log": "F:\\nav_integration_g2_20261023\\observation_reuse_prefetch_probe2\\reused\\preflight.log",
+    "first_readback": "F:\\nav_integration_g2_20261023\\observation_reuse_prefetch_probe2\\reused\\effective_options.tcl",
+    "new_settings_directory": "F:\\nav_integration_g2_20261023\\observation_reuse_prefetch_probe2\\reused\\settings_retry1",
+    "maximum_retry_count": 1,
+    "source_and_synthesis_inputs_unchanged": true
+  },
+  "joint_synthesis": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_syn9",
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+    "live_state": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_syn9\\job.json",
+    "job_snapshot": {
+      "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_syn9",
+      "wait_pid": null,
+      "programmed": false,
+      "source_frozen_before_wait": true,
+      "automatic_pnr": false,
+      "modified_rtl_inputs": [
+        "control/rl_observation_v5.v"
+      ],
+      "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+      "phase": "synthesizing",
+      "updated_at": "2026-10-24T10:57:40.340702+08:00",
+      "minimum_start_free_bytes": 2147483648,
+      "minimum_start_available_commit_bytes": 4294967296,
+      "max_runtime_minutes": 40,
+      "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+      "tool_pid": 62296,
+      "synthesis_started_at": "2026-10-24T10:49:40.210716+08:00",
+      "elapsed_s": 480.14000000001397,
+      "free_bytes": 3432599552,
+      "available_commit_bytes": 4085542912
+    },
+    "supervisor_pid": 21416,
+    "supervisor_created_at": "2026-10-24T10:49:37.5870588+08:00",
+    "tool_pid": 62296,
+    "tool_created_at": "2026-10-24T10:49:40.205325+08:00",
+    "deadline": "2026-10-24T11:29:40.210716+08:00",
+    "assets_checked_by_content": 104,
+    "asset_sets_equal": true,
+    "asset_contents_equal": true,
+    "sdc_cst_csr_and_other_rtl_unchanged": true,
+    "resource_and_timing_result_available": false,
+    "inherited_json_audits_are_not_current_measurements": true,
+    "pre_pnr_checks_pending": [
+      "new source exact difference",
+      "actual memories and resource benefit",
+      "reset/CE and allocation drivers",
+      "26 lidar and51 host CDC connections",
+      "actual Lane2 RX/TX clock sources",
+      "valid constraints and complete timing"
+    ],
+    "automatic_pnr": false
+  },
+  "next_steps": [
+    "read actual joint SYN; check resources/timing and unchanged memories/assets",
+    "prove new names/drivers and CDC; preserve strict checks before considering one bounded PNR",
+    "then examine wide snapshot ownership and word handoff, telemetry copies, navigation arithmetic without removing required features"
+  ],
+  "prepared_clock_only_candidate": {
+    "plan": "integration/g2/clock_resource_plan_lane2_telemetry_observation.json",
+    "started": false,
+    "priority": "deferred while structural candidate is measured; do not mix RTL/CST effects"
+  },
+  "recurring_supervision_active": false,
+  "programmed": false,
+  "deployment_accepted": false,
+  "gates": "unrouted0; actualBSRAM<=336/340;50/100/125/125MHz;all setup/hold0;CDC/constraints/PCS/reset/pulse/IO complete"
+}

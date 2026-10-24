@@ -153,7 +153,7 @@
     "history_phy_guard": "0985e15",
     "lease_sfp_client": "214d3c6"
   },
-  "updated_at": "2026-10-24T09:54:18.806646+08:00",
+  "updated_at": "2026-10-24T10:58:08.638738+08:00",
   "history_fanout_candidate": {
     "generator": "control/tools/g2_history_fanout.py",
     "source_edit": "one syn_maxfan=128 synthesis attribute, no functional RTL edit",
@@ -648,7 +648,18 @@
       "evidence": "lane2_telemetry_final_unrouted544.json"
     }
   ],
-  "pending_builds": [],
+  "pending_builds": [
+    {
+      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_syn9",
+      "stage": "syn",
+      "phase": "synthesizing",
+      "live_state": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_syn9\\job.json",
+      "max_runtime_minutes": 40,
+      "tool_pid": 62296,
+      "supervisor_pid": 21416,
+      "automatic_pnr": false
+    }
+  ],
   "best_measured_candidate": {
     "build": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
     "unrouted_nets": 273,
@@ -805,7 +816,16 @@
     "live_state": "F:\\nav_integration_g2_20261023\\lane2_telemetry_observation_preparation\\job.json",
     "phase": "prepared_not_started_host_memory",
     "tool_started": false,
-    "evidence": "lane2_observation_clock_preparation_20261024.json"
+    "evidence": "lane2_observation_clock_preparation_20261024.json",
+    "priority": "deferred_for_structural_simplification",
+    "not_started": true
   },
-  "recurring_supervision_active": false
+  "recurring_supervision_active": false,
+  "observation_structural_simplification": {
+    "evidence": "observation_reuse_intervention_20261024.json",
+    "live_state": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_syn9\\job.json",
+    "phase": "synthesizing",
+    "automatic_pnr": false,
+    "full_joint_results_available": false
+  }
 }
