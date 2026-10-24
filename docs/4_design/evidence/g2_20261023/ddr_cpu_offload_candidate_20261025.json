@@ -1,0 +1,245 @@
+{
+  "recorded_at": "2026-10-25T00:47:55.833355+08:00",
+  "scope": "implemented DDR CPU candidate, module RTL/vendor-INIT tests and serial full-SYN preparation; not joint physical or electrical acceptance",
+  "frozen_source": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+  "candidate": "F:\\nav_integration_g2_20261023\\ddr_cpu_candidate3",
+  "backend_synthesis": "F:\\nav_integration_g2_20261023\\ddr_cpu_backend_probe2",
+  "ddr_phy": "F:\\nav_integration_g2_20261023\\ddr3_c_phy4",
+  "ddr_pll": "F:\\nav_integration_g2_20261023\\ddr3_c_pll1",
+  "contracts": {
+    "original_4500_algorithm_changed": false,
+    "weights_changed": false,
+    "control_tick_hz": 125,
+    "core_clock_mhz": 50,
+    "cpu_logical_bytes": 131072,
+    "cpu_all_addresses_writable": true,
+    "map_and_point_storage_capacity_changed": false,
+    "stop_priority_changed": false,
+    "complete_matcher_preserved": true,
+    "sfp_lane": "Q0 Lane2",
+    "original_asset_count_unchanged": 104
+  },
+  "initialization": {
+    "created_at": "2026-10-25T00:30:20.991201+08:00",
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+    "out": "F:\\nav_integration_g2_20261023\\ddr_cpu_candidate3",
+    "logical_ram_bytes": 131072,
+    "boot_image_bytes": 51712,
+    "zero_tail_bytes": 79360,
+    "cache_bytes": 4096,
+    "all_32768_words_reconstructed_exactly": true,
+    "firmware_and_control_modified": false,
+    "programmed": false,
+    "physically_integrated": false,
+    "current_pnr_inputs_modified": false,
+    "scope": "isolated candidate; DDR PHY, physical resources and navigation latency remain gated"
+  },
+  "functional": {
+    "tested_at": "2026-10-25T00:33:25.940974+08:00",
+    "programmed": false,
+    "scope": "functional app-interface model; no DDR PHY, physical timing or joint RL/nav acceptance",
+    "checks": [
+      "TEST PASSED memory checks=36981 reads=35015 writes=1966 holds=146022 core_cycles=601007 native_reads=6111 native_writes=6062 command_stalls=4093 data_stalls=11764 data_first=2350 command_first=5468",
+      "TEST PASSED soc debug_checks=101 program_words=27 nav_transactions=2 checksum=04000000 baseline_run_cycles=73819 ddr_run_cycles=181165 warm_reset_retained=1 clock_loss_latched=1"
+    ]
+  },
+  "mapped_backend": {
+    "check": "TEST PASSED memory checks=36981 reads=35015 writes=1966 holds=146022 core_cycles=601007 native_reads=6111 native_writes=6062 command_stalls=4093 data_stalls=11764 data_first=2350 command_first=5468",
+    "scope": "full mapped cache/boot-ROM and actual vendor INIT vs unchanged 32768-word image; native bridge remains RTL and behavioral DDR model; not PHY simulation or physical acceptance"
+  },
+  "resources": {
+    "baseline_cpu_bsram": 64,
+    "backend_source_bsram": 28,
+    "backend_wide_leaves": 0,
+    "ddr_source_bsram": 16,
+    "ddr_wide_leaves": 16,
+    "source_total": 44,
+    "source_delta": -20,
+    "physical_prediction_if_all_wide_leaves_split": 60,
+    "physical_delta_prediction": -4,
+    "whole_joint_physical_prediction": 322,
+    "physical_resources_verified": false,
+    "backend_lut": 1594,
+    "backend_ff": 856,
+    "ddr_lut": 2954,
+    "ddr_ff": 5750,
+    "ddr_alu": 190,
+    "first_backend_probe_source_bsram": 34,
+    "banked_backend_source_bsram": 28,
+    "note": "the 20-source-leaf decrease is NOT a 20-physical-block saving; count all 16 wide controller leaves conservatively"
+  },
+  "ineffective_mc_ssram": {
+    "attempts": [
+      "F:\\nav_integration_g2_20261023\\ddr3_c_phy5_ssram",
+      "F:\\nav_integration_g2_20261023\\ddr3_c_phy6_ssram"
+    ],
+    "actual_mc_bsram": true,
+    "actual_mc_ssram": false,
+    "actual_source_bsram": 16,
+    "accepted": false,
+    "further_identical_generation_rejected": true,
+    "reason": "requested choice did not persist in actual configuration/readback"
+  },
+  "phy_generation": {
+    "inspected_at": "2026-10-25T00:44:58.714645+08:00",
+    "generated": true,
+    "actual_parameters": "F:\\nav_integration_g2_20261023\\ddr3_c_phy4\\ip\\nav_ddr3_phy\\temp\\DDR3\\gwmc_param.v",
+    "readback": {
+      "DQ_WIDTH": "32",
+      "DRAM_WIDTH": "16",
+      "nCK_PER_CLK": "4",
+      "ROW_WIDTH": "15",
+      "COL_WIDTH": "10",
+      "BANK_WIDTH": "3",
+      "RANK_WIDTH": "1",
+      "tCK": "2500"
+    },
+    "vendor_ip_synthesis_observed": true,
+    "vendor_ip_synthesis_resources": {
+      "name": "Nav_DDR3_PHY",
+      "Register": "5750",
+      "Alu": "190",
+      "Lut": "2954",
+      "Bsram": "16",
+      "T_Register": "5750(5750)",
+      "T_Alu": "190(190)",
+      "T_Lut": "2954(2954)",
+      "T_Bsram": "16(16)"
+    },
+    "controller_buffer": "BSRAM",
+    "source_bsram_leaves": 16,
+    "wide32_36_leaves": 16,
+    "predicted_physical_with_wide_split_1": 32,
+    "physical_resources_verified": false,
+    "programmed": false,
+    "full_g2_synthesis_started": false
+  },
+  "pll_generation": {
+    "generated_at": "2026-10-25T00:37:23.509224+08:00",
+    "tool_exit": 0,
+    "device": "GW5AT-LV138PG484AC1/I0",
+    "device_version": "C",
+    "input_mhz": 50,
+    "requested_clkout2_mhz": 400,
+    "physical_clock_verified": false,
+    "programmed": false
+  },
+  "preparation": {
+    "prepared_at": "2026-10-25T00:37:23.980482+08:00",
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+    "candidate": "F:\\nav_integration_g2_20261023\\ddr_cpu_candidate3",
+    "prepared": "F:\\nav_integration_g2_20261023\\lane2_ddr_cpu_prepared1",
+    "modified_rtl_inputs": [
+      "nav/rtl/soc/nav_soc.v",
+      "g2_top.v"
+    ],
+    "original_source_inputs": 68,
+    "new_source_inputs": 5,
+    "all_control_sources_unchanged": true,
+    "original_four_clock_lines_preserved": true,
+    "ddr_unique_physical_pins": 71,
+    "pin_overlap": [],
+    "new_timing_exceptions": 0,
+    "automatic_pnr": false,
+    "programmed": false,
+    "pending_before_pnr": [
+      "actual RAM/resource effect",
+      "original and new clock drivers",
+      "available PRIMARY/LW/HCLK allocation",
+      "native bundled-data CDC and reset constraints",
+      "original 26+51 and extra 43 CDC/PCS/IO",
+      "navigation latency/deadlines"
+    ]
+  },
+  "serial_chain": {
+    "controller_pid": 59196,
+    "started_at": "2026-10-25T00:38:19.453467+08:00",
+    "source": "F:\\nav_integration_g2_20261023\\lane2_ddr_cpu_prepared1",
+    "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_ddr_cpu_syn12",
+    "wait_pnr": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+    "wait_identity": {
+      "pid": 32852,
+      "created_at": 1792852465.5492747,
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "integration/g2/continue_bank_select_once.py",
+        "--synthesis",
+        "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "--baseline",
+        "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+        "--pnr-out",
+        "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+        "--state-dir",
+        "F:\\nav_integration_g2_20261023\\lane2_observation_lw_one_shot",
+        "--clock-resource-plan",
+        "integration/g2/clock_resource_plan_lane2_observation_lw.json",
+        "--max-runtime-minutes",
+        "0"
+      ]
+    },
+    "maximum_synthesis_runs": 1,
+    "maximum_pnr_runs": 0,
+    "automatic_pnr": false,
+    "programmed": false,
+    "waited_pnr_termination_deadline": null,
+    "waited_pnr_untouched": true,
+    "phase": "waiting_for_pnr15_and_collection",
+    "updated_at": "2026-10-25T00:47:49.523899+08:00"
+  },
+  "pnr15_runtime_snapshot": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-24T22:35:10.373678+08:00",
+    "max_runtime_s": 0.0,
+    "max_no_observable_progress_s": 0.0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 33684,
+    "elapsed_s": 7961.0620000000345,
+    "no_observable_progress_s": 7241.875000000058,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        2087078,
+        1792853227854509700
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        2086635,
+        1792853227854509700
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2405664,
+        1792853193268311400
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        14102012,
+        1792853193921603900
+      ]
+    ]
+  },
+  "changed_running_pnr_inputs": false,
+  "programmed": false,
+  "flash_written": false,
+  "serial_opened": false,
+  "motion_sent": false,
+  "acceptance": {
+    "joint_synthesis": false,
+    "joint_routing": false,
+    "ddr_phy_simulation": false,
+    "ddr_electrical_training": false,
+    "navigation_latency": false,
+    "full_rl_inference": false,
+    "physical_cdc": false,
+    "deployment": false
+  }
+}
