@@ -102,3 +102,27 @@ Isolated SYN14 sourceRAM/4 wide leaves predicts18 physical blocks including
 retained touch/LF storage. Keeping the existing7 cache blocks plus6 new row/
 node blocks plus predicted32 DDR blocks gives a conservative67-block saving;
 remaining adapters can add storage. No whole-joint physical count is accepted.
+
+Packed-cache/UPDATE coherence is now implemented in `nav_ddr_struct_cache.v`
+and `nav_ddr_structure_store.v`. The new structure cache uses the same19-beat
+row layout as the DMA; the old8x32-bit-slot structure cache remains historical.
+The store drains all dirty entries, invalidates, synchronizes native ownership
+both ways, and returns only new map data to a client held across UPDATE.
+`probe_structure_store.py --row-probe <accepted-row-probe> --out <new>` tests
+full capacity and all256 resident indices dirty with genuinely changed values.
+`--synthesis-after <accepted-store-probe> --out <new>` measures this isolated
+store; `--audit-existing --out <existing-SYN>` checks the three new ownership/
+fault synchronizers and four narrow cache RAM leaves, without rebuilding.
+
+Accepted store test: `ddr_structure_store_probe3`,298249 client checks plus
+524288 backing words, including an in-flight client miss at UPDATE acceptance.
+The miss completes before ownership transfer. Including full dirty drain/ownership handover, positive
+native-service models need at most4.05068ms; a slower permitted service model
+needs10.93456ms. Actual hardware worst-case5ms remains UNVERIFIED. The original
+point-transform probe has not yet been combined with this dirty-cache test.
+Isolated store SYN18 source/4 wide predicts22 physical, including retained
+original touch/LF; the conservative whole-storage saving remains67 blocks.
+Only three control chains have a SYN structural CDC check; payload delays,
+full matcher EVAL/prior/debug adapters, UI-stop/PLL guarding, elevation scan,
+cold DDR initialization and real controller service bounds remain admission
+requirements. No full G2 SYN, PNR or hardware programming was started.

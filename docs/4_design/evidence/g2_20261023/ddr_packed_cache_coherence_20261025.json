@@ -1,0 +1,587 @@
+{
+  "updated_at": "2026-10-25T02:33:08.994960+08:00",
+  "stage": "packed-cache/exclusive-row-UPDATE coherence",
+  "contracts": {
+    "original_4500": true,
+    "all_weights": true,
+    "control_hz": 125,
+    "cpu_onchip_bytes": 131072,
+    "structure_map_cells": 65536,
+    "structure_word_bits": 18,
+    "elevation_map_cells": 16384,
+    "elevation_word_bits": 53,
+    "point_buffer_words": 4096,
+    "point_buffer_word_bits": 36,
+    "stop_priority_unchanged": true
+  },
+  "proof": {
+    "tested_at": "2026-10-25T02:31:22.217515+08:00",
+    "passed": true,
+    "timing": [
+      {
+        "case": 0,
+        "cycles": 120488,
+        "us_at_50MHz": 2409.76,
+        "drain_and_start_cycles": 10631,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 1,
+        "cycles": 120519,
+        "us_at_50MHz": 2410.38,
+        "drain_and_start_cycles": 10635,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 2,
+        "cycles": 117030,
+        "us_at_50MHz": 2340.6,
+        "drain_and_start_cycles": 10674,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 3,
+        "cycles": 117856,
+        "us_at_50MHz": 2357.12,
+        "drain_and_start_cycles": 10624,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 4,
+        "cycles": 100918,
+        "us_at_50MHz": 2018.36,
+        "drain_and_start_cycles": 10636,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 5,
+        "cycles": 200181,
+        "us_at_50MHz": 4003.62,
+        "drain_and_start_cycles": 10675,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 6,
+        "cycles": 202534,
+        "us_at_50MHz": 4050.68,
+        "drain_and_start_cycles": 10683,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 7,
+        "cycles": 546728,
+        "us_at_50MHz": 10934.56,
+        "drain_and_start_cycles": 13645,
+        "expected_meets_5ms": 0
+      }
+    ],
+    "metrics": {
+      "cases": 8,
+      "client_checks": 298249,
+      "backing_words": 524288,
+      "positive_max_cycles": 202534,
+      "negative_cycles": 546728,
+      "maximum_drain_start_cycles": 13645
+    },
+    "packed18_cache_and_stream_same_layout": true,
+    "all_resident_lines_dirty_before_update": true,
+    "stalled_client_reads_new_data": true,
+    "inflight_client_drained_before_update": true,
+    "calibration_fault_sticky": true,
+    "scope": "complete cache/UPDATE ownership RTL plus bounded native-service model; not whole matcher, PHY or CDC timing",
+    "real_worst_update_under_5ms_verified": false,
+    "full_joint_implementation": false,
+    "programmed": false
+  },
+  "source_audit_passed": true,
+  "synthesis": {
+    "tested": "F:\\nav_integration_g2_20261023\\ddr_structure_store_probe2",
+    "runtime": {
+      "started_at": "2026-10-25T02:24:53.920808+08:00",
+      "max_runtime_s": 180,
+      "max_owned_rss": 805306368,
+      "scope": "isolated coherent packed cache/UPDATE store only; no G2 SYN/PNR",
+      "cancelled": false,
+      "pid": 56284,
+      "tool_exit": 0,
+      "elapsed_s": 19.67200000002049
+    },
+    "effective_options": {
+      "global_freq_mhz": 50.0,
+      "wide_split": 0,
+      "effective_options": "F:\\nav_integration_g2_20261023\\ddr_structure_store_syn1\\effective_options.tcl",
+      "extra_options": {}
+    },
+    "startup_available_physical": 4077137920,
+    "startup_available_commit": 7043874816,
+    "resources": {
+      "name": "g2_top",
+      "Register": "31",
+      "Lut": "560",
+      "T_Register": "3882(31)",
+      "T_Alu": "1497(0)",
+      "T_Lut": "4474(560)",
+      "T_MULTALU27X18": "6(0)",
+      "T_MULT12X12": "18(0)",
+      "T_MULT27X36": "7(0)",
+      "T_Bsram": "18(0)",
+      "T_Ssram": "130(0)"
+    },
+    "inventory": {
+      "primitives": {
+        "IBUF": 345,
+        "OBUF": 346,
+        "LUT4": 2245,
+        "LUT2": 435,
+        "LUT3": 1778,
+        "DFFCE": 903,
+        "DFFRE": 2965,
+        "INV": 16,
+        "DFFPE": 12,
+        "VCC": 12,
+        "GND": 12,
+        "SDPX9B": 8,
+        "RAM16SDP4": 130,
+        "MULT12X12": 18,
+        "ALU": 1497,
+        "MUX2_LUT5": 142,
+        "MUX2_LUT6": 61,
+        "MUX2_LUT7": 29,
+        "SDPB": 8,
+        "MULT27X36": 7,
+        "MULTALU27X18": 6,
+        "DFFSE": 2,
+        "DPX9B": 2,
+        "GSR": 1
+      },
+      "bsram": 18,
+      "ff": 3882,
+      "maximum_nonclock_load": 532,
+      "high_loads": [
+        {
+          "net": "u_native/r2",
+          "loads": 532,
+          "pins": {
+            "CLEAR": 532
+          }
+        },
+        {
+          "net": "u_update/u_dma/beats_RAMOUT_47_G[0]_11",
+          "loads": 495,
+          "pins": {
+            "I3": 494,
+            "I1": 1
+          }
+        },
+        {
+          "net": "rst_d",
+          "loads": 483,
+          "pins": {
+            "PRESET": 12,
+            "I3": 2,
+            "RESET": 428,
+            "I0": 11,
+            "I2": 4,
+            "I1": 26
+          }
+        },
+        {
+          "net": "u_update/u_lf/n3462_7",
+          "loads": 365,
+          "pins": {
+            "CE": 365
+          }
+        },
+        {
+          "net": "u_cache/state_0[3]",
+          "loads": 318,
+          "pins": {
+            "I2": 5,
+            "I0": 6,
+            "I3": 17,
+            "I1": 286,
+            "S0": 3,
+            "I": 1
+          }
+        },
+        {
+          "net": "u_cache/state_0[2]",
+          "loads": 307,
+          "pins": {
+            "I3": 5,
+            "I2": 30,
+            "I1": 4,
+            "I0": 262,
+            "S0": 6
+          }
+        },
+        {
+          "net": "own2",
+          "loads": 286,
+          "pins": {
+            "I2": 272,
+            "I3": 2,
+            "I0": 8,
+            "I1": 3,
+            "D": 1
+          }
+        },
+        {
+          "net": "u_native/request_toggle_14",
+          "loads": 270,
+          "pins": {
+            "CE": 270
+          }
+        },
+        {
+          "net": "data_sent_12[0]",
+          "loads": 266,
+          "pins": {
+            "I2": 258,
+            "I1": 5,
+            "I3": 1,
+            "I0": 1,
+            "CIN": 1
+          }
+        },
+        {
+          "net": "u_update/u_dma/completed[0]",
+          "loads": 266,
+          "pins": {
+            "I0": 4,
+            "I2": 258,
+            "I1": 4
+          }
+        },
+        {
+          "net": "u_native/r2_0",
+          "loads": 265,
+          "pins": {
+            "CLEAR": 265
+          }
+        },
+        {
+          "net": "ui_state[1]",
+          "loads": 264,
+          "pins": {
+            "I1": 5,
+            "I3": 1,
+            "I0": 257,
+            "I2": 1
+          }
+        },
+        {
+          "net": "u_native/n3923_17",
+          "loads": 258,
+          "pins": {
+            "I0": 1,
+            "I1": 257
+          }
+        },
+        {
+          "net": "u_native/rdata_255_9",
+          "loads": 257,
+          "pins": {
+            "I3": 1,
+            "CE": 256
+          }
+        },
+        {
+          "net": "u_native/reply_255_9",
+          "loads": 257,
+          "pins": {
+            "CE": 257
+          }
+        },
+        {
+          "net": "u_update/u_lf/n21411_6",
+          "loads": 186,
+          "pins": {
+            "CE": 186
+          }
+        }
+      ]
+    },
+    "programmed": false,
+    "full_joint_implementation": false,
+    "physical_resources_verified": false
+  },
+  "memory": {
+    "source": 18,
+    "wide": 4,
+    "physical_prediction": 22,
+    "physical_verified": false,
+    "cache_narrow18_leaves": 4,
+    "retained_touch_blocks": 4,
+    "retained_LF_physical_prediction": 8,
+    "new_row_buffers": 4,
+    "new_nodes": 2,
+    "elevation_cache_existing_prediction": 3,
+    "DDR_IP_prediction": 32,
+    "replacement_storage_prediction": 45,
+    "net_saving_prediction": 67,
+    "whole_joint_prediction": 259,
+    "caveat": "remaining adapters/init/fault queues may add RAM; no joint physical measurement"
+  },
+  "ownership_sync_source_checks": {
+    "passed": true,
+    "scope": "three two-FF controls only, not payload or physical CDC timing",
+    "checks": [
+      {
+        "source": {
+          "name": "owner_request_s1",
+          "kind": "DFFRE",
+          "ports": {
+            "Q": [
+              "owner_request"
+            ],
+            "D": [
+              "n1674_21"
+            ],
+            "CLK": [
+              "clk_d"
+            ],
+            "RESET": [
+              "r2"
+            ],
+            "CE": [
+              "owner_request_8"
+            ]
+          }
+        },
+        "first": {
+          "name": "own1_s1",
+          "kind": "DFFCE",
+          "ports": {
+            "Q": [
+              "own1"
+            ],
+            "D": [
+              "owner_request"
+            ],
+            "CLK": [
+              "ui_clk_d"
+            ],
+            "CLEAR": [
+              "r2_10"
+            ],
+            "CE": [
+              "VCC"
+            ]
+          }
+        },
+        "second": {
+          "name": "own2_s1",
+          "kind": "DFFCE",
+          "ports": {
+            "Q": [
+              "own2"
+            ],
+            "D": [
+              "own1"
+            ],
+            "CLK": [
+              "ui_clk_d"
+            ],
+            "CLEAR": [
+              "r2_10"
+            ],
+            "CE": [
+              "VCC"
+            ]
+          }
+        },
+        "first_Q_loads": [
+          {
+            "cell": "own2_s1",
+            "pin": "D",
+            "kind": "DFFCE"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "source": {
+          "name": "own2_s1",
+          "kind": "DFFCE",
+          "ports": {
+            "Q": [
+              "own2"
+            ],
+            "D": [
+              "own1"
+            ],
+            "CLK": [
+              "ui_clk_d"
+            ],
+            "CLEAR": [
+              "r2_10"
+            ],
+            "CE": [
+              "VCC"
+            ]
+          }
+        },
+        "first": {
+          "name": "own_ack1_s1",
+          "kind": "DFFCE",
+          "ports": {
+            "Q": [
+              "own_ack1"
+            ],
+            "D": [
+              "own2"
+            ],
+            "CLK": [
+              "clk_d"
+            ],
+            "CLEAR": [
+              "r2"
+            ],
+            "CE": [
+              "VCC"
+            ]
+          }
+        },
+        "second": {
+          "name": "own_ack2_s1",
+          "kind": "DFFCE",
+          "ports": {
+            "Q": [
+              "own_ack2"
+            ],
+            "D": [
+              "own_ack1"
+            ],
+            "CLK": [
+              "clk_d"
+            ],
+            "CLEAR": [
+              "r2"
+            ],
+            "CE": [
+              "VCC"
+            ]
+          }
+        },
+        "first_Q_loads": [
+          {
+            "cell": "own_ack2_s1",
+            "pin": "D",
+            "kind": "DFFCE"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "source": {
+          "name": "u_native/fault_s0",
+          "kind": "DFFCE",
+          "ports": {
+            "Q": [
+              "cf"
+            ],
+            "D": [
+              "u_native/n3926_3"
+            ],
+            "CLK": [
+              "ui_clk_d"
+            ],
+            "CLEAR": [
+              "u_native/r2_0"
+            ],
+            "CE": [
+              "VCC"
+            ]
+          }
+        },
+        "first": {
+          "name": "cf1_s1",
+          "kind": "DFFCE",
+          "ports": {
+            "Q": [
+              "cf1"
+            ],
+            "D": [
+              "cf"
+            ],
+            "CLK": [
+              "clk_d"
+            ],
+            "CLEAR": [
+              "r2"
+            ],
+            "CE": [
+              "VCC"
+            ]
+          }
+        },
+        "second": {
+          "name": "cf2_s1",
+          "kind": "DFFCE",
+          "ports": {
+            "Q": [
+              "cf2"
+            ],
+            "D": [
+              "cf1"
+            ],
+            "CLK": [
+              "clk_d"
+            ],
+            "CLEAR": [
+              "r2"
+            ],
+            "CE": [
+              "VCC"
+            ]
+          }
+        },
+        "first_Q_loads": [
+          {
+            "cell": "cf2_s1",
+            "pin": "D",
+            "kind": "DFFCE"
+          }
+        ],
+        "passed": true
+      }
+    ]
+  },
+  "gates": {
+    "packed_cache_stream_layout_match": true,
+    "dirty_flush_and_invalidate_before_update_verified": true,
+    "stale_client_reply_after_update_rejected": true,
+    "model_positive_max_us": 4050.68,
+    "slower_native_model_counterexample_us": 10934.56,
+    "all256_resident_lines_dirty_with_actual_changed_values": true,
+    "original_transform_and_dirty_cache_combined_probe": false,
+    "complete_matcher_scoring_prior_debug_adapters_integrated": false,
+    "vendor_service_bound_verified": false,
+    "actual_worst_update_under_5ms_verified": false,
+    "UI_clock_stopped_fault_protection_verified": false,
+    "physical_CDC_delays_verified": false,
+    "cold_DDR_initialization_verified": false,
+    "full_netlist_simulation_verified": false,
+    "joint_synthesis_started": false,
+    "pnr_started": false,
+    "programmed": false,
+    "inflight_client_drained_before_update_verified": true
+  },
+  "limitations": [
+    "native model only; no verified bound on real cmd_ready/read response/turnaround/refresh precharge/arbitration",
+    "full matcher EVAL/prior/debug are not connected to this coherent store yet",
+    "ownership chains audited in SYN only; bundled payload/physical CDC still pending",
+    "calibration loss sticky tested while UI runs; stopped UI/PLL independent guard and cold DDR init pending",
+    "prior full-netlist attempt exceeded BASIC50000 instances; not repeated or counted as pass"
+  ],
+  "next_actions": [
+    "connect the packed coherent store to the original full matcher via verified pause/response adapters",
+    "prove real DDR service/refresh/other-client worst bounds and complete5ms update including all handover costs",
+    "complete elevation/traversability, cold initialization and independent PLL/UI-stop fault handling",
+    "only after all gates prepare one full joint SYN and one unlimited PNR with30-minute checks"
+  ],
+  "final_rtl_probe": "F:\\nav_integration_g2_20261023\\ddr_structure_store_probe3\\result.json",
+  "latest_tested_RTL_matches_existing_SYN": true,
+  "source_comparison_scope": "same six RTL texts, only synthesized top module name and newline normalization; no new SYN"
+}
