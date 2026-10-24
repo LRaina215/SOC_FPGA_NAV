@@ -1,0 +1,530 @@
+{
+  "recorded_at": "2026-10-24T22:37:00.879624+08:00",
+  "scope": "one measured allocation exchange on exact completed SYN11; source RTL/netlist/SDC/CSR unchanged from PNR14",
+  "previous_final_result": "lane2_private_snapshot_final_unrouted377.json",
+  "reference_build": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_pnr14",
+  "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+  "pnr": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+  "job": {
+    "started_at": "2026-10-24T22:34:25.875787+08:00",
+    "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+    "baseline": "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+    "pnr_out": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+    "wait_pid": null,
+    "maximum_wait_seconds": 10800,
+    "recurring": false,
+    "maximum_pnr_runs": 1,
+    "programmed": false,
+    "deployment_accepted": false,
+    "phase": "full_pnr_running",
+    "updated_at": "2026-10-24T22:34:48.061667+08:00",
+    "pre_pnr_checks_passed": true,
+    "command": [
+      "D:\\Anaconda\\python.exe",
+      "-X",
+      "utf8",
+      "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\pnr_from_netlist.py",
+      "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+      "--out",
+      "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+      "--wide-split",
+      "1",
+      "--replicate-resources",
+      "1",
+      "--place-option",
+      "1",
+      "--route-option",
+      "2",
+      "--max-runtime-minutes",
+      "0.0",
+      "--max-no-progress-minutes",
+      "0",
+      "--cdc-reference-audit",
+      "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4\\cdc_reference_audit.json",
+      "--sfp-cdc-reference",
+      "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4\\sfp_cdc_reference.json",
+      "--clock-resource-plan",
+      "F:\\nav_integration_g2_20261023\\lane2_observation_lw_one_shot\\clock_plan_frozen.json",
+      "--routing-evidence",
+      "--capture-system-telemetry"
+    ],
+    "pnr_wrapper_pid": 53456
+  },
+  "process_identities": [
+    {
+      "pid": 33684,
+      "created_at": "2026-10-24T22:35:10.446842+08:00",
+      "parent_pid": 53456,
+      "cwd": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ]
+    },
+    {
+      "pid": 53456,
+      "created_at": "2026-10-24T22:34:48.056972+08:00",
+      "parent_pid": 32852,
+      "cwd": "D:\\Desktop\\SOC FPGA\\nav",
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\pnr_from_netlist.py",
+        "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "--out",
+        "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+        "--wide-split",
+        "1",
+        "--replicate-resources",
+        "1",
+        "--place-option",
+        "1",
+        "--route-option",
+        "2",
+        "--max-runtime-minutes",
+        "0.0",
+        "--max-no-progress-minutes",
+        "0",
+        "--cdc-reference-audit",
+        "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4\\cdc_reference_audit.json",
+        "--sfp-cdc-reference",
+        "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4\\sfp_cdc_reference.json",
+        "--clock-resource-plan",
+        "F:\\nav_integration_g2_20261023\\lane2_observation_lw_one_shot\\clock_plan_frozen.json",
+        "--routing-evidence",
+        "--capture-system-telemetry"
+      ]
+    },
+    {
+      "pid": 32852,
+      "created_at": "2026-10-24T22:34:25.549275+08:00",
+      "parent_pid": 68444,
+      "cwd": "D:\\Desktop\\SOC FPGA\\nav",
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "integration/g2/continue_bank_select_once.py",
+        "--synthesis",
+        "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "--baseline",
+        "F:\\nav_integration_g2_20261023\\sfp_clockpriority_pnr4",
+        "--pnr-out",
+        "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+        "--state-dir",
+        "F:\\nav_integration_g2_20261023\\lane2_observation_lw_one_shot",
+        "--clock-resource-plan",
+        "integration/g2/clock_resource_plan_lane2_observation_lw.json",
+        "--max-runtime-minutes",
+        "0"
+      ]
+    }
+  ],
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-24T22:35:10.373678+08:00",
+    "max_runtime_s": 0.0,
+    "max_no_observable_progress_s": 0.0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 33684,
+    "elapsed_s": 90.25,
+    "no_observable_progress_s": 82.10999999998603,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        2086882,
+        1792852517175111200
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        2086439,
+        1792852517175111200
+      ]
+    ]
+  },
+  "allocation_plan": {
+    "reference_physical_build": "F:/nav_integration_g2_20261023/sfp_lane2_pointplanes_pnr13",
+    "structural_driver_reference_build": "F:/nav_integration_g2_20261023/sfp_lane2_pointplanes_syn10",
+    "target_source_build": "F:/nav_integration_g2_20261023/sfp_lane2_private_snapshot_syn11_retry1",
+    "reference_net_aliases": {},
+    "observation_lw_reallocation": true,
+    "observation_lw_reference_build": "F:/nav_integration_g2_20261023/sfp_lane2_private_snapshot_pnr14",
+    "hypothesis": "PNR14 removed 4032 root-reset loads but lost the 3893-pin observation update LW allocation while a 308-pin projection CE became LW. Reuse the exact SYN11 netlist and exchange only these two routing choices to test that observed allocation shift. This does not identify any of the 377 failed nets.",
+    "promote": [
+      {
+        "net": "n2371_7",
+        "primary_index": 4,
+        "signal_types": "SR|LOGIC"
+      },
+      {
+        "net": "r2",
+        "primary_index": 5,
+        "signal_types": "SR|CE|LOGIC"
+      },
+      {
+        "net": "u_control/model_thread/observation/n971_7",
+        "primary_index": 6,
+        "signal_types": "SR|LOGIC"
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_update",
+        "primary_index": 7,
+        "signal_types": "CE"
+      }
+    ],
+    "prefer_global": [
+      {
+        "net": "u_control/telemetry_thread/n1315_4",
+        "signal_types": "LOGIC"
+      },
+      {
+        "net": "u_control/telemetry_thread/snapshot_959_10",
+        "signal_types": "CE"
+      },
+      {
+        "net": "u_control/model_thread/observation/n12472_10",
+        "signal_types": "CE|LOGIC"
+      }
+    ],
+    "local": [
+      "u_nav/u_xt/n9903_3",
+      "u_nav/u_match/u_ex/n7021_4",
+      "u_nav/u_match/u_ex/rb_ra[0]",
+      "u_nav/u_match/u_ex/rb_ra[1]",
+      "u_nav/a_q_15_17",
+      "u_nav/u_map/u_tv/n25284_7",
+      "u_nav/u_pt/n5285_4"
+    ],
+    "logic_and_clock_periods_unchanged_by_plan": true,
+    "manual": "Gowin SUG1541-1.0E section2.8; generic BUFG CE|LOGIC and LOCAL_CLOCK as in the existing measured plan; actual LW allocation must be checked after PNR",
+    "point_planes_driver_revalidation": true
+  },
+  "exact_new_cst_lines": [
+    "CLOCK_LOC \"u_control/model_thread/observation/n12472_10\" BUFG = CE|LOGIC;",
+    "CLOCK_LOC \"u_nav/u_pt/n5285_4\" LOCAL_CLOCK;"
+  ],
+  "original12_cst_requests_unchanged": true,
+  "non_clock_cst_identical": true,
+  "netlist_sdc_csr_bytes_identical_to_pnr14": true,
+  "pre_pnr_checks": {
+    "passed": true,
+    "changed_rtl_inputs": [
+      "control/rl_policy_tick_v5.v"
+    ],
+    "unchanged_firmware_storage_assets": 104,
+    "source_bsram": 316,
+    "wide_leaves": 10,
+    "predicted_physical_bsram": 326,
+    "physical_count_is_prediction": true,
+    "core_synthesis_estimate": {
+      "name": "clk50",
+      "constraint_mhz": 50.0,
+      "estimated_fmax_mhz": 54.372,
+      "levels": 20,
+      "entity": "TOP"
+    },
+    "private_snapshot_reset_checks": {
+      "snapshot_registers_retained": 4032,
+      "system_reset_loads_before": 4032,
+      "system_reset_loads_after": 0,
+      "remaining_data_zero_fill_clear_pins": 24,
+      "remaining_clear_drivers": [
+        {
+          "name": "u_control/model_thread/policy/n310_s1",
+          "kind": "LUT2",
+          "ports": {
+            "F": [
+              "u_control/model_thread/policy/n310_4"
+            ],
+            "I0": [
+              "u_control/model_thread/policy/snapshot_shift_select_6"
+            ],
+            "I1": [
+              "u_control/model_thread/policy/snapshot_update"
+            ]
+          }
+        }
+      ],
+      "write_before_read_rtl_checks": [
+        {
+          "variant": "rtl",
+          "result": "TEST PASSED PRIVATE_RESET cycles=42000 publications=30 writes=9661 resets=8"
+        }
+      ],
+      "all_other_source_text_unchanged": true,
+      "core_stop_state_and_fault_resets_preserved": true,
+      "actual_fc_consumer_ignores_data_without_valid_write": true
+    },
+    "routing_driver_revalidation": {
+      "passed": true,
+      "reference_physical_build": "F:\\nav_integration_g2_20261023\\sfp_lane2_pointplanes_pnr13",
+      "structural_reference": "F:\\nav_integration_g2_20261023\\sfp_lane2_pointplanes_syn10",
+      "targets": [
+        {
+          "net": "n2371_7",
+          "driver": "u_control/n2371_s2",
+          "kind": "LUT3",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "r2",
+          "driver": "u_rs/r2_s1",
+          "kind": "DFFPE",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "u_control/model_thread/observation/n971_7",
+          "driver": "u_control/model_thread/observation/n971_s2",
+          "kind": "LUT4",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "u_control/model_thread/policy/snapshot_update",
+          "driver": "u_control/model_thread/policy/snapshot_update_s0",
+          "kind": "LUT4",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "u_control/telemetry_thread/n1315_4",
+          "driver": "u_control/telemetry_thread/n1315_s1",
+          "kind": "LUT4",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "u_control/telemetry_thread/snapshot_959_10",
+          "driver": "u_control/telemetry_thread/snapshot_959_s4",
+          "kind": "LUT4",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "u_control/model_thread/observation/n12472_10",
+          "driver": "u_control/model_thread/observation/n12506_s4",
+          "kind": "LUT3",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "u_nav/u_xt/n9903_3",
+          "driver": "u_nav/u_xt/n9616_s1",
+          "kind": "LUT4",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "u_nav/u_match/u_ex/n7021_4",
+          "driver": "u_nav/u_match/u_ex/n7021_s1",
+          "kind": "LUT2",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "u_nav/u_match/u_ex/rb_ra[0]",
+          "driver": "u_nav/u_match/u_ex/rb_ra_0_s10",
+          "kind": "LUT3",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "u_nav/u_match/u_ex/rb_ra[1]",
+          "driver": "u_nav/u_match/u_ex/rb_ra_1_s10",
+          "kind": "LUT3",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "u_nav/a_q_15_17",
+          "driver": "u_nav/a_q_15_s9",
+          "kind": "LUT4",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "u_nav/u_map/u_tv/n25284_7",
+          "driver": "u_nav/u_map/u_tv/n25284_s2",
+          "kind": "LUT2",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "u_nav/u_pt/n5285_4",
+          "driver": "u_nav/u_pt/n5285_s1",
+          "kind": "LUT2",
+          "inputs_and_parameters_identical": true
+        }
+      ],
+      "true_clock_drivers": [
+        {
+          "net": "clk50_d",
+          "driver": "clk50_ibuf",
+          "kind": "IBUF",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "rgmii_rxc_d",
+          "driver": "rgmii_rxc_ibuf",
+          "kind": "IBUF",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "h_rx_clk",
+          "driver": "u_sfp/u_mac/u_serdes/gtr12_quad_inst0",
+          "kind": "GTR12_QUAD",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "h_tx_clk",
+          "driver": "u_sfp/u_mac/u_serdes/gtr12_quad_inst0",
+          "kind": "GTR12_QUAD",
+          "inputs_and_parameters_identical": true
+        }
+      ],
+      "strict_targets": 14,
+      "aliases_allowed": 0,
+      "observation_lw_exchange_evidence": {
+        "reference_build": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_pnr14",
+        "exact_source_bytes": true,
+        "requested_global": {
+          "net": "u_control/model_thread/observation/n12472_10",
+          "pins": 3893,
+          "port_counts": {
+            "D": 1,
+            "CE": 3892
+          },
+          "examples": [
+            "DFFCE u_control/model_thread/observation/valid_s0.D",
+            "DFFCE u_control/model_thread/observation/current_flat_671_s0.CE",
+            "DFFCE u_control/model_thread/observation/current_flat_666_s0.CE"
+          ]
+        },
+        "requested_local": {
+          "net": "u_nav/u_pt/n5285_4",
+          "resource": "LW",
+          "drivers": [
+            {
+              "kind": "LUT2",
+              "name": "u_nav/u_pt/n5285_s1",
+              "ports": {
+                "I0": "r2",
+                "I1": "\\u_nav/pp_ready ",
+                "F": "\\u_nav/u_pt/n5285_4 "
+              }
+            }
+          ],
+          "direct_pin_counts": {
+            "CE": 308
+          },
+          "direct_load_kinds": {
+            "DFFRE": 299,
+            "MULTALU27X18": 9
+          },
+          "load_examples": [
+            [
+              "DFFRE",
+              "u_nav/u_pt/pv1_s0",
+              "CE"
+            ],
+            [
+              "DFFRE",
+              "u_nav/u_pt/sof1_s0",
+              "CE"
+            ],
+            [
+              "DFFRE",
+              "u_nav/u_pt/eof1_s0",
+              "CE"
+            ],
+            [
+              "DFFRE",
+              "u_nav/u_pt/t1x_31_s0",
+              "CE"
+            ]
+          ]
+        },
+        "failed_net_identities_available": false,
+        "scope": "one measured LW allocation exchange; not a cause assignment for 377 failed nets"
+      },
+      "scope": "driver/INIT identity only; actual allocation, CDC delay and timing require PNR"
+    },
+    "lidar26_source_connections_match": true,
+    "host51_source_connections_match": true,
+    "row_store_checks": {
+      "maximum_nonclock_load": 250,
+      "distributed_words": 250,
+      "bank_select_registers": 9
+    },
+    "deployment_accepted": false
+  },
+  "existing_actual_regressions": [
+    {
+      "case": "actual14_drivers_and4_clocks",
+      "passed": true
+    },
+    {
+      "case": "changed_control_driver_input",
+      "rejected": true
+    },
+    {
+      "case": "changed_lane2_receive_clock",
+      "rejected": true
+    },
+    {
+      "case": "changed_control_driver_init",
+      "rejected": true
+    },
+    {
+      "case": "unreviewed_alias",
+      "rejected": true
+    },
+    {
+      "case": "changed_primary_assignment",
+      "rejected": true
+    },
+    {
+      "case": "wrong_frozen_source",
+      "rejected": true
+    },
+    {
+      "case": "inherited12_still_strict",
+      "passed": true
+    },
+    {
+      "case": "changed_observation_update_driver",
+      "rejected": true
+    },
+    {
+      "case": "unreviewed_small_local_choice",
+      "rejected": true
+    },
+    {
+      "case": "wrong_observation_allocation_reference",
+      "rejected": true
+    }
+  ],
+  "actual_cmd_do": "-d F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15\\g2_top.vg\n-p GW5AT-138C-PBGA484A-1\n-pn GW5AT-LV138PG484AC1/I0\n-cst F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15\\g2.cst\n-cfg F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15\\impl\\pnr\\device.cfg\n-sdc F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15\\g2.sdc\n-bit\n-tr\n-ph\n-posp\n-o\n-warning_all\n-timing\n-ireg_not_in_iob\n-oreg_not_in_iob\n-ioreg_not_in_iob\n-replicate\n-cst_error\n-convert_sdp32_36_to_sdp16_18\n-place_option 1\n-route_option 2\n-retiming_resource none\n-clock_route_order 0\n-correct_hold 1\n-route_maxfan 23\n-global_freq 50.000\n-csr F:/nav_integration_g2_20261023/sfp_lane2_observation_lw_pnr15/ip/serdes.csr\n",
+  "clock_constraints": [
+    "create_clock -name clk50 -period 20 [get_ports {clk50}]",
+    "create_clock -name rgmii_rxc -period 10 [get_ports {rgmii_rxc}]",
+    "create_clock -name sfp_rx_clk -period 8.000 [get_pins {u_sfp/u_mac/u_serdes/gtr12_quad_inst0/LANE2_PCS_RX_O_FABRIC_CLK}]",
+    "create_clock -name sfp_tx_clk -period 8.000 [get_pins {u_sfp/u_mac/u_serdes/gtr12_quad_inst0/LANE2_PCS_TX_O_FABRIC_CLK}]"
+  ],
+  "hold_only_commands": 77,
+  "max_delay_commands": 77,
+  "routing_report_requests": [
+    "report_route_congestion -max_grids 200",
+    "report_high_fanout_nets -max_nets 100 -min_fanout 100"
+  ],
+  "physical_allocation_and_resources_pending": true,
+  "physical_setup_hold_timing_and154_effective_commands_pending": true,
+  "complete_cdc_pcs_reset_io_pending": true,
+  "original4500_all_weights125hz_all_storage_and_stop_contract_preserved": true,
+  "new_synthesis_started": false,
+  "programmed": false,
+  "deployment_accepted": false,
+  "launcher_memory_bytes": {
+    "available_physical": 4725739520,
+    "available_commit": 6942629888,
+    "minimum_physical": 2147483648,
+    "minimum_commit": 4294967296
+  }
+}

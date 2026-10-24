@@ -1,0 +1,32 @@
+{
+  "reference_physical_build": "F:/nav_integration_g2_20261023/sfp_lane2_pointplanes_pnr13",
+  "structural_driver_reference_build": "F:/nav_integration_g2_20261023/sfp_lane2_pointplanes_syn10",
+  "target_source_build": "F:/nav_integration_g2_20261023/sfp_lane2_private_snapshot_syn11_retry1",
+  "reference_net_aliases": {},
+  "observation_lw_reallocation": true,
+  "observation_lw_reference_build": "F:/nav_integration_g2_20261023/sfp_lane2_private_snapshot_pnr14",
+  "hypothesis": "PNR14 removed 4032 root-reset loads but lost the 3893-pin observation update LW allocation while a 308-pin projection CE became LW. Reuse the exact SYN11 netlist and exchange only these two routing choices to test that observed allocation shift. This does not identify any of the 377 failed nets.",
+  "promote": [
+    {"net": "n2371_7", "primary_index": 4, "signal_types": "SR|LOGIC"},
+    {"net": "r2", "primary_index": 5, "signal_types": "SR|CE|LOGIC"},
+    {"net": "u_control/model_thread/observation/n971_7", "primary_index": 6, "signal_types": "SR|LOGIC"},
+    {"net": "u_control/model_thread/policy/snapshot_update", "primary_index": 7, "signal_types": "CE"}
+  ],
+  "prefer_global": [
+    {"net": "u_control/telemetry_thread/n1315_4", "signal_types": "LOGIC"},
+    {"net": "u_control/telemetry_thread/snapshot_959_10", "signal_types": "CE"},
+    {"net": "u_control/model_thread/observation/n12472_10", "signal_types": "CE|LOGIC"}
+  ],
+  "local": [
+    "u_nav/u_xt/n9903_3",
+    "u_nav/u_match/u_ex/n7021_4",
+    "u_nav/u_match/u_ex/rb_ra[0]",
+    "u_nav/u_match/u_ex/rb_ra[1]",
+    "u_nav/a_q_15_17",
+    "u_nav/u_map/u_tv/n25284_7",
+    "u_nav/u_pt/n5285_4"
+  ],
+  "logic_and_clock_periods_unchanged_by_plan": true,
+  "manual": "Gowin SUG1541-1.0E section2.8; generic BUFG CE|LOGIC and LOCAL_CLOCK as in the existing measured plan; actual LW allocation must be checked after PNR",
+  "point_planes_driver_revalidation": true
+}
