@@ -1,0 +1,100 @@
+{
+  "recorded_at": "2026-10-25T00:10:03.155855+08:00",
+  "scope": "read-only board-design and existing joint-source audit; not an electrical DDR3 acceptance test",
+  "board_family": "ACX750 / ACG750 GW5AT-138 PG484",
+  "sources": {
+    "core_schematic": "D:\\Desktop\\SOC FPGA\\小梅哥ACG750型国产高云GW5AT-138K FPGA开发板资料\\硬件图纸\\ACX750-GW5A138-CORE-25092801.pdf",
+    "ddr_sheet": 5,
+    "fpga_bank_sheet": 2,
+    "pinout": "D:\\Desktop\\SOC FPGA\\小梅哥ACG750型国产高云GW5AT-138K FPGA开发板资料\\硬件图纸\\ACX750-GW5A138开发板管脚信息表.xlsx",
+    "factory_archive": "D:\\Desktop\\SOC FPGA\\小梅哥ACG750型国产高云GW5AT-138K FPGA开发板资料\\例程源码\\DDR3_MC_PHY_1vs4_5a138k.rar",
+    "manufacturer_spec": "https://lexarenterprise.com/product/ddr3l-2/",
+    "rendered_pages": [
+      "F:\\nav_integration_g2_20261023\\ddr3_hardware_audit_20261025\\core_page5.png",
+      "F:\\nav_integration_g2_20261023\\ddr3_hardware_audit_20261025\\core_page2.png"
+    ]
+  },
+  "design_facts": {
+    "external_ddr3l_present": true,
+    "chip_refs": [
+      "U5",
+      "U6"
+    ],
+    "chip_part": "F60C1A0004-M79W",
+    "chip_density_gbit": 4,
+    "chip_width_bits": 16,
+    "total_width_bits": 32,
+    "total_design_capacity_bytes": 1073741824,
+    "total_design_capacity_mib": 1024,
+    "power_net": "VCC1P5",
+    "termination": "TPS51200DRCR, DDR3_VTT and DDR3_VREF",
+    "fpga_data_bank": 7,
+    "fpga_address_control_bank": 6
+  },
+  "capacity_is_design_not_measured": true,
+  "actual_board_population_verified": false,
+  "ddr_training_completed": false,
+  "ddr_read_write_test_performed": false,
+  "factory_example": {
+    "parameters": {
+      "DQ_WIDTH": 32,
+      "DRAM_WIDTH": 16,
+      "RANK_WIDTH": 1,
+      "BANK_WIDTH": 3,
+      "ROW_WIDTH": 15,
+      "COL_WIDTH": 10,
+      "nCK_PER_CLK": 4
+    },
+    "configured_capacity_bytes": 1073741824,
+    "clock_period_ps": 2500,
+    "configuration_memory_clock_mhz": 400,
+    "has_calibration_complete_output": true,
+    "has_read_write_comparison_logic": true,
+    "project_device": "GW5AT-138B, GW5AT-LV138PG484AC1/I0",
+    "ipc_target": "gw5ast138b-002",
+    "readme_target": "GW5AST-138B-FCPBGA676A",
+    "current_joint_device_version": "C",
+    "must_retarget_and_regenerate_before_use": true,
+    "source_files": [
+      "F:\\nav_integration_g2_20261023\\ddr3_hardware_audit_20261025\\factory_project.gprj",
+      "F:\\nav_integration_g2_20261023\\ddr3_hardware_audit_20261025\\factory_ddr3.ipc",
+      "F:\\nav_integration_g2_20261023\\ddr3_hardware_audit_20261025\\factory_ddr3_parameters.v",
+      "F:\\nav_integration_g2_20261023\\ddr3_hardware_audit_20261025\\factory_ddr3.cst",
+      "F:\\nav_integration_g2_20261023\\ddr3_hardware_audit_20261025\\factory_ddr3_top.v",
+      "F:\\nav_integration_g2_20261023\\ddr3_hardware_audit_20261025\\factory_readme.txt"
+    ]
+  },
+  "address_pin_crosscheck": {
+    "schematic_sheet2_aa3_label": "DDR3_A1",
+    "schematic_sheet2_ab3_label": "DDR3_A1",
+    "spreadsheet_aa3": "DDR3_A12",
+    "spreadsheet_ab3": "DDR3_A1",
+    "factory_cst_aa3": "ddr_addr[12]",
+    "factory_cst_ab3": "ddr_addr[1]",
+    "status": "schematic label discrepancy recorded; spreadsheet and factory CST agree, electrical confirmation still pending"
+  },
+  "current_joint": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+    "source_count": 68,
+    "ddr_named_source_files": [],
+    "ddr_top_ports": [],
+    "previous_physical_bank6_used": 0,
+    "previous_physical_bank7_used": 0,
+    "ddr_pin_overlap_with_existing_frozen_cst": [],
+    "source_not_using_external_ddr": true,
+    "full_joint_ddr_controller_resource_timing_cost_not_measured": true
+  },
+  "current_pnr_preserved": {
+    "pid": 33684,
+    "created_at": "2026-10-24T22:35:10.446842+08:00",
+    "started_at": "2026-10-24T22:35:10.373678+08:00",
+    "max_runtime_s": 0,
+    "max_idle_s": 0
+  },
+  "board_programmed": false,
+  "serial_opened": false,
+  "mode_changed": false,
+  "motion_commanded": false,
+  "large_build_started": false,
+  "implementation_changed": false
+}
