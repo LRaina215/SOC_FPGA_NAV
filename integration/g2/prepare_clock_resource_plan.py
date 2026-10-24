@@ -15,8 +15,15 @@ def apply(source, out, plan_file):
     plan=json.loads(Path(plan_file).read_text(encoding='utf-8'))
     requested=[r['net'] for r in plan['promote']]+[r['net'] for r in plan.get('prefer_global',[])]+plan['local']
     assert len(requested)==len(set(requested)), 'duplicate routing target'
-    measured=audit(Path(plan['reference_physical_build']),requested)
+    aliases=plan.get('reference_net_aliases',{})
+    driver_proof=None
+    if aliases:
+        from revalidate_observation_routing import validate
+        driver_proof=validate(source,plan)
+    reference_name=lambda n:aliases.get(n,n)
+    measured=audit(Path(plan['reference_physical_build']),[reference_name(n) for n in requested])
     previous={r['net']:r for r in measured['global_nets']}
+    for name,prior in aliases.items():previous[name]=previous[prior]
     cells=read(out/'g2_top.vg')
     nets={net for cell in cells.values() for values in cell['ports'].values() for net in values}
     cst=out/'g2.cst';original=cst.read_text(encoding='utf-8')
@@ -59,6 +66,7 @@ def apply(source, out, plan_file):
     fragment='\n// Explicit measured control routing plan; original IO constraints preserved.\n'+'\n'.join(commands)+'\n'
     cst.write_text(original+fragment,encoding='utf-8',newline='\n')
     result=dict(plan=plan,source=str(source),actions=rows,cst_fragment=fragment,
+        mapped_driver_proof=driver_proof,
         logic_unchanged=True,clock_periods_unchanged=True,
         real_primary_clocks=['clk50_d','rgmii_rxc_d','h_rx_clk','h_tx_clk'],
         scope='directed physical routing candidate; no timing, routability, full CDC or hardware acceptance claimed')

@@ -131,4 +131,9 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 `measure_observation_reuse.py <frozen-SYN> --out <new-probe> --prefetch --reuse-baseline <verified-original-probe>`进行四符号RTL逐拍对照及配对模块SYN；`--resume`仅复用已验证且源码/包装相同的结果。`--retry-preflight`允许一次保留现场的设置回读重试，不重复已完成SYN。实际提前准备探针56000拍/主实例32帧通过，模块LUT−395、ALU＋101、FF−77、MULTALU27X18为16→4、BSRAM0，时钟估计75.317→81.542MHz。实例数65333超过本地Vivado BASIC50000许可，候选网表对原RTL仿真未启动，记录为验证缺口；不能仅凭退出状态或RTL通过宣称网表验证完成。
 
-`retry_frozen_synthesis.py <frozen-SYN> --out <new-build> --start-now --observation-reuse-prefetch`要求该原始探针的实际RTL/资源证据，生成与已测候选逐字相同的单RTL差异，核对其他输入并进行一次40分钟联合SYN。它不自动PNR，不恢复定时监督；新综合网名/驱动、存储参数、CDC和真实Lane2时钟必须重新证明，旧接续器尚不会接受这个新源差异。联合资源和PNR结论以实际报告为准。见[结构简化与证据](../../docs/4_design/g2_structural_simplification_20261024.md)。
+`retry_frozen_synthesis.py <frozen-SYN> --out <new-build> --start-now --observation-reuse-prefetch`要求该原始探针的实际RTL/资源证据，生成与已测候选逐字相同的单RTL差异，核对其他输入并进行一次40分钟联合SYN。它不自动PNR，不恢复定时监督；新综合网名/驱动、存储参数、CDC和真实Lane2时钟必须重新证明，接续器现有专门的新源检查分支；必须通过精确差异/资源/存储/驱动/CDC检查后才运行PNR。联合资源和PNR结论以实际报告为准。见[结构简化与证据](../../docs/4_design/g2_structural_simplification_20261024.md)。
+
+
+`clock_resource_plan_lane2_obsreuse.json`保留正确Lane2的544条物理参考的12项分配，只将观测复位名n331_7映射到n971_7。`revalidate_observation_routing.py`证明这一个具名LUT4别名的全部输入、INIT16'hEFFF/16项真值、四个唯一上游驱动/参数；其余11个目标和四真实时钟源严格相同。应用器只在该证明通过后借用原物理网络的负载证据，不能用任意别名跳过检查。`test_observation_routing.py --out <new-folder>`的实际正例和7项负例已通过。
+
+`continue_bank_select_once.py --synthesis <obsreuse-SYN> --baseline <fixed-CDC-reference> --pnr-out <new-dir> --state-dir <new-state> --clock-resource-plan <obsreuse-plan> --max-runtime-minutes 150`只运行一次；`validate_observation_reuse.py`重计全部26＋51已知CDC、实际Lane2 RX/TX时钟，保留原存储/104资产与所有功能。自动名变化的36个雷达RESET连接仍需已有完整驱动/模块INIT证明。完整网表仿真许可缺口和43额外跨域/PCS/复位/IO继续待签核。源检查通过不能代替PNR的真实资源、时序、分配与154条有效命令；本次不恢复周期监督，也不进行硬件操作。

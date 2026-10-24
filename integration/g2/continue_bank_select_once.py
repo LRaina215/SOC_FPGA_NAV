@@ -53,6 +53,9 @@ def validate_candidate(source, baseline, plan_file):
     job = json.loads((source/'job.json').read_text())
     assert job['phase'] == 'synthesis_complete' and job['tool_exit'] == 0, ('SYN not complete',job)
     manifest = json.loads((source/'manifest.json').read_text())
+    if manifest.get('observation_reuse_prefetch'):
+        from validate_observation_reuse import validate
+        return validate(source,baseline,plan_file)
     assert manifest['bank_select_data_fanout'] and manifest['real_sfp'] and manifest['full_control_telemetry']
     assert not manifest['control_weights_changed'] and manifest['clock_core_mhz'] == 50
     lane2_proof = manifest.get('sfp_lane2_from_build')

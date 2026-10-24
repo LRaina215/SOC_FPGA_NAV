@@ -1,6 +1,6 @@
 {
   "recorded_at": "2026-10-24T10:58:08.638738+08:00",
-  "phase": "joint_synthesis_complete_pnr_not_started",
+  "phase": "full_pnr_running",
   "cause_assessment": {
     "proven_root_cause": false,
     "failed_net_identities_and_locations_available": false,
@@ -186,12 +186,7 @@
     "sdc_cst_csr_and_other_rtl_unchanged": true,
     "resource_and_timing_result_available": true,
     "inherited_json_audits_are_not_current_measurements": true,
-    "pre_pnr_checks_pending": [
-      "new reset/CE and allocation drivers",
-      "26 lidar and51 host CDC connections",
-      "actual Lane2 RX/TX clock sources",
-      "valid constraints and complete physical timing"
-    ],
+    "pre_pnr_checks_pending": [],
     "automatic_pnr": false,
     "actual_source_bsram": 316,
     "actual_wide_leaves": 18,
@@ -236,7 +231,8 @@
         "Latch Clk": "clk50[R]"
       },
       "scope": "synthesis estimate only; actual PNR resource/timing acceptance must come from PNR reports"
-    }
+    },
+    "pre_pnr_checks_completed": "observation_reuse_pnr_start_20261024.json"
   },
   "next_steps": [
     "read actual joint SYN; check resources/timing and unchanged memories/assets",
@@ -252,6 +248,25 @@
   "programmed": false,
   "deployment_accepted": false,
   "gates": "unrouted0; actualBSRAM<=336/340;50/100/125/125MHz;all setup/hold0;CDC/constraints/PCS/reset/pulse/IO complete",
-  "latest_update_at": "2026-10-24T11:01:27.648136+08:00",
-  "joint_synthesis_result": "observation_reuse_joint_synthesis_20261024.json"
+  "latest_update_at": "2026-10-24T11:12:49.451143+08:00",
+  "joint_synthesis_result": "observation_reuse_joint_synthesis_20261024.json",
+  "active_pnr": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_pnr12",
+    "live_state": "F:\\nav_integration_g2_20261023\\lane2_obsreuse_one_shot\\job.json",
+    "phase": "full_pnr_running",
+    "active": true,
+    "tool_pid": 54424,
+    "tool_created_at": "2026-10-24T11:09:02.734667+08:00",
+    "wrapper_pid": 58396,
+    "wrapper_created_at": "2026-10-24T11:08:41.790865+08:00",
+    "controller_pid": 55032,
+    "controller_created_at": "2026-10-24T11:08:27.483924+08:00",
+    "started_at": "2026-10-24T11:09:02.663834+08:00",
+    "max_runtime_minutes": 150,
+    "max_no_progress_minutes": 0,
+    "absolute_deadline": "2026-10-24T13:39:02.663834+08:00",
+    "diagnostic_only": false,
+    "evidence": "observation_reuse_pnr_start_20261024.json"
+  },
+  "next_phase_evidence": "observation_reuse_pnr_start_20261024.json"
 }

@@ -1,0 +1,30 @@
+{
+  "reference_physical_build": "F:/nav_integration_g2_20261023/sfp_lane2_telemetryglobal_pnr10",
+  "structural_driver_reference_build": "F:/nav_integration_g2_20261023/sfp_lane2_rowbanks_syn7",
+  "target_source_build": "F:/nav_integration_g2_20261023/sfp_lane2_obsreuse_syn9",
+  "reference_net_aliases": {
+    "u_control/model_thread/observation/n971_7": "u_control/model_thread/observation/n331_7"
+  },
+  "hypothesis": "Measure only the equivalent observation implementation against the correct-Lane2 544-net result. Retain all twelve routing choices, allowing only a separately proved generated name change of the same observation reset LUT. Resource reduction does not prove which nets failed or that routing will succeed.",
+  "promote": [
+    {"net": "n2371_7", "primary_index": 4, "signal_types": "SR|LOGIC"},
+    {"net": "r2", "primary_index": 5, "signal_types": "SR|CE|LOGIC"},
+    {"net": "u_control/model_thread/observation/n971_7", "primary_index": 6, "signal_types": "SR|LOGIC"},
+    {"net": "u_control/model_thread/policy/snapshot_update", "primary_index": 7, "signal_types": "CE"}
+  ],
+  "prefer_global": [
+    {"net": "u_control/telemetry_thread/n1315_4", "signal_types": "LOGIC"},
+    {"net": "u_control/telemetry_thread/snapshot_959_10", "signal_types": "CE"}
+  ],
+  "local": [
+    "u_nav/u_xt/n9903_3",
+    "u_nav/u_match/u_ex/n7021_4",
+    "u_nav/u_match/u_ex/rb_ra[0]",
+    "u_nav/u_match/u_ex/rb_ra[1]",
+    "u_nav/a_q_15_17",
+    "u_nav/u_map/u_tv/n25284_7"
+  ],
+  "logic_and_clock_periods_unchanged_by_plan": true,
+  "new_observation_global_request_not_added": true,
+  "manual": "Gowin SUG1541-1.0E section2.8; same PRIMARY/LW requests and LOCAL choices as physical PNR10"
+}

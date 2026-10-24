@@ -1,0 +1,1569 @@
+{
+  "recorded_at": "2026-10-24T11:12:49.451143+08:00",
+  "phase": "full_pnr_running",
+  "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_syn9",
+  "active_pnr": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_pnr12",
+    "live_state": "F:\\nav_integration_g2_20261023\\lane2_obsreuse_one_shot\\job.json",
+    "phase": "full_pnr_running",
+    "active": true,
+    "tool_pid": 54424,
+    "tool_created_at": "2026-10-24T11:09:02.734667+08:00",
+    "wrapper_pid": 58396,
+    "wrapper_created_at": "2026-10-24T11:08:41.790865+08:00",
+    "controller_pid": 55032,
+    "controller_created_at": "2026-10-24T11:08:27.483924+08:00",
+    "started_at": "2026-10-24T11:09:02.663834+08:00",
+    "max_runtime_minutes": 150,
+    "max_no_progress_minutes": 0,
+    "absolute_deadline": "2026-10-24T13:39:02.663834+08:00",
+    "diagnostic_only": false,
+    "evidence": "observation_reuse_pnr_start_20261024.json"
+  },
+  "comparison": {
+    "correct_lane2_physical_baseline": "sfp_lane2_telemetryglobal_pnr10",
+    "unrouted_nets": 544,
+    "actual_bsram": 334,
+    "routing_choices_unchanged_except_proved_reset_net_rename": true,
+    "extra14_target_allocation_not_applied": true,
+    "old_lane0_273_used_for_fixed_known_cdc_reference_only": true
+  },
+  "actual_inputs_and_options": {
+    "source_netlist_byte_identical": true,
+    "source_io_cst_prefix_unchanged": true,
+    "csr_byte_identical": true,
+    "correct_lane2_csr_in_actual_command": true,
+    "timing_driven": 1,
+    "place_option": 1,
+    "route_option": 2,
+    "replicate_resources": 1,
+    "wide_split": 1,
+    "global_freq_mhz": 50,
+    "correct_hold": 1,
+    "clock_periods_ns": {
+      "clk50": 20.0,
+      "rgmii_rxc": 10.0,
+      "sfp_rx_clk": 8.0,
+      "sfp_tx_clk": 8.0
+    },
+    "hold_only_commands": 77,
+    "max_delay_commands": 77,
+    "active_commands_and_actual_delays_not_yet_verified": true,
+    "report_congestion_grids": 200,
+    "report_high_fanout_max_nets": 100
+  },
+  "pre_pnr_checks": {
+    "passed": true,
+    "source_bsram": 316,
+    "wide_leaves": 18,
+    "predicted_physical_bsram": 334,
+    "physical_count_is_prediction": true,
+    "changed_rtl_inputs": [
+      "control/rl_observation_v5.v"
+    ],
+    "unchanged_firmware_storage_assets": 104,
+    "all_existing_bsram_parameters_match": true,
+    "control_weights_and125hz_unchanged": true,
+    "source_csr_and_clock_sdc_unchanged": true,
+    "core_synthesis_estimate": {
+      "name": "clk50",
+      "constraint_mhz": 50.0,
+      "estimated_fmax_mhz": 54.372,
+      "levels": 20,
+      "entity": "TOP"
+    },
+    "global_resource_delta": {
+      "T_Lut": -505,
+      "T_Alu": 94,
+      "T_Register": -77,
+      "T_MULTALU27X18": -12
+    },
+    "observation_rtl_probe": {
+      "variant": "rtl",
+      "result": "TEST PASSED cycles=56000 frames=32 signed24_extremes=1 changing_inputs=1 busy_capture=1 reset_busy=1"
+    },
+    "native_netlist_simulation_available": false,
+    "native_simulation_gap": {
+      "reason": "installed simulator instance license limit",
+      "maximum_instances": 50000,
+      "reported_instances": 65333,
+      "log": "F:\\nav_integration_g2_20261023\\observation_reuse_prefetch_probe2\\vendor_candidate_against_rtl\\xsim.log",
+      "functional_mismatch_not_observed": true
+    },
+    "full_candidate_for_physical_evaluation": true,
+    "routing_driver_revalidation": {
+      "passed": true,
+      "reference_physical_build": "F:\\nav_integration_g2_20261023\\sfp_lane2_telemetryglobal_pnr10",
+      "structural_reference": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+      "target_source": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_syn9",
+      "targets": [
+        {
+          "net": "n2371_7",
+          "reference_net": "n2371_7",
+          "old_driver": "u_control/n2371_s2",
+          "new_driver": "u_control/n2371_s2",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "r2",
+          "reference_net": "r2",
+          "old_driver": "u_rs/r2_s1",
+          "new_driver": "u_rs/r2_s1",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "u_control/model_thread/observation/n971_7",
+          "reference_net": "u_control/model_thread/observation/n331_7",
+          "old_driver": "u_control/model_thread/observation/n331_s2",
+          "new_driver": "u_control/model_thread/observation/n971_s2",
+          "parameters_identical": true,
+          "proved_alias": true
+        },
+        {
+          "net": "u_control/model_thread/policy/snapshot_update",
+          "reference_net": "u_control/model_thread/policy/snapshot_update",
+          "old_driver": "u_control/model_thread/policy/snapshot_update_s0",
+          "new_driver": "u_control/model_thread/policy/snapshot_update_s0",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "u_control/telemetry_thread/n1315_4",
+          "reference_net": "u_control/telemetry_thread/n1315_4",
+          "old_driver": "u_control/telemetry_thread/n1315_s1",
+          "new_driver": "u_control/telemetry_thread/n1315_s1",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "u_control/telemetry_thread/snapshot_959_10",
+          "reference_net": "u_control/telemetry_thread/snapshot_959_10",
+          "old_driver": "u_control/telemetry_thread/snapshot_959_s4",
+          "new_driver": "u_control/telemetry_thread/snapshot_959_s4",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "u_nav/u_xt/n9903_3",
+          "reference_net": "u_nav/u_xt/n9903_3",
+          "old_driver": "u_nav/u_xt/n9616_s1",
+          "new_driver": "u_nav/u_xt/n9616_s1",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "u_nav/u_match/u_ex/n7021_4",
+          "reference_net": "u_nav/u_match/u_ex/n7021_4",
+          "old_driver": "u_nav/u_match/u_ex/n7021_s1",
+          "new_driver": "u_nav/u_match/u_ex/n7021_s1",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "u_nav/u_match/u_ex/rb_ra[0]",
+          "reference_net": "u_nav/u_match/u_ex/rb_ra[0]",
+          "old_driver": "u_nav/u_match/u_ex/rb_ra_0_s10",
+          "new_driver": "u_nav/u_match/u_ex/rb_ra_0_s10",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "u_nav/u_match/u_ex/rb_ra[1]",
+          "reference_net": "u_nav/u_match/u_ex/rb_ra[1]",
+          "old_driver": "u_nav/u_match/u_ex/rb_ra_1_s10",
+          "new_driver": "u_nav/u_match/u_ex/rb_ra_1_s10",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "u_nav/a_q_15_17",
+          "reference_net": "u_nav/a_q_15_17",
+          "old_driver": "u_nav/a_q_15_s9",
+          "new_driver": "u_nav/a_q_15_s9",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "u_nav/u_map/u_tv/n25284_7",
+          "reference_net": "u_nav/u_map/u_tv/n25284_7",
+          "old_driver": "u_nav/u_map/u_tv/n25284_s2",
+          "new_driver": "u_nav/u_map/u_tv/n25284_s2",
+          "parameters_identical": true,
+          "proved_alias": false
+        }
+      ],
+      "strict_targets": 11,
+      "proved_alias": {
+        "old_net": "u_control/model_thread/observation/n331_7",
+        "new_net": "u_control/model_thread/observation/n971_7",
+        "old_driver": "u_control/model_thread/observation/n331_s2",
+        "new_driver": "u_control/model_thread/observation/n971_s2",
+        "kind": "LUT4",
+        "init": "16'hEFFF",
+        "truth_table_16": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          1,
+          1
+        ],
+        "upstream": [
+          {
+            "pin": "I0",
+            "net": "u_control/model_status_flags_1[6]",
+            "driver": "u_control/model_thread/stop_latched_s0",
+            "kind": "DFFCE",
+            "inputs_clock_enable_and_parameters_identical": true
+          },
+          {
+            "pin": "I1",
+            "net": "r2",
+            "driver": "u_rs/r2_s1",
+            "kind": "DFFPE",
+            "inputs_clock_enable_and_parameters_identical": true
+          },
+          {
+            "pin": "I2",
+            "net": "u_control/n6_4",
+            "driver": "u_control/n6_s1",
+            "kind": "LUT4",
+            "inputs_clock_enable_and_parameters_identical": true
+          },
+          {
+            "pin": "I3",
+            "net": "u_control/n6_5",
+            "driver": "u_control/n6_s2",
+            "kind": "LUT4",
+            "inputs_clock_enable_and_parameters_identical": true
+          }
+        ],
+        "outputs_only_renamed": true,
+        "scope": "one named reset-LUT alias; no timing exception added"
+      },
+      "true_clock_drivers": [
+        {
+          "net": "clk50_d",
+          "driver": "clk50_ibuf",
+          "kind": "IBUF",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "rgmii_rxc_d",
+          "driver": "rgmii_rxc_ibuf",
+          "kind": "IBUF",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "h_rx_clk",
+          "driver": "u_sfp/u_mac/u_serdes/gtr12_quad_inst0",
+          "kind": "GTR12_QUAD",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "h_tx_clk",
+          "driver": "u_sfp/u_mac/u_serdes/gtr12_quad_inst0",
+          "kind": "GTR12_QUAD",
+          "inputs_and_parameters_identical": true
+        }
+      ],
+      "clock_periods_and_routing_choices_unchanged": true,
+      "scope": "actual drivers, INIT and one proved alias; actual allocation/CDC delay/timing still require PNR"
+    },
+    "clock_plan_sources_revalidated": [
+      "n2371_7",
+      "r2",
+      "u_control/model_thread/observation/n971_7",
+      "u_control/model_thread/policy/snapshot_update",
+      "u_control/telemetry_thread/n1315_4",
+      "u_control/telemetry_thread/snapshot_959_10",
+      "u_nav/u_xt/n9903_3",
+      "u_nav/u_match/u_ex/n7021_4",
+      "u_nav/u_match/u_ex/rb_ra[0]",
+      "u_nav/u_match/u_ex/rb_ra[1]",
+      "u_nav/a_q_15_17",
+      "u_nav/u_map/u_tv/n25284_7"
+    ],
+    "sfp_lane2_checks": {
+      "lane": "Q0 Lane2",
+      "proof_build": "F:\\nav_sfp_20261023\\build_lane2_v3",
+      "exact_generated_csr_and_wrapper": true,
+      "protected_mac_unchanged": true,
+      "outer_mac_function_unchanged": true,
+      "joint_clock_periods_unchanged": true,
+      "standalone_exceptions_not_imported": true,
+      "io_cst_unchanged": true,
+      "joint_hardware_accepted": false,
+      "actual_synthesized_clock_pins": {
+        "LANE2_PCS_RX_O_FABRIC_CLK": "h_rx_clk",
+        "LANE2_PCS_TX_O_FABRIC_CLK": "h_tx_clk"
+      }
+    },
+    "lidar_revalidation": {
+      "passed": true,
+      "paths": 26,
+      "changed_reset_pin_connections": 36,
+      "proved_reset_aliases": [
+        {
+          "old_net": "r2_205",
+          "new_net": "r2_203",
+          "driver": "u_lrr/r2_s1",
+          "kind": "DFFPE",
+          "all_driver_inputs_identical": true,
+          "module_definition_including_init_identical": true
+        }
+      ],
+      "source_first_second_data_clock_enable_and_single_fanout_rechecked": true,
+      "exception_endpoints_and_budgets_unchanged": true,
+      "scope": "known SYN connectivity and proved reset alias only; no physical/reset-release/MTBF signoff"
+    },
+    "lidar26_source_connections_match": true,
+    "host51_source_connections_match": true,
+    "host_cdc_audit": {
+      "netlist": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_syn9\\impl\\gwsynthesis\\g2_top.vg",
+      "stage": "synthesis",
+      "passed": true,
+      "paths": [
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_b_12_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_12_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_12_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_12_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_11_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_11_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_11_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_11_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_10_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_10_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_10_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_10_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_9_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_9_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_9_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_9_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_8_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_8_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_8_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_8_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_7_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_7_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_7_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_7_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_6_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_6_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_6_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_6_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_5_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_5_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_5_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_5_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_4_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_4_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_4_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_4_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_3_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_3_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_3_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_3_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_2_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_2_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_2_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_2_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_1_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_1_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_1_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_1_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_0_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_0_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_0_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_0_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_b_12_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_12_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_12_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_12_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_11_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_11_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_11_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_11_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_10_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_10_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_10_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_10_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_9_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_9_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_9_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_9_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_8_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_8_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_8_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_8_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_7_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_7_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_7_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_7_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_6_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_6_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_6_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_6_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_5_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_5_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_5_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_5_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_4_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_4_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_4_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_4_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_3_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_3_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_3_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_3_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_2_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_2_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_2_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_2_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_1_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_1_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_1_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_1_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_0_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_0_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_0_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_0_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_b_11_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_11_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_11_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_11_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_10_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_10_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_10_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_10_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_9_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_9_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_9_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_9_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_8_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_8_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_8_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_8_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_7_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_7_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_7_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_7_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_6_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_6_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_6_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_6_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_5_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_5_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_5_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_5_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_4_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_4_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_4_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_4_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_3_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_3_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_3_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_3_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_2_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_2_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_2_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_2_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_1_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_1_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_1_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_1_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_0_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_0_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_0_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_0_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_b_11_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_11_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_11_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_11_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_10_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_10_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_10_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_10_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_9_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_9_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_9_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_9_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_8_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_8_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_8_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_8_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_7_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_7_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_7_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_7_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_6_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_6_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_6_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_6_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_5_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_5_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_5_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_5_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_4_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_4_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_4_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_4_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_3_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_3_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_3_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_3_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_2_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_2_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_2_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_2_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_1_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_1_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_1_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_1_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_0_s1",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_0_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_0_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_0_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_frame_toggle",
+          "source_register": "u_nav/u_neth/u_fs/t_s1",
+          "first_register": "u_nav/u_neth/u_fs/u_s/s1_0_s1",
+          "second_register": "u_nav/u_neth/u_fs/u_s/s2_0_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_fs/u_s/s2_0_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        }
+      ],
+      "expected_paths": 51,
+      "errors": [],
+      "scope": "host FIFO Gray and frame-toggle connections only; vendor PCS, status, IO/reset and MTBF remain separate"
+    },
+    "selector_after": {
+      "registers": [
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_4_s1",
+          "loads": 37
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_3_s1",
+          "loads": 73
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_2_s1",
+          "loads": 74
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_1_s1",
+          "loads": 35
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_0_s1",
+          "loads": 67
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_5_s1",
+          "loads": 19
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_2_s2",
+          "loads": 72
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_1_s2",
+          "loads": 65
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_1_s3",
+          "loads": 128
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_0_s2",
+          "loads": 66
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_0_s3",
+          "loads": 128
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_0_s4",
+          "loads": 128
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_0_s5",
+          "loads": 128
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_1_s4",
+          "loads": 64
+        },
+        {
+          "name": "u_nav/u_match/u_sm/g_banked.selected_0_s6",
+          "loads": 65
+        }
+      ],
+      "maximum": 128
+    },
+    "row_store_checks": {
+      "maximum_nonclock_load": 250,
+      "distributed_words": 250,
+      "bank_select_registers": 9
+    },
+    "deployment_accepted": false,
+    "recurring_supervision_active": false
+  },
+  "regression_tests": {
+    "passed": true,
+    "cases": [
+      {
+        "case": "actual12_targets4_clocks",
+        "passed": true
+      },
+      {
+        "case": "changed_reset_input",
+        "rejected": true,
+        "reason": ""
+      },
+      {
+        "case": "changed_reset_lut_init",
+        "rejected": true,
+        "reason": "reset LUT function changed"
+      },
+      {
+        "case": "changed_upstream_register_enable",
+        "rejected": true,
+        "reason": "('observation reset upstream inputs/clock/enable changed', 'r2')"
+      },
+      {
+        "case": "changed_other_routing_driver",
+        "rejected": true,
+        "reason": "('routing driver inputs changed', 'n2371_7')"
+      },
+      {
+        "case": "unreviewed_reference_alias",
+        "rejected": true,
+        "reason": "unreviewed routing alias"
+      },
+      {
+        "case": "wrong_target_source",
+        "rejected": true,
+        "reason": "wrong target SYN"
+      },
+      {
+        "case": "routing_choice_change",
+        "rejected": true,
+        "reason": "LOCAL choices changed"
+      }
+    ],
+    "actual_proof": {
+      "passed": true,
+      "reference_physical_build": "F:\\nav_integration_g2_20261023\\sfp_lane2_telemetryglobal_pnr10",
+      "structural_reference": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+      "target_source": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_syn9",
+      "targets": [
+        {
+          "net": "n2371_7",
+          "reference_net": "n2371_7",
+          "old_driver": "u_control/n2371_s2",
+          "new_driver": "u_control/n2371_s2",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "r2",
+          "reference_net": "r2",
+          "old_driver": "u_rs/r2_s1",
+          "new_driver": "u_rs/r2_s1",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "u_control/model_thread/observation/n971_7",
+          "reference_net": "u_control/model_thread/observation/n331_7",
+          "old_driver": "u_control/model_thread/observation/n331_s2",
+          "new_driver": "u_control/model_thread/observation/n971_s2",
+          "parameters_identical": true,
+          "proved_alias": true
+        },
+        {
+          "net": "u_control/model_thread/policy/snapshot_update",
+          "reference_net": "u_control/model_thread/policy/snapshot_update",
+          "old_driver": "u_control/model_thread/policy/snapshot_update_s0",
+          "new_driver": "u_control/model_thread/policy/snapshot_update_s0",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "u_control/telemetry_thread/n1315_4",
+          "reference_net": "u_control/telemetry_thread/n1315_4",
+          "old_driver": "u_control/telemetry_thread/n1315_s1",
+          "new_driver": "u_control/telemetry_thread/n1315_s1",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "u_control/telemetry_thread/snapshot_959_10",
+          "reference_net": "u_control/telemetry_thread/snapshot_959_10",
+          "old_driver": "u_control/telemetry_thread/snapshot_959_s4",
+          "new_driver": "u_control/telemetry_thread/snapshot_959_s4",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "u_nav/u_xt/n9903_3",
+          "reference_net": "u_nav/u_xt/n9903_3",
+          "old_driver": "u_nav/u_xt/n9616_s1",
+          "new_driver": "u_nav/u_xt/n9616_s1",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "u_nav/u_match/u_ex/n7021_4",
+          "reference_net": "u_nav/u_match/u_ex/n7021_4",
+          "old_driver": "u_nav/u_match/u_ex/n7021_s1",
+          "new_driver": "u_nav/u_match/u_ex/n7021_s1",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "u_nav/u_match/u_ex/rb_ra[0]",
+          "reference_net": "u_nav/u_match/u_ex/rb_ra[0]",
+          "old_driver": "u_nav/u_match/u_ex/rb_ra_0_s10",
+          "new_driver": "u_nav/u_match/u_ex/rb_ra_0_s10",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "u_nav/u_match/u_ex/rb_ra[1]",
+          "reference_net": "u_nav/u_match/u_ex/rb_ra[1]",
+          "old_driver": "u_nav/u_match/u_ex/rb_ra_1_s10",
+          "new_driver": "u_nav/u_match/u_ex/rb_ra_1_s10",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "u_nav/a_q_15_17",
+          "reference_net": "u_nav/a_q_15_17",
+          "old_driver": "u_nav/a_q_15_s9",
+          "new_driver": "u_nav/a_q_15_s9",
+          "parameters_identical": true,
+          "proved_alias": false
+        },
+        {
+          "net": "u_nav/u_map/u_tv/n25284_7",
+          "reference_net": "u_nav/u_map/u_tv/n25284_7",
+          "old_driver": "u_nav/u_map/u_tv/n25284_s2",
+          "new_driver": "u_nav/u_map/u_tv/n25284_s2",
+          "parameters_identical": true,
+          "proved_alias": false
+        }
+      ],
+      "strict_targets": 11,
+      "proved_alias": {
+        "old_net": "u_control/model_thread/observation/n331_7",
+        "new_net": "u_control/model_thread/observation/n971_7",
+        "old_driver": "u_control/model_thread/observation/n331_s2",
+        "new_driver": "u_control/model_thread/observation/n971_s2",
+        "kind": "LUT4",
+        "init": "16'hEFFF",
+        "truth_table_16": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          1,
+          1
+        ],
+        "upstream": [
+          {
+            "pin": "I0",
+            "net": "u_control/model_status_flags_1[6]",
+            "driver": "u_control/model_thread/stop_latched_s0",
+            "kind": "DFFCE",
+            "inputs_clock_enable_and_parameters_identical": true
+          },
+          {
+            "pin": "I1",
+            "net": "r2",
+            "driver": "u_rs/r2_s1",
+            "kind": "DFFPE",
+            "inputs_clock_enable_and_parameters_identical": true
+          },
+          {
+            "pin": "I2",
+            "net": "u_control/n6_4",
+            "driver": "u_control/n6_s1",
+            "kind": "LUT4",
+            "inputs_clock_enable_and_parameters_identical": true
+          },
+          {
+            "pin": "I3",
+            "net": "u_control/n6_5",
+            "driver": "u_control/n6_s2",
+            "kind": "LUT4",
+            "inputs_clock_enable_and_parameters_identical": true
+          }
+        ],
+        "outputs_only_renamed": true,
+        "scope": "one named reset-LUT alias; no timing exception added"
+      },
+      "true_clock_drivers": [
+        {
+          "net": "clk50_d",
+          "driver": "clk50_ibuf",
+          "kind": "IBUF",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "rgmii_rxc_d",
+          "driver": "rgmii_rxc_ibuf",
+          "kind": "IBUF",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "h_rx_clk",
+          "driver": "u_sfp/u_mac/u_serdes/gtr12_quad_inst0",
+          "kind": "GTR12_QUAD",
+          "inputs_and_parameters_identical": true
+        },
+        {
+          "net": "h_tx_clk",
+          "driver": "u_sfp/u_mac/u_serdes/gtr12_quad_inst0",
+          "kind": "GTR12_QUAD",
+          "inputs_and_parameters_identical": true
+        }
+      ],
+      "clock_periods_and_routing_choices_unchanged": true,
+      "scope": "actual drivers, INIT and one proved alias; actual allocation/CDC delay/timing still require PNR"
+    }
+  },
+  "observation_clock_inventory": {
+    "passed": true,
+    "rows": [
+      {
+        "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_rowbanks_syn7",
+        "raw_clock_pin_connections": {
+          "clk50_d": 5431,
+          "GND": 21
+        },
+        "nonconstant_clock_nets": [
+          "clk50_d"
+        ],
+        "unused_primitive_clock_pins_tied_to_constants": true,
+        "primitives": 11133
+      },
+      {
+        "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_obsreuse_syn9",
+        "raw_clock_pin_connections": {
+          "clk50_d": 5345,
+          "GND": 6
+        },
+        "nonconstant_clock_nets": [
+          "clk50_d"
+        ],
+        "unused_primitive_clock_pins_tied_to_constants": true,
+        "primitives": 10307
+      }
+    ],
+    "no_clock_domain_added": true,
+    "scope": "observation clock pin inventory only; constants are not clock domains; not complete CDC or timing signoff"
+  },
+  "initial_tool_telemetry_host_memory": {
+    "available_physical_bytes": 3728543744,
+    "total_physical_bytes": 16849293312,
+    "available_commit_bytes": 4390170624,
+    "commit_limit_bytes": 34825080832
+  },
+  "native_netlist_simulation_available": false,
+  "pending": [
+    "actual unrouted count and BSRAM/global resource allocation",
+    "global and per-domain setup/hold",
+    "154 effective constraints and actual first-stage delays",
+    "43 additional CDC and protected PCS/reset/IO review",
+    "recovery/removal/pulse widths",
+    "native observation netlist simulation license gap"
+  ],
+  "deployment_accepted": false,
+  "programmed": false,
+  "recurring_supervision_active": false,
+  "scope": "one bounded complete-candidate PNR; clocks/functional contracts preserved; no recurring automation or hardware action"
+}
