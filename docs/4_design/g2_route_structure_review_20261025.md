@@ -299,3 +299,9 @@ PNR33 `baseline_pose_only_pnr33`于00:06:41.419103启动工具3176、控制60448
 唯一PNR34 `baseline_fusion_action_width_pnr34`于00:58:16.208665启动工具38440（创建00:58:16.221713）、包装68788、接续13704；身份/命令/目录再次核对正确，实际cmd.do归一化逐项同PNR32，CST/20-10ns SDC逐字保持、无新例外，只有动作精确位宽叠加已布通融合实现。启动物理/提交约4.52/6.77GiB、通过原2/4GiB门槛，总0/静默0。最新真实日志完成布局和Routing Phase0，无最终rpt/tr，不能预报未布通/物理容量或50MHz时序；未中断、未重跑/改输入、未烧录。[实际启动](evidence/g2_20261023/fusion_action_width_PNR34_actual_start_20261026.json)；[本轮状态](evidence/g2_20261023/SYN25_complete_PNR34_routing_status_20261026.json)。
 
 并行局部布局审阅确认官方`INS_LOC`/区域约束入口和TR实际DSP位置，但DSP块索引不是GRID列，邻近CFU容量/空位图尚缺；当前锁位置草稿只保持原位，不是时序优化候选、不排重复布线。后续需官方FloorPlanner/Chip Array证明可用邻近位置再做有意义单因素对照。[位置审阅与待证项](evidence/g2_20261023/PNR32_local_placement_feasibility_20261026.json)。
+
+## 2026-10-26 01:29 PNR34失败与并行接续
+
+**2026-10-26 01:29 PNR34已自然失败1767条，当前无活动PNR；保留已布通PNR32并并行定位后续实现。** `baseline_fusion_action_width_pnr34`于01:25:18.070930自然PR0004退出1、cancelled=false，总0/静默0，厂商Routing Phase0至3结束后报告1767条未布通。实际RAM332/340、Logic89158、FF40104、DSP163.5、IO51；比PNR32 Logic−459/FF+12，RAM/DSP不变，但未保住布通。没有.tr，setup/hold、50MHz及实际CDC延迟均未知，不能用综合收益当时序改善；26物理源/首级/二级连接仍匹配，非完整CDC签核。工具38440/包装68788/接续13704均已退出，不再等待或原样重跑。[实际最终结果](evidence/g2_20261023/fusion_action_width_PNR34_final_unrouted1767_20261026.json)。
+
+最小动作位宽候选来源/数值与周期对照、实际RAM/INIT/两钟/26CDC前置通过不等于可布通，故该实现暂缓接入。原PNR32仍保留为332块、33.197MHz/3781 setup/12已审跨域hold的布通锚点，未达50MHz或部署门槛。当前三路独立并行：比较PNR32/34实际全局分配与负载/位置；审原融合平方30.099ns路径的数值/拍数不变寄存边界；用官方FloorPlanner/Chip Array查DSP对应GRID列与邻近可用CFU，证据足够才准备局部约束。未取得1767条失败逐网身份/拥塞位置，不宣称单一根因、不盲换参数，没有新PNR/烧录动作。
