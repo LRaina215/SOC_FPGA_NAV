@@ -74,8 +74,11 @@ def main():
         # A failed router may still omit the timing report; never invent data.
         report_commands=['report_route_congestion -max_grids 200',
                          'report_high_fanout_nets -max_nets 100 -min_fanout 100']
+        existing=(out/'g2.sdc').read_text(encoding='utf-8')
+        assert all(existing.splitlines().count(c)<=1 for c in report_commands), 'duplicate report request'
+        missing=[c for c in report_commands if c not in existing.splitlines()]
         with (out/'g2.sdc').open('a',encoding='utf-8',newline='\n') as file:
-            file.write('\n# Detailed routing evidence; constraints unchanged.\n'+'\n'.join(report_commands)+'\n')
+            if missing:file.write('\n# Detailed routing evidence; constraints unchanged.\n'+'\n'.join(missing)+'\n')
     command=src/'impl/pnr/cmd.do';cmd=command.read_text(encoding='utf-8') if command.exists() else None
     if cmd:
         frequency=float(re.search(r'-global_freq\s+(\S+)',cmd)[1]);replicate=int(bool(re.search(r'(?m)^-replicate(?:_resources)?(?:\s|$)',cmd)))

@@ -46,6 +46,8 @@ def main():
     ap.add_argument('--observation-reuse-prefetch',action='store_true',help='share exact observation scaling and prefetch on existing state edges; retain all external cycles')
     ap.add_argument('--slf-point-planes',action='store_true',help='pack only the full4096x36 point store into1024x18 planes; same values/capacity/read cycles')
     ap.add_argument('--snapshot-private-reset',action='store_true',help='remove only the write-before-read private snapshot reset; preserve all state/stop/core resets')
+    ap.add_argument('--small-block-stores',action='store_true',help='map tested storage shapes; combine with explicit mailbox selection to avoid the rejected337-block broad variant')
+    ap.add_argument('--select-small-block-mailboxes',action='store_true',help='explicitly opt in only the three mailbox instances; preserve same-shaped candidate/result tables')
     ap.add_argument('--sfp-lane2-from-build',type=Path,help='adopt proved SFP1 Lane2 generated wrapper/CSR; preserve other frozen RTL and joint timing requirements')
     a=ap.parse_args();src=a.source.resolve();out=a.out.resolve()
     assert (a.wait_pid is None or a.wait_pid>0) and out!=src and src not in out.parents and out not in src.parents
@@ -64,6 +66,8 @@ def main():
     assert not a.observation_reuse_prefetch or not manifest.get('observation_reuse_prefetch')
     assert not a.slf_point_planes or not manifest.get('slf_point_planes')
     assert not a.snapshot_private_reset or not manifest.get('snapshot_private_reset')
+    assert not a.small_block_stores or not manifest.get('small_block_stores')
+    assert not a.select_small_block_mailboxes or a.small_block_stores
     original=(src/'run.tcl').read_text(encoding='utf-8')
     assert [s.strip()for s in original.splitlines()if s.strip().startswith('run ')]==['run syn']
     # Preserve the cancelled directory, including partial implementation files.
@@ -151,6 +155,27 @@ def main():
         expected += adopt(out,src,a.sfp_lane2_from_build)
         manifest['sfp_lane2_from_build']=str(a.sfp_lane2_from_build.resolve())
         manifest['sfp_lane2_input_checks']=verify_frozen(out,src,a.sfp_lane2_from_build)
+    if a.small_block_stores:
+        from prepare_small_block_stores import generate
+        probe_path=src.parent/'small_block_stores_probe1/result.json'
+        probe=json.loads(probe_path.read_text())
+        assert Path(probe['source']).resolve()==src and probe['passed']
+        assert probe['physical_run']['actual_bsram']==3
+        assert [r['variant'] for r in probe['checks']]==['rtl','mapped','physical_mapped']
+        assert all('TEST PASSED checks=90122' in r['result'] for r in probe['checks'])
+        generate(out/'nav/rtl/common/nav_ram_sdp.v')
+        assert (out/'nav/rtl/common/nav_ram_sdp.v').read_text()==(probe_path.parent/'physical/ram.v').read_text()
+        manifest.update(small_block_stores=True,small_block_stores_probe=str(probe_path))
+        if a.select_small_block_mailboxes:
+            from prepare_small_block_stores import transform_selected,select_mailboxes
+            selected_probe=src.parent/'smallblocks_selected_probe1/result.json'
+            selected=json.loads(selected_probe.read_text())
+            assert selected['passed'] and Path(selected['source']).resolve()==src
+            assert selected['enabled_memory_bodies_match_prior_physical_proof']
+            assert 'TEST PASSED checks=90122' in selected['checks'][0]['result']
+            (out/'nav/rtl/common/nav_ram_sdp.v').write_text(transform_selected((src/'nav/rtl/common/nav_ram_sdp.v').read_text()),encoding='utf-8')
+            (out/'nav/rtl/net/host_mbx.v').write_text(select_mailboxes((src/'nav/rtl/net/host_mbx.v').read_text()),encoding='utf-8')
+            manifest.update(small_block_stores_selected=True,small_block_stores_selection_probe=str(selected_probe))
     if a.gyro_sum_exact_widths:expected.append('control/imu_fusion.v')
     if a.trig_block_rom:expected.append('nav/rtl/common/nav_ram_sdp.v')
     if a.snapshot_mux_fanout:expected.append('control/rl_policy_tick_v5.v')
@@ -164,6 +189,8 @@ def main():
     if a.observation_reuse_prefetch:expected.append('control/rl_observation_v5.v')
     if a.slf_point_planes:expected.append('nav/rtl/common/nav_ram_sdp.v')
     if a.snapshot_private_reset:expected.append('control/rl_policy_tick_v5.v')
+    if a.small_block_stores:expected.append('nav/rtl/common/nav_ram_sdp.v')
+    if a.select_small_block_mailboxes:expected.append('nav/rtl/net/host_mbx.v')
     for name in manifest['source_files']:
         previous=Path(name);relative=previous.relative_to(src)
         if previous.read_bytes()!=(out/relative).read_bytes():modified.append(relative.as_posix())
