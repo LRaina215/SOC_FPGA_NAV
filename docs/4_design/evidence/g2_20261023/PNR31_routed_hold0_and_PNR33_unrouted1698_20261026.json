@@ -1,0 +1,328 @@
+{
+  "recorded_at": "2026-10-26T00:37:07.580202+08:00",
+  "scope": "Actual natural PNR31/33 results and live PNR32 identity; not deployment approval",
+  "PNR31": {
+    "routing_passed": true,
+    "unrouted_nets": null,
+    "errors": [],
+    "resources": {
+      "logic": {
+        "used": 89584.0,
+        "capacity": 138240.0
+      },
+      "register": {
+        "used": 39957.0,
+        "capacity": 139095.0
+      },
+      "bsram": {
+        "used": 332.0,
+        "capacity": 340.0
+      },
+      "dsp": {
+        "used": 163.5,
+        "capacity": 298.0
+      },
+      "io_port": {
+        "used": 51.0,
+        "capacity": 297.0
+      }
+    },
+    "clocks": [
+      {
+        "name": "clk50",
+        "constraint_mhz": 50.0,
+        "actual_fmax_mhz": 26.313,
+        "levels": 24,
+        "entity": "TOP"
+      },
+      {
+        "name": "rgmii_rxc",
+        "constraint_mhz": 100.0,
+        "actual_fmax_mhz": 123.53,
+        "levels": 9,
+        "entity": "TOP"
+      }
+    ],
+    "setup_violations": 5003,
+    "hold_violations": 0,
+    "per_clock_violations": {
+      "clk50": {
+        "setup": {
+          "tns_ns": -25715.209,
+          "violated_endpoints": 5003
+        },
+        "hold": {
+          "tns_ns": 0.0,
+          "violated_endpoints": 0
+        }
+      },
+      "rgmii_rxc": {
+        "setup": {
+          "tns_ns": 0.0,
+          "violated_endpoints": 0
+        },
+        "hold": {
+          "tns_ns": 0.0,
+          "violated_endpoints": 0
+        }
+      }
+    },
+    "reported_reset_pulse_checks": {
+      "recovery": {
+        "available": true,
+        "reported_rows": 25,
+        "worst_slack_ns": 3.354,
+        "negative_reported_rows": 0
+      },
+      "removal": {
+        "available": true,
+        "reported_rows": 25,
+        "worst_slack_ns": 0.66,
+        "negative_reported_rows": 0
+      },
+      "minimum_pulse_width": {
+        "available": true,
+        "reported_rows": 10,
+        "worst_slack_ns": 2.843,
+        "negative_reported_rows": 0
+      }
+    },
+    "reported_reset_pulse_checks_pass": true,
+    "diagnostic_only": true,
+    "g2_resource_core_gate_pass": false,
+    "CDC26_and_active52": {
+      "passed": true,
+      "endpoints_match_reference": true,
+      "required_active_constraints": 52,
+      "missing_active_constraints": [],
+      "effective_constraint_status": "verified_reported_active"
+    },
+    "directory": "F:\\nav_integration_g2_20261023\\baseline27_cdc_only_pnr31",
+    "runtime": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-25T23:37:33.732993+08:00",
+      "max_runtime_s": 0,
+      "max_no_observable_progress_s": 0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 4172,
+      "elapsed_s": 1743.9839999999385,
+      "no_observable_progress_s": 0.0,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          2112,
+          1792944395195834300
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          1684,
+          1792944395195834300
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          2384840,
+          1792943046885228600
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          13803723,
+          1792943047366125200
+        ],
+        [
+          "impl\\pnr\\g2_top.pr",
+          238571898,
+          1792944361175499200
+        ],
+        [
+          "impl\\pnr\\g2_top.tr",
+          582570,
+          1792944395089988900
+        ],
+        [
+          "impl\\pnr\\g2_top.rpt.txt",
+          92675,
+          1792944385843752200
+        ],
+        [
+          "impl\\pnr\\g2_top.vo",
+          44530639,
+          1792944388660404200
+        ]
+      ],
+      "tool_exit": 0,
+      "ended_at": "2026-10-26T00:06:37.714168+08:00"
+    },
+    "report": "F:\\nav_integration_g2_20261023\\baseline27_cdc_only_pnr31\\impl\\pnr\\g2_top.rpt.txt",
+    "timing_report_available": true,
+    "actual_global_and_RAM_details_review_pending": false,
+    "unrouted_net_identities_available": false,
+    "full_IO_CDC_signoff": false,
+    "programmed": false,
+    "deployment_accepted": false,
+    "additional_actual_delay_review": "D:/Desktop/SOC FPGA/nav/docs/4_design/evidence/g2_20261023/PNR31_effective_CDC_and_delay_final_review_20261026.json",
+    "all26_max_delay_path_slacks_positive": true,
+    "worst_of26_max_delay_slacks_ns": 6.929
+  },
+  "PNR33": {
+    "routing_passed": false,
+    "unrouted_nets": 1698,
+    "errors": [
+      "ERROR  (PR0004) : There are total 1698 unrouted nets",
+      "Error: DesRoute failed."
+    ],
+    "resources": {
+      "logic": {
+        "used": 89556.0,
+        "capacity": 138240.0
+      },
+      "register": {
+        "used": 39958.0,
+        "capacity": 139095.0
+      },
+      "bsram": {
+        "used": 332.0,
+        "capacity": 340.0
+      },
+      "dsp": {
+        "used": 163.5,
+        "capacity": 298.0
+      },
+      "io_port": {
+        "used": 51.0,
+        "capacity": 297.0
+      }
+    },
+    "clocks": [],
+    "setup_violations": null,
+    "hold_violations": null,
+    "per_clock_violations": {},
+    "reported_reset_pulse_checks": {
+      "recovery": {
+        "available": false,
+        "reported_rows": 0,
+        "worst_slack_ns": null,
+        "negative_reported_rows": null
+      },
+      "removal": {
+        "available": false,
+        "reported_rows": 0,
+        "worst_slack_ns": null,
+        "negative_reported_rows": null
+      },
+      "minimum_pulse_width": {
+        "available": false,
+        "reported_rows": 0,
+        "worst_slack_ns": null,
+        "negative_reported_rows": null
+      }
+    },
+    "reported_reset_pulse_checks_pass": false,
+    "diagnostic_only": true,
+    "g2_resource_core_gate_pass": false,
+    "physical26_connections": {
+      "passed": true,
+      "actual_source_first_second_identity_matches_reviewed_SYN": true,
+      "added_timing_exceptions": 0,
+      "full_CDC_timing_signoff": false
+    },
+    "directory": "F:\\nav_integration_g2_20261023\\baseline_pose_only_pnr33",
+    "runtime": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-26T00:06:41.419103+08:00",
+      "max_runtime_s": 0,
+      "max_no_observable_progress_s": 0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 3176,
+      "elapsed_s": 1575.984999999986,
+      "no_observable_progress_s": 0.0,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          1691,
+          1792945975218991800
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          1177,
+          1792945973020461600
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          2384060,
+          1792944774088932600
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          13791229,
+          1792944774559781900
+        ],
+        [
+          "impl\\pnr\\g2_top.rpt.txt",
+          93175,
+          1792945970641267600
+        ],
+        [
+          "impl\\pnr\\g2_top.vo",
+          44525301,
+          1792945973020461600
+        ]
+      ],
+      "tool_exit": 1,
+      "ended_at": "2026-10-26T00:32:57.411128+08:00"
+    },
+    "report": "F:\\nav_integration_g2_20261023\\baseline_pose_only_pnr33\\impl\\pnr\\g2_top.rpt.txt",
+    "timing_report_available": false,
+    "actual_global_and_RAM_details_review_pending": true,
+    "unrouted_net_identities_available": false,
+    "full_IO_CDC_signoff": false,
+    "programmed": false,
+    "deployment_accepted": false,
+    "actual_options_equal_PNR27": true,
+    "pure_RTL_change": "nav/rtl/top/nav_subsystem.v pose address predecode only",
+    "original_CST_20ns10ns_SDC_preserved": true
+  },
+  "PNR32": {
+    "directory": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32",
+    "runtime": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32\\tool_runtime.json",
+    "tool_pid": 42064,
+    "tool_created_epoch": 1792943969.2923913,
+    "controller_pid": 68232,
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-25T23:59:29.290084+08:00",
+    "phase": "routing_Phase1_completed_no_final_report",
+    "total_limit_s": 0,
+    "silent_limit_s": 0,
+    "inputs_process_or_deadlines_changed": false,
+    "programmed": false
+  },
+  "controlled_observations": {
+    "adding_audited52_constraints_alone_retained_routing": true,
+    "PNR31_setup5003_and_core_Fmax26p313_unchanged": true,
+    "PNR31_reported_hold0_is_exception_aware_STA_not_proof_all_physical_CDC_safe": true,
+    "pure_pose_candidate_failed_in_this_run": true,
+    "pure_pose_failure_proves_all_timing_optimization_impossible": false,
+    "failure_location_and_cause_still_unverified": true
+  },
+  "parallel_overlap_confirmed": true,
+  "new_builds_started_by_this_check": false,
+  "automation_resumed": false,
+  "programmed": false,
+  "deployment_accepted": false
+}

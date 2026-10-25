@@ -275,3 +275,11 @@ fusion-only SYN23（工具35124/监管20832、23:41:17、IDLE CPU16）及pose-on
 两份63硬件仅各1RTL改变、69资产/31头/真正FW与编译时标逐字保持；64个CPU SP/4096 INIT页重建完整128KiB，所有BSRAM几何/模式/INIT、两真实时钟及26首级链/改名输入锥均审阅通过。首轮检查误将`fw/bsp/__pycache__`宿主缓存当固件而拦截，严格排除原retry本就不复制的解释器缓存后，仅review-only复用现有VG；原failed JSON/log/声明保留，没有重综、改算法或放宽真实资产。恢复passed目录为`review_only_recovery_20261025_235536_156419`。[fusion实际审阅](evidence/g2_20261023/fusion_only_actual_SYN_preflight_20261025.json)；[pose实际审阅](evidence/g2_20261023/pose_only_actual_SYN_preflight_20261025.json)。
 
 PNR31工具4172/控制19752保持原PNR27网表及20/10ns，只加52个已审CDC命令，仍无最终报告。纯fusion PNR32已23:59:29.290084启动工具42064/控制68232，与31并行；纯pose PNR33控制60448已严格消费passed并独立等2GiB物理/4GiB提交余量，最近提交约3.37GiB低于4GiB，尚未启动工具。两版均原PNR27 CST/20-10ns/route0，仅各1项RTL，无新增52例外；不把另一轮结束当逻辑前提。原43460/53008轻量等待器因首次审阅failed正确退出，显式continuation_attempt_1仅恢复尚未启动物理的消费，旧声明与failed证据保留，不是重复PNR。所有PNR总0/静默0，无截止；未中断任何布线/关闭用户软件/恢复自动监督/烧录或发动作。[当前并行身份与接续](evidence/g2_20261023/parallel_baseline_SYN23_24_and_PNR31_32_33_20261026.json)。
+
+## 2026-10-26 00:37 PNR31与PNR33实际结果
+
+**2026-10-26 00:37 新结果：PNR31已布通且hold0，但50MHz仍5003 setup；纯POSE PNR33自然失败1698条，融合PNR32继续routing。** PNR31于00:06:37.714168自然退出0、cancelled=false，厂商实际RAM332/340、Logic89584、FF39957、CLS55557、DSP163.5；核心约束50MHz/Fmax26.313MHz，setup5003/hold0，RX100MHz/Fmax123.530MHz。26物理源/首级/二级连接和52条实际Actived命令均匹配；hold0是在已审首级hold-only与max-delay约束口径下的STA结果，不代表完整CDC/IO或50MHz准入。复位/脉宽已报表行余量为正，完整签核仍待。
+
+PNR33 `baseline_pose_only_pnr33`于00:06:41.419103启动工具3176、控制60448，已与PNR32并行；00:32:57.411128自然PR0004退出1，1698条未布通，总0/静默0、cancelled=false。实际RAM332/340、Logic89556、FF39958、CLS55285、DSP163.5；相对PNR27为Logic−28/FF+1/CLS−272、RAM/DSP相同。原CST/20-10ns/route0与参数均核对相同，只有已证明的POSE RTL改变，无新增52例外。26物理连接匹配，但缺.tr，setup/hold/有效延迟/IO未知；不能当0违规，也未取得1698条失败网络身份/位置。保留失败现场、暂缓接入该实现，不原样重跑。[真实结果与当前进程](evidence/g2_20261023/PNR31_routed_hold0_and_PNR33_unrouted1698_20261026.json)。
+
+这两项对照分别确认：单独增加已审52约束未破坏基线布通、也未解决5003 setup；POSE预译码单独加入在本轮已未能布通，不能由此否定所有时序实现。进一步核对真实全局分配和控制负载，不把RAM总量或某一猜测当根因。PNR32 `baseline_fusion_only_pnr32`仍为原工具42064创建23:59:29.292391、控制68232，同目录/命令已核，Routing Phase1完成、无最终报告；总0/静默0，不暂停、不恢复截止。当前只有32仍在布线，31/33已自然结束，不等旧PID；未启动重复构建、未恢复自动监督、未烧录/发动作。
