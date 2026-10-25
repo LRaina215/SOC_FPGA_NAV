@@ -1,0 +1,179 @@
+{
+  "passed": true,
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_width_syn25",
+  "baseline": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32",
+  "changed_HW_inputs": [
+    "control/policy_action_map.v"
+  ],
+  "identical_assets": 69,
+  "identical_headers": 31,
+  "firmware_files": {
+    "fw": 61,
+    "firmware": 92
+  },
+  "source_BSRAM": 314,
+  "wide_leaves": 18,
+  "predicted_physical_BSRAM": 332,
+  "CPU_SP_count": 64,
+  "true_clocks": 2,
+  "known_CDC_paths": 26,
+  "actual_direct_CDC_count": 26,
+  "unproved_CDC_aliases": 0,
+  "memory_pin_name_differences": 782,
+  "actual_all_memory_geometry_and_INIT_identical": true,
+  "actual_physical_timing_or_CDC_delay_signed_off": false,
+  "changed_actual_CDC_input_cones_proved": 36,
+  "execution": {
+    "phase": "starting_unique_pure_RTL_PNR",
+    "available_physical_bytes": 4857167872,
+    "available_commit_bytes": 7268143104,
+    "minimum_physical_bytes": 2147483648,
+    "minimum_commit_bytes": 4294967296,
+    "total_limit_s": 0,
+    "silent_limit_s": 0
+  },
+  "processes": [
+    {
+      "pid": 13704,
+      "created_epoch": 1792947117.3392231,
+      "parent_pid": 19600,
+      "name": "python.exe",
+      "cwd": "D:\\Desktop\\SOC FPGA\\nav",
+      "command": [
+        "D:/Anaconda/python.exe",
+        "-X",
+        "utf8",
+        "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\continue_baseline_fusion_action_width.py"
+      ],
+      "priority": 32,
+      "affinity": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ]
+    },
+    {
+      "pid": 68788,
+      "created_epoch": 1792947494.3878782,
+      "parent_pid": 13704,
+      "name": "python.exe",
+      "cwd": "D:\\Desktop\\SOC FPGA\\nav",
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\run_baseline_fusion_action_width_pnr.py",
+        "--review",
+        "F:\\nav_integration_g2_20261023\\baseline_fusion_action_width_continuation1\\actual_netlist_review.json"
+      ],
+      "priority": 32,
+      "affinity": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ]
+    },
+    {
+      "pid": 38440,
+      "created_epoch": 1792947496.2217133,
+      "parent_pid": 68788,
+      "name": "gw_sh.exe",
+      "cwd": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_width_pnr34",
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "priority": 32,
+      "affinity": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ]
+    }
+  ],
+  "original_CST_bytes_identical": true,
+  "original_two_clock_SDC_bytes_identical": true,
+  "actual_PNR_cmd_available": true,
+  "actual_normalized_PNR_cmd_equal_PNR32": true,
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-26T00:58:16.208665+08:00",
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 38440,
+    "elapsed_s": 30.04700000002049,
+    "no_observable_progress_s": 26.015999999945052,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        860,
+        1792947499919304000
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        405,
+        1792947499919304000
+      ]
+    ]
+  },
+  "physical_result_pending": true
+}

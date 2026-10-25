@@ -1,0 +1,231 @@
+{
+  "recorded_at": "2026-10-26T01:17:19.659355+08:00",
+  "scope": "SYN25 real resources and PNR34 in-progress physical run; no deployment acceptance",
+  "synthesis_job": {
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_width_prepared1",
+    "build": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_width_syn25",
+    "wait_pid": null,
+    "programmed": false,
+    "source_frozen_before_wait": true,
+    "automatic_pnr": false,
+    "settings_only_resume": false,
+    "modified_rtl_inputs": [],
+    "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+    "execution_policy": {
+      "priority": 64,
+      "affinity": [
+        16
+      ],
+      "maximum_new_SYN_tree_RSS_MiB": 0,
+      "maximum_new_SYN_tree_private_commit_MiB": 0,
+      "minimum_runtime_physical_MiB": 0,
+      "minimum_runtime_commit_reserve_MiB": 0,
+      "applies_to": "this runner and newly created descendants only; no existing PNR process is modified"
+    },
+    "phase": "synthesis_complete",
+    "updated_at": "2026-10-26T00:57:29.676759+08:00",
+    "minimum_start_free_bytes": 2147483648,
+    "minimum_start_available_commit_bytes": 4294967296,
+    "max_runtime_minutes": 40,
+    "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+    "tool_pid": 38716,
+    "synthesis_started_at": "2026-10-26T00:44:35.617854+08:00",
+    "tool_created_epoch": 1792946675.6184423,
+    "actual_tool_priority": 64,
+    "actual_tool_affinity": [
+      16
+    ],
+    "elapsed_s": 744.125,
+    "free_bytes": 4204339200,
+    "available_commit_bytes": 6737879040,
+    "owned_tool_RSS_bytes": 566272000,
+    "peak_owned_tool_RSS_bytes": 1421492224,
+    "owned_tool_private_bytes": 561934336,
+    "peak_owned_tool_private_bytes": 1452019712,
+    "tool_exit": 0,
+    "joint_pnr_measured": false
+  },
+  "vendor_resources": {
+    "name": "g2_top",
+    "Register": "26",
+    "Alu": "25",
+    "Lut": "3",
+    "T_Register": "38195(26)",
+    "T_Alu": "9581(25)",
+    "T_Lut": "52631(3)",
+    "T_MULTALU27X18": "77(0)",
+    "T_MULT12X12": "23(0)",
+    "T_MULT27X36": "37(0)",
+    "T_MULTADDALU12X12": "1(0)",
+    "T_Bsram": "314(0)",
+    "T_Ssram": "3855(0)",
+    "T_ROM16": "3650(0)"
+  },
+  "relative_to_SYN23": {
+    "FF": 12,
+    "LUT": -428,
+    "ALU": -37,
+    "source_BSRAM": 0
+  },
+  "actual_preflight": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\fusion_action_width_SYN25_actual_netlist_review_20261026.json",
+  "PNR34_status_snapshot": {
+    "recorded_at": "2026-10-26T01:15:49.336549+08:00",
+    "build": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_width_pnr34",
+    "process_identities": [
+      {
+        "pid": 13704,
+        "expected_created_epoch": 1792947117.3392231,
+        "alive_same_identity": true,
+        "actual_created_epoch": 1792947117.3392231,
+        "name": "python.exe",
+        "parent_pid": 19600,
+        "command": [
+          "D:/Anaconda/python.exe",
+          "-X",
+          "utf8",
+          "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\continue_baseline_fusion_action_width.py"
+        ],
+        "cwd": "D:\\Desktop\\SOC FPGA\\nav"
+      },
+      {
+        "pid": 68788,
+        "expected_created_epoch": 1792947494.3878782,
+        "alive_same_identity": true,
+        "actual_created_epoch": 1792947494.3878782,
+        "name": "python.exe",
+        "parent_pid": 13704,
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\run_baseline_fusion_action_width_pnr.py",
+          "--review",
+          "F:\\nav_integration_g2_20261023\\baseline_fusion_action_width_continuation1\\actual_netlist_review.json"
+        ],
+        "cwd": "D:\\Desktop\\SOC FPGA\\nav"
+      },
+      {
+        "pid": 38440,
+        "expected_created_epoch": 1792947496.2217133,
+        "alive_same_identity": true,
+        "actual_created_epoch": 1792947496.2217133,
+        "name": "gw_sh.exe",
+        "parent_pid": 68788,
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "run.tcl"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_width_pnr34"
+      }
+    ],
+    "runtime": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-26T00:58:16.208665+08:00",
+      "max_runtime_s": 0,
+      "max_no_observable_progress_s": 0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 38440,
+      "elapsed_s": 1051.2029999999795,
+      "no_observable_progress_s": 656.734999999986,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          1056,
+          1792947888718097900
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          601,
+          1792947888718097900
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          2379100,
+          1792947864383348800
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          13769229,
+          1792947864852787600
+        ]
+      ]
+    },
+    "controller_phase": "starting_unique_pure_RTL_PNR",
+    "log_tail": [
+      "Reading netlist file: \"F:\\nav_integration_g2_20261023\\baseline_fusion_action_width_pnr34\\g2_top.vg\"",
+      "Parsing netlist file \"F:\\nav_integration_g2_20261023\\baseline_fusion_action_width_pnr34\\g2_top.vg\" completed",
+      "Processing netlist completed",
+      "Reading constraint file: \"F:\\nav_integration_g2_20261023\\baseline_fusion_action_width_pnr34\\g2.cst\"",
+      "Physical Constraint parsed completed",
+      "Running placement......",
+      "[10%] Placement Phase 0 completed",
+      "[20%] Placement Phase 1 completed",
+      "[30%] Placement Phase 2 completed",
+      "[50%] Placement Phase 3 completed",
+      "Running routing......",
+      "[60%] Routing Phase 0 completed"
+    ],
+    "final_rpt_exists": false,
+    "timing_tr_files": [],
+    "SYN23_resources": {
+      "T_Register": 38183,
+      "T_Lut": 53059,
+      "T_Alu": 9618,
+      "T_Bsram": 314,
+      "T_Ssram": 3855,
+      "T_ROM16": 3650
+    },
+    "SYN25_resources": {
+      "T_Register": 38195,
+      "T_Lut": 52631,
+      "T_Alu": 9581,
+      "T_Bsram": 314,
+      "T_Ssram": 3855,
+      "T_ROM16": 3650
+    },
+    "SYN25_minus_SYN23": {
+      "T_Register": 12,
+      "T_Lut": -428,
+      "T_Alu": -37,
+      "T_Bsram": 0,
+      "T_Ssram": 0,
+      "T_ROM16": 0
+    },
+    "source_preflight": {
+      "passed": true,
+      "actual_RAM_INIT_clock_26CDC_preflight_passed": true,
+      "source_BSRAM": 314,
+      "wide_leaves": 18,
+      "CPU_SP_count": 64,
+      "true_clocks": 2,
+      "known_CDC_paths": 26,
+      "identical_assets": 69,
+      "identical_headers": 31,
+      "firmware_files": {
+        "fw": 61,
+        "firmware": 92
+      },
+      "actual_all_memory_geometry_and_INIT_identical": true,
+      "actual_direct_CDC_count": 26,
+      "unproved_CDC_aliases": 0
+    },
+    "changed_CDC_input_cones_proved": 36,
+    "scope": "Read-only process/log/report snapshot; active runtime or stage is not route convergence or timing acceptance",
+    "last_phase_lines": [
+      "[10%] Placement Phase 0 completed",
+      "[20%] Placement Phase 1 completed",
+      "[30%] Placement Phase 2 completed",
+      "[50%] Placement Phase 3 completed",
+      "[60%] Routing Phase 0 completed"
+    ]
+  },
+  "physical_RAM_and_timing_pending": true,
+  "programmed": false
+}

@@ -291,3 +291,11 @@ PNR33 `baseline_pose_only_pnr33`于00:06:41.419103启动工具3176、控制60448
 真实最差动作→执行器路径30.066ns/−10.124ns，其中布线21.960ns；融合平方30.099ns/−10.090ns，其中布线20.469ns。前者17 LUT＋MULTALU27X18、后者19 LUT＋MULT27X36，两个DSP相关寄存配置均BYPASS；top25为8条动作＋17条融合，不能据此断言NAV域50MHz已过。两条最长跳线已按实际端点交独立合法CST位置审阅，不猜坐标或把样本当全拥塞图。[实际逐弧/原语终审](evidence/g2_20261023/PNR32_actual_timing_and_critical_path_final_review_20261026.json)。纯POSE PNR33的1698条失败现场保留；实际全局分配虽变，但未取得失败逐网身份，不能称唯一根因。[POSE实际物理对照](evidence/g2_20261023/PNR33_vs_baseline_actual_physical_comparison_20261026.json)。
 
 从已布通融合SYN23冻结，仅提取已证明的`control/policy_action_map.v`私有精确位宽，不引入POSE、weight9或其他旧候选。复用8770帧、每增益8193取值、停止/无效各64拍和两参数组的数值/周期证明；63硬件仅该1份改变，69资产/31头/完整固件与编译时间字节保持，原4500/权重/125Hz/全部容量/停止外部周期不变。唯一SYN25 `baseline_fusion_action_width_syn25`于00:44:35.617854实际启动工具38716（创建00:44:35.618442）、监管64928；同目录/命令已核，40分钟综合及原2/4GiB启动/运行内存保护保持。实际新RAM/INIT/时钟/26CDC审阅尚待SYN完成；通过后接唯一PNR34，PNR仍总0/静默0，不把来源证明当新网表通过。当前无活动PNR，没有重复综合或恢复自动监督；局部布线位置审阅与SYN25并行。[来源与实际启动](evidence/g2_20261023/fusion_action_width_SYN25_source_and_launch_20261026.json)。
+
+## 2026-10-26 01:17 SYN25实际审阅与PNR34布线
+
+**2026-10-26 01:17 SYN25已完成且实际网表审阅通过，PNR34已进入routing。** SYN25于00:57:29.676759自然完整完成、退出0，厂商实际FF38195/LUT52631/ALU9581；比融合单改SYN23为FF+12/LUT−428/ALU−37，源BSRAM314/18宽保持。预计物理332块仍待PNR实测。69资产/31头/FW61+92文件及编译时间字节相同，全部RAM叶参数/INIT与CPU128KiB保持；两真时钟、26直接跨域、36处改名输入锥证明通过、未证别名0。782处RAM端口网名差异已保存，未冒称完整网表等价。[实际新网表前置审阅](evidence/g2_20261023/fusion_action_width_SYN25_actual_netlist_review_20261026.json)。
+
+唯一PNR34 `baseline_fusion_action_width_pnr34`于00:58:16.208665启动工具38440（创建00:58:16.221713）、包装68788、接续13704；身份/命令/目录再次核对正确，实际cmd.do归一化逐项同PNR32，CST/20-10ns SDC逐字保持、无新例外，只有动作精确位宽叠加已布通融合实现。启动物理/提交约4.52/6.77GiB、通过原2/4GiB门槛，总0/静默0。最新真实日志完成布局和Routing Phase0，无最终rpt/tr，不能预报未布通/物理容量或50MHz时序；未中断、未重跑/改输入、未烧录。[实际启动](evidence/g2_20261023/fusion_action_width_PNR34_actual_start_20261026.json)；[本轮状态](evidence/g2_20261023/SYN25_complete_PNR34_routing_status_20261026.json)。
+
+并行局部布局审阅确认官方`INS_LOC`/区域约束入口和TR实际DSP位置，但DSP块索引不是GRID列，邻近CFU容量/空位图尚缺；当前锁位置草稿只保持原位，不是时序优化候选、不排重复布线。后续需官方FloorPlanner/Chip Array证明可用邻近位置再做有意义单因素对照。[位置审阅与待证项](evidence/g2_20261023/PNR32_local_placement_feasibility_20261026.json)。
