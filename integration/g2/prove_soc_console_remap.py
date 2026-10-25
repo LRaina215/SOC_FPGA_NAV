@@ -130,11 +130,28 @@ def prove(before,after,old_params,new_params,directions,timeout_ms=10000):
                 net,=c['ports']['Q'];assert net not in result;result[net]=c
         return result
     qa,qb=state(a),state(b)
-    removed=sorted(qa.keys()-qb.keys());added=sorted(qb.keys()-qa.keys())
-    assert not added and removed
+    # The CPU's actual output FF can keep its complete primitive definition
+    # while the optimizer removes a shared _Z output alias. Pair only that
+    # same actual instance; its complete transition is still proved below.
+    by_name={c['name']:q for q,c in qb.items()}
+    pairs={};renamed=[]
+    for q,c in qa.items():
+        if q in qb:pairs[q]=q
+        elif c['name'] in by_name:
+            new_q=by_name[c['name']];y=qb[new_q]
+            assert c['name'].startswith('u_soc/u_cpu/') and c['kind']==y['kind'],('unexpected SoC state correspondence',q,new_q)
+            assert {p:v for p,v in c['ports'].items() if p!='Q'}=={p:v for p,v in y['ports'].items() if p!='Q'},('renamed CPU Q changed another primitive pin',c['name'])
+            assert old_params(c)==new_params(y),('renamed CPU Q changed INIT',c['name'])
+            pairs[q]=new_q;renamed.append(dict(instance=c['name'],old=q,new=new_q,all_non_Q_pins_and_INIT_identical=True))
+    assert len(pairs.values())==len(set(pairs.values())), 'nonbijective SoC state correspondence'
+    removed=sorted(qa.keys()-pairs.keys());added=sorted(qb.keys()-set(pairs.values()))
+    assert not added and removed,('unmatched SoC state',removed,added)
     allowed_removed=re.compile(r'^u_soc/con_(?:q(?:_\d+)?\[\d+\]|ra\[\d+\]|ra_\d+_\d+)$')
     assert all(allowed_removed.fullmatch(n) for n in removed), ('non-console state disappeared',removed)
-    qsymbols={n:z3.Bool('state:'+n) for n in qa.keys()|qb.keys()}
+    qsymbols={n:z3.Bool('state:'+n) for n in qa}
+    for old,new in pairs.items():
+        if new in qsymbols:assert z3.eq(qsymbols[new],qsymbols[old]),('SoC state alias collision',old,new)
+        qsymbols[new]=qsymbols[old]
     opaque=lambda cells:{n:c for n,c in cells.items() if c['kind'] in ('SP','RAM16SDP4','MULT27X36') and not console_path(n)}
     oa,ob=opaque(a),opaque(b)
     assert oa.keys()==ob.keys(), ('retained CPU RAM/DSP leaf set changed',sorted(oa.keys()-ob.keys()),sorted(ob.keys()-oa.keys()))
@@ -159,12 +176,12 @@ def prove(before,after,old_params,new_params,directions,timeout_ms=10000):
                     for index in range(len(nets)):symbols[(name,pin,index)]=z3.Bool('removed_console:'+name+':'+pin+':'+str(index))
     la,lb=Logic(before,old_params,directions,qsymbols,symbols),Logic(after,new_params,directions,qsymbols,symbols)
     input_cuts=[]
-    for q in sorted(qb):
+    for q in sorted(pairs):
         if not re.fullmatch(r'u_soc/nav_q\[\d+\]',q):continue
         # nav_q samples the external navigation return bus. The reduced
         # navigation candidate changes some register-read values by design;
         # do not pull that separate implementation through this SoC proof.
-        x,y=qa[q],qb[q]
+        x,y=qa[q],qb[pairs[q]]
         assert x['ports']['D']==y['ports']['D'] and len(x['ports']['D'])==1
         net=x['ports']['D'][0]
         assert all(not name.startswith('u_soc/') for name,_,_ in la.drivers.get(net,[]))
@@ -201,8 +218,8 @@ def prove(before,after,old_params,new_params,directions,timeout_ms=10000):
     ram_a,ram_b=ram_decode(la),ram_decode(lb);check('debug F008 address decode',ram_a,ram_b)
     console_update=z3.And(z3.Not(rst_a),state3,z3.Not(ram_a))
     type_changes=[]
-    for q in sorted(qb):
-        x,y=qa[q],qb[q]
+    for q in sorted(pairs):
+        x,y=qa[q],qb[pairs[q]]
         assert x['ports']['CLK']==y['ports']['CLK']==['clk50_d']
         old_init=literal(old_params(x).get('INIT',"1'b1" if x['kind'] in ('DFFSE','DFFPE') else "1'b0"))
         new_init=literal(new_params(y).get('INIT',"1'b1" if y['kind'] in ('DFFSE','DFFPE') else "1'b0"))
@@ -235,6 +252,7 @@ def prove(before,after,old_params,new_params,directions,timeout_ms=10000):
     assert solver.check()==z3.sat, 'negative counter-data corruption was not rejected'
     return dict(passed=True,old_SoC_cells=len(a),new_SoC_cells=len(b),
         retained_register_Qs=len(qb),removed_console_register_Qs=removed,new_register_Qs=added,
+        same_actual_CPU_FF_Q_renames=renamed,
         retained_CPU_register_Qs=sum(n.startswith('u_soc/u_cpu/') for n in qb),
         exact_unchanged_external_navigation_return_input_cuts=input_cuts,
         all_retained_state_INIT_and_clock_preserved=True,FF_type_changes=type_changes,
