@@ -1,0 +1,873 @@
+{
+  "recorded_at": "2026-10-25T15:27:12.263710+08:00",
+  "phase": "lossless_LF_complete_proof_two_full_candidates_one_conditional_waiter",
+  "arena_m": [
+    3,
+    5
+  ],
+  "all_vehicle_motion_inside": true,
+  "all_navigation_control_SFP_telemetry_algorithms_and_precision_retained": true,
+  "no_function_cut_variant_started": true,
+  "logical_capacity": {
+    "structure_words": 65536,
+    "structure_bits": 18,
+    "elevation_words": 16384,
+    "elevation_bits": 53,
+    "point_words": 4096,
+    "point_bits": 36
+  },
+  "exact_LF_representation": {
+    "original_line_bits": 19,
+    "information_bits": 11,
+    "rows": 4,
+    "depth": 258,
+    "original_storage_bits": 19608,
+    "compact_storage_bits": 11352,
+    "read_reconstruction": "same-cycle wires",
+    "original_scan_window_N": 256,
+    "all2048_information_encodings": true,
+    "arithmetic_and_5x5_neighborhood_unchanged": true
+  },
+  "complete_module_proof": {
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_syn17",
+    "build": "F:\\nav_integration_g2_20261023\\lf_line_compact_probe1",
+    "prepared_at": "2026-10-25T15:12:48.014374+08:00",
+    "modified_RTL_inputs": [
+      "nav/rtl/match/slf_lf.v"
+    ],
+    "exact_inverse_transform": true,
+    "map_words": 65536,
+    "slot_bits": 18,
+    "scan_N": 256,
+    "line_depth": 258,
+    "old_line_width": 19,
+    "new_line_information_width": 11,
+    "original_19bit_window_interface_retained": true,
+    "logical_line_bits_before": 19608,
+    "logical_line_bits_after": 11352,
+    "all2048_information_encodings_passed": true,
+    "original_scan_arithmetic_precision_and_latency_retained": true,
+    "programmed": false,
+    "deployment_accepted": false,
+    "joint_build_started": false,
+    "PNR_started": false,
+    "source_asset_files_unchanged": true,
+    "functional_proofs": [
+      {
+        "scope": "full original LF scan old/new cycle and map equality",
+        "passed": true,
+        "result": [
+          "TEST PASSED LF checks=467205 runs=8 full_map_words=524288 writes=459216 reads=459751 four_line_checks=1863160 all2048encodings=1 initial_zero_nonzero=1 resets=3"
+        ],
+        "timing_lines": [
+          "LF_RUN run=1 x=0 y=0 cycles=66593 interrupted=0",
+          "LF_RUN run=2 x=127 y=-128 cycles=66593 interrupted=0",
+          "LF_RUN run=3 x=-128 y=511 cycles=66593 interrupted=0",
+          "LF_RUN run=4 x=255 y=256 cycles=66593 interrupted=0",
+          "LF_RUN run=5 x=-257 y=-513 cycles=66593 interrupted=0",
+          "LF_RUN run=6 x=777 y=-999 cycles=1003 interrupted=1003",
+          "LF_RUN run=7 x=777 y=-999 cycles=66593 interrupted=0",
+          "LF_RUN run=8 x=2147483264 y=-2147483264 cycles=66593 interrupted=0"
+        ],
+        "runtimes": [
+          {
+            "command": [
+              "cmd",
+              "/c",
+              "E:\\2026.1\\Vivado\\bin\\xvlog.bat",
+              "-sv",
+              "F:\\nav_integration_g2_20261023\\lf_line_compact_probe1\\unit\\old.v",
+              "F:\\nav_integration_g2_20261023\\lf_line_compact_probe1\\unit\\new.v",
+              "F:\\nav_integration_g2_20261023\\lf_line_compact_probe1\\unit\\tb.sv"
+            ],
+            "started_at": "2026-10-25T15:12:48.016378+08:00",
+            "rss_limit_bytes": 805306368,
+            "max_runtime_s": 300,
+            "cancelled": false,
+            "priority": "IDLE",
+            "cores": 1,
+            "programmed": false,
+            "pid": 28936,
+            "creation_time": 1792912368.0180764,
+            "tool_exit": 0,
+            "elapsed_s": 1.625,
+            "peak_owned_RSS": 50499584,
+            "ended_at": "2026-10-25T15:12:49.640861+08:00"
+          },
+          {
+            "command": [
+              "cmd",
+              "/c",
+              "E:\\2026.1\\Vivado\\bin\\xelab.bat",
+              "-debug",
+              "off",
+              "-timescale",
+              "1ns/1ps",
+              "tb",
+              "-s",
+              "snap"
+            ],
+            "started_at": "2026-10-25T15:12:49.640861+08:00",
+            "rss_limit_bytes": 805306368,
+            "max_runtime_s": 300,
+            "cancelled": false,
+            "priority": "IDLE",
+            "cores": 1,
+            "programmed": false,
+            "pid": 9752,
+            "creation_time": 1792912369.6430347,
+            "tool_exit": 0,
+            "elapsed_s": 4.312999999965541,
+            "peak_owned_RSS": 137674752,
+            "ended_at": "2026-10-25T15:12:53.954546+08:00"
+          },
+          {
+            "command": [
+              "cmd",
+              "/c",
+              "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+              "snap",
+              "-runall"
+            ],
+            "started_at": "2026-10-25T15:12:53.954546+08:00",
+            "rss_limit_bytes": 805306368,
+            "max_runtime_s": 1200,
+            "cancelled": false,
+            "priority": "IDLE",
+            "cores": 1,
+            "programmed": false,
+            "pid": 9000,
+            "creation_time": 1792912373.9567704,
+            "tool_exit": 0,
+            "elapsed_s": 23.18700000003446,
+            "peak_owned_RSS": 274046976,
+            "ended_at": "2026-10-25T15:13:17.147835+08:00"
+          }
+        ]
+      },
+      {
+        "scope": "unmodified original full SLF five-frame/245-candidate/prior/model full-map fixture",
+        "fixture": "F:\\nav_integration_g2_20261023\\ddr_complete_matcher_dirty_probe1",
+        "testbench": "D:\\Desktop\\SOC FPGA\\nav\\rtl\\match\\tb\\tb_slf.sv",
+        "passed": true,
+        "result": [
+          "TEST PASSED"
+        ],
+        "timing_lines": [
+          "SLF_TIMING points=2259 candidates=245 cycles=562441 us_at_50MHz=11248.820000",
+          "SLF_TIMING points=1977 candidates=245 cycles=738025 us_at_50MHz=14760.500000",
+          "SLF_TIMING points=1777 candidates=245 cycles=1073755 us_at_50MHz=21475.100000",
+          "SLF_TIMING points=2055 candidates=245 cycles=1195399 us_at_50MHz=23907.980000",
+          "SLF_TIMING points=2247 candidates=245 cycles=2852665 us_at_50MHz=57053.300000",
+          "SLF_TIMING points=2055 candidates=245 cycles=2685979 us_at_50MHz=53719.580000",
+          "SLF_TIMING points=2247 candidates=245 cycles=3461245 us_at_50MHz=69224.900000"
+        ],
+        "runtimes": [
+          {
+            "command": [
+              "cmd",
+              "/c",
+              "E:\\2026.1\\Vivado\\bin\\xvlog.bat",
+              "-sv",
+              "F:\\nav_integration_g2_20261023\\lf_line_compact_probe1\\original_full_matcher\\nav_ram_sdp.v",
+              "F:\\nav_integration_g2_20261023\\lf_line_compact_probe1\\original_full_matcher\\slf_extract.v",
+              "F:\\nav_integration_g2_20261023\\lf_line_compact_probe1\\original_full_matcher\\slf_lf.v",
+              "F:\\nav_integration_g2_20261023\\lf_line_compact_probe1\\original_full_matcher\\slf_match.v",
+              "F:\\nav_integration_g2_20261023\\lf_line_compact_probe1\\original_full_matcher\\tb_slf.sv"
+            ],
+            "started_at": "2026-10-25T15:13:17.165398+08:00",
+            "rss_limit_bytes": 805306368,
+            "max_runtime_s": 300,
+            "cancelled": false,
+            "priority": "IDLE",
+            "cores": 1,
+            "programmed": false,
+            "pid": 53396,
+            "creation_time": 1792912397.1722164,
+            "tool_exit": 0,
+            "elapsed_s": 1.359000000054948,
+            "peak_owned_RSS": 71262208,
+            "ended_at": "2026-10-25T15:13:18.519193+08:00"
+          },
+          {
+            "command": [
+              "cmd",
+              "/c",
+              "E:\\2026.1\\Vivado\\bin\\xelab.bat",
+              "-debug",
+              "off",
+              "-timescale",
+              "1ns/1ps",
+              "tb_slf",
+              "-s",
+              "snap"
+            ],
+            "started_at": "2026-10-25T15:13:18.519193+08:00",
+            "rss_limit_bytes": 805306368,
+            "max_runtime_s": 300,
+            "cancelled": false,
+            "priority": "IDLE",
+            "cores": 1,
+            "programmed": false,
+            "pid": 52112,
+            "creation_time": 1792912398.5211864,
+            "tool_exit": 0,
+            "elapsed_s": 8.10999999998603,
+            "peak_owned_RSS": 187392000,
+            "ended_at": "2026-10-25T15:13:26.633402+08:00"
+          },
+          {
+            "command": [
+              "cmd",
+              "/c",
+              "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+              "snap",
+              "-runall"
+            ],
+            "started_at": "2026-10-25T15:13:26.634158+08:00",
+            "rss_limit_bytes": 805306368,
+            "max_runtime_s": 1200,
+            "cancelled": false,
+            "priority": "IDLE",
+            "cores": 1,
+            "programmed": false,
+            "pid": 33384,
+            "creation_time": 1792912406.6367395,
+            "tool_exit": 0,
+            "elapsed_s": 76.10900000005495,
+            "peak_owned_RSS": 275877888,
+            "ended_at": "2026-10-25T15:14:42.742545+08:00"
+          }
+        ]
+      },
+      {
+        "scope": "same unique mapped LF and original vendor primitive models versus original RTL; public pins and all backing words",
+        "source_netlist": "F:\\nav_integration_g2_20261023\\lf_line_compact_probe1\\isolated_syn\\impl\\gwsynthesis\\g2_top.vg",
+        "original_vendor_library": "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\simlib\\gw5a\\prim_sim.v",
+        "private_array_observation": false,
+        "passed": true,
+        "result": [
+          "TEST PASSED MAPPED LF checks=467205 runs=8 full_map_words=524288 writes=459216 reads=459751 initial_zero_nonzero=1 resets=3"
+        ],
+        "timing_lines": [
+          "LF_RUN run=1 x=0 y=0 cycles=66593 interrupted=0",
+          "LF_RUN run=2 x=127 y=-128 cycles=66593 interrupted=0",
+          "LF_RUN run=3 x=-128 y=511 cycles=66593 interrupted=0",
+          "LF_RUN run=4 x=255 y=256 cycles=66593 interrupted=0",
+          "LF_RUN run=5 x=-257 y=-513 cycles=66593 interrupted=0",
+          "LF_RUN run=6 x=777 y=-999 cycles=1003 interrupted=1003",
+          "LF_RUN run=7 x=777 y=-999 cycles=66593 interrupted=0",
+          "LF_RUN run=8 x=2147483264 y=-2147483264 cycles=66593 interrupted=0"
+        ],
+        "runtimes": [
+          {
+            "command": [
+              "cmd",
+              "/c",
+              "E:\\2026.1\\Vivado\\bin\\xvlog.bat",
+              "-sv",
+              "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\simlib\\gw5a\\prim_sim.v",
+              "F:\\nav_integration_g2_20261023\\lf_line_compact_probe1\\vendor_public_interface\\old.v",
+              "F:\\nav_integration_g2_20261023\\lf_line_compact_probe1\\vendor_public_interface\\vendor.v",
+              "F:\\nav_integration_g2_20261023\\lf_line_compact_probe1\\vendor_public_interface\\tb.sv"
+            ],
+            "started_at": "2026-10-25T15:15:57.939495+08:00",
+            "rss_limit_bytes": 805306368,
+            "max_runtime_s": 300,
+            "cancelled": false,
+            "priority": "IDLE",
+            "cores": 1,
+            "programmed": false,
+            "pid": 36340,
+            "creation_time": 1792912557.941574,
+            "tool_exit": 0,
+            "elapsed_s": 1.890999999945052,
+            "peak_owned_RSS": 76984320,
+            "ended_at": "2026-10-25T15:15:59.830427+08:00"
+          },
+          {
+            "command": [
+              "cmd",
+              "/c",
+              "E:\\2026.1\\Vivado\\bin\\xelab.bat",
+              "-debug",
+              "off",
+              "-timescale",
+              "1ns/1ps",
+              "tb",
+              "-s",
+              "snap"
+            ],
+            "started_at": "2026-10-25T15:15:59.830427+08:00",
+            "rss_limit_bytes": 805306368,
+            "max_runtime_s": 300,
+            "cancelled": false,
+            "priority": "IDLE",
+            "cores": 1,
+            "programmed": false,
+            "pid": 51008,
+            "creation_time": 1792912559.832432,
+            "tool_exit": 0,
+            "elapsed_s": 16.39000000001397,
+            "peak_owned_RSS": 432021504,
+            "ended_at": "2026-10-25T15:16:16.222266+08:00"
+          },
+          {
+            "command": [
+              "cmd",
+              "/c",
+              "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+              "snap",
+              "-runall"
+            ],
+            "started_at": "2026-10-25T15:16:16.222266+08:00",
+            "rss_limit_bytes": 805306368,
+            "max_runtime_s": 1200,
+            "cancelled": false,
+            "priority": "IDLE",
+            "cores": 1,
+            "programmed": false,
+            "pid": 29656,
+            "creation_time": 1792912576.2242815,
+            "tool_exit": 0,
+            "elapsed_s": 331.7970000000205,
+            "peak_owned_RSS": 362672128,
+            "ended_at": "2026-10-25T15:21:48.022216+08:00"
+          }
+        ]
+      }
+    ],
+    "synthesis": {
+      "started": true,
+      "completed": true,
+      "runtime": {
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "run.tcl"
+        ],
+        "started_at": "2026-10-25T15:14:42.745553+08:00",
+        "rss_limit_bytes": 805306368,
+        "max_runtime_s": 180,
+        "cancelled": false,
+        "priority": "IDLE",
+        "cores": 1,
+        "programmed": false,
+        "pid": 63408,
+        "creation_time": 1792912482.7470891,
+        "tool_exit": 0,
+        "elapsed_s": 7.0,
+        "peak_owned_RSS": 164089856,
+        "ended_at": "2026-10-25T15:14:49.745784+08:00"
+      },
+      "startup_memory": {
+        "available_physical": 3251945472,
+        "available_commit": 5198987264
+      },
+      "actual_SYN_resources": {
+        "name": "g2_top",
+        "Register": "1881",
+        "Alu": "1360",
+        "Lut": "1009",
+        "MULTALU27X18": "6",
+        "MULT12X12": "15",
+        "MULT27X36": "7",
+        "Bsram": "2",
+        "T_Register": "1881(1881)",
+        "T_Alu": "1360(1360)",
+        "T_Lut": "1009(1009)",
+        "T_MULTALU27X18": "6(6)",
+        "T_MULT12X12": "15(15)",
+        "T_MULT27X36": "7(7)",
+        "T_Bsram": "2(2)"
+      },
+      "RAM": [
+        {
+          "cell": "lb1_lb1_0_0_s",
+          "kind": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "cell": "lb4_lb4_0_0_s",
+          "kind": "SDPB",
+          "parameters": {
+            "BIT_WIDTH_0": "16",
+            "BIT_WIDTH_1": "16",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        }
+      ],
+      "actual_source_BSRAM": 2,
+      "actual_wide_leaves": 1,
+      "predicted_physical_BSRAM": 3,
+      "primitives": {
+        "IBUF": 31,
+        "OBUF": 54,
+        "LUT4": 535,
+        "LUT2": 281,
+        "LUT3": 188,
+        "DFFRE": 1881,
+        "SDPX9B": 1,
+        "SDPB": 1,
+        "MULT27X36": 7,
+        "MULTALU27X18": 6,
+        "MULT12X12": 15,
+        "ALU": 1360,
+        "INV": 5,
+        "VCC": 1,
+        "GND": 1,
+        "GSR": 1
+      },
+      "physical_BSRAM_unmeasured": true,
+      "physical_timing_unverified": true,
+      "joint_candidate_unchanged": true,
+      "frozen_joint_LF_baseline": {
+        "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_syn17",
+        "RAM": [
+          {
+            "cell": "lb1_lb1_0_0_s",
+            "kind": "SDPB",
+            "parameters": {
+              "BIT_WIDTH_0": "32",
+              "BIT_WIDTH_1": "32",
+              "READ_MODE": "1'b0",
+              "RESET_MODE": "\"SYNC\"",
+              "BLK_SEL_0": "3'b000",
+              "BLK_SEL_1": "3'b000"
+            }
+          },
+          {
+            "cell": "lb1_lb1_0_1_s",
+            "kind": "SDPB",
+            "parameters": {
+              "BIT_WIDTH_0": "32",
+              "BIT_WIDTH_1": "32",
+              "READ_MODE": "1'b0",
+              "RESET_MODE": "\"SYNC\"",
+              "BLK_SEL_0": "3'b000",
+              "BLK_SEL_1": "3'b000"
+            }
+          },
+          {
+            "cell": "lb3_lb3_0_0_s",
+            "kind": "SDPB",
+            "parameters": {
+              "BIT_WIDTH_0": "32",
+              "BIT_WIDTH_1": "32",
+              "READ_MODE": "1'b0",
+              "RESET_MODE": "\"SYNC\"",
+              "BLK_SEL_0": "3'b000",
+              "BLK_SEL_1": "3'b000"
+            }
+          },
+          {
+            "cell": "lb3_lb3_0_1_s",
+            "kind": "SDPB",
+            "parameters": {
+              "BIT_WIDTH_0": "32",
+              "BIT_WIDTH_1": "32",
+              "READ_MODE": "1'b0",
+              "RESET_MODE": "\"SYNC\"",
+              "BLK_SEL_0": "3'b000",
+              "BLK_SEL_1": "3'b000"
+            }
+          }
+        ],
+        "actual_source_BSRAM": 4,
+        "actual_wide_leaves": 4,
+        "predicted_split_physical_BSRAM": 8,
+        "scope": "completed full SYN17 LF subtree; physical block comparison still requires new joint PNR"
+      },
+      "predicted_physical_blocks_saved": 5,
+      "frequency_hint_MHz": 50.0,
+      "estimated_Fmax_MHz": 121.549,
+      "estimate_is_not_physical_timing_signoff": true
+    },
+    "limits": "Isolated behavior and optional SYN only. No whole-system route/timing or 5ms claim.",
+    "candidate_ready_for_joint_evaluation": true,
+    "joint_or_physical_timing_accepted": false,
+    "clock_enable_or_pause_port_added": false
+  },
+  "strict_completed_proof_binding": {
+    "proof": "F:\\nav_integration_g2_20261023\\lf_line_compact_probe1",
+    "exact_LF_source_and_candidate_bound": true,
+    "unit_eight_runs_and_524288_words_passed": true,
+    "full_original_SLF_five_frames_245_candidates_passed": true,
+    "full_original_SLF_context_source": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_syn17",
+    "all2048_information_states_passed": true,
+    "actual_isolated_source_BSRAM": 2,
+    "actual_isolated_wide_leaves": 1,
+    "isolated_physical_BSRAM_prediction": 3,
+    "isolated_geometry": [
+      {
+        "cell": "lb1_lb1_0_0_s",
+        "kind": "SDPX9B",
+        "parameters": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        }
+      },
+      {
+        "cell": "lb4_lb4_0_0_s",
+        "kind": "SDPB",
+        "parameters": {
+          "BIT_WIDTH_0": "16",
+          "BIT_WIDTH_1": "16",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        }
+      }
+    ],
+    "mapped_public_interface_passed": true,
+    "mapped_public_interface_status": "completed_pass",
+    "whole_joint_timing_or_physical_acceptance": false
+  },
+  "prepared_joint_candidates": [
+    {
+      "passed": true,
+      "phase": "prepared_complete_LF_only_candidate_no_build_started",
+      "prepared_at": "2026-10-25T15:21:55.952255+08:00",
+      "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+      "prepared": "F:\\nav_integration_g2_20261023\\lane2_lf_compact_from_syn11_prepared1",
+      "proof": "F:\\nav_integration_g2_20261023\\lf_line_compact_probe1",
+      "source_files": 68,
+      "unchanged_hardware_inputs": 67,
+      "unchanged_assets": 104,
+      "modified_rtl_inputs": [
+        "nav/rtl/match/slf_lf.v"
+      ],
+      "copied_headers": 31,
+      "original_control_CPU_4500_weights_125Hz_capacity_and_stop_source_unchanged": true,
+      "original_IO_SDC_CSR_unchanged": true,
+      "origin_review": {
+        "origin": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "peer_origin": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_syn17",
+        "both_frozen_LF_sources_byte_identical": true,
+        "base_source_BSRAM": 316,
+        "base_wide_leaves": 10,
+        "base_predicted_physical_BSRAM": 326,
+        "expected_source_BSRAM": 314,
+        "expected_wide_leaves": 7,
+        "expected_predicted_physical_BSRAM": 321,
+        "physical_is_prediction": true
+      },
+      "completed_proof_review": {
+        "proof": "F:\\nav_integration_g2_20261023\\lf_line_compact_probe1",
+        "exact_LF_source_and_candidate_bound": true,
+        "unit_eight_runs_and_524288_words_passed": true,
+        "full_original_SLF_five_frames_245_candidates_passed": true,
+        "full_original_SLF_context_source": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_syn17",
+        "all2048_information_states_passed": true,
+        "actual_isolated_source_BSRAM": 2,
+        "actual_isolated_wide_leaves": 1,
+        "isolated_physical_BSRAM_prediction": 3,
+        "isolated_geometry": [
+          {
+            "cell": "lb1_lb1_0_0_s",
+            "kind": "SDPX9B",
+            "parameters": {
+              "BIT_WIDTH_0": "36",
+              "BIT_WIDTH_1": "36",
+              "READ_MODE": "1'b0",
+              "RESET_MODE": "\"SYNC\"",
+              "BLK_SEL_0": "3'b000",
+              "BLK_SEL_1": "3'b000"
+            }
+          },
+          {
+            "cell": "lb4_lb4_0_0_s",
+            "kind": "SDPB",
+            "parameters": {
+              "BIT_WIDTH_0": "16",
+              "BIT_WIDTH_1": "16",
+              "READ_MODE": "1'b0",
+              "RESET_MODE": "\"SYNC\"",
+              "BLK_SEL_0": "3'b000",
+              "BLK_SEL_1": "3'b000"
+            }
+          }
+        ],
+        "mapped_public_interface_passed": true,
+        "mapped_public_interface_status": "completed_pass",
+        "whole_joint_timing_or_physical_acceptance": false
+      },
+      "mapped_proof_required_before_PNR": true,
+      "SYN_started": false,
+      "PNR_started": false,
+      "automatic_pnr": false,
+      "programmed": false,
+      "deployment_accepted": false,
+      "scope": "Prepared frozen sources only; joint netlist, timing and physical RAM are not measured."
+    },
+    {
+      "passed": true,
+      "phase": "prepared_complete_LF_only_candidate_no_build_started",
+      "prepared_at": "2026-10-25T15:21:56.287973+08:00",
+      "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_syn17",
+      "prepared": "F:\\nav_integration_g2_20261023\\lane2_lf_compact_from_syn17_prepared1",
+      "proof": "F:\\nav_integration_g2_20261023\\lf_line_compact_probe1",
+      "source_files": 68,
+      "unchanged_hardware_inputs": 67,
+      "unchanged_assets": 104,
+      "modified_rtl_inputs": [
+        "nav/rtl/match/slf_lf.v"
+      ],
+      "copied_headers": 31,
+      "original_control_CPU_4500_weights_125Hz_capacity_and_stop_source_unchanged": true,
+      "original_IO_SDC_CSR_unchanged": true,
+      "origin_review": {
+        "origin": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_syn17",
+        "peer_origin": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "both_frozen_LF_sources_byte_identical": true,
+        "base_source_BSRAM": 320,
+        "base_wide_leaves": 13,
+        "base_predicted_physical_BSRAM": 333,
+        "expected_source_BSRAM": 318,
+        "expected_wide_leaves": 10,
+        "expected_predicted_physical_BSRAM": 328,
+        "physical_is_prediction": true
+      },
+      "completed_proof_review": {
+        "proof": "F:\\nav_integration_g2_20261023\\lf_line_compact_probe1",
+        "exact_LF_source_and_candidate_bound": true,
+        "unit_eight_runs_and_524288_words_passed": true,
+        "full_original_SLF_five_frames_245_candidates_passed": true,
+        "full_original_SLF_context_source": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_syn17",
+        "all2048_information_states_passed": true,
+        "actual_isolated_source_BSRAM": 2,
+        "actual_isolated_wide_leaves": 1,
+        "isolated_physical_BSRAM_prediction": 3,
+        "isolated_geometry": [
+          {
+            "cell": "lb1_lb1_0_0_s",
+            "kind": "SDPX9B",
+            "parameters": {
+              "BIT_WIDTH_0": "36",
+              "BIT_WIDTH_1": "36",
+              "READ_MODE": "1'b0",
+              "RESET_MODE": "\"SYNC\"",
+              "BLK_SEL_0": "3'b000",
+              "BLK_SEL_1": "3'b000"
+            }
+          },
+          {
+            "cell": "lb4_lb4_0_0_s",
+            "kind": "SDPB",
+            "parameters": {
+              "BIT_WIDTH_0": "16",
+              "BIT_WIDTH_1": "16",
+              "READ_MODE": "1'b0",
+              "RESET_MODE": "\"SYNC\"",
+              "BLK_SEL_0": "3'b000",
+              "BLK_SEL_1": "3'b000"
+            }
+          }
+        ],
+        "mapped_public_interface_passed": true,
+        "mapped_public_interface_status": "completed_pass",
+        "whole_joint_timing_or_physical_acceptance": false
+      },
+      "mapped_proof_required_before_PNR": true,
+      "SYN_started": false,
+      "PNR_started": false,
+      "automatic_pnr": false,
+      "programmed": false,
+      "deployment_accepted": false,
+      "scope": "Prepared frozen sources only; joint netlist, timing and physical RAM are not measured."
+    }
+  ],
+  "waiting_controller": {
+    "prepared": "F:\\nav_integration_g2_20261023\\lane2_lf_compact_from_syn11_prepared1",
+    "prior_PNR": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+    "baseline": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+    "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_lf_compact_selected_syn18",
+    "PNR": "F:\\nav_integration_g2_20261023\\sfp_lane2_lf_compact_selected_pnr21",
+    "controller_pid": 68528,
+    "controller_created_epoch": 1792913129.4856937,
+    "maximum_new_SYN_runs": 1,
+    "maximum_new_PNR_runs": 1,
+    "PNR_total_seconds": 0,
+    "PNR_silent_seconds": 0,
+    "programmed": false,
+    "deployment_accepted": false,
+    "all_navigation_control_SFP_functions_retained": true,
+    "phase": "waiting_for_current_PNR_natural_completion_and_collection",
+    "updated_at": "2026-10-25T15:25:29.763506+08:00",
+    "protected_inputs": {
+      "g2_top.vg": [
+        22817897,
+        1792911900644920900
+      ],
+      "g2.sdc": [
+        19601,
+        1792911900646228400
+      ],
+      "g2.cst": [
+        6207,
+        1792911900646228400
+      ],
+      "run.tcl": [
+        960,
+        1792911903094503500
+      ],
+      "ip\\serdes.csr": [
+        10840,
+        1792911900646228400
+      ]
+    },
+    "prior_processes": [
+      {
+        "pid": 21252,
+        "created_epoch": 1792911903.1623285,
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "run.tcl"
+        ]
+      },
+      {
+        "pid": 13724,
+        "created_epoch": 1792911900.49652,
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\pnr_from_netlist.py",
+          "F:\\nav_integration_g2_20261023\\lane2_row_read_shared_after_pnr19_once_retry1\\pnr_inputs",
+          "--out",
+          "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+          "--wide-split",
+          "1",
+          "--replicate-resources",
+          "1",
+          "--place-option",
+          "1",
+          "--route-option",
+          "2",
+          "--timing-driven",
+          "1",
+          "--max-runtime-minutes",
+          "0",
+          "--max-no-progress-minutes",
+          "0",
+          "--routing-evidence",
+          "--capture-system-telemetry"
+        ]
+      },
+      {
+        "pid": 33696,
+        "created_epoch": 1792911486.3670444,
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:/Desktop/SOC FPGA/nav/integration/g2/continue_row_read_joint_once.py",
+          "--prepared",
+          "F:/nav_integration_g2_20261023/lane2_row_read_shared_prepared1",
+          "--prior-pnr",
+          "F:/nav_integration_g2_20261023/sfp_lane2_smallblocks_pnr19",
+          "--prior-state",
+          "F:/nav_integration_g2_20261023/lane2_smallblocks_checked_one_shot",
+          "--syn-out",
+          "F:/nav_integration_g2_20261023/sfp_lane2_row_read_shared_syn17",
+          "--pnr-out",
+          "F:/nav_integration_g2_20261023/sfp_lane2_row_read_shared_pnr20",
+          "--state-dir",
+          "F:/nav_integration_g2_20261023/lane2_row_read_shared_after_pnr19_once_retry1",
+          "--resume-settings-only"
+        ]
+      }
+    ]
+  },
+  "waiting_controller_command": [
+    "D:\\Anaconda\\python.exe",
+    "-X",
+    "utf8",
+    "D:/Desktop/SOC FPGA/nav/integration/g2/continue_lf_line_joint_once.py",
+    "--prepared",
+    "F:/nav_integration_g2_20261023/lane2_lf_compact_from_syn11_prepared1",
+    "--shared-prepared",
+    "F:/nav_integration_g2_20261023/lane2_lf_compact_from_syn17_prepared1",
+    "--prior-pnr",
+    "F:/nav_integration_g2_20261023/sfp_lane2_row_read_shared_pnr20",
+    "--prior-state",
+    "F:/nav_integration_g2_20261023/lane2_row_read_shared_after_pnr19_once_retry1",
+    "--baseline",
+    "F:/nav_integration_g2_20261023/sfp_lane2_observation_lw_pnr15",
+    "--syn-out",
+    "F:/nav_integration_g2_20261023/sfp_lane2_lf_compact_selected_syn18",
+    "--pnr-out",
+    "F:/nav_integration_g2_20261023/sfp_lane2_lf_compact_selected_pnr21",
+    "--state-dir",
+    "F:/nav_integration_g2_20261023/lane2_lf_compact_selected_after_pnr20_once"
+  ],
+  "selection_policy": {
+    "retain_current": "If PNR20 routes and reports clean setup/hold, continue full signoff without optional rebuild.",
+    "natural_PR0004_improves_below184": "Use completed shared SYN17 origin and apply only LF compaction.",
+    "natural_PR0004_not_below184": "Use retained minimum184 SYN11 origin and apply only LF compaction.",
+    "unsupported_error_or_missing_report": "Stop automatic construction for targeted review, no blind retry.",
+    "supported_new_builds": "At most one full SYN18 then strict complete netlist review then one no-deadline PNR21."
+  },
+  "PNR20_snapshot_after_all_local_work": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+    "pid": 21252,
+    "started_at": "2026-10-25T15:05:03.098004+08:00",
+    "total_limit_s": 0.0,
+    "idle_limit_s": 0.0,
+    "input_metadata": {
+      "g2_top.vg": [
+        22817897,
+        1792911900644920900
+      ],
+      "g2.sdc": [
+        19601,
+        1792911900646228400
+      ],
+      "g2.cst": [
+        6207,
+        1792911900646228400
+      ],
+      "run.tcl": [
+        960,
+        1792911903094503500
+      ],
+      "ip\\serdes.csr": [
+        10840,
+        1792911900646228400
+      ]
+    },
+    "created_epoch": 1792911903.1623285,
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ]
+  },
+  "waiting_controller_replacement": {
+    "old_pid": 29488,
+    "old_dir": "F:\\nav_integration_g2_20261023\\lane2_lf_compact_reference_after_pnr20_once",
+    "reason": "Replace reference-only policy with actual-result-based source selection before any build.",
+    "initial_zero_child_guard": "Rejected own console host child; no process stopped by that check.",
+    "actual_stop_scope": "Only verified idle Python waiter; sole child was its console host. No SYN/PNR existed, main PNR20 remained active.",
+    "current_pid": 68528,
+    "only_one_waiter_active": true
+  },
+  "new_joint_SYN_started": false,
+  "new_joint_PNR_started": false,
+  "physical_RAM_savings_and_timing_verified": false,
+  "programmed": false,
+  "deployment_accepted": false
+}

@@ -1,0 +1,125 @@
+{
+  "date": "2026-10-25",
+  "scope": "Read-only review of two function-preserving organization candidates. No source candidate, simulation, synthesis, PNR, hardware action or acceptance is created by this review.",
+  "frozen_build": "F:/nav_integration_g2_20261023/sfp_lane2_row_read_shared_syn17",
+  "required_contract": [
+    "Original 4500 algorithm and every original weight",
+    "125 Hz control and unchanged navigation, complete telemetry, SFP Lane2 and stopping priority",
+    "Unchanged map and point capacities, precision, candidates and external results",
+    "Unchanged completion cycles; real 50 MHz and whole-chip timing still require measurement"
+  ],
+  "candidates": [
+    {
+      "id": "local_sine_cosine_ROM_read_organization",
+      "modules": ["u_nav/u_match", "u_nav/u_tr"],
+      "actual_synthesis_evidence": {
+        "inventory": "F:/nav_integration_g2_20261023/sfp_lane2_row_read_shared_syn17/memory_inventory.json",
+        "actual_pROM_leaves": [
+          "g2_top/u_nav/u_match/u_cos/\\g_init_block.mem_g_init_block.mem_0_0_s",
+          "g2_top/u_nav/u_match/u_cos/\\g_init_block.mem_g_init_block.mem_0_0_s0",
+          "g2_top/u_nav/u_tr/u_cos/\\g_init_block.mem_g_init_block.mem_0_0_s",
+          "g2_top/u_nav/u_tr/u_cos/\\g_init_block.mem_g_init_block.mem_0_0_s0"
+        ],
+        "leaf_count": 4,
+        "BIT_WIDTH": 16,
+        "matcher_READ_MODE": "1'b1",
+        "trajectory_READ_MODE": "1'b0",
+        "interpretation": "Synthesis groups the source sin/cos instances under u_cos but retains two physical source leaves per consumer. Source instance merging alone is not a RAM saving."
+      },
+      "RTL_references": [
+        {"file": "nav/rtl/match/slf_match.v", "line": 160, "fact": "Two ROM instances use the same SIN_INIT, independently addressed with write enable tied low."},
+        {"file": "nav/rtl/match/slf_match.v", "line": 408, "fact": "S_LUT sets both read addresses/enables; S_LUTW is an existing wait; S_T0 latches sn/cs."},
+        {"file": "nav/rtl/plan/traj_eval.v", "line": 79, "fact": "Two same-table read-only ROM instances provide simultaneous sin/cos."},
+        {"file": "nav/rtl/plan/traj_eval.v", "line": 129, "fact": "S_B sets addresses/enables, S_C waits, S_D consumes sin/cos for the original four products."},
+        {"file": "nav/rtl/common/nav_ram_sdp.v", "line": 64, "fact": "Original initialized ROM branch has synchronous read and hold behavior."}
+      ],
+      "alternative_implementations": [
+        {
+          "kind": "one_read_only_storage_with_two_independent_read_ports",
+          "intent": "Keep the original simultaneous address sampling, per-port output hold and exact consumer timing.",
+          "proof_required": "The C-version device must map this legal geometry to one real block per consumer, not silently duplicate storage or introduce an extra latency. Source array count does not prove mapping."
+        },
+        {
+          "kind": "one_read_port_interleaved_over_existing_wait_cycles",
+          "matcher_proposed_schedule": "Read sine directly on S_LUT; on S_LUTW retain that response and read cosine using the unchanged da_r plus 256 modulo 1024; consume the original values on S_T0.",
+          "trajectory_proposed_schedule": "Read sine from th_n on S_B; on S_C retain sine and read cosine from the already updated th (not th_n, which would add dth twice); consume the original values on S_D.",
+          "proof_required": "Prove original versus proposed address/enable sampling, address stability and responses on every consume edge; account for different original inferred READ_MODE values, added hold registers, reset interruption and no-operation branches."
+        }
+      ],
+      "bit_identity": "Both values are exact entries of the same immutable 1024 x 16 table. The cosine address remains (sine_address + 256) mod 1024. No trigonometric approximation or quantization is proposed.",
+      "resource_prediction": {
+        "current_source_ROM_blocks": 4,
+        "candidate_source_ROM_blocks_if_mapping_succeeds": 2,
+        "possible_saved_blocks": 2,
+        "predicted_whole_chip_physical_BSRAM_if_other_mapping_unchanged": 331,
+        "baseline_whole_chip_physical_BSRAM_is_prediction": 333,
+        "measured_candidate_mapping": false,
+        "additional_registers_muxes_and_real_timing_unknown": true
+      },
+      "boundaries_and_risks": [
+        "Matcher and trajectory may run concurrently; each keeps its own storage. Do not share across those modules by assuming software serialization.",
+        "An earlier read introduces a different angle-to-address timing path; local and joint 50 MHz checks are mandatory.",
+        "Test every table entry, 10-bit wrap, all signed angles, reset during each fetch phase, zero points/candidates/trajectory length, and busy-time configuration changes.",
+        "No source reduction is claimed until exact output words and completion cycles match and actual ROM mapping is read back."
+      ],
+      "status": "unimplemented_candidate"
+    },
+    {
+      "id": "traversability_direction_permutation_identity",
+      "module": "u_nav/u_map/u_tv",
+      "actual_synthesis_evidence": {
+        "netlist": "F:/nav_integration_g2_20261023/sfp_lane2_row_read_shared_syn17/impl/gwsynthesis/g2_top.vg",
+        "scoped_module": "trav_v3",
+        "rev_direct_primitive_input_pins": 241,
+        "count_method": "Within the trav_v3 module only, count primitive I<n>, S and D inputs connected exactly to rev.",
+        "failed_net_identity_claimed": false
+      },
+      "RTL_references": [
+        {"file": "nav/rtl/map/trav_v3.v", "line": 128, "fact": "O[i][j] selects W[i][j] or W[4-i][4-j] under rev."},
+        {"file": "nav/rtl/map/trav_v3.v", "line": 160, "fact": "The center is invariant, and the eight-neighbor set is only permuted by reversal."},
+        {"file": "nav/rtl/map/trav_v3.v", "line": 167, "fact": "Nearest previously scanned row/column samples already use W directly and must remain unchanged."},
+        {"file": "nav/rtl/map/trav_v3.v", "line": 435, "fact": "T2 registers the five-point row/column and symmetric neighbor inputs; T3/T4 apply differences and gate."},
+        {"file": "nav/rtl/map/trav_v3.v", "line": 503, "fact": "T6 changes the signed baseline according to P_B for scanning-direction drop extrapolation."},
+        {"file": "nav/rtl/map/trav_v3.v", "line": 378, "fact": "The original phase transition drains 16 flush cycles before switching rev."}
+      ],
+      "exact_identities": [
+        "Center data is unchanged by 180-degree reversal.",
+        "Neighbor maximum step, valid count, lethal OR and valid-neighbor min/max are permutation invariant. Invalid-value internal registers need not be equal; every public output and valid write must be equal.",
+        "For any signed 16-bit heights, difference is in [-65535,65535]. Thus gate(-d,jump) = -gate(d,jump) with no signed-overflow exception.",
+        "Reversing five heights reverses and negates their four adjacent differences; hence sx_world = rev ? -sx_scan : sx_scan, and the same identity holds for y.",
+        "Original (P_B ? sx_world : -sx_world) equals -sx_scan in both scan directions. Absolute rise and roughness remain unchanged.",
+        "cfg_jump is 8 bits; each gated difference lies in [-255,255], so each four-term sum lies in [-1020,1020] and is exact in the existing 19-bit path."
+      ],
+      "resource_prediction": {
+        "expected_change": "Remove part of the data-direction muxing and its rev fanout; keep all windows, caches, four passes and exact arithmetic.",
+        "RAM_capacity_change": 0,
+        "cycle_count_change": 0,
+        "measured_candidate_LUT_FF_global_resources_or_timing": false,
+        "exact_number_of_removed_LUTs_or_rev_loads": null
+      },
+      "boundaries_and_risks": [
+        "Keep actual address reversal and scanning-direction predecessor selection; only eliminate redundant data permutation.",
+        "Do not drop the sign compensation in the slope/drop calculation.",
+        "Compare all elevation writes, cost-map writes, bitmap writes, busy and done cycle by cycle for forward/reverse scans, invalid cells, fill thresholds, signed extremes, high-only steps, boundaries, reset/clear and busy-time configuration changes.",
+        "Retain phase flushing and prove no old-window values enter a new scan phase.",
+        "241 direct inputs describe a real high-fanout connection, not a list of failed routing nets or a proven congestion root cause."
+      ],
+      "status": "unimplemented_candidate"
+    }
+  ],
+  "csum_scope_correction": {
+    "earlier_statement": "The trajectory csum width had already been reduced automatically to 16 bits.",
+    "earlier_statement_is_false": true,
+    "cause": "An unscoped search found a different module's 16-bit csum.",
+    "correct_module": "traj_eval",
+    "actual_netlist_declaration": "wire [31:0] csum;",
+    "actual_direct_csum_Q_pins": 32,
+    "source_declaration": "nav/rtl/plan/traj_eval.v:58, reg [31:0] csum;",
+    "mathematical_bound": "T is 8 bits and a summed known cost is at most 254, so csum <= 255*254 = 64770. A future 16-bit explicit width candidate is plausible but is unimplemented and has no measured resource/timing benefit.",
+    "no_new_measured_saving_claimed": true
+  },
+  "existing_LF_candidate_not_repeated": true,
+  "PNR20_inputs_or_deadlines_modified": false,
+  "Gowin_build_started": false,
+  "accepted_for_joint_build": false
+}

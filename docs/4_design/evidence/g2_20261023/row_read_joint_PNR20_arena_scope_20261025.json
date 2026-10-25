@@ -1,0 +1,1364 @@
+{
+  "recorded_at": "2026-10-25T15:13:55.015970+08:00",
+  "phase": "shared_full_SYN17_complete_PNR20_running_arena_scope_review",
+  "shared_SYN17_job": {
+    "source": "F:\\nav_integration_g2_20261023\\lane2_row_read_shared_prepared1",
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_syn17",
+    "wait_pid": null,
+    "programmed": false,
+    "source_frozen_before_wait": true,
+    "automatic_pnr": false,
+    "settings_only_resume": true,
+    "modified_rtl_inputs": [],
+    "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+    "phase": "synthesis_complete",
+    "updated_at": "2026-10-25T15:04:49.485098+08:00",
+    "minimum_start_free_bytes": 2147483648,
+    "minimum_start_available_commit_bytes": 4294967296,
+    "max_runtime_minutes": 40,
+    "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+    "tool_pid": 52432,
+    "synthesis_started_at": "2026-10-25T14:58:08.244812+08:00",
+    "elapsed_s": 390.0929999999935,
+    "free_bytes": 3699380224,
+    "available_commit_bytes": 6800859136,
+    "tool_exit": 0,
+    "joint_pnr_measured": false
+  },
+  "full_synthesis_resources": {
+    "path": "/g2_top",
+    "name": "g2_top",
+    "Register": "26",
+    "Alu": "25",
+    "Lut": "175",
+    "T_Register": "40851(26)",
+    "T_Alu": "10235(25)",
+    "T_Lut": "50635(175)",
+    "T_MULTALU27X18": "65(0)",
+    "T_MULT12X12": "23(0)",
+    "T_MULT27X36": "37(0)",
+    "T_MULTADDALU12X12": "1(0)",
+    "T_Bsram": "320(0)",
+    "T_Ssram": "2342(0)",
+    "T_ROM16": "702(0)"
+  },
+  "resource_delta_to_SYN16": {
+    "T_Lut": 111,
+    "T_Register": -891,
+    "T_Alu": 0,
+    "T_Bsram": 0,
+    "T_Ssram": 0,
+    "T_MULTALU27X18": 0,
+    "T_MULT12X12": 0,
+    "T_MULT27X36": 0,
+    "T_MULTADDALU12X12": 0
+  },
+  "complete_pre_PNR_audit": {
+    "passed": true,
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_syn17",
+    "baseline": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+    "original": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+    "modified_rtl_inputs": [
+      "nav/rtl/common/nav_ram_sdp.v",
+      "nav/rtl/net/host_mbx.v"
+    ],
+    "unchanged_inputs": 66,
+    "unchanged_assets": 104,
+    "original_RAMs_and_parameters_and_INIT_preserved": 316,
+    "new_RAMs": [
+      {
+        "name": "u_nav/u_map/u_tv/u_bm/g_bitmap_block.bitmap_g_bitmap_block.bitmap_0_0_s",
+        "width": 1,
+        "clock": "clk50_d",
+        "explicit_zero_parameters": 0,
+        "vendor_default_zero_parameters": 64,
+        "effective_zero_parameters": 64
+      },
+      {
+        "name": "u_nav/u_mbx/u_injb/g_mailbox_planes.low_mem_g_mailbox_planes.low_mem_0_0_s",
+        "width": 32,
+        "clock": "clk50_d",
+        "explicit_zero_parameters": 0,
+        "vendor_default_zero_parameters": 64,
+        "effective_zero_parameters": 64
+      },
+      {
+        "name": "u_nav/u_mbx/u_txb/g_mailbox_planes.low_mem_g_mailbox_planes.low_mem_0_0_s",
+        "width": 32,
+        "clock": "clk50_d",
+        "explicit_zero_parameters": 0,
+        "vendor_default_zero_parameters": 64,
+        "effective_zero_parameters": 64
+      },
+      {
+        "name": "u_nav/u_mbx/u_txs/g_mailbox_planes.low_mem_g_mailbox_planes.low_mem_0_0_s",
+        "width": 32,
+        "clock": "clk50_d",
+        "explicit_zero_parameters": 0,
+        "vendor_default_zero_parameters": 64,
+        "effective_zero_parameters": 64
+      }
+    ],
+    "vendor_SDPB_defaults_file": "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\simlib\\gw5a\\prim_sim.v",
+    "nonzero_initialization_mutation_rejected": true,
+    "source_bsram": 320,
+    "wide_leaves": 13,
+    "predicted_physical_bsram": 333,
+    "physical_is_prediction": true,
+    "resource_delta": {
+      "T_Lut": -3252,
+      "T_Register": -993,
+      "T_Alu": 0,
+      "T_Ssram": -1792,
+      "T_Bsram": 4,
+      "T_MULTALU27X18": 0
+    },
+    "module_proof": [
+      {
+        "variant": "rtl",
+        "result": "TEST PASSED checks=90122 reads=69667 writes=20498 collisions=16384 holds=20455 all16384bitmap=1 all512mailbox=1 nonzeroINIT=1 read_first=1"
+      },
+      {
+        "variant": "mapped",
+        "result": "TEST PASSED checks=90122 reads=69667 writes=20498 collisions=16384 holds=20455 all16384bitmap=1 all512mailbox=1 nonzeroINIT=1 read_first=1"
+      },
+      {
+        "variant": "physical_mapped",
+        "result": "TEST PASSED checks=90122 reads=69667 writes=20498 collisions=16384 holds=20455 all16384bitmap=1 all512mailbox=1 nonzeroINIT=1 read_first=1"
+      }
+    ],
+    "selection_proof": {
+      "passed": true,
+      "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+      "checks": [
+        {
+          "variant": "explicit_and_default",
+          "result": "TEST PASSED checks=90122 reads=69667 writes=20498 collisions=16384 holds=20455 all16384bitmap=1 all512mailbox=1 nonzeroINIT=1 read_first=1"
+        }
+      ],
+      "enabled_memory_bodies_match_prior_physical_proof": true,
+      "physical_proof": "F:\\nav_integration_g2_20261023\\small_block_stores_probe1\\result.json",
+      "only_selected_instances": [
+        "u_injb",
+        "u_txb",
+        "u_txs"
+      ],
+      "default_512x32_candidate_and_result_store_remain_original": true,
+      "prior_joint_SYN15_rejected_prediction": 337,
+      "target_prediction": 333,
+      "programmed": false
+    },
+    "driver_checks": [
+      {
+        "net": "n2371_7",
+        "driver": "u_control/n2371_s2",
+        "kind": "LUT3",
+        "parameters_identical": true
+      },
+      {
+        "net": "r2",
+        "driver": "u_rs/r2_s1",
+        "kind": "DFFPE",
+        "parameters_identical": true
+      },
+      {
+        "net": "u_control/model_thread/observation/n971_7",
+        "driver": "u_control/model_thread/observation/n971_s2",
+        "kind": "LUT4",
+        "parameters_identical": true
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_update",
+        "driver": "u_control/model_thread/policy/snapshot_update_s0",
+        "kind": "LUT4",
+        "parameters_identical": true
+      },
+      {
+        "net": "u_control/telemetry_thread/n1315_4",
+        "driver": "u_control/telemetry_thread/n1315_s1",
+        "kind": "LUT4",
+        "parameters_identical": true
+      },
+      {
+        "net": "u_control/telemetry_thread/snapshot_959_10",
+        "driver": "u_control/telemetry_thread/snapshot_959_s4",
+        "kind": "LUT4",
+        "parameters_identical": true
+      },
+      {
+        "net": "u_control/model_thread/observation/n12472_10",
+        "driver": "u_control/model_thread/observation/n12506_s4",
+        "kind": "LUT3",
+        "parameters_identical": true
+      },
+      {
+        "net": "u_nav/u_xt/n9903_3",
+        "driver": "u_nav/u_xt/n9616_s1",
+        "kind": "LUT4",
+        "parameters_identical": true
+      },
+      {
+        "net": "u_nav/u_match/u_ex/n7021_4",
+        "driver": "u_nav/u_match/u_ex/n7021_s1",
+        "kind": "LUT2",
+        "parameters_identical": true
+      },
+      {
+        "net": "u_nav/u_match/u_ex/rb_ra[0]",
+        "driver": "u_nav/u_match/u_ex/rb_ra_0_s10",
+        "kind": "LUT3",
+        "parameters_identical": true
+      },
+      {
+        "net": "u_nav/u_match/u_ex/rb_ra[1]",
+        "driver": "u_nav/u_match/u_ex/rb_ra_1_s10",
+        "kind": "LUT3",
+        "parameters_identical": true
+      },
+      {
+        "net": "u_nav/a_q_15_17",
+        "driver": "u_nav/a_q_15_s9",
+        "kind": "LUT4",
+        "parameters_identical": true
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25284_7",
+        "driver": "u_nav/u_map/u_tv/n25284_s2",
+        "kind": "LUT2",
+        "parameters_identical": true
+      },
+      {
+        "net": "u_nav/u_pt/n5285_4",
+        "driver": "u_nav/u_pt/n5285_s1",
+        "kind": "LUT2",
+        "parameters_identical": true
+      },
+      {
+        "net": "clk50_d",
+        "driver": "clk50_ibuf",
+        "kind": "IBUF",
+        "parameters_identical": true
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "driver": "rgmii_rxc_ibuf",
+        "kind": "IBUF",
+        "parameters_identical": true
+      },
+      {
+        "net": "h_rx_clk",
+        "driver": "u_sfp/u_mac/u_serdes/gtr12_quad_inst0",
+        "kind": "GTR12_QUAD",
+        "parameters_identical": true
+      },
+      {
+        "net": "h_tx_clk",
+        "driver": "u_sfp/u_mac/u_serdes/gtr12_quad_inst0",
+        "kind": "GTR12_QUAD",
+        "parameters_identical": true
+      }
+    ],
+    "strict_targets": 14,
+    "unselected_candidate_and_result_store_checks": [
+      {
+        "prefix": "u_nav/u_match/u_cand/",
+        "cells": 1318,
+        "distributed_RAM16": 256,
+        "all_connections_and_INIT_identical": true
+      },
+      {
+        "prefix": "u_nav/u_match/u_res/",
+        "cells": 1318,
+        "distributed_RAM16": 256,
+        "all_connections_and_INIT_identical": true
+      }
+    ],
+    "true_clocks": 4,
+    "unproved_aliases": 0,
+    "negative_driver_checks_rejected": [
+      "input",
+      "driver",
+      "INIT"
+    ],
+    "lidar26": {
+      "passed": true,
+      "paths": 26,
+      "changed_reset_pin_connections": 36,
+      "proved_reset_aliases": [
+        {
+          "old_net": "r2_200",
+          "new_net": "r2_205",
+          "driver": "u_lrr/r2_s1",
+          "kind": "DFFPE",
+          "all_driver_inputs_identical": true,
+          "module_definition_including_init_identical": true
+        }
+      ],
+      "source_first_second_data_clock_enable_and_single_fanout_rechecked": true,
+      "exception_endpoints_and_budgets_unchanged": true,
+      "scope": "known SYN connectivity and proved reset alias only; no physical/reset-release/MTBF signoff"
+    },
+    "host51": {
+      "netlist": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_syn17\\impl\\gwsynthesis\\g2_top.vg",
+      "stage": "synthesis",
+      "passed": true,
+      "paths": [
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_b_12_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_12_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_12_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_12_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_11_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_11_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_11_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_11_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_10_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_10_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_10_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_10_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_9_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_9_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_9_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_9_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_8_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_8_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_8_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_8_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_7_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_7_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_7_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_7_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_6_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_6_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_6_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_6_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_5_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_5_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_5_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_5_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_4_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_4_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_4_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_4_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_3_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_3_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_3_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_3_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_2_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_2_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_2_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_2_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_1_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_1_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_1_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_1_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_write_gray",
+          "source_register": "u_nav/u_neth/u_rxf/wp_g_0_s0",
+          "first_register": "u_nav/u_neth/u_rxf/wp_g_r1_0_s1",
+          "second_register": "u_nav/u_neth/u_rxf/wp_g_r2_0_s1",
+          "source_clock": "h_rx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/wp_g_r2_0_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_b_12_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_12_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_12_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_12_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_11_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_11_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_11_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_11_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_10_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_10_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_10_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_10_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_9_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_9_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_9_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_9_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_8_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_8_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_8_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_8_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_7_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_7_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_7_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_7_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_6_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_6_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_6_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_6_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_5_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_5_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_5_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_5_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_4_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_4_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_4_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_4_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_3_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_3_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_3_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_3_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_2_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_2_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_2_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_2_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_1_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_1_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_1_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_1_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_rx_read_gray",
+          "source_register": "u_nav/u_neth/u_rxf/rp_g_0_s0",
+          "first_register": "u_nav/u_neth/u_rxf/rp_g_w1_0_s1",
+          "second_register": "u_nav/u_neth/u_rxf/rp_g_w2_0_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_rx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_rxf/rp_g_w2_0_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_b_11_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_11_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_11_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_11_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_10_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_10_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_10_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_10_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_9_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_9_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_9_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_9_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_8_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_8_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_8_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_8_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_7_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_7_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_7_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_7_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_6_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_6_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_6_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_6_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_5_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_5_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_5_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_5_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_4_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_4_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_4_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_4_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_3_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_3_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_3_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_3_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_2_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_2_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_2_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_2_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_1_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_1_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_1_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_1_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_write_gray",
+          "source_register": "u_nav/u_neth/u_txf/wp_g_0_s0",
+          "first_register": "u_nav/u_neth/u_txf/wp_g_r1_0_s1",
+          "second_register": "u_nav/u_neth/u_txf/wp_g_r2_0_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/wp_g_r2_0_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_b_11_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_11_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_11_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_11_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_10_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_10_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_10_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_10_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_9_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_9_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_9_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_9_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_8_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_8_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_8_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_8_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_7_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_7_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_7_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_7_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_6_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_6_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_6_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_6_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_5_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_5_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_5_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_5_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_4_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_4_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_4_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_4_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_3_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_3_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_3_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_3_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_2_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_2_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_2_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_2_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_1_s0",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_1_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_1_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_1_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_tx_read_gray",
+          "source_register": "u_nav/u_neth/u_txf/rp_g_0_s1",
+          "first_register": "u_nav/u_neth/u_txf/rp_g_w1_0_s1",
+          "second_register": "u_nav/u_neth/u_txf/rp_g_w2_0_s1",
+          "source_clock": "h_tx_clk",
+          "target_clock": "clk50_d",
+          "route_max_delay_ns": 6.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_txf/rp_g_w2_0_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        },
+        {
+          "group": "host_frame_toggle",
+          "source_register": "u_nav/u_neth/u_fs/t_s1",
+          "first_register": "u_nav/u_neth/u_fs/u_s/s1_0_s1",
+          "second_register": "u_nav/u_neth/u_fs/u_s/s2_0_s1",
+          "source_clock": "clk50_d",
+          "target_clock": "h_tx_clk",
+          "route_max_delay_ns": 18.0,
+          "first_q_direct_loads": [
+            [
+              "u_nav/u_neth/u_fs/u_s/s2_0_s1",
+              "D"
+            ]
+          ],
+          "passed": true,
+          "failures": []
+        }
+      ],
+      "expected_paths": 51,
+      "errors": [],
+      "scope": "host FIFO Gray and frame-toggle connections only; vendor PCS, status, IO/reset and MTBF remain separate"
+    },
+    "lane2": {
+      "lane": "Q0 Lane2",
+      "proof_build": "F:\\nav_sfp_20261023\\build_lane2_v3",
+      "exact_generated_csr_and_wrapper": true,
+      "protected_mac_unchanged": true,
+      "outer_mac_function_unchanged": true,
+      "joint_clock_periods_unchanged": true,
+      "standalone_exceptions_not_imported": true,
+      "io_cst_unchanged": true,
+      "joint_hardware_accepted": false,
+      "actual_synthesized_clock_pins": {
+        "LANE2_PCS_RX_O_FABRIC_CLK": "h_rx_clk",
+        "LANE2_PCS_TX_O_FABRIC_CLK": "h_tx_clk"
+      }
+    },
+    "bank_selector_max_load": 128,
+    "row_RAM16_preserved": 250,
+    "clock_periods_ns": [
+      20,
+      10,
+      8,
+      8
+    ],
+    "hold_only": 77,
+    "max_delay": 77,
+    "shared_row_source_review": {
+      "base": "F:\\nav_integration_g2_20261023\\sfp_lane2_smallblocks_selected_syn16",
+      "modified_inputs": [
+        "nav/rtl/common/nav_ram_sdp.v"
+      ],
+      "unchanged_inputs": 67,
+      "context_proof": "F:\\nav_integration_g2_20261023\\row_read_context_occupied_globals_probe6\\result.json",
+      "no_extra_global_local_50MHz_passed": true
+    },
+    "shared_row_netlist_review": {
+      "row_RAM16": 250,
+      "all_row_RAM_INIT_parameters_preserved": true,
+      "row_read_registers": 98,
+      "row_read_clock": "clk50_d",
+      "low_four_read_address_drivers_identical": true,
+      "explicit_direct_crossings": 77,
+      "all_explicit_direct_crossings_identical": true,
+      "extra_beyond_known77": 0,
+      "register_clock_net_set_unchanged": true,
+      "scope": "source and explicit structural connections only, not physical CDC timing/signoff"
+    },
+    "original_DSP_resources": {
+      "T_MULTALU27X18": 65,
+      "T_MULT12X12": 23,
+      "T_MULT27X36": 37,
+      "T_MULTADDALU12X12": 1
+    },
+    "original_control_CPU_4500_weights_125Hz_and_stop_source_unchanged": true,
+    "no_DDR_in_candidate": true,
+    "failed_net_identities_unknown": true,
+    "deployment_accepted": false
+  },
+  "PNR20_runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-25T15:05:03.098004+08:00",
+    "max_runtime_s": 0.0,
+    "max_no_observable_progress_s": 0.0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 21252,
+    "elapsed_s": 510.64100000006147,
+    "no_observable_progress_s": 166.18800000008196,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        2110709,
+        1792912246949531600
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        2110263,
+        1792912246949531600
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2234304,
+        1792912226315753500
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        12924290,
+        1792912226797020300
+      ]
+    ]
+  },
+  "PNR20_process_snapshot": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+    "pid": 21252,
+    "started_at": "2026-10-25T15:05:03.098004+08:00",
+    "total_limit_s": 0.0,
+    "idle_limit_s": 0.0,
+    "input_metadata": {
+      "g2_top.vg": [
+        22817897,
+        1792911900644920900
+      ],
+      "g2.sdc": [
+        19601,
+        1792911900646228400
+      ],
+      "g2.cst": [
+        6207,
+        1792911900646228400
+      ],
+      "run.tcl": [
+        960,
+        1792911903094503500
+      ],
+      "ip\\serdes.csr": [
+        10840,
+        1792911900646228400
+      ]
+    },
+    "created_epoch": 1792911903.1623285,
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ]
+  },
+  "actual_command": [
+    "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+    "run.tcl"
+  ],
+  "actual_process_created_epoch": 1792911903.1623285,
+  "frozen_netlist_equals_completed_SYN": true,
+  "CST_SDC_CSR_bytes_equal_PNR19": {
+    "g2.cst": true,
+    "g2.sdc": true,
+    "ip/serdes.csr": true
+  },
+  "PNR20_final_route_resource_timing_measured": false,
+  "latest_user_scope": {
+    "all_vehicle_motion_in_arena_m": [
+      3,
+      5
+    ],
+    "navigation_control_SFP_functions": "must remain complete",
+    "algorithm_or_precision_alternatives": "may be evaluated with quantified behavior and acceptance; no relaxed stop/clock limits",
+    "function_cut_variants": "not enabled; earlier OLED-only diagnostic remains prepared and permanently non-deployable"
+  },
+  "geometry": {
+    "cell_mm_exact": "65536/1311",
+    "cell_mm": 49.98932112890923,
+    "elevation_width_mm": 6398.633104500382,
+    "structure_width_mm": 12797.266209000763,
+    "structure_online_margin_mm": 399.91456903127386,
+    "old_online_positive_halfwidth_mm": 5998.718535469107,
+    "candidate128_online_positive_halfwidth_mm": 2799.401983218917,
+    "field_width_mm": 3000,
+    "field_length_mm": 5000,
+    "field_diagonal_mm": 5830.951894845301,
+    "aligned_grid_extent_cells_ceil": [
+      61,
+      101
+    ],
+    "whole_room_rotated_bbox_max_mm": 5830.951894845301,
+    "point5000mm_in_old_core": true,
+    "point5000mm_in128_core": false,
+    "terrain2000mm_in128_window": true,
+    "terrain2000mm_in64_window": false,
+    "minimum_even_rolling_N_preserve_5m_plus8cells": 218,
+    "minimum_power2_N_preserve_5m_plus8cells": 256,
+    "vehicle_arena_known_but_all_lidar_observations_inside_not_proved": true,
+    "direct_LOG2N_reduction_accepted": false
+  },
+  "map_reduction_conclusion": "3x5 vehicle bounds alone do not justify halving existing rolling windows; old/new far-wall and terrain counterexamples retained",
+  "next_lossless_direction": {
+    "file": "nav/rtl/match/slf_lf.v",
+    "operation": "evaluate11-bit line-cache representation and same-cycle reconstruction of the original19-bit value",
+    "geometry_and_algorithms": "unchanged",
+    "functional_proof": "in preparation; no pass claimed",
+    "joint_build_started": false
+  },
+  "programmed": false,
+  "deployment_accepted": false
+}
