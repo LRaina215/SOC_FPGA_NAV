@@ -5,6 +5,9 @@ a time. No PNR or programming command exists in this producer. Completed SYNs
 are reused, failed netlist checks are preserved, and --review-only rechecks an
 existing SYN without rebuilding it. The consumer must use validate_ready_cache.
 Metadata is byte length and modification time, never a content hash.
+The shared consumer validator also accepts independently reviewed emitted
+netlists through explicit report-stage recovery provenance; this producer
+does not label an interrupted vendor synthesis as complete.
 """
 import argparse
 from datetime import datetime
@@ -107,7 +110,12 @@ def frozen_input_metadata(build):
 
 
 def validate_ready_cache(job_or_path, profile=None):
-    """Return the complete ready cache job, or reject stale/incomplete evidence."""
+    """Validate a reviewed complete SYN or an explicitly recovered emitted VG.
+
+    Recovery never changes the interrupted vendor job into a successful SYN.
+    Its provenance and the independent source/RAM/clock/CDC review are both
+    required before the existing serial consumer can explore that netlist.
+    """
     job = load(job_or_path) if isinstance(job_or_path, (str, Path)) else job_or_path
     assert job['schema_version'] == 1 and job['phase'] == 'ready_for_PNR', 'cache is not ready'
     prepared, synthesis = Path(job['prepared']).resolve(), Path(job['synthesis']).resolve()
@@ -126,8 +134,75 @@ def validate_ready_cache(job_or_path, profile=None):
     assert expected['synthesis'] == frozen_input_metadata(synthesis), 'SYN inputs/netlist/proofs changed after cache review'
     assert expected['pre_pnr_checks'] == file_metadata(check), 'cached review result changed'
     assert expected['reviewer_snapshot'] == file_metadata(job['reviewer_snapshot']), 'cached reviewer snapshot changed'
-    assert load(synthesis/'job.json').get('phase') == 'synthesis_complete'
+    mode = job.get('artifact_mode', 'completed_synthesis')
+    if mode == 'completed_synthesis':
+        assert load(synthesis/'job.json').get('phase') == 'synthesis_complete'
+    elif mode == 'recovered_emitted_netlist':
+        validate_recovered_netlist_cache(job, result)
+    else:
+        raise AssertionError(('unrecognized netlist provenance', mode))
     return job
+
+
+def validate_recovered_netlist_cache(job, result):
+    """Reject incomplete, changed, or merely structural recovery evidence."""
+    source, prepared = Path(job['synthesis']).resolve(), Path(job['prepared']).resolve()
+    evidence_path = Path(job['netlist_recovery_evidence']).resolve()
+    evidence = load(evidence_path)
+    expected = job['verified_input_metadata']
+    assert expected['netlist_recovery_evidence'] == file_metadata(evidence_path), 'recovery evidence changed after review'
+    assert evidence['schema_version'] == 1 and evidence['passed'] is True
+    assert Path(evidence['source']).resolve() == source
+    assert Path(evidence['prepared']).resolve() == prepared
+    assert evidence['report_stage_interrupted'] is True
+    assert evidence['vendor_synthesis_completed'] is False and evidence['vendor_normal_exit_observed'] is False
+    assert evidence['vendor_resource_report_available'] is False
+    assert evidence['original_job_unchanged'] is True
+    assert evidence['original_synthesis_processes_exited'] is True
+    assert evidence['tool_log_netlist_generation_completed'] is True
+    assert evidence['project_XML_complete'] is True
+    assert not evidence['tool_and_synthesis_log_ERROR_FATAL_lines']
+    assert evidence['all_source_bindings_bytes_identical'] is True
+    assert evidence['manifest_immutable_fields_identical'] is True
+    assert evidence['frozen_hardware_inputs_identical'] == 68
+    assert evidence['frozen_assets_identical'] == 104
+    assert evidence['frozen_headers_identical'] == 31
+    assert evidence['permits_independent_exploratory_review'] is True
+    assert evidence['programmed'] is False and evidence['deployment_accepted'] is False
+    runtime = load(evidence['original_cancellation_runtime_path'])
+    assert runtime == evidence['original_cancellation_runtime']
+    assert runtime['cancelled'] is True
+    assert runtime['protection_reason'] == 'new_child_only_host_reserve_protection'
+    assert not existing_synthesis_processes(source), 'interrupted source has an active synthesis process'
+    original_job = load(source/'job.json')
+    assert original_job['phase'] == evidence['original_job_phase'] != 'synthesis_complete'
+    assert original_job.get('tool_exit') == evidence['original_tool_exit_available']
+    for item in evidence['preserved_artifacts']:
+        assert item == file_metadata(item['path']), ('preserved recovery artifact changed', item['path'])
+    bindings = evidence['source_bindings']
+    assert bindings
+    for binding in bindings:
+        assert binding['bytes_identical'] is True
+        for side, directory in (('prepared', prepared), ('synthesis', source)):
+            path = directory/binding['relative_path']
+            assert binding[side] == file_metadata(path), ('recovered frozen input changed', side, str(path))
+    assert result.get('artifact_mode') == 'recovered_emitted_netlist', 'structural audit is not a joint review'
+    assert Path(result['netlist_recovery_evidence']).resolve() == evidence_path
+    assert result.get('vendor_synthesis_completed') is False
+    assert result.get('independent_actual_netlist_precheck_passed') is True
+    # Every result still traverses the actual joint reviewer. A structural
+    # inventory, candidate's prepared-source proof, or missing report cannot
+    # stand in for the RAM/clock/CDC/constraint and protected-function gates.
+    assert (result.get('outside_allowed_scopes_identical') is True or
+            result.get('outside_allowed_scopes_identical_or_functionally_proved') is True), 'retained netlist changes are not proved'
+    for field in ('register_clock_domains_unchanged',
+                  'original_4500_weights_125Hz_CPU_hardware_SFP_and_stop_protection_retained'):
+        assert result.get(field) is True, ('recovered joint gate absent', field)
+    assert result['strict_targets'] == 14 and result['true_clocks'] == 4
+    assert result['known_constraints'] == 154 and result['unproved_aliases'] == 0
+    assert result['source_BSRAM'] == evidence['resources']['source_BSRAM']
+    assert result['wide_leaves'] == evidence['resources']['wide32_36_BSRAM']
+    assert result['predicted_physical_BSRAM'] == evidence['resources']['predicted_physical_BSRAM_with_split']
 
 
 def identity(process):
