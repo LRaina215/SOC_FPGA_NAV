@@ -1,0 +1,163 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T02:14:26.781658+08:00",
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23",
+  "routed_reference": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32",
+  "prepared": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_action_CSA_uart_prepared1",
+  "hardware_inputs": 63,
+  "modified_rtl_inputs": [
+    "control/imu_fusion.v",
+    "control/policy_action_map.v"
+  ],
+  "unchanged_hardware_inputs": 61,
+  "modified_existing_FW": [
+    "fw/app/nav_app.c",
+    "fw/drv/hal_fpga.c"
+  ],
+  "added_FW": [
+    "fw/nav/host_link_guard.c",
+    "fw/nav/host_link_guard.h"
+  ],
+  "unchanged_existing_FW": 59,
+  "hardware_assets": 69,
+  "modified_hardware_assets": [
+    "firmware/nav_fw.bin",
+    "firmware/ram_b0.hex",
+    "firmware/ram_b1.hex",
+    "firmware/ram_b2.hex",
+    "firmware/ram_b3.hex",
+    "firmware/ram_w.hex",
+    "ram_b0.hex",
+    "ram_b1.hex",
+    "ram_b2.hex",
+    "ram_b3.hex",
+    "ram_w.hex"
+  ],
+  "unchanged_hardware_assets": 58,
+  "original_headers": 31,
+  "headers_with_new_guard": 32,
+  "minimum_RK_overlay": [
+    "yuntuo/bridge/core.py"
+  ],
+  "each_component_candidate_source_byte_identical_in_combination": true,
+  "all_weights_4500_CPU128KiB_map_point_capacity125Hz_and_original_stop_RTL_preserved": true,
+  "actual_new_CPU_image_52164_bytes_and128KiB_zero_padded_HEX_proved": true,
+  "source_CPU_image": {
+    "elf_class": 32,
+    "machine": "RISC-V",
+    "executable": true,
+    "load_file_bytes": 52164,
+    "load_memory_bytes": 122136,
+    "linked_symbols": {
+      "RAM_SIZE": 131072,
+      "STACK_RESERVE": 6144,
+      "_bss_start": 52168,
+      "_bss_end": 122136,
+      "_stack_top": 131072
+    },
+    "BSS_bytes": 69968,
+    "aligned_remaining_bytes": 2792
+  },
+  "original_CST_20ns10ns_SDC_and_tool_options_preserved": true,
+  "no_POSE_failed_action_width_or_CDC52_added": true,
+  "reused_component_proofs": {
+    "fusion_cycle_proof": "F:\\nav_integration_g2_20261023\\fusion_square_pipeline2_candidate1\\result.json",
+    "fusion_math_proof": "F:\\nav_integration_g2_20261023\\fusion_square_late2_math_proof1\\result.json",
+    "fusion_RTL_boundary_proof": "F:\\nav_integration_g2_20261023\\fusion_square_late2_math_proof1\\boundary_review.json",
+    "action_cycle_and_integer_domain_proof": "F:\\nav_integration_g2_20261023\\action_constant_csa_candidate1\\result.json",
+    "action_module_mapping": "F:\\nav_integration_g2_20261023\\action_constant_csa_candidate1\\module_syn1\\result.json",
+    "UART_source_and_image": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\prepared_source_review.json",
+    "RK_frozen_context_31_checks": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_mission_handshake_result.json"
+  },
+  "no_repeated_simulation_firmware_compile_or_synthesis": true,
+  "new_joint_RAM_INIT_clocks26CDC_and_physical_resources_pending": true,
+  "combined_functional_acceptance": false,
+  "physical_timing_accepted": false,
+  "ready_for_joint_review_not_automatic_build": true,
+  "remaining_deployment_gates": [
+    "Combine-only full-control numerical/cycle/stop verification under real scheduling",
+    "New joint netlist CPU INIT/RAM geometry/weights/clocks/26 CDC and reset/enable sources",
+    "Actual routing, global allocation, all setup/hold/recovery/removal/pulse/physical CDC/IO",
+    "Actual dual UART, NV/telemetry freshness, host-loss under long planner load, explicit rearm",
+    "Controlled stop with balance maintained and separately tested genuine emergency stop",
+    "NV delayed pre-arrival USB replay/session gap, software hard WCET and actual stack watermark",
+    "Real RK service and powered/supported vehicle acceptance"
+  ],
+  "bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\manifest.json",
+      "bytes": 7387,
+      "mtime_ns": 1792942877818334300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_prepared1\\control\\imu_fusion.v",
+      "bytes": 23849,
+      "mtime_ns": 1792950216657225400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_CSA_prepared1\\control\\policy_action_map.v",
+      "bytes": 3452,
+      "mtime_ns": 1792951551842603600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_prepared1\\prepared_source_review.json",
+      "bytes": 13135,
+      "mtime_ns": 1792950216712362500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_CSA_prepared1\\prepared_source_review.json",
+      "bytes": 3441,
+      "mtime_ns": 1792951551978389000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\prepared_source_review.json",
+      "bytes": 57033,
+      "mtime_ns": 1792951814914625300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_action_CSA_uart_prepared1\\control\\imu_fusion.v",
+      "bytes": 23849,
+      "mtime_ns": 1792952066502650700
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_action_CSA_uart_prepared1\\control\\policy_action_map.v",
+      "bytes": 3452,
+      "mtime_ns": 1792952066505693900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_action_CSA_uart_prepared1\\firmware\\nav_fw.bin",
+      "bytes": 52164,
+      "mtime_ns": 1792934818588828900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_action_CSA_uart_prepared1\\firmware\\nav_fw.elf",
+      "bytes": 427996,
+      "mtime_ns": 1792934816895075600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_action_CSA_uart_prepared1\\rk\\yuntuo\\bridge\\core.py",
+      "bytes": 33663,
+      "mtime_ns": 1792951813719677200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_action_CSA_uart_prepared1\\run.tcl",
+      "bytes": 9116,
+      "mtime_ns": 1792952066777751400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_action_CSA_uart_prepared1\\g2.cst",
+      "bytes": 5495,
+      "mtime_ns": 1792951813016926600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_action_CSA_uart_prepared1\\g2.sdc",
+      "bytes": 122,
+      "mtime_ns": 1792951813016926600
+    }
+  ],
+  "new_SYN_or_PNR_started": false,
+  "serial_opened": false,
+  "production_RK_modified": false,
+  "programmed": false,
+  "deployment_accepted": false
+}

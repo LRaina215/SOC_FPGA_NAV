@@ -1,0 +1,219 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T02:04:25.510000+08:00",
+  "proof": "F:\\nav_integration_g2_20261023\\action_constant_csa_candidate1\\result.json",
+  "source": "F:\\nav_integration_g2_20261023\\action_constant_csa_candidate1\\policy_action_map.v",
+  "module_source_matches_proof_except_top_name": true,
+  "startup_available_physical_bytes": 3656192000,
+  "startup_available_commit_bytes": 4367392768,
+  "runtime": {
+    "started_at": "2026-10-26T02:04:12.147467+08:00",
+    "max_runtime_s": 180,
+    "max_owned_rss": 805306368,
+    "scope": "isolated action constant CSA module only; not joint SYN/PNR",
+    "cancelled": false,
+    "pid": 67368,
+    "tool_exit": 0,
+    "elapsed_s": 12.969000000040978
+  },
+  "effective_options": {
+    "reused_settings_only_readback": "F:\\nav_integration_g2_20261023\\action_constant_csa_candidate1\\module_syn1\\effective_options.tcl",
+    "text": "add_file -type verilog \"F:/nav_integration_g2_20261023/action_constant_csa_candidate1/module_syn1/action.v\"\nadd_file -type sdc \"F:/nav_integration_g2_20261023/action_constant_csa_candidate1/module_syn1/clock.sdc\"\nset_device GW5AT-LV138PG484AC1/I0 -device_version C\nset_csr NA\nset_option -synthesis_tool gowinsynthesis\nset_option -output_base_name g2_top\nset_option -global_freq 50.000\nset_option -top_module g2_top\nset_option -verilog_std v2001\nset_option -vhdl_std vhd1993\nset_option -print_all_synthesis_warning 0\nset_option -disable_io_insertion 0\nset_option -looplimit 100000\nset_option -rw_check_on_ram 0\nset_option -gen_sdf 0\nset_option -gen_io_cst 0\nset_option -gen_ibis 0\nset_option -gen_posp 0\nset_option -gen_verilog_sim_netlist 0\nset_option -gen_vhdl_sim_netlist 0\nset_option -show_init_in_vo 0\nset_option -show_all_warn 0\nset_option -timing_driven 1\nset_option -ireg_in_iob 0\nset_option -oreg_in_iob 0\nset_option -ioreg_in_iob 0\nset_option -replicate_resources 0\nset_option -cst_warn_to_error 1\nset_option -rpt_auto_place_io_info 0\nset_option -convert_sdp32_36_to_sdp16_18 1\nset_option -correct_hold_violation 1\nset_option -set_route_vcc 1\nset_option -place_option 3\nset_option -route_option 2\nset_option -retiming_resource None\nset_option -clock_route_order 0\nset_option -route_maxfan 23\nset_option -use_jtag_as_gpio 0\nset_option -use_sspi_as_gpio 0\nset_option -use_mspi_as_gpio 0\nset_option -use_ready_as_gpio 0\nset_option -use_done_as_gpio 0\nset_option -use_mode_as_gpio 0\nset_option -use_i2c_as_gpio 0\nset_option -use_cpu_as_gpio 0\nset_option -power_on_reset_monitor 1\nset_option -bit_format bin\nset_option -bit_crc_check 1\nset_option -bit_compress 0\nset_option -bit_encrypt 0\nset_option -bit_encrypt_key 00000000000000000000000000000000\nset_option -bit_security 1\nset_option -bit_incl_bsram_init 1\nset_option -hotboot 0\nset_option -i2c_slave_addr 00\nset_option -secure_mode 0\nset_option -loading_rate default\nset_option -program_done_bypass 0\nset_option -wakeup_mode 0\nset_option -user_code default\nset_option -unused_pin default\nset_option -multi_boot 0\nset_option -mspi_jump 0\nset_option -turn_off_bg 0\nset_option -vccx 1.8\nset_option -vcc 0.9\nset_option -seu_handler 0\nset_option -seu_handler_checksum 0\nset_option -seu_handler_mode auto\nset_option -error_detection false\nset_option -error_detection_correction false\nset_option -stop_seu_handler false\nset_option -error_injection false\nset_option -ext_cclk false\nset_option -ext_cclk_div 1\nset_option -inc_place 0\nset_option -inc_pnr 0\nset_option -serdesRetiming 0\nset_option -co-place_io_registers 0"
+  },
+  "resources": {
+    "name": "g2_top",
+    "Register": "183",
+    "Alu": "290",
+    "Lut": "799",
+    "T_Register": "183(183)",
+    "T_Alu": "290(290)",
+    "T_Lut": "799(799)"
+  },
+  "inventory": {
+    "primitives": {
+      "IBUF": 196,
+      "OBUF": 273,
+      "LUT3": 299,
+      "LUT4": 421,
+      "LUT2": 74,
+      "DFFCE": 155,
+      "DFFPE": 28,
+      "ALU": 290,
+      "INV": 5,
+      "VCC": 1,
+      "GND": 1,
+      "GSR": 1
+    },
+    "bsram": 0,
+    "ff": 183,
+    "maximum_nonclock_load": 183,
+    "high_loads": [
+      {
+        "net": "n6_6",
+        "loads": 183,
+        "pins": {
+          "CLEAR": 155,
+          "PRESET": 28
+        }
+      },
+      {
+        "net": "left_mmps_30_16",
+        "loads": 127,
+        "pins": {
+          "CE": 127
+        }
+      },
+      {
+        "net": "run_d",
+        "loads": 126,
+        "pins": {
+          "I0": 5,
+          "I2": 58,
+          "I3": 37,
+          "I1": 25,
+          "D": 1
+        }
+      },
+      {
+        "net": "actions_d[143]",
+        "loads": 49,
+        "pins": {
+          "I3": 5,
+          "I1": 22,
+          "I2": 2,
+          "I0": 20
+        }
+      },
+      {
+        "net": "n7068_3",
+        "loads": 48,
+        "pins": {
+          "CE": 48
+        }
+      },
+      {
+        "net": "n1228_4",
+        "loads": 43,
+        "pins": {
+          "I0": 20,
+          "I3": 9,
+          "I2": 1,
+          "I1": 13
+        }
+      },
+      {
+        "net": "actions_d[119]",
+        "loads": 41,
+        "pins": {
+          "I0": 22,
+          "I2": 1,
+          "I1": 17,
+          "I3": 1
+        }
+      },
+      {
+        "net": "n1917_4",
+        "loads": 41,
+        "pins": {
+          "I2": 20,
+          "I3": 18,
+          "I1": 3
+        }
+      },
+      {
+        "net": "n4452_4",
+        "loads": 41,
+        "pins": {
+          "I2": 20,
+          "I3": 18,
+          "I1": 3
+        }
+      },
+      {
+        "net": "actions_d[71]",
+        "loads": 40,
+        "pins": {
+          "I3": 2,
+          "I1": 18,
+          "I2": 3,
+          "I0": 17
+        }
+      },
+      {
+        "net": "n2719_4",
+        "loads": 39,
+        "pins": {
+          "I0": 16,
+          "I2": 2,
+          "I3": 9,
+          "I1": 12
+        }
+      },
+      {
+        "net": "n3650_4",
+        "loads": 39,
+        "pins": {
+          "I0": 16,
+          "I2": 2,
+          "I3": 9,
+          "I1": 12
+        }
+      },
+      {
+        "net": "actions_d[23]",
+        "loads": 37,
+        "pins": {
+          "I0": 19,
+          "I3": 3,
+          "I1": 15
+        }
+      },
+      {
+        "net": "actions_d[47]",
+        "loads": 33,
+        "pins": {
+          "I0": 12,
+          "I2": 3,
+          "I3": 1,
+          "I1": 17
+        }
+      },
+      {
+        "net": "actions_d[95]",
+        "loads": 32,
+        "pins": {
+          "I0": 12,
+          "I2": 2,
+          "I3": 1,
+          "I1": 17
+        }
+      },
+      {
+        "net": "n249_5",
+        "loads": 29,
+        "pins": {
+          "I0": 19,
+          "I3": 9,
+          "I2": 1
+        }
+      }
+    ]
+  },
+  "DSP_primitives": {},
+  "target_action_DSP_removed_in_isolated_mapping": true,
+  "original_full_joint_action_scope_resources": {
+    "name": "actuator_map",
+    "Register": "193",
+    "Alu": "88",
+    "Lut": "779",
+    "MULTALU27X18": "6",
+    "T_Register": "193(193)",
+    "T_Alu": "88(88)",
+    "T_Lut": "779(779)",
+    "T_MULTALU27X18": "6(6)"
+  },
+  "physical_timing_or_joint_mapping_proved": false,
+  "joint_synthesis_or_PNR_started": false,
+  "programmed": false,
+  "caveat": "Module SYN can establish this isolated mapped arithmetic contains no DSP, not that a future full joint mapping/placement retains it or closes50MHz."
+}

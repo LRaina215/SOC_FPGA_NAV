@@ -1,0 +1,535 @@
+{
+  "passed": true,
+  "actual_start_review_passed": true,
+  "recorded_at": "2026-10-26T02:07:53.172121+08:00",
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_syn26",
+  "output": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_pnr36",
+  "reference": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32",
+  "actual_SYN_review": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_one_shot\\actual_SYN26_netlist_review.json",
+  "actual_SYN_review_passed": true,
+  "actual_source_resources": {
+    "BSRAM": 314,
+    "wide_source_leaves": 18,
+    "CPU_SP": 64,
+    "physical_BSRAM332_is_prediction_not_measurement": true,
+    "all_RAM_geometry_and_INIT_identical_to_PNR32": true,
+    "memory_pin_name_differences": 168,
+    "all_memory_pin_combinational_equivalence_proved": false
+  },
+  "CDC": {
+    "paths": 26,
+    "group_counts": {
+      "rx_write_gray": 12,
+      "core_read_gray": 12,
+      "rx_clock_monitor": 1,
+      "rx_sampling_select": 1
+    },
+    "source_first_second_registers_and_INIT_clock_reset_CE_checked": true,
+    "first_Q_only_second_D_checked": true,
+    "direct_cross_clock_edges": 26,
+    "changed_input_cone_proof_count": 0,
+    "changed_input_cones": [],
+    "unproved_aliases": 0,
+    "timing_exceptions_added": 0,
+    "full_physical_CDC_timing_or_MTBF_passed": false
+  },
+  "actual_tool": {
+    "pid": 20732,
+    "created_epoch": 1792951501.5983884,
+    "created_at": "2026-10-26T02:05:01.598388+08:00",
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "cwd": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_pnr36",
+    "parent_pid": 44484,
+    "parent_created_epoch": 1792950566.169916,
+    "priority": 32,
+    "affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  "actual_controller": {
+    "pid": 44484,
+    "created_epoch": 1792950566.169916,
+    "command": [
+      "D:/Anaconda/python.exe",
+      "-X",
+      "utf8",
+      "D:/Desktop/SOC FPGA/nav/integration/g2/run_fusion_square2_chain.py"
+    ],
+    "priority": 32,
+    "affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  "runtime": {
+    "started_at": "2026-10-26T02:05:01.597137+08:00",
+    "total_limit_s": 0,
+    "silent_limit_s": 0,
+    "cancelled": false
+  },
+  "immediate_prelaunch_admission": {
+    "recorded_by": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_one_shot\\job.json",
+    "phase": "starting_unique_PNR36",
+    "recorded_at": "2026-10-26T02:05:01.596137+08:00",
+    "available_physical_bytes": 3696840704,
+    "available_commit_bytes": 4461072384,
+    "minimum_physical_bytes": 2147483648,
+    "minimum_commit_bytes": 4294967296,
+    "passed": true
+  },
+  "constraints": {
+    "CST_byte_identical_to_PNR32": true,
+    "SDC_byte_identical_to_PNR32": true,
+    "SDC_clocks_ns": {
+      "clk50": 20,
+      "rgmii_rxc": 10
+    },
+    "added_timing_exceptions": 0,
+    "cmd_do_normalized_all_lines_identical": true,
+    "cmd_do_line_comparison": [
+      {
+        "index": 1,
+        "PNR32": "-d <BUILD>\\g2_top.vg",
+        "PNR36": "-d <BUILD>\\g2_top.vg",
+        "identical": true
+      },
+      {
+        "index": 2,
+        "PNR32": "-p GW5AT-138C-PBGA484A-1",
+        "PNR36": "-p GW5AT-138C-PBGA484A-1",
+        "identical": true
+      },
+      {
+        "index": 3,
+        "PNR32": "-pn GW5AT-LV138PG484AC1/I0",
+        "PNR36": "-pn GW5AT-LV138PG484AC1/I0",
+        "identical": true
+      },
+      {
+        "index": 4,
+        "PNR32": "-cst <BUILD>\\g2.cst",
+        "PNR36": "-cst <BUILD>\\g2.cst",
+        "identical": true
+      },
+      {
+        "index": 5,
+        "PNR32": "-cfg <BUILD>\\impl\\pnr\\device.cfg",
+        "PNR36": "-cfg <BUILD>\\impl\\pnr\\device.cfg",
+        "identical": true
+      },
+      {
+        "index": 6,
+        "PNR32": "-sdc <BUILD>\\g2.sdc",
+        "PNR36": "-sdc <BUILD>\\g2.sdc",
+        "identical": true
+      },
+      {
+        "index": 7,
+        "PNR32": "-bit",
+        "PNR36": "-bit",
+        "identical": true
+      },
+      {
+        "index": 8,
+        "PNR32": "-tr",
+        "PNR36": "-tr",
+        "identical": true
+      },
+      {
+        "index": 9,
+        "PNR32": "-ph",
+        "PNR36": "-ph",
+        "identical": true
+      },
+      {
+        "index": 10,
+        "PNR32": "-o",
+        "PNR36": "-o",
+        "identical": true
+      },
+      {
+        "index": 11,
+        "PNR32": "-timing",
+        "PNR36": "-timing",
+        "identical": true
+      },
+      {
+        "index": 12,
+        "PNR32": "-ireg_not_in_iob",
+        "PNR36": "-ireg_not_in_iob",
+        "identical": true
+      },
+      {
+        "index": 13,
+        "PNR32": "-oreg_not_in_iob",
+        "PNR36": "-oreg_not_in_iob",
+        "identical": true
+      },
+      {
+        "index": 14,
+        "PNR32": "-ioreg_not_in_iob",
+        "PNR36": "-ioreg_not_in_iob",
+        "identical": true
+      },
+      {
+        "index": 15,
+        "PNR32": "-replicate",
+        "PNR36": "-replicate",
+        "identical": true
+      },
+      {
+        "index": 16,
+        "PNR32": "-cst_error",
+        "PNR36": "-cst_error",
+        "identical": true
+      },
+      {
+        "index": 17,
+        "PNR32": "-convert_sdp32_36_to_sdp16_18",
+        "PNR36": "-convert_sdp32_36_to_sdp16_18",
+        "identical": true
+      },
+      {
+        "index": 18,
+        "PNR32": "-place_option 1",
+        "PNR36": "-place_option 1",
+        "identical": true
+      },
+      {
+        "index": 19,
+        "PNR32": "-route_option 0",
+        "PNR36": "-route_option 0",
+        "identical": true
+      },
+      {
+        "index": 20,
+        "PNR32": "-retiming_resource none",
+        "PNR36": "-retiming_resource none",
+        "identical": true
+      },
+      {
+        "index": 21,
+        "PNR32": "-clock_route_order 0",
+        "PNR36": "-clock_route_order 0",
+        "identical": true
+      },
+      {
+        "index": 22,
+        "PNR32": "-correct_hold 1",
+        "PNR36": "-correct_hold 1",
+        "identical": true
+      },
+      {
+        "index": 23,
+        "PNR32": "-route_maxfan 23",
+        "PNR36": "-route_maxfan 23",
+        "identical": true
+      },
+      {
+        "index": 24,
+        "PNR32": "-global_freq 50.000",
+        "PNR36": "-global_freq 50.000",
+        "identical": true
+      }
+    ],
+    "device_cfg_byte_identical": true,
+    "device_cfg_line_comparison": [
+      {
+        "index": 1,
+        "PNR32": "set JTAG regular_io = false",
+        "PNR36": "set JTAG regular_io = false",
+        "identical": true
+      },
+      {
+        "index": 2,
+        "PNR32": "set SSPI regular_io = true",
+        "PNR36": "set SSPI regular_io = true",
+        "identical": true
+      },
+      {
+        "index": 3,
+        "PNR32": "set MSPI regular_io = true",
+        "PNR36": "set MSPI regular_io = true",
+        "identical": true
+      },
+      {
+        "index": 4,
+        "PNR32": "set READY regular_io = true",
+        "PNR36": "set READY regular_io = true",
+        "identical": true
+      },
+      {
+        "index": 5,
+        "PNR32": "set DONE regular_io = true",
+        "PNR36": "set DONE regular_io = true",
+        "identical": true
+      },
+      {
+        "index": 6,
+        "PNR32": "set I2C regular_io = true",
+        "PNR36": "set I2C regular_io = true",
+        "identical": true
+      },
+      {
+        "index": 7,
+        "PNR32": "set CPU regular_io = true",
+        "PNR36": "set CPU regular_io = true",
+        "identical": true
+      },
+      {
+        "index": 8,
+        "PNR32": "set CRC_check = true",
+        "PNR36": "set CRC_check = true",
+        "identical": true
+      },
+      {
+        "index": 9,
+        "PNR32": "set compress = false",
+        "PNR36": "set compress = false",
+        "identical": true
+      },
+      {
+        "index": 10,
+        "PNR32": "set encryption = false",
+        "PNR36": "set encryption = false",
+        "identical": true
+      },
+      {
+        "index": 11,
+        "PNR32": "set security_bit_enable = true",
+        "PNR36": "set security_bit_enable = true",
+        "identical": true
+      },
+      {
+        "index": 12,
+        "PNR32": "set bsram_init_fuse_print = true",
+        "PNR36": "set bsram_init_fuse_print = true",
+        "identical": true
+      },
+      {
+        "index": 13,
+        "PNR32": "set secure_mode = false",
+        "PNR36": "set secure_mode = false",
+        "identical": true
+      },
+      {
+        "index": 14,
+        "PNR32": "set program_done_bypass = false",
+        "PNR36": "set program_done_bypass = false",
+        "identical": true
+      },
+      {
+        "index": 15,
+        "PNR32": "set wake_up = 0",
+        "PNR36": "set wake_up = 0",
+        "identical": true
+      },
+      {
+        "index": 16,
+        "PNR32": "set format = binary",
+        "PNR36": "set format = binary",
+        "identical": true
+      },
+      {
+        "index": 17,
+        "PNR32": "set power_on_reset_monitor = true",
+        "PNR36": "set power_on_reset_monitor = true",
+        "identical": true
+      },
+      {
+        "index": 18,
+        "PNR32": "set seu_handler = false",
+        "PNR36": "set seu_handler = false",
+        "identical": true
+      },
+      {
+        "index": 19,
+        "PNR32": "set ext_cclk = false",
+        "PNR36": "set ext_cclk = false",
+        "identical": true
+      },
+      {
+        "index": 20,
+        "PNR32": "set vccx = 1.8",
+        "PNR36": "set vccx = 1.8",
+        "identical": true
+      },
+      {
+        "index": 21,
+        "PNR32": "set vcc = 0.9",
+        "PNR36": "set vcc = 0.9",
+        "identical": true
+      },
+      {
+        "index": 22,
+        "PNR32": "set unused_pin = default",
+        "PNR36": "set unused_pin = default",
+        "identical": true
+      }
+    ]
+  },
+  "byte_bindings": [
+    {
+      "first": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_pnr36\\g2_top.vg",
+        "bytes": 24421219,
+        "mtime_ns": 1792951500383393300
+      },
+      "second": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_syn26\\impl\\gwsynthesis\\g2_top.vg",
+        "bytes": 24421219,
+        "mtime_ns": 1792951034083044000
+      },
+      "bytes_identical": true
+    },
+    {
+      "first": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_pnr36\\g2_top.vg",
+        "bytes": 24421219,
+        "mtime_ns": 1792951500383393300
+      },
+      "second": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_one_shot\\actual_SYN26_netlist_review_evidence\\reviewed_g2_top.vg",
+        "bytes": 24421219,
+        "mtime_ns": 1792951497420778400
+      },
+      "bytes_identical": true
+    },
+    {
+      "first": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_pnr36\\g2.cst",
+        "bytes": 5495,
+        "mtime_ns": 1792951500383393300
+      },
+      "second": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32\\g2.cst",
+        "bytes": 5495,
+        "mtime_ns": 1792943968776248300
+      },
+      "bytes_identical": true
+    },
+    {
+      "first": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_pnr36\\g2.sdc",
+        "bytes": 122,
+        "mtime_ns": 1792951500383393300
+      },
+      "second": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32\\g2.sdc",
+        "bytes": 122,
+        "mtime_ns": 1792943968777246300
+      },
+      "bytes_identical": true
+    },
+    {
+      "first": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_pnr36\\g2.cst",
+        "bytes": 5495,
+        "mtime_ns": 1792951500383393300
+      },
+      "second": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_one_shot\\actual_SYN26_netlist_review_evidence\\reviewed_g2.cst",
+        "bytes": 5495,
+        "mtime_ns": 1792951497448094500
+      },
+      "bytes_identical": true
+    },
+    {
+      "first": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_pnr36\\g2.sdc",
+        "bytes": 122,
+        "mtime_ns": 1792951500383393300
+      },
+      "second": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_one_shot\\actual_SYN26_netlist_review_evidence\\reviewed_g2.sdc",
+        "bytes": 122,
+        "mtime_ns": 1792951497450093800
+      },
+      "bytes_identical": true
+    }
+  ],
+  "SYN26_source_resource_delta": {
+    "passed": true,
+    "source_before": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23",
+    "source_after": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_syn26",
+    "resource_XML_only_not_physical": true,
+    "before": {
+      "T_Register": 38183,
+      "T_Lut": 53059,
+      "T_Alu": 9618,
+      "T_Bsram": 314,
+      "T_MULTALU27X18": 77,
+      "T_MULT27X36": 37,
+      "T_MULT12X12": 23,
+      "T_MULTADDALU12X12": 1,
+      "T_Ssram": 3855,
+      "T_ROM16": 3650
+    },
+    "after": {
+      "T_Register": 38181,
+      "T_Lut": 52923,
+      "T_Alu": 9618,
+      "T_Bsram": 314,
+      "T_MULTALU27X18": 77,
+      "T_MULT27X36": 34,
+      "T_MULT12X12": 23,
+      "T_MULTADDALU12X12": 1,
+      "T_Ssram": 3855,
+      "T_ROM16": 3650
+    },
+    "delta": {
+      "T_Register": -2,
+      "T_Lut": -136,
+      "T_Alu": 0,
+      "T_Bsram": 0,
+      "T_MULTALU27X18": 0,
+      "T_MULT27X36": -3,
+      "T_MULT12X12": 0,
+      "T_MULTADDALU12X12": 0,
+      "T_Ssram": 0,
+      "T_ROM16": 0
+    }
+  },
+  "physical_timing_50MHz_or_deployment_passed": false,
+  "programmed": false
+}

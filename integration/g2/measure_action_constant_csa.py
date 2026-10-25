@@ -1,7 +1,7 @@
 """One isolated module SYN after exact RTL proof; no implementation/PNR."""
 from pathlib import Path
 from datetime import datetime
-import json,sys,xml.etree.ElementTree as ET,argparse
+import json,sys,time,xml.etree.ElementTree as ET,argparse
 import psutil
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from measure_slf_row_banks import TOOL,run_syn,inventory
@@ -13,6 +13,7 @@ parser.add_argument('--candidate-dir',type=Path,required=True)
 parser.add_argument('--out',type=Path,required=True)
 parser.add_argument('--origin-synthesis',type=Path,default=Path('F:/nav_integration_g2_20261023/baseline_fusion_only_syn23'))
 parser.add_argument('--resume-settings-only',action='store_true')
+parser.add_argument('--wait-for-memory',action='store_true',help='wait after imports, before the single tool launch; no SYN runtime budget starts yet')
 args=parser.parse_args()
 HERE=args.candidate_dir.resolve();OUT=args.out.resolve()
 me=psutil.Process();me.nice(psutil.IDLE_PRIORITY_CLASS);me.cpu_affinity([16])
@@ -49,8 +50,27 @@ else:
  (OUT/'clock.sdc').write_text(clock_text,encoding='utf-8')
  options=validate(TOOL,OUT,settings,50,1)
  (OUT/'run.tcl').write_text(run_text,encoding='utf-8')
-# Recheck after the settings-only tool has exited, immediately before SYN.
-m2=memory_status();assert m2.avail_phys>=2*1024**3 and m2.avail_page>=4*1024**3,'2/4GiB launch recheck'
+# Recheck in this already-loaded child, so importing the audit helpers cannot
+# consume an unaccounted reserve between the parent gate and actual launch.
+frozen_files=[HERE/'result.json',HERE/'policy_action_map.v']+[OUT/name for name in
+              ('action.v','clock.sdc','run.tcl','preflight.log','effective_options.tcl')]
+def bindings():
+ result=[]
+ for path in frozen_files:
+  stat=path.stat();result.append(dict(path=str(path),bytes=stat.st_size,mtime_ns=stat.st_mtime_ns))
+ return result
+frozen=bindings()
+while True:
+ m2=memory_status()
+ if m2.avail_phys>=2*1024**3 and m2.avail_page>=4*1024**3:break
+ assert args.wait_for_memory,'2/4GiB launch recheck'
+ assert bindings()==frozen,'frozen input changed while waiting'
+ state=dict(phase='waiting_for_2_4GiB_after_imports_before_unique_module_SYN',pid=me.pid,
+  created_epoch=me.create_time(),available_physical_bytes=m2.avail_phys,available_commit_bytes=m2.avail_page,
+  minimum_physical_bytes=2*1024**3,minimum_commit_bytes=4*1024**3,SYN_started=False,input_bindings=frozen)
+ temporary=OUT/'admission_wait.json.tmp';temporary.write_text(json.dumps(state,indent=2),encoding='utf-8');temporary.replace(OUT/'admission_wait.json')
+ time.sleep(13)
+assert bindings()==frozen
 with (OUT/'launch_claim.json').open('x',encoding='utf-8') as file:
  json.dump(dict(pid=me.pid,created_at=me.create_time(),source=str(HERE/'policy_action_map.v'),scope='one isolated module SYN only'),file)
 runtime=run_syn(OUT,scope='isolated action constant CSA module only; not joint SYN/PNR')

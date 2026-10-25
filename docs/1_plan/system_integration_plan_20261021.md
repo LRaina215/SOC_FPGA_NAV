@@ -13,7 +13,7 @@
 | 原4500控制 | 固定`6443f56`策略、ROM、125Hz推理、BMI088、编码器与执行器 | 既有独立控制与数字合同记录保留 | G2共同工程测量中 | 最后实板记录为13:20切入4B28恒零输出B1诊断；22:53本轮仅离线构建，未重新读取当时供电/镜像状态；原控制源码/权重未改 |
 | 接受导航N1c | `reference/nav_n1c_20261021/fw` | 旧严格口径28/50，只归对应运行器 | 未与当前控制工程联合接受 | 不将旧结果写成当前整车通过 |
 | AS/AY/BJ/BH2实验 | AS在fw，其他以补丁重建 | BJ主机0失败/90轨迹一致；BH2有33项C合同及7880项名义几何 | 无同一候选联合通过关键工况 | 未部署；暂停新增FPGA地形存储和扩大批量 |
-| G2共同资源 | 已布通PNR32为锚点332/340、Fmax33.197MHz；原50MHz不放宽 | 融合新流水20万拍＋独立5项UNSAT/36复位相位通过；动作CSA 8770帧通过，模块映射待内存 | PNR35原网表仅加52条已审CDC约束，01:40:51启动；SYN26融合单改01:44:17启动，并行、均无最终物理结果 | 新网表审阅后接唯一无截止PNR36；布通/全域setup/hold/完整CDC/IO及停止门槛仍待，未烧录 |
+| G2共同资源 | PNR35与新融合流水PNR36并行；PNR32布通锚点332/340、33.197MHz保留 | SYN26实际314源/18宽/CPU64及INIT/两钟/26CDC过；FF−2/LUT−136/27×36宏−3，DSP内部寄存已核；动作CSA模块DSP0 | PNR36于02:05:01工具20732真实启动、原约束/route0、0/0；CSA独立SYN27接续36312等内存 | 双UART失联软件候选源审过但未合镜像；全域50MHz/布通/CDC/IO/停止尚未准入，未烧录 |
 | 终点精度/停止 | 航向逐包截断隔离修复、独立计数反馈/窗口候选 | 24组C积分通过；BJ单例147→134mm，AS仍超时；重建主机0失败/90轨迹一致、RV128KiB通过 | 候选未合入，未消除定位/漂移 | 150mm不变；2s漂移仍13.7mm，导航零偏未建立 |
 | 命令有效期 | 统一年龄/owner/session/有界减速原型；G2可选接入NAV | 实际UART CRC解析＋监管器24项故障注入；500ms默认停稳门限，测试缩放10ms | 带监管静态边界版PNR占用332并布通，时序失败；旧UART仍无序号/session | 无实车/刹停包络通过；本次已授权专项实施 |
 | G3现有板接入/BMI诊断 | B1原驱动/编码器诊断，控制引脚保持；十路执行器恒低 | B1既有独立物理时序/引脚及3023＋6013帧六轴恢复证据保留 | BMI采样恢复已确认；零偏/轴向/融合及停止仍待接受；本次01:44只读复核为独立SFP镜像91FB，不能读取其中不存在的BMI遥测 | 用户本轮确认整车上电/支撑，授权本次夜间联合门槛后直接SRAM及必要支撑工况整车测试；不重复索取同意，状态改变再核实；未发动作/写Flash |
@@ -25,6 +25,16 @@
 提交`cd9b816`保留此前未提交源码和既有团队文档内容，未将失败实验说成接受基线。N1c的54个构建/源码文件已从被忽略目录另存进Git；AS源码在fw，AY/BJ/BH2补丁及构建脚本在sim/closed_loop/candidates。见[检查点说明](../../reference/checkpoints/README.md)。原始点云、完整物理状态、视频和失败数据保留在`F:/nav_terrain4500_20261022/evidence`，仓库sim/build/terrain4500_20261022仍为联接。
 
 ## 2. 先完成G2：真实共同工程资源
+
+**2026-10-26 02:14 PNR35与PNR36已实际并行，动作CSA模块DSP0，独立SYN27接续等内存。** SYN26于01:57:30完整结束、退出0；对SYN23 FF38183→38181（−2）、LUT53059→52923（−136）、MULT27X36 37→34（−3），源RAM314/18宽、其他DSP种类/ALU/SSRAM/ROM保持。综合44.852MHz仍仅估计、首路转动作映射，不当50MHz。实际新VG审阅通过：CPU64/128KiB INIT、全部RAM几何/INIT、两真钟/26首二级连接保持，变化控制输入锥0、别名0，无须捏造SAT结果；168存储端口网名差异未冒称全口逻辑等价。[实际新网表](../4_design/evidence/g2_20261023/fusion_square2_SYN26_actual_netlist_review_20261026.json)。
+
+映射证据表明原归一化6颗MULT27X36（每轴两颗、A/B/O寄存均BYPASS）变为3颗，实际AREG/BREG/OREG=CLK0=clk50_d、CE0/CE0/CE1，PREG仍BYPASS、RESET0=GND。abs/product级被DSP内部寄存吸收，显式square FF192→189，加1个valid，局部960→958，与整机−2一致，不能沿用源码‘新增290位’当实际FF开销；物理布线/50MHz仍待。[实际DSP映射](../4_design/evidence/g2_20261023/fusion_square2_actual_DSP_register_mapping_20261026.json)。
+
+唯一PNR36 `baseline_fusion_square2_pnr36`已02:05:01.597137启动工具20732（创建02:05:01.598388）、父接续44484，实际NORMAL/全20核、目录/命令均核；入场物理3696840704B/提交4461072384B通过2/4GiB，原PNR32 CST/20-10ns逐字同、cmd.do归一目录逐行同、device.cfg字节同，总0/静默0、无52例外。与仍在routing的PNR35同时执行，均无本次最终物理/时序结果。未中断任一构建；只按用户既有授权关闭已核无窗口/后台ComServer的PhoneExperienceHost PID15884（原私有221MiB），没有关闭LLM、系统桌面或构建，未放宽门槛。[实际启动](../4_design/evidence/g2_20261023/fusion_square2_PNR36_actual_start_20261026.json)。
+
+动作CSA唯一模块SYN已02:04:12实际启动67368、12.969秒自然退出0，实用DSP0、FF183/LUT799/ALU290/BSRAM0。模块输入→输出缺外部到达预算，孤立模块的Fmax不代表原actions寄存器→映射路径通过；只接受DSP消除证据。原模块开始前两次设置/入场拒绝均没有启动Gowin综合，现场与claims保留；已加载依赖的恢复子进程自行等实际门槛，实际只综合这一次。独立冻结源只改动作scale，其他62RTL/69资产/31头/完整固件保持；接续36312创建02:05:50.356740已等2/4GiB，达标后唯一SYN27→全新RAM/INIT/两钟/26CDC与跨层wheel D锥无DSP审阅→唯一PNR37（原32CST/20-10/route0、0/0），无35/36退出依赖，不提前混合候选。[并行身份与接续](../4_design/evidence/g2_20261023/parallel_PNR35_PNR36_and_CSA_chain_20261026.json)。
+
+并行51 IO审阅按16输入/30输出/5双向分类：本版OLED/BMI088均I²C而非SPI，异步输入、源同步RGMII、慢速总线/执行器需按各自合同签核，不因缺input/output_delay一概说全失败，也不填任意0。双UART/126字节V2/100Hz传输保留，但PNR32/35尚无RK失联guard；SAFE原200ms与lease不能当RK失联保护。新`baseline_fusion_uart_loss_prepared2`已源审过：硬件0改、FW2改2增、11CPU资产更新至52164B（+452B），ELF/BIN及128KiB HEX重构匹配，25C预处理与既有RV32实际输入匹配；RK只core.py overlay、冻结依赖/配置后31握手检查过，未访问串口/生产服务。prepared1缺默认测试配置、未出manifest/pass或构建的现场保留。通信受控停车发布零导航需求并保留平衡，不等于真正ESTOP切控制；实际串口、负载下超时、停稳反馈/包络、独立急停及全镜像仍待。[软件接入源审阅](../4_design/evidence/g2_20261023/dual_UART_loss_protection_frozen_source_review_20261026.json)。合并源`baseline_fusion_square2_action_CSA_uart_prepared1`也已准备审阅通过：相对SYN23仅两RTL、11CPU资产、FW2改2增及RK core overlay，61硬件/58资产/全部权重、容量、125Hz与原CST/20-10逐字保持；三套单项证明均重绑实际文件，未重复仿真/编译。合并功能、真实新网表/CPU INIT/26CDC与物理/实车接受仍待，不启动SYN28/新PNR。[合并来源审阅](../4_design/evidence/g2_20261023/fusion_square2_action_CSA_uart_combined_source_review_20261026.json)。当前未烧录。
 
 **2026-10-26 01:51 以PNR32为已布通锚点，hold约束与setup实现分线并行。** PNR34实际332叶参数/5444项显式INIT、18宽拆分、两钟/26CDC/51IO均保持；Logic−459并未保住布通。已定位同388负载sensor控制由PRIMARY转普通、同399负载地图CE由LW转PRIMARY，以及四组同INIT/状态输入、各1000负载policy网的覆盖/负载分布变化；它们是可审实际变化，不是1767条失败网身份或唯一根因。[物理比较](../4_design/evidence/g2_20261023/PNR32_vs_PNR34_actual_physical_comparison_20261026.json)。
 

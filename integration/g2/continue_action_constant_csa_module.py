@@ -60,6 +60,8 @@ def main():
     parser.add_argument('--candidate-dir',type=Path,required=True)
     parser.add_argument('--module-out',type=Path,required=True)
     parser.add_argument('--state-out',type=Path,required=True)
+    parser.add_argument('--continuation-attempt',type=int,default=0,
+        help='explicit recovery only after an unstarted memory-gate refusal; preserve every old claim/job')
     args=parser.parse_args()
     candidate,out,state_out=[p.resolve() for p in (args.candidate_dir,args.module_out,args.state_out)]
     me=psutil.Process();me.nice(psutil.IDLE_PRIORITY_CLASS);me.cpu_affinity([16])
@@ -71,9 +73,25 @@ def main():
         recorded_at=datetime.now().astimezone().isoformat(),programmed=False,
         scope='One isolated module SYN only; no existing build is touched',
         minimum_physical_bytes=2*GIB,minimum_commit_bytes=4*GIB)
+    assert args.continuation_attempt>=0
+    if args.continuation_attempt:
+        previous='continuation_claim.json' if args.continuation_attempt==1 else 'continuation_claim_attempt_'+str(args.continuation_attempt-1)+'.json'
+        prior=load(out/previous);prior_state=Path(prior['state_out'])
+        old=load(prior_state/'job.json')
+        assert old['phase']=='failed_preserved_without_retry'
+        assert Path(old['candidate']).resolve()==candidate and Path(old['module_out']).resolve()==out
+        assert "2/4GiB launch recheck" in (prior_state/'module_SYN_stdout.log').read_text(encoding='utf-8')
+        for key,stamp in [('controller_pid','controller_created_epoch'),('child_pid','child_created_epoch')]:
+            try:
+                proc=psutil.Process(old[key])
+                assert abs(proc.create_time()-old[stamp])>.01,'previous controller/child still active'
+            except psutil.NoSuchProcess:pass
+        state['unstarted_memory_refusal_recovery_of']=str(prior_state/'job.json')
+        state['continuation_attempt']=args.continuation_attempt
     # Per-module, not only per-controller-directory, so another state path
     # cannot create a second waiter for this same preserved settings stage.
-    with (out/'continuation_claim.json').open('x',encoding='utf-8') as file:
+    claim_name='continuation_claim.json' if not args.continuation_attempt else 'continuation_claim_attempt_'+str(args.continuation_attempt)+'.json'
+    with (out/claim_name).open('x',encoding='utf-8') as file:
         json.dump(state,file,ensure_ascii=False,indent=2)
     def status(phase,**extra):
         state.update(phase=phase,updated_at=datetime.now().astimezone().isoformat(),**extra)
@@ -82,7 +100,7 @@ def main():
            ('action.v','clock.sdc','run.tcl','preflight.log','effective_options.tcl')]
     bindings=[metadata(path) for path in files]
     command=[sys.executable,'-X','utf8',str(Path(__file__).with_name('measure_action_constant_csa.py')),
-        '--candidate-dir',str(candidate),'--out',str(out),'--resume-settings-only']
+        '--candidate-dir',str(candidate),'--out',str(out),'--resume-settings-only','--wait-for-memory']
     try:
         while True:
             check_unstarted(candidate,out)

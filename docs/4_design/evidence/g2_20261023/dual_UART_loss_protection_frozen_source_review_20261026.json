@@ -1,0 +1,1635 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T02:10:14.831367+08:00",
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23",
+  "routed_reference": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32",
+  "prepared": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2",
+  "donor": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2",
+  "donor_origin": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+  "review_kind": "source/image preparation and existing software contracts, not new joint implementation",
+  "ready_for_integrated_synthesis": true,
+  "new_SYN_or_PNR_started": false,
+  "source_origin_FW61_byte_identical": true,
+  "hardware_inputs": 63,
+  "modified_rtl_inputs": [],
+  "modified_existing_FW": [
+    "fw/app/nav_app.c",
+    "fw/drv/hal_fpga.c"
+  ],
+  "added_FW": [
+    "fw/nav/host_link_guard.c",
+    "fw/nav/host_link_guard.h"
+  ],
+  "unchanged_existing_FW": 59,
+  "original_headers": 31,
+  "new_headers": 32,
+  "hardware_assets": 69,
+  "modified_hardware_assets": [
+    "firmware/nav_fw.bin",
+    "firmware/ram_b0.hex",
+    "firmware/ram_b1.hex",
+    "firmware/ram_b2.hex",
+    "firmware/ram_b3.hex",
+    "firmware/ram_w.hex",
+    "ram_b0.hex",
+    "ram_b1.hex",
+    "ram_b2.hex",
+    "ram_b3.hex",
+    "ram_w.hex"
+  ],
+  "unchanged_hardware_assets": 58,
+  "CPU128KiB_capacity_unchanged": true,
+  "new_CPU_INIT_not_yet_measured_in_actual_joint_netlist": true,
+  "image": {
+    "original_bytes": 51712,
+    "candidate_bytes": 52164,
+    "growth_bytes": 452,
+    "candidate_ELF_BIN_load_equal": true,
+    "RAM_bank_and_word_views_equal": true,
+    "zero_padding_bytes": 78908,
+    "elf_class": 32,
+    "machine": "RISC-V",
+    "executable": true,
+    "load_file_bytes": 52164,
+    "load_memory_bytes": 122136,
+    "linked_symbols": {
+      "RAM_SIZE": 131072,
+      "STACK_RESERVE": 6144,
+      "_bss_start": 52168,
+      "_bss_end": 122136,
+      "_stack_top": 131072
+    },
+    "BSS_bytes": 69968,
+    "aligned_remaining_bytes": 2792
+  },
+  "compiler_support_artifacts_replaced_separately_from11_hardware_assets": true,
+  "preprocessing_proof": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\preprocessed_source_binding.json",
+  "old_frozen_origin_timestamp_only_proof_not_misrepresented_as_candidate_difference": true,
+  "stack_static_bound_bytes": 2736,
+  "stack_reserved_bytes": 6144,
+  "original_4500_all_weights125Hz_and_stop_RTL_byte_identical": true,
+  "original_two_clocks_CST_20ns10ns_SDC_byte_identical": true,
+  "no_new_CDC52_exceptions": true,
+  "RK": {
+    "minimum_production_change": [
+      "yuntuo/bridge/core.py"
+    ],
+    "overlay": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk",
+    "context_snapshot": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context",
+    "working_core_equals_donor_baseline_after_CRLF_normalization": true,
+    "baseline_bytes": 23808,
+    "working_bytes": 23355,
+    "byte_difference_is_only_CRLF_vs_LF": true,
+    "production_modified": false,
+    "existing_31_check_source_has_no_historical_dependency_snapshot": true,
+    "current_frozen_context_31_checks_passed": true,
+    "current_frozen_context_test": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_mission_handshake_result.json",
+    "heartbeat_seconds": 0.2,
+    "fresh_idle_feedback_seconds": 0.5
+  },
+  "reused_software_proofs": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\manifest.json",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\manifest.json",
+        "bytes": 3709,
+        "mtime_ns": 1792935080621649100
+      }
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\prepared_origin_binding.json",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\prepared_origin_binding.json",
+        "bytes": 11644,
+        "mtime_ns": 1792934977249940800
+      }
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\result.json",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\result.json",
+        "bytes": 1318,
+        "mtime_ns": 1792934755387949600
+      }
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\rv32_validation_result.json",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\rv32_validation_result.json",
+        "bytes": 3050,
+        "mtime_ns": 1792934818794505500
+      }
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\navigation_regression_result.json",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\navigation_regression_result.json",
+        "bytes": 2425,
+        "mtime_ns": 1792934879475113600
+      }
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\rk_mission_handshake_result.json",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\rk_mission_handshake_result.json",
+        "bytes": 3179,
+        "mtime_ns": 1792934916789238000
+      }
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\frozen_origin_and_image_binding.json",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\frozen_origin_and_image_binding.json",
+        "bytes": 8613,
+        "mtime_ns": 1792934944632724100
+      }
+    }
+  ],
+  "stop_contract": {
+    "host_timeout_us": 1000000,
+    "timeout_is_candidate_parameter_not_measured_deadline": true,
+    "liveness": "valid inbound NV application packet timestamp; outgoing STATUS or raw MMIO polls do not renew",
+    "controlled_stop": "clear task/goal/old publication, publish zero numeric NAV demand; retain balance policy",
+    "status_mode_ESTOP_is_not_SAFE_CTRL_ESTOP_or_power_cut": true,
+    "true_local_emergency_stop_path_hardware_unchanged": true
+  },
+  "remaining": [
+    "Actual complete joint synthesis: new CPU INIT, all RAM, original 26 CDC and clock/IO sources",
+    "Full setup/hold/recovery/removal/pulse/physical CDC and board IO acceptance",
+    "Real dual UART/NV/telemetry, heartbeats, deadline under planner load, explicit rearm",
+    "Controlled deceleration/balance/physical standstill and true emergency path separately",
+    "NV has no wire session or nonce; pre-arrival delayed USB replay remains unproved",
+    "Full software hard WCET, actual stack watermark, full RK service/vehicle acceptance"
+  ],
+  "bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\manifest.json",
+      "bytes": 7387,
+      "mtime_ns": 1792942877818334300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\firmware\\nav_fw.bin",
+      "bytes": 51712,
+      "mtime_ns": 1792660824309244200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\rv32\\nav_fw.elf",
+      "bytes": 427996,
+      "mtime_ns": 1792934816895075600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\rv32\\nav_fw.bin",
+      "bytes": 52164,
+      "mtime_ns": 1792934818588828900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\firmware\\nav_fw.elf",
+      "bytes": 427996,
+      "mtime_ns": 1792934816895075600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\firmware\\nav_fw.bin",
+      "bytes": 52164,
+      "mtime_ns": 1792934818588828900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\test_rk_mission_handshake.py",
+      "bytes": 11506,
+      "mtime_ns": 1792934744437799200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\revalidate_rk_mission_handshake.py",
+      "bytes": 11361,
+      "mtime_ns": 1792951813883122300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\baseline\\rk\\yuntuo\\bridge\\core.py",
+      "bytes": 23808,
+      "mtime_ns": 1792929513198414700
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\bridge\\core.py",
+      "bytes": 23355,
+      "mtime_ns": 1792905639679869600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\rk\\yuntuo\\bridge\\core.py",
+      "bytes": 33663,
+      "mtime_ns": 1792934476270043100
+    }
+  ],
+  "frozen_FW_bindings": [
+    {
+      "relative": "app/main.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\app\\main.c",
+        "bytes": 1934,
+        "mtime_ns": 1792741123623106200
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\app\\main.c",
+        "bytes": 1934,
+        "mtime_ns": 1792741123623106200
+      }
+    },
+    {
+      "relative": "app/nav_app.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\app\\nav_app.c",
+        "bytes": 15536,
+        "mtime_ns": 1792934744429291500
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\app\\nav_app.c",
+        "bytes": 15536,
+        "mtime_ns": 1792934744429291500
+      }
+    },
+    {
+      "relative": "app/nav_app.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\app\\nav_app.h",
+        "bytes": 3330,
+        "mtime_ns": 1792741123624090700
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\app\\nav_app.h",
+        "bytes": 3330,
+        "mtime_ns": 1792741123624090700
+      }
+    },
+    {
+      "relative": "bsp/analyze_stack.py",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\bsp\\analyze_stack.py",
+        "bytes": 5808,
+        "mtime_ns": 1792582794608249000
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\bsp\\analyze_stack.py",
+        "bytes": 5808,
+        "mtime_ns": 1792582794608249000
+      }
+    },
+    {
+      "relative": "bsp/build_rv.py",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\bsp\\build_rv.py",
+        "bytes": 5526,
+        "mtime_ns": 1792583488589870200
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\bsp\\build_rv.py",
+        "bytes": 5526,
+        "mtime_ns": 1792583488589870200
+      }
+    },
+    {
+      "relative": "bsp/console.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\bsp\\console.c",
+        "bytes": 1391,
+        "mtime_ns": 1792741123625106400
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\bsp\\console.c",
+        "bytes": 1391,
+        "mtime_ns": 1792741123625106400
+      }
+    },
+    {
+      "relative": "bsp/link.ld",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\bsp\\link.ld",
+        "bytes": 752,
+        "mtime_ns": 1792582794608249000
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\bsp\\link.ld",
+        "bytes": 752,
+        "mtime_ns": 1792582794608249000
+      }
+    },
+    {
+      "relative": "bsp/selftest.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\bsp\\selftest.c",
+        "bytes": 1314,
+        "mtime_ns": 1792741123625106400
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\bsp\\selftest.c",
+        "bytes": 1314,
+        "mtime_ns": 1792741123625106400
+      }
+    },
+    {
+      "relative": "bsp/soc.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\bsp\\soc.h",
+        "bytes": 944,
+        "mtime_ns": 1792741123626090600
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\bsp\\soc.h",
+        "bytes": 944,
+        "mtime_ns": 1792741123626090600
+      }
+    },
+    {
+      "relative": "bsp/start.S",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\bsp\\start.S",
+        "bytes": 389,
+        "mtime_ns": 1790666590790300400
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\bsp\\start.S",
+        "bytes": 389,
+        "mtime_ns": 1790666590790300400
+      }
+    },
+    {
+      "relative": "drv/hal_fpga.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\drv\\hal_fpga.c",
+        "bytes": 15872,
+        "mtime_ns": 1792934744429291500
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\drv\\hal_fpga.c",
+        "bytes": 15872,
+        "mtime_ns": 1792934744429291500
+      }
+    },
+    {
+      "relative": "hal/hal.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\hal\\hal.h",
+        "bytes": 7770,
+        "mtime_ns": 1792741123789485300
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\hal\\hal.h",
+        "bytes": 7770,
+        "mtime_ns": 1792741123789485300
+      }
+    },
+    {
+      "relative": "include/nav_params.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\include\\nav_params.h",
+        "bytes": 985,
+        "mtime_ns": 1792741123628036400
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\include\\nav_params.h",
+        "bytes": 985,
+        "mtime_ns": 1792741123628036400
+      }
+    },
+    {
+      "relative": "include/nav_regs_map.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\include\\nav_regs_map.h",
+        "bytes": 26167,
+        "mtime_ns": 1792741123628573000
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\include\\nav_regs_map.h",
+        "bytes": 26167,
+        "mtime_ns": 1792741123628573000
+      }
+    },
+    {
+      "relative": "include/nav_sin_lut.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\include\\nav_sin_lut.h",
+        "bytes": 7745,
+        "mtime_ns": 1792741123628573000
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\include\\nav_sin_lut.h",
+        "bytes": 7745,
+        "mtime_ns": 1792741123628573000
+      }
+    },
+    {
+      "relative": "include/nav_types.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\include\\nav_types.h",
+        "bytes": 1976,
+        "mtime_ns": 1792741123629583000
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\include\\nav_types.h",
+        "bytes": 1976,
+        "mtime_ns": 1792741123629583000
+      }
+    },
+    {
+      "relative": "nav/astar.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\astar.c",
+        "bytes": 12074,
+        "mtime_ns": 1792741123629583000
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\astar.c",
+        "bytes": 12074,
+        "mtime_ns": 1792741123629583000
+      }
+    },
+    {
+      "relative": "nav/astar.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\astar.h",
+        "bytes": 3424,
+        "mtime_ns": 1792741123629583000
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\astar.h",
+        "bytes": 3424,
+        "mtime_ns": 1792741123629583000
+      }
+    },
+    {
+      "relative": "nav/explore.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\explore.c",
+        "bytes": 8411,
+        "mtime_ns": 1792741123789485300
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\explore.c",
+        "bytes": 8411,
+        "mtime_ns": 1792741123789485300
+      }
+    },
+    {
+      "relative": "nav/explore.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\explore.h",
+        "bytes": 3912,
+        "mtime_ns": 1792741123789485300
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\explore.h",
+        "bytes": 3912,
+        "mtime_ns": 1792741123789485300
+      }
+    },
+    {
+      "relative": "nav/fixmath.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\fixmath.c",
+        "bytes": 2519,
+        "mtime_ns": 1792741123632120700
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\fixmath.c",
+        "bytes": 2519,
+        "mtime_ns": 1792741123632120700
+      }
+    },
+    {
+      "relative": "nav/fixmath.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\fixmath.h",
+        "bytes": 987,
+        "mtime_ns": 1792741123632120700
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\fixmath.h",
+        "bytes": 987,
+        "mtime_ns": 1792741123632120700
+      }
+    },
+    {
+      "relative": "nav/gmap.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\gmap.c",
+        "bytes": 9303,
+        "mtime_ns": 1792741123633117700
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\gmap.c",
+        "bytes": 9303,
+        "mtime_ns": 1792741123633117700
+      }
+    },
+    {
+      "relative": "nav/gmap.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\gmap.h",
+        "bytes": 4438,
+        "mtime_ns": 1792741123634119100
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\gmap.h",
+        "bytes": 4438,
+        "mtime_ns": 1792741123634119100
+      }
+    },
+    {
+      "relative": "nav/host_link_guard.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\host_link_guard.c",
+        "bytes": 2140,
+        "mtime_ns": 1792933728553198200
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\host_link_guard.c",
+        "bytes": 2140,
+        "mtime_ns": 1792933728553198200
+      }
+    },
+    {
+      "relative": "nav/host_link_guard.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\host_link_guard.h",
+        "bytes": 765,
+        "mtime_ns": 1792933685883254800
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\host_link_guard.h",
+        "bytes": 765,
+        "mtime_ns": 1792933685883254800
+      }
+    },
+    {
+      "relative": "nav/imu_parse.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\imu_parse.c",
+        "bytes": 1324,
+        "mtime_ns": 1792741123634119100
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\imu_parse.c",
+        "bytes": 1324,
+        "mtime_ns": 1792741123634119100
+      }
+    },
+    {
+      "relative": "nav/imu_parse.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\imu_parse.h",
+        "bytes": 1339,
+        "mtime_ns": 1792741123635118100
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\imu_parse.h",
+        "bytes": 1339,
+        "mtime_ns": 1792741123635118100
+      }
+    },
+    {
+      "relative": "nav/lidar_cal.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\lidar_cal.c",
+        "bytes": 7043,
+        "mtime_ns": 1792741123636116400
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\lidar_cal.c",
+        "bytes": 7043,
+        "mtime_ns": 1792741123636116400
+      }
+    },
+    {
+      "relative": "nav/lidar_cal.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\lidar_cal.h",
+        "bytes": 2675,
+        "mtime_ns": 1792741123636116400
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\lidar_cal.h",
+        "bytes": 2675,
+        "mtime_ns": 1792741123636116400
+      }
+    },
+    {
+      "relative": "nav/loc.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\loc.c",
+        "bytes": 7459,
+        "mtime_ns": 1792741123637119100
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\loc.c",
+        "bytes": 7459,
+        "mtime_ns": 1792741123637119100
+      }
+    },
+    {
+      "relative": "nav/loc.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\loc.h",
+        "bytes": 4673,
+        "mtime_ns": 1792741123637119100
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\loc.h",
+        "bytes": 4673,
+        "mtime_ns": 1792741123637119100
+      }
+    },
+    {
+      "relative": "nav/local_frame.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\local_frame.c",
+        "bytes": 1220,
+        "mtime_ns": 1792741123638116800
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\local_frame.c",
+        "bytes": 1220,
+        "mtime_ns": 1792741123638116800
+      }
+    },
+    {
+      "relative": "nav/local_frame.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\local_frame.h",
+        "bytes": 545,
+        "mtime_ns": 1792741123638116800
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\local_frame.h",
+        "bytes": 545,
+        "mtime_ns": 1792741123638116800
+      }
+    },
+    {
+      "relative": "nav/local_planner.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\local_planner.c",
+        "bytes": 9587,
+        "mtime_ns": 1792741123639116100
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\local_planner.c",
+        "bytes": 9587,
+        "mtime_ns": 1792741123639116100
+      }
+    },
+    {
+      "relative": "nav/local_planner.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\local_planner.h",
+        "bytes": 2698,
+        "mtime_ns": 1792741123639116100
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\local_planner.h",
+        "bytes": 2698,
+        "mtime_ns": 1792741123639116100
+      }
+    },
+    {
+      "relative": "nav/motion_guard.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\motion_guard.c",
+        "bytes": 10919,
+        "mtime_ns": 1792741123640419200
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\motion_guard.c",
+        "bytes": 10919,
+        "mtime_ns": 1792741123640419200
+      }
+    },
+    {
+      "relative": "nav/motion_guard.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\motion_guard.h",
+        "bytes": 1293,
+        "mtime_ns": 1792741123640956300
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\motion_guard.h",
+        "bytes": 1293,
+        "mtime_ns": 1792741123640956300
+      }
+    },
+    {
+      "relative": "nav/nav_task.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\nav_task.c",
+        "bytes": 38149,
+        "mtime_ns": 1792741123790463200
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\nav_task.c",
+        "bytes": 38149,
+        "mtime_ns": 1792741123790463200
+      }
+    },
+    {
+      "relative": "nav/nav_task.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\nav_task.h",
+        "bytes": 5814,
+        "mtime_ns": 1792741123642278600
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\nav_task.h",
+        "bytes": 5814,
+        "mtime_ns": 1792741123642278600
+      }
+    },
+    {
+      "relative": "nav/pose.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\pose.c",
+        "bytes": 13228,
+        "mtime_ns": 1792741123642838400
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\pose.c",
+        "bytes": 13228,
+        "mtime_ns": 1792741123642838400
+      }
+    },
+    {
+      "relative": "nav/pose.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\pose.h",
+        "bytes": 5610,
+        "mtime_ns": 1792741123643395800
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\pose.h",
+        "bytes": 5610,
+        "mtime_ns": 1792741123643395800
+      }
+    },
+    {
+      "relative": "nav/pose_match.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\pose_match.c",
+        "bytes": 8290,
+        "mtime_ns": 1792741123643395800
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\pose_match.c",
+        "bytes": 8290,
+        "mtime_ns": 1792741123643395800
+      }
+    },
+    {
+      "relative": "nav/pose_match.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\pose_match.h",
+        "bytes": 2855,
+        "mtime_ns": 1792741123643950100
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\pose_match.h",
+        "bytes": 2855,
+        "mtime_ns": 1792741123643950100
+      }
+    },
+    {
+      "relative": "nav/prior.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\prior.c",
+        "bytes": 3677,
+        "mtime_ns": 1792741123644505300
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\prior.c",
+        "bytes": 3677,
+        "mtime_ns": 1792741123644505300
+      }
+    },
+    {
+      "relative": "nav/prior.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\prior.h",
+        "bytes": 1731,
+        "mtime_ns": 1792741123645060900
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\prior.h",
+        "bytes": 1731,
+        "mtime_ns": 1792741123645060900
+      }
+    },
+    {
+      "relative": "nav/proto.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\proto.c",
+        "bytes": 4472,
+        "mtime_ns": 1792741123645632100
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\proto.c",
+        "bytes": 4472,
+        "mtime_ns": 1792741123645632100
+      }
+    },
+    {
+      "relative": "nav/proto.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\proto.h",
+        "bytes": 4439,
+        "mtime_ns": 1792741123646189700
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\proto.h",
+        "bytes": 4439,
+        "mtime_ns": 1792741123646189700
+      }
+    },
+    {
+      "relative": "nav/scratch.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\scratch.c",
+        "bytes": 47,
+        "mtime_ns": 1792741123646747900
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\scratch.c",
+        "bytes": 47,
+        "mtime_ns": 1792741123646747900
+      }
+    },
+    {
+      "relative": "nav/scratch.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\scratch.h",
+        "bytes": 1502,
+        "mtime_ns": 1792741123647306400
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\scratch.h",
+        "bytes": 1502,
+        "mtime_ns": 1792741123647306400
+      }
+    },
+    {
+      "relative": "nav/support_guard.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\support_guard.c",
+        "bytes": 8171,
+        "mtime_ns": 1792741123790463200
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\support_guard.c",
+        "bytes": 8171,
+        "mtime_ns": 1792741123790463200
+      }
+    },
+    {
+      "relative": "nav/support_guard.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\support_guard.h",
+        "bytes": 911,
+        "mtime_ns": 1792741123648045500
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\support_guard.h",
+        "bytes": 911,
+        "mtime_ns": 1792741123648045500
+      }
+    },
+    {
+      "relative": "nav/target.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\target.c",
+        "bytes": 1304,
+        "mtime_ns": 1792741123648575500
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\target.c",
+        "bytes": 1304,
+        "mtime_ns": 1792741123648575500
+      }
+    },
+    {
+      "relative": "nav/target.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\target.h",
+        "bytes": 1145,
+        "mtime_ns": 1792741123649230700
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\target.h",
+        "bytes": 1145,
+        "mtime_ns": 1792741123649230700
+      }
+    },
+    {
+      "relative": "nav/traj_sw.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\traj_sw.c",
+        "bytes": 1761,
+        "mtime_ns": 1792741123649230700
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\traj_sw.c",
+        "bytes": 1761,
+        "mtime_ns": 1792741123649230700
+      }
+    },
+    {
+      "relative": "nav/traj_sw.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\traj_sw.h",
+        "bytes": 515,
+        "mtime_ns": 1792741123649870500
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\traj_sw.h",
+        "bytes": 515,
+        "mtime_ns": 1792741123649870500
+      }
+    },
+    {
+      "relative": "nav/xt_link.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\xt_link.c",
+        "bytes": 11120,
+        "mtime_ns": 1792741123650467300
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\xt_link.c",
+        "bytes": 11120,
+        "mtime_ns": 1792741123650467300
+      }
+    },
+    {
+      "relative": "nav/xt_link.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\nav\\xt_link.h",
+        "bytes": 2470,
+        "mtime_ns": 1792741123650467300
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\nav\\xt_link.h",
+        "bytes": 2470,
+        "mtime_ns": 1792741123650467300
+      }
+    },
+    {
+      "relative": "test/build.py",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\test\\build.py",
+        "bytes": 1534,
+        "mtime_ns": 1790667600610444100
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\test\\build.py",
+        "bytes": 1534,
+        "mtime_ns": 1790667600610444100
+      }
+    },
+    {
+      "relative": "test/hal_py.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\test\\hal_py.c",
+        "bytes": 19537,
+        "mtime_ns": 1792741123790463200
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\test\\hal_py.c",
+        "bytes": 19537,
+        "mtime_ns": 1792741123790463200
+      }
+    },
+    {
+      "relative": "test/hal_sim.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\test\\hal_sim.c",
+        "bytes": 11333,
+        "mtime_ns": 1792741123791461800
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\test\\hal_sim.c",
+        "bytes": 11333,
+        "mtime_ns": 1792741123791461800
+      }
+    },
+    {
+      "relative": "test/hal_sim.h",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\test\\hal_sim.h",
+        "bytes": 1754,
+        "mtime_ns": 1792741123652723600
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\test\\hal_sim.h",
+        "bytes": 1754,
+        "mtime_ns": 1792741123652723600
+      }
+    },
+    {
+      "relative": "test/test_main.c",
+      "source": {
+        "path": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\fw\\test\\test_main.c",
+        "bytes": 52732,
+        "mtime_ns": 1792741123791461800
+      },
+      "prepared": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\fw\\test\\test_main.c",
+        "bytes": 52732,
+        "mtime_ns": 1792741123791461800
+      }
+    }
+  ],
+  "RK_context_bindings": [
+    {
+      "relative": "fpga_bridge.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\fpga_bridge.py",
+        "bytes": 163,
+        "mtime_ns": 1792650196321672700
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\fpga_bridge.py",
+        "bytes": 163,
+        "mtime_ns": 1792951813774192100
+      }
+    },
+    {
+      "relative": "link_check.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\link_check.py",
+        "bytes": 24210,
+        "mtime_ns": 1792739856011110400
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\link_check.py",
+        "bytes": 24210,
+        "mtime_ns": 1792951813777399600
+      }
+    },
+    {
+      "relative": "llm_server.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\llm_server.py",
+        "bytes": 156,
+        "mtime_ns": 1792688637881675900
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\llm_server.py",
+        "bytes": 156,
+        "mtime_ns": 1792951813779379800
+      }
+    },
+    {
+      "relative": "mock_camera.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\mock_camera.py",
+        "bytes": 3570,
+        "mtime_ns": 1792654788236534500
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\mock_camera.py",
+        "bytes": 3570,
+        "mtime_ns": 1792951813781624000
+      }
+    },
+    {
+      "relative": "mock_fpga.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\mock_fpga.py",
+        "bytes": 17289,
+        "mtime_ns": 1792653217378089400
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\mock_fpga.py",
+        "bytes": 17289,
+        "mtime_ns": 1792951813783628700
+      }
+    },
+    {
+      "relative": "tts_server.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\tts_server.py",
+        "bytes": 156,
+        "mtime_ns": 1792689604770459400
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\tts_server.py",
+        "bytes": 156,
+        "mtime_ns": 1792951813786313100
+      }
+    },
+    {
+      "relative": "__init__.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\__init__.py",
+        "bytes": 131,
+        "mtime_ns": 1792649346766171300
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\__init__.py",
+        "bytes": 131,
+        "mtime_ns": 1792951813786313100
+      }
+    },
+    {
+      "relative": "bridge/config.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\bridge\\config.py",
+        "bytes": 5396,
+        "mtime_ns": 1792904958482816200
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\bridge\\config.py",
+        "bytes": 5396,
+        "mtime_ns": 1792951813786313100
+      }
+    },
+    {
+      "relative": "bridge/core.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\bridge\\core.py",
+        "bytes": 23355,
+        "mtime_ns": 1792905639679869600
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\bridge\\core.py",
+        "bytes": 23355,
+        "mtime_ns": 1792951813786313100
+      }
+    },
+    {
+      "relative": "bridge/feedback.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\bridge\\feedback.py",
+        "bytes": 3232,
+        "mtime_ns": 1792904906921148300
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\bridge\\feedback.py",
+        "bytes": 3232,
+        "mtime_ns": 1792951813797540000
+      }
+    },
+    {
+      "relative": "bridge/inputs.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\bridge\\inputs.py",
+        "bytes": 6044,
+        "mtime_ns": 1792904928920703800
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\bridge\\inputs.py",
+        "bytes": 6044,
+        "mtime_ns": 1792951813800739100
+      }
+    },
+    {
+      "relative": "bridge/poster.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\bridge\\poster.py",
+        "bytes": 3262,
+        "mtime_ns": 1792649766684358600
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\bridge\\poster.py",
+        "bytes": 3262,
+        "mtime_ns": 1792951813800739100
+      }
+    },
+    {
+      "relative": "bridge/server.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\bridge\\server.py",
+        "bytes": 5260,
+        "mtime_ns": 1792742677391650600
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\bridge\\server.py",
+        "bytes": 5260,
+        "mtime_ns": 1792951813805675500
+      }
+    },
+    {
+      "relative": "bridge/targets.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\bridge\\targets.py",
+        "bytes": 3027,
+        "mtime_ns": 1792649782193352900
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\bridge\\targets.py",
+        "bytes": 3027,
+        "mtime_ns": 1792951813807673800
+      }
+    },
+    {
+      "relative": "bridge/tasks.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\bridge\\tasks.py",
+        "bytes": 28056,
+        "mtime_ns": 1792905639678875500
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\bridge\\tasks.py",
+        "bytes": 28056,
+        "mtime_ns": 1792951813810385900
+      }
+    },
+    {
+      "relative": "bridge/__init__.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\bridge\\__init__.py",
+        "bytes": 130,
+        "mtime_ns": 1792649722981179300
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\bridge\\__init__.py",
+        "bytes": 130,
+        "mtime_ns": 1792951813812497600
+      }
+    },
+    {
+      "relative": "fpga_link/links.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\fpga_link\\links.py",
+        "bytes": 7451,
+        "mtime_ns": 1792649418093242200
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\fpga_link\\links.py",
+        "bytes": 7451,
+        "mtime_ns": 1792951813814734400
+      }
+    },
+    {
+      "relative": "fpga_link/nvmp.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\fpga_link\\nvmp.py",
+        "bytes": 3010,
+        "mtime_ns": 1792649473078381700
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\fpga_link\\nvmp.py",
+        "bytes": 3010,
+        "mtime_ns": 1792951813816449100
+      }
+    },
+    {
+      "relative": "fpga_link/nv_proto.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\fpga_link\\nv_proto.py",
+        "bytes": 10934,
+        "mtime_ns": 1792741365915317200
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\fpga_link\\nv_proto.py",
+        "bytes": 10934,
+        "mtime_ns": 1792951813816449100
+      }
+    },
+    {
+      "relative": "fpga_link/telemetry.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\fpga_link\\telemetry.py",
+        "bytes": 7164,
+        "mtime_ns": 1792741365914298400
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\fpga_link\\telemetry.py",
+        "bytes": 7164,
+        "mtime_ns": 1792951813816449100
+      }
+    },
+    {
+      "relative": "fpga_link/__init__.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\fpga_link\\__init__.py",
+        "bytes": 121,
+        "mtime_ns": 1792649346807024700
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\fpga_link\\__init__.py",
+        "bytes": 121,
+        "mtime_ns": 1792951813816449100
+      }
+    },
+    {
+      "relative": "llm/rkllm.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\llm\\rkllm.py",
+        "bytes": 13709,
+        "mtime_ns": 1792688580247628700
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\llm\\rkllm.py",
+        "bytes": 13709,
+        "mtime_ns": 1792951813816449100
+      }
+    },
+    {
+      "relative": "llm/server.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\llm\\server.py",
+        "bytes": 13195,
+        "mtime_ns": 1792820653391893500
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\llm\\server.py",
+        "bytes": 13195,
+        "mtime_ns": 1792951813816449100
+      }
+    },
+    {
+      "relative": "llm/__init__.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\llm\\__init__.py",
+        "bytes": 51,
+        "mtime_ns": 1792688637829120800
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\llm\\__init__.py",
+        "bytes": 51,
+        "mtime_ns": 1792951813831073000
+      }
+    },
+    {
+      "relative": "perception/color.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\perception\\color.py",
+        "bytes": 2538,
+        "mtime_ns": 1792651169441710200
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\perception\\color.py",
+        "bytes": 2538,
+        "mtime_ns": 1792951813831073000
+      }
+    },
+    {
+      "relative": "perception/detectors.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\perception\\detectors.py",
+        "bytes": 2268,
+        "mtime_ns": 1792651297773011900
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\perception\\detectors.py",
+        "bytes": 2268,
+        "mtime_ns": 1792951813831073000
+      }
+    },
+    {
+      "relative": "perception/geometry.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\perception\\geometry.py",
+        "bytes": 4105,
+        "mtime_ns": 1792683610421063900
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\perception\\geometry.py",
+        "bytes": 4105,
+        "mtime_ns": 1792951813831073000
+      }
+    },
+    {
+      "relative": "perception/node.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\perception\\node.py",
+        "bytes": 13550,
+        "mtime_ns": 1792738990416636300
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\perception\\node.py",
+        "bytes": 13550,
+        "mtime_ns": 1792951813840883200
+      }
+    },
+    {
+      "relative": "perception/pipeline.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\perception\\pipeline.py",
+        "bytes": 4527,
+        "mtime_ns": 1792651273631545800
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\perception\\pipeline.py",
+        "bytes": 4527,
+        "mtime_ns": 1792951813843161900
+      }
+    },
+    {
+      "relative": "perception/sources.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\perception\\sources.py",
+        "bytes": 8502,
+        "mtime_ns": 1792738990415636900
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\perception\\sources.py",
+        "bytes": 8502,
+        "mtime_ns": 1792951813845158300
+      }
+    },
+    {
+      "relative": "perception/stream.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\perception\\stream.py",
+        "bytes": 4014,
+        "mtime_ns": 1792738955073806500
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\perception\\stream.py",
+        "bytes": 4014,
+        "mtime_ns": 1792951813847318700
+      }
+    },
+    {
+      "relative": "perception/tracker.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\perception\\tracker.py",
+        "bytes": 3113,
+        "mtime_ns": 1792651169469137000
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\perception\\tracker.py",
+        "bytes": 3113,
+        "mtime_ns": 1792951813850342800
+      }
+    },
+    {
+      "relative": "perception/__init__.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\perception\\__init__.py",
+        "bytes": 147,
+        "mtime_ns": 1792651169381031400
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\perception\\__init__.py",
+        "bytes": 147,
+        "mtime_ns": 1792951813852342500
+      }
+    },
+    {
+      "relative": "tests/test_bridge_sim.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\tests\\test_bridge_sim.py",
+        "bytes": 11525,
+        "mtime_ns": 1792905045161005200
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\tests\\test_bridge_sim.py",
+        "bytes": 11525,
+        "mtime_ns": 1792951813852986200
+      }
+    },
+    {
+      "relative": "tests/test_fpga_link.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\tests\\test_fpga_link.py",
+        "bytes": 8370,
+        "mtime_ns": 1792741459068987400
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\tests\\test_fpga_link.py",
+        "bytes": 8370,
+        "mtime_ns": 1792951813852986200
+      }
+    },
+    {
+      "relative": "tests/test_link_check.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\tests\\test_link_check.py",
+        "bytes": 4199,
+        "mtime_ns": 1792739921485598600
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\tests\\test_link_check.py",
+        "bytes": 4199,
+        "mtime_ns": 1792951813852986200
+      }
+    },
+    {
+      "relative": "tests/test_llm_server.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\tests\\test_llm_server.py",
+        "bytes": 4802,
+        "mtime_ns": 1792820694512036400
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\tests\\test_llm_server.py",
+        "bytes": 4802,
+        "mtime_ns": 1792951813852986200
+      }
+    },
+    {
+      "relative": "tests/test_perception.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\tests\\test_perception.py",
+        "bytes": 6866,
+        "mtime_ns": 1792698152250634400
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\tests\\test_perception.py",
+        "bytes": 6866,
+        "mtime_ns": 1792951813852986200
+      }
+    },
+    {
+      "relative": "tests/test_stream.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\tests\\test_stream.py",
+        "bytes": 1526,
+        "mtime_ns": 1792739119847395100
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\tests\\test_stream.py",
+        "bytes": 1526,
+        "mtime_ns": 1792951813852986200
+      }
+    },
+    {
+      "relative": "tests/test_task_replay.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\tests\\test_task_replay.py",
+        "bytes": 12104,
+        "mtime_ns": 1792905639682032300
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\tests\\test_task_replay.py",
+        "bytes": 12104,
+        "mtime_ns": 1792951813867688100
+      }
+    },
+    {
+      "relative": "tests/test_tts_server.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\tests\\test_tts_server.py",
+        "bytes": 3269,
+        "mtime_ns": 1792689683666997600
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\tests\\test_tts_server.py",
+        "bytes": 3269,
+        "mtime_ns": 1792951813867688100
+      }
+    },
+    {
+      "relative": "tts/server.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\tts\\server.py",
+        "bytes": 11715,
+        "mtime_ns": 1792779026713889500
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\tts\\server.py",
+        "bytes": 11715,
+        "mtime_ns": 1792951813878550000
+      }
+    },
+    {
+      "relative": "tts/__init__.py",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\yuntuo\\tts\\__init__.py",
+        "bytes": 57,
+        "mtime_ns": 1792689604651151600
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\yuntuo\\tts\\__init__.py",
+        "bytes": 57,
+        "mtime_ns": 1792951813880547500
+      }
+    }
+  ],
+  "RK_configuration_bindings": [
+    {
+      "relative": "backend/app/config/yuntuo/waypoints.json",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\backend\\app\\config\\yuntuo\\waypoints.json",
+        "bytes": 1019,
+        "mtime_ns": 1792650803608345200
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\backend\\app\\config\\yuntuo\\waypoints.json",
+        "bytes": 1019,
+        "mtime_ns": 1792951813883122300
+      }
+    },
+    {
+      "relative": "backend/app/config/yuntuo/patrol_routes.json",
+      "original": {
+        "path": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\backend\\app\\config\\yuntuo\\patrol_routes.json",
+        "bytes": 262,
+        "mtime_ns": 1792650803639001100
+      },
+      "snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_uart_loss_prepared2\\rk_context\\backend\\app\\config\\yuntuo\\patrol_routes.json",
+        "bytes": 262,
+        "mtime_ns": 1792951813883122300
+      }
+    }
+  ],
+  "programmed": false,
+  "serial_opened": false,
+  "physical_stop_proved": false,
+  "deployment_accepted": false
+}
