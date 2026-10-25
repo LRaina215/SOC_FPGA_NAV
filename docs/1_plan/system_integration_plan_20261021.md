@@ -13,7 +13,7 @@
 | 原4500控制 | 固定`6443f56`策略、ROM、125Hz推理、BMI088、编码器与执行器 | 既有独立控制与数字合同记录保留 | G2共同工程测量中 | 最后实板记录为13:20切入4B28恒零输出B1诊断；22:53本轮仅离线构建，未重新读取当时供电/镜像状态；原控制源码/权重未改 |
 | 接受导航N1c | `reference/nav_n1c_20261021/fw` | 旧严格口径28/50，只归对应运行器 | 未与当前控制工程联合接受 | 不将旧结果写成当前整车通过 |
 | AS/AY/BJ/BH2实验 | AS在fw，其他以补丁重建 | BJ主机0失败/90轨迹一致；BH2有33项C合同及7880项名义几何 | 无同一候选联合通过关键工况 | 未部署；暂停新增FPGA地形存储和扩大批量 |
-| G2共同资源 | PNR27已复现布通332/340，但50MHz仍5003 setup/8 hold | PNR28自然366/323、PNR29自然893/332，均无.tr；实际分配变化已核对，根因未证 | PNR30同基线仅40ns诊断正在routing；PNR31同基线仅52CDC约束排后；总0/静默0 | 真实25MHz分域与独立fusion/pose候选继续审，双UART/时序/CDC/IO/失联停止未准入；未烧录 |
+| G2共同资源 | PNR27布通332/340但50MHz仍5003 setup/8 hold；PNR30仅40ns已布通setup0/hold9，硬件仍50MHz | fusion-only SYN23、pose-only SYN24均完整完成且真实RAM/INIT/2钟/26CDC审阅通过；各314源/18宽，332物理待测 | PNR31与PNR32并行；PNR33独立等2/4GiB余量，不绑定前轮结束；PNR总0/静默0 | 并行优先；完整时序/CDC/IO/双UART失联停止未准入，未烧录 |
 | 终点精度/停止 | 航向逐包截断隔离修复、独立计数反馈/窗口候选 | 24组C积分通过；BJ单例147→134mm，AS仍超时；重建主机0失败/90轨迹一致、RV128KiB通过 | 候选未合入，未消除定位/漂移 | 150mm不变；2s漂移仍13.7mm，导航零偏未建立 |
 | 命令有效期 | 统一年龄/owner/session/有界减速原型；G2可选接入NAV | 实际UART CRC解析＋监管器24项故障注入；500ms默认停稳门限，测试缩放10ms | 带监管静态边界版PNR占用332并布通，时序失败；旧UART仍无序号/session | 无实车/刹停包络通过；本次已授权专项实施 |
 | G3现有板接入/BMI诊断 | B1原驱动/编码器诊断，控制引脚保持；十路执行器恒低 | B1既有独立物理时序/引脚及3023＋6013帧六轴恢复证据保留 | BMI采样恢复已确认；零偏/轴向/融合及停止仍待接受；本次01:44只读复核为独立SFP镜像91FB，不能读取其中不存在的BMI遥测 | 用户本轮确认整车上电/支撑，授权本次夜间联合门槛后直接SRAM及必要支撑工况整车测试；不重复索取同意，状态改变再核实；未发动作/写Flash |
@@ -25,6 +25,14 @@
 提交`cd9b816`保留此前未提交源码和既有团队文档内容，未将失败实验说成接受基线。N1c的54个构建/源码文件已从被忽略目录另存进Git；AS源码在fw，AY/BJ/BH2补丁及构建脚本在sim/closed_loop/candidates。见[检查点说明](../../reference/checkpoints/README.md)。原始点云、完整物理状态、视频和失败数据保留在`F:/nav_terrain4500_20261022/evidence`，仓库sim/build/terrain4500_20261022仍为联接。
 
 ## 2. 先完成G2：真实共同工程资源
+
+**2026-10-26 00:02 用户要求并行优先已落实：PNR31与PNR32同时运行，PNR33独立等待提交余量；两版完整SYN和实际网表审阅均通过。** PNR30于23:37:33自然结束0、实际布通332块，40ns约束下setup0/hold9，报告Fmax26.176/116.085MHz；原VO除创建时间行与PNR27完全相同，314源/18宽拆分、CPU64/控制49/导航219及INIT/端口保持。仅SDC改变，硬件仍50MHz，不能烧录。9条负hold为8FIFO＋1MAC测频首级，全部精确落原26已审清单；人工将26误分为全FIFO的判断已纠正为24FIFO＋rx_clock_monitor＋rx_sampling_select，不新增豁免。[PNR30真实终审](../4_design/evidence/g2_20261023/PNR30_actual_timing_and_CDC_review_20261025.json)。
+
+fusion-only SYN23（工具35124/监管20832、23:41:17、IDLE CPU16）及pose-only SYN24（57160/26272、23:43:08、IDLE CPU18）已与PNR31并行完成，原40分钟SYN与主机保护保持，无额外1536MiB自身硬帽。相对同口径原SYN38055FF/52931LUT/9714ALU：fusion为38183/+128FF、53059/+128LUT、9618/−96ALU；pose为38056/+1FF、52891/−40LUT、9714不变。两版源RAM均314、18宽叶，物理332仍预测；DSP原语配置保持。SYN估计44.852/43.664MHz仍不代表50MHz通过。[实际SYN汇总](../4_design/evidence/g2_20261023/single_RTL_SYN23_SYN24_actual_summary_20261025.json)。
+
+两份63硬件仅各1RTL改变、69资产/31头/真正FW与编译时标逐字保持；64个CPU SP/4096 INIT页重建完整128KiB，所有BSRAM几何/模式/INIT、两真实时钟及26首级链/改名输入锥均审阅通过。首轮检查误将`fw/bsp/__pycache__`宿主缓存当固件而拦截，严格排除原retry本就不复制的解释器缓存后，仅review-only复用现有VG；原failed JSON/log/声明保留，没有重综、改算法或放宽真实资产。恢复passed目录为`review_only_recovery_20261025_235536_156419`。[fusion实际审阅](../4_design/evidence/g2_20261023/fusion_only_actual_SYN_preflight_20261025.json)；[pose实际审阅](../4_design/evidence/g2_20261023/pose_only_actual_SYN_preflight_20261025.json)。
+
+PNR31工具4172/控制19752保持原PNR27网表及20/10ns，只加52个已审CDC命令，仍无最终报告。纯fusion PNR32已23:59:29.290084启动工具42064/控制68232，与31并行；纯pose PNR33控制60448已严格消费passed并独立等2GiB物理/4GiB提交余量，最近提交约3.37GiB低于4GiB，尚未启动工具。两版均原PNR27 CST/20-10ns/route0，仅各1项RTL，无新增52例外；不把另一轮结束当逻辑前提。原43460/53008轻量等待器因首次审阅failed正确退出，显式continuation_attempt_1仅恢复尚未启动物理的消费，旧声明与failed证据保留，不是重复PNR。所有PNR总0/静默0，无截止；未中断任何布线/关闭用户软件/恢复自动监督/烧录或发动作。[当前并行身份与接续](../4_design/evidence/g2_20261023/parallel_baseline_SYN23_24_and_PNR31_32_33_20261026.json)。
 
 **2026-10-25 23:36 PNR28/29自然失败；保留PNR27布通锚点，已启动独立PNR30并串行排入PNR31。** PNR28于22:42:39自然结束366条未布通、实际RAM323；PNR29于22:57:10自然结束893条、实际RAM332，均cancelled=false、总0/静默0，无.tr，setup/hold及52条有效约束状态未知。已修正采集器把缺.tr明确标成未验证，不能由“未找到52条Actived”推断工具忽略约束。见[实际结果与本轮接续](../4_design/evidence/g2_20261023/PNR28_29_final_and_PNR30_31_diagnostics_20261025.json)。
 

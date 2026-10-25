@@ -265,3 +265,13 @@ PNR30 `baseline27_clk25_diag_pnr30`于23:18:18.393888启动工具21748（创建2
 40ns诊断不保证布通或hold双0，更不会改变板上50MHz。旧route的已报同域setup样本推算最差+1.996ns仅属固定路由算术，不是新STA；8条跨域首级hold关系仍0ns，原IO也无input/output_delay，不能把放宽SDC位流当25MHz镜像烧录。真实控制25/NAV50只读审阅发现28项时钟/节拍参数和跨域职责；直接改时钟会把125Hz变62.5Hz，并改变串口、BMI、PWM、编码器量纲。83534拍在25MHz下3.34136ms只证明历史核心推理周期，不含完整采样/观测/装载/执行器及跨域；NAV还有37.028ns路径，控制单独降频不能完成全域50MHz签核。[真实分域范围](evidence/g2_20261023/control25_nav50_clock_split_scope_20261025.json)。
 
 fusion-only和pose-only两份独立准备源均就绪，尚未新SYN/PNR；pose-only仅采用已通过3091拍证明的NAV预译码，其余62 RTL/69资产/31头、完整FW编译时标、原fusion/CST/20-10ns保持。先读独立物理诊断结果再选择接入，不堆候选。[纯POSE准备](evidence/g2_20261023/baseline_pose_only_source_prepared_20261025.json)。另需纠正历史归属：0.992g属于10-23 13:20独立B1恒零镜像，不是当前联合通过；最新双UART只读仍sensor_error1/推理0且SYS_ID无应答。461ms是旧T版A*样本，后续Y分块样本39.60048ms也不能代替当前冻结FW全环WCET。失联候选仍ready_for_integration=false/safe_for_deployment=false，不把软件合同当上板停止通过。
+
+## 2026-10-26 00:02 并行接续
+
+**2026-10-26 00:02 用户要求并行优先已落实：PNR31与PNR32同时运行，PNR33独立等待提交余量；两版完整SYN和实际网表审阅均通过。** PNR30于23:37:33自然结束0、实际布通332块，40ns约束下setup0/hold9，报告Fmax26.176/116.085MHz；原VO除创建时间行与PNR27完全相同，314源/18宽拆分、CPU64/控制49/导航219及INIT/端口保持。仅SDC改变，硬件仍50MHz，不能烧录。9条负hold为8FIFO＋1MAC测频首级，全部精确落原26已审清单；人工将26误分为全FIFO的判断已纠正为24FIFO＋rx_clock_monitor＋rx_sampling_select，不新增豁免。[PNR30真实终审](evidence/g2_20261023/PNR30_actual_timing_and_CDC_review_20261025.json)。
+
+fusion-only SYN23（工具35124/监管20832、23:41:17、IDLE CPU16）及pose-only SYN24（57160/26272、23:43:08、IDLE CPU18）已与PNR31并行完成，原40分钟SYN与主机保护保持，无额外1536MiB自身硬帽。相对同口径原SYN38055FF/52931LUT/9714ALU：fusion为38183/+128FF、53059/+128LUT、9618/−96ALU；pose为38056/+1FF、52891/−40LUT、9714不变。两版源RAM均314、18宽叶，物理332仍预测；DSP原语配置保持。SYN估计44.852/43.664MHz仍不代表50MHz通过。[实际SYN汇总](evidence/g2_20261023/single_RTL_SYN23_SYN24_actual_summary_20261025.json)。
+
+两份63硬件仅各1RTL改变、69资产/31头/真正FW与编译时标逐字保持；64个CPU SP/4096 INIT页重建完整128KiB，所有BSRAM几何/模式/INIT、两真实时钟及26首级链/改名输入锥均审阅通过。首轮检查误将`fw/bsp/__pycache__`宿主缓存当固件而拦截，严格排除原retry本就不复制的解释器缓存后，仅review-only复用现有VG；原failed JSON/log/声明保留，没有重综、改算法或放宽真实资产。恢复passed目录为`review_only_recovery_20261025_235536_156419`。[fusion实际审阅](evidence/g2_20261023/fusion_only_actual_SYN_preflight_20261025.json)；[pose实际审阅](evidence/g2_20261023/pose_only_actual_SYN_preflight_20261025.json)。
+
+PNR31工具4172/控制19752保持原PNR27网表及20/10ns，只加52个已审CDC命令，仍无最终报告。纯fusion PNR32已23:59:29.290084启动工具42064/控制68232，与31并行；纯pose PNR33控制60448已严格消费passed并独立等2GiB物理/4GiB提交余量，最近提交约3.37GiB低于4GiB，尚未启动工具。两版均原PNR27 CST/20-10ns/route0，仅各1项RTL，无新增52例外；不把另一轮结束当逻辑前提。原43460/53008轻量等待器因首次审阅failed正确退出，显式continuation_attempt_1仅恢复尚未启动物理的消费，旧声明与failed证据保留，不是重复PNR。所有PNR总0/静默0，无截止；未中断任何布线/关闭用户软件/恢复自动监督/烧录或发动作。[当前并行身份与接续](evidence/g2_20261023/parallel_baseline_SYN23_24_and_PNR31_32_33_20261026.json)。

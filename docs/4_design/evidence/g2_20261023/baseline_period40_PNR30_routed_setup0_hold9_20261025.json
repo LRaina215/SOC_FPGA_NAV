@@ -1,0 +1,254 @@
+{
+  "resources": {
+    "logic": {
+      "used": 89584.0,
+      "capacity": 138240.0
+    },
+    "register": {
+      "used": 39957.0,
+      "capacity": 139095.0
+    },
+    "bsram": {
+      "used": 332.0,
+      "capacity": 340.0
+    },
+    "dsp": {
+      "used": 163.5,
+      "capacity": 298.0
+    },
+    "io_port": {
+      "used": 51.0,
+      "capacity": 297.0
+    }
+  },
+  "routing_passed": true,
+  "setup_violations": 0,
+  "hold_violations": 9,
+  "clocks": [
+    {
+      "name": "clk50",
+      "constraint_mhz": 25.0,
+      "actual_fmax_mhz": 26.176,
+      "levels": 24,
+      "entity": "TOP"
+    },
+    {
+      "name": "rgmii_rxc",
+      "constraint_mhz": 100.0,
+      "actual_fmax_mhz": 116.085,
+      "levels": 9,
+      "entity": "TOP"
+    }
+  ],
+  "per_clock_violations": {
+    "clk50": {
+      "setup": {
+        "tns_ns": 0.0,
+        "violated_endpoints": 0
+      },
+      "hold": {
+        "tns_ns": 0.0,
+        "violated_endpoints": 0
+      }
+    },
+    "rgmii_rxc": {
+      "setup": {
+        "tns_ns": 0.0,
+        "violated_endpoints": 0
+      },
+      "hold": {
+        "tns_ns": 0.0,
+        "violated_endpoints": 0
+      }
+    }
+  },
+  "violations_outside_per_clock_summary": {
+    "setup": 0,
+    "hold": 9
+  },
+  "negative_reported_hold_paths": [
+    {
+      "slack_ns": -0.218,
+      "source": "u_nav/u_netl/u_rxf/wp_g_6_s0/Q",
+      "destination": "u_nav/u_netl/u_rxf/wp_g_r1_6_s1/D",
+      "source_clock": "rgmii_rxc:[R]",
+      "destination_clock": "clk50:[R]",
+      "cross_clock": true
+    },
+    {
+      "slack_ns": -0.218,
+      "source": "u_nav/u_netl/u_rxf/wp_g_3_s0/Q",
+      "destination": "u_nav/u_netl/u_rxf/wp_g_r1_3_s1/D",
+      "source_clock": "rgmii_rxc:[R]",
+      "destination_clock": "clk50:[R]",
+      "cross_clock": true
+    },
+    {
+      "slack_ns": -0.186,
+      "source": "u_nav/u_netl/u_rxf/wp_g_5_s0/Q",
+      "destination": "u_nav/u_netl/u_rxf/wp_g_r1_5_s1/D",
+      "source_clock": "rgmii_rxc:[R]",
+      "destination_clock": "clk50:[R]",
+      "cross_clock": true
+    },
+    {
+      "slack_ns": -0.183,
+      "source": "u_nav/u_netl/u_rxf/wp_g_4_s0/Q",
+      "destination": "u_nav/u_netl/u_rxf/wp_g_r1_4_s1/D",
+      "source_clock": "rgmii_rxc:[R]",
+      "destination_clock": "clk50:[R]",
+      "cross_clock": true
+    },
+    {
+      "slack_ns": -0.174,
+      "source": "u_nav/u_netl/u_rxf/wp_g_1_s0/Q",
+      "destination": "u_nav/u_netl/u_rxf/wp_g_r1_1_s1/D",
+      "source_clock": "rgmii_rxc:[R]",
+      "destination_clock": "clk50:[R]",
+      "cross_clock": true
+    },
+    {
+      "slack_ns": -0.174,
+      "source": "u_nav/u_netl/u_rxf/wp_g_2_s0/Q",
+      "destination": "u_nav/u_netl/u_rxf/wp_g_r1_2_s1/D",
+      "source_clock": "rgmii_rxc:[R]",
+      "destination_clock": "clk50:[R]",
+      "cross_clock": true
+    },
+    {
+      "slack_ns": -0.112,
+      "source": "u_nav/u_netl/u_rxf/wp_g_7_s0/Q",
+      "destination": "u_nav/u_netl/u_rxf/wp_g_r1_7_s1/D",
+      "source_clock": "rgmii_rxc:[R]",
+      "destination_clock": "clk50:[R]",
+      "cross_clock": true
+    },
+    {
+      "slack_ns": -0.103,
+      "source": "u_lmac/rdiv_5_s0/Q",
+      "destination": "u_lmac/rsync_0_s0/D",
+      "source_clock": "rgmii_rxc:[R]",
+      "destination_clock": "clk50:[R]",
+      "cross_clock": true
+    },
+    {
+      "slack_ns": -0.084,
+      "source": "u_nav/u_netl/u_rxf/wp_g_0_s0/Q",
+      "destination": "u_nav/u_netl/u_rxf/wp_g_r1_0_s1/D",
+      "source_clock": "rgmii_rxc:[R]",
+      "destination_clock": "clk50:[R]",
+      "cross_clock": true
+    }
+  ],
+  "reported_reset_pulse_checks": {
+    "recovery": {
+      "available": true,
+      "reported_rows": 25,
+      "worst_slack_ns": 4.902,
+      "negative_reported_rows": 0
+    },
+    "removal": {
+      "available": true,
+      "reported_rows": 25,
+      "worst_slack_ns": 0.649,
+      "negative_reported_rows": 0
+    },
+    "minimum_pulse_width": {
+      "available": true,
+      "reported_rows": 10,
+      "worst_slack_ns": 2.848,
+      "negative_reported_rows": 0
+    }
+  },
+  "reported_reset_pulse_checks_pass": true,
+  "scope": "diagnostic implementation comparison only; never G2 or deployment acceptance",
+  "diagnostic_only": true,
+  "errors": [],
+  "unrouted_nets": null,
+  "recorded_at": "2026-10-25T23:41:12.343813+08:00",
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-25T23:18:18.393888+08:00",
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 21748,
+    "elapsed_s": 1155.25,
+    "no_observable_progress_s": 0.0,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        2138,
+        1792942651219740300
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        1704,
+        1792942651219740300
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2384840,
+        1792941870044699700
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        13803673,
+        1792941870527247200
+      ],
+      [
+        "impl\\pnr\\g2_top.pr",
+        238692039,
+        1792942617316154700
+      ],
+      [
+        "impl\\pnr\\g2_top.tr",
+        357624,
+        1792942651113551000
+      ],
+      [
+        "impl\\pnr\\g2_top.rpt.txt",
+        92686,
+        1792942642461240300
+      ],
+      [
+        "impl\\pnr\\g2_top.vo",
+        44530639,
+        1792942644888815300
+      ]
+    ],
+    "tool_exit": 0,
+    "ended_at": "2026-10-25T23:37:33.638071+08:00"
+  },
+  "source": "F:\\nav_integration_g2_20261023\\baseline_rep1_replay_pnr27",
+  "input_change": "clk50 SDC20ns->40ns only; VG/CST and hardware clock untouched",
+  "actual_clock_still50MHz": true,
+  "physical_25MHz_or_deployment_accepted": false,
+  "programmed": false,
+  "all9holds_are_original26_FIFO_paths": false,
+  "additional_MAC_hold": {
+    "source": "u_lmac/rdiv_5_s0/Q",
+    "destination": "u_lmac/rsync_0_s0/D",
+    "slack_ns": -0.103,
+    "existing26_exception_scope_covers": true,
+    "review_pending": false,
+    "group": "rx_clock_monitor",
+    "planned_hold_only_and_8ns_max_delay_already_present": true
+  },
+  "report": "F:\\nav_integration_g2_20261023\\baseline27_clk25_diag_pnr30\\impl\\pnr\\g2_top.rpt.txt",
+  "timing_report": "F:\\nav_integration_g2_20261023\\baseline27_clk25_diag_pnr30\\impl\\pnr\\g2_top.tr",
+  "all9holds_are_within_existing26_audited_CDC_paths": true,
+  "existing26_groups": {
+    "FIFO": 24,
+    "rx_clock_monitor": 1,
+    "rx_sampling_select": 1
+  },
+  "review_correction": "Initial manual grouping incorrectly assumed all26 wereFIFO. Strict endpoint matching proved original26 are24FIFO plus2MAC paths; no new exception is needed."
+}

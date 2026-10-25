@@ -1,0 +1,142 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-25T23:58:05.023353+08:00",
+  "scope": "Completed joint synthesis plus actual source/memory/clock/CDC preflight only; PNR and deployment remain pending",
+  "rows": [
+    {
+      "candidate": "fusion",
+      "source": "baseline_fusion_only_syn23",
+      "passed": true,
+      "actual_preflight_passed": true,
+      "review": "F:\\nav_integration_g2_20261023\\baseline_single_factor_parallel_syn1\\review_only_recovery_20261025_235536_156419\\fusion_actual_netlist_review.json",
+      "source_BSRAM": 314,
+      "wide_leaves": 18,
+      "predicted_physical_BSRAM": 332,
+      "resources": {
+        "T_Register": 38183,
+        "T_Lut": 53059,
+        "T_Alu": 9618,
+        "T_Bsram": 314
+      },
+      "deltas_vs_frozen_SYN": {
+        "T_Register": 128,
+        "T_Lut": 128,
+        "T_Alu": -96,
+        "T_Bsram": 0
+      },
+      "synthesis_timing_estimate": {
+        "clocks": [
+          {
+            "name": "clk50",
+            "constraint_mhz": 50.0,
+            "estimated_fmax_mhz": 44.852,
+            "levels": 24,
+            "entity": "TOP"
+          },
+          {
+            "name": "rgmii_rxc",
+            "constraint_mhz": 50.0,
+            "estimated_fmax_mhz": 98.656,
+            "levels": 6,
+            "entity": "TOP"
+          }
+        ],
+        "first_path": {
+          "Slack": "-2.296",
+          "Data Arrival Time": "22.610",
+          "Data Required Time": "20.314",
+          "From": "u_control/model_thread/policy/actions_114_s1",
+          "To": "u_control/model_thread/actuator_map/rk_us_0_s0",
+          "Launch Clk": "clk50[R]",
+          "Latch Clk": "clk50[R]"
+        },
+        "scope": "synthesis estimate only; actual PNR resource/timing acceptance must come from PNR reports"
+      },
+      "known_CDC_paths": 26,
+      "changed_CDC_input_cones_proved": 0,
+      "CPU_SP_count": 64,
+      "true_clocks": 2,
+      "new_timing_exceptions": 0,
+      "memory_pin_name_differences": 512,
+      "source_firmware_files": {
+        "fw": 61,
+        "firmware": 92
+      },
+      "excluded_host_cache": [
+        "fw\\bsp\\__pycache__\\analyze_stack.cpython-311.pyc"
+      ],
+      "tool_started_at": "2026-10-25T23:41:17.832697+08:00",
+      "last_complete_job_updated_at": "2026-10-25T23:53:53.917578+08:00",
+      "tool_exit": 0
+    },
+    {
+      "candidate": "pose",
+      "source": "baseline_pose_only_syn24",
+      "passed": true,
+      "actual_preflight_passed": true,
+      "review": "F:\\nav_integration_g2_20261023\\baseline_single_factor_parallel_syn1\\review_only_recovery_20261025_235536_156419\\pose_actual_netlist_review.json",
+      "source_BSRAM": 314,
+      "wide_leaves": 18,
+      "predicted_physical_BSRAM": 332,
+      "resources": {
+        "T_Register": 38056,
+        "T_Lut": 52891,
+        "T_Alu": 9714,
+        "T_Bsram": 314
+      },
+      "deltas_vs_frozen_SYN": {
+        "T_Register": 1,
+        "T_Lut": -40,
+        "T_Alu": 0,
+        "T_Bsram": 0
+      },
+      "synthesis_timing_estimate": {
+        "clocks": [
+          {
+            "name": "clk50",
+            "constraint_mhz": 50.0,
+            "estimated_fmax_mhz": 43.664,
+            "levels": 25,
+            "entity": "TOP"
+          },
+          {
+            "name": "rgmii_rxc",
+            "constraint_mhz": 50.0,
+            "estimated_fmax_mhz": 98.656,
+            "levels": 6,
+            "entity": "TOP"
+          }
+        ],
+        "first_path": {
+          "Slack": "-2.902",
+          "Data Arrival Time": "23.216",
+          "Data Required Time": "20.314",
+          "From": "u_control/model_thread/fusion/egy_3_s0",
+          "To": "u_control/model_thread/fusion/sqrt_value_48_s0",
+          "Launch Clk": "clk50[R]",
+          "Latch Clk": "clk50[R]"
+        },
+        "scope": "synthesis estimate only; actual PNR resource/timing acceptance must come from PNR reports"
+      },
+      "known_CDC_paths": 26,
+      "changed_CDC_input_cones_proved": 37,
+      "CPU_SP_count": 64,
+      "true_clocks": 2,
+      "new_timing_exceptions": 0,
+      "memory_pin_name_differences": 686,
+      "source_firmware_files": {
+        "fw": 61,
+        "firmware": 92
+      },
+      "excluded_host_cache": [
+        "fw\\bsp\\__pycache__\\analyze_stack.cpython-311.pyc"
+      ],
+      "tool_started_at": "2026-10-25T23:43:08.029437+08:00",
+      "last_complete_job_updated_at": "2026-10-25T23:54:32.799058+08:00",
+      "tool_exit": 0
+    }
+  ],
+  "no_repeated_synthesis": true,
+  "PNR_started_by_this_agent": false,
+  "programmed": false
+}
