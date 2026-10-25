@@ -1,0 +1,14 @@
+{
+  "passed": false,
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_CSA_syn29",
+  "prepared": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_CSA_prepared1",
+  "baseline": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32",
+  "error": "('u_control/model_thread/actuator_map/product_lh_62_s0', 'RESET', ['u_control/model_thread/actuator_map/n5_129'])",
+  "traceback": "Traceback (most recent call last):\n  File \"D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_baseline_fusion_action_width_syn.py\", line 397, in main\n    result=review(args.source,args.prepared,args.out)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_registered_action_csa_syn.py\", line 68, in review\n    r=original_review(source,prepared,out)\n      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_baseline_fusion_action_width_syn.py\", line 273, in review\n    after, newparams, newmem, drivers, newclock, inventory = snapshot(source/'impl/gwsynthesis/g2_top.vg', directions)\n                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_registered_action_csa_syn.py\", line 56, in snapshot\n    if any(s in pin for s in('RESET','CLEAR','PRESET','SET')):assert set(values)=={'GND'},(n,pin,values)\n                                                                     ^^^^^^^^^^^^^^^^^^^^\nAssertionError: ('u_control/model_thread/actuator_map/product_lh_62_s0', 'RESET', ['u_control/model_thread/actuator_map/n5_129'])\n",
+  "programmed": false,
+  "deployment_accepted": false,
+  "automatic_PNR": false,
+  "correction": "Actual ten DFFRE RESETs implement synchronous product data zeroing. Vendor primitive is posedge CLK only; all actual RESET input cones are proved to be the same associated core action FFs, no system reset. All asynchronous controls remain zero.",
+  "corrected_review": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_CSA_one_shot\\actual_SYN29_review_retry1.json",
+  "no_repeated_SYN": true
+}

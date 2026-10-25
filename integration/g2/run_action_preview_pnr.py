@@ -26,6 +26,9 @@ MAPPING=BASE/'baseline_fusion_action_preview_one_shot/actual_preview_product_map
 REFERENCE=BASE/'baseline_fusion32_CDC52_pnr35'
 OUTPUT=BASE/'baseline_fusion_action_preview_pnr39'
 CONTROL=BASE/'baseline_fusion_action_preview_pnr_one_shot'
+PNR_LABEL='PNR39'
+SYN_LABEL='SYN28'
+CHANGE_CONCEPT='private preview product pipeline on existing publication edge'
 CHANGED=sorted(['control/mem_policy.v','control/policy_action_map.v','control/rl_policy_tick_v5.v'])
 REPORT='report_timing -setup -max_paths 5000 -max_common_paths 1'
 GIB=1024**3
@@ -34,6 +37,11 @@ PROFILE=dict(source=SOURCE,prepared=PREPARED,output=OUTPUT,interval=13)
 load=engine.load
 meta=engine.metadata
 same=engine.equal_bytes
+
+def mapping_check(mapped):
+    assert mapped['passed']and mapped['action_DSP_count']==6
+    assert mapped['all_six_original_core_actions_are_actual_sources']and mapped['actual_products_absorbed_in_DSP_output_registers']
+    return mapped['evidence_bindings']
 
 def save(path,value):
     tmp=path.with_name(path.name+'.'+str(os.getpid())+'.tmp');tmp.write_text(json.dumps(value,indent=2)+'\n');tmp.replace(path)
@@ -51,9 +59,8 @@ def source_check():
         old,new=engine.inputs(origin,suffixes),engine.inputs(SOURCE,suffixes)
         assert old.keys()==new.keys()and len(new)==count
         assert all(same(old[n],new[n])for n in old)
-    mapped=load(MAPPING);assert mapped['passed']and mapped['action_DSP_count']==6
-    assert mapped['all_six_original_core_actions_are_actual_sources']and mapped['actual_products_absorbed_in_DSP_output_registers']
-    for row in mapped['evidence_bindings']:assert meta(Path(row['path']))==row
+    mapped=load(MAPPING)
+    for row in mapping_check(mapped):assert meta(Path(row['path']))==row
     final35=load(BASE/'fusion32_CDC52_final_review1/review_result.json');assert final35['passed']
     assert load(REFERENCE/'g2_gate.json')['routing_passed']
     assert same(REFERENCE/'g2.cst',engine.BASELINE/'g2.cst')
@@ -76,8 +83,8 @@ def prepare():
     shutil.copyfile(REFERENCE/'g2.cst',OUTPUT/'g2.cst')
     (OUTPUT/'g2.sdc').write_bytes(sdc);(OUTPUT/'run.tcl').write_bytes(tcl)
     shutil.copyfile(REVIEW,OUTPUT/'actual_SYN_preflight_review.json');shutil.copyfile(MAPPING,OUTPUT/'actual_product_mapping_review.json')
-    save(OUTPUT/'cdc_reference_audit.json',dict(netlist=str(OUTPUT/'g2_top.vg'),passed=True,paths=actual['paths'],expected_paths=26,errors=[],scope='Actual SYN28 78-register geometry/INIT/clock/CE/reset/unique-first-load audit; recheck actual physical39 and52 effective commands after PNR.'))
-    save(OUTPUT/'manifest.json',dict(source=str(SOURCE),source_manifest=load(SOURCE/'manifest.json'),prepared=str(PREPARED),frozen_netlist=True,reused_completed_synthesis=True,reference=str(REFERENCE),only_RTL_change_concept='private preview product pipeline on existing publication edge',modified_RTL=CHANGED,clock_periods_ns=dict(clk50=20,rgmii_rxc=10),hold_only_false_paths=26,explicit_max_delays=26,SDC_same_as_routed35_except_report=REPORT,global_requests=0,max_runtime_minutes=0,max_no_progress_minutes=0,diagnostic_only=True,programmed=False,deployment_accepted=False))
+    save(OUTPUT/'cdc_reference_audit.json',dict(netlist=str(OUTPUT/'g2_top.vg'),passed=True,paths=actual['paths'],expected_paths=26,errors=[],scope='Actual '+SYN_LABEL+' 78-register geometry/INIT/clock/CE/reset/unique-first-load audit; recheck actual physical'+PNR_LABEL+' and52 effective commands after PNR.'))
+    save(OUTPUT/'manifest.json',dict(source=str(SOURCE),source_manifest=load(SOURCE/'manifest.json'),prepared=str(PREPARED),frozen_netlist=True,reused_completed_synthesis=True,reference=str(REFERENCE),only_RTL_change_concept=CHANGE_CONCEPT,modified_RTL=CHANGED,clock_periods_ns=dict(clk50=20,rgmii_rxc=10),hold_only_false_paths=26,explicit_max_delays=26,SDC_same_as_routed35_except_report=REPORT,global_requests=0,max_runtime_minutes=0,max_no_progress_minutes=0,diagnostic_only=True,programmed=False,deployment_accepted=False))
     save(OUTPUT/'prepared_request_review.json',dict(passed=True,source=str(SOURCE),reference=str(REFERENCE),actual_SYN_and_product_mapping_passed=True,same26_CDC_contract_as_routed35=True,report_added_to_same_single_SDC=True,new_tool_started=False,bindings=[meta(p)for p in(REVIEW,MAPPING,REFERENCE/'run.tcl',REFERENCE/'g2.cst',REFERENCE/'g2.sdc',SOURCE/'impl/gwsynthesis/g2_top.vg')],prepared_bindings=[meta(OUTPUT/n)for n in('g2_top.vg','g2.cst','g2.sdc','run.tcl')]))
 
 def validate():
@@ -100,7 +107,7 @@ def main():
             if m.avail_phys>=2*GIB and m.avail_page>=4*GIB:return
             time.sleep(13)
     try:
-        wait_memory();validate();wait_memory();status('starting_unique_PNR39')
+        wait_memory();validate();wait_memory();status('starting_unique_'+PNR_LABEL)
         runtime=run_tool([str(engine.TOOL),'run.tcl'],OUTPUT,max_runtime_s=0,max_no_progress_s=0,capture_system_telemetry=True)
         status('tool_exited_collecting',runtime=runtime);wait_memory();finalize_gate(OUTPUT);gate=load(OUTPUT/'g2_gate.json')
         normal=lambda p,r:p.read_text().replace(str(r),'<BUILD>').replace(r.as_posix(),'<BUILD>').split()

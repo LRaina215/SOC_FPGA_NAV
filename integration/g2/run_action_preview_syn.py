@@ -16,6 +16,8 @@ PREP=BASE/'baseline_fusion_action_preview_prepared1'
 ORIGIN=BASE/'baseline_fusion_only_syn23'
 OUTPUT=BASE/'baseline_fusion_action_preview_syn28'
 CONTROL=BASE/'baseline_fusion_action_preview_one_shot'
+BUILD_LABEL='SYN28'
+REVIEW_SCRIPT=Path(__file__).with_name('review_baseline_action_preview_syn.py')
 CHANGED=sorted(['control/policy_action_map.v','control/rl_policy_tick_v5.v','control/mem_policy.v'])
 GIB=1024**3
 
@@ -45,16 +47,16 @@ def main():
             time.sleep(13)
         source_check();assert not OUTPUT.exists()
         cmd=[sys.executable,'-X','utf8',str(Path(__file__).with_name('retry_frozen_synthesis.py')),str(PREP),'--out',str(OUTPUT),'--start-now','--tool-priority','normal']
-        with(CONTROL/'full_SYN28_stdout.log').open('w')as log:
+        with(CONTROL/('full_'+BUILD_LABEL+'_stdout.log')).open('w')as log:
             child=subprocess.Popen(cmd,stdout=log,stderr=subprocess.STDOUT,creationflags=subprocess.CREATE_NO_WINDOW)
-            status('running_unique_full_SYN28',runner_pid=child.pid,runner_created_epoch=psutil.Process(child.pid).create_time(),command=cmd)
+            status('running_unique_full_'+BUILD_LABEL,runner_pid=child.pid,runner_created_epoch=psutil.Process(child.pid).create_time(),command=cmd)
             code=child.wait()
         assert code==0,('full synthesis did not finish successfully',code)
-        status('SYN28_complete_waiting_actual_new_netlist_review')
-        cmd=[sys.executable,'-X','utf8',str(Path(__file__).with_name('review_baseline_action_preview_syn.py')),'--source',str(OUTPUT),'--prepared',str(PREP),'--out',str(CONTROL/'actual_SYN28_review.json')]
+        status(BUILD_LABEL+'_complete_waiting_actual_new_netlist_review')
+        cmd=[sys.executable,'-X','utf8',str(REVIEW_SCRIPT),'--source',str(OUTPUT),'--prepared',str(PREP),'--out',str(CONTROL/('actual_'+BUILD_LABEL+'_review.json'))]
         with(CONTROL/'actual_review_stdout.log').open('w')as log:
             child=subprocess.Popen(cmd,stdout=log,stderr=subprocess.STDOUT,creationflags=subprocess.CREATE_NO_WINDOW)
-            status('reviewing_actual_SYN28_RAM_INIT_clocks_26CDC',reviewer_pid=child.pid,reviewer_created_epoch=psutil.Process(child.pid).create_time())
+            status('reviewing_actual_'+BUILD_LABEL+'_RAM_INIT_clocks_26CDC',reviewer_pid=child.pid,reviewer_created_epoch=psutil.Process(child.pid).create_time())
             code=child.wait()
         assert code==0,('actual new netlist review failed',code)
         status('actual_generic_review_passed_product_mapping_and_PNR_preparation_pending')
