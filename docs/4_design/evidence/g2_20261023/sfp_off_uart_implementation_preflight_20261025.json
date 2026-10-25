@@ -1,0 +1,2617 @@
+{
+  "passed": true,
+  "implementation_preflight_passed": true,
+  "source": "F:\\nav_integration_g2_20261023\\uart_host_no_sfp_syn22",
+  "baseline": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+  "prepared": "F:\\nav_integration_g2_20261023\\lane2_sfp_off_uart_prepared1",
+  "created_at": "2026-10-25T19:41:19.083071+08:00",
+  "diagnostic_only": true,
+  "deployment_accepted": false,
+  "programmed": false,
+  "origin": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+  "modified_rtl_inputs": [
+    "g2_top.v"
+  ],
+  "removed_hardware_inputs": [
+    "ip/giga_serial_ethernet.v",
+    "ip/serdes.v",
+    "sfp_host_mac.v",
+    "sfp_management.v"
+  ],
+  "retained_hardware_inputs": 64,
+  "unchanged_retained_inputs": 63,
+  "unchanged_assets": 104,
+  "unchanged_headers": 31,
+  "source_top_exact_transform": true,
+  "original_IO_constraints_preserved": true,
+  "original_4500_weights_125Hz_CPU128KiB_NAV_capacity_and_stop_sources_preserved": true,
+  "HOST_EXTENSION_ENABLE": 1,
+  "live_UART_RX_TX_INJ_TXshadow_console_sources_retained": true,
+  "phase": "implementation_preflight_passed",
+  "source_BSRAM": 313,
+  "wide_leaves": 10,
+  "predicted_physical_BSRAM": 323,
+  "physical_is_prediction": true,
+  "preserved_BSRAM_geometry_and_INIT": 312,
+  "removed_physical_host_RX_RAM": [
+    "u_nav/u_neth/u_rxf/mem_mem_0_0_s",
+    "u_nav/u_neth/u_rxf/mem_mem_0_1_s",
+    "u_nav/u_neth/u_rxf/mem_mem_0_2_s"
+  ],
+  "disconnected_physical_host_TX_RAM": {
+    "path": "u_nav/u_neth/u_txf/mem_mem_0_0_s",
+    "old_kind": "SDPX9B",
+    "new_kind": "SDPB",
+    "old_width": 9,
+    "new_width": 1,
+    "explicit_zero_INIT_parameters": 0,
+    "vendor_default_zero_INIT_parameters": 64
+  },
+  "BSRAM_by_top": {
+    "u_soc": 64,
+    "u_control": 43,
+    "u_nav": 206
+  },
+  "full_mailbox_memories": {
+    "u_nav/u_mbx/u_injb/": {
+      "leaves": 256,
+      "kinds": {
+        "RAM16SDP4": 256
+      },
+      "geometry_and_INIT_preserved": true
+    },
+    "u_nav/u_mbx/u_rxb/": {
+      "leaves": 2,
+      "kinds": {
+        "SDPB": 2
+      },
+      "geometry_and_INIT_preserved": true
+    },
+    "u_nav/u_mbx/u_txs/": {
+      "old_shadow_leaves": 256,
+      "new_shadow_leaves": 256,
+      "actual_shadow_read_address": [
+        "u_nav/r_MBX_TXB_ADDR_Z[3]",
+        "u_nav/r_MBX_TXB_ADDR_Z[2]",
+        "u_nav/r_MBX_TXB_ADDR_Z[1]",
+        "u_nav/r_MBX_TXB_ADDR_Z[0]"
+      ],
+      "write_coordinates_and_INIT_multiset_preserved": true,
+      "discarded_disconnected_physical_TX_read_copy": 256,
+      "write_slice_function_proof_pending": false,
+      "write_slice_function_proof_passed": true,
+      "memory_leaf_mapping": [
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_0_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_1_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_1_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_1_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_1_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_1_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_1_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_1_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_1_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_1_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_1_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_1_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_1_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_1_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_1_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_1_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_1_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_2_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_2_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_2_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_2_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_2_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_2_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_2_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_2_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_2_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_2_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_2_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_2_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_2_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_2_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_2_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_2_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_3_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_3_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_3_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_3_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_3_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_3_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_3_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_3_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_3_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_3_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_3_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_3_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_3_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_3_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_3_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_3_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_4_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_4_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_4_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_4_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_4_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_4_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_4_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_4_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_4_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_4_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_4_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_4_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_4_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_4_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_4_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_4_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_5_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_5_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_5_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_5_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_5_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_5_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_5_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_5_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_5_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_5_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_5_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_5_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_5_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_5_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_5_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_5_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_6_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_6_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_6_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_6_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_6_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_6_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_6_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_6_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_6_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_6_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_6_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_6_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_6_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_6_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_6_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_6_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_7_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_7_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_7_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_7_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_7_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_7_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_7_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_7_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_7_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_7_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_7_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_7_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_7_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_7_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_7_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_7_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_8_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_8_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_8_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_8_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_8_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_8_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_8_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_8_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_8_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_8_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_8_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_8_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_8_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_8_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_8_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_8_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_9_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_9_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_9_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_9_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_9_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_9_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_9_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_9_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_9_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_9_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_9_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_9_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_9_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_9_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_9_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_9_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_10_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_10_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_10_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_10_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_10_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_10_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_10_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_10_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_10_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_10_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_10_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_10_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_10_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_10_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_10_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_10_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_11_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_11_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_11_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_11_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_11_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_11_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_11_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_11_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_11_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_11_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_11_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_11_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_11_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_11_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_11_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_11_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_12_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_12_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_12_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_12_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_12_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_12_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_12_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_12_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_12_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_12_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_12_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_12_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_12_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_12_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_12_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_12_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_13_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_13_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_13_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_13_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_13_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_13_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_13_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_13_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_13_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_13_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_13_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_13_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_13_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_13_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_13_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_13_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_14_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_14_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_14_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_14_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_14_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_14_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_14_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_14_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_14_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_14_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_14_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_14_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_14_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_14_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_14_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_14_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_15_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_15_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_15_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_15_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_15_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_15_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_15_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_15_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_15_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_15_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_15_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_15_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_15_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_15_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_15_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_15_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_16_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_16_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_16_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_16_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_16_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_16_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_16_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_16_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_16_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_16_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_16_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_16_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_16_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_16_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_16_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_16_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_17_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_17_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_17_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_17_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_17_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_17_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_17_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_17_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_17_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_17_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_17_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_17_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_17_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_17_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_17_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_17_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_18_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_18_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_18_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_18_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_18_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_18_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_18_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_18_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_18_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_18_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_18_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_18_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_18_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_18_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_18_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_18_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_19_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_19_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_19_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_19_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_19_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_19_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_19_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_19_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_19_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_19_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_19_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_19_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_19_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_19_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_19_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_19_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_20_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_20_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_20_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_20_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_20_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_20_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_20_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_20_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_20_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_20_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_20_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_20_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_20_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_20_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_20_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_20_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_21_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_21_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_21_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_21_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_21_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_21_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_21_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_21_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_21_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_21_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_21_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_21_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_21_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_21_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_21_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_21_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_22_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_22_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_22_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_22_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_22_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_22_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_22_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_22_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_22_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_22_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_22_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_22_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_22_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_22_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_22_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_22_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_23_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_23_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_23_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_23_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_23_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_23_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_23_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_23_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_23_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_23_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_23_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_23_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_23_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_23_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_23_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_23_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_24_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_24_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_24_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_24_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_24_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_24_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_24_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_24_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_24_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_24_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_24_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_24_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_24_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_24_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_24_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_24_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_25_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_25_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_25_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_25_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_25_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_25_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_25_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_25_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_25_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_25_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_25_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_25_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_25_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_25_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_25_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_25_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_26_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_26_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_26_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_26_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_26_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_26_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_26_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_26_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_26_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_26_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_26_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_26_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_26_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_26_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_26_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_26_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_27_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_27_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_27_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_27_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_27_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_27_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_27_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_27_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_27_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_27_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_27_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_27_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_27_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_27_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_27_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_27_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_28_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_28_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_28_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_28_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_28_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_28_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_28_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_28_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_28_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_28_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_28_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_28_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_28_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_28_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_28_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_28_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_29_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_29_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_29_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_29_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_29_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_29_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_29_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_29_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_29_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_29_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_29_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_29_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_29_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_29_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_29_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_29_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_30_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_30_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_30_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_30_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_30_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_30_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_30_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_30_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_30_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_30_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_30_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_30_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_30_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_30_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_30_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_30_7_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_31_0_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_31_0_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_31_1_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_31_1_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_31_2_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_31_2_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_31_3_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_31_3_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_31_4_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_31_4_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_31_5_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_31_5_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_31_6_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_31_6_s0"
+        },
+        {
+          "old": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_31_7_s0",
+          "new": "u_nav/u_mbx/u_txs/g_distributed.mem_g_distributed.mem_31_7_s0"
+        }
+      ]
+    }
+  },
+  "surviving_distributed_memory_ROM_INIT_checked": 4532,
+  "physical_SFP_MAC_PCS_SerDes_removed": true,
+  "true_clocks": 2,
+  "register_clock_domains": {
+    "clk50_d": 38832,
+    "rgmii_rxc_d": 136,
+    "u_lmac/n13_6": 5,
+    "u_lmac/n630_6": 1
+  },
+  "actual_true_clock_input_drivers_checked": true,
+  "multiple_primitive_output_drivers": 0,
+  "original_inverted_clock_branches": {
+    "u_lmac/n13_6": {
+      "driver": "u_lmac/n13_s2",
+      "parent_clock": "rgmii_rxc_d",
+      "unchanged_register_loads": 5
+    },
+    "u_lmac/n630_6": {
+      "driver": "u_lmac/n630_s2",
+      "parent_clock": "clk50_d",
+      "unchanged_register_loads": 1
+    }
+  },
+  "lidar26": {
+    "passed": true,
+    "paths": 26,
+    "source_first_second_direct_data_clocks_INIT_and_single_fanout_checked": true,
+    "all_changed_endpoint_inputs_Boolean_proved": [
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/wp_b_11_s0/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/wp_g_10_s0/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/wp_g_9_s0/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/wp_g_8_s0/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/wp_g_7_s0/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/wp_g_6_s0/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/wp_g_5_s0/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/wp_g_4_s0/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/wp_g_3_s0/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/wp_g_2_s0/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/wp_g_1_s0/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/wp_g_0_s0/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w1_11_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w2_11_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w1_10_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w2_10_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w1_9_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w2_9_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w1_8_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w2_8_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w1_7_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w2_7_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w1_6_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w2_6_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w1_5_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w2_5_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w1_4_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w2_4_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w1_3_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w2_3_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w1_2_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w2_2_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w1_1_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w2_1_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w1_0_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_netl/u_rxf/rp_g_w2_0_s1/RESET[0]",
+        "old_net": "r2_200",
+        "new_net": "r2_159",
+        "Boolean_equivalent": true
+      },
+      {
+        "endpoint": "u_nav/u_rf/r_NETL_CTRL_4_s0/CE[0]",
+        "old_net": "u_nav/u_rf/n15988_3",
+        "new_net": "u_nav/u_rf/n15988_12",
+        "Boolean_equivalent": true
+      }
+    ],
+    "no_unproved_aliases": true,
+    "physical_CDC_delay_reset_release_MTBF_signoff": false
+  },
+  "hold_only": 26,
+  "max_delay": 26,
+  "known_text_constraints": 52,
+  "explicit_direct_CDC": 26,
+  "additional_direct_CDC": [],
+  "remaining_CDC_signed_off": false,
+  "physical_CDC_timing_reset_PCS_IO_signed_off": false,
+  "full_UART_business_and_disconnect_stop_verified": false,
+  "prior_SFP_host51_required": false,
+  "removed_SFP_host51_constraint_pairs": 51,
+  "functional_clock_logic_boundaries": {
+    "state_boundary": "same actual primitive instance/kind/INIT/CLK",
+    "shared_state_primitives": 38860,
+    "shared_opaque_primitives": 5006,
+    "full_sequential_equivalence_claimed": false
+  },
+  "clock_resource_review": {
+    "passed": true,
+    "mappings": [
+      {
+        "old_target": "n2371_7",
+        "new_target": "u_control/n2371_7",
+        "original_request": "CLOCK_LOC \"n2371_7\" BUFG[4] = SR|LOGIC;",
+        "new_request": "CLOCK_LOC \"u_control/n2371_7\" BUFG[4] = SR|LOGIC;",
+        "selection": "same_actual_primitive_instance_and_output_pin",
+        "old_driver": {
+          "instance": "u_control/n2371_s2",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_control/n2371_s2",
+            "kind": "LUT3",
+            "ports": {
+              "F": [
+                "n2371_7"
+              ],
+              "I0": [
+                "r2"
+              ],
+              "I1": [
+                "u_control/n6_4"
+              ],
+              "I2": [
+                "u_control/n6_5"
+              ]
+            }
+          }
+        },
+        "new_driver": {
+          "instance": "u_control/n2371_s2",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_control/n2371_s2",
+            "kind": "LUT3",
+            "ports": {
+              "F": [
+                "u_control/n2371_7"
+              ],
+              "I0": [
+                "r2"
+              ],
+              "I1": [
+                "u_control/n6_4"
+              ],
+              "I2": [
+                "u_control/n6_5"
+              ]
+            }
+          }
+        },
+        "old_parameters": {
+          "INIT": "8'hBF"
+        },
+        "new_parameters": {
+          "INIT": "8'hBF"
+        },
+        "output_function_proof": "canonical_logic_identity",
+        "requested_register_next_state_proof": null,
+        "removed_SFP_management_page_contract": null,
+        "old_loads": 5059,
+        "retained_old_loads": 5057,
+        "exact_retained_loads": 5056,
+        "equivalent_remapped_loads": 0,
+        "stable_state_or_opaque_loads": 5028,
+        "combinational_intermediate_pins_not_assumed_semantically_identical": 29,
+        "actual_state_or_opaque_boundary_proofs": [],
+        "old_load_roles": {
+          "LOGIC": 51,
+          "SR": 5008
+        },
+        "new_load_roles": {
+          "LOGIC": 49,
+          "SR": 5008
+        },
+        "CST_target_changed": true
+      },
+      {
+        "old_target": "r2",
+        "new_target": "r2",
+        "original_request": "CLOCK_LOC \"r2\" BUFG[5] = SR|CE|LOGIC;",
+        "new_request": "CLOCK_LOC \"r2\" BUFG[5] = SR|CE|LOGIC;",
+        "selection": "same_actual_primitive_instance_and_output_pin",
+        "old_driver": {
+          "instance": "u_rs/r2_s1",
+          "pin": "Q",
+          "index": 0,
+          "primitive": {
+            "name": "u_rs/r2_s1",
+            "kind": "DFFPE",
+            "ports": {
+              "Q": [
+                "r2"
+              ],
+              "D": [
+                "u_rs/r1"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "PRESET": [
+                "n8_6"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          }
+        },
+        "new_driver": {
+          "instance": "u_rs/r2_s1",
+          "pin": "Q",
+          "index": 0,
+          "primitive": {
+            "name": "u_rs/r2_s1",
+            "kind": "DFFPE",
+            "ports": {
+              "Q": [
+                "r2"
+              ],
+              "D": [
+                "u_rs/r1"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "PRESET": [
+                "n8_6"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          }
+        },
+        "old_parameters": {
+          "INIT": "1'b1"
+        },
+        "new_parameters": {
+          "INIT": "1'b1"
+        },
+        "output_function_proof": "canonical_logic_identity",
+        "requested_register_next_state_proof": "canonical_logic_identity",
+        "removed_SFP_management_page_contract": null,
+        "old_loads": 6166,
+        "retained_old_loads": 6111,
+        "exact_retained_loads": 6107,
+        "equivalent_remapped_loads": 0,
+        "stable_state_or_opaque_loads": 5746,
+        "combinational_intermediate_pins_not_assumed_semantically_identical": 365,
+        "actual_state_or_opaque_boundary_proofs": [],
+        "old_load_roles": {
+          "LOGIC": 385,
+          "SR": 5781
+        },
+        "new_load_roles": {
+          "LOGIC": 418,
+          "SR": 6198
+        },
+        "CST_target_changed": false
+      },
+      {
+        "old_target": "u_control/model_thread/observation/n971_7",
+        "new_target": "u_control/model_thread/observation/n971_7",
+        "original_request": "CLOCK_LOC \"u_control/model_thread/observation/n971_7\" BUFG[6] = SR|LOGIC;",
+        "new_request": "CLOCK_LOC \"u_control/model_thread/observation/n971_7\" BUFG[6] = SR|LOGIC;",
+        "selection": "same_actual_primitive_instance_and_output_pin",
+        "old_driver": {
+          "instance": "u_control/model_thread/observation/n971_s2",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_control/model_thread/observation/n971_s2",
+            "kind": "LUT4",
+            "ports": {
+              "F": [
+                "u_control/model_thread/observation/n971_7"
+              ],
+              "I0": [
+                "u_control/model_status_flags_1[6]"
+              ],
+              "I1": [
+                "r2"
+              ],
+              "I2": [
+                "u_control/n6_4"
+              ],
+              "I3": [
+                "u_control/n6_5"
+              ]
+            }
+          }
+        },
+        "new_driver": {
+          "instance": "u_control/model_thread/observation/n971_s2",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_control/model_thread/observation/n971_s2",
+            "kind": "LUT4",
+            "ports": {
+              "F": [
+                "u_control/model_thread/observation/n971_7"
+              ],
+              "I0": [
+                "u_control/model_status_flags_1[6]"
+              ],
+              "I1": [
+                "r2"
+              ],
+              "I2": [
+                "u_control/n6_4"
+              ],
+              "I3": [
+                "u_control/n6_5"
+              ]
+            }
+          }
+        },
+        "old_parameters": {
+          "INIT": "16'hEFFF"
+        },
+        "new_parameters": {
+          "INIT": "16'hEFFF"
+        },
+        "output_function_proof": "canonical_logic_identity",
+        "requested_register_next_state_proof": null,
+        "removed_SFP_management_page_contract": null,
+        "old_loads": 4204,
+        "retained_old_loads": 4203,
+        "exact_retained_loads": 4203,
+        "equivalent_remapped_loads": 0,
+        "stable_state_or_opaque_loads": 4200,
+        "combinational_intermediate_pins_not_assumed_semantically_identical": 3,
+        "actual_state_or_opaque_boundary_proofs": [],
+        "old_load_roles": {
+          "LOGIC": 6,
+          "SR": 4198
+        },
+        "new_load_roles": {
+          "LOGIC": 6,
+          "SR": 4198
+        },
+        "CST_target_changed": false
+      },
+      {
+        "old_target": "u_control/model_thread/policy/snapshot_update",
+        "new_target": "u_control/model_thread/policy/snapshot_update",
+        "original_request": "CLOCK_LOC \"u_control/model_thread/policy/snapshot_update\" BUFG[7] = CE;",
+        "new_request": "CLOCK_LOC \"u_control/model_thread/policy/snapshot_update\" BUFG[7] = CE;",
+        "selection": "same_actual_primitive_instance_and_output_pin",
+        "old_driver": {
+          "instance": "u_control/model_thread/policy/snapshot_update_s0",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_control/model_thread/policy/snapshot_update_s0",
+            "kind": "LUT4",
+            "ports": {
+              "F": [
+                "u_control/model_thread/policy/snapshot_update"
+              ],
+              "I0": [
+                "u_control/model_thread/policy/snapshot_update_18"
+              ],
+              "I1": [
+                "u_control/model_thread/policy/snapshot_shift_select"
+              ],
+              "I2": [
+                "u_control/model_thread/policy/snapshot_update_16"
+              ],
+              "I3": [
+                "model_ready"
+              ]
+            }
+          }
+        },
+        "new_driver": {
+          "instance": "u_control/model_thread/policy/snapshot_update_s0",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_control/model_thread/policy/snapshot_update_s0",
+            "kind": "LUT4",
+            "ports": {
+              "F": [
+                "u_control/model_thread/policy/snapshot_update"
+              ],
+              "I0": [
+                "u_control/model_thread/policy/snapshot_update_18"
+              ],
+              "I1": [
+                "u_control/model_thread/policy/snapshot_shift_select"
+              ],
+              "I2": [
+                "u_control/model_thread/policy/snapshot_update_16"
+              ],
+              "I3": [
+                "model_ready"
+              ]
+            }
+          }
+        },
+        "old_parameters": {
+          "INIT": "16'h0E00"
+        },
+        "new_parameters": {
+          "INIT": "16'h0E00"
+        },
+        "output_function_proof": "canonical_logic_identity",
+        "requested_register_next_state_proof": null,
+        "removed_SFP_management_page_contract": null,
+        "old_loads": 4033,
+        "retained_old_loads": 4033,
+        "exact_retained_loads": 4033,
+        "equivalent_remapped_loads": 0,
+        "stable_state_or_opaque_loads": 4032,
+        "combinational_intermediate_pins_not_assumed_semantically_identical": 1,
+        "actual_state_or_opaque_boundary_proofs": [],
+        "old_load_roles": {
+          "LOGIC": 1,
+          "CE": 4032
+        },
+        "new_load_roles": {
+          "LOGIC": 1,
+          "CE": 4032
+        },
+        "CST_target_changed": false
+      },
+      {
+        "old_target": "u_control/telemetry_thread/n1315_4",
+        "new_target": "u_control/telemetry_thread/n1315_4",
+        "original_request": "CLOCK_LOC \"u_control/telemetry_thread/n1315_4\" BUFG = LOGIC;",
+        "new_request": "CLOCK_LOC \"u_control/telemetry_thread/n1315_4\" BUFG = LOGIC;",
+        "selection": "same_actual_primitive_instance_and_output_pin",
+        "old_driver": {
+          "instance": "u_control/telemetry_thread/n1315_s1",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_control/telemetry_thread/n1315_s1",
+            "kind": "LUT4",
+            "ports": {
+              "F": [
+                "u_control/telemetry_thread/n1315_4"
+              ],
+              "I0": [
+                "n1315_5"
+              ],
+              "I1": [
+                "n1315_6"
+              ],
+              "I2": [
+                "index[6]"
+              ],
+              "I3": [
+                "u_control/telemetry_thread/n179_4"
+              ]
+            }
+          }
+        },
+        "new_driver": {
+          "instance": "u_control/telemetry_thread/n1315_s1",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_control/telemetry_thread/n1315_s1",
+            "kind": "LUT4",
+            "ports": {
+              "F": [
+                "u_control/telemetry_thread/n1315_4"
+              ],
+              "I0": [
+                "u_control/telemetry_thread/n1315_5"
+              ],
+              "I1": [
+                "u_control/telemetry_thread/n1315_6"
+              ],
+              "I2": [
+                "u_control/telemetry_thread/index[6]"
+              ],
+              "I3": [
+                "u_control/telemetry_thread/n179_6"
+              ]
+            }
+          }
+        },
+        "old_parameters": {
+          "INIT": "16'h3500"
+        },
+        "new_parameters": {
+          "INIT": "16'h3500"
+        },
+        "output_function_proof": "canonical_logic_identity",
+        "requested_register_next_state_proof": null,
+        "removed_SFP_management_page_contract": null,
+        "old_loads": 963,
+        "retained_old_loads": 963,
+        "exact_retained_loads": 961,
+        "equivalent_remapped_loads": 0,
+        "stable_state_or_opaque_loads": 0,
+        "combinational_intermediate_pins_not_assumed_semantically_identical": 963,
+        "actual_state_or_opaque_boundary_proofs": [],
+        "old_load_roles": {
+          "LOGIC": 963
+        },
+        "new_load_roles": {
+          "LOGIC": 963
+        },
+        "CST_target_changed": false
+      },
+      {
+        "old_target": "u_control/telemetry_thread/snapshot_959_10",
+        "new_target": "u_control/telemetry_thread/snapshot_959_10",
+        "original_request": "CLOCK_LOC \"u_control/telemetry_thread/snapshot_959_10\" BUFG = CE;",
+        "new_request": "CLOCK_LOC \"u_control/telemetry_thread/snapshot_959_10\" BUFG = CE;",
+        "selection": "same_actual_primitive_instance_and_output_pin",
+        "old_driver": {
+          "instance": "u_control/telemetry_thread/snapshot_959_s4",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_control/telemetry_thread/snapshot_959_s4",
+            "kind": "LUT4",
+            "ports": {
+              "F": [
+                "u_control/telemetry_thread/snapshot_959_10"
+              ],
+              "I0": [
+                "active"
+              ],
+              "I1": [
+                "busy"
+              ],
+              "I2": [
+                "u_control/telemetry_thread/n6538_14"
+              ],
+              "I3": [
+                "u_control/telemetry_thread/n1315_4"
+              ]
+            }
+          }
+        },
+        "new_driver": {
+          "instance": "u_control/telemetry_thread/snapshot_959_s4",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_control/telemetry_thread/snapshot_959_s4",
+            "kind": "LUT4",
+            "ports": {
+              "F": [
+                "u_control/telemetry_thread/snapshot_959_10"
+              ],
+              "I0": [
+                "u_control/telemetry_thread/active"
+              ],
+              "I1": [
+                "u_control/telemetry_thread/busy"
+              ],
+              "I2": [
+                "u_control/telemetry_thread/n6538_14"
+              ],
+              "I3": [
+                "u_control/telemetry_thread/n1315_4"
+              ]
+            }
+          }
+        },
+        "old_parameters": {
+          "INIT": "16'hFF10"
+        },
+        "new_parameters": {
+          "INIT": "16'hFF10"
+        },
+        "output_function_proof": "canonical_logic_identity",
+        "requested_register_next_state_proof": null,
+        "removed_SFP_management_page_contract": null,
+        "old_loads": 960,
+        "retained_old_loads": 960,
+        "exact_retained_loads": 960,
+        "equivalent_remapped_loads": 0,
+        "stable_state_or_opaque_loads": 960,
+        "combinational_intermediate_pins_not_assumed_semantically_identical": 0,
+        "actual_state_or_opaque_boundary_proofs": [],
+        "old_load_roles": {
+          "CE": 960
+        },
+        "new_load_roles": {
+          "CE": 960
+        },
+        "CST_target_changed": false
+      },
+      {
+        "old_target": "u_control/model_thread/observation/n12472_10",
+        "new_target": "u_control/model_thread/observation/n12472_10",
+        "original_request": "CLOCK_LOC \"u_control/model_thread/observation/n12472_10\" BUFG = CE|LOGIC;",
+        "new_request": "CLOCK_LOC \"u_control/model_thread/observation/n12472_10\" BUFG = CE|LOGIC;",
+        "selection": "same_actual_primitive_instance_and_output_pin",
+        "old_driver": {
+          "instance": "u_control/model_thread/observation/n12506_s4",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_control/model_thread/observation/n12506_s4",
+            "kind": "LUT3",
+            "ports": {
+              "F": [
+                "u_control/model_thread/observation/n12472_10"
+              ],
+              "I0": [
+                "u_control/model_thread/observation/state[0]"
+              ],
+              "I1": [
+                "u_control/model_thread/observation/state[1]"
+              ],
+              "I2": [
+                "u_control/model_thread/observation/state[2]"
+              ]
+            }
+          }
+        },
+        "new_driver": {
+          "instance": "u_control/model_thread/observation/n12506_s4",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_control/model_thread/observation/n12506_s4",
+            "kind": "LUT3",
+            "ports": {
+              "F": [
+                "u_control/model_thread/observation/n12472_10"
+              ],
+              "I0": [
+                "u_control/model_thread/observation/state[0]"
+              ],
+              "I1": [
+                "u_control/model_thread/observation/state[1]"
+              ],
+              "I2": [
+                "u_control/model_thread/observation/state[2]"
+              ]
+            }
+          }
+        },
+        "old_parameters": {
+          "INIT": "8'h10"
+        },
+        "new_parameters": {
+          "INIT": "8'h10"
+        },
+        "output_function_proof": "canonical_logic_identity",
+        "requested_register_next_state_proof": null,
+        "removed_SFP_management_page_contract": null,
+        "old_loads": 3893,
+        "retained_old_loads": 3893,
+        "exact_retained_loads": 3893,
+        "equivalent_remapped_loads": 0,
+        "stable_state_or_opaque_loads": 3893,
+        "combinational_intermediate_pins_not_assumed_semantically_identical": 0,
+        "actual_state_or_opaque_boundary_proofs": [],
+        "old_load_roles": {
+          "LOGIC": 1,
+          "CE": 3892
+        },
+        "new_load_roles": {
+          "LOGIC": 1,
+          "CE": 3892
+        },
+        "CST_target_changed": false
+      },
+      {
+        "old_target": "u_nav/u_xt/n9903_3",
+        "new_target": "u_nav/u_xt/n9903_3",
+        "original_request": "CLOCK_LOC \"u_nav/u_xt/n9903_3\" LOCAL_CLOCK;",
+        "new_request": "CLOCK_LOC \"u_nav/u_xt/n9903_3\" LOCAL_CLOCK;",
+        "selection": "same_actual_primitive_instance_and_output_pin",
+        "old_driver": {
+          "instance": "u_nav/u_xt/n9616_s1",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_nav/u_xt/n9616_s1",
+            "kind": "LUT4",
+            "ports": {
+              "F": [
+                "u_nav/u_xt/n9903_3"
+              ],
+              "I0": [
+                "u_nav/u_xt/n9616_5"
+              ],
+              "I1": [
+                "u_nav/u_xt/n9616_6"
+              ],
+              "I2": [
+                "u_nav/u_xt/info_left[7]"
+              ],
+              "I3": [
+                "u_nav/u_xt/n9616_7"
+              ]
+            }
+          }
+        },
+        "new_driver": {
+          "instance": "u_nav/u_xt/n9616_s1",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_nav/u_xt/n9616_s1",
+            "kind": "LUT4",
+            "ports": {
+              "F": [
+                "u_nav/u_xt/n9903_3"
+              ],
+              "I0": [
+                "u_nav/u_xt/n9616_5"
+              ],
+              "I1": [
+                "u_nav/u_xt/n9616_6"
+              ],
+              "I2": [
+                "u_nav/u_xt/info_left[7]"
+              ],
+              "I3": [
+                "u_nav/u_xt/n9616_7"
+              ]
+            }
+          }
+        },
+        "old_parameters": {
+          "INIT": "16'hCA00"
+        },
+        "new_parameters": {
+          "INIT": "16'hCA00"
+        },
+        "output_function_proof": "SAT_unsatisfiable_miter",
+        "requested_register_next_state_proof": null,
+        "removed_SFP_management_page_contract": null,
+        "old_loads": 288,
+        "retained_old_loads": 288,
+        "exact_retained_loads": 288,
+        "equivalent_remapped_loads": 0,
+        "stable_state_or_opaque_loads": 288,
+        "combinational_intermediate_pins_not_assumed_semantically_identical": 0,
+        "actual_state_or_opaque_boundary_proofs": [],
+        "old_load_roles": {
+          "CE": 288
+        },
+        "new_load_roles": {
+          "CE": 288
+        },
+        "CST_target_changed": false
+      },
+      {
+        "old_target": "u_nav/u_match/u_ex/n7021_4",
+        "new_target": "u_nav/u_match/u_ex/n7021_4",
+        "original_request": "CLOCK_LOC \"u_nav/u_match/u_ex/n7021_4\" LOCAL_CLOCK;",
+        "new_request": "CLOCK_LOC \"u_nav/u_match/u_ex/n7021_4\" LOCAL_CLOCK;",
+        "selection": "same_actual_primitive_instance_and_output_pin",
+        "old_driver": {
+          "instance": "u_nav/u_match/u_ex/n7021_s1",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_nav/u_match/u_ex/n7021_s1",
+            "kind": "LUT2",
+            "ports": {
+              "F": [
+                "u_nav/u_match/u_ex/n7021_4"
+              ],
+              "I0": [
+                "r2"
+              ],
+              "I1": [
+                "u_nav/u_match/u_ex/vb1"
+              ]
+            }
+          }
+        },
+        "new_driver": {
+          "instance": "u_nav/u_match/u_ex/n7021_s1",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_nav/u_match/u_ex/n7021_s1",
+            "kind": "LUT2",
+            "ports": {
+              "F": [
+                "u_nav/u_match/u_ex/n7021_4"
+              ],
+              "I0": [
+                "r2"
+              ],
+              "I1": [
+                "u_nav/u_match/u_ex/vb1"
+              ]
+            }
+          }
+        },
+        "old_parameters": {
+          "INIT": "4'h4"
+        },
+        "new_parameters": {
+          "INIT": "4'h4"
+        },
+        "output_function_proof": "canonical_logic_identity",
+        "requested_register_next_state_proof": null,
+        "removed_SFP_management_page_contract": null,
+        "old_loads": 277,
+        "retained_old_loads": 277,
+        "exact_retained_loads": 277,
+        "equivalent_remapped_loads": 0,
+        "stable_state_or_opaque_loads": 277,
+        "combinational_intermediate_pins_not_assumed_semantically_identical": 0,
+        "actual_state_or_opaque_boundary_proofs": [],
+        "old_load_roles": {
+          "CE": 277
+        },
+        "new_load_roles": {
+          "CE": 277
+        },
+        "CST_target_changed": false
+      },
+      {
+        "old_target": "u_nav/u_match/u_ex/rb_ra[0]",
+        "new_target": "u_nav/u_match/u_ex/rb_ra[0]",
+        "original_request": "CLOCK_LOC \"u_nav/u_match/u_ex/rb_ra[0]\" LOCAL_CLOCK;",
+        "new_request": "CLOCK_LOC \"u_nav/u_match/u_ex/rb_ra[0]\" LOCAL_CLOCK;",
+        "selection": "same_actual_primitive_instance_and_output_pin",
+        "old_driver": {
+          "instance": "u_nav/u_match/u_ex/rb_ra_0_s10",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_nav/u_match/u_ex/rb_ra_0_s10",
+            "kind": "LUT3",
+            "ports": {
+              "F": [
+                "u_nav/u_match/u_ex/rb_ra[0]"
+              ],
+              "I0": [
+                "u_nav/u_match/u_ex/u[0]"
+              ],
+              "I1": [
+                "u_nav/u_match/u_ex/fu[0]"
+              ],
+              "I2": [
+                "u_nav/u_match/u_ex/flushing"
+              ]
+            }
+          }
+        },
+        "new_driver": {
+          "instance": "u_nav/u_match/u_ex/rb_ra_0_s10",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_nav/u_match/u_ex/rb_ra_0_s10",
+            "kind": "LUT3",
+            "ports": {
+              "F": [
+                "u_nav/u_match/u_ex/rb_ra[0]"
+              ],
+              "I0": [
+                "u_nav/u_match/u_ex/u[0]"
+              ],
+              "I1": [
+                "u_nav/u_match/u_ex/fu[0]"
+              ],
+              "I2": [
+                "u_nav/u_match/u_ex/flushing"
+              ]
+            }
+          }
+        },
+        "old_parameters": {
+          "INIT": "8'hCA"
+        },
+        "new_parameters": {
+          "INIT": "8'hCA"
+        },
+        "output_function_proof": "canonical_logic_identity",
+        "requested_register_next_state_proof": null,
+        "removed_SFP_management_page_contract": null,
+        "old_loads": 250,
+        "retained_old_loads": 250,
+        "exact_retained_loads": 250,
+        "equivalent_remapped_loads": 0,
+        "stable_state_or_opaque_loads": 250,
+        "combinational_intermediate_pins_not_assumed_semantically_identical": 0,
+        "actual_state_or_opaque_boundary_proofs": [],
+        "old_load_roles": {
+          "LOGIC": 250
+        },
+        "new_load_roles": {
+          "LOGIC": 250
+        },
+        "CST_target_changed": false
+      },
+      {
+        "old_target": "u_nav/u_match/u_ex/rb_ra[1]",
+        "new_target": "u_nav/u_match/u_ex/rb_ra[1]",
+        "original_request": "CLOCK_LOC \"u_nav/u_match/u_ex/rb_ra[1]\" LOCAL_CLOCK;",
+        "new_request": "CLOCK_LOC \"u_nav/u_match/u_ex/rb_ra[1]\" LOCAL_CLOCK;",
+        "selection": "same_actual_primitive_instance_and_output_pin",
+        "old_driver": {
+          "instance": "u_nav/u_match/u_ex/rb_ra_1_s10",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_nav/u_match/u_ex/rb_ra_1_s10",
+            "kind": "LUT3",
+            "ports": {
+              "F": [
+                "u_nav/u_match/u_ex/rb_ra[1]"
+              ],
+              "I0": [
+                "u_nav/u_match/u_ex/u[1]"
+              ],
+              "I1": [
+                "u_nav/u_match/u_ex/fu[1]"
+              ],
+              "I2": [
+                "u_nav/u_match/u_ex/flushing"
+              ]
+            }
+          }
+        },
+        "new_driver": {
+          "instance": "u_nav/u_match/u_ex/rb_ra_1_s10",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_nav/u_match/u_ex/rb_ra_1_s10",
+            "kind": "LUT3",
+            "ports": {
+              "F": [
+                "u_nav/u_match/u_ex/rb_ra[1]"
+              ],
+              "I0": [
+                "u_nav/u_match/u_ex/u[1]"
+              ],
+              "I1": [
+                "u_nav/u_match/u_ex/fu[1]"
+              ],
+              "I2": [
+                "u_nav/u_match/u_ex/flushing"
+              ]
+            }
+          }
+        },
+        "old_parameters": {
+          "INIT": "8'hCA"
+        },
+        "new_parameters": {
+          "INIT": "8'hCA"
+        },
+        "output_function_proof": "canonical_logic_identity",
+        "requested_register_next_state_proof": null,
+        "removed_SFP_management_page_contract": null,
+        "old_loads": 250,
+        "retained_old_loads": 250,
+        "exact_retained_loads": 250,
+        "equivalent_remapped_loads": 0,
+        "stable_state_or_opaque_loads": 250,
+        "combinational_intermediate_pins_not_assumed_semantically_identical": 0,
+        "actual_state_or_opaque_boundary_proofs": [],
+        "old_load_roles": {
+          "LOGIC": 250
+        },
+        "new_load_roles": {
+          "LOGIC": 250
+        },
+        "CST_target_changed": false
+      },
+      {
+        "old_target": "u_nav/a_q_15_17",
+        "new_target": "u_nav/a_q_15_10",
+        "original_request": "CLOCK_LOC \"u_nav/a_q_15_17\" LOCAL_CLOCK;",
+        "new_request": "CLOCK_LOC \"u_nav/a_q_15_10\" LOCAL_CLOCK;",
+        "selection": "all_surviving_actual_sink_pins_agree_on_one_net",
+        "old_driver": {
+          "instance": "u_nav/a_q_15_s9",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_nav/a_q_15_s9",
+            "kind": "LUT4",
+            "ports": {
+              "F": [
+                "u_nav/a_q_15_17"
+              ],
+              "I0": [
+                "r2"
+              ],
+              "I1": [
+                "ub_rdata_31_7"
+              ],
+              "I2": [
+                "n12_4"
+              ],
+              "I3": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          }
+        },
+        "new_driver": {
+          "instance": "u_nav/a_q_15_s5",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_nav/a_q_15_s5",
+            "kind": "LUT3",
+            "ports": {
+              "F": [
+                "u_nav/a_q_15_10"
+              ],
+              "I0": [
+                "r2"
+              ],
+              "I1": [
+                "u_nav/a_q_15_8"
+              ],
+              "I2": [
+                "u_nav/n11097_15"
+              ]
+            }
+          }
+        },
+        "old_parameters": {
+          "INIT": "16'h1000"
+        },
+        "new_parameters": {
+          "INIT": "8'h40"
+        },
+        "output_function_proof": "SAT_unsatisfiable_miter",
+        "requested_register_next_state_proof": null,
+        "removed_SFP_management_page_contract": {
+          "removed_page": "0x1300..0x13ff",
+          "condition_bound_to_actual_old_arbiter_address_bits": [
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "non_removed_pages_must_be_strictly_equal": true,
+          "removed_page_stub_behavior_accepted": false,
+          "full_state_or_UART_acceptance": false,
+          "purpose": "Map the retained NAV address-load routing role after explicitly removing SFP management."
+        },
+        "old_loads": 47,
+        "retained_old_loads": 46,
+        "exact_retained_loads": 46,
+        "equivalent_remapped_loads": 0,
+        "stable_state_or_opaque_loads": 46,
+        "combinational_intermediate_pins_not_assumed_semantically_identical": 0,
+        "actual_state_or_opaque_boundary_proofs": [],
+        "old_load_roles": {
+          "LOGIC": 1,
+          "CE": 46
+        },
+        "new_load_roles": {
+          "LOGIC": 2,
+          "CE": 46
+        },
+        "CST_target_changed": true
+      },
+      {
+        "old_target": "u_nav/u_map/u_tv/n25284_7",
+        "new_target": "u_nav/u_map/u_tv/n25284_7",
+        "original_request": "CLOCK_LOC \"u_nav/u_map/u_tv/n25284_7\" LOCAL_CLOCK;",
+        "new_request": "CLOCK_LOC \"u_nav/u_map/u_tv/n25284_7\" LOCAL_CLOCK;",
+        "selection": "same_actual_primitive_instance_and_output_pin",
+        "old_driver": {
+          "instance": "u_nav/u_map/u_tv/n25284_s2",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_nav/u_map/u_tv/n25284_s2",
+            "kind": "LUT2",
+            "ports": {
+              "F": [
+                "u_nav/u_map/u_tv/n25284_7"
+              ],
+              "I0": [
+                "r2"
+              ],
+              "I1": [
+                "u_nav/u_map/u_tv/wval"
+              ]
+            }
+          }
+        },
+        "new_driver": {
+          "instance": "u_nav/u_map/u_tv/n25284_s2",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_nav/u_map/u_tv/n25284_s2",
+            "kind": "LUT2",
+            "ports": {
+              "F": [
+                "u_nav/u_map/u_tv/n25284_7"
+              ],
+              "I0": [
+                "r2"
+              ],
+              "I1": [
+                "u_nav/u_map/u_tv/wval"
+              ]
+            }
+          }
+        },
+        "old_parameters": {
+          "INIT": "4'h4"
+        },
+        "new_parameters": {
+          "INIT": "4'h4"
+        },
+        "output_function_proof": "canonical_logic_identity",
+        "requested_register_next_state_proof": null,
+        "removed_SFP_management_page_contract": null,
+        "old_loads": 357,
+        "retained_old_loads": 357,
+        "exact_retained_loads": 357,
+        "equivalent_remapped_loads": 0,
+        "stable_state_or_opaque_loads": 355,
+        "combinational_intermediate_pins_not_assumed_semantically_identical": 2,
+        "actual_state_or_opaque_boundary_proofs": [],
+        "old_load_roles": {
+          "LOGIC": 2,
+          "CE": 355
+        },
+        "new_load_roles": {
+          "LOGIC": 2,
+          "CE": 355
+        },
+        "CST_target_changed": false
+      },
+      {
+        "old_target": "u_nav/u_pt/n5285_4",
+        "new_target": "u_nav/u_pt/n5285_4",
+        "original_request": "CLOCK_LOC \"u_nav/u_pt/n5285_4\" LOCAL_CLOCK;\n",
+        "new_request": "CLOCK_LOC \"u_nav/u_pt/n5285_4\" LOCAL_CLOCK;",
+        "selection": "same_actual_primitive_instance_and_output_pin",
+        "old_driver": {
+          "instance": "u_nav/u_pt/n5285_s1",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_nav/u_pt/n5285_s1",
+            "kind": "LUT2",
+            "ports": {
+              "F": [
+                "u_nav/u_pt/n5285_4"
+              ],
+              "I0": [
+                "r2"
+              ],
+              "I1": [
+                "u_nav/pp_ready"
+              ]
+            }
+          }
+        },
+        "new_driver": {
+          "instance": "u_nav/u_pt/n5285_s1",
+          "pin": "F",
+          "index": 0,
+          "primitive": {
+            "name": "u_nav/u_pt/n5285_s1",
+            "kind": "LUT2",
+            "ports": {
+              "F": [
+                "u_nav/u_pt/n5285_4"
+              ],
+              "I0": [
+                "r2"
+              ],
+              "I1": [
+                "u_nav/pp_ready"
+              ]
+            }
+          }
+        },
+        "old_parameters": {
+          "INIT": "4'h4"
+        },
+        "new_parameters": {
+          "INIT": "4'h4"
+        },
+        "output_function_proof": "canonical_logic_identity",
+        "requested_register_next_state_proof": null,
+        "removed_SFP_management_page_contract": null,
+        "old_loads": 306,
+        "retained_old_loads": 306,
+        "exact_retained_loads": 306,
+        "equivalent_remapped_loads": 0,
+        "stable_state_or_opaque_loads": 306,
+        "combinational_intermediate_pins_not_assumed_semantically_identical": 0,
+        "actual_state_or_opaque_boundary_proofs": [],
+        "old_load_roles": {
+          "CE": 297,
+          "LOGIC": 9
+        },
+        "new_load_roles": {
+          "CE": 297,
+          "LOGIC": 9
+        },
+        "CST_target_changed": false
+      }
+    ],
+    "checks": [
+      {
+        "old_target": "n2371_7",
+        "passed": true
+      },
+      {
+        "old_target": "r2",
+        "passed": true
+      },
+      {
+        "old_target": "u_control/model_thread/observation/n971_7",
+        "passed": true
+      },
+      {
+        "old_target": "u_control/model_thread/policy/snapshot_update",
+        "passed": true
+      },
+      {
+        "old_target": "u_control/telemetry_thread/n1315_4",
+        "passed": true
+      },
+      {
+        "old_target": "u_control/telemetry_thread/snapshot_959_10",
+        "passed": true
+      },
+      {
+        "old_target": "u_control/model_thread/observation/n12472_10",
+        "passed": true
+      },
+      {
+        "old_target": "u_nav/u_xt/n9903_3",
+        "passed": true
+      },
+      {
+        "old_target": "u_nav/u_match/u_ex/n7021_4",
+        "passed": true
+      },
+      {
+        "old_target": "u_nav/u_match/u_ex/rb_ra[0]",
+        "passed": true
+      },
+      {
+        "old_target": "u_nav/u_match/u_ex/rb_ra[1]",
+        "passed": true
+      },
+      {
+        "old_target": "u_nav/a_q_15_17",
+        "passed": true
+      },
+      {
+        "old_target": "u_nav/u_map/u_tv/n25284_7",
+        "passed": true
+      },
+      {
+        "old_target": "u_nav/u_pt/n5285_4",
+        "passed": true
+      }
+    ],
+    "errors": [],
+    "state_boundary_audit": {
+      "supplied_by_joint_reviewer": true,
+      "full_sequential_equivalence_claimed": false
+    },
+    "all_real_IO_constraints_preserved": true,
+    "guessed_automatic_aliases": 0,
+    "actual_global_allocation_verified": false,
+    "physical_timing_accepted": false,
+    "exploratory_implementation_preflight_only": true
+  },
+  "pnr_source": "F:\\nav_integration_g2_20261023\\uart_host_no_sfp_pnr_inputs1",
+  "actual_global_allocation_verified": false,
+  "exploratory_PNR_only": true,
+  "full_UART_behaviour_and_disconnect_stop_are_deployment_gates": true,
+  "pnr_input_files": [
+    {
+      "path": "cdc_reference_audit.json",
+      "bytes": 12914,
+      "modified_at": "2026-10-25T19:41:39.958622+08:00"
+    },
+    {
+      "path": "effective_options.tcl",
+      "bytes": 9404,
+      "modified_at": "2026-10-25T19:41:39.957399+08:00"
+    },
+    {
+      "path": "g2.cst",
+      "bytes": 6216,
+      "modified_at": "2026-10-25T19:41:39.958214+08:00"
+    },
+    {
+      "path": "g2.sdc",
+      "bytes": 6664,
+      "modified_at": "2026-10-25T19:41:39.957399+08:00"
+    },
+    {
+      "path": "impl/gwsynthesis/g2_top.prj",
+      "bytes": 8865,
+      "modified_at": "2026-10-25T19:41:39.956397+08:00"
+    },
+    {
+      "path": "impl/gwsynthesis/g2_top.vg",
+      "bytes": 23306144,
+      "modified_at": "2026-10-25T19:41:39.955396+08:00"
+    },
+    {
+      "path": "implementation_preflight.json",
+      "bytes": 93991,
+      "modified_at": "2026-10-25T19:41:39.964154+08:00"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 9056,
+      "modified_at": "2026-10-25T19:41:39.960701+08:00"
+    }
+  ]
+}

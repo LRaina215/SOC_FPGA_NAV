@@ -1,6 +1,6 @@
 # G2 双 UART 合同与 RK 联调步骤（2026-10-25）
 
-本次只读审阅导航、控制与 RK 桥接代码；没有打开串口、发送任务、下载镜像、修改 RK 服务或运行综合/仿真。正在运行的无 SFP 联合综合不受本审阅影响。机器记录见 [dual_uart_contract_20261025.json](evidence/g2_20261023/dual_uart_contract_20261025.json)。
+本次审阅导航、控制与 RK 桥接代码，并于 19:29 经用户已保存的私有连接配置成功登录 RK，读取 USB/sysfs/服务状态/相关内核日志。定位后按明确授权实施了单设备 BRLTTY 排除与串口重绑；没有打开串口、发送任务、下载镜像或运行综合/仿真，亦未停止 ModemManager、Web 或相机。本次未改变无 SFP 冻结输入或启动重复构建。机器记录见 [dual_uart_contract_20261025.json](evidence/g2_20261023/dual_uart_contract_20261025.json)。
 
 用户确认已有 P11-40 USB-TTL 接线，只把其 USB 端接到 RK，FPGA 侧保持不动。双串口方向可复用现有实现：CH9102 负责导航任务和低频状态，P11-40 负责完整控制 V2 遥测。当前新镜像与 RK 双口的实板接受仍未完成。
 
@@ -54,7 +54,36 @@ V2 原始字段包括六轴 BMI、融合角速度/重力、采用的前进/转�
 - `yuntuo/bridge/inputs.py::TelemetryReader`，接受 `serial:/dev/...@230400`，只读 V1/V2，CRC 检查并在设备异常后重连。`serial.read(512)` 会批量接收；接收批次时间不能冒充每个采样的设备时间。
 - `scripts/udev/99-yuntuo.rules` 已约定 `/dev/yuntuo-fpga`（1a86:55d4）和 `/dev/yuntuo-ctl`（1a86:7523）。这是按 VID/PID 的规则，不是当前实物身份验证。若两个适配器同 VID/PID，必须用实际唯一序列号；无唯一序列号则用固定 USB 物理路径 `ID_PATH` 区分，不能依赖 ttyUSB0/ttyACM0 枚举次序。
 
-既有 RK SSH 入口为 `robomaster@100.113.173.115`，本机 SSH 配置含该 Host。2026-10-25 本轮一次 BatchMode/既有 known_hosts 的只读 inventory 请求返回 `Permission denied (publickey,password)`，没有取得当前 lsusb/by-id 列表，也未改远端。当前双 USB 是否已经插到 RK、适配器 VID/PID/序列号、服务占用均待可访问时只读核对；没有重新索取授权或输出口令。
+既有 RK SSH 入口为 `robomaster@100.113.173.115`，本机 SSH 配置含该 Host。首个 BatchMode 请求因没有可用非交互认证被拒；用户随后授权持久复用连接，19:29 已从 `C:/Users/Li/.codex/private/rk3588_connection.md` 仅在内存使用认证信息成功登录。没有输出或提交口令。
+
+**19:28–19:29 实际枚举与无串口原因：**
+
+- 可见 `1a86:7523` CH340（Bus002 Device004，物理拓扑 `fc880000.usb/usb2/2-1/2-1.2`），没有 CH9102，也没有 ttyUSB/ttyACM/ttyCH 节点。CH9102 当前未枚举，不能判断是尚未接到 RK、线缆还是其它现场原因。
+- CH340 的 USB `authorized=1`、configuration=1；接口 `2-1.2:1.0` 当前无 driver。`ch341` 模块已加载，故不是没安装驱动。
+- kernel journal 记录 19:11:10 `ch341-uart converter now attached to ttyUSB0`，19:11:11 紧接 `interface 0 claimed by ch341 while 'brltty' sets config #1`，随后 ttyUSB0/converter 断开。dmesg 有相同顺序；两者墙钟转换不同，不能据其秒值推算独立两次事件。
+- `/lib/udev/rules.d/85-brltty.rules:293` 把 `PRODUCT=1a86/7523/*` 作为 Baum 盲文设备匹配，设置 `BRLTTY_BRAILLE_DRIVER=bm` 并启动 BRLTTY；`udevadm` 的当前属性也有该值和 `SYSTEMD_WANTS=brltty-udev.service`。`brltty-udev.service` 实际 active/running，主 PID 322390；软件包为 `brltty 6.4-4ubuntu3`。
+- ModemManager 和 Web bridge 虽在运行，此次解绑的日志证据直接指向 BRLTTY，不能把其它服务当根因而逐个停掉。
+- 此 CH340 没有唯一 USB serial；`ID_SERIAL=1a86_USB_Serial` 是通用描述，不能当唯一身份。恢复绑定后应取得实际 tty 的 `ID_PATH/by-path` 并绑定原固定 USB 口；当前 `99-yuntuo.rules` 已有对应 `/dev/yuntuo-ctl` 规则，但没有 tty 就不会生成该链接。
+
+**19:32 已授权的精确恢复：**备份实际厂商规则到 `/var/backups/yuntuo-ch340-brltty-20261025T193229/85-brltty.rules.vendor.before`，创建同名本地覆盖 `/etc/udev/rules.d/85-brltty.rules`，只在原 `PRODUCT=1a86/7523/*` 那一条加当前物理 DEVPATH 的排除条件。原厂 `/usr/lib/udev/rules.d/85-brltty.rules` 未改，所有其它规则保持原文。此前本地覆盖不存在，恢复时删除本次覆盖即可回到厂商版本。
+
+```text
+原：ENV{PRODUCT}=="1a86/7523/*", ENV{BRLTTY_BRAILLE_DRIVER}="bm", GOTO="brltty_usb_run"
+新：ENV{PRODUCT}=="1a86/7523/*", DEVPATH!="/devices/platform/fc880000.usb/usb2/2-1/2-1.2", ENV{BRLTTY_BRAILLE_DRIVER}="bm", GOTO="brltty_usb_run"
+```
+
+随后只停止 `brltty-udev.service`、reload udev 规则，将准确接口 `2-1.2:1.0` 写入 `ch341/bind`，等待 udev 完成。停止 BRLTTY 耗尽其原 10s 退出时限，最终 `MainPID=0`、`ActiveState=failed`、`Result=timeout`；没有留下 BRLTTY 进程。没有卸包/卸载驱动/停止其它服务。恢复规则的 root 命令是 `rm -- /etc/udev/rules.d/85-brltty.rules` 后 `udevadm control --reload-rules`；这会撤回排除，原抢占可能再次发生，不能无目的地执行。备份目录另存 `85-brltty.rules.local.after` 和 `repair_record.json`。
+
+**19:33 实际复核：**
+
+| 身份 | 当前节点和稳定入口 | 实际属性 |
+|---|---|---|
+| 控制 CH340 | `/dev/yuntuo-ctl → ttyUSB0`；`/dev/serial/by-path/platform-fc880000.usb-usb-0:1.2:1.0-port0` | ch341；`ID_PATH=platform-fc880000.usb-usb-0:1.2:1.0`；无唯一 serial |
+| 导航 CH9102 | `/dev/yuntuo-fpga → ttyACM0`；`/dev/serial/by-id/usb-1a86_USB_Single_Serial_5910012847-if00` | cdc_acm；VID/PID=1a86:55d4；serial=5910012847；USB 路径 2-1.4 |
+
+CH9102 是在本轮期间新枚举的现场变化，不是这次 CH340 修复的效果。`fuser` 未报告两节点有占用者；ModemManager 和 Web bridge 的原 PID 仍 active。当前 RK `/home/robomaster/QHXD/.env` 实际仍为导航 `udp:127.0.0.1:9000`、`YUNTUO_FPGA_IS_MOCK=true`、遥测 `udp:127.0.0.1:9104`，本次未改。两个稳定入口已出现，只证明设备枚举/绑定，不证明 NAV0 或完整 V2 通信通过。当前路径例外与原固定 USB 拓扑绑定；本次没有重启/物理拔插验证，拓扑改变后应重新核对，不能假设任意 USB 口都自动排除 BRLTTY。
+
+原始记录位于 `F:/nav_integration_g2_20261023/rk_dual_uart_readonly_inventory_20261025/` 的 `inventory1.json`、`ch340_diagnosis1.json`、`ch340_brltty_rule1.json`、`ch340_targeted_repair1.json`、`ch340_after_repair_verify1.json`。认证信息只在内存/SSH stdin 使用，没有输出、复制到报告或提交。
 
 可复用的只读清单（本次未在 RK 成功执行）：
 
@@ -75,7 +104,7 @@ YUNTUO_CONTROL_TELEMETRY=serial:/dev/yuntuo-ctl@230400
 YUNTUO_FPGA_IS_MOCK=false
 ```
 
-不得直接运行批量安装脚本替代针对性配置，它会重启服务及改变其它栈。当前 RK 远端运行配置未重读，不能把 2026-10-23 的 mock 快照称为当前事实。
+不得直接运行批量安装脚本替代针对性配置，它会重启服务及改变其它栈。上面的候选双口配置尚未部署；19:33 实际重读仍为 mock UDP，不能把串口节点出现当成 Web 已切换到真 FPGA。
 
 ## 6. 过物理门槛后的双口测试顺序
 
@@ -88,4 +117,4 @@ YUNTUO_FPGA_IS_MOCK=false
 5. **任务与地图。** 保持停止，验证 MAP_BEGIN/DATA/END 的最终 offset/state 与 CRC 错误拒绝；模式/位姿等任务先观察接受后的真实状态。检查同时 STATUS 到来时 MAP_ACK 不会被误当成功。暂不把 PATH/实时地图当作已存在输出。
 6. **最后运动。** 原 N2/N3 门槛满足后才在支撑下低幅短时执行 GOAL/受控 TARGET，验证 NAV 唯一所有权、停止优先级、反馈新鲜度、取消与失联实际反应；落地停止/地形验收另计。
 
-本审阅完成了源合同和接续步骤整理；当前 RK 双口枚举、当前新镜像端到端通信、运行中主机断连停止仍未验证。
+本审阅完成了源合同和接续步骤整理，定位并可逆修复了 CH340 的 BRLTTY 抢占，实际双口枚举/稳定入口已复核。当前新镜像端到端通信、运行中主机断连停止仍未验证；未打开串口或发送任何运动字节。

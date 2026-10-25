@@ -1,0 +1,86 @@
+{
+  "recorded_at": "2026-10-25T19:45:19.771013+08:00",
+  "actual_phase": "PNR26_running_placement",
+  "actual_PNR_directory": "F:\\nav_integration_g2_20261023\\uart_host_no_sfp_pnr26",
+  "controller": {
+    "controller_pid": 63304,
+    "controller_created_epoch": 1792928567.964055,
+    "wrapper_pid": 52112,
+    "wrapper_created_epoch": 1792928568.180436
+  },
+  "tool_identity": {
+    "pid": 24304,
+    "created_epoch": 1792928570.190971,
+    "created_at": "2026-10-25T19:42:50.190971+08:00",
+    "ppid": 52112,
+    "cwd": "F:\\nav_integration_g2_20261023\\uart_host_no_sfp_pnr26",
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ]
+  },
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-25T19:42:50.134366+08:00",
+    "max_runtime_s": 0.0,
+    "max_no_observable_progress_s": 0.0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 24304,
+    "elapsed_s": 120.20299999997951,
+    "no_observable_progress_s": 36.03200000000652,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        1976843,
+        1792928654023823000
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        1976424,
+        1792928654023823000
+      ]
+    ]
+  },
+  "actual_cmd_do": "-d F:\\nav_integration_g2_20261023\\uart_host_no_sfp_pnr26\\g2_top.vg\n-p GW5AT-138C-PBGA484A-1\n-pn GW5AT-LV138PG484AC1/I0\n-cst F:\\nav_integration_g2_20261023\\uart_host_no_sfp_pnr26\\g2.cst\n-cfg F:\\nav_integration_g2_20261023\\uart_host_no_sfp_pnr26\\impl\\pnr\\device.cfg\n-sdc F:\\nav_integration_g2_20261023\\uart_host_no_sfp_pnr26\\g2.sdc\n-bit\n-tr\n-ph\n-posp\n-o\n-warning_all\n-timing\n-ireg_not_in_iob\n-oreg_not_in_iob\n-ioreg_not_in_iob\n-replicate\n-cst_error\n-convert_sdp32_36_to_sdp16_18\n-place_option 1\n-route_option 2\n-retiming_resource none\n-clock_route_order 0\n-correct_hold 1\n-route_maxfan 23\n-global_freq 50.000\n",
+  "single_factor_scope": "disable physical SFP/MAC/PCS/SerDes/125MHz and its duplicate transport branch; keep primary control/NAV/full UART mailboxes; no DDR/clock relaxation",
+  "synthesis": {
+    "completed_at": "2026-10-25T19:24:51.679640+08:00",
+    "tool_exit": 0,
+    "source_BSRAM": 313,
+    "wide_leaves": 10,
+    "predicted_physical_BSRAM": 323,
+    "LUT": 50251,
+    "FF": 38974,
+    "ALU": 9582,
+    "against_source_SFP_LUT_delta": -3636,
+    "against_source_SFP_FF_delta": -2870
+  },
+  "preflight_evidence": "docs/4_design/evidence/g2_20261023/sfp_off_uart_implementation_preflight_20261025.json",
+  "implementation_preflight_passed": true,
+  "source_memory_detail": "312 retained BSRAM parameter/INIT matches;3 disconnected physical-host RX leaves removed;1 disconnected host TX bookkeeping leaf9to1bit;main CPU/control/maps/points kept",
+  "clock_mapping_detail": "14 actual targets;only n2371 and a_q names remapped;non0x13 page conditional proof for removed SFP management page is explicit, not full sequential equivalence",
+  "true_clock_roots": 2,
+  "known_radar_connections": 26,
+  "known_hold_only_plus_max_delay_commands": 52,
+  "actual_physical_RAM": null,
+  "actual_unrouted": null,
+  "setup": null,
+  "hold": null,
+  "actual_global_assignment_verified": false,
+  "UART_full_business_and_disconnect_stop_verified": false,
+  "RK_USB_enumeration_repair_verified": true,
+  "RK_mock_config_changed": false,
+  "password_saved_private_only": true,
+  "private_record_reference": "C:/Users/Li/.codex/private/rk3588_connection.md",
+  "diagnostic_only": true,
+  "automatic_programming": false,
+  "programmed": false,
+  "deployment_accepted": false
+}

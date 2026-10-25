@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "date": "2026-10-25",
-  "scope": "Static source audit and one failed noninteractive read-only SSH inventory attempt; no serial device opened, no command sent, no service/configuration change, no synthesis/simulation or hardware action",
+  "scope": "Source audit, authenticated read-only USB/kernel diagnosis, and explicitly authorized reversible single-device BRLTTY exclusion/rebind; no serial device opened, no serial bytes/motion sent, no synthesis/simulation or FPGA action",
   "read_only_audit_completed": true,
   "safe_for_deployment": false,
   "current_dual_uart_board_acceptance_passed": false,
@@ -11,12 +11,37 @@
     "device": "board CH9102, FPGA L21/M21",
     "baud": 921600,
     "format": "8N1",
-    "implemented_commands": ["GOAL", "WAYPOINTS", "MODE", "SET_POSE", "TARGET", "MAP_BEGIN", "MAP_DATA", "MAP_END", "MAP_CLEAR"],
-    "implemented_replies": ["STATUS", "MAP_ACK"],
+    "implemented_commands": [
+      "GOAL",
+      "WAYPOINTS",
+      "MODE",
+      "SET_POSE",
+      "TARGET",
+      "MAP_BEGIN",
+      "MAP_DATA",
+      "MAP_END",
+      "MAP_CLEAR"
+    ],
+    "implemented_replies": [
+      "STATUS",
+      "MAP_ACK"
+    ],
     "path_builder_exists_but_current_application_sends_path": false,
     "consistent_live_map_uplink_implemented": false,
-    "register_bridge": {"write": "W+u16be address+u32be value -> K", "read": "R+u16be address -> D+u32be value", "crc": false, "command_sequence": false, "K_is_bus_ack_only": true},
-    "nv_v1": {"header": "NV,version,type", "payload_endian": "little", "generic_command_ack": false, "session_or_command_ttl": false, "packet_crc": false},
+    "register_bridge": {
+      "write": "W+u16be address+u32be value -> K",
+      "read": "R+u16be address -> D+u32be value",
+      "crc": false,
+      "command_sequence": false,
+      "K_is_bus_ack_only": true
+    },
+    "nv_v1": {
+      "header": "NV,version,type",
+      "payload_endian": "little",
+      "generic_command_ack": false,
+      "session_or_command_ttl": false,
+      "packet_crc": false
+    },
     "tx_sequence_meaning": "Incremented on TX_GO accepted while not busy; not task execution or remote delivery confirmation",
     "reply_storage": "Latest message only; writes update shadow before GO increments sequence; no independently locked UART snapshot proven",
     "map_integrity": "MAP_ACK next_offset/state plus body CRC32 at MAP_END",
@@ -28,8 +53,29 @@
     "device": "existing USB-TTL at P11-40/A16 TX",
     "baud": 230400,
     "format": "8N1",
-    "frame": {"header_hex": "a55a0278", "payload_bytes": 120, "total_bytes": 126, "nominal_hz": 100, "crc": "CRC16/CCITT-FALSE, init FFFF/poly1021, version+length+payload, little-endian transmitted CRC"},
-    "fields": ["timestamp_ms", "frame_sequence", "status/faults", "raw_six_axis_BMI", "fused_angular_velocity/gravity", "adopted_forward/yaw/height_commands", "policy_wheel_targets", "wheel_feedback", "PWM", "servo_pulse_widths", "inference_count/cycles", "encoder_deltas", "PID_reference/error", "control_sequences"],
+    "frame": {
+      "header_hex": "a55a0278",
+      "payload_bytes": 120,
+      "total_bytes": 126,
+      "nominal_hz": 100,
+      "crc": "CRC16/CCITT-FALSE, init FFFF/poly1021, version+length+payload, little-endian transmitted CRC"
+    },
+    "fields": [
+      "timestamp_ms",
+      "frame_sequence",
+      "status/faults",
+      "raw_six_axis_BMI",
+      "fused_angular_velocity/gravity",
+      "adopted_forward/yaw/height_commands",
+      "policy_wheel_targets",
+      "wheel_feedback",
+      "PWM",
+      "servo_pulse_widths",
+      "inference_count/cycles",
+      "encoder_deltas",
+      "PID_reference/error",
+      "control_sequences"
+    ],
     "g2_NAV_INPUT_ENABLE": 1,
     "g2_UART_SPEED_ENABLE": 0,
     "g2_UART_RXD": "constant 1",
@@ -55,7 +101,19 @@
     "control_8N1_bits_per_second": 126000,
     "control_line_utilization_fraction": 0.546875,
     "current_RK_throughput_measured": false,
-    "historical_documented_PC_board_test": {"date": "2026-10-01", "status_hz": 5, "target_hz": 10, "prior_map_bytes": 38964, "prior_map_upload_seconds": 1.7, "prior_map_result": "loaded", "status_roundtrip_ms_documented": [25, 50], "is_current_joint_image_or_RK_acceptance": false}
+    "historical_documented_PC_board_test": {
+      "date": "2026-10-01",
+      "status_hz": 5,
+      "target_hz": 10,
+      "prior_map_bytes": 38964,
+      "prior_map_upload_seconds": 1.7,
+      "prior_map_result": "loaded",
+      "status_roundtrip_ms_documented": [
+        25,
+        50
+      ],
+      "is_current_joint_image_or_RK_acceptance": false
+    }
   },
   "rk_local_implementation": {
     "root": "D:/Desktop/SOC FPGA/QHXD_Web",
@@ -65,27 +123,109 @@
     "control_entry": "yuntuo/bridge/inputs.py::TelemetryReader",
     "control_spec": "serial:/dev/yuntuo-ctl@230400",
     "control_reader_read_only_and_reconnects": true,
-    "environment_keys": ["YUNTUO_FPGA_LINK", "YUNTUO_CONTROL_TELEMETRY", "YUNTUO_FPGA_IS_MOCK"],
+    "environment_keys": [
+      "YUNTUO_FPGA_LINK",
+      "YUNTUO_CONTROL_TELEMETRY",
+      "YUNTUO_FPGA_IS_MOCK"
+    ],
     "udev_file": "scripts/udev/99-yuntuo.rules",
-    "declared_udev_matches": {"yuntuo-fpga": "1a86:55d4", "yuntuo-ctl": "1a86:7523"},
-    "actual_adapter_ids_or_serials_verified_now": false,
+    "declared_udev_matches": {
+      "yuntuo-fpga": "1a86:55d4",
+      "yuntuo-ctl": "1a86:7523"
+    },
+    "actual_adapter_ids_or_serials_verified_now": true,
     "stable_identity_rule": "Prefer actual unique USB serial/by-id; if absent/duplicate, verified fixed ID_PATH/by-path. VID/PID-only is insufficient for same-model adapters; do not rely on tty enumeration order",
-    "remote_configuration_verified_now": false
+    "remote_configuration_verified_now": true,
+    "actual_adapter_identity_limit": "Both adapters and stable links visible after repair: CH9102 unique serial 5910012847; CH340 has generic ID_SERIAL only and uses verified fixed USB physical path. This is enumeration, not FPGA protocol acceptance"
   },
   "rk_remote_inventory": {
     "host": "robomaster@100.113.173.115",
     "existing_local_ssh_Host_entry_present": true,
-    "method": "One BatchMode=yes StrictHostKeyChecking=yes ConnectTimeout=8 read-only SSH command for hostname/date/lsusb/by-id/by-path and selected service state",
-    "exit_code": 1,
-    "result": "Permission denied (publickey,password)",
-    "current_lsusb_or_serial_links_obtained": false,
+    "authentication_history": [
+      {
+        "method": "OpenSSH BatchMode with existing known_hosts",
+        "exit_code": 1,
+        "result": "Permission denied (publickey,password)"
+      },
+      {
+        "method": "Paramiko using authorized private connection file, existing known_hosts, in-memory password only",
+        "password_authentication_succeeded": true,
+        "recorded_at": "2026-10-25T19:29:20.684465+08:00"
+      }
+    ],
+    "private_connection_file": "C:/Users/Li/.codex/private/rk3588_connection.md",
+    "current_lsusb_or_serial_links_obtained": true,
+    "visible_USB_serial_adapters": [
+      {
+        "vid_pid": "1a86:7523",
+        "description": "CH340 serial converter",
+        "bus": 2,
+        "device": 4,
+        "kernel_usb_path": "2-1.2",
+        "sysfs_path": "/sys/devices/platform/fc880000.usb/usb2/2-1/2-1.2",
+        "authorized": 1,
+        "configuration": 1,
+        "unique_serial": null,
+        "generic_ID_SERIAL_not_unique": "1a86_USB_Serial",
+        "interface": "2-1.2:1.0",
+        "interface_driver": "ch341",
+        "tty_nodes": [
+          "/dev/ttyUSB0"
+        ],
+        "stable_device": "/dev/yuntuo-ctl",
+        "ID_PATH": "platform-fc880000.usb-usb-0:1.2:1.0",
+        "stable_by_path": "/dev/serial/by-path/platform-fc880000.usb-usb-0:1.2:1.0-port0"
+      },
+      {
+        "vid_pid": "1a86:55d4",
+        "description": "CH9102 USB Single Serial",
+        "bus": 2,
+        "device": 7,
+        "kernel_usb_path": "2-1.4",
+        "unique_serial": "5910012847",
+        "interface_driver": "cdc_acm",
+        "tty_nodes": [
+          "/dev/ttyACM0"
+        ],
+        "stable_device": "/dev/yuntuo-fpga",
+        "ID_PATH": "platform-fc880000.usb-usb-0:1.4:1.0",
+        "stable_by_id": "/dev/serial/by-id/usb-1a86_USB_Single_Serial_5910012847-if00"
+      }
+    ],
+    "CH9102_visible": true,
+    "CH9102_absence_root_cause_known": false,
+    "stable_links": {
+      "/dev/yuntuo-astra-color": "/dev/video0",
+      "/dev/yuntuo-ctl": "/dev/ttyUSB0",
+      "/dev/yuntuo-fpga": "/dev/ttyACM0"
+    },
     "credentials_printed_or_copied": false,
     "serial_device_opened": false,
-    "remote_mutation": false,
-    "pending": ["actual two USB devices attached to RK", "VID/PID/serial/ID_PATH", "stable links", "current serial owner/service settings"]
+    "remote_mutation": true,
+    "raw_read_only_records": [
+      "F:/nav_integration_g2_20261023/rk_dual_uart_readonly_inventory_20261025/inventory1.json",
+      "F:/nav_integration_g2_20261023/rk_dual_uart_readonly_inventory_20261025/ch340_diagnosis1.json",
+      "F:/nav_integration_g2_20261023/rk_dual_uart_readonly_inventory_20261025/ch340_brltty_rule1.json",
+      "F:\\nav_integration_g2_20261023\\rk_dual_uart_readonly_inventory_20261025\\ch340_after_repair_verify1.json"
+    ],
+    "pending": [
+      "Current joint image NAV0 and full V2 serial acceptance",
+      "Explicit dual-UART bridge configuration deployment and freshness/stop tests",
+      "Topology change/replug/reboot persistence not tested"
+    ],
+    "remote_mutation_scope": "Only local BRLTTY rule override for exact CH340 USB DEVPATH, stop brltty-udev.service, reload udev, rebind exact interface; no unrelated service stopped",
+    "CH9102_observation": "Absent at 19:29; independently newly enumerated around 19:31 during this task; not attributed to CH340 driver repair",
+    "targeted_repair_record": "F:\\nav_integration_g2_20261023\\rk_dual_uart_readonly_inventory_20261025\\ch340_targeted_repair1.json",
+    "fuser_reported_serial_owners_at_19_33": [],
+    "selected_env_read_at": "2026-10-25T19:33:24.945422+08:00",
+    "selected_env_values": {
+      "YUNTUO_FPGA_LINK": "udp:127.0.0.1:9000",
+      "YUNTUO_FPGA_IS_MOCK": "true",
+      "YUNTUO_CONTROL_TELEMETRY": "udp:127.0.0.1:9104"
+    }
   },
   "pending_test_sequence": [
-    "Physical/image/timing gates and current power/support facts, then read-only USB identity and exclusive ownership",
+    "Physical/image/timing gates and current power/support facts; both adapters/stable links now enumerated, then exclusive serial ownership",
     "Read-only complete V2 zero-command telemetry: CRC/sequence/timestamps/rate/gaps/freshness/faults",
     "NAV0 and MODE idle/stop through sole R0 owner; correlate fresh STATUS and physical feedback, not K or TX_SEQ alone",
     "Zero-command disconnect/reconnect and no stale replay; explicitly not moving-link-loss-stop proof",
@@ -110,5 +250,84 @@
     "D:/Desktop/SOC FPGA/QHXD_Web/yuntuo/bridge/inputs.py:103-164",
     "D:/Desktop/SOC FPGA/QHXD_Web/yuntuo/bridge/config.py:30-68",
     "D:/Desktop/SOC FPGA/QHXD_Web/scripts/udev/99-yuntuo.rules:1-8"
-  ]
+  ],
+  "ch340_missing_tty_diagnosis": {
+    "identified_from_actual_logs": true,
+    "root_cause": "BRLTTY udev rule matches the generic CH340 1a86:7523 as a Baum braille device; running brltty resets configuration and disconnects existing ch341 ttyUSB0 binding",
+    "driver_installed": true,
+    "driver_module": "ch341",
+    "interface_currently_unbound": false,
+    "journal_events": [
+      "19:11:10 ch341 2-1.2:1.0 converter detected",
+      "19:11:10 converter now attached to ttyUSB0",
+      "19:11:11 usb 2-1.2: usbfs: interface 0 claimed by ch341 while 'brltty' sets config #1",
+      "19:11:11 converter now disconnected from ttyUSB0"
+    ],
+    "dmesg_independently_contains_same_event_sequence": true,
+    "journal_dmesg_wall_clock_conversion_differs_not_two_proven_events": true,
+    "exact_rule_file": "/lib/udev/rules.d/85-brltty.rules",
+    "exact_rule_line": 293,
+    "exact_rule": "ENV{PRODUCT}==\"1a86/7523/*\", ENV{BRLTTY_BRAILLE_DRIVER}=\"bm\", GOTO=\"brltty_usb_run\"",
+    "actual_udev_properties": {
+      "BRLTTY_BRAILLE_DRIVER": "bm",
+      "SYSTEMD_WANTS": "brltty-udev.service"
+    },
+    "actual_service": {
+      "name": "brltty-udev.service",
+      "ActiveState": "active",
+      "SubState": "running",
+      "MainPID": 322390,
+      "ExecStart": "/sbin/brltty -n -p /var/run/brltty.pid"
+    },
+    "package": "brltty 6.4-4ubuntu3",
+    "ModemManager_root_cause_asserted": false,
+    "minimal_transient_fix_proposed": [
+      "Stop only the specifically proven brltty-udev.service instance",
+      "Rebind exact interface 2-1.2:1.0 to existing ch341 driver",
+      "Read-only verify tty/driver/by-path and kernel logs before any serial use"
+    ],
+    "persistent_fix_scope": "Exclude this verified CH340 physical USB path from BRLTTY misidentification; do not disable unrelated services or uninstall serial driver. A system-wide BRLTTY-rule disable requires confirming no braille-device use",
+    "fix_executed_in_this_audit": true,
+    "serial_communication_passed": false,
+    "interface_unbound_before_repair": true,
+    "authorized_targeted_repair": {
+      "executed_at": "2026-10-25T19:32:29.793685+08:00",
+      "execution_exit_code": 0,
+      "backup_directory": "/var/backups/yuntuo-ch340-brltty-20261025T193229",
+      "override": "/etc/udev/rules.d/85-brltty.rules",
+      "override_previously_existed": false,
+      "vendor_rule_unchanged": true,
+      "rule_before": "ENV{PRODUCT}==\"1a86/7523/*\", ENV{BRLTTY_BRAILLE_DRIVER}=\"bm\", GOTO=\"brltty_usb_run\"",
+      "rule_after": "ENV{PRODUCT}==\"1a86/7523/*\", DEVPATH!=\"/devices/platform/fc880000.usb/usb2/2-1/2-1.2\", ENV{BRLTTY_BRAILLE_DRIVER}=\"bm\", GOTO=\"brltty_usb_run\"",
+      "only_changed_rule": true,
+      "target_DEVPATH": "/devices/platform/fc880000.usb/usb2/2-1/2-1.2",
+      "target_interface": "2-1.2:1.0",
+      "restore_commands": [
+        "rm -- /etc/udev/rules.d/85-brltty.rules",
+        "udevadm control --reload-rules"
+      ],
+      "binding_restored": true,
+      "serial_opened": false,
+      "serial_bytes_sent": 0,
+      "verification_record": "F:\\nav_integration_g2_20261023\\rk_dual_uart_readonly_inventory_20261025\\ch340_after_repair_verify1.json",
+      "brltty_after": {
+        "MainPID": 0,
+        "ActiveState": "failed",
+        "SubState": "failed",
+        "Result": "timeout",
+        "explanation": "Original service stop exhausted 10s stop timeout; no process remains"
+      },
+      "unrelated_services_unchanged": {
+        "ModemManager.service": {
+          "MainPID": 1536,
+          "ActiveState": "active"
+        },
+        "yuntuo-fpga-bridge.service": {
+          "MainPID": 1745,
+          "ActiveState": "active"
+        }
+      },
+      "persistence_limits": "Exact current USB DEVPATH excluded; physical replug/reboot and different-port persistence not tested; no global BRLTTY disable/uninstall"
+    }
+  }
 }
