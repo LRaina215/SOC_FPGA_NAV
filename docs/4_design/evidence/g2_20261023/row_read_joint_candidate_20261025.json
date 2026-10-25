@@ -1,0 +1,244 @@
+{
+  "recorded_at": "2026-10-25T14:49:23.489033+08:00",
+  "phase": "waiting_for_PNR19_natural_completion_and_result",
+  "prepared_source_review": {
+    "created_at": "2026-10-25T14:40:48.301772+08:00",
+    "phase": "prepared_only_waiting_for_PNR19_result_review",
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_smallblocks_selected_syn16",
+    "prepared": "F:\\nav_integration_g2_20261023\\lane2_row_read_shared_prepared1",
+    "source_files": 68,
+    "unchanged_hardware_inputs": 67,
+    "modified_rtl_inputs": [
+      "nav/rtl/common/nav_ram_sdp.v"
+    ],
+    "unchanged_assets": 104,
+    "copied_headers": 31,
+    "original_IO_SDC_CSR_unchanged": true,
+    "context_proof": "F:\\nav_integration_g2_20261023\\row_read_context_occupied_globals_probe6\\result.json",
+    "context_50MHz_without_extra_global_passed": true,
+    "predicted_physical_BSRAM": 333,
+    "physical_is_prediction": true,
+    "original_4500_weights_125Hz_CPU_and_capacity_unchanged": true,
+    "measurement_fixture_not_in_candidate": true,
+    "protected_joint_build": {
+      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_smallblocks_pnr19",
+      "pid": 13244,
+      "started_at": "2026-10-25T12:35:04.604978+08:00",
+      "total_limit_s": 0.0,
+      "idle_limit_s": 0.0,
+      "input_metadata": {
+        "g2_top.vg": [
+          22995611,
+          1792902901855743100
+        ],
+        "g2.sdc": [
+          19601,
+          1792902901857242100
+        ],
+        "g2.cst": [
+          6207,
+          1792902901857242100
+        ],
+        "run.tcl": [
+          944,
+          1792902904599521100
+        ],
+        "ip\\serdes.csr": [
+          10840,
+          1792902901858313500
+        ]
+      },
+      "created_epoch": 1792902904.664652,
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ]
+    },
+    "SYN_started": false,
+    "PNR_started": false,
+    "programmed": false,
+    "decision_required_after_current_result": true,
+    "scope": "complete frozen source candidate only; no joint netlist or timing result yet"
+  },
+  "conditional_controller": {
+    "prepared": "F:\\nav_integration_g2_20261023\\lane2_row_read_shared_prepared1",
+    "prior_PNR": "F:\\nav_integration_g2_20261023\\sfp_lane2_smallblocks_pnr19",
+    "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_syn17",
+    "PNR": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+    "controller_pid": 23192,
+    "controller_created_epoch": 1792910903.7250657,
+    "programmed": false,
+    "deployment_accepted": false,
+    "maximum_new_SYN_runs": 1,
+    "maximum_new_PNR_runs": 1,
+    "PNR_total_seconds": 0,
+    "PNR_silent_seconds": 0,
+    "phase": "waiting_for_PNR19_natural_completion_and_result",
+    "updated_at": "2026-10-25T14:48:24.011961+08:00",
+    "protected_inputs": {
+      "g2_top.vg": [
+        22995611,
+        1792902901855743100
+      ],
+      "g2.sdc": [
+        19601,
+        1792902901857242100
+      ],
+      "g2.cst": [
+        6207,
+        1792902901857242100
+      ],
+      "run.tcl": [
+        944,
+        1792902904599521100
+      ],
+      "ip\\serdes.csr": [
+        10840,
+        1792902901858313500
+      ]
+    },
+    "prior_processes": [
+      {
+        "pid": 13244,
+        "created_epoch": 1792902904.664652,
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "run.tcl"
+        ]
+      },
+      {
+        "pid": 45432,
+        "created_epoch": 1792902901.6686444,
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\pnr_from_netlist.py",
+          "F:\\nav_integration_g2_20261023\\lane2_smallblocks_checked_one_shot\\pnr_inputs",
+          "--out",
+          "F:\\nav_integration_g2_20261023\\sfp_lane2_smallblocks_pnr19",
+          "--wide-split",
+          "1",
+          "--replicate-resources",
+          "1",
+          "--place-option",
+          "1",
+          "--route-option",
+          "2",
+          "--timing-driven",
+          "1",
+          "--max-runtime-minutes",
+          "0",
+          "--max-no-progress-minutes",
+          "0",
+          "--routing-evidence",
+          "--capture-system-telemetry"
+        ]
+      },
+      {
+        "pid": 35652,
+        "created_epoch": 1792902889.9191272,
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:/Desktop/SOC FPGA/nav/integration/g2/continue_smallblocks_once.py",
+          "--synthesis",
+          "F:/nav_integration_g2_20261023/sfp_lane2_smallblocks_selected_syn16",
+          "--baseline",
+          "F:/nav_integration_g2_20261023/sfp_lane2_observation_lw_pnr15",
+          "--pnr-out",
+          "F:/nav_integration_g2_20261023/sfp_lane2_smallblocks_pnr19",
+          "--state-dir",
+          "F:/nav_integration_g2_20261023/lane2_smallblocks_checked_one_shot"
+        ]
+      }
+    ]
+  },
+  "controller_command": [
+    "D:\\Anaconda\\python.exe",
+    "-X",
+    "utf8",
+    "D:/Desktop/SOC FPGA/nav/integration/g2/continue_row_read_joint_once.py",
+    "--prepared",
+    "F:/nav_integration_g2_20261023/lane2_row_read_shared_prepared1",
+    "--prior-pnr",
+    "F:/nav_integration_g2_20261023/sfp_lane2_smallblocks_pnr19",
+    "--prior-state",
+    "F:/nav_integration_g2_20261023/lane2_smallblocks_checked_one_shot",
+    "--syn-out",
+    "F:/nav_integration_g2_20261023/sfp_lane2_row_read_shared_syn17",
+    "--pnr-out",
+    "F:/nav_integration_g2_20261023/sfp_lane2_row_read_shared_pnr20",
+    "--state-dir",
+    "F:/nav_integration_g2_20261023/lane2_row_read_shared_after_pnr19_once"
+  ],
+  "protected_PNR_at_record": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_smallblocks_pnr19",
+    "pid": 13244,
+    "started_at": "2026-10-25T12:35:04.604978+08:00",
+    "total_limit_s": 0.0,
+    "idle_limit_s": 0.0,
+    "input_metadata": {
+      "g2_top.vg": [
+        22995611,
+        1792902901855743100
+      ],
+      "g2.sdc": [
+        19601,
+        1792902901857242100
+      ],
+      "g2.cst": [
+        6207,
+        1792902901857242100
+      ],
+      "run.tcl": [
+        944,
+        1792902904599521100
+      ],
+      "ip\\serdes.csr": [
+        10840,
+        1792902901858313500
+      ]
+    },
+    "created_epoch": 1792902904.664652,
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ]
+  },
+  "source_and_decision_checks": {
+    "prepared_exact_source_and_prior_storage_proof_binding": true,
+    "sfp_lane2_observation_lw_pnr15": {
+      "action": "evaluate_frozen_shared_candidate",
+      "reason": "Natural PR0004 with actual unresolved routes and RAM within budget. Evaluate one source-only row-read alternative with completed local function/50MHz evidence; no failed-net identity inferred."
+    },
+    "sfp_lane2_ddr_maps_pnr16": {
+      "action": "review_required",
+      "reason": "Actual prior BSRAM is missing or outside the336-block work gate; shared reads do not reduce BSRAM."
+    },
+    "active_PNR19_blocks_early_launch": true
+  },
+  "decision_policy": {
+    "clean_prior_routing_and_reported_setup_hold": "Retain PNR19 and review remaining joint signoff; no optional new full build.",
+    "natural_PR0004_with_actual_RAM_within_budget": "Evaluate the one frozen shared-row alternative, based on local functional/50MHz proof; no failure identities inferred.",
+    "extractor_negative_timing_rows": "Evaluate the measured extractor alternative once.",
+    "other_error_missing_report_or_unrelated_timing": "Stop automatic construction and preserve concrete evidence for targeted review."
+  },
+  "new_netlist_pre_PNR_required": [
+    "Exactly one RAM source difference from completed SYN16; 67 other hardware inputs and 104 assets unchanged.",
+    "All original 316 BSRAM parameters/INIT plus four proven block-store additions; 320 source/13 wide, 333 physical prediction only.",
+    "Shared 160x98 row store: 250 RAM16 and all INIT values preserved; 98 read registers on clk50_d.",
+    "Four real clocks and all 14 named CST drivers/connections/INIT strictly proved; no unproved autogenerated aliases.",
+    "26 radar and 51 host structural CDC paths, all explicit direct DFF crossings and register clock-net set preserved.",
+    "20/10/8/8ns and 77 hold-only plus 77 max-delay unchanged; physical CDC/reset/PCS/IO remain separate signoff.",
+    "At least 2GiB physical and 4GiB available commit before each serial large build."
+  ],
+  "joint_SYN_started": false,
+  "joint_PNR_started": false,
+  "expected_joint_FF_saving_not_measured": true,
+  "physical_and_timing_acceptance": false,
+  "programmed": false,
+  "no_periodic_automation_resumed": true,
+  "scope": "Prepared frozen source and one waiting conditional continuation. Local 50MHz/function evidence does not guarantee joint routability or timing."
+}

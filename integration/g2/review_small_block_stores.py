@@ -19,6 +19,8 @@ from prepare_sfp_lane2 import verify_frozen, verify_synthesized_clock_pins
 from revalidate_lidar_cdc import definitions, revalidate
 from revalidate_observation_routing import driver_index, parameters, LIBRARY
 from synthesis_connectivity import read,CELL
+from prepare_row_read_share import transform as share_row,SHARED
+from prepare_slf_row_banks import BRANCH as BANKED_ROW
 
 ROOT=Path(__file__).resolve().parents[2]
 RAM='nav/rtl/common/nav_ram_sdp.v'
@@ -73,7 +75,27 @@ def review(source,baseline):
     source,baseline=Path(source).resolve(),Path(baseline).resolve()
     manifest=json.loads((source/'manifest.json').read_text())
     job=json.loads((source/'job.json').read_text())
-    original=Path(manifest['frozen_source_build']).resolve()
+    shared_row=bool(manifest.get('row_read_shared'))
+    original=Path(manifest['row_read_shared_smallblock_origin'] if shared_row else manifest['frozen_source_build']).resolve()
+    shared_source_review=None
+    if shared_row:
+        current=Path(manifest['row_read_shared_base_build']).resolve()
+        assert Path(json.loads((current/'manifest.json').read_text())['frozen_source_build']).resolve()==original
+        current_manifest=json.loads((current/'manifest.json').read_text())
+        relative=lambda root,m:{Path(n).relative_to(root).as_posix() for n in m['source_files']}
+        assert relative(current,current_manifest)==relative(source,manifest)
+        changes=sorted(n for n in relative(source,manifest) if (source/n).read_bytes()!=(current/n).read_bytes())
+        assert changes==[RAM]
+        assert (source/RAM).read_text()==share_row((current/RAM).read_text())
+        proof=json.loads(Path(manifest['row_read_shared_context_proof']).read_text())
+        assert proof['phase']=='local_50MHz_passed_without_extra_extractor_globals'
+        assert all(r['internal_clock_50MHz_pass'] and r['global_assignments_match_budget'] and not r['extractor_extra_global_resources_used'] for r in proof['results'].values())
+        context=json.loads((Path(proof['prior'])/'result.json').read_text())
+        assert Path(context['source']).resolve()==current
+        assert (source/RAM).read_text()==(Path(proof['prior'])/'shared/ram.v').read_text()
+        assert context['context_behavior'].startswith('TEST PASSED cycles=55812 valid_points=13615')
+        shared_source_review=dict(base=str(current),modified_inputs=changes,unchanged_inputs=67,
+            context_proof=manifest['row_read_shared_context_proof'],no_extra_global_local_50MHz_passed=True)
     assert baseline.name=='sfp_lane2_observation_lw_pnr15'
     report=(baseline/'impl/pnr/g2_top.rpt.txt').read_text()
     assert re.search(r'PR0004\).*total 184 unrouted nets',report)
@@ -92,14 +114,25 @@ def review(source,baseline):
     changed=sorted(n for n in new_files if (source/n).read_bytes()!=(original/n).read_bytes())
     assert manifest['small_block_stores_selected'], 'the broad SYN15 candidate exceeded the RAM budget'
     host='nav/rtl/net/host_mbx.v'
-    assert changed==sorted(job['modified_rtl_inputs'])==[RAM,host]
-    assert (source/RAM).read_text()==transform_selected((original/RAM).read_text())
+    assert changed==[RAM,host]
+    if shared_row:
+        assert job['modified_rtl_inputs']==[], 'the prepared shared candidate must be compiled without another RTL transform'
+        prepared=Path(job['source']).resolve()
+        preparation=json.loads((prepared/'prepared_source_review.json').read_text())
+        assert Path(preparation['source']).resolve()==current and preparation['modified_rtl_inputs']==[RAM]
+        assert Path(manifest['frozen_source_build']).resolve()==prepared
+    else:assert changed==sorted(job['modified_rtl_inputs'])
+    expected_ram=transform_selected((original/RAM).read_text())
+    assert (source/RAM).read_text()==(share_row(expected_ram) if shared_row else expected_ram)
     assert (source/host).read_text()==select_mailboxes((original/host).read_text())
     probe=json.loads(Path(manifest['small_block_stores_probe']).read_text())
     assert Path(probe['source']).resolve()==original and probe['passed']
     assert [c['variant'] for c in probe['checks']]==['rtl','mapped','physical_mapped']
     assert all('TEST PASSED checks=90122' in c['result'] for c in probe['checks'])
     normalized=(source/RAM).read_text().replace(',parameter integer BLOCK_MAILBOX=0','').replace('BLOCK_MAILBOX && ','')
+    if shared_row:
+        assert normalized.count(SHARED)==1
+        normalized=normalized.replace(SHARED,BANKED_ROW,1)
     assert (Path(probe['build'])/'physical/ram.v').read_text()==normalized
     selected=json.loads(Path(manifest['small_block_stores_selection_probe']).read_text())
     assert selected['passed'] and Path(selected['source']).resolve()==original
@@ -199,7 +232,39 @@ def review(source,baseline):
     row='u_nav/u_match/u_ex/u_rb/'
     row_old={n:c for n,c in before.items() if n.startswith(row)}
     row_new={n:c for n,c in after.items() if n.startswith(row)}
-    assert row_old==row_new and sum(c['kind']=='RAM16SDP4' for c in row_new.values())==250
+    assert sum(c['kind']=='RAM16SDP4' for c in row_new.values())==250
+    shared_netlist_review=None
+    if shared_row:
+        a_ram={n:c for n,c in row_old.items() if c['kind']=='RAM16SDP4'}
+        b_ram={n:c for n,c in row_new.items() if c['kind']=='RAM16SDP4'}
+        assert a_ram.keys()==b_ram.keys() and len(a_ram)==250
+        assert all(old_params(c)==new_params(b_ram[n]) for n,c in a_ram.items()), 'row memory initialization changed'
+        registers=[c for c in row_new.values() if c['kind'].startswith('DFF')]
+        assert len(registers)==98 and all(c['ports']['CLK']==['clk50_d'] for c in registers)
+        for bit in range(4):
+            net=f'u_nav/u_match/u_ex/rb_ra[{bit}]'
+            assert len(a[net])==len(b[net])==1
+            same_driver(a[net][0],b[net][0],old_params(a[net][0]),new_params(b[net][0]))
+        def direct_edges(cells):
+            q={net:c for c in cells.values() if c['kind'].startswith('DFF') and 'CLK' in c['ports'] for net in c['ports'].get('Q',[])}
+            edges=[]
+            for c in cells.values():
+                if not c['kind'].startswith('DFF') or 'CLK' not in c['ports']:continue
+                for net in c['ports'].get('D',[]):
+                    src=q.get(net)
+                    if src and src['ports']['CLK']!=c['ports']['CLK']:
+                        edges.append((src['name'],c['name'],tuple(src['ports']['CLK']),tuple(c['ports']['CLK'])))
+            return sorted(edges)
+        old_edges,new_edges=direct_edges(before),direct_edges(after)
+        assert old_edges==new_edges and len(old_edges)>=77, 'new or changed explicit direct CDC'
+        clock_set=lambda cells:sorted({tuple(c['ports']['CLK']) for c in cells.values() if c['kind'].startswith('DFF') and 'CLK' in c['ports']})
+        assert clock_set(before)==clock_set(after)
+        shared_netlist_review=dict(row_RAM16=250,all_row_RAM_INIT_parameters_preserved=True,
+            row_read_registers=98,row_read_clock='clk50_d',low_four_read_address_drivers_identical=True,
+            explicit_direct_crossings=len(new_edges),all_explicit_direct_crossings_identical=True,
+            extra_beyond_known77=len(new_edges)-77,register_clock_net_set_unchanged=True,
+            scope='source and explicit structural connections only, not physical CDC timing/signoff')
+    else:assert row_old==row_new
     # Preserve 77 hold-only / 77 maximum-delay constraints without adding any.
     sdc=(baseline/'g2.sdc').read_text()
     assert len(re.findall(r'^set_false_path\b.*-hold',sdc,re.M))==77
@@ -210,7 +275,8 @@ def review(source,baseline):
     assert not summary['errors'] and summary['actual_synthesis_global_freq_mhz']==50
     val=lambda s,k:int(s['synthesis_hierarchy'][0].get(k,'0').split('(')[0])
     delta={k:val(summary,k)-val(prior,k) for k in ('T_Lut','T_Register','T_Alu','T_Ssram','T_Bsram','T_MULTALU27X18')}
-    assert delta['T_Lut']<0 and delta['T_Register']<=0 and delta['T_MULTALU27X18']==0
+    assert delta['T_MULTALU27X18']==0
+    if not shared_row:assert delta['T_Lut']<0 and delta['T_Register']<=0
     dsp_fields=('T_MULTALU27X18','T_MULT12X12','T_MULT27X36','T_MULTADDALU12X12')
     assert all(val(summary,k)==val(prior,k) for k in dsp_fields)
     return dict(passed=True,source=str(source),baseline=str(baseline),original=str(original),
@@ -223,6 +289,7 @@ def review(source,baseline):
         true_clocks=4,unproved_aliases=0,negative_driver_checks_rejected=rejected,
         lidar26=lidar,host51=sfp,lane2=lane,bank_selector_max_load=selectors['maximum'],
         row_RAM16_preserved=250,clock_periods_ns=[20,10,8,8],hold_only=77,max_delay=77,
+        shared_row_source_review=shared_source_review,shared_row_netlist_review=shared_netlist_review,
         original_DSP_resources={k:val(summary,k) for k in dsp_fields},
         original_control_CPU_4500_weights_125Hz_and_stop_source_unchanged=True,
         no_DDR_in_candidate=True,failed_net_identities_unknown=True,deployment_accepted=False)
