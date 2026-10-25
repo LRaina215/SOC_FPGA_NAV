@@ -1,0 +1,50 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T01:40:19.367418+08:00",
+  "candidate": "F:\\nav_integration_g2_20261023\\fusion_square_pipeline2_candidate1\\imu_fusion.v",
+  "origin": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\imu_fusion.v",
+  "source_frozen_origin_byte_equal": false,
+  "source_frozen_origin_text_equal": true,
+  "source_snapshot_only_newline_difference": "snapshot CRLF versus original LF; all normalized text exactly equal",
+  "exact_inverse_transform_recovers_source": true,
+  "helper_exact_inverse_transform_recovers_original_isqrt": true,
+  "only_changes": [
+    "three32bit_abs_registers",
+    "three64bit_product_registers",
+    "two_private_valid_bits",
+    "st4/st9_capture_abs_instead_of_square",
+    "private_late2_sqrt_instance_and_helper"
+  ],
+  "unchanged": [
+    "ports",
+    "parameters",
+    "clocks",
+    "FSM_state_transitions",
+    "sqrt_start_pulses",
+    "published_outputs_flags_valid",
+    "reciprocal_dividers",
+    "original64bit_square_storage"
+  ],
+  "actual_helper_only_one_private_fusion_call": true,
+  "init_and_reset_argument": "New abs/product data initialize0 but need no data reset: async reset clears both valid stages and original sqrt_start/helper state. Thereafter a fresh st4/st9 capture at E produces product E+1 and square E+2; late2 helper samples sum E+3. A reset at any of these edges cancels the pending valid chain; no pre-reset product can be consumed without fresh abs capture.",
+  "timing": {
+    "st4_or_st9": "E",
+    "sqrt_accept": "E+1",
+    "product_capture": "E+1",
+    "square_capture": "E+2",
+    "helper_cnt0_skip": "E+2",
+    "helper_cnt1_capture": "E+3",
+    "matching_cnt2_state": "E+3",
+    "root_done": "E+34"
+  },
+  "independent_math": "F:\\nav_integration_g2_20261023\\fusion_square_late2_math_proof1\\result.json",
+  "candidate_finite_RTL_proof": "F:\\nav_integration_g2_20261023\\fusion_square_pipeline2_candidate1\\result.json",
+  "eligible_for_exploratory_joint_SYN26": true,
+  "physical_timing_or_deployment_passed": false,
+  "risks": [
+    "Adds290 private register bits before synthesis optimization; placement/fanout and timing remain unmeasured.",
+    "late2 is not a generic64-bit sqrt replacement: N>=2^60 has explicit counterexamples.",
+    "200000-cycle RTL proof and control-reset edge cases do not establish all fusion state-space formal equivalence.",
+    "Actual SYN must bind this exact source, retain clocks/capacity/control contracts and confirm arithmetic mapping; PNR must prove50MHz."
+  ]
+}

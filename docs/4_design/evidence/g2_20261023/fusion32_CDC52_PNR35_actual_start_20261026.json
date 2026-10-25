@@ -1,0 +1,142 @@
+{
+  "recorded_at": "2026-10-26T01:41:46.158681+08:00",
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32",
+  "output": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35",
+  "source_review": "F:\\nav_integration_g2_20261023\\fusion32_CDC52_preflight1\\review_result.json",
+  "source_review_passed": true,
+  "known_paths_rebound": 26,
+  "actual_registers_audited": 78,
+  "exact_replicated_state_aliases": 1,
+  "processes": [
+    {
+      "pid": 40228,
+      "created_epoch": 1792950050.8508947,
+      "parent_pid": 57340,
+      "name": "python.exe",
+      "cwd": "D:\\Desktop\\SOC FPGA\\nav",
+      "command": [
+        "D:/Anaconda/python.exe",
+        "-X",
+        "utf8",
+        "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\run_fusion32_CDC52_pnr.py"
+      ],
+      "priority": 32,
+      "affinity": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ]
+    },
+    {
+      "pid": 22316,
+      "created_epoch": 1792950051.091943,
+      "parent_pid": 40228,
+      "name": "gw_sh.exe",
+      "cwd": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35",
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "priority": 32,
+      "affinity": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ]
+    }
+  ],
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-26T01:40:51.087282+08:00",
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 22316,
+    "elapsed_s": 30.04700000002049,
+    "no_observable_progress_s": 26.015999999945052,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        830,
+        1792950054960720700
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        390,
+        1792950054960720700
+      ]
+    ]
+  },
+  "admission": {
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32",
+    "output": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35",
+    "controller_pid": 40228,
+    "controller_created_epoch": 1792950050.8508947,
+    "source_review": "F:\\nav_integration_g2_20261023\\fusion32_CDC52_preflight1\\review_result.json",
+    "total_limit_s": 0,
+    "silent_limit_s": 0,
+    "synthesis_started": false,
+    "diagnostic_only": true,
+    "programmed": false,
+    "deployment_accepted": false,
+    "phase": "starting_unique_PNR35",
+    "updated_at": "2026-10-26T01:40:51.087282+08:00",
+    "available_physical_bytes": 4206743552,
+    "available_commit_bytes": 6729633792,
+    "minimum_physical_bytes": 2147483648,
+    "minimum_commit_bytes": 4294967296,
+    "launch_available_physical_bytes": 4203167744,
+    "launch_available_commit_bytes": 6730149888
+  },
+  "VG_byte_identical": true,
+  "CST_byte_identical": true,
+  "original_SDC_prefix_preserved": true,
+  "only26hold_only_plus26max_commands_added": true,
+  "unchanged_clocks20ns10ns": true,
+  "source_setup3781_remains_required": true,
+  "physical_result_pending": true,
+  "actual_cmd_available": true,
+  "actual_cmd_equal_to_PNR32_except_paths": true,
+  "device_cfg_byte_identical": true
+}

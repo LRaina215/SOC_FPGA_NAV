@@ -1,0 +1,126 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T01:39:20.546474+08:00",
+  "proof_layer": "Independent mathematical/bit-vector state-transition proof, not compiled candidate RTL or physical timing acceptance",
+  "source_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\imu_fusion.v",
+      "bytes": 20521,
+      "mtime_ns": 1792936600772323300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\imu_isqrt.v",
+      "bytes": 1997,
+      "mtime_ns": 1792936600551268900
+    }
+  ],
+  "actual_abs24_source": "    function [23:0] abs24;\n        input signed [23:0] v;\n        begin abs24 = v[23] ? -v : v; end\n    endfunction",
+  "proofs": [
+    {
+      "label": "all_signed24_patterns_abs_return_zero_extension_equals_mathematical_abs",
+      "status": "unsat",
+      "passed": true,
+      "elapsed_ms": 20.239099976606667
+    },
+    {
+      "label": "unsigned_abs24_maximum_is_2_pow23_including_minimum_signed_input",
+      "status": "unsat",
+      "passed": true,
+      "elapsed_ms": 9.136900072917342
+    },
+    {
+      "label": "three_exact_squares_sum_maximum_3_pow46",
+      "status": "unsat",
+      "passed": true,
+      "elapsed_ms": 305.6955999927595
+    },
+    {
+      "label": "general_value_below_2_pow60_reference_first_two_steps_equal_delayed_capture_cnt2",
+      "status": "unsat",
+      "passed": true,
+      "elapsed_ms": 3.800600068643689
+    },
+    {
+      "label": "fusion_range_is_strictly_inside_first_two_empty_iteration_domain",
+      "status": "unsat",
+      "passed": true,
+      "elapsed_ms": 1.977000036276877
+    }
+  ],
+  "exact_sum_maximum": 211106232532992,
+  "maximum_attained_by_three_signed_minimum_inputs": true,
+  "fusion_sum_strictly_below_2_pow48": true,
+  "necessary_generic_bound_for_two_empty_steps": "0 <= original accepted value < 2^60",
+  "state_after_two_iterations": {
+    "rem": "original accepted value",
+    "acc": 0,
+    "bitv": 288230376151711744,
+    "cnt": 2,
+    "busy": 1,
+    "done": 0,
+    "root": "unchanged prior root"
+  },
+  "suffix_induction": "Identical cnt2 state and identical subsequent deterministic transitions imply identical root and done for all remaining iterations.",
+  "late2_timing": {
+    "fusion_abs_capture_edge": "E (original st4/st9)",
+    "product_capture_edge": "E+1",
+    "original_norm_square_capture_edge": "E+2",
+    "sqrt_start_accepted_edge": "E+1",
+    "skip_cnt0_edge": "E+2",
+    "capture_real_value_and_skip_cnt1_edge": "E+3",
+    "state_matches_original_cnt2_edge": "E+3",
+    "done_and_root_edge": "E+34",
+    "done_edges_after_accepted_start": 33
+  },
+  "prerequisites": [
+    "The value sampled at cnt1 is exactly the reference value accepted two edges earlier.",
+    "Input magnitudes/products are unsigned zero-extended before multiplication and no truncation is introduced.",
+    "Reset/start/busy/cnt progression and transitions from cnt2 onward are preserved in the actual candidate.",
+    "The changed helper must be scoped to this bounded fusion caller; arbitrary 64-bit callers are not equivalent."
+  ],
+  "signed24_triples_checked": 4100,
+  "additional_bounded_unsigned_values_checked": 4103,
+  "reset_start_control_source_contracts_checked": true,
+  "reset_interruption_phases_checked": 36,
+  "reset_start_control_edges_checked": 3060,
+  "reset_argument": "Both actual helpers have identical asynchronous reset assignments for every helper state/output. Fusion resets both valid stages and sqrt_start, so an interrupted pipeline cannot launch or complete stale work; after a fresh accepted start the same two-step relation re-establishes. Finite edge checks supplement this reset transition inspection, not a full fusion state-space proof.",
+  "arbitrary_64bit_counterexamples": [
+    {
+      "value": 1152921504606846976,
+      "value_hex": "0x1000000000000000",
+      "original_root": 1073741824,
+      "delayed2_root": 1073741823,
+      "done_cycle_after_accepted_start": 33
+    },
+    {
+      "value": 4611686018427387904,
+      "value_hex": "0x4000000000000000",
+      "original_root": 2147483648,
+      "delayed2_root": 1073741823,
+      "done_cycle_after_accepted_start": 33
+    },
+    {
+      "value": 18446744073709551615,
+      "value_hex": "0xffffffffffffffff",
+      "original_root": 4294967295,
+      "delayed2_root": 1073741823,
+      "done_cycle_after_accepted_start": 33
+    }
+  ],
+  "candidate_expected_path": "F:\\nav_integration_g2_20261023\\fusion_square_pipeline2_candidate1\\imu_fusion.v",
+  "candidate_exists": true,
+  "candidate_RTL_equivalence_proved_by_this_script": false,
+  "physical_or_board_acceptance": false,
+  "synthesis_or_PNR_started": false,
+  "execution_policy": {
+    "priority": 64,
+    "cpu_affinity": [
+      16
+    ]
+  },
+  "candidate_metadata_observed_not_RTL_proof": {
+    "path": "F:\\nav_integration_g2_20261023\\fusion_square_pipeline2_candidate1\\imu_fusion.v",
+    "bytes": 23849,
+    "mtime_ns": 1792949743278791300
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "recorded_at": "2026-10-26T01:51:20.672741+08:00",
+  "anchor": {
+    "build": "baseline_fusion_only_pnr32",
+    "routing_passed": true,
+    "actual_BSRAM": 332,
+    "core_Fmax_MHz": 33.197,
+    "setup": 3781,
+    "hold": 12,
+    "deployment_passed": false
+  },
+  "hold_constraint_only_PNR35": {
+    "runtime": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-26T01:40:51.087282+08:00",
+      "max_runtime_s": 0,
+      "max_no_observable_progress_s": 0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 22316,
+      "elapsed_s": 600.6720000000205,
+      "no_observable_progress_s": 180.204000000027,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          1026,
+          1792950470691335800
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          586,
+          1792950470691335800
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          2388180,
+          1792950445936029100
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          13826251,
+          1792950446408943400
+        ]
+      ]
+    },
+    "actual_start_evidence": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\fusion32_CDC52_PNR35_actual_start_20261026.json",
+    "old_routed_VG_CST_clock_periods_PNR_options_identical": true,
+    "only_added_26_first_stage_hold_and26_max_delays": true,
+    "actual_negative_hold_group_counts": {
+      "rx_write_gray": 11,
+      "rx_clock_monitor": 1
+    },
+    "same_domain_setup_or_second_stage_not_excepted": true,
+    "physical_result_pending": true
+  },
+  "fusion_square_pipeline": {
+    "SYN26_job": {
+      "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_prepared1",
+      "build": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_syn26",
+      "wait_pid": null,
+      "programmed": false,
+      "source_frozen_before_wait": true,
+      "automatic_pnr": false,
+      "settings_only_resume": false,
+      "modified_rtl_inputs": [],
+      "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+      "execution_policy": {
+        "priority": 64,
+        "affinity": [
+          16
+        ],
+        "maximum_new_SYN_tree_RSS_MiB": 0,
+        "maximum_new_SYN_tree_private_commit_MiB": 0,
+        "minimum_runtime_physical_MiB": 0,
+        "minimum_runtime_commit_reserve_MiB": 0,
+        "applies_to": "this runner and newly created descendants only; no existing PNR process is modified"
+      },
+      "phase": "synthesizing",
+      "updated_at": "2026-10-26T01:51:00.940158+08:00",
+      "minimum_start_free_bytes": 2147483648,
+      "minimum_start_available_commit_bytes": 4294967296,
+      "max_runtime_minutes": 40,
+      "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+      "tool_pid": 24464,
+      "synthesis_started_at": "2026-10-26T01:44:17.282242+08:00",
+      "tool_created_epoch": 1792950257.2800288,
+      "actual_tool_priority": 64,
+      "actual_tool_affinity": [
+        16
+      ],
+      "elapsed_s": 403.625,
+      "free_bytes": 1739997184,
+      "available_commit_bytes": 3019735040,
+      "owned_tool_RSS_bytes": 565641216,
+      "peak_owned_tool_RSS_bytes": 782413824,
+      "owned_tool_private_bytes": 568025088,
+      "peak_owned_tool_private_bytes": 784211968
+    },
+    "source_review": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\fusion_square2_frozen_source_review_20261026.json",
+    "RTL_200000_cycles_passed": true,
+    "independent_5_unsat_math_and36_reset_phases_passed": true,
+    "exact_external_output_cycles_preserved_in_finite_RTL": true,
+    "not_full_state_equivalence": true,
+    "followup": {
+      "controller_pid": 44484,
+      "controller_created_epoch": 1792950566.169916,
+      "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_syn26",
+      "prepared": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_prepared1",
+      "output": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_pnr36",
+      "source_review": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_one_shot\\actual_SYN26_netlist_review.json",
+      "total_limit_s": 0,
+      "silent_limit_s": 0,
+      "programmed": false,
+      "deployment_accepted": false,
+      "checker_code_bindings": [
+        {
+          "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\run_fusion_square2_chain.py",
+          "bytes": 12342,
+          "mtime_ns": 1792950565586635800
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_one_shot\\checker_snapshot\\run_fusion_square2_chain.py",
+          "bytes": 12342,
+          "mtime_ns": 1792950566451241800
+        },
+        {
+          "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_fusion_square2_syn.py",
+          "bytes": 529,
+          "mtime_ns": 1792950541550231200
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_one_shot\\checker_snapshot\\review_fusion_square2_syn.py",
+          "bytes": 529,
+          "mtime_ns": 1792950566461240800
+        },
+        {
+          "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_baseline_single_factor_syn.py",
+          "bytes": 21357,
+          "mtime_ns": 1792943717505858900
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_one_shot\\checker_snapshot\\review_baseline_single_factor_syn.py",
+          "bytes": 21357,
+          "mtime_ns": 1792950566468477800
+        },
+        {
+          "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\run_baseline_single_factor_pnr.py",
+          "bytes": 20546,
+          "mtime_ns": 1792943907611795300
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_one_shot\\checker_snapshot\\run_baseline_single_factor_pnr.py",
+          "bytes": 20546,
+          "mtime_ns": 1792950566475186300
+        }
+      ],
+      "phase": "waiting_for_existing_SYN26",
+      "updated_at": "2026-10-26T01:49:26.485755+08:00"
+    },
+    "physical_timing_pending": true
+  },
+  "action_constant_CSA": {
+    "numeric_and_8770_frame_RTL_passed": true,
+    "only_scale_function_changed": true,
+    "no_failed_width_change_adopted": true,
+    "module_SYN_started_at_recording": false,
+    "waiting_for_actual_memory_gate": true,
+    "joint_SYN_or_PNR_started": false
+  },
+  "physical_failure_analysis": {
+    "PNR34_unrouted": 1767,
+    "same_actual_RAM_parameters_and_INIT": true,
+    "allocation_changes_proved": true,
+    "failed_net_identities_unknown": true,
+    "unique_failure_cause_proved": false
+  },
+  "timing_clock_targets_not_relaxed": true,
+  "all_PNR_limits": {
+    "total_s": 0,
+    "silent_s": 0
+  },
+  "automatic_supervision_resumed": false,
+  "programmed": false,
+  "deployment_accepted": false
+}

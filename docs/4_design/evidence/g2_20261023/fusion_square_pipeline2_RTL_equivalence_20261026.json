@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "passed": true,
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\imu_fusion.v",
+  "PNR32_prepared_source_bytes_equal": true,
+  "candidate": "F:\\nav_integration_g2_20261023\\fusion_square_pipeline2_candidate1\\imu_fusion.v",
+  "modified_hardware_inputs": [
+    "control/imu_fusion.v"
+  ],
+  "new_private_modules": [
+    "imu_fusion_isqrt_late2"
+  ],
+  "public_ports_parameters_or_clocks_changed": false,
+  "original_math_widths_retained": true,
+  "three32bit_absolute_registers": true,
+  "three64bit_product_registers": true,
+  "original_three64bit_square_registers_retained": true,
+  "sqrt_start_and_done_cycle_contract_retained": true,
+  "private_square_and_rem_values_retimed_not_full_state_equivalence": true,
+  "joint_SYN_or_PNR_started": false,
+  "physical_timing_proved": false,
+  "programmed": false,
+  "execution_policy": {
+    "pid": 65120,
+    "priority": 64,
+    "affinity": [
+      16
+    ]
+  },
+  "runs": [
+    {
+      "tool": "xvlog",
+      "exit_code": 0
+    },
+    {
+      "tool": "xelab",
+      "exit_code": 0
+    },
+    {
+      "tool": "xsim",
+      "exit_code": 0
+    }
+  ],
+  "clock_cycles": 200000,
+  "frames50m": 288,
+  "frames100k": 288,
+  "accepted_accel": 149,
+  "rejected_accel": 139,
+  "full_signed24_extreme_random_triples": 64,
+  "ordinary_busy_reset": 1,
+  "pipeline_reset_phases": 4,
+  "external_outputs_flags_valid_and_engine_publish_cycle_exact": true,
+  "sqrt_acc_bitv_cnt_and_rem_after_cnt2_equal_each_cycle": true,
+  "stimulus_reference": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\tb_fusion_equivalence.sv",
+  "previous_proof_reused": "stimulus and prior published original-vs-retimed proof only; this new candidate was separately simulated against exactPNR32RTL",
+  "not_proved": [
+    "Joint physical timing/resource/fanout",
+    "Full control/board/vehicle behavior",
+    "All possible sample/reset sequences byformal equivalence"
+  ],
+  "recorded_at": "2026-10-25T17:36:06.908445+00:00"
+}

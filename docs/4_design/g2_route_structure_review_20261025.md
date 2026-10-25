@@ -305,3 +305,13 @@ PNR33 `baseline_pose_only_pnr33`于00:06:41.419103启动工具3176、控制60448
 **2026-10-26 01:29 PNR34已自然失败1767条，当前无活动PNR；保留已布通PNR32并并行定位后续实现。** `baseline_fusion_action_width_pnr34`于01:25:18.070930自然PR0004退出1、cancelled=false，总0/静默0，厂商Routing Phase0至3结束后报告1767条未布通。实际RAM332/340、Logic89158、FF40104、DSP163.5、IO51；比PNR32 Logic−459/FF+12，RAM/DSP不变，但未保住布通。没有.tr，setup/hold、50MHz及实际CDC延迟均未知，不能用综合收益当时序改善；26物理源/首级/二级连接仍匹配，非完整CDC签核。工具38440/包装68788/接续13704均已退出，不再等待或原样重跑。[实际最终结果](evidence/g2_20261023/fusion_action_width_PNR34_final_unrouted1767_20261026.json)。
 
 最小动作位宽候选来源/数值与周期对照、实际RAM/INIT/两钟/26CDC前置通过不等于可布通，故该实现暂缓接入。原PNR32仍保留为332块、33.197MHz/3781 setup/12已审跨域hold的布通锚点，未达50MHz或部署门槛。当前三路独立并行：比较PNR32/34实际全局分配与负载/位置；审原融合平方30.099ns路径的数值/拍数不变寄存边界；用官方FloorPlanner/Chip Array查DSP对应GRID列与邻近可用CFU，证据足够才准备局部约束。未取得1767条失败逐网身份/拥塞位置，不宣称单一根因、不盲换参数，没有新PNR/烧录动作。
+
+## 2026-10-26 01:51 并行闭合hold与setup
+
+**2026-10-26 01:51 以PNR32为已布通锚点，hold约束与setup实现分线并行。** PNR34实际332叶参数/5444项显式INIT、18宽拆分、两钟/26CDC/51IO均保持；Logic−459并未保住布通。已定位同388负载sensor控制由PRIMARY转普通、同399负载地图CE由LW转PRIMARY，以及四组同INIT/状态输入、各1000负载policy网的覆盖/负载分布变化；它们是可审实际变化，不是1767条失败网身份或唯一根因。[物理比较](evidence/g2_20261023/PNR32_vs_PNR34_actual_physical_comparison_20261026.json)。
+
+PNR32的12条负hold均为原26清单的异步首级（11 FIFO＋1 MAC测频）；本轮重新核对78寄存器的实际VG/VO、INIT、CLK/CE/reset、首级Q唯一扇出，1处复制D源按同初始化/同状态转移证明。新SDC只追加26 hold-only＋26个8/18ns max-delay，不豁免第二级、核心3781 setup、复位或脉宽。曾有1条监测样本报告标签误写FIFO，原paths与约束一直正确；原消费文件保留、另附勘误，生成器已修。官方公开TCL与本机命令仅syn/pnr/all，未取得固定路由单独STA入口；inc_pnr仍是PnR而非保证只重STA，未擅加。唯一PNR35 `baseline_fusion32_CDC52_pnr35`于01:40:51.087282启动工具22316、监管40228，原VG/CST/20-10ns/route0保持、仅SDC上述差异，入场物理/提交约3.91/6.27GiB，总0/静默0，结果待报告。[实际首级审阅](evidence/g2_20261023/fusion32_CDC52_actual_first_stage_review_20261026.json)；[标签勘误](evidence/g2_20261023/fusion32_CDC52_review_label_erratum_20261026.json)。
+
+融合平方流水保持原位宽/数值/发布时刻：原开方输入严格小于2^48，前两次2^62/2^60试位必空；利用该真实时序余量把abs、product、原square分拍，私有late2引擎在第二空轮加载并从cnt2起对齐原状态。新模块仅限该有界调用，任意64位输入已有反例，未替换通用开方器。实际20万拍、50MHz/100kHz各288发布、接受149/拒绝139、64组极值随机、4阶段中断复位通过；独立5项Z3 UNSAT及36相位3060沿复核通过，不冒称全融合全状态形式等价。SYN23冻结仅`imu_fusion.v`变，其余62 RTL/69资产/31头/完整固件保持；唯一SYN26 `baseline_fusion_square2_syn26`已01:44:17.282242启动工具24464、监管54316，40分钟及原2/4GiB/运行保护保持，与PNR35并行。接续44484只等此SYN结束，重新审实际RAM/INIT/两钟/26CDC，全部通过才唯一PNR36，原PNR32 CST/20-10ns/route0、无52例外、无动作/POSE叠加，总0/静默0；不等PNR35结束。[并行实际状态与证明](evidence/g2_20261023/timing_closure_parallel_PNR35_SYN26_20261026.json)。
+
+独立动作CSA候选从PNR32原scale出发，保留64位product/舍入、端口/参数/输出拍/停止复位；±600/±19改精确常数移加/进位保存树，其余gain保留原乘法fallback，不叠失败位宽候选。8193×4数值及原8770帧/两参数组、64无效/64停止/复位逐拍通过；数学采用局部全加器恒等＋64位模和＋常数代数证明，初次单体BV64求解unknown保留而非算通过。实际目标DSP是否消除仍待模块SYN；启动设置后内存跌破2/4GiB已拦截，未抢现有构建。布局GUI官方读取仍在初始化前报kernel-assets路径错误，当前目录/Temp均存在，未取得可用GRID图，不猜位置。所有候选都须再过实际布通与完整50MHz时序/CDC/IO和停止门槛，当前未烧录。

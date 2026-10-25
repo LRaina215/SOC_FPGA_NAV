@@ -1,0 +1,115 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T01:43:47.692328+08:00",
+  "original": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\policy_action_map.v",
+  "candidate": "F:\\nav_integration_g2_20261023\\action_constant_csa_candidate1\\policy_action_map.v",
+  "source_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\policy_action_map.v",
+      "bytes": 2194,
+      "mtime_ns": 1792936600556099200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\action_constant_csa_candidate1\\policy_action_map.v",
+      "bytes": 3452,
+      "mtime_ns": 1792950211235193100
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\tb_action_map_equivalence.sv",
+      "bytes": 2826,
+      "mtime_ns": 1792667151177150600
+    }
+  ],
+  "only_scale_function_changed": true,
+  "from_failed_width_candidate": false,
+  "original64bit_product_and_rounding_preserved": true,
+  "all_other_integer_gains_literal_original_fallback": true,
+  "formal_product_checks": [
+    {
+      "gain": -600,
+      "integer_shift_factor_identity": "unsat",
+      "CSA_full_adder_bit_identity": "unsat",
+      "all64bit_conclusion": "Weight the proven bit identities by2^i and sum modulo2^64; apply the proven integer constant factor identity.",
+      "elapsed_s": 0.0018587999511510134
+    },
+    {
+      "gain": 600,
+      "integer_shift_factor_identity": "unsat",
+      "CSA_full_adder_bit_identity": "unsat",
+      "all64bit_conclusion": "Weight the proven bit identities by2^i and sum modulo2^64; apply the proven integer constant factor identity.",
+      "elapsed_s": 0.00015750003512948751
+    },
+    {
+      "gain": -19,
+      "integer_shift_factor_identity": "unsat",
+      "CSA_full_adder_bit_identity": "unsat",
+      "all64bit_conclusion": "Weight the proven bit identities by2^i and sum modulo2^64; apply the proven integer constant factor identity.",
+      "elapsed_s": 0.0001503999810665846
+    },
+    {
+      "gain": 19,
+      "integer_shift_factor_identity": "unsat",
+      "CSA_full_adder_bit_identity": "unsat",
+      "all64bit_conclusion": "Weight the proven bit identities by2^i and sum modulo2^64; apply the proven integer constant factor identity.",
+      "elapsed_s": 0.00014239992015063763
+    }
+  ],
+  "clip_domain_values_per_gain": 8193,
+  "exhaustive_scale_values_checked": 32772,
+  "gains": [
+    -600,
+    600,
+    -19,
+    19
+  ],
+  "fallback_directed_gains": [
+    -2147483648,
+    -601,
+    -20,
+    -1,
+    0,
+    1,
+    20,
+    601,
+    2147483647
+  ],
+  "frames": 8770,
+  "invalid_cycles": 64,
+  "run_stop_cycles": 64,
+  "reset_scenarios": 1,
+  "parameter_sets": 2,
+  "outputs_last_actions_and_validity_cycle_exact": true,
+  "unchanged_parameters_ports_valid_reset_stop": true,
+  "runs": [
+    {
+      "tool": "xvlog",
+      "exit_code": 0,
+      "log": "F:\\nav_integration_g2_20261023\\action_constant_csa_candidate1\\xvlog_0_stdout.log"
+    },
+    {
+      "tool": "xvlog",
+      "exit_code": 0,
+      "log": "F:\\nav_integration_g2_20261023\\action_constant_csa_candidate1\\xvlog_1_stdout.log"
+    },
+    {
+      "tool": "xelab",
+      "exit_code": 0,
+      "log": "F:\\nav_integration_g2_20261023\\action_constant_csa_candidate1\\xelab_2_stdout.log"
+    },
+    {
+      "tool": "xsim",
+      "exit_code": 0,
+      "log": "F:\\nav_integration_g2_20261023\\action_constant_csa_candidate1\\xsim_3_stdout.log"
+    }
+  ],
+  "execution_policy": {
+    "priority": 64,
+    "affinity": [
+      16
+    ]
+  },
+  "mathematical_proof_scope": "CSA local full-adder theorem plus weighted64bit modular sum and four unbounded integer constant-factor identities; identical clip and rounding then imply the same scale function. Zero_us/ff/pulse/output state logic is unchanged. Module simulation is finite8770frames, not all state/input sequences.",
+  "initial_monolithic_BV64_solver_attempt": "10second timeout/unknown, not a counterexample; replaced by explicit compositional algebraic proof, no unsupported claim of monolithic formal equivalence",
+  "physical_timing_or_resource_passed": false,
+  "joint_synthesis_or_PNR_started": false
+}
