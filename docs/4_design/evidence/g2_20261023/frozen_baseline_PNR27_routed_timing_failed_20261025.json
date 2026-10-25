@@ -1,0 +1,216 @@
+{
+  "recorded_at": "2026-10-25T21:50:50.449110+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\baseline_rep1_replay_pnr27",
+  "reference": "F:/nav_integration_g2_20261022/directed_static_coverage_rep1_effective50",
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-25T21:17:38.849127+08:00",
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 64096,
+    "elapsed_s": 1752.2820000000065,
+    "no_observable_progress_s": 0.0,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        2125,
+        1792936008430502600
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        1694,
+        1792936008430502600
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2384840,
+        1792934680652882500
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        13803723,
+        1792934681167167000
+      ],
+      [
+        "impl\\pnr\\g2_top.pr",
+        238571898,
+        1792935974629431400
+      ],
+      [
+        "impl\\pnr\\g2_top.tr",
+        498797,
+        1792936008326846400
+      ],
+      [
+        "impl\\pnr\\g2_top.rpt.txt",
+        92676,
+        1792935999394983200
+      ],
+      [
+        "impl\\pnr\\g2_top.vo",
+        44530639,
+        1792936001882866300
+      ]
+    ],
+    "tool_exit": 0,
+    "ended_at": "2026-10-25T21:46:51.122994+08:00"
+  },
+  "actual_PNR_command_matches_reference": true,
+  "source_VG_CST_SDC_bytes_equal_reference": true,
+  "routing_passed": true,
+  "unrouted_nets_reported": null,
+  "unrouted_error_absent": true,
+  "resources": {
+    "logic": {
+      "used": 89584.0,
+      "capacity": 138240.0
+    },
+    "register": {
+      "used": 39957.0,
+      "capacity": 139095.0
+    },
+    "bsram": {
+      "used": 332.0,
+      "capacity": 340.0
+    },
+    "dsp": {
+      "used": 163.5,
+      "capacity": 298.0
+    },
+    "io_port": {
+      "used": 51.0,
+      "capacity": 297.0
+    }
+  },
+  "CLS": 55557,
+  "setup_violations": 5003,
+  "hold_violations": 8,
+  "clocks": [
+    {
+      "name": "clk50",
+      "constraint_mhz": 50.0,
+      "actual_fmax_mhz": 26.313,
+      "levels": 24,
+      "entity": "TOP"
+    },
+    {
+      "name": "rgmii_rxc",
+      "constraint_mhz": 100.0,
+      "actual_fmax_mhz": 123.53,
+      "levels": 9,
+      "entity": "TOP"
+    }
+  ],
+  "top_setup_rows": [
+    "1             -18.004      u_control/model_thread/fusion/egz_2_s0/Q   u_control/model_thread/fusion/sqrt_value_47_s0/D   clk50:[R]    clk50:[R]   20.000     0.032        37.915",
+    "2             -17.958      u_control/model_thread/fusion/egz_2_s0/Q   u_control/model_thread/fusion/sqrt_value_48_s0/D   clk50:[R]    clk50:[R]   20.000     0.023        37.877",
+    "3             -17.943      u_control/model_thread/fusion/egz_2_s0/Q   u_control/model_thread/fusion/sqrt_value_49_s0/D   clk50:[R]    clk50:[R]   20.000     0.040        37.851",
+    "4             -17.886      u_control/model_thread/fusion/egz_2_s0/Q   u_control/model_thread/fusion/sqrt_value_43_s0/D   clk50:[R]    clk50:[R]   20.000     0.023        37.805",
+    "5             -17.823      u_control/model_thread/fusion/egz_2_s0/Q   u_control/model_thread/fusion/sqrt_value_40_s0/D   clk50:[R]    clk50:[R]   20.000     0.032        37.734",
+    "6             -17.745      u_control/model_thread/fusion/egz_2_s0/Q   u_control/model_thread/fusion/sqrt_value_39_s0/D   clk50:[R]    clk50:[R]   20.000     0.021        37.666",
+    "7             -17.589      u_nav/a_q_8_s0/Q                           u_nav/u_pp/n311_s/A[0]                             clk50:[R]    clk50:[R]   20.000     0.039        37.028",
+    "8             -17.560      u_control/model_thread/fusion/egz_2_s0/Q   u_control/model_thread/fusion/sqrt_value_44_s0/D   clk50:[R]    clk50:[R]   20.000     0.023        37.480",
+    "9             -17.535      u_control/model_thread/fusion/egz_2_s0/Q   u_control/model_thread/fusion/sqrt_value_46_s0/D   clk50:[R]    clk50:[R]   20.000     0.015        37.463",
+    "10            -17.494      u_control/model_thread/fusion/egz_2_s0/Q   u_control/model_thread/fusion/sqrt_value_45_s0/D   clk50:[R]    clk50:[R]   20.000     0.015        37.422"
+  ],
+  "negative_reported_hold_paths": [
+    {
+      "slack_ns": -0.211,
+      "source": "u_nav/u_netl/u_rxf/wp_g_0_s0/Q",
+      "destination": "u_nav/u_netl/u_rxf/wp_g_r1_0_s1/D",
+      "source_clock": "rgmii_rxc:[R]",
+      "destination_clock": "clk50:[R]",
+      "cross_clock": true
+    },
+    {
+      "slack_ns": -0.183,
+      "source": "u_nav/u_netl/u_rxf/wp_g_5_s0/Q",
+      "destination": "u_nav/u_netl/u_rxf/wp_g_r1_5_s1/D",
+      "source_clock": "rgmii_rxc:[R]",
+      "destination_clock": "clk50:[R]",
+      "cross_clock": true
+    },
+    {
+      "slack_ns": -0.177,
+      "source": "u_nav/u_netl/u_rxf/wp_g_1_s0/Q",
+      "destination": "u_nav/u_netl/u_rxf/wp_g_r1_1_s1/D",
+      "source_clock": "rgmii_rxc:[R]",
+      "destination_clock": "clk50:[R]",
+      "cross_clock": true
+    },
+    {
+      "slack_ns": -0.174,
+      "source": "u_nav/u_netl/u_rxf/wp_g_9_s0/Q",
+      "destination": "u_nav/u_netl/u_rxf/wp_g_r1_9_s1/D",
+      "source_clock": "rgmii_rxc:[R]",
+      "destination_clock": "clk50:[R]",
+      "cross_clock": true
+    },
+    {
+      "slack_ns": -0.101,
+      "source": "u_nav/u_netl/u_rxf/wp_g_3_s0/Q",
+      "destination": "u_nav/u_netl/u_rxf/wp_g_r1_3_s1/D",
+      "source_clock": "rgmii_rxc:[R]",
+      "destination_clock": "clk50:[R]",
+      "cross_clock": true
+    },
+    {
+      "slack_ns": -0.094,
+      "source": "u_nav/u_netl/u_rxf/wp_g_6_s0/Q",
+      "destination": "u_nav/u_netl/u_rxf/wp_g_r1_6_s1/D",
+      "source_clock": "rgmii_rxc:[R]",
+      "destination_clock": "clk50:[R]",
+      "cross_clock": true
+    },
+    {
+      "slack_ns": -0.086,
+      "source": "u_nav/u_netl/u_rxf/wp_g_8_s0/Q",
+      "destination": "u_nav/u_netl/u_rxf/wp_g_r1_8_s1/D",
+      "source_clock": "rgmii_rxc:[R]",
+      "destination_clock": "clk50:[R]",
+      "cross_clock": true
+    },
+    {
+      "slack_ns": -0.018,
+      "source": "u_nav/u_netl/u_rxf/wp_g_10_s0/Q",
+      "destination": "u_nav/u_netl/u_rxf/wp_g_r1_10_s1/D",
+      "source_clock": "rgmii_rxc:[R]",
+      "destination_clock": "clk50:[R]",
+      "cross_clock": true
+    }
+  ],
+  "reset_pulse_checks": {
+    "recovery": {
+      "available": true,
+      "reported_rows": 25,
+      "worst_slack_ns": 3.354,
+      "negative_reported_rows": 0
+    },
+    "removal": {
+      "available": true,
+      "reported_rows": 25,
+      "worst_slack_ns": 0.66,
+      "negative_reported_rows": 0
+    },
+    "minimum_pulse_width": {
+      "available": true,
+      "reported_rows": 10,
+      "worst_slack_ns": 2.843,
+      "negative_reported_rows": 0
+    }
+  },
+  "prior_baseline_routability_reproduced_this_run": true,
+  "historical_timing_result_reproduced_this_run": true,
+  "diagnostic_only": true,
+  "deployment_accepted": false,
+  "programmed": false,
+  "scope": "Frozen prior routability reproduced;50MHz setup and global hold not accepted; no claims of universal determinism or vehicle acceptance"
+}

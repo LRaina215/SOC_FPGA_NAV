@@ -1,0 +1,165 @@
+{
+  "schema": 2,
+  "date": "2026-10-25",
+  "candidate_directory": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2",
+  "patch": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\candidate.patch",
+  "manifest": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\manifest.json",
+  "candidate_prepared": true,
+  "all_requested_light_contracts_passed": true,
+  "ready_for_integration": false,
+  "safe_for_deployment": false,
+  "FPGA_build_started": false,
+  "PNR27_28_inputs_modified": false,
+  "production_RK_modified": false,
+  "serial_opened": false,
+  "serial_bytes_sent": 0,
+  "source_correction": {
+    "candidate1": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate1",
+    "candidate1_wrong_FW_origin": "working tree D:/Desktop/SOC FPGA/nav/fw rather than frozen SYN11/SYN22",
+    "candidate1_results_are_not_frozen_firmware_validation": true,
+    "candidate1_all_history_preserved": true,
+    "previous_repo_evidence_saved": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate1\\repository_evidence_before_candidate2.json",
+    "current_actual_frozen_origin": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+    "59_original_FW_source_inputs_identical": true,
+    "modified_existing_FW_inputs": [
+      "fw/app/nav_app.c",
+      "fw/drv/hal_fpga.c"
+    ],
+    "new_FW_inputs": [
+      "fw/nav/host_link_guard.c",
+      "fw/nav/host_link_guard.h"
+    ],
+    "inverse_exact_insertion_transform_restores_frozen_originals": true,
+    "capture_us_support_coverage_and_epoch_preserved": true,
+    "current_SFP_off_SYN22_has_OLED_and_console_not_trimmed": true
+  },
+  "candidate_contract": {
+    "timeout_us_proposed_only": 1000000,
+    "time_source": "Existing 32-bit NAV_SYS_TIME_US via hal_time_us, not control telemetry TIME_MS",
+    "activity_source": "Existing parsed inbound NV with fresh original MBX arrival timestamp; stale/future/regressing arrival time rejected",
+    "STATUS_poll_is_inbound_activity": false,
+    "existing_RK_UART_heartbeat_present_before_candidate": false,
+    "heartbeat": "Existing 24-byte TARGET(found=0), UART every 200ms including MAP_ACK wait",
+    "new_RTL_clock_or_protocol_type": false,
+    "startup_policy": "Software motion lock until explicit fresh MODE idle",
+    "timeout_policy": "Clear old task/target/path/turning; numeric zero vx/vy/wz at actual HAL publication; keep software lock",
+    "recovery_policy": "Fresh heartbeat/GOAL cannot clear lock; post-lock explicit idle then genuinely new task required; unsent UART queue and pre-fault HTTP intents are discarded, no automatic reconnect unlock",
+    "SAFE_CTRL_ESTOP_written": false,
+    "control_model_wheel_servo_enable_changed": false,
+    "controlled_zero_request_not_physical_stop_certificate": true,
+    "lock_epoch": "Boot/timeout captures device time; an idle with an original FPGA RX timestamp older than that lock cannot clear it",
+    "strict_old_USB_bytes_delivered_after_lock_replay_proved": false,
+    "post_lock_USB_delay_limit": "NV has no session/command sequence. Old host/USB bytes physically delivered after lock get a new FPGA RX timestamp and cannot be distinguished by this age gate alone; host-side queue clear does not prove otherwise",
+    "normal_RK_first_task_handshake_complete": true,
+    "RK_normal_task_contract": "Explicit new UART goto/search/resume sends fresh idle first; new advancing idle/zero STATUS plus post-send original0.5s healthy StopEvidence required; ambiguous mode4/state6 needs separate explicit release then a new mission; reconnect never replays old tasks",
+    "RK_HTTP_memory_queue_epoch_gate": true
+  },
+  "observed_original_limits": {
+    "unbounded_hal_traj_eval_DONE_poll": true,
+    "host_and_raw_frame_drain_loops_unbounded_under_continuous_input": true,
+    "pure_main_loop_hard_WCET_proved": false,
+    "point_of_publication_gate_tested": true,
+    "SAFE_raw_command_watchdog_default_us": 200000,
+    "SAFE_default_tick_us": 1000,
+    "SAFE_default_DV_mmps_per_tick": 2,
+    "SAFE_default_DW_mradps_per_tick": 3,
+    "lease_forward_limit_Q12": 2458,
+    "lease_forward_step_Q12_per_ms": 41,
+    "lease_forward_demand_zero_nominal_max_ms": 60,
+    "nominal_lease_demand_bound_is_full_stop_time": false,
+    "SAFE_ESTOP_semantics": "Sets ch_stop at SAFE tick then lease clears navigation demands; does not directly disable policy/wheel/servo enables",
+    "control_own_IR_or_compile_estop_is_different_chain": true,
+    "session_authenticated_replay_protection_proved": false
+  },
+  "validation": {
+    "schema": 2,
+    "recorded_at": "2026-10-25T21:29:37.249940",
+    "candidate": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2",
+    "frozen_origin": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+    "candidate1_retained_but_not_frozen_Syn22_verification": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate1",
+    "reviewable_candidate": true,
+    "all_requested_light_contracts_passed": true,
+    "ready_for_integration": false,
+    "safe_for_deployment": false,
+    "PNR27_28_inputs_modified": false,
+    "production_RK_changed": false,
+    "serial_opened": false,
+    "checks": {
+      "native_guard_real_HAL_MMIO": 3258,
+      "actual_app_queue": 10,
+      "RK_heartbeat_fake_link": 9,
+      "RK_actual_TaskRunner_StopEvidence_mission": 31,
+      "original_frozen_full_navigation_suite_passed": true,
+      "trajectory_reference_candidates": 90,
+      "trajectory_reference_mismatches": 0
+    },
+    "firmware": {
+      "frozen_original_binary_bytes": 51712,
+      "candidate_binary_bytes": 52164,
+      "image_delta_bytes": 452,
+      "original_bss_bytes": 69944,
+      "candidate_bss_bytes": 69968,
+      "bss_delta_bytes": 24,
+      "stack_reserved_bytes": 6144,
+      "complete_static_stack_bound_bytes": 2736,
+      "alignment_adjusted_unused_bytes": 2792,
+      "original_unused_bytes": 3272,
+      "hardware_RAM_capacity_bytes": 131072,
+      "original_CPU_hardware_changed": false,
+      "captures_coverage_and_epoch_preserved": true
+    },
+    "origin_binding": {
+      "actual_frozen_preprocessed_sources": 24,
+      "equal_except_line_directives": 23,
+      "one_boot_print_build_macro_difference": true,
+      "original_binary_diff_bytes": 7,
+      "only_binary_difference_in_exact_build_timestamp_literal": true,
+      "original_CPU_RAM5_root_and_firmware_pairs_bytes_identical": true,
+      "original_and_candidate_CPU_initialization_reconstruct_128KiB_and_zero_padding": true,
+      "104_original_asset_identities_inventoried_no_hardware_assets_replaced": true
+    },
+    "candidate_parameter_only": {
+      "host_timeout_us": 1000000,
+      "RK_heartbeat_period_s": 0.2,
+      "RK_feedback_quiet_interval_s": 0.5
+    },
+    "unproved": {
+      "strict_USB_delayed_byte_authorization_replay_prevention": false,
+      "hard_full_software_WCET": false,
+      "physical_standstill_or_braking_distance": false,
+      "real_RK_service_or_board_acceptance": false
+    },
+    "evidence_paths": {
+      "result.json": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\result.json",
+      "rv32_validation_result.json": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\rv32_validation_result.json",
+      "navigation_regression_result.json": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\navigation_regression_result.json",
+      "rk_mission_handshake_result.json": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\rk_mission_handshake_result.json",
+      "frozen_origin_and_image_binding.json": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\frozen_origin_and_image_binding.json"
+    },
+    "patch": "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\candidate.patch",
+    "reproduction_scripts": [
+      "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\run_contracts.py",
+      "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\run_rv32_validation.py",
+      "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\run_navigation_regression.py",
+      "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\test_rk_mission_handshake.py",
+      "F:\\nav_integration_g2_20261023\\uart_host_loss_stop_candidate2\\audit_frozen_origin.py"
+    ]
+  },
+  "pending": [
+    "Root review of candidate timeout and recovery semantics before merge; 1s is still a proposed parameter",
+    "Strict USB-late-byte authorization/session boundary remains unproved; RX timestamp and memory queue epochs do not solve late physical delivery",
+    "Actual dual UART heartbeat/reconnect/disconnect with current accepted image",
+    "Full software WCET and real standstill/braking behavior",
+    "Independent physical implementation and deployment gates"
+  ],
+  "source_references": [
+    "fw/app/nav_app.c::nav_app_poll/on_msg",
+    "fw/drv/hal_fpga.c::hal_time_us/hal_host_recv/hal_send_cmd/hal_traj_eval",
+    "fw/nav/target.c::target_update/target_alive",
+    "fw/nav/nav_task.c::task_step_local/send_checked",
+    "rtl/plan/safety_guard.v",
+    "integration/g2/command_lease_guard.v",
+    "F:/nav_integration_g2_20261023/lane2_sfp_off_uart_prepared1/g2_top.v",
+    "D:/Desktop/SOC FPGA/QHXD_Web/yuntuo/bridge/core.py"
+  ]
+}

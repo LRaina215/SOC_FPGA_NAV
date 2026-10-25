@@ -115,7 +115,8 @@ def run(case):
     gate = finalize_gate(out) if (out/'impl/pnr/g2_top.rpt.txt').exists() else False
     save('completed_requires_model_review', runtime=runtime,
          actual_PNR_command_matches_reference=command_matches,
-         gate_collected=bool(gate), deployment_accepted=False)
+         gate_collected=(out/'g2_gate.json').exists(),
+         acceptance_gate_pass=bool(gate), deployment_accepted=False)
     return int(not command_matches)
 
 
