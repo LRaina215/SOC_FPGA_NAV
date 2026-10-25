@@ -1,0 +1,1043 @@
+{
+  "schema_version": 1,
+  "review_completed": true,
+  "scope": "Read-only compact actual RPT plus physical RAM leaf/split reconciliation; no new complete-net graph or build invoked",
+  "recorded_at": "2026-10-26T00:39:36.582516+08:00",
+  "baseline": {
+    "build": "F:\\nav_integration_g2_20261023\\baseline_rep1_replay_pnr27",
+    "resources": {
+      "Logic": 89584,
+      "Register": 39957,
+      "CLS": 55557,
+      "BSRAM": 332,
+      "DSP": 163.5,
+      "LUT": 52789,
+      "ALU": 10015,
+      "ROM16": 3650,
+      "RAM16": 3855
+    },
+    "globals": [
+      {
+        "net": "clk50_d",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PTR2 PTR3 PBR0 PBR1 PBR2 PBR3"
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "resource": "PRIMARY",
+        "location": "PBR1"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_21",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_22",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_23",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_24",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_nav/a_q_15_15",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PTR2 PBR1 PBR2"
+      },
+      {
+        "net": "u_nav/u_pt/n5285_4",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PBR0 PBR1"
+      },
+      {
+        "net": "r2",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/n2371_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n331_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_0_9",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n26292_4",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25518_4",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n24910_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25284_7",
+        "resource": "LW",
+        "location": "-"
+      }
+    ],
+    "actual_BSRAM_by_primitive": {
+      "SP": 64,
+      "pROM": 45,
+      "pROMX9": 2,
+      "SDPB": 60,
+      "SDPX9B": 161
+    },
+    "actual_BSRAM_by_top": {
+      "u_soc": 64,
+      "u_control": 49,
+      "u_nav": 219
+    },
+    "actual_BSRAM_by_depth2": {
+      "u_soc/g_lane[0].u_ram": 16,
+      "u_soc/g_lane[1].u_ram": 16,
+      "u_soc/g_lane[2].u_ram": 16,
+      "u_soc/g_lane[3].u_ram": 16,
+      "u_control/model_thread": 47,
+      "u_control/display": 2,
+      "u_nav/u_netl": 3,
+      "u_nav/u_neth": 1,
+      "u_nav/u_mbx": 2,
+      "u_nav/u_xt": 19,
+      "u_nav/u_pp": 20,
+      "u_nav/u_map": 74,
+      "u_nav/g_support.u_support": 8,
+      "u_nav/u_match": 92
+    },
+    "matched_wide_split_pairs": 18,
+    "wide_pairs": [
+      {
+        "source": "u_control/model_thread/ik/rom_lh_rom_lh_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH": "36"
+        },
+        "original": {
+          "name": "u_control/model_thread/ik/rom_lh_rom_lh_0_0_s",
+          "kind": "pROMX9"
+        },
+        "added": {
+          "name": "u_control/model_thread/ik/gowin_add_rom_lh_rom_lh_0_0_s",
+          "kind": "pROMX9"
+        }
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb1_lb1_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_map/u_tv/lb1_lb1_0_0_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_map/u_tv/gowin_add_SDPX9B_lb1_lb1_0_0_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb1_lb1_0_1_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_map/u_tv/lb1_lb1_0_1_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_map/u_tv/gowin_add_SDPX9B_lb1_lb1_0_1_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb3_lb3_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32"
+        },
+        "original": {
+          "name": "u_nav/u_map/u_tv/lb3_lb3_0_0_s",
+          "kind": "SDPB"
+        },
+        "added": {
+          "name": "u_nav/u_map/u_tv/gowin_add_SDPB_lb3_lb3_0_0_s",
+          "kind": "SDPB"
+        }
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb3_lb3_0_1_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32"
+        },
+        "original": {
+          "name": "u_nav/u_map/u_tv/lb3_lb3_0_1_s",
+          "kind": "SDPB"
+        },
+        "added": {
+          "name": "u_nav/u_map/u_tv/gowin_add_SDPB_lb3_lb3_0_1_s",
+          "kind": "SDPB"
+        }
+      },
+      {
+        "source": "u_nav/u_map/u_tv/vc_vc_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32"
+        },
+        "original": {
+          "name": "u_nav/u_map/u_tv/vc_vc_0_0_s",
+          "kind": "SDPB"
+        },
+        "added": {
+          "name": "u_nav/u_map/u_tv/gowin_add_SDPB_vc_vc_0_0_s",
+          "kind": "SDPB"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_pb/g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_0_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_pb/gowin_add_SDPX9B_g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_0_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_pb/g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_pb/gowin_add_SDPX9B_g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[2].mem_g_banked.g_bank[2].mem_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_pb/g_banked.g_bank[2].mem_g_banked.g_bank[2].mem_0_0_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_pb/gowin_add_SDPX9B_g_banked.g_bank[2].mem_g_banked.g_bank[2].mem_0_0_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[3].mem_g_banked.g_bank[3].mem_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_pb/g_banked.g_bank[3].mem_g_banked.g_bank[3].mem_0_0_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_pb/gowin_add_SDPX9B_g_banked.g_bank[3].mem_g_banked.g_bank[3].mem_0_0_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[4].mem_g_banked.g_bank[4].mem_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_pb/g_banked.g_bank[4].mem_g_banked.g_bank[4].mem_0_0_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_pb/gowin_add_SDPX9B_g_banked.g_bank[4].mem_g_banked.g_bank[4].mem_0_0_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[5].mem_g_banked.g_bank[5].mem_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_pb/g_banked.g_bank[5].mem_g_banked.g_bank[5].mem_0_0_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_pb/gowin_add_SDPX9B_g_banked.g_bank[5].mem_g_banked.g_bank[5].mem_0_0_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[6].mem_g_banked.g_bank[6].mem_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_pb/g_banked.g_bank[6].mem_g_banked.g_bank[6].mem_0_0_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_pb/gowin_add_SDPX9B_g_banked.g_bank[6].mem_g_banked.g_bank[6].mem_0_0_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[7].mem_g_banked.g_bank[7].mem_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_pb/g_banked.g_bank[7].mem_g_banked.g_bank[7].mem_0_0_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_pb/gowin_add_SDPX9B_g_banked.g_bank[7].mem_g_banked.g_bank[7].mem_0_0_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb1_lb1_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_lf/lb1_lb1_0_0_s",
+          "kind": "SDPB"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_lf/gowin_add_SDPB_lb1_lb1_0_0_s",
+          "kind": "SDPB"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb1_lb1_0_1_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_lf/lb1_lb1_0_1_s",
+          "kind": "SDPB"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_lf/gowin_add_SDPB_lb1_lb1_0_1_s",
+          "kind": "SDPB"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb3_lb3_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_lf/lb3_lb3_0_0_s",
+          "kind": "SDPB"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_lf/gowin_add_SDPB_lb3_lb3_0_0_s",
+          "kind": "SDPB"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb3_lb3_0_1_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_lf/lb3_lb3_0_1_s",
+          "kind": "SDPB"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_lf/gowin_add_SDPB_lb3_lb3_0_1_s",
+          "kind": "SDPB"
+        }
+      }
+    ]
+  },
+  "candidate": {
+    "build": "F:\\nav_integration_g2_20261023\\baseline_pose_only_pnr33",
+    "resources": {
+      "Logic": 89556,
+      "Register": 39958,
+      "CLS": 55285,
+      "BSRAM": 332,
+      "DSP": 163.5,
+      "LUT": 52749,
+      "ALU": 10027,
+      "ROM16": 3650,
+      "RAM16": 3855
+    },
+    "globals": [
+      {
+        "net": "clk50_d",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PTR2 PTR3 PBR0 PBR1 PBR2 PBR3"
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "resource": "PRIMARY",
+        "location": "PBR0 PBR1"
+      },
+      {
+        "net": "u_soc/cpu_rst",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_21",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_22",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_23",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_24",
+        "resource": "PRIMARY",
+        "location": "PTR2 PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_nav/u_pt/n4985_5",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1"
+      },
+      {
+        "net": "r2",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/n2371_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n331_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_0_9",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/a_q_15_10",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_xt/n7923_5",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_pf/n3967_6",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_match/n11988_6",
+        "resource": "LW",
+        "location": "-"
+      }
+    ],
+    "actual_BSRAM_by_primitive": {
+      "SP": 64,
+      "pROM": 45,
+      "pROMX9": 2,
+      "SDPB": 60,
+      "SDPX9B": 161
+    },
+    "actual_BSRAM_by_top": {
+      "u_soc": 64,
+      "u_control": 49,
+      "u_nav": 219
+    },
+    "actual_BSRAM_by_depth2": {
+      "u_soc/g_lane[0].u_ram": 16,
+      "u_soc/g_lane[1].u_ram": 16,
+      "u_soc/g_lane[2].u_ram": 16,
+      "u_soc/g_lane[3].u_ram": 16,
+      "u_control/model_thread": 47,
+      "u_control/display": 2,
+      "u_nav/u_netl": 3,
+      "u_nav/u_neth": 1,
+      "u_nav/u_mbx": 2,
+      "u_nav/u_xt": 19,
+      "u_nav/u_pp": 20,
+      "u_nav/u_map": 74,
+      "u_nav/g_support.u_support": 8,
+      "u_nav/u_match": 92
+    },
+    "matched_wide_split_pairs": 18,
+    "wide_pairs": [
+      {
+        "source": "u_control/model_thread/ik/rom_lh_rom_lh_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH": "36"
+        },
+        "original": {
+          "name": "u_control/model_thread/ik/rom_lh_rom_lh_0_0_s",
+          "kind": "pROMX9"
+        },
+        "added": {
+          "name": "u_control/model_thread/ik/gowin_add_rom_lh_rom_lh_0_0_s",
+          "kind": "pROMX9"
+        }
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb1_lb1_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_map/u_tv/lb1_lb1_0_0_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_map/u_tv/gowin_add_SDPX9B_lb1_lb1_0_0_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb1_lb1_0_1_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_map/u_tv/lb1_lb1_0_1_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_map/u_tv/gowin_add_SDPX9B_lb1_lb1_0_1_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb3_lb3_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32"
+        },
+        "original": {
+          "name": "u_nav/u_map/u_tv/lb3_lb3_0_0_s",
+          "kind": "SDPB"
+        },
+        "added": {
+          "name": "u_nav/u_map/u_tv/gowin_add_SDPB_lb3_lb3_0_0_s",
+          "kind": "SDPB"
+        }
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb3_lb3_0_1_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32"
+        },
+        "original": {
+          "name": "u_nav/u_map/u_tv/lb3_lb3_0_1_s",
+          "kind": "SDPB"
+        },
+        "added": {
+          "name": "u_nav/u_map/u_tv/gowin_add_SDPB_lb3_lb3_0_1_s",
+          "kind": "SDPB"
+        }
+      },
+      {
+        "source": "u_nav/u_map/u_tv/vc_vc_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32"
+        },
+        "original": {
+          "name": "u_nav/u_map/u_tv/vc_vc_0_0_s",
+          "kind": "SDPB"
+        },
+        "added": {
+          "name": "u_nav/u_map/u_tv/gowin_add_SDPB_vc_vc_0_0_s",
+          "kind": "SDPB"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_pb/g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_0_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_pb/gowin_add_SDPX9B_g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_0_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_pb/g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_pb/gowin_add_SDPX9B_g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[2].mem_g_banked.g_bank[2].mem_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_pb/g_banked.g_bank[2].mem_g_banked.g_bank[2].mem_0_0_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_pb/gowin_add_SDPX9B_g_banked.g_bank[2].mem_g_banked.g_bank[2].mem_0_0_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[3].mem_g_banked.g_bank[3].mem_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_pb/g_banked.g_bank[3].mem_g_banked.g_bank[3].mem_0_0_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_pb/gowin_add_SDPX9B_g_banked.g_bank[3].mem_g_banked.g_bank[3].mem_0_0_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[4].mem_g_banked.g_bank[4].mem_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_pb/g_banked.g_bank[4].mem_g_banked.g_bank[4].mem_0_0_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_pb/gowin_add_SDPX9B_g_banked.g_bank[4].mem_g_banked.g_bank[4].mem_0_0_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[5].mem_g_banked.g_bank[5].mem_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_pb/g_banked.g_bank[5].mem_g_banked.g_bank[5].mem_0_0_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_pb/gowin_add_SDPX9B_g_banked.g_bank[5].mem_g_banked.g_bank[5].mem_0_0_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[6].mem_g_banked.g_bank[6].mem_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_pb/g_banked.g_bank[6].mem_g_banked.g_bank[6].mem_0_0_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_pb/gowin_add_SDPX9B_g_banked.g_bank[6].mem_g_banked.g_bank[6].mem_0_0_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[7].mem_g_banked.g_bank[7].mem_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_pb/g_banked.g_bank[7].mem_g_banked.g_bank[7].mem_0_0_s",
+          "kind": "SDPX9B"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_pb/gowin_add_SDPX9B_g_banked.g_bank[7].mem_g_banked.g_bank[7].mem_0_0_s",
+          "kind": "SDPX9B"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb1_lb1_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_lf/lb1_lb1_0_0_s",
+          "kind": "SDPB"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_lf/gowin_add_SDPB_lb1_lb1_0_0_s",
+          "kind": "SDPB"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb1_lb1_0_1_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_lf/lb1_lb1_0_1_s",
+          "kind": "SDPB"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_lf/gowin_add_SDPB_lb1_lb1_0_1_s",
+          "kind": "SDPB"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb3_lb3_0_0_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_lf/lb3_lb3_0_0_s",
+          "kind": "SDPB"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_lf/gowin_add_SDPB_lb3_lb3_0_0_s",
+          "kind": "SDPB"
+        }
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb3_lb3_0_1_s",
+        "source_widths": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32"
+        },
+        "original": {
+          "name": "u_nav/u_match/u_lf/lb3_lb3_0_1_s",
+          "kind": "SDPB"
+        },
+        "added": {
+          "name": "u_nav/u_match/u_lf/gowin_add_SDPB_lb3_lb3_0_1_s",
+          "kind": "SDPB"
+        }
+      }
+    ]
+  },
+  "actual_resource_delta": {
+    "Logic": -28,
+    "Register": 1,
+    "CLS": -272,
+    "BSRAM": 0,
+    "DSP": 0.0,
+    "LUT": -40,
+    "ALU": 12,
+    "ROM16": 0,
+    "RAM16": 0
+  },
+  "inputs": {
+    "CST_byte_identical": true,
+    "SDC_byte_identical": true,
+    "device_cfg_byte_identical": true,
+    "actual_options_identical_except_paths": true,
+    "newVG_byte_identical_to_completed_SYN": true
+  },
+  "physical_RAM": {
+    "actual_count_each": 332,
+    "source_count_each": 314,
+    "wide_count_each": 18,
+    "all18_added_split_pairs_present_each": true,
+    "physical332_leaf_names_and_primitive_types_identical": true,
+    "geometry_and_INIT_not_reparsed_here": true,
+    "actual_SYN_geometry_INIT_and_CPU_proof": "F:\\nav_integration_g2_20261023\\baseline_pose_only_pnr33\\actual_SYN_preflight_review.json"
+  },
+  "actual_global_assignment_changes": [
+    {
+      "net": "rgmii_rxc_d",
+      "before": {
+        "net": "rgmii_rxc_d",
+        "resource": "PRIMARY",
+        "location": "PBR1"
+      },
+      "after": {
+        "net": "rgmii_rxc_d",
+        "resource": "PRIMARY",
+        "location": "PBR0 PBR1"
+      }
+    },
+    {
+      "net": "u_control/model_thread/policy/n14311_21",
+      "before": {
+        "net": "u_control/model_thread/policy/n14311_21",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      },
+      "after": {
+        "net": "u_control/model_thread/policy/n14311_21",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      }
+    },
+    {
+      "net": "u_control/model_thread/policy/n14311_22",
+      "before": {
+        "net": "u_control/model_thread/policy/n14311_22",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      "after": {
+        "net": "u_control/model_thread/policy/n14311_22",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      }
+    },
+    {
+      "net": "u_control/model_thread/policy/n14311_23",
+      "before": {
+        "net": "u_control/model_thread/policy/n14311_23",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      "after": {
+        "net": "u_control/model_thread/policy/n14311_23",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      }
+    },
+    {
+      "net": "u_control/model_thread/policy/n14311_24",
+      "before": {
+        "net": "u_control/model_thread/policy/n14311_24",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      "after": {
+        "net": "u_control/model_thread/policy/n14311_24",
+        "resource": "PRIMARY",
+        "location": "PTR2 PTR3 PBR2 PBR3"
+      }
+    },
+    {
+      "net": "u_nav/a_q_15_10",
+      "before": null,
+      "after": {
+        "net": "u_nav/a_q_15_10",
+        "resource": "LW",
+        "location": "-"
+      }
+    },
+    {
+      "net": "u_nav/a_q_15_15",
+      "before": {
+        "net": "u_nav/a_q_15_15",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PTR2 PBR1 PBR2"
+      },
+      "after": null
+    },
+    {
+      "net": "u_nav/u_map/u_tv/n24910_7",
+      "before": {
+        "net": "u_nav/u_map/u_tv/n24910_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      "after": null
+    },
+    {
+      "net": "u_nav/u_map/u_tv/n25284_7",
+      "before": {
+        "net": "u_nav/u_map/u_tv/n25284_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      "after": null
+    },
+    {
+      "net": "u_nav/u_map/u_tv/n25518_4",
+      "before": {
+        "net": "u_nav/u_map/u_tv/n25518_4",
+        "resource": "LW",
+        "location": "-"
+      },
+      "after": null
+    },
+    {
+      "net": "u_nav/u_map/u_tv/n26292_4",
+      "before": {
+        "net": "u_nav/u_map/u_tv/n26292_4",
+        "resource": "LW",
+        "location": "-"
+      },
+      "after": null
+    },
+    {
+      "net": "u_nav/u_match/n11988_6",
+      "before": null,
+      "after": {
+        "net": "u_nav/u_match/n11988_6",
+        "resource": "LW",
+        "location": "-"
+      }
+    },
+    {
+      "net": "u_nav/u_pf/n3967_6",
+      "before": null,
+      "after": {
+        "net": "u_nav/u_pf/n3967_6",
+        "resource": "LW",
+        "location": "-"
+      }
+    },
+    {
+      "net": "u_nav/u_pt/n4985_5",
+      "before": null,
+      "after": {
+        "net": "u_nav/u_pt/n4985_5",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1"
+      }
+    },
+    {
+      "net": "u_nav/u_pt/n5285_4",
+      "before": {
+        "net": "u_nav/u_pt/n5285_4",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PBR0 PBR1"
+      },
+      "after": null
+    },
+    {
+      "net": "u_nav/u_xt/n7923_5",
+      "before": null,
+      "after": {
+        "net": "u_nav/u_xt/n7923_5",
+        "resource": "LW",
+        "location": "-"
+      }
+    },
+    {
+      "net": "u_soc/cpu_rst",
+      "before": null,
+      "after": {
+        "net": "u_soc/cpu_rst",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      }
+    }
+  ],
+  "global_capacity": {
+    "baseline_PRIMARY": 8,
+    "baseline_LW": 8,
+    "candidate_PRIMARY": 8,
+    "candidate_LW": 8
+  },
+  "key_changes": {
+    "cpu_reset": "u_soc/cpu_rst newlyPRIMARY; baseline wasnot listed asglobal",
+    "nav_address": "baseline u_nav/a_q_15_15 PRIMARY no longerlisted; candidate u_nav/a_q_15_10 LW isrecorded without asserting autogenerated-name functional equivalence",
+    "NAV_lightweight": "baseline fouru_nav/u_map/u_tv nets leaveLW; candidate u_nav/u_xt,n_pf,n_match control nets occupyLW",
+    "policy": "samefour policy selector net spellings remainPRIMARY; regionalcoverage differs",
+    "top_level_reset_and_observation": "r2/u_control/n2371_7/observation/n331_7/policy/snapshot_0_9 remainLW",
+    "direct_pin_loads_recounted_this_pass": false
+  },
+  "failure": {
+    "unrouted": 1698,
+    "tool_exit": 1,
+    "cancelled": false,
+    "ended_at": "2026-10-26T00:32:57.411128+08:00",
+    "timing_report_available": false,
+    "failed_net_identities_available": false,
+    "failed_net_coordinates_or_congestion_positions_available": false,
+    "public_reports": "rpt.txt/rpt.html andlog containaggregate PR0004; physicalVO retainslogicalconnectivity withoutper-net route-status",
+    "opaque_db_and_placement_files_retained": true
+  },
+  "physical26CDC": {
+    "passed": true,
+    "paths": 26,
+    "evidence": "F:\\nav_integration_g2_20261023\\baseline_pose_only_pnr33\\pure_CDC_physical_connection_review.json",
+    "setup_hold_delay_not_signed_off": true,
+    "added52_exceptions": 0
+  },
+  "conclusions": [
+    "Same332 actualRAM andsame314+18 split leaves; noRAM capacity orsplit-count regression found.",
+    "Logic decreases28,FF adds1,CLS decreases272, yet1698 netsunrouted; aggregateusage alone isnot routability.",
+    "OnlyPOSE RTL ischanged underidenticalIO/SDC/device/options, andautomatic globalallocation changesstrongly; thisisimplementation sensitivity, notproofwhich1698 failedoruniquecongestioncause.",
+    "KeepPNR27 routedcontrol andPNR33counterexample; do not repeatidenticalPOSE inputs orpromotePOSE-only fordelivery.",
+    "Usealready-runningPNR32 tocompleteRTLfactorcomparison. AnyfutureCST control-role experiment mustfirstbindactual drivers/loadsandchangeonepolicy; no experiment startedhere."
+  ],
+  "PNR32_touched": false,
+  "new_build_started": false,
+  "programmed": false,
+  "deployment_accepted": false
+}
