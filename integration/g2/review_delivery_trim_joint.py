@@ -94,7 +94,7 @@ def scopes(profile):
     return result
 
 
-def review_proofs(profile, prepared, candidate, changed, frozen_netlist):
+def review_proofs(profile, prepared, candidate, changed, frozen_netlist, changed_firmware=()):
     records = profile.get('proofs', [])
     if not records and profile.get('source_difference_proof'):
         records = [{'path': profile['source_difference_proof'], 'required_true_fields': ['passed']}]
@@ -107,7 +107,8 @@ def review_proofs(profile, prepared, candidate, changed, frozen_netlist):
         assert required and all(value(result, f) is True for f in required), ('targeted proof not passed', str(proof_path), required)
         for runtime in result.get('runtimes', []):
             assert runtime.get('tool_exit') == 0 and runtime.get('cancelled') is False and runtime.get('ended_at'), ('incomplete proof process', str(proof_path))
-        for binding in item.get('source_bindings', []):
+        actual_bindings = item.get('source_bindings') or result.get('source_bindings', [])
+        for binding in actual_bindings:
             relative = binding['candidate']
             actual = resolve(candidate, relative)
             exercised = resolve(proof_path.parent, binding['proof_source'])
@@ -117,9 +118,9 @@ def review_proofs(profile, prepared, candidate, changed, frozen_netlist):
         # Netlist-only transformations may prove all outside module text and
         # primitive pins by direct comparison in this reviewer instead of simulating.
         checks.append(dict(path=str(proof_path), required_true_fields=required,
-                           exact_source_bindings=item.get('source_bindings', [])))
+                           exact_source_bindings=actual_bindings))
     if not frozen_netlist:
-        needed = set(changed)
+        needed = set(changed) | set(changed_firmware)
         covered = set(profile.get('proof_covered_inputs', []))
         # Coverage cannot be self-declared: an exercised transformed file must
         # be recorded for every changed RTL input. Firmware assets are separate.
@@ -191,6 +192,7 @@ def review(source, baseline):
 
     oldfiles, newfiles = names(origin, original_manifest), names(source, manifest)
     source_differences = []
+    firmware_changes = []
     if newfiles:
         prepared_manifest = load(prepared/'manifest.json')
         assert set(newfiles) == set(names(prepared, prepared_manifest))
@@ -224,7 +226,15 @@ def review(source, baseline):
                        if p.is_file() and p.suffix.lower() in {'.vh', '.h'}
                        and 'impl' not in p.relative_to(source).parts}
         assert old_headers.keys() == new_headers.keys(), 'frozen include-header set changed'
-        assert all(p.read_bytes() == new_headers[n].read_bytes() for n,p in old_headers.items()), 'hardware/include header changed without dedicated review'
+        for name,p in old_headers.items():
+            if p.read_bytes() != new_headers[name].read_bytes():
+                assert name.startswith('fw/') and name in profile.get('firmware_modified_inputs', []), ('hardware/include header changed without dedicated review', name)
+        if (origin/'fw').exists():
+            old_fw = {p.relative_to(origin).as_posix():p for p in (origin/'fw').rglob('*') if p.is_file()}
+            new_fw = {p.relative_to(source).as_posix():p for p in (source/'fw').rglob('*') if p.is_file()}
+            assert old_fw.keys() == new_fw.keys(), 'frozen firmware source set changed'
+            firmware_changes = sorted(n for n,p in old_fw.items() if p.read_bytes() != new_fw[n].read_bytes())
+            assert firmware_changes == sorted(profile.get('firmware_modified_inputs', [])), ('undeclared firmware source difference', firmware_changes)
 
     oldassets = assets(origin)
     assert len(oldassets) == 104, ('unexpected original asset set', len(oldassets))
@@ -244,7 +254,20 @@ def review(source, baseline):
         assert {b['candidate'] for b in bound_assets} == set(asset_changes)
         for binding in bound_assets:
             assert candidate_assets[binding['candidate']].read_bytes() == resolve(prepared, binding['compiled_output']).read_bytes()
-    proof_checks = review_proofs(profile, prepared, source, source_differences, frozen)
+    proof_checks = review_proofs(profile, prepared, source, source_differences, frozen, firmware_changes)
+    if asset_changes:
+        firmware_proof_flags = ('global_initialization_radius_and_relocation_radius_retained',
+            'generated_inverse_indices_match_literal_candidate_feeds',
+            'all_batches_within_actual_hardware_capacity',
+            'slow_forward_turn_and_reverse_categories_retained', 'failed_HAL_returns_zero_command')
+        assert any(all(load(p['path']).get(f) is True for f in firmware_proof_flags)
+                   for p in proof_checks), 'navigation firmware lacks completed capacity/index/radius/motion-category proof'
+        provenance = profile['firmware_provenance']
+        assert provenance['RAM_bytes'] == 131072 and provenance['stack_reserve_bytes'] >= 6144
+        stack = load(resolve(prepared, provenance['stack_analysis']))
+        assert stack['complete'] and stack['static_bound_bytes'] <= provenance['stack_reserve_bytes']
+        elf = resolve(prepared, provenance['compiled_elf']).read_bytes()
+        assert elf[:5] == b'\x7fELF\x01' and int.from_bytes(elf[18:20], 'little') == 243, 'CPU image did not come from RV32 ELF'
 
     for relative in ('g2.cst', 'g2.sdc', 'ip/serdes.csr'):
         assert (source/relative).read_bytes() == (baseline/relative).read_bytes(), ('constraint/IO/CSR differs from reviewed physical reference', relative)
@@ -348,6 +371,7 @@ def review(source, baseline):
     return dict(passed=True, profile_id=profile.get('profile_id', profile.get('profile_name')),
         kind=kind, source=str(source), prepared=str(prepared), origin=str(origin), baseline=str(baseline),
         tradeoffs=tradeoffs, modified_rtl_inputs=source_differences,
+        modified_firmware_inputs=firmware_changes,
         unchanged_asset_count=104-len(asset_changes), asset_changes=asset_changes,
         inherited_original_assets=inherited, completed_source_bound_proofs=proof_checks,
         OLED_actual_open_drain_release_verified=oled_release,
