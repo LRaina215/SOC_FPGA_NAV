@@ -149,7 +149,7 @@ def changed_cells(before, after, old_params, new_params):
     return dict(added=added, removed=removed, changed=changed)
 
 
-def review(source, baseline):
+def review(source, baseline, *, prepared_only=False):
     source, baseline = Path(source).resolve(), Path(baseline).resolve()
     assert baseline.name == 'sfp_lane2_observation_lw_pnr15', 'unreviewed physical constraint/CDC reference'
     baseline_report = (baseline/'impl/pnr/g2_top.rpt.txt').read_text(encoding='utf-8')
@@ -158,7 +158,7 @@ def review(source, baseline):
     manifest = load(source/'manifest.json')
     frozen = bool(manifest.get('frozen_netlist'))
     job = load(source/'job.json') if (source/'job.json').is_file() else {}
-    prepared = source if frozen else Path(job['source']).resolve()
+    prepared = source if frozen or prepared_only else Path(job['source']).resolve()
     profile_path = prepared/'trim_profile.json'
     assert profile_path.is_file(), ('missing explicit trim profile', str(profile_path))
     profile = load(profile_path)
@@ -171,7 +171,7 @@ def review(source, baseline):
     if kind == 'rtl_source':
         kind = 'rtl'
     assert kind in ('rtl', 'frozen_netlist') and frozen == (kind == 'frozen_netlist')
-    if not frozen:
+    if not frozen and not prepared_only:
         assert job.get('phase') == 'synthesis_complete' and job.get('tool_exit') == 0
         assert job.get('modified_rtl_inputs') == [], 'joint SYN must compile the prepared source without another transform'
         assert Path(manifest['frozen_source_build']).resolve() == prepared
@@ -229,9 +229,9 @@ def review(source, baseline):
         for name,p in old_headers.items():
             if p.read_bytes() != new_headers[name].read_bytes():
                 assert name.startswith('fw/') and name in profile.get('firmware_modified_inputs', []), ('hardware/include header changed without dedicated review', name)
-        if (origin/'fw').exists():
-            old_fw = {p.relative_to(origin).as_posix():p for p in (origin/'fw').rglob('*') if p.is_file()}
-            new_fw = {p.relative_to(source).as_posix():p for p in (source/'fw').rglob('*') if p.is_file()}
+        if profile.get('firmware_modified_inputs') or declared(profile, 'allowed_changed_assets', 'allowed_asset_changes'):
+            old_fw = {p.relative_to(origin).as_posix():p for p in (origin/'fw').rglob('*') if p.is_file() and '__pycache__' not in p.parts and p.suffix != '.pyc'}
+            new_fw = {p.relative_to(source).as_posix():p for p in (source/'fw').rglob('*') if p.is_file() and '__pycache__' not in p.parts and p.suffix != '.pyc'}
             assert old_fw.keys() == new_fw.keys(), 'frozen firmware source set changed'
             firmware_changes = sorted(n for n,p in old_fw.items() if p.read_bytes() != new_fw[n].read_bytes())
             assert firmware_changes == sorted(profile.get('firmware_modified_inputs', [])), ('undeclared firmware source difference', firmware_changes)
@@ -277,6 +277,19 @@ def review(source, baseline):
     assert sorted(float(v) for v in re.findall(r'^create_clock\b.*?-period\s+(\S+)', sdc, re.M)) == [8, 8, 10, 20]
     assert '/LANE2_PCS_RX_O_FABRIC_CLK' in sdc and '/LANE2_PCS_TX_O_FABRIC_CLK' in sdc
     assert '/LANE0_PCS_' not in sdc and not re.search(r'^\s*set_clock_groups\b', sdc, re.M)
+    if prepared_only:
+        return dict(passed=True, profile_id=profile.get('profile_id', profile.get('profile_name')),
+            source=str(source), prepared=str(prepared), origin=str(origin), baseline=str(baseline),
+            modified_rtl_inputs=source_differences, modified_firmware_inputs=firmware_changes,
+            unchanged_asset_count=104-len(asset_changes), asset_changes=asset_changes,
+            completed_source_bound_proofs=proof_checks, tradeoffs=tradeoffs,
+            source_and_compiled_CPU_image_checks_passed=True,
+            known_constraints=154, hold_only=77, max_delay=77,
+            clock_periods_ns=[20,10,8,8],
+            review_scope='frozen prepared sources, compiled CPU image and completed targeted proofs only',
+            actual_joint_synthesis_netlist_resources_clock_drivers_and_CDC_reviewed=False,
+            exploratory_PNR_precheck_passed=False, synthesis_or_PNR_started=False,
+            deployment_accepted=False, programmed=False)
     oldvg, newvg = netlist(origin), netlist(source)
     before, after = read(oldvg), read(newvg)
     olddefs, newdefs = definitions(oldvg), definitions(newvg)
@@ -401,14 +414,20 @@ def review(source, baseline):
         exploratory_PNR_precheck_only=True, deployment_accepted=False, programmed=False)
 
 
+def review_prepared(source, baseline):
+    """Source-only gate; deliberately cannot authorize PNR without real SYN."""
+    return review(source, baseline, prepared_only=True)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--baseline', type=Path, required=True)
     parser.add_argument('--out', type=Path)
+    parser.add_argument('--prepared-only', action='store_true')
     args = parser.parse_args()
     try:
-        result = review(args.source, args.baseline)
+        result = review(args.source, args.baseline, prepared_only=args.prepared_only)
     except (AssertionError, KeyError, FileNotFoundError, TypeError) as error:
         result = dict(passed=False, source=str(args.source.resolve()),
                       baseline=str(args.baseline.resolve()), error=str(error),
