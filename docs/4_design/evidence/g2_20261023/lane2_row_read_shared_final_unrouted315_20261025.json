@@ -1,0 +1,453 @@
+{
+  "recorded_at": "2026-10-25T17:35:45.416019+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+  "source_synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_syn17",
+  "actual_result": "natural_PR0004",
+  "unrouted_nets": 315,
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-25T15:05:03.098004+08:00",
+    "max_runtime_s": 0.0,
+    "max_no_observable_progress_s": 0.0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 21252,
+    "elapsed_s": 6515.109999999986,
+    "no_observable_progress_s": 2.0,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        2111342,
+        1792918413836672200
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        2110896,
+        1792918413836672200
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2234304,
+        1792912226315753500
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        12924290,
+        1792912226797020300
+      ],
+      [
+        "impl\\pnr\\g2_top.rpt.txt",
+        93294,
+        1792918411599036000
+      ],
+      [
+        "impl\\pnr\\g2_top.vo",
+        41298935,
+        1792918413832655000
+      ]
+    ],
+    "tool_exit": 1,
+    "ended_at": "2026-10-25T16:53:38.202584+08:00"
+  },
+  "vendor_report": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20\\impl\\pnr\\g2_top.rpt.txt",
+  "vendor_elapsed": "1h48m20s",
+  "vendor_placement_elapsed": "5m18s",
+  "vendor_routing_phase1_elapsed": "1h43m1s",
+  "vendor_peak_memory_MB": 2212,
+  "actual_resources": {
+    "logic": {
+      "used": 75818.0,
+      "capacity": 138240.0
+    },
+    "register": {
+      "used": 42344.0,
+      "capacity": 139095.0
+    },
+    "bsram": {
+      "used": 333.0,
+      "capacity": 340.0
+    },
+    "dsp": {
+      "used": 151.5,
+      "capacity": 298.0
+    },
+    "io_port": {
+      "used": 51.0,
+      "capacity": 297.0
+    },
+    "CLS": {
+      "used": 50937,
+      "capacity": 69120
+    }
+  },
+  "physical_memory_accounting": {
+    "source_BSRAM": 320,
+    "source_wide_leaves": 13,
+    "actual_BSRAM": 333,
+    "capacity": 340,
+    "counts_reconciled": true,
+    "all13_wide_pairs_geometry_and_nonINIT_parameters_match": true,
+    "no_missing_source_instances": true,
+    "by_top": {
+      "u_soc": 64,
+      "u_control": 44,
+      "u_nav": 225
+    },
+    "detail": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\lane2_row_read_shared_pnr20_physical_memories_20261025.json",
+    "wide_pairs": [
+      {
+        "source": "u_control/model_thread/ik/rom_lh_rom_lh_0_0_s",
+        "added": "u_control/model_thread/ik/gowin_add_rom_lh_rom_lh_0_0_s",
+        "kind": "pROMX9",
+        "split_parameters": {
+          "BIT_WIDTH": "18",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\""
+        },
+        "matched": true
+      },
+      {
+        "source": "u_nav/u_mbx/u_injb/g_mailbox_planes.low_mem_g_mailbox_planes.low_mem_0_0_s",
+        "added": "u_nav/u_mbx/u_injb/gowin_add_SDPB_g_mailbox_planes.low_mem_g_mailbox_planes.low_mem_0_0_s",
+        "kind": "SDPB",
+        "split_parameters": {
+          "BIT_WIDTH_0": "16",
+          "BIT_WIDTH_1": "16",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "matched": true
+      },
+      {
+        "source": "u_nav/u_mbx/u_txb/g_mailbox_planes.low_mem_g_mailbox_planes.low_mem_0_0_s",
+        "added": "u_nav/u_mbx/u_txb/gowin_add_SDPB_g_mailbox_planes.low_mem_g_mailbox_planes.low_mem_0_0_s",
+        "kind": "SDPB",
+        "split_parameters": {
+          "BIT_WIDTH_0": "16",
+          "BIT_WIDTH_1": "16",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "matched": true
+      },
+      {
+        "source": "u_nav/u_mbx/u_txs/g_mailbox_planes.low_mem_g_mailbox_planes.low_mem_0_0_s",
+        "added": "u_nav/u_mbx/u_txs/gowin_add_SDPB_g_mailbox_planes.low_mem_g_mailbox_planes.low_mem_0_0_s",
+        "kind": "SDPB",
+        "split_parameters": {
+          "BIT_WIDTH_0": "16",
+          "BIT_WIDTH_1": "16",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "matched": true
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb1_lb1_0_0_s",
+        "added": "u_nav/u_map/u_tv/gowin_add_SDPX9B_lb1_lb1_0_0_s",
+        "kind": "SDPX9B",
+        "split_parameters": {
+          "BIT_WIDTH_0": "18",
+          "BIT_WIDTH_1": "18",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "matched": true
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb1_lb1_0_1_s",
+        "added": "u_nav/u_map/u_tv/gowin_add_SDPX9B_lb1_lb1_0_1_s",
+        "kind": "SDPX9B",
+        "split_parameters": {
+          "BIT_WIDTH_0": "18",
+          "BIT_WIDTH_1": "18",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "matched": true
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb3_lb3_0_0_s",
+        "added": "u_nav/u_map/u_tv/gowin_add_SDPB_lb3_lb3_0_0_s",
+        "kind": "SDPB",
+        "split_parameters": {
+          "BIT_WIDTH_0": "16",
+          "BIT_WIDTH_1": "16",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "matched": true
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb3_lb3_0_1_s",
+        "added": "u_nav/u_map/u_tv/gowin_add_SDPB_lb3_lb3_0_1_s",
+        "kind": "SDPB",
+        "split_parameters": {
+          "BIT_WIDTH_0": "16",
+          "BIT_WIDTH_1": "16",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "matched": true
+      },
+      {
+        "source": "u_nav/u_map/u_tv/vc_vc_0_0_s",
+        "added": "u_nav/u_map/u_tv/gowin_add_SDPB_vc_vc_0_0_s",
+        "kind": "SDPB",
+        "split_parameters": {
+          "BIT_WIDTH_0": "16",
+          "BIT_WIDTH_1": "16",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "matched": true
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb1_lb1_0_0_s",
+        "added": "u_nav/u_match/u_lf/gowin_add_SDPB_lb1_lb1_0_0_s",
+        "kind": "SDPB",
+        "split_parameters": {
+          "BIT_WIDTH_0": "16",
+          "BIT_WIDTH_1": "16",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "matched": true
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb1_lb1_0_1_s",
+        "added": "u_nav/u_match/u_lf/gowin_add_SDPB_lb1_lb1_0_1_s",
+        "kind": "SDPB",
+        "split_parameters": {
+          "BIT_WIDTH_0": "16",
+          "BIT_WIDTH_1": "16",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "matched": true
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb3_lb3_0_0_s",
+        "added": "u_nav/u_match/u_lf/gowin_add_SDPB_lb3_lb3_0_0_s",
+        "kind": "SDPB",
+        "split_parameters": {
+          "BIT_WIDTH_0": "16",
+          "BIT_WIDTH_1": "16",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "matched": true
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb3_lb3_0_1_s",
+        "added": "u_nav/u_match/u_lf/gowin_add_SDPB_lb3_lb3_0_1_s",
+        "kind": "SDPB",
+        "split_parameters": {
+          "BIT_WIDTH_0": "16",
+          "BIT_WIDTH_1": "16",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "matched": true
+      }
+    ],
+    "scope": "Source/physical instance accounting and declared non-INIT split parameters; does not establish routing success or timing."
+  },
+  "global_resource_assignments": {
+    "detail": "F:\\nav_integration_g2_20261023\\lane2_row_read_shared_after_pnr19_once_retry1\\actual_global_assignments.json",
+    "PRIMARY_used": 8,
+    "PRIMARY_capacity": 8,
+    "LW_used": 8,
+    "LW_capacity": 8,
+    "nets": [
+      {
+        "net": "clk50_d",
+        "resource": "PRIMARY"
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "resource": "PRIMARY"
+      },
+      {
+        "net": "r2",
+        "resource": "PRIMARY"
+      },
+      {
+        "net": "h_rx_clk",
+        "resource": "PRIMARY"
+      },
+      {
+        "net": "h_tx_clk",
+        "resource": "PRIMARY"
+      },
+      {
+        "net": "n2371_7",
+        "resource": "PRIMARY"
+      },
+      {
+        "net": "u_control/model_thread/observation/n971_7",
+        "resource": "PRIMARY"
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_update",
+        "resource": "PRIMARY"
+      },
+      {
+        "net": "r2_207",
+        "resource": "LW"
+      },
+      {
+        "net": "u_soc/cpu_rst",
+        "resource": "LW"
+      },
+      {
+        "net": "u_soc/ram_a[14]",
+        "resource": "LW"
+      },
+      {
+        "net": "u_control/model_thread/observation/n12472_10",
+        "resource": "LW"
+      },
+      {
+        "net": "u_control/telemetry_thread/n1315_4",
+        "resource": "LW"
+      },
+      {
+        "net": "u_control/telemetry_thread/snapshot_959_10",
+        "resource": "LW"
+      },
+      {
+        "net": "u_nav/u_pt/n4985_5",
+        "resource": "LW"
+      },
+      {
+        "net": "u_nav/u_match/u_ex/rb_ra[0]",
+        "resource": "LW"
+      },
+      {
+        "net": "u_nav/u_xt/n9903_3",
+        "resource": null
+      },
+      {
+        "net": "u_nav/u_match/u_ex/n7021_4",
+        "resource": null
+      },
+      {
+        "net": "u_nav/u_match/u_ex/rb_ra[1]",
+        "resource": null
+      },
+      {
+        "net": "u_nav/a_q_15_17",
+        "resource": null
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25284_7",
+        "resource": null
+      },
+      {
+        "net": "u_nav/u_pt/n5285_4",
+        "resource": null
+      }
+    ],
+    "all4_true_clocks_PRIMARY": true,
+    "scope": "Actual global table; resource=null means not listed global, not proof of a LOCAL route property."
+  },
+  "CDC": {
+    "cdc_first_stage_candidate": {
+      "physical_netlist_audit_passed": true,
+      "physical_paths": 26,
+      "endpoints_match_reference": true,
+      "required_active_constraints": 52,
+      "constraints_not_verified_active": 52,
+      "physical_timing_passed": false
+    },
+    "sfp_host_cdc_candidate": {
+      "physical_netlist_audit_passed": true,
+      "physical_paths": 51,
+      "endpoints_match_reference": true,
+      "required_active_constraints": 102,
+      "constraints_not_verified_active": 102,
+      "physical_timing_passed": false
+    }
+  },
+  "report_gaps": {
+    "timing_report_available": false,
+    "setup_endpoints": null,
+    "hold_endpoints": null,
+    "all_domain_clock_summary_available": false,
+    "reset_recovery_removal_pulse_verified": false,
+    "per_net_failure_list_available": false,
+    "congestion_grid_rows": 0,
+    "high_fanout_report_rows": 0,
+    "actual_diagnostic_report_commands": [],
+    "bsram_placement_available": false,
+    "extra43_CDC_signed_off": false,
+    "PCS_reset_IO_signed_off": false
+  },
+  "comparisons": [
+    {
+      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_smallblocks_pnr19",
+      "unrouted": 355,
+      "physical_BSRAM": 333.0,
+      "logic": 75697.0,
+      "FF": 43263.0,
+      "current_minus_reference_unrouted": -40,
+      "current_minus_reference_BSRAM": 0.0,
+      "current_minus_reference_logic": 121.0,
+      "current_minus_reference_FF": -919.0
+    },
+    {
+      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+      "unrouted": 184,
+      "physical_BSRAM": 326.0,
+      "logic": 89813.0,
+      "FF": 43646.0,
+      "current_minus_reference_unrouted": 131,
+      "current_minus_reference_BSRAM": 7.0,
+      "current_minus_reference_logic": -13995.0,
+      "current_minus_reference_FF": -1302.0
+    }
+  ],
+  "conclusions": [
+    "355 to315 is 40 fewer unresolved nets with the same333 BSRAM; it is still failed routing.",
+    "Against correct-Lane2 PNR15, unresolved nets rise184 to315 while logic and FF are lower and BSRAM rises326 to333. Aggregate utilization alone does not prove a routing cause.",
+    "No failed-net identity, location or congestion evidence is available, so no specific net or unique failure cause is asserted.",
+    "26+51 physical connectivity checks are preserved; the absent timing report leaves all154 constraint activation/delay checks and full signoff unverified."
+  ],
+  "collector": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20\\g2_gate.json",
+  "routing_diagnostics": "F:\\nav_integration_g2_20261023\\lane2_row_read_shared_after_pnr19_once_retry1\\routing_result.json",
+  "deployment_accepted": false,
+  "programmed": false,
+  "PNR21_touched": false,
+  "SYN_or_PNR_started": false
+}
