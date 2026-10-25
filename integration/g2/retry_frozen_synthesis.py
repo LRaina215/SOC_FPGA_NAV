@@ -33,6 +33,7 @@ def main():
     launch=ap.add_mutually_exclusive_group(required=True)
     launch.add_argument('--wait-pid',type=int)
     launch.add_argument('--start-now',action='store_true',help='explicit serial launch after the prior tool has exited')
+    ap.add_argument('--resume-settings-only',action='store_true',help='retry one preserved settings timeout only when synthesis has never started')
     ap.add_argument('--gyro-sum-exact-widths',action='store_true',help='derive only the already-validated17-bit gyro sum from frozen RTL')
     ap.add_argument('--trig-block-rom',action='store_true',help='derive initialized navigation lookup storage from the frozen directed RTL')
     ap.add_argument('--snapshot-mux-fanout',action='store_true',help='derive cycle-exact snapshot mux fanout from frozen scheduler RTL')
@@ -51,6 +52,14 @@ def main():
     ap.add_argument('--sfp-lane2-from-build',type=Path,help='adopt proved SFP1 Lane2 generated wrapper/CSR; preserve other frozen RTL and joint timing requirements')
     a=ap.parse_args();src=a.source.resolve();out=a.out.resolve()
     assert (a.wait_pid is None or a.wait_pid>0) and out!=src and src not in out.parents and out not in src.parents
+    if a.resume_settings_only:
+        prior=json.loads((out/'job.json').read_text(encoding='utf-8'))
+        assert prior['phase']=='validating_frozen_settings' and 'tool_pid' not in prior
+        assert Path(prior['source']).resolve()==src and not (out/'impl').exists() and not (out/'gw_sh.log').exists()
+        assert not any(v for k,v in vars(a).items() if k not in ('source','out','start_now','wait_pid','resume_settings_only')), 'settings resume cannot add an RTL transform'
+        archive=out/'first_settings_timeout';archive.mkdir(exist_ok=False)
+        for name in ('job.json','preflight.log','preflight.tcl','effective_options.tcl'):
+            if (out/name).exists():shutil.copyfile(out/name,archive/name)
     manifest=json.loads((src/'manifest.json').read_text(encoding='utf-8'))
     assert manifest['stage']=='syn' and not manifest['control_weights_changed'] and not manifest['programmed']
     assert not a.gyro_sum_exact_widths or not manifest.get('gyro_sum_exact_widths',False),'source already contains this candidate'
@@ -71,9 +80,10 @@ def main():
     original=(src/'run.tcl').read_text(encoding='utf-8')
     assert [s.strip()for s in original.splitlines()if s.strip().startswith('run ')]==['run syn']
     # Preserve the cancelled directory, including partial implementation files.
-    shutil.copytree(src,out,ignore=shutil.ignore_patterns('impl','gw_sh.log','preflight.log',
-        'resource_cancellation.json','__pycache__','job.json','synthesis_summary.json',
-        'memory_inventory.json','tool_runtime.json'))
+    if not a.resume_settings_only:
+        shutil.copytree(src,out,ignore=shutil.ignore_patterns('impl','gw_sh.log','preflight.log',
+            'resource_cancellation.json','__pycache__','job.json','synthesis_summary.json',
+            'memory_inventory.json','tool_runtime.json'))
     modified=[]
     if a.gyro_sum_exact_widths:
         import importlib.util
@@ -205,6 +215,7 @@ def main():
     settings=[rewrite(line)for line in original.splitlines()if line.strip()not in ('run syn','exit')]
     state=dict(source=str(src),build=str(out),wait_pid=a.wait_pid,programmed=False,
         source_frozen_before_wait=True,automatic_pnr=False,
+        settings_only_resume=a.resume_settings_only,
         modified_rtl_inputs=modified,
         scope='one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance')
     def status(phase,**extra):

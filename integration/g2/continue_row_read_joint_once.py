@@ -55,6 +55,7 @@ def main():
     p=argparse.ArgumentParser()
     for key in ('prepared','prior-pnr','prior-state','syn-out','pnr-out','state-dir'):p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--check-only',action='store_true')
+    p.add_argument('--resume-settings-only',action='store_true')
     a=p.parse_args()
     prepared,prior,prior_state,syn,out,state_dir=[x.resolve() for x in (a.prepared,a.prior_pnr,a.prior_state,a.syn_out,a.pnr_out,a.state_dir)]
     baseline=prior.parent/'sfp_lane2_observation_lw_pnr15'
@@ -63,7 +64,12 @@ def main():
         proof=review(syn,baseline)
         (state_dir/'pre_pnr_checks.json').write_text(json.dumps(proof,indent=2)+'\n',encoding='utf-8')
         return 0
-    assert not syn.exists() and not out.exists()
+    assert not out.exists()
+    if a.resume_settings_only:
+        previous=json.loads((syn/'job.json').read_text())
+        assert previous['phase']=='validating_frozen_settings' and 'tool_pid' not in previous
+        assert not (syn/'impl').exists() and not (syn/'gw_sh.log').exists()
+    else:assert not syn.exists()
     preparation=json.loads((prepared/'prepared_source_review.json').read_text())
     assert preparation['phase']=='prepared_only_waiting_for_PNR19_result_review'
     assert preparation['unchanged_assets']==104 and preparation['unchanged_hardware_inputs']==67
@@ -116,6 +122,7 @@ def main():
             if memory.avail_phys>=2*GIB and memory.avail_page>=4*GIB:break
             time.sleep(15)
         command=[sys.executable,'-X','utf8',str(ROOT/'integration/g2/retry_frozen_synthesis.py'),str(prepared),'--out',str(syn),'--start-now']
+        if a.resume_settings_only:command.append('--resume-settings-only')
         with (state_dir/'synthesis_runner.log').open('w',encoding='utf-8') as stream:
             child=subprocess.Popen(command,cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT,creationflags=subprocess.CREATE_NO_WINDOW)
             save('one_frozen_joint_SYN_running',synthesis_supervisor_pid=child.pid,command=command)
