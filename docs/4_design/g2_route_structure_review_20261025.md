@@ -253,3 +253,15 @@ RK双UART本轮基础只读实测：P11在20.04秒收1998帧完整126字节V2、
 PNR29 `baseline_fusion_pose_timing_pnr29`于22:30:24.113193启动，工具61168创建22:30:24.115581、控制58384；启动物理/提交各约4.29GiB，通过原2/4GiB门槛。实际cmd.do除路径外与已布通PNR27一致，保持route0/place1/复制1/宽拆分1/global50；CST原字节保持，VG及54条有效SDC命令与审阅快照逐字对应。当前已进入布局，无新物理/时序结果；总0/静默0无截止。PNR28工具54744仍同一routing，未改其输入、时限或进程，未恢复已暂停自动监督。[实际启动及身份](../4_design/evidence/g2_20261023/fusion_pose_timing_PNR29_launch_20261025.json)。
 
 这份SYN估计44.852MHz并非50MHz通过，最差已转动作→执行器映射；旧NAV路径后半段也不能由预译码证明消除。另已查到具备数值/周期对照的动作精确位宽候选及完整SYN缓存，当前未叠加，须根据新物理报告继续定位。新轮结束先收真实布通/资源/分配/长路径、全域setup/hold及52条有效约束与CDC/复位/IO，未验证不放行，不以综合估计或布通代替部署门槛。
+
+## 23:36 两轮最终失败与基线独立诊断
+
+**2026-10-25 23:36 PNR28/29自然失败；保留PNR27布通锚点，已启动独立PNR30并串行排入PNR31。** PNR28于22:42:39自然结束366条未布通、实际RAM323；PNR29于22:57:10自然结束893条、实际RAM332，均cancelled=false、总0/静默0，无.tr，setup/hold及52条有效约束状态未知。已修正采集器把缺.tr明确标成未验证，不能由“未找到52条Actived”推断工具忽略约束。见[实际结果与本轮接续](evidence/g2_20261023/PNR28_29_final_and_PNR30_31_diagnostics_20261025.json)。
+
+PNR27可复现的是已布通及5003 setup/8 hold失败，不是“每次必通”或可部署点。PNR28放宽SDC仍失败不能单独证明纯拥塞；PNR29同时修改两份RTL、加入52条CDC命令，不能否定全部时序优化。两版实际332块RAM实例/原语/几何/模式和18宽拆分相同，CPU64/控制49/导航219；Logic仅+4、FF+136、CLS−230。已核实9条相同驱动/输入/INIT及负载数网络在PRIMARY/LW/普通路由间重新分配，包括4条地图/遍历控制CE从LW转普通。它们是可定位的变化，不是893条失败网络身份或已证根因。[实际物理比较](evidence/g2_20261023/PNR27_vs_PNR29_actual_physical_comparison_20261025.json)。
+
+PNR30 `baseline27_clk25_diag_pnr30`于23:18:18.393888启动工具21748（创建23:18:18.405396）、控制19752；原PNR27 VG/CST字节相同，只把clk50 SDC20ns改40ns，RX10ns/原两条命令范围保持，实际cmd.do除目录外完全相同、route0/global50保持。已完成Routing Phase0，无最终报告。控制器`baseline27_single_factor_pair1`待其自然结果后，重新检查2GiB物理/4GiB提交门槛，启动唯一PNR31 `baseline27_cdc_only_pnr31`：同PNR27 VG/CST/20-10ns，仅加26 hold-only＋26个8/18ns max-delay。两者均总0/静默0，无截止；没有重综合、改实际时钟、恢复自动监督、关闭软件或硬件动作。启动余量约3.54GiB物理/4.67GiB提交，只够保守串行接续，不强开第二PNR。[独立输入审阅](evidence/g2_20261023/PNR27_period40_and_CDC52_input_review_20261025.json)。
+
+40ns诊断不保证布通或hold双0，更不会改变板上50MHz。旧route的已报同域setup样本推算最差+1.996ns仅属固定路由算术，不是新STA；8条跨域首级hold关系仍0ns，原IO也无input/output_delay，不能把放宽SDC位流当25MHz镜像烧录。真实控制25/NAV50只读审阅发现28项时钟/节拍参数和跨域职责；直接改时钟会把125Hz变62.5Hz，并改变串口、BMI、PWM、编码器量纲。83534拍在25MHz下3.34136ms只证明历史核心推理周期，不含完整采样/观测/装载/执行器及跨域；NAV还有37.028ns路径，控制单独降频不能完成全域50MHz签核。[真实分域范围](evidence/g2_20261023/control25_nav50_clock_split_scope_20261025.json)。
+
+fusion-only和pose-only两份独立准备源均就绪，尚未新SYN/PNR；pose-only仅采用已通过3091拍证明的NAV预译码，其余62 RTL/69资产/31头、完整FW编译时标、原fusion/CST/20-10ns保持。先读独立物理诊断结果再选择接入，不堆候选。[纯POSE准备](evidence/g2_20261023/baseline_pose_only_source_prepared_20261025.json)。另需纠正历史归属：0.992g属于10-23 13:20独立B1恒零镜像，不是当前联合通过；最新双UART只读仍sensor_error1/推理0且SYS_ID无应答。461ms是旧T版A*样本，后续Y分块样本39.60048ms也不能代替当前冻结FW全环WCET。失联候选仍ready_for_integration=false/safe_for_deployment=false，不把软件合同当上板停止通过。

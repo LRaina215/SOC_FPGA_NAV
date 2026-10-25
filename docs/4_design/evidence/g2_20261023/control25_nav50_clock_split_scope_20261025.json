@@ -1,0 +1,562 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-25T23:18:10.251372+08:00",
+  "review_completed": true,
+  "deployment_feasible_proved": false,
+  "scope": "Read-only actual frozen RTL plus actualPNR27 report feasibility audit; no source, build, board or running process modified.",
+  "frozen_source": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50",
+  "routed_reference": "F:/nav_integration_g2_20261023/baseline_rep1_replay_pnr27",
+  "current_clock_structure": {
+    "all_control_modules_use_single_clk": true,
+    "control_top_has_CLK_HZ_parameter": false,
+    "g2_shared_modules": [
+      "control4500_core",
+      "nav_subsystem",
+      "nav_soc",
+      "nav_bus_arb",
+      "uart_bus_bridge",
+      "nav_command_units",
+      "command_lease_guard",
+      "rgmii_mac100 management/TX"
+    ],
+    "clock": "clk50 directly, NAV_USE_PLL branch not selected by frozen run",
+    "true_clocks": [
+      "clk50 50MHz",
+      "rgmii_rxc100MHz"
+    ],
+    "references": [
+      {
+        "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50\\g2_top.v",
+        "lines": [
+          48,
+          52,
+          53,
+          78,
+          160,
+          175,
+          184
+        ]
+      }
+    ]
+  },
+  "inference_3p3ms_audit": {
+    "83534_cycles_supported_by_saved_RTL_report": true,
+    "supported_scope": "fixed4500 core start-to-done; historical256synthetic+56trajectory+8numeric stress vectors plus replay/protocol/reset checks; not a25MHz physical full-control measurement",
+    "cycles": 83534,
+    "calculated_at50MHz_ms": 1.67068,
+    "calculated_at25MHz_ms": 3.34136,
+    "deadline_cycles_at25MHz_for8ms": 200000,
+    "remaining_cycles_excluding_core": 116466,
+    "remaining_time_ms_excluding_core": 4.65864,
+    "numeric_oracle": "D:/Desktop/SOC FPGA/nav/control/model/mem_4500/error_report.md:25",
+    "cycle_assertion": "D:/Desktop/SOC FPGA/nav/control/pt_to_fpga/parking_speed_4500/tb/tb_fc_v4_top.v:221",
+    "documentation": "D:/Desktop/SOC FPGA/nav/control/fpga/md/MEM_4500.md:78",
+    "actual_last_read_existing_board_image_inference_cycles_min_max": [
+      0,
+      0
+    ],
+    "board_read_evidence": "D:/Desktop/SOC FPGA/nav/docs/4_design/evidence/g2_20261023/rk_dual_uart_baseline_readonly_20261025.json",
+    "excluded_from_3p3ms": [
+      "observation/history formation",
+      "168word LOAD and snapshot/handshakes",
+      "fresh BMI sampling/fusion age",
+      "action mapping and PID delivery",
+      "NAV/control boundary transfer",
+      "servo next20ms frame boundary"
+    ],
+    "conclusion": "Core arithmetic headroom is plausible. The3.34136ms calculation is correct for that83534cycle core, but does not prove full25MHz control correctness or8ms end-to-end behavior."
+  },
+  "active_control_clock_and_timer_audit": [
+    {
+      "block": "control4500_core",
+      "field": "new CTRL_CLK_HZ",
+      "frozen_50MHz_value": null,
+      "proposed_25MHz_value": 25000000,
+      "note": "Required top-level parameter does not exist now; must propagate explicitly through instantiated blocks."
+    },
+    {
+      "block": "control4500_core startup",
+      "field": "startup counter",
+      "frozen_50MHz_value": 255,
+      "proposed_25MHz_value": "Review whether preserve255cycles or wall5.1us; not a deadline proof",
+      "note": "Initial saturation wait becomes10.2us if unchanged; no external functional issue proved."
+    },
+    {
+      "block": "mem_policy / rl_policy_tick_v5",
+      "field": "PERIOD_CLKS",
+      "frozen_50MHz_value": 400000,
+      "proposed_25MHz_value": 200000,
+      "note": "Required for125Hz/8ms and the same overrun watchdog threshold in wall time."
+    },
+    {
+      "block": "mem_policy",
+      "field": "SENSOR_TIMEOUT_CLKS",
+      "frozen_50MHz_value": 2500000,
+      "proposed_25MHz_value": 1250000,
+      "note": "Preserve50ms fresh-sample limit; unchanged would100ms."
+    },
+    {
+      "block": "imu_fusion",
+      "field": "CLK_HZ",
+      "frozen_50MHz_value": 50000000,
+      "proposed_25MHz_value": 25000000,
+      "note": "Must match actual clock because measured integration_ticks is divided by CLK_HZ; unchanged produces half correct physical integration interval."
+    },
+    {
+      "block": "bmi088",
+      "field": "STARTUP_CYCLES",
+      "frozen_50MHz_value": 1500000,
+      "proposed_25MHz_value": 750000,
+      "note": "Preserve30ms."
+    },
+    {
+      "block": "bmi088",
+      "field": "WRITE_WAIT_CYCLES",
+      "frozen_50MHz_value": 50000,
+      "proposed_25MHz_value": 25000,
+      "note": "Preserve1ms."
+    },
+    {
+      "block": "bmi088",
+      "field": "ACCEL_CONF_WAIT_CYCLES",
+      "frozen_50MHz_value": 250000,
+      "proposed_25MHz_value": 125000,
+      "note": "Preserve5ms."
+    },
+    {
+      "block": "bmi088",
+      "field": "ACCEL_POWER_WAIT_CYCLES",
+      "frozen_50MHz_value": 2500000,
+      "proposed_25MHz_value": 1250000,
+      "note": "Preserve50ms."
+    },
+    {
+      "block": "bmi088",
+      "field": "GYRO_WAIT_CYCLES",
+      "frozen_50MHz_value": 1500000,
+      "proposed_25MHz_value": 750000,
+      "note": "Preserve30ms."
+    },
+    {
+      "block": "bmi088",
+      "field": "POLL_CYCLES",
+      "frozen_50MHz_value": 500000,
+      "proposed_25MHz_value": 250000,
+      "note": "Preserve10ms start interval /100Hz host polling and200sample approximate2s bias window."
+    },
+    {
+      "block": "bmi088 / iic",
+      "field": "QUARTER_CYCLES",
+      "frozen_50MHz_value": 125,
+      "proposed_25MHz_value": "62/63 fractional, or63 with separately accepted0.8% slower clock",
+      "note": "125 is odd; naive floor/round cannot reproduce100kHz exactly at25MHz. 63 gives99.206kHz;62 gives100.806kHz. No external timing acceptance inferred."
+    },
+    {
+      "block": "bmi088 / iic",
+      "field": "TIMEOUT_CYCLES",
+      "frozen_50MHz_value": 50000,
+      "proposed_25MHz_value": 25000,
+      "note": "Preserve1ms timeout."
+    },
+    {
+      "block": "bmi088",
+      "field": "RETRY_CYCLES",
+      "frozen_50MHz_value": 5000000,
+      "proposed_25MHz_value": 2500000,
+      "note": "Preserve100ms retry."
+    },
+    {
+      "block": "ir_remote_control",
+      "field": "CLOCK_FREQ_HZ",
+      "frozen_50MHz_value": 50000000,
+      "proposed_25MHz_value": 25000000,
+      "note": "Preserve NEC widths,180ms held-key timeout and10ms height step; unchanged input decoder thresholds would double in wall time."
+    },
+    {
+      "block": "motor520_speed",
+      "field": "CLK_HZ, SPEED_GATE_CYCLES",
+      "frozen_50MHz_value": [
+        50000000,
+        500000
+      ],
+      "proposed_25MHz_value": [
+        25000000,
+        250000
+      ],
+      "note": "Preserve10ms AB count window and exact ratio CLK_HZ/SPEED_GATE_CYCLES; verify edge sampling/phase boundaries and full count conversion."
+    },
+    {
+      "block": "rl_observation_v5",
+      "field": "WHEEL_NUM, WHEEL_DEN",
+      "frozen_50MHz_value": [
+        193019452637,
+        "1320 *500000"
+      ],
+      "proposed_25MHz_value": "Preserve exact conversion for physical10ms count window",
+      "note": "Fixed WHEEL_NUM embeds original timing scale. Blindly changing only observation SPEED_GATE_CYCLES to250000 doubles reported wheel observation. Preserve exact old rational per10ms, or parameterize elapsed duration with exact compile-time rational; do not truncate the odd numerator by two."
+    },
+    {
+      "block": "motor520_velocity_pid",
+      "field": "FEEDBACK_TIMEOUT_CYCLES",
+      "frozen_50MHz_value": 10000000,
+      "proposed_25MHz_value": 5000000,
+      "note": "Preserve200ms feedback timeout."
+    },
+    {
+      "block": "motor520_velocity_pid",
+      "field": "STALL_SAMPLES, WRONG_DIRECTION_SAMPLES, RAMP_STEP_MMPS",
+      "frozen_50MHz_value": [
+        100,
+        10,
+        100
+      ],
+      "proposed_25MHz_value": [
+        100,
+        10,
+        100
+      ],
+      "note": "Keep sample-count semantics if10ms encoder cadence retained; these are per sample, not raw clocks."
+    },
+    {
+      "block": "motor520_closed_loop",
+      "field": "PWM_PERIOD_CYCLES, DUTY_MAX",
+      "frozen_50MHz_value": [
+        2500,
+        2400
+      ],
+      "proposed_25MHz_value": "See PWM alternatives",
+      "note": "Keeping2500 at25MHz changes20kHz carrier to10kHz while duty fraction resolution remains. Changing period to1250 without rescaling duty/gains clips at100% too early. Exact20kHz+original tick gain/resolution best kept in50MHz peripheral domain."
+    },
+    {
+      "block": "motor520_velocity_pid",
+      "field": "PID gains in PWM ticks/mm/s",
+      "frozen_50MHz_value": "core Kp3 Ki.35 Kd2 Kff.8",
+      "proposed_25MHz_value": "unchanged only if original2500tick duty units retained",
+      "note": "The physical100Hz sample must remain unchanged; if duty period/unit changes gains, limits, derivative clamp and duty threshold require re-derivation/proof."
+    },
+    {
+      "block": "servo_driver",
+      "field": "CLK_HZ, FRAME_US",
+      "frozen_50MHz_value": [
+        50000000,
+        20000
+      ],
+      "proposed_25MHz_value": [
+        25000000,
+        20000
+      ],
+      "note": "25cycles/us reproduces original500..2500us commands and20ms frame. Without propagation frame40ms and all pulses2x."
+    },
+    {
+      "block": "uart_telemetry",
+      "field": "CLOCK_FREQ_HZ, FRAME_HZ",
+      "frozen_50MHz_value": [
+        50000000,
+        100
+      ],
+      "proposed_25MHz_value": [
+        25000000,
+        100
+      ],
+      "note": "Preserve100Hz frame and real1ms timestamp; default CLOCK_FREQ_HZ is currently not overridden by core."
+    },
+    {
+      "block": "uart_telemetry / board_uart_tx / optional uart_speed_rx",
+      "field": "CLKS_PER_BIT",
+      "frozen_50MHz_value": 217,
+      "proposed_25MHz_value": "108/109 fractional or109 subject to UART tolerance proof",
+      "note": "Original actual baud230414.747;109 at25MHz gives229357.798 (about-0.452% from230400),108 gives231481.481 (+0.469%). Fractional alternating108/109 preserves old mean but changes bit jitter; verify framing/receiver tolerance. Current speed RX is disabled/tied high; V2 TX remains live."
+    },
+    {
+      "block": "uart_speed_rx optional",
+      "field": "FRAME_TIMEOUT_CLKS",
+      "frozen_50MHz_value": 500000,
+      "proposed_25MHz_value": 250000,
+      "note": "Preserve10ms incomplete-frame discard if this RX path is later enabled."
+    },
+    {
+      "block": "model_wheel_response dormant",
+      "field": "UPDATE_CYCLES",
+      "frozen_50MHz_value": 100000,
+      "proposed_25MHz_value": 50000,
+      "note": "Preserve2ms if filter is enabled; frozen MODEL_WHEEL_FILTER_ENABLE=0, so not an active behavior in this build."
+    },
+    {
+      "block": "oled",
+      "field": "STARTUP_CYCLES, IIC_TIMEOUT_CYCLES",
+      "frozen_50MHz_value": [
+        10000000,
+        50000
+      ],
+      "proposed_25MHz_value": [
+        5000000,
+        25000
+      ],
+      "note": "Preserve200ms display startup/1ms bus timeout; quarter125 has same fractional issue as BMI I2C."
+    },
+    {
+      "block": "NAV-side command_lease_guard",
+      "field": "CLK_HZ",
+      "frozen_50MHz_value": 50000000,
+      "proposed_25MHz_value": 50000000,
+      "note": "Keep inNAV50 domain: original200ms lease/50ms feedback freshness/500ms dwell/1ms slew unchanged. Transfer complete atomic48bit command to25 domain; do not halve NAV timers."
+    }
+  ],
+  "references": {
+    "core_live_children": {
+      "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50\\control4500_core.v",
+      "lines": [
+        73,
+        81,
+        124,
+        134,
+        147,
+        151,
+        179,
+        201,
+        259,
+        275,
+        311
+      ]
+    },
+    "policy_schedule": {
+      "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50\\control\\mem_policy.v",
+      "lines": [
+        7,
+        8,
+        32,
+        42,
+        44,
+        47,
+        60,
+        75,
+        84,
+        95
+      ]
+    },
+    "fusion_time_scale": {
+      "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50\\control\\imu_fusion.v",
+      "lines": [
+        50,
+        89,
+        119,
+        122,
+        126,
+        187,
+        191,
+        261,
+        275,
+        276,
+        277,
+        400,
+        429
+      ]
+    },
+    "observation_scale": {
+      "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50\\control\\rl_observation_v5.v",
+      "lines": [
+        6,
+        10,
+        24,
+        25,
+        28,
+        29,
+        106
+      ]
+    },
+    "PWM_units": {
+      "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50\\control\\motor520_closed_loop.v",
+      "lines": [
+        9,
+        10,
+        15,
+        32,
+        34,
+        41,
+        43,
+        49,
+        52,
+        60,
+        61,
+        77,
+        119,
+        186,
+        197,
+        206
+      ]
+    },
+    "servo_clock_loss_risk": {
+      "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50\\control\\servo_driver.v",
+      "lines": [
+        44,
+        46,
+        48,
+        57,
+        64,
+        67
+      ]
+    }
+  },
+  "new_boundary_if_whole_control25": [
+    {
+      "direction": "NAV50 ->control25",
+      "payload": [
+        "nav_forward_q12 signed24",
+        "nav_yaw_q12 signed24"
+      ],
+      "width": 48,
+      "current_form": "combinational continuously held command pair from50MHz lease, no control-side valid/ack port",
+      "needed": "atomic registered pair handoff with destination commit/ack; latest zero/STOP wins and no stale replay after reset/PLL loss; keep lease authority and balance-running semantics. Two independent per-bit synchronizers do not prove coherence."
+    },
+    {
+      "direction": "control25 ->NAV50 command_lease",
+      "payload": [
+        "feedback_vx_mmps signed16",
+        "feedback_wz_mradps signed16",
+        "feedback_valid one source-cycle pulse"
+      ],
+      "width": 33,
+      "current_form": "vx derived fromsum of left/right speed; wz fromcaptured telemetry gyro; valid is left_speed_valid &&right_speed_valid &&model_ready",
+      "needed": "capture complete32bit pair onsource feedback_valid, transfer durable sequence/toggle+ack and produce exactlyone50MHz valid; preserve ordered10ms samples/freshness. Feedback pulsewidth doubles to40ns but still needs deterministic transfer and payload proof."
+    },
+    {
+      "direction": "reset/PLL status both domains",
+      "payload": [
+        "shared protocol reset",
+        "PLL lock/fault",
+        "independent supervisor timebase"
+      ],
+      "needed": "asynchronous assertion/synchronous release ineach actual domain, sticky lock-loss stop supervised by surviving50MHz; verify paused25 clock cannot leave motor/servo outputs unsafe or auto-rearm. Existing servo reset is synchronous, so25 clock halt can leave its outputQ high."
+    }
+  ],
+  "related_clock_constraint_limit": {
+    "true_PLL25_from50_is_related": true,
+    "not_all_boundary_paths_get40ns": "With ideal aligned edges,50launch at20ns→25capture40ns and25launch0→50capture20ns each offer20ns, before clock delay/skew/setup.40ns applies to25→25 paths, not every cross-domain path.",
+    "needed": [
+      "actual PLL ratio/phase and generated clocks fromdevice flow",
+      "retain clocks relationship; no broad asynchronous clock_groups/false paths",
+      "actual source/first/second and coherent payload review onnew VG",
+      "post-route inter-domain setup/hold/skew and resetrelease proof"
+    ]
+  },
+  "alternative_smaller_external_timing_risk": {
+    "architecture": "Keep BMI/I2C, IR, encoder conversion/PID/PWM, servo andUART50MHz; move fusion+observation+inference+action arithmetic toPLL25MHz.",
+    "benefit": "Preserves existing bit/cycle physical timing, PWM2500tick resolution and PID gain units without fractional clocks.",
+    "cost": "Many extra boundary transactions:96bitBMI+valid/status;64bitencoder delta/valid;commands;64bitwheel targets;64bitservo commands;model enable/ready/fault. Requires atomic snapshots/stop priority and source-age accounting. It is more than moving the core clk pin."
+  },
+  "actual_global_clock_resources": {
+    "PRIMARY_used": 8,
+    "PRIMARY_capacity": 8,
+    "LW_used": 8,
+    "LW_capacity": 8,
+    "global_clock_pin_used": 6,
+    "rows": [
+      {
+        "net": "clk50_d",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PTR2 PTR3 PBR0 PBR1 PBR2 PBR3"
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "resource": "PRIMARY",
+        "location": "PBR1"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_21",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_22",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_23",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_24",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_nav/a_q_15_15",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PTR2 PBR1 PBR2"
+      },
+      {
+        "net": "u_nav/u_pt/n5285_4",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PBR0 PBR1"
+      },
+      {
+        "net": "r2",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/n2371_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n331_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_0_9",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n26292_4",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25518_4",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n24910_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25284_7",
+        "resource": "LW",
+        "location": "-"
+      }
+    ],
+    "true_clocks_now": 2,
+    "true_clocks_after": 3,
+    "interpretation": "Six currently automatic PRIMARYcontrol signals can potentially be reassigned, so PRIMARY8/8 does not alone prove a third clock impossible. But reserving aPLL25 route displaces some control distribution and LW is also full; new actual netlist/load roles and reported assignment must be reviewed."
+  },
+  "why_control25_alone_is_not_complete_timing_solution": {
+    "PNR27_worst_control_path_ns": 37.915,
+    "PNR27_nav_path_ns": 37.028,
+    "nav_route_component_ns": 32.853,
+    "nav_path": "u_nav/a_q_8_s0/Q ->u_nav/u_pp/n311_s/A[0]",
+    "NAV_stays50MHz_required_period_ns": 20,
+    "old_pose_decode_prefix_after_Q_ns": 11.568,
+    "old_remaining_path_after_prefix_ns": 25.115,
+    "meaning": "Control40ns may relax the measured fusion path, but NAV20ns remains violated. Subtracting the oldPOSE prefix does not establish new routed delay; it still leaves>20ns inold placement.",
+    "evidence": "F:/nav_integration_g2_20261023/pnr27_timing_review_20261025/timing_review.json"
+  },
+  "feasible_next_steps_in_order": [
+    "Freeze the exactPNR27 source and define whether original20kHzPWM/230400baud/100HzBMI/100HzV2/20msservo must remain physically exact. Retain original4500, allweights and125Hz.",
+    "Prefer explicit CTRL_CLK_HZ propagation and a complete table of walltime/rational-unit contracts; preserve NAV/CPU/lease50MHz. Choose explicit PWM/serial boundary policy rather than blinddivideall constants.",
+    "Add atomic48bit command and32bit feedback handoff, independent50MHz PLL-loss/stop supervisor and proper domain reset. Keep communication stop as controlled zero command with balancing policy alive, rather than cutting control_run.",
+    "Targeted dual-clock behavioral checks atreal25/50MHz edges:125Hz cadence/capture→action deadline, exactnumeric4500, alignedsamples, BMI/I2C timeouts, UART bit timing, encoder/PID/PWM units, servo pulsewidth, zero/STOP priority, pulse preservation, PLLhalt/loss/reset and noauto-rearm.",
+    "Only after source contracts pass, one full SYN; audit real3clock objects/global allocation, originalmemories/INIT/weights, newCDC/payload/reset and originalradar CDC. Actual PNR has no total/silent deadline.",
+    "Require actual25MHz control plus50MHz NAV and100MHzreceive setup/hold and allfunctional/stop gates before anyboard deployment. Do not treat SDC40ns alone asPLLdivision."
+  ],
+  "source_changed": false,
+  "SYN_or_PNR_started": false,
+  "board_action": false,
+  "deployment_accepted": false
+}

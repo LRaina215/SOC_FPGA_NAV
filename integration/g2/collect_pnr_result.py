@@ -110,6 +110,9 @@ def collect(build,top='g2_top'):
         cdc_pass=bool(endpoints_match and not missing)
         r['cdc_first_stage_candidate']=dict(physical_audit=physical,endpoints_match_reference=endpoints_match,
             required_active_constraints=len(reviewed),missing_active_constraints=missing,passed=cdc_pass,
+            effective_constraint_report_available=bool(t.strip()),
+            effective_constraint_status=('unverified_no_timing_report' if not t.strip() else
+                                         'required_commands_not_found' if missing else 'verified_reported_active'),
             scope='only audited first-stage hold exceptions and explicit max delays; no full CDC/IO/MTBF signoff')
     sfp_file=build/'sfp_cdc_reference.json'
     if sfp_file.exists():

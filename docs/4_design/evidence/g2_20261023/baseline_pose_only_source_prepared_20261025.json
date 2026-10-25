@@ -1,0 +1,114 @@
+{
+  "passed": true,
+  "review_kind": "strict_source_preparation_and_existing_pose_cycle_proof_binding_only",
+  "created_at": "2026-10-25T23:31:11.005212+08:00",
+  "source": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50",
+  "routed_reference": "F:\\nav_integration_g2_20261023\\baseline_rep1_replay_pnr27",
+  "prepared": "F:\\nav_integration_g2_20261023\\baseline_pose_only_prepared1",
+  "modified_rtl_inputs": [
+    "nav/rtl/top/nav_subsystem.v"
+  ],
+  "hardware_inputs": 63,
+  "unchanged_hardware_inputs": 62,
+  "unchanged_assets": 69,
+  "unchanged_headers": 31,
+  "all_unmodified_hardware_assets_headers_bytes_preserved": true,
+  "original_firmware_and_build_timestamp_bytes_preserved": true,
+  "firmware_files_copied": 92,
+  "fw_files_copied": 62,
+  "complete_original4500_weights_125Hz_CPU_and_stop_inputs_byte_identical": true,
+  "original_IO_and_20ns10ns_SDC_byte_identical": true,
+  "no_fusion_or_point_buffer_or_other_optimization_adopted": true,
+  "candidate_bytes_equal_preserved_pose_proof_input": true,
+  "exact_five_text_transform_from_original_frozen_NAV": true,
+  "run_tcl_only_path_relocation_byte_exact_after_inverse": true,
+  "run_tcl_command": "run syn",
+  "run_tcl_CRLF_preserved": true,
+  "existing_proof_reused_without_new_simulation": true,
+  "preparation_check_note": "Initial multiline regex did not match preserved CRLF. Replaced that check with splitlines+fullmatch; frozen payloads unchanged. No simulation or vendor build was invoked.",
+  "contract": {
+    "post_clock_identity": "pose_predecoded_q == rf_wr && (a_q == 16'h2070)",
+    "same_bus_accept_edge_and_word_alignment": true,
+    "address_aliases": [
+      "0x2070",
+      "0x2071",
+      "0x2072",
+      "0x2073"
+    ],
+    "zero_data_write_triggers": true,
+    "read_and_special_window_branches_do_not_trigger": true,
+    "reset_clears_both_pulses_on_same_clock": true,
+    "XT_pose_commit_and_coverage_frame_start_only_consumers": true,
+    "coverage_match_only_gate_unchanged": true,
+    "no_point_stream_latency_or_metadata_buffer_added": true,
+    "original_bus_ACK_state_machine_unchanged": true,
+    "held_req_caveat": "Original B_END returns IDLE unconditionally. No new once-only claim for a request held past ACK.",
+    "proof_result": {
+      "pass_": true,
+      "cycle_comparisons": 3091,
+      "pose_pulses": 83,
+      "bus_transactions": 541,
+      "reset_scenarios": 2,
+      "reference": "unmodified nav_regfile POSE_COMMIT output in actual nav_subsystem bus FSM",
+      "scope": "finite pulse/cycle equivalence; no full-system or physical timing acceptance"
+    },
+    "proof_scope": "Existing finite pulse/cycle equivalence. Not new simulation, whole-system or physical timing acceptance."
+  },
+  "bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50\\nav\\rtl\\top\\nav_subsystem.v",
+      "bytes": 33080,
+      "mtime_ns": 1792648523202350000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50\\control\\imu_fusion.v",
+      "bytes": 19950,
+      "mtime_ns": 1792654237932555100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50\\firmware\\nav_fw.bin",
+      "bytes": 51712,
+      "mtime_ns": 1792660824309244200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_rep1_replay_pnr27\\g2_top.vg",
+      "bytes": 24413952,
+      "mtime_ns": 1792934258261681000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\pose_predecode_equivalence\\nav_candidate.v",
+      "bytes": 32862,
+      "mtime_ns": 1792666159276604900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\pose_predecode_equivalence\\result.json",
+      "bytes": 311,
+      "mtime_ns": 1792666173305525500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\pose_predecode_equivalence\\xsim.log",
+      "bytes": 1453,
+      "mtime_ns": 1792666173213457100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_pose_only_prepared1\\nav\\rtl\\top\\nav_subsystem.v",
+      "bytes": 32862,
+      "mtime_ns": 1792942228101851100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_pose_only_prepared1\\pose_only.patch",
+      "bytes": 2953,
+      "mtime_ns": 1792942228153738200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_pose_only_prepared1\\run.tcl",
+      "bytes": 7808,
+      "mtime_ns": 1792942228153738200
+    }
+  ],
+  "actual_joint_SYN_RAM_INIT_clock_CDC_and_timing_pending": true,
+  "no_synthesis_or_PNR_started": true,
+  "ready_for_PNR": false,
+  "programmed": false,
+  "deployment_accepted": false
+}

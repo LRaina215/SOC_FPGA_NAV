@@ -1,0 +1,159 @@
+{
+  "recorded_at": "2026-10-25T23:36:04.288035+08:00",
+  "scope": "Actual final results, same-baseline physical comparison, independent diagnostics and true clock-split scope; no deployment approval",
+  "PNR27": {
+    "routing_passed": true,
+    "BSRAM": 332,
+    "core_constraint_MHz": 50,
+    "core_Fmax_MHz": 26.313,
+    "setup_violations": 5003,
+    "global_hold_violations": 8,
+    "exact_replay_timing_and_resources_reproduced": true,
+    "universal_route_guarantee": false,
+    "deployment_accepted": false
+  },
+  "PNR28": {
+    "unrouted": 366,
+    "BSRAM": 323,
+    "natural_exit": true,
+    "timing_report_available": false,
+    "setup": null,
+    "hold": null,
+    "proves_pure_congestion": false,
+    "evidence": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\clk25_PNR28_final_unrouted366_20261025.json"
+  },
+  "PNR29": {
+    "unrouted": 893,
+    "BSRAM": 332,
+    "natural_exit": true,
+    "timing_report_available": false,
+    "setup": null,
+    "hold": null,
+    "changes": [
+      "fusion register boundary",
+      "pose address predecode",
+      "26hold-only+26max-delay commands",
+      "CPU banner5ASCII compile-time characters"
+    ],
+    "disproves_all_timing_optimization": false,
+    "evidence": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\fusion_pose_PNR29_final_unrouted893_20261025.json"
+  },
+  "physical_comparison": {
+    "same_actual_BSRAM_instances_geometry_and_modes": true,
+    "by_owner": {
+      "CPU": 64,
+      "control": 49,
+      "NAV": 219
+    },
+    "resource_deltas": {
+      "Logic": 4,
+      "Register": 136,
+      "CLS": -230,
+      "BSRAM": 0,
+      "DSP": 0,
+      "primary": 0,
+      "lw": 0
+    },
+    "identical_driver_and_load_nets_reassigned": 9,
+    "unrouted_net_identities_or_locations_known": false,
+    "global_reassignment_is_proven_failure_cause": false,
+    "report": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\PNR27_vs_PNR29_actual_physical_comparison_20261025.json"
+  },
+  "PNR30": {
+    "directory": "F:\\nav_integration_g2_20261023\\baseline27_clk25_diag_pnr30",
+    "started_at": "2026-10-25T23:18:18.393888+08:00",
+    "tool_pid": 21748,
+    "tool_created_epoch": 1792941498.4053967,
+    "tool_command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "tool_cwd": "F:\\nav_integration_g2_20261023\\baseline27_clk25_diag_pnr30",
+    "controller_pid": 19752,
+    "controller_created_epoch": 1792941498.125261,
+    "controller_command": [
+      "D:\\Anaconda\\python.exe",
+      "-X",
+      "utf8",
+      "D:/Desktop/SOC FPGA/nav/integration/g2/run_routing_replay.py",
+      "baseline_pair"
+    ],
+    "phase": "routing_Phase0_completed_no_final_report",
+    "input_VG_CST_bytes_same_PNR27": true,
+    "only_SDC_change": "clk50 period20ns to40ns, RX10ns and original two-command scope unchanged",
+    "actual_command_same_except_paths": true,
+    "physical_clock_changed": false,
+    "diagnostic_only": true,
+    "total_limit_s": 0,
+    "silent_limit_s": 0,
+    "runtime": "F:\\nav_integration_g2_20261023\\baseline27_clk25_diag_pnr30\\tool_runtime.json",
+    "programmed": false
+  },
+  "PNR31": {
+    "directory": "F:\\nav_integration_g2_20261023\\baseline27_cdc_only_pnr31",
+    "phase": "prepared_queued_after_PNR30",
+    "started": false,
+    "input_VG_CST_bytes_same_PNR27": true,
+    "only_SDC_change": "26auditedhold-only+26max-delay8/18ns;20/10ns clocks unchanged",
+    "pair_controller_job": "F:\\nav_integration_g2_20261023\\baseline27_single_factor_pair1\\job.json",
+    "fresh_memory_admission_GiB": {
+      "physical": 2,
+      "commit": 4
+    },
+    "diagnostic_only": true,
+    "total_limit_s": 0,
+    "silent_limit_s": 0,
+    "programmed": false
+  },
+  "period40_interpretation": {
+    "fixed_route_sample_worst_setup_estimate_ns": 1.996,
+    "new_STA_or_new_route_proof": false,
+    "hold_relation_ns": 0,
+    "hold_zero_guaranteed": false,
+    "physical_frequency_changed": false,
+    "IO_delay_constraints_present": false,
+    "report": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\PNR27_period40_and_CDC52_input_review_20261025.json"
+  },
+  "real_control25_NAV50": {
+    "review": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\control25_nav50_clock_split_scope_20261025.json",
+    "review_completed": true,
+    "hardware_candidate_built": false,
+    "full25MHz_end_to_end_8ms_proved": false,
+    "core_only_83534cycles_at25MHz_ms": 3.34136,
+    "NAV_path_still_37p028ns_at20ns_requirement": true,
+    "direct_whole_control_clock_division_changes_timers_PWM_UART_sensor_scaling": true,
+    "atomic_cross_domain_transfer_and_stop_reset_lock_proof_required": true
+  },
+  "single_RTL_candidates": {
+    "fusion_only_prepared": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_prepared1\\prepared_source_review.json",
+    "pose_only_prepared": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\baseline_pose_only_source_prepared_20261025.json",
+    "new_SYN_or_PNR_started": false,
+    "only_preparation_and_existing_proof_reuse": true
+  },
+  "historical_claim_limits": {
+    "BMI_0p992g": {
+      "source": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g3_20261023\\feedback_powered_recovery_1320.json",
+      "scope": "2026-10-23 13:20 independent4B28/B1 constant-zero capture; not current joint image or fusion/stop acceptance",
+      "latest_dual_UART_readonly": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\rk_dual_uart_baseline_readonly_20261025.json",
+      "latest_observation": "2026-10-25 21:09 P11 transport1998frames CRC0, sensor_error1/fusion_flags1/inference0; CH9102 SYS_ID0responses; current image identity unverified"
+    },
+    "Astar_461ms": {
+      "source": "D:\\Desktop\\SOC FPGA\\nav\\sim\\build\\nav_opt\\n2t_astar_cpu_cycles\\result.json",
+      "scope": "HistoricalT compressed-distance64x64 unknown-map sample, not present frozen firmware WCET",
+      "later_sample_source": "D:\\Desktop\\SOC FPGA\\nav\\sim\\build\\nav_opt\\n2y_chunk_cpu_cycles\\result.json",
+      "later_sample_max_ms": 39.60048,
+      "later_sample_is_current_whole_loop_WCET": false
+    },
+    "UART_host_loss": {
+      "source": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\uart_host_loss_candidate_20261025.json",
+      "ready_for_integration": false,
+      "safe_for_deployment": false,
+      "scope": "Software contracts do not prove real CPU response bounds, two-link business completeness or physical loss-to-stop behavior"
+    }
+  },
+  "automation_resumed": false,
+  "applications_closed": [],
+  "hardware_actions": [],
+  "programmed": false,
+  "deployment_accepted": false
+}
