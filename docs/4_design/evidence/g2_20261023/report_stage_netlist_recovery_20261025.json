@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-25T17:47:10.556870+08:00",
+  "scope": "Explicit recovery review evidence for structurally complete VGs interrupted after95% netlist generation, without resynthesis or vendor success claims",
+  "tool": "integration/g2/recover_report_stage_netlist.py",
+  "hashes_used": false,
+  "original_jobs_and_logs_unchanged": true,
+  "SYN_or_PNR_started": false,
+  "programmed": false,
+  "results": [
+    {
+      "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_console_trim_syn19",
+      "prepared": "F:\\nav_integration_g2_20261023\\lane2_trim_console_prepared1",
+      "vendor_synthesis_completed": false,
+      "vendor_normal_exit_observed": false,
+      "vendor_resource_report_available": false,
+      "original_job_phase": "synthesizing",
+      "original_synthesis_processes_exited": true,
+      "tool_log_netlist_generation_completed": true,
+      "frozen_hardware_inputs_identical": 68,
+      "frozen_assets_identical": 104,
+      "frozen_headers_identical": 31,
+      "frozen_firmware_sources_identical": 0,
+      "all_source_bindings_bytes_identical": true,
+      "manifest_immutable_fields_identical": true,
+      "definition_integrity": {
+        "passed": true,
+        "module_declarations": 142,
+        "complete_module_definitions": 142,
+        "endmodule_count": 142,
+        "reachable_definitions": 142,
+        "top": "g2_top",
+        "all_instances_parsed": true,
+        "hierarchy_acyclic": true,
+        "all_external_leaf_types_in_original_vendor_library": true,
+        "final_top_endmodule_present": true
+      },
+      "resources": {
+        "counting_rule": "expanded explicit VG leaf instances; no vendor T_* or DSP-internal register conversion",
+        "LUT2_3_4": 48393,
+        "DFF_primitives": 40058,
+        "ALU": 10144,
+        "RAM16SDP4": 2276,
+        "RAM16SDP1": 1088,
+        "ROM16": 702,
+        "source_BSRAM": 314,
+        "wide32_36_BSRAM": 10,
+        "assumed_exploratory_PNR_wide_split": 1,
+        "predicted_physical_BSRAM_with_split": 324,
+        "physical_PNR_resources_measured": false
+      },
+      "reference_VG_resources": {
+        "counting_rule": "expanded explicit VG leaf instances; no vendor T_* or DSP-internal register conversion",
+        "LUT2_3_4": 52319,
+        "DFF_primitives": 40766,
+        "ALU": 10197,
+        "RAM16SDP4": 3044,
+        "RAM16SDP1": 1088,
+        "ROM16": 702,
+        "source_BSRAM": 316,
+        "wide32_36_BSRAM": 10,
+        "assumed_exploratory_PNR_wide_split": 1,
+        "predicted_physical_BSRAM_with_split": 326,
+        "physical_PNR_resources_measured": false
+      },
+      "resource_delta_from_reference": {
+        "LUT2_3_4": -3926,
+        "DFF_primitives": -708,
+        "ALU": -53,
+        "RAM16SDP4": -768,
+        "RAM16SDP1": 0,
+        "ROM16": 0,
+        "source_BSRAM": -2,
+        "wide32_36_BSRAM": 0
+      },
+      "missing_vendor_reports": [
+        "g2_top_syn_rsc.xml",
+        "g2_top_syn_resource.html",
+        "g2_top_syn.rpt.html"
+      ],
+      "exploratory_PNR_precheck_passed": false,
+      "deployment_accepted": false,
+      "full_recovery_evidence": {
+        "path": "F:\\nav_integration_g2_20261023\\sfp_lane2_console_trim_syn19\\netlist_recovery_evidence.json",
+        "size_bytes": 7117663,
+        "mtime_ns": 1792921559787001500
+      },
+      "initialization_coverage": {
+        "memory_leaf_count": 4380,
+        "by_primitive": {
+          "RAM16SDP4": 2276,
+          "SP": 64,
+          "pROM": 24,
+          "ROM16": 702,
+          "pROMX9": 21,
+          "SDPB": 53,
+          "SDPX9B": 152,
+          "RAM16SDP1": 1088
+        },
+        "effective_INIT_parameter_count": 30990,
+        "effective_INIT_declared_bits": 5673184,
+        "all_leaf_geometries_and_modes_recorded": true,
+        "all_leaf_INIT_literals_known": true,
+        "vendor_defaults_source": "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\simlib\\gw5a\\prim_sim.v"
+      }
+    },
+    {
+      "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_nav_medium_syn20",
+      "prepared": "F:\\nav_integration_g2_20261023\\lane2_nav_medium_prepared1",
+      "vendor_synthesis_completed": false,
+      "vendor_normal_exit_observed": false,
+      "vendor_resource_report_available": false,
+      "original_job_phase": "synthesizing",
+      "original_synthesis_processes_exited": true,
+      "tool_log_netlist_generation_completed": true,
+      "frozen_hardware_inputs_identical": 68,
+      "frozen_assets_identical": 104,
+      "frozen_headers_identical": 31,
+      "frozen_firmware_sources_identical": 33,
+      "all_source_bindings_bytes_identical": true,
+      "manifest_immutable_fields_identical": true,
+      "definition_integrity": {
+        "passed": true,
+        "module_declarations": 142,
+        "complete_module_definitions": 142,
+        "endmodule_count": 142,
+        "reachable_definitions": 142,
+        "top": "g2_top",
+        "all_instances_parsed": true,
+        "hierarchy_acyclic": true,
+        "all_external_leaf_types_in_original_vendor_library": true,
+        "final_top_endmodule_present": true
+      },
+      "resources": {
+        "counting_rule": "expanded explicit VG leaf instances; no vendor T_* or DSP-internal register conversion",
+        "LUT2_3_4": 47623,
+        "DFF_primitives": 40056,
+        "ALU": 10144,
+        "RAM16SDP4": 1924,
+        "RAM16SDP1": 1088,
+        "ROM16": 702,
+        "source_BSRAM": 314,
+        "wide32_36_BSRAM": 10,
+        "assumed_exploratory_PNR_wide_split": 1,
+        "predicted_physical_BSRAM_with_split": 324,
+        "physical_PNR_resources_measured": false
+      },
+      "reference_VG_resources": {
+        "counting_rule": "expanded explicit VG leaf instances; no vendor T_* or DSP-internal register conversion",
+        "LUT2_3_4": 52319,
+        "DFF_primitives": 40766,
+        "ALU": 10197,
+        "RAM16SDP4": 3044,
+        "RAM16SDP1": 1088,
+        "ROM16": 702,
+        "source_BSRAM": 316,
+        "wide32_36_BSRAM": 10,
+        "assumed_exploratory_PNR_wide_split": 1,
+        "predicted_physical_BSRAM_with_split": 326,
+        "physical_PNR_resources_measured": false
+      },
+      "resource_delta_from_reference": {
+        "LUT2_3_4": -4696,
+        "DFF_primitives": -710,
+        "ALU": -53,
+        "RAM16SDP4": -1120,
+        "RAM16SDP1": 0,
+        "ROM16": 0,
+        "source_BSRAM": -2,
+        "wide32_36_BSRAM": 0
+      },
+      "missing_vendor_reports": [
+        "g2_top_syn_rsc.xml",
+        "g2_top_syn_resource.html",
+        "g2_top_syn.rpt.html"
+      ],
+      "exploratory_PNR_precheck_passed": false,
+      "deployment_accepted": false,
+      "full_recovery_evidence": {
+        "path": "F:\\nav_integration_g2_20261023\\sfp_lane2_nav_medium_syn20\\netlist_recovery_evidence.json",
+        "size_bytes": 6762528,
+        "mtime_ns": 1792921581098834200
+      },
+      "initialization_coverage": {
+        "memory_leaf_count": 4028,
+        "by_primitive": {
+          "RAM16SDP4": 1924,
+          "SP": 64,
+          "pROM": 24,
+          "ROM16": 702,
+          "pROMX9": 21,
+          "SDPB": 53,
+          "SDPX9B": 152,
+          "RAM16SDP1": 1088
+        },
+        "effective_INIT_parameter_count": 29582,
+        "effective_INIT_declared_bits": 5650656,
+        "all_leaf_geometries_and_modes_recorded": true,
+        "all_leaf_INIT_literals_known": true,
+        "vendor_defaults_source": "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\simlib\\gw5a\\prim_sim.v"
+      }
+    }
+  ],
+  "pending": "Independent source/profile/INIT-preservation/clock/CDC review is still required before exploratory PNR; physical resource/timing/function/deployment signoff is not accepted."
+}
