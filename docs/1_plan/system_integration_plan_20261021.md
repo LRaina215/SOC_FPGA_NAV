@@ -26,6 +26,8 @@
 
 ## 2. 先完成G2：真实共同工程资源
 
+**2026-10-26 04:46 在PNR40布线期间完成实际接收链组合验证，未改在途输入。** 对后续冻结安全源的原MAC、修复FIFO、完整RAW1 net_port/UDP和原XT帧解析直接联接，按原50MHz核心/100Mb的25MHz RX、下降沿采样及共同复位拓扑运行；不是替代CPU/控制的整G2仿真。4个160×60完整帧/38400像素由独立Python协议模型逐点核对，70报文/98530 UDP字节逐字检查长度、last和最终error；运行中与停RX钟的2次复位均拒绝DV持续为高的假前导尾包，最终FCS错误的整图不发布，12800次像素反压保持检查通过。初探针同数值通过后，夹具补充反压期间valid不得提前撤销的检查，probe2再次通过，两个现场均保留。12份实际RTL均与冻结源逐字相同，原FIFO深度/XT满容量保持，不强制内部状态，没有新综合、串口或烧录。完整CPU/RK双UART失联与独立急停组合、全部异步序列及物理CDC/reset/IO/时序仍未接受；本证据只补上此前MAC到UDP/XT的组合缺口。[实际接收链组合证据](../4_design/evidence/g2_20261023/preview_MAC_UDP_XT_reset_integration_20261026.json)。
+
 **2026-10-26 04:39 PNR39自然失败293条；同一网表的双观测全局请求PNR40已启动。** 39于04:28:29.057993自然PR0004退出1、cancelled=false、总0/静默0，26396/64632均已退出。实际332RAM/Logic89703/FF40129/CLS55602/DSP163.5，对32为Logic+86/FF+37/CLS+85，全部RAM几何/显式INIT保持；六动作DSP OREG=CLK0在物理VO仍保留，26物理连接匹配。无TR，不能说新流水已改善setup、52已生效或50MHz通过，也未取得293失败逐网身份。[39实际最终审阅](../4_design/evidence/g2_20261023/action_preview_PNR39_final_unrouted293_20261026.json)。
 
 这次实际观测4001负载CE和4366负载复位网同时失去原LW，两条新361 CE/357 CE+LOGIC导航网占LW；原sensor388也失PRIMARY，其他分配和区域变化一并保留。39与只失观测CE、复位仍LW的36/38不同，且使用SYN28动作OREG网表；不能从38失败推断本次双观测对照已做过，也不能把分配变化当失败网络或唯一根因。已重读32/39实际VO，四个拟约束驱动输入锥（含真实ALU模式/COUT）到55个实际FF的D/CLK/CE/reset/INIT全部逐字同，别名0；初读器仅保留LUT/FF而漏ALU COUT的失败记录保留，补全真实ALU模式/输入表达式后严格等式通过，未放宽对象检查。[新4锥证明](../4_design/evidence/g2_20261023/action_preview_observation_pair_request_preflight_20261026.json)。
