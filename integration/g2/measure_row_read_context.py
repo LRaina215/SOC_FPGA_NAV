@@ -46,6 +46,17 @@ def now():return datetime.now().astimezone().isoformat()
 def write(path,value):path.write_text(json.dumps(value,indent=2)+'\n',encoding='utf-8')
 
 
+def checked_options(options):
+    actual={}
+    for key,expected in [('global_freq',50.0),('convert_sdp32_36_to_sdp16_18',1),('timing_driven',1)]:
+        match=re.search(r'^set_option -'+key+r'\s+(\S+)\s*$',options,re.M)
+        assert match, 'missing effective option '+key
+        # Gowin serializes50MHz as50.000. Compare numeric value, not spelling.
+        actual[key]=float(match[1]) if key=='global_freq' else int(match[1])
+        assert actual[key]==expected,(key,actual[key],expected)
+    return actual
+
+
 def reference_snapshot(build):
     runtime=json.loads((build/'tool_runtime.json').read_text())
     result=dict(build=str(build),pid=runtime['pid'],started_at=runtime['started_at'],
@@ -73,6 +84,8 @@ def prepare(source,out,proof,reference):
                full_joint_acceptance=False,programmed=False,results={},
                scope='complete original extractor, local timing context; not joint routing/CDC acceptance',
                execution_policy=dict(priority='BELOW_NORMAL',maximum_cpu_cores=1,maximum_owned_rss_bytes=768*1024**2,
+                  maximum_local_PNR_owned_rss_bytes=1536*1024**2,
+                  local_PNR_runtime_minimum_physical_bytes=GIB,local_PNR_runtime_minimum_commit_bytes=2*GIB,
                   small_start_physical_bytes=GIB,small_start_commit_bytes=3*GIB,
                   physical_start_physical_bytes=2*GIB,physical_start_commit_bytes=4*GIB,
                   own_PNR_total_s=0,own_PNR_idle_s=0,changes_to_existing_PNR=False))
@@ -107,9 +120,81 @@ def prepare(source,out,proof,reference):
 
 
 class Runner:
-    def __init__(self,out):
+    def __init__(self,out,resume_option_review=False,resume_physical_review=False):
         self.out=out;self.state=json.loads((out/'result.json').read_text())
-        assert self.state['phase']=='prepared','one-shot only; inspect existing result instead of rerunning'
+        self.resume_option_review=resume_option_review
+        self.resume_physical_review=resume_physical_review
+        if resume_option_review:
+            assert self.state['phase']=='local_analysis_failed_requires_review'
+            assert self.state.get('failure','').startswith("('global_freq',"),'only the reviewed numeric-format rejection'
+            assert not self.state.get('active_child') and not self.state['results']
+            try:
+                old=psutil.Process(self.state['controller_pid'])
+                assert abs(old.create_time()-self.state['controller_created_epoch'])>1,'old controller is still active'
+            except psutil.NoSuchProcess:pass
+            source=Path(self.state['source'])
+            baseline_ram=(source/'nav/rtl/common/nav_ram_sdp.v').read_text(encoding='utf-8')
+            extractor=(source/'nav/rtl/match/slf_extract.v').read_bytes()
+            for name,ram,suffix in [('baseline',baseline_ram,'old'),('shared',transform(baseline_ram),'new')]:
+                folder=out/name
+                assert (folder/'ram.v').read_text(encoding='utf-8')==ram
+                assert (folder/'extract.v').read_bytes()==extractor
+                assert (folder/'top.v').read_text(encoding='utf-8')==TOP
+                assert not (folder/'synthesis_runtime.json').exists() and not (folder/'impl/gwsynthesis/g2_top.vg').exists(), 'SYN must not already have run'
+                assert (out/'context_rtl'/(suffix+'_ram.v')).read_text(encoding='utf-8')==ram.replace('module nav_ram_sdp #(','module ram_'+suffix+' #(',1)
+                generated=extractor.decode('utf-8').replace('module slf_extract #(','module extract_'+suffix+' #(',1).replace('nav_ram_sdp #(','ram_'+suffix+' #(',1)
+                # prepare() used Windows write_text newline translation, including
+                # existing CRLF. Match those exact saved bytes, not stripped RTL.
+                assert (out/'context_rtl'/(suffix+'_extract.v')).read_bytes()==generated.replace('\n','\r\n').encode('utf-8')
+            assert (out/'context_rtl/tb.sv').read_bytes()==(HERE/'tb_row_read_context.sv').read_bytes()
+            for relative in ['context_rtl/'+label+'_runtime.json' for label in ('rtl_compile','bench_compile','elaborate','simulate')]+['baseline/preflight_runtime.json']:
+                runtime=json.loads((out/relative).read_text())
+                assert runtime['tool_exit']==0 and not runtime['cancelled'],relative
+            log=(out/'context_rtl/xsim.log').read_text(errors='replace')
+            assert self.state['context_behavior'] in log and 'Fatal:' not in log
+            checked_options((out/'baseline/effective_options.tcl').read_text(encoding='utf-8'))
+            saved=out/'result_before_option_format_fix.json';assert not saved.exists()
+            saved.write_bytes((out/'result.json').read_bytes())
+            self.state.update(resumed_after='numeric50 versus50.000 option formatting; completed RTL/preflight reused',previous_result=str(saved))
+            del self.state['failure']
+        elif resume_physical_review:
+            assert self.state['phase']=='local_analysis_failed_requires_review' and not self.state.get('active_child')
+            try:
+                old=psutil.Process(self.state['controller_pid'])
+                assert abs(old.create_time()-self.state['controller_created_epoch'])>1,'old controller is still active'
+            except psutil.NoSuchProcess:pass
+            stopped=json.loads((out/'baseline/physical_runtime.json').read_text())
+            assert stopped['cancelled'] and stopped['reason']=='owned probe or host memory protection'
+            assert stopped['peak_owned_rss_bytes']>768*1024**2 and stopped['maximum_runtime_s']==0
+            assert not (out/'baseline/impl/pnr/g2_top.tr').exists() and not (out/'shared/physical_runtime.json').exists()
+            try:
+                old=psutil.Process(stopped['pid'])
+                assert abs(old.create_time()-stopped['created_epoch'])>1,'previous local router still active'
+            except psutil.NoSuchProcess:pass
+            source=Path(self.state['source'])
+            old_ram=(source/'nav/rtl/common/nav_ram_sdp.v').read_text(encoding='utf-8')
+            for name,ram in [('baseline',old_ram),('shared',transform(old_ram))]:
+                folder=out/name;row=self.state['results'][name]
+                assert row['synthesis']['tool_exit']==0 and not row['synthesis']['cancelled']
+                assert not row['no_timing_path'] and row['path_summaries']
+                assert (folder/'ram.v').read_text(encoding='utf-8')==ram
+                assert (folder/'extract.v').read_bytes()==(source/'nav/rtl/match/slf_extract.v').read_bytes()
+                assert (folder/'top.v').read_text(encoding='utf-8')==TOP
+                assert (folder/'clock.sdc').read_text()=='create_clock -name clk50 -period 20 [get_ports {clk}]\n'
+                checked_options((folder/'effective_options.tcl').read_text(encoding='utf-8'))
+                assert (folder/'impl/gwsynthesis/g2_top.vg').is_file()
+            log=(out/'context_rtl/xsim.log').read_text(errors='replace')
+            assert self.state['context_behavior'] in log and 'Fatal:' not in log
+            saved=out/'result_before_local_memory_fix.json';assert not saved.exists()
+            saved.write_bytes((out/'result.json').read_bytes())
+            self.state.update(physical_budget_review=dict(previous_result=str(saved),previous_local_route=stopped,
+                  reason='768MiB synthesis limit was incorrectly reused for device routing; preserve2/4GiB startup and stronger host reserve, permit1.5GiB for this isolated route only'),
+                  reused_completed_synthesis=['baseline','shared'])
+            self.state['execution_policy'].update(maximum_local_PNR_owned_rss_bytes=1536*1024**2,
+                  local_PNR_runtime_minimum_physical_bytes=GIB,local_PNR_runtime_minimum_commit_bytes=2*GIB)
+            del self.state['failure']
+        else:
+            assert self.state['phase']=='prepared','one-shot only; inspect existing result instead of rerunning'
         self.state.update(controller_pid=psutil.Process().pid,controller_created_epoch=psutil.Process().create_time())
         me=psutil.Process();me.nice(psutil.BELOW_NORMAL_PRIORITY_CLASS)
         me.cpu_affinity([max(me.cpu_affinity())]);self.state['assigned_cpu']=me.cpu_affinity()
@@ -133,6 +218,8 @@ class Runner:
         runtime=dict(command=command,started_at=now(),maximum_runtime_s=limit,maximum_silent_s=0,
                      startup_free_bytes=m.avail_phys,startup_commit_reserve_bytes=m.avail_page,
                      priority='BELOW_NORMAL',cpu_affinity=self.state['assigned_cpu'],cancelled=False)
+        owned_limit=(1536 if physical else 768)*1024**2
+        runtime['maximum_owned_rss_bytes']=owned_limit
         with (folder/(label+'.log')).open('w',encoding='utf-8') as stream:
             p=subprocess.Popen(command,cwd=folder,stdout=stream,stderr=subprocess.STDOUT,
                  creationflags=subprocess.CREATE_NO_WINDOW|subprocess.BELOW_NORMAL_PRIORITY_CLASS)
@@ -151,9 +238,11 @@ class Runner:
                 peak=max(peak,used);m=memory_status()
                 reason=''
                 if limit and time.monotonic()-start>limit:reason='finite local analysis runtime budget'
-                if used>768*1024**2 or m.avail_page<GIB:reason='owned probe or host memory protection'
+                if used>owned_limit:reason='owned probe memory budget'
+                if m.avail_page<(2 if physical else 1)*GIB or (physical and m.avail_phys<GIB):reason='host memory protection'
                 if reason:
-                    runtime.update(cancelled=True,reason=reason)
+                    runtime.update(cancelled=True,reason=reason,stop_owned_rss_bytes=used,
+                                   stop_free_bytes=m.avail_phys,stop_commit_reserve_bytes=m.avail_page)
                     # Only this probe's child tree, never the protected joint PNR.
                     for q in reversed(children):
                         try:q.kill()
@@ -169,19 +258,21 @@ class Runner:
     def execute(self):
         folder=self.out/'context_rtl'
         files=['old_ram.v','old_extract.v','new_ram.v','new_extract.v']
-        for label,exe,args in [('rtl_compile','xvlog',files),('bench_compile','xvlog',['-sv','tb.sv']),
-                              ('elaborate','xelab',['-debug','off','-timescale','1ns/1ps','tb','-s','snap']),
-                              ('simulate','xsim',['snap','-runall'])]:
-            self.run(folder,label,['cmd','/c',str(VIV/(exe+'.bat')),*args],limit=120)
+        if not (self.resume_option_review or self.resume_physical_review):
+            for label,exe,args in [('rtl_compile','xvlog',files),('bench_compile','xvlog',['-sv','tb.sv']),
+                                  ('elaborate','xelab',['-debug','off','-timescale','1ns/1ps','tb','-s','snap']),
+                                  ('simulate','xsim',['snap','-runall'])]:
+                self.run(folder,label,['cmd','/c',str(VIV/(exe+'.bat')),*args],limit=120)
         log=(folder/'xsim.log').read_text(errors='replace')
         assert 'TEST PASSED' in log and 'Fatal:' not in log,log[-3000:]
         self.state['context_behavior']=re.search(r'TEST PASSED[^\n]*',log)[0];self.save('context_behavior_passed')
         for name in ('baseline','shared'):
+            if self.resume_physical_review:continue
             folder=self.out/name
-            self.run(folder,'preflight',[str(TOOL),'preflight.tcl'],limit=60)
+            if not (self.resume_option_review and name=='baseline'):
+                self.run(folder,'preflight',[str(TOOL),'preflight.tcl'],limit=60)
             options=(folder/'effective_options.tcl').read_text(encoding='utf-8')
-            for key,value in [('global_freq','50'),('convert_sdp32_36_to_sdp16_18','1'),('timing_driven','1')]:
-                assert re.search(r'^set_option -'+key+r'\s+'+value+r'\s*$',options,re.M),(key,options)
+            actual_options=checked_options(options)
             runtime=self.run(folder,'synthesis',[str(TOOL),'synthesis.tcl'])
             log=(folder/'synthesis.log').read_text(errors='replace');assert not re.search(r'\bERROR\s*\(',log),log[-3000:]
             syn=folder/'impl/gwsynthesis'
@@ -193,12 +284,19 @@ class Runner:
                 fields=cells(item.split('</table>',1)[0]);summaries.append(dict(zip(fields[::2],fields[1::2])))
             self.state['results'][name]=dict(synthesis=runtime,resources=ET.parse(syn/'g2_top_syn_rsc.xml').getroot().attrib,
                 inventory=inventory(syn/'g2_top.vg'),frequency_table=perf,path_summaries=summaries,
-                no_timing_path='No timing path found' in rpt,synthesis_is_not_physical_timing=True)
+                no_timing_path='No timing path found' in rpt,synthesis_is_not_physical_timing=True,effective_options=actual_options)
             assert summaries and 'No timing path found' not in rpt,'context must create real timed launches and captures'
             self.save(name+'_context_synthesis_complete')
         # Physical checks are small and sequential; reserve at least the full2/4GiB before each.
         for name in ('baseline','shared'):
             folder=self.out/name
+            if self.resume_physical_review and name=='baseline':
+                retry=self.out/'baseline_physical_retry1';retry.mkdir(exist_ok=False)
+                (retry/'physical.tcl').write_bytes((folder/'physical.tcl').read_bytes())
+                write(retry/'source.json',dict(source_netlist=str(folder/'impl/gwsynthesis/g2_top.vg'),
+                      incomplete_previous_run=str(folder/'physical_runtime.json'),synthesis_repeated=False,
+                      purpose='complete the local physical comparison after correcting the too-small local routing memory cap'))
+                folder=retry
             runtime=self.run(folder,'physical',[str(TOOL),'physical.tcl'],limit=0,physical=True)
             log=(folder/'physical.log').read_text(errors='replace')
             pnr=folder/'impl/pnr';timing=pnr/'g2_top.tr'
@@ -220,11 +318,15 @@ class Runner:
 def main():
     p=argparse.ArgumentParser();p.add_argument('--source',type=Path);p.add_argument('--out',type=Path,required=True)
     p.add_argument('--prior-proof',type=Path);p.add_argument('--protected-pnr',type=Path)
-    p.add_argument('--run-prepared',action='store_true');a=p.parse_args();out=a.out.resolve()
+    p.add_argument('--run-prepared',action='store_true');p.add_argument('--resume-after-option-review',action='store_true')
+    p.add_argument('--resume-local-physical-after-budget-review',action='store_true')
+    a=p.parse_args();out=a.out.resolve()
+    if (a.resume_after_option_review or a.resume_local_physical_after_budget_review) and not a.run_prepared:p.error('resume requires --run-prepared')
+    if a.resume_after_option_review and a.resume_local_physical_after_budget_review:p.error('choose one reviewed recovery point')
     if not a.run_prepared:
         assert a.source and a.prior_proof and a.protected_pnr
         prepare(a.source.resolve(),out,a.prior_proof.resolve(),a.protected_pnr.resolve());return
-    runner=Runner(out)
+    runner=Runner(out,a.resume_after_option_review,a.resume_local_physical_after_budget_review)
     try:runner.execute()
     except BaseException as exc:
         runner.state['failure']=str(exc);runner.save('local_analysis_failed_requires_review');raise

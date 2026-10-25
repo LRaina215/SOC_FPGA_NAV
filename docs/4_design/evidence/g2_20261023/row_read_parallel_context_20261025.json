@@ -1,10 +1,10 @@
 {
-  "recorded_at": "2026-10-25T13:09:00.887984+08:00",
+  "recorded_at": "2026-10-25T14:09:31.990155+08:00",
   "request": "Validate row-read sharing in parallel without interrupting the current joint PNR.",
   "live_result": "F:\\nav_integration_g2_20261023\\row_read_context_timing_probe1\\result.json",
-  "controller_pid": 42072,
-  "controller_created_epoch": 1792904823.6522412,
-  "phase_at_record": "waiting_for_small_probe_memory",
+  "controller_pid": 30708,
+  "controller_created_epoch": 1792908385.087738,
+  "phase_at_record": "context_function_and_automatic_physical_passed_joint_resource_condition_unverified",
   "host_memory_at_record": {
     "free_bytes": 2909999104,
     "commit_reserve_bytes": 2740625408
@@ -19,7 +19,10 @@
     "physical_start_commit_bytes": 4294967296,
     "own_PNR_total_s": 0,
     "own_PNR_idle_s": 0,
-    "changes_to_existing_PNR": false
+    "changes_to_existing_PNR": false,
+    "maximum_local_PNR_owned_rss_bytes": 1610612736,
+    "local_PNR_runtime_minimum_physical_bytes": 1073741824,
+    "local_PNR_runtime_minimum_commit_bytes": 2147483648
   },
   "assigned_cpu": [
     19
@@ -71,10 +74,1216 @@
   "local_PNR_start_commit_GiB": 4,
   "candidate_in_current_joint_build": false,
   "parallel_validation_authorized": true,
-  "context_function_pass": null,
-  "local_physical_timing_pass": null,
+  "context_function_pass": true,
+  "local_physical_timing_pass": true,
   "full_joint_routing_pass": false,
   "full_joint_candidate_accepted": false,
   "programmed": false,
-  "caveat": "Prepared/queued is not test completion. Low priority and one core limit competition, but do not prove zero host-load impact. Local success cannot guarantee joint routability."
+  "caveat": "Prepared/queued is not test completion. Low priority and one core limit competition, but do not prove zero host-load impact. Local success cannot guarantee joint routability.",
+  "initial_queue_snapshot": {
+    "recorded_at": "2026-10-25T13:09:00.887984+08:00",
+    "controller_pid": 42072,
+    "controller_created_epoch": 1792904823.6522412,
+    "phase_at_record": "waiting_for_small_probe_memory",
+    "host_memory_at_record": {
+      "free_bytes": 2909999104,
+      "commit_reserve_bytes": 2740625408
+    }
+  },
+  "context_function_result": "TEST PASSED cycles=55812 valid_points=13615 completed_frames=4 frame_attempts=6 resets=2 gaps=7373 saturation4096=1",
+  "context_function_log": "F:\\nav_integration_g2_20261023\\row_read_context_timing_probe1\\context_rtl\\xsim.log",
+  "joint_global_resource_condition_verified": false,
+  "local_only_live_result": "F:\\nav_integration_g2_20261023\\row_read_context_localroutes_probe1\\result.json",
+  "completed_context_result": "F:\\nav_integration_g2_20261023\\row_read_context_timing_probe1\\result.json",
+  "local_routes_attempt": {
+    "baseline": {
+      "build": "F:\\nav_integration_g2_20261023\\row_read_context_localroutes_probe1\\baseline",
+      "report": "F:\\nav_integration_g2_20261023\\row_read_context_localroutes_probe1\\baseline\\impl\\pnr\\g2_top.rpt.txt",
+      "timing_report": "F:\\nav_integration_g2_20261023\\row_read_context_localroutes_probe1\\baseline\\impl\\pnr\\g2_top.tr",
+      "runtime": {
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "physical.tcl"
+        ],
+        "started_at": "2026-10-25T14:06:26.701916+08:00",
+        "maximum_runtime_s": 0,
+        "maximum_silent_s": 0,
+        "startup_free_bytes": 4936732672,
+        "startup_commit_reserve_bytes": 5906825216,
+        "priority": "BELOW_NORMAL",
+        "cpu_affinity": [
+          19
+        ],
+        "cancelled": false,
+        "maximum_owned_rss_bytes": 1610612736,
+        "pid": 57328,
+        "created_epoch": 1792908386.7061427,
+        "tool_exit": 0,
+        "elapsed_s": 111.60999999998603,
+        "peak_owned_rss_bytes": 1353674752,
+        "ended_at": "2026-10-25T14:08:18.336581+08:00"
+      },
+      "routing_completed": true,
+      "explicit_unrouted_count": null,
+      "routing_evidence": "Natural successful routing completion, physical netlist and STA; no explicit unrouted count printed.",
+      "clocks": [
+        {
+          "name": "clk50",
+          "required_mhz": 50.0,
+          "actual_mhz": 88.829
+        }
+      ],
+      "counts": {
+        "setup": 0,
+        "hold": 0,
+        "paths": 7636,
+        "endpoints": 9205
+      },
+      "resources": {
+        "Logic": 2749,
+        "Register": 2297,
+        "CLS": 2052,
+        "BSRAM": 0,
+        "RAM16": 250,
+        "LUT": 972
+      },
+      "paths": {
+        "setup": {
+          "worst_reported_slack_ns": 8.742,
+          "reported_rows": 25,
+          "worst": {
+            "slack_ns": 8.742,
+            "source": "u_extract/dxy3_3_s0/Q",
+            "destination": "u_extract/pb_waddr_0_s0/CE",
+            "source_clock": "clk50:[R]",
+            "destination_clock": "clk50:[R]",
+            "data_delay_ns": 11.076
+          },
+          "row_memory_rows": [
+            {
+              "slack_ns": 8.805,
+              "source": "u_extract/fu_6_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].qr_92_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.933
+            },
+            {
+              "slack_ns": 8.805,
+              "source": "u_extract/fu_6_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].qr_93_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.933
+            },
+            {
+              "slack_ns": 8.805,
+              "source": "u_extract/fu_6_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].qr_94_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.933
+            },
+            {
+              "slack_ns": 8.805,
+              "source": "u_extract/fu_6_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].qr_95_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.933
+            },
+            {
+              "slack_ns": 9.079,
+              "source": "u_extract/fu_6_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[6].qr_68_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.65
+            },
+            {
+              "slack_ns": 9.079,
+              "source": "u_extract/fu_6_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[6].qr_69_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.65
+            },
+            {
+              "slack_ns": 9.079,
+              "source": "u_extract/fu_6_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[6].qr_70_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.65
+            },
+            {
+              "slack_ns": 9.079,
+              "source": "u_extract/fu_6_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[6].qr_71_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.65
+            },
+            {
+              "slack_ns": 9.082,
+              "source": "u_extract/fu_6_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].qr_84_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.658
+            },
+            {
+              "slack_ns": 9.082,
+              "source": "u_extract/fu_6_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].qr_85_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.658
+            },
+            {
+              "slack_ns": 9.082,
+              "source": "u_extract/fu_6_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].qr_86_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.658
+            },
+            {
+              "slack_ns": 9.082,
+              "source": "u_extract/fu_6_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].qr_87_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.658
+            },
+            {
+              "slack_ns": 9.088,
+              "source": "u_extract/fu_6_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[3].qr_92_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.641
+            },
+            {
+              "slack_ns": 9.088,
+              "source": "u_extract/fu_6_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[3].qr_93_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.641
+            },
+            {
+              "slack_ns": 9.088,
+              "source": "u_extract/fu_6_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[3].qr_94_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.641
+            },
+            {
+              "slack_ns": 9.088,
+              "source": "u_extract/fu_6_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[3].qr_95_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.641
+            }
+          ]
+        },
+        "hold": {
+          "worst_reported_slack_ns": 0.185,
+          "reported_rows": 25,
+          "worst": {
+            "slack_ns": 0.185,
+            "source": "u_extract/rb_wa_0_s0/Q",
+            "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[0].mem_g_slf_row_banks.g_row_bank[0].mem_0_17_s/WAD[0]",
+            "source_clock": "clk50:[R]",
+            "destination_clock": "clk50:[R]",
+            "data_delay_ns": 0.222
+          },
+          "row_memory_rows": [
+            {
+              "slack_ns": 0.185,
+              "source": "u_extract/rb_wa_0_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[0].mem_g_slf_row_banks.g_row_bank[0].mem_0_17_s/WAD[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.222
+            },
+            {
+              "slack_ns": 0.193,
+              "source": "u_extract/rb_wd_79_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[2].mem_g_slf_row_banks.g_row_bank[2].mem_0_19_s/DI[3]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.234
+            },
+            {
+              "slack_ns": 0.197,
+              "source": "u_extract/rb_wd_78_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[2].mem_g_slf_row_banks.g_row_bank[2].mem_0_19_s/DI[2]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.238
+            },
+            {
+              "slack_ns": 0.201,
+              "source": "u_extract/rb_wd_78_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].mem_g_slf_row_banks.g_row_bank[7].mem_0_19_s/DI[2]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.238
+            },
+            {
+              "slack_ns": 0.204,
+              "source": "u_extract/rb_wd_48_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[4].mem_g_slf_row_banks.g_row_bank[4].mem_0_12_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.264
+            },
+            {
+              "slack_ns": 0.249,
+              "source": "u_extract/rb_wd_90_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[9].mem_g_slf_row_banks.g_row_bank[9].mem_0_22_s/DI[2]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.305
+            },
+            {
+              "slack_ns": 0.253,
+              "source": "u_extract/rb_wd_91_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[9].mem_g_slf_row_banks.g_row_bank[9].mem_0_22_s/DI[3]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.309
+            },
+            {
+              "slack_ns": 0.257,
+              "source": "u_extract/rb_wd_89_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[9].mem_g_slf_row_banks.g_row_bank[9].mem_0_22_s/DI[1]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.302
+            },
+            {
+              "slack_ns": 0.259,
+              "source": "u_extract/rb_wd_48_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[9].mem_g_slf_row_banks.g_row_bank[9].mem_0_12_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.329
+            },
+            {
+              "slack_ns": 0.26,
+              "source": "u_extract/rb_wd_49_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[9].mem_g_slf_row_banks.g_row_bank[9].mem_0_12_s/DI[1]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.331
+            },
+            {
+              "slack_ns": 0.266,
+              "source": "u_extract/rb_wa_0_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[5].mem_g_slf_row_banks.g_row_bank[5].mem_0_17_s/WAD[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.308
+            },
+            {
+              "slack_ns": 0.27,
+              "source": "u_extract/rb_wa_0_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[4].mem_g_slf_row_banks.g_row_bank[4].mem_0_17_s/WAD[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.308
+            },
+            {
+              "slack_ns": 0.272,
+              "source": "u_extract/rb_wa_0_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[9].mem_g_slf_row_banks.g_row_bank[9].mem_0_22_s/WAD[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.312
+            },
+            {
+              "slack_ns": 0.276,
+              "source": "u_extract/rb_wd_79_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[3].mem_g_slf_row_banks.g_row_bank[3].mem_0_19_s/DI[3]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.319
+            },
+            {
+              "slack_ns": 0.277,
+              "source": "u_extract/rb_wd_48_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[8].mem_g_slf_row_banks.g_row_bank[8].mem_0_12_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.348
+            },
+            {
+              "slack_ns": 0.279,
+              "source": "u_extract/rb_wd_96_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].mem_g_slf_row_banks.g_row_bank[7].mem_0_24_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.343
+            },
+            {
+              "slack_ns": 0.279,
+              "source": "u_extract/rb_wd_49_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[8].mem_g_slf_row_banks.g_row_bank[8].mem_0_12_s/DI[1]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.35
+            },
+            {
+              "slack_ns": 0.281,
+              "source": "u_extract/rb_wd_96_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[8].mem_g_slf_row_banks.g_row_bank[8].mem_0_24_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.346
+            },
+            {
+              "slack_ns": 0.282,
+              "source": "u_extract/rb_wd_96_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[9].mem_g_slf_row_banks.g_row_bank[9].mem_0_24_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.343
+            },
+            {
+              "slack_ns": 0.285,
+              "source": "u_extract/rb_wd_78_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[4].mem_g_slf_row_banks.g_row_bank[4].mem_0_19_s/DI[2]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.327
+            },
+            {
+              "slack_ns": 0.285,
+              "source": "u_extract/rb_wd_48_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[1].mem_g_slf_row_banks.g_row_bank[1].mem_0_12_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.352
+            },
+            {
+              "slack_ns": 0.289,
+              "source": "u_extract/rb_wd_48_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[5].mem_g_slf_row_banks.g_row_bank[5].mem_0_12_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.352
+            }
+          ]
+        }
+      },
+      "reset_pulse": {
+        "recovery": {
+          "reported_rows": 0,
+          "worst_slack_ns": null
+        },
+        "removal": {
+          "reported_rows": 0,
+          "worst_slack_ns": null
+        },
+        "pulse": {
+          "reported_rows": 10,
+          "worst_slack_ns": 7.774
+        }
+      },
+      "global_allocations": [
+        {
+          "net": "clk_d",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/rb_ra[0]",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/rb_ra[1]",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/rb_ra[2]",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/rb_ra[3]",
+          "resource": "PRIMARY"
+        }
+      ],
+      "internal_clock_50MHz_pass": true,
+      "fixture_external_IO_delays_constrained": false,
+      "joint_global_resource_occupancy_reproduced": false,
+      "all_row_read_paths_individually_listed": false,
+      "full_joint_acceptance": false
+    }
+  },
+  "local_routes_guard_failure": "unexpected spare global allocation requires review",
+  "shared_local_routes_started": false,
+  "automatic_global_routes": {
+    "baseline": {
+      "build": "F:\\nav_integration_g2_20261023\\row_read_context_timing_probe1\\baseline_physical_retry1",
+      "report": "F:\\nav_integration_g2_20261023\\row_read_context_timing_probe1\\baseline_physical_retry1\\impl\\pnr\\g2_top.rpt.txt",
+      "timing_report": "F:\\nav_integration_g2_20261023\\row_read_context_timing_probe1\\baseline_physical_retry1\\impl\\pnr\\g2_top.tr",
+      "runtime": {
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "physical.tcl"
+        ],
+        "started_at": "2026-10-25T14:01:47.543684+08:00",
+        "maximum_runtime_s": 0,
+        "maximum_silent_s": 0,
+        "startup_free_bytes": 4810731520,
+        "startup_commit_reserve_bytes": 6141059072,
+        "priority": "BELOW_NORMAL",
+        "cpu_affinity": [
+          19
+        ],
+        "cancelled": false,
+        "maximum_owned_rss_bytes": 1610612736,
+        "pid": 67944,
+        "created_epoch": 1792908107.5461257,
+        "tool_exit": 0,
+        "elapsed_s": 107.15700000000652,
+        "peak_owned_rss_bytes": 1357074432,
+        "ended_at": "2026-10-25T14:03:34.705936+08:00"
+      },
+      "routing_completed": true,
+      "explicit_unrouted_count": null,
+      "routing_evidence": "Natural successful routing completion, physical netlist and STA; no explicit unrouted count printed.",
+      "clocks": [
+        {
+          "name": "clk50",
+          "required_mhz": 50.0,
+          "actual_mhz": 91.925
+        }
+      ],
+      "counts": {
+        "setup": 0,
+        "hold": 0,
+        "paths": 7636,
+        "endpoints": 9205
+      },
+      "resources": {
+        "Logic": 2749,
+        "Register": 2297,
+        "CLS": 2052,
+        "BSRAM": 0,
+        "RAM16": 250,
+        "LUT": 972
+      },
+      "paths": {
+        "setup": {
+          "worst_reported_slack_ns": 9.122,
+          "reported_rows": 25,
+          "worst": {
+            "slack_ns": 9.122,
+            "source": "u_extract/dxy3_3_s0/Q",
+            "destination": "u_extract/pb_waddr_0_s0/CE",
+            "source_clock": "clk50:[R]",
+            "destination_clock": "clk50:[R]",
+            "data_delay_ns": 10.696
+          },
+          "row_memory_rows": [
+            {
+              "slack_ns": 9.773,
+              "source": "u_extract/fu_4_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].qr_92_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 9.964
+            },
+            {
+              "slack_ns": 9.773,
+              "source": "u_extract/fu_4_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].qr_93_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 9.964
+            },
+            {
+              "slack_ns": 9.773,
+              "source": "u_extract/fu_4_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].qr_94_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 9.964
+            },
+            {
+              "slack_ns": 9.773,
+              "source": "u_extract/fu_4_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].qr_95_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 9.964
+            },
+            {
+              "slack_ns": 9.89,
+              "source": "u_extract/fu_4_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].qr_84_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 9.849
+            },
+            {
+              "slack_ns": 9.89,
+              "source": "u_extract/fu_4_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].qr_85_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 9.849
+            },
+            {
+              "slack_ns": 9.89,
+              "source": "u_extract/fu_4_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].qr_86_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 9.849
+            },
+            {
+              "slack_ns": 9.89,
+              "source": "u_extract/fu_4_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].qr_87_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 9.849
+            },
+            {
+              "slack_ns": 10.09,
+              "source": "u_extract/fu_4_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].qr_76_s0/CE",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 9.676
+            }
+          ]
+        },
+        "hold": {
+          "worst_reported_slack_ns": 0.194,
+          "reported_rows": 25,
+          "worst": {
+            "slack_ns": 0.194,
+            "source": "u_extract/rb_wa_0_s0/Q",
+            "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[0].mem_g_slf_row_banks.g_row_bank[0].mem_0_17_s/WAD[0]",
+            "source_clock": "clk50:[R]",
+            "destination_clock": "clk50:[R]",
+            "data_delay_ns": 0.23
+          },
+          "row_memory_rows": [
+            {
+              "slack_ns": 0.194,
+              "source": "u_extract/rb_wa_0_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[0].mem_g_slf_row_banks.g_row_bank[0].mem_0_17_s/WAD[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.23
+            },
+            {
+              "slack_ns": 0.194,
+              "source": "u_extract/rb_wa_0_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[8].mem_g_slf_row_banks.g_row_bank[8].mem_0_18_s/WAD[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.265
+            },
+            {
+              "slack_ns": 0.2,
+              "source": "u_extract/rb_wd_78_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[2].mem_g_slf_row_banks.g_row_bank[2].mem_0_19_s/DI[2]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.241
+            },
+            {
+              "slack_ns": 0.203,
+              "source": "u_extract/rb_wd_78_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].mem_g_slf_row_banks.g_row_bank[7].mem_0_19_s/DI[2]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.241
+            },
+            {
+              "slack_ns": 0.204,
+              "source": "u_extract/rb_wd_48_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[4].mem_g_slf_row_banks.g_row_bank[4].mem_0_12_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.264
+            },
+            {
+              "slack_ns": 0.247,
+              "source": "u_extract/rb_wd_91_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[9].mem_g_slf_row_banks.g_row_bank[9].mem_0_22_s/DI[3]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.302
+            },
+            {
+              "slack_ns": 0.253,
+              "source": "u_extract/u_rb/g_slf_row_banks.row_selected_2_s1/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.row_selected_2_s1/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.275
+            },
+            {
+              "slack_ns": 0.258,
+              "source": "u_extract/rb_wd_49_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[9].mem_g_slf_row_banks.g_row_bank[9].mem_0_12_s/DI[1]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.328
+            },
+            {
+              "slack_ns": 0.259,
+              "source": "u_extract/rb_wd_48_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[9].mem_g_slf_row_banks.g_row_bank[9].mem_0_12_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.329
+            },
+            {
+              "slack_ns": 0.26,
+              "source": "u_extract/rb_wd_89_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[9].mem_g_slf_row_banks.g_row_bank[9].mem_0_22_s/DI[1]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.305
+            },
+            {
+              "slack_ns": 0.266,
+              "source": "u_extract/rb_wd_79_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[2].mem_g_slf_row_banks.g_row_bank[2].mem_0_19_s/DI[3]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.308
+            },
+            {
+              "slack_ns": 0.269,
+              "source": "u_extract/rb_wd_49_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[4].mem_g_slf_row_banks.g_row_bank[4].mem_0_12_s/DI[1]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.328
+            },
+            {
+              "slack_ns": 0.27,
+              "source": "u_extract/rb_wd_79_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].mem_g_slf_row_banks.g_row_bank[7].mem_0_19_s/DI[3]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.308
+            },
+            {
+              "slack_ns": 0.272,
+              "source": "u_extract/rb_wd_48_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[8].mem_g_slf_row_banks.g_row_bank[8].mem_0_12_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.343
+            },
+            {
+              "slack_ns": 0.275,
+              "source": "u_extract/rb_wd_79_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[3].mem_g_slf_row_banks.g_row_bank[3].mem_0_19_s/DI[3]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.318
+            },
+            {
+              "slack_ns": 0.277,
+              "source": "u_extract/rb_wd_49_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[8].mem_g_slf_row_banks.g_row_bank[8].mem_0_12_s/DI[1]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.347
+            },
+            {
+              "slack_ns": 0.279,
+              "source": "u_extract/rb_wd_96_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].mem_g_slf_row_banks.g_row_bank[7].mem_0_24_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.343
+            },
+            {
+              "slack_ns": 0.28,
+              "source": "u_extract/rb_wa_0_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[9].mem_g_slf_row_banks.g_row_bank[9].mem_0_22_s/WAD[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.32
+            },
+            {
+              "slack_ns": 0.281,
+              "source": "u_extract/rb_wd_96_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[8].mem_g_slf_row_banks.g_row_bank[8].mem_0_24_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.346
+            },
+            {
+              "slack_ns": 0.281,
+              "source": "u_extract/rb_wd_78_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[3].mem_g_slf_row_banks.g_row_bank[3].mem_0_19_s/DI[2]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.324
+            },
+            {
+              "slack_ns": 0.282,
+              "source": "u_extract/rb_wd_96_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[9].mem_g_slf_row_banks.g_row_bank[9].mem_0_24_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.343
+            },
+            {
+              "slack_ns": 0.284,
+              "source": "u_extract/rb_wd_48_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[1].mem_g_slf_row_banks.g_row_bank[1].mem_0_12_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.35
+            }
+          ]
+        }
+      },
+      "reset_pulse": {
+        "recovery": {
+          "reported_rows": 0,
+          "worst_slack_ns": null
+        },
+        "removal": {
+          "reported_rows": 0,
+          "worst_slack_ns": null
+        },
+        "pulse": {
+          "reported_rows": 10,
+          "worst_slack_ns": 7.774
+        }
+      },
+      "global_allocations": [
+        {
+          "net": "clk_d",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/rb_ra[0]",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/rb_ra[1]",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/rb_ra[2]",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/rb_ra[3]",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/n6609_4",
+          "resource": "LW"
+        },
+        {
+          "net": "u_extract/n7021_4",
+          "resource": "LW"
+        },
+        {
+          "net": "u_extract/n7631_4",
+          "resource": "LW"
+        }
+      ],
+      "internal_clock_50MHz_pass": true,
+      "fixture_external_IO_delays_constrained": false,
+      "joint_global_resource_occupancy_reproduced": false,
+      "all_row_read_paths_individually_listed": false,
+      "full_joint_acceptance": false
+    },
+    "shared": {
+      "build": "F:\\nav_integration_g2_20261023\\row_read_context_timing_probe1\\shared",
+      "report": "F:\\nav_integration_g2_20261023\\row_read_context_timing_probe1\\shared\\impl\\pnr\\g2_top.rpt.txt",
+      "timing_report": "F:\\nav_integration_g2_20261023\\row_read_context_timing_probe1\\shared\\impl\\pnr\\g2_top.tr",
+      "runtime": {
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "physical.tcl"
+        ],
+        "started_at": "2026-10-25T14:03:34.718392+08:00",
+        "maximum_runtime_s": 0,
+        "maximum_silent_s": 0,
+        "startup_free_bytes": 5428736000,
+        "startup_commit_reserve_bytes": 6017937408,
+        "priority": "BELOW_NORMAL",
+        "cpu_affinity": [
+          19
+        ],
+        "cancelled": false,
+        "maximum_owned_rss_bytes": 1610612736,
+        "pid": 3956,
+        "created_epoch": 1792908214.7324333,
+        "tool_exit": 0,
+        "elapsed_s": 100.59399999992456,
+        "peak_owned_rss_bytes": 1351000064,
+        "ended_at": "2026-10-25T14:05:15.323846+08:00"
+      },
+      "routing_completed": true,
+      "explicit_unrouted_count": null,
+      "routing_evidence": "Natural successful routing completion, physical netlist and STA; no explicit unrouted count printed.",
+      "clocks": [
+        {
+          "name": "clk50",
+          "required_mhz": 50.0,
+          "actual_mhz": 80.647
+        }
+      ],
+      "counts": {
+        "setup": 0,
+        "hold": 0,
+        "paths": 5863,
+        "endpoints": 6532
+      },
+      "resources": {
+        "Logic": 2836,
+        "Register": 1406,
+        "CLS": 2164,
+        "BSRAM": 0,
+        "RAM16": 250,
+        "LUT": 1059
+      },
+      "paths": {
+        "setup": {
+          "worst_reported_slack_ns": 7.6,
+          "reported_rows": 25,
+          "worst": {
+            "slack_ns": 7.6,
+            "source": "u_extract/u_1_s0/Q",
+            "destination": "u_extract/u_rb/g_slf_row_banks.qr_94_s0/D",
+            "source_clock": "clk50:[R]",
+            "destination_clock": "clk50:[R]",
+            "data_delay_ns": 12.312
+          },
+          "row_memory_rows": [
+            {
+              "slack_ns": 7.6,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_94_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.312
+            },
+            {
+              "slack_ns": 7.617,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_16_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.33
+            },
+            {
+              "slack_ns": 7.618,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_38_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.284
+            },
+            {
+              "slack_ns": 7.619,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_78_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.293
+            },
+            {
+              "slack_ns": 7.621,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_93_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.304
+            },
+            {
+              "slack_ns": 7.625,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_35_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.322
+            },
+            {
+              "slack_ns": 7.637,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_56_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.299
+            },
+            {
+              "slack_ns": 7.687,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_15_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.26
+            },
+            {
+              "slack_ns": 7.694,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_87_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.222
+            },
+            {
+              "slack_ns": 7.703,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_74_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.21
+            },
+            {
+              "slack_ns": 7.704,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_51_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.241
+            },
+            {
+              "slack_ns": 7.724,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_25_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.183
+            },
+            {
+              "slack_ns": 7.745,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_5_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.199
+            },
+            {
+              "slack_ns": 7.752,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_52_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.173
+            },
+            {
+              "slack_ns": 7.772,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_32_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.188
+            },
+            {
+              "slack_ns": 7.774,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_95_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.151
+            },
+            {
+              "slack_ns": 7.783,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_62_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.073
+            },
+            {
+              "slack_ns": 7.785,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_37_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.151
+            },
+            {
+              "slack_ns": 7.797,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_76_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.131
+            },
+            {
+              "slack_ns": 7.797,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_22_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.112
+            },
+            {
+              "slack_ns": 7.803,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_49_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.131
+            },
+            {
+              "slack_ns": 7.812,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_19_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.144
+            },
+            {
+              "slack_ns": 7.821,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_69_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.081
+            },
+            {
+              "slack_ns": 7.83,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_53_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.095
+            },
+            {
+              "slack_ns": 7.834,
+              "source": "u_extract/u_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_4_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 12.103
+            }
+          ]
+        },
+        "hold": {
+          "worst_reported_slack_ns": 0.248,
+          "reported_rows": 25,
+          "worst": {
+            "slack_ns": 0.248,
+            "source": "u_extract/dz2_12_s0/Q",
+            "destination": "u_extract/dz3_12_s0/D",
+            "source_clock": "clk50:[R]",
+            "destination_clock": "clk50:[R]",
+            "data_delay_ns": 0.2
+          },
+          "row_memory_rows": [
+            {
+              "slack_ns": 0.301,
+              "source": "u_extract/rb_wd_96_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].mem_g_slf_row_banks.g_row_bank[7].mem_0_24_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.329
+            }
+          ]
+        }
+      },
+      "reset_pulse": {
+        "recovery": {
+          "reported_rows": 0,
+          "worst_slack_ns": null
+        },
+        "removal": {
+          "reported_rows": 0,
+          "worst_slack_ns": null
+        },
+        "pulse": {
+          "reported_rows": 10,
+          "worst_slack_ns": 7.778
+        }
+      },
+      "global_allocations": [
+        {
+          "net": "clk_d",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/rb_ra[0]",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/rb_ra[1]",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/rb_ra[2]",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/rb_ra[3]",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/n6609_4",
+          "resource": "LW"
+        },
+        {
+          "net": "u_extract/n7021_4",
+          "resource": "LW"
+        },
+        {
+          "net": "u_extract/n7631_4",
+          "resource": "LW"
+        }
+      ],
+      "internal_clock_50MHz_pass": true,
+      "fixture_external_IO_delays_constrained": false,
+      "joint_global_resource_occupancy_reproduced": false,
+      "all_row_read_paths_individually_listed": false,
+      "full_joint_acceptance": false
+    }
+  },
+  "local_CST_targets": [
+    "u_extract/n6609_4",
+    "u_extract/n7021_4",
+    "u_extract/n7631_4",
+    "u_extract/rb_ra[0]",
+    "u_extract/rb_ra[1]",
+    "u_extract/rb_ra[2]",
+    "u_extract/rb_ra[3]"
+  ],
+  "joint_reference": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+  "original_joint_inputs_unchanged": true,
+  "synthesis_estimated_Fmax_MHz": {
+    "baseline": 154.294,
+    "shared": 154.294
+  },
+  "synthesis_resource_delta": {
+    "FF": -891,
+    "LUT": 87,
+    "RAM16": 0,
+    "BSRAM": 0
+  },
+  "recovery_records": {
+    "option_format": "F:\\nav_integration_g2_20261023\\row_read_context_timing_probe1\\result_before_option_format_fix.json",
+    "original_local_memory_cap": "F:\\nav_integration_g2_20261023\\row_read_context_timing_probe1\\result_before_local_memory_fix.json",
+    "explanation": "Numeric50.000 formatting fixed; completed functional validation and both SYNs reused. First baseline local route was cancelled at807608320 bytes by incorrect768MiB routing cap; preserved and retried once with1.5GiB and stronger host guards. No main PNR intervention."
+  },
+  "limits": [
+    "Only local complete-extractor function and physical clock paths; not complete matcher/RL/G2.",
+    "Fixture external IO delays are not constrained; recovery/removal paths absent in local report, not signed off.",
+    "Seven LOCAL requests removed three LW allocations but the four read-address PRIMARY allocations remain. The guard stopped before shared local-routes PNR; no matching joint resource condition claimed.",
+    "Fewer FFs do not imply less physical area or guaranteed joint routability."
+  ]
 }
