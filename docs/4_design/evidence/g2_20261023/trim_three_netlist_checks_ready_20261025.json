@@ -1,0 +1,505 @@
+{
+  "recorded_at": "2026-10-25T18:38:05.792632+08:00",
+  "all_three_actual_netlist_prechecks_passed": true,
+  "root_independent_ready_cache_validation_at": "2026-10-25T18:36:06.181683+08:00",
+  "profiles": [
+    {
+      "profile_id": "03_console_storage_off",
+      "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_console_trim_syn19",
+      "cache_job": "F:\\nav_integration_g2_20261023\\lane2_trim_report_stage_recovery_cache1\\03_console_storage_off\\job.json",
+      "cache_phase": "ready_for_PNR",
+      "ready_at": "2026-10-25T18:35:11.863643+08:00",
+      "artifact_mode": "recovered_emitted_netlist",
+      "vendor_synthesis_completed": false,
+      "preserved_source_job": {
+        "source": "F:\\nav_integration_g2_20261023\\lane2_trim_console_prepared1",
+        "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_console_trim_syn19",
+        "wait_pid": null,
+        "programmed": false,
+        "source_frozen_before_wait": true,
+        "automatic_pnr": false,
+        "settings_only_resume": false,
+        "modified_rtl_inputs": [],
+        "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+        "execution_policy": {
+          "priority": 64,
+          "affinity": [
+            16
+          ],
+          "maximum_new_SYN_tree_RSS_MiB": 1536,
+          "maximum_new_SYN_tree_private_commit_MiB": 1536,
+          "minimum_runtime_physical_MiB": 1536,
+          "minimum_runtime_commit_reserve_MiB": 3072,
+          "applies_to": "this runner and newly created descendants only; no existing PNR process is modified"
+        },
+        "phase": "synthesizing",
+        "updated_at": "2026-10-25T17:03:56.553941+08:00",
+        "minimum_start_free_bytes": 2147483648,
+        "minimum_start_available_commit_bytes": 4294967296,
+        "max_runtime_minutes": 40,
+        "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+        "tool_pid": 48720,
+        "synthesis_started_at": "2026-10-25T16:53:07.633965+08:00",
+        "tool_created_epoch": 1792918387.627736,
+        "actual_tool_priority": 64,
+        "actual_tool_affinity": [
+          16
+        ],
+        "elapsed_s": 648.859000000055,
+        "free_bytes": 1746399232,
+        "available_commit_bytes": 4354478080,
+        "owned_tool_RSS_bytes": 519966720,
+        "peak_owned_tool_RSS_bytes": 746201088,
+        "owned_tool_private_bytes": 534241280,
+        "peak_owned_tool_private_bytes": 746745856
+      },
+      "pre_pnr_checks": {
+        "path": "F:\\nav_integration_g2_20261023\\lane2_trim_report_stage_recovery_cache1\\03_console_storage_off\\review_attempt2\\pre_pnr_checks.json",
+        "size_bytes": 23151193,
+        "mtime_ns": 1792924509399478500
+      },
+      "reviewer_snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\lane2_trim_report_stage_recovery_cache1\\03_console_storage_off\\review_attempt2\\reviewer_snapshot.py",
+        "size_bytes": 34994,
+        "mtime_ns": 1792924291973232900
+      },
+      "source_BSRAM": 314,
+      "wide_leaves": 10,
+      "predicted_physical_BSRAM": 324,
+      "physical_resources_measured": false,
+      "actual_SoC_proof": {
+        "passed": true,
+        "retained_register_Qs": 1030,
+        "retained_CPU_register_Qs": 699,
+        "retained_opaque_CPU_RAM_DSP_leaves": 98,
+        "primitive_input_bits_checked": 4098,
+        "proved_endpoints": 5249,
+        "SAT_calls": 383
+      },
+      "actual_shell_proof": {
+        "passed": true,
+        "retained_state_instances": 39028,
+        "retained_opaque_primitives": 4183,
+        "opaque_input_bits_checked": 78150,
+        "proof_endpoints": 128392,
+        "SAT_calls": 13371,
+        "failures": [],
+        "exceptions": []
+      },
+      "actual_interface_and_global_proofs": {
+        "OLED_and_arbiter_outputs_passed": true,
+        "strict_targets": 14,
+        "true_clocks": 4,
+        "explicit_direct_crossings": 77,
+        "known_constraints": 154,
+        "hold_only": 77,
+        "max_delay": 77,
+        "unproved_aliases": 0,
+        "clock_periods_ns": [
+          20,
+          10,
+          8,
+          8
+        ]
+      },
+      "raw_outside_scope_cells_identical": false,
+      "outside_scope_cells_identical_or_functionally_proved": true,
+      "physical_CDC_timing_PCS_reset_IO_and_extra43_signoff": false,
+      "deployment_accepted": false
+    },
+    {
+      "profile_id": "04_navigation_medium",
+      "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_nav_medium_syn20",
+      "cache_job": "F:\\nav_integration_g2_20261023\\lane2_trim_report_stage_recovery_cache1\\04_navigation_medium\\job.json",
+      "cache_phase": "ready_for_PNR",
+      "ready_at": "2026-10-25T18:28:38.234211+08:00",
+      "artifact_mode": "recovered_emitted_netlist",
+      "vendor_synthesis_completed": false,
+      "preserved_source_job": {
+        "source": "F:\\nav_integration_g2_20261023\\lane2_nav_medium_prepared1",
+        "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_nav_medium_syn20",
+        "wait_pid": null,
+        "programmed": false,
+        "source_frozen_before_wait": true,
+        "automatic_pnr": false,
+        "settings_only_resume": false,
+        "modified_rtl_inputs": [],
+        "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+        "execution_policy": {
+          "priority": 64,
+          "affinity": [
+            16
+          ],
+          "maximum_new_SYN_tree_RSS_MiB": 1536,
+          "maximum_new_SYN_tree_private_commit_MiB": 1536,
+          "minimum_runtime_physical_MiB": 1536,
+          "minimum_runtime_commit_reserve_MiB": 3072,
+          "applies_to": "this runner and newly created descendants only; no existing PNR process is modified"
+        },
+        "phase": "synthesizing",
+        "updated_at": "2026-10-25T17:15:12.682430+08:00",
+        "minimum_start_free_bytes": 2147483648,
+        "minimum_start_available_commit_bytes": 4294967296,
+        "max_runtime_minutes": 40,
+        "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+        "tool_pid": 25212,
+        "synthesis_started_at": "2026-10-25T17:04:23.988696+08:00",
+        "tool_created_epoch": 1792919063.970035,
+        "actual_tool_priority": 64,
+        "actual_tool_affinity": [
+          16
+        ],
+        "elapsed_s": 648.6719999999041,
+        "free_bytes": 2141061120,
+        "available_commit_bytes": 4343836672,
+        "owned_tool_RSS_bytes": 518410240,
+        "peak_owned_tool_RSS_bytes": 748933120,
+        "owned_tool_private_bytes": 533336064,
+        "peak_owned_tool_private_bytes": 749764608
+      },
+      "pre_pnr_checks": {
+        "path": "F:\\nav_integration_g2_20261023\\lane2_trim_report_stage_recovery_cache1\\04_navigation_medium\\review_attempt1\\pre_pnr_checks.json",
+        "size_bytes": 18531456,
+        "mtime_ns": 1792924114941933500
+      },
+      "reviewer_snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\lane2_trim_report_stage_recovery_cache1\\04_navigation_medium\\review_attempt1\\reviewer_snapshot.py",
+        "size_bytes": 34994,
+        "mtime_ns": 1792923915787906100
+      },
+      "source_BSRAM": 314,
+      "wide_leaves": 10,
+      "predicted_physical_BSRAM": 324,
+      "physical_resources_measured": false,
+      "actual_SoC_proof": {
+        "passed": true,
+        "retained_register_Qs": 1030,
+        "retained_CPU_register_Qs": 699,
+        "retained_opaque_CPU_RAM_DSP_leaves": 98,
+        "primitive_input_bits_checked": 4098,
+        "proved_endpoints": 5249,
+        "SAT_calls": 383
+      },
+      "actual_shell_proof": {
+        "passed": true,
+        "retained_state_instances": 33542,
+        "retained_opaque_primitives": 2786,
+        "opaque_input_bits_checked": 50045,
+        "proof_endpoints": 94844,
+        "SAT_calls": 13003,
+        "failures": [],
+        "exceptions": []
+      },
+      "actual_interface_and_global_proofs": {
+        "OLED_and_arbiter_outputs_passed": true,
+        "strict_targets": 14,
+        "true_clocks": 4,
+        "explicit_direct_crossings": 77,
+        "known_constraints": 154,
+        "hold_only": 77,
+        "max_delay": 77,
+        "unproved_aliases": 0,
+        "clock_periods_ns": [
+          20,
+          10,
+          8,
+          8
+        ]
+      },
+      "raw_outside_scope_cells_identical": false,
+      "outside_scope_cells_identical_or_functionally_proved": true,
+      "physical_CDC_timing_PCS_reset_IO_and_extra43_signoff": false,
+      "deployment_accepted": false
+    },
+    {
+      "profile_id": "05_navigation_strong",
+      "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_nav_strong_syn21",
+      "cache_job": "F:\\nav_integration_g2_20261023\\lane2_trim_parallel_SYN_cache1\\05_navigation_strong\\job.json",
+      "cache_phase": "ready_for_PNR",
+      "ready_at": "2026-10-25T18:24:37.720488+08:00",
+      "artifact_mode": "completed_synthesis",
+      "vendor_synthesis_completed": true,
+      "preserved_source_job": {
+        "source": "F:\\nav_integration_g2_20261023\\lane2_nav_strong_prepared1",
+        "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_nav_strong_syn21",
+        "wait_pid": null,
+        "programmed": false,
+        "source_frozen_before_wait": true,
+        "automatic_pnr": false,
+        "settings_only_resume": false,
+        "modified_rtl_inputs": [],
+        "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+        "execution_policy": {
+          "priority": 64,
+          "affinity": [
+            16
+          ],
+          "maximum_new_SYN_tree_RSS_MiB": 1536,
+          "maximum_new_SYN_tree_private_commit_MiB": 1536,
+          "minimum_runtime_physical_MiB": 1536,
+          "minimum_runtime_commit_reserve_MiB": 3072,
+          "applies_to": "this runner and newly created descendants only; no existing PNR process is modified"
+        },
+        "phase": "synthesis_complete",
+        "updated_at": "2026-10-25T17:27:05.837200+08:00",
+        "minimum_start_free_bytes": 2147483648,
+        "minimum_start_available_commit_bytes": 4294967296,
+        "max_runtime_minutes": 40,
+        "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+        "tool_pid": 67980,
+        "synthesis_started_at": "2026-10-25T17:15:40.960473+08:00",
+        "tool_created_epoch": 1792919740.954934,
+        "actual_tool_priority": 64,
+        "actual_tool_affinity": [
+          16
+        ],
+        "elapsed_s": 680.109000000055,
+        "free_bytes": 2210623488,
+        "available_commit_bytes": 4371857408,
+        "owned_tool_RSS_bytes": 626601984,
+        "peak_owned_tool_RSS_bytes": 1275035648,
+        "owned_tool_private_bytes": 646647808,
+        "peak_owned_tool_private_bytes": 1322819584,
+        "tool_exit": 0,
+        "joint_pnr_measured": false
+      },
+      "pre_pnr_checks": {
+        "path": "F:\\nav_integration_g2_20261023\\lane2_trim_parallel_SYN_cache1\\05_navigation_strong\\pre_pnr_checks_attempt4.json",
+        "size_bytes": 18528260,
+        "mtime_ns": 1792923875521283600
+      },
+      "reviewer_snapshot": {
+        "path": "F:\\nav_integration_g2_20261023\\lane2_trim_parallel_SYN_cache1\\05_navigation_strong\\reviewer_snapshot.py",
+        "size_bytes": 34994,
+        "mtime_ns": 1792923677949491600
+      },
+      "source_BSRAM": 314,
+      "wide_leaves": 10,
+      "predicted_physical_BSRAM": 324,
+      "physical_resources_measured": false,
+      "actual_SoC_proof": {
+        "passed": true,
+        "retained_register_Qs": 1030,
+        "retained_CPU_register_Qs": 699,
+        "retained_opaque_CPU_RAM_DSP_leaves": 98,
+        "primitive_input_bits_checked": 4098,
+        "proved_endpoints": 5249,
+        "SAT_calls": 377
+      },
+      "actual_shell_proof": {
+        "passed": true,
+        "retained_state_instances": 33542,
+        "retained_opaque_primitives": 2786,
+        "opaque_input_bits_checked": 50045,
+        "proof_endpoints": 94844,
+        "SAT_calls": 12600,
+        "failures": [],
+        "exceptions": []
+      },
+      "actual_interface_and_global_proofs": {
+        "OLED_and_arbiter_outputs_passed": true,
+        "strict_targets": 14,
+        "true_clocks": 4,
+        "explicit_direct_crossings": 77,
+        "known_constraints": 154,
+        "hold_only": 77,
+        "max_delay": 77,
+        "unproved_aliases": 0,
+        "clock_periods_ns": [
+          20,
+          10,
+          8,
+          8
+        ]
+      },
+      "raw_outside_scope_cells_identical": false,
+      "outside_scope_cells_identical_or_functionally_proved": true,
+      "physical_CDC_timing_PCS_reset_IO_and_extra43_signoff": false,
+      "deployment_accepted": false
+    }
+  ],
+  "no_repeat_synthesis_for_these_three": true,
+  "no_candidate_RTL_or_VG_changed_during_review": true,
+  "original_failed_attempts_preserved": true,
+  "known_checker_repairs": [
+    "SoC shared decode/counter/CPU input remapping proved using actual retained state and primitive inputs; no entire-SoC exemption.",
+    "Live TX256 distributed-memory leaves bijectively proved against old live256 of old live+shadow512; only shadow side removed.",
+    "Parent bus read functions checked for precise permitted shadow-zero and source-bound navigation valid-result contracts; no invented result-net aliases or GND/VCC cuts.",
+    "13 CPU data/strobe Q renames in console version share actual primitive and all non-Q pins/INIT, then full next-state/CPU RAM inputs re-proved."
+  ],
+  "ready_cache_guard_validation": {
+    "at": "2026-10-25T18:29:53.786586+08:00",
+    "checks": [
+      {
+        "profile": "04_navigation_medium",
+        "cache_ready_revalidated": true,
+        "artifact_mode": "recovered_emitted_netlist",
+        "source_BSRAM": 314,
+        "wide_leaves": 10,
+        "deploy": false
+      },
+      {
+        "independent_actual_precheck_missing_rejected": true,
+        "source_files_modified": false
+      },
+      {
+        "profile": "05_navigation_strong",
+        "cache_ready_revalidated": true,
+        "artifact_mode": "completed_synthesis",
+        "source_BSRAM": 314,
+        "wide_leaves": 10,
+        "deploy": false
+      }
+    ],
+    "earlier_negative_checks": [
+      "structural recovery without actual joint review rejected",
+      "changed recovery evidence metadata rejected"
+    ],
+    "new_SYN_or_PNR_started": false
+  },
+  "registry": "F:\\nav_integration_g2_20261023\\delivery_trim_batch_20261025.json",
+  "consumer": {
+    "job": "F:\\nav_integration_g2_20261023\\lane2_delivery_trim_serial_queue3\\job.json",
+    "phase": "one_profile_joint_PNR_running_no_deadline",
+    "active_profile": "01_oled_off",
+    "identity": {
+      "pid": 62896,
+      "created_epoch": 1792917650.354967,
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\run_delivery_trim_queue.py",
+        "--registry",
+        "F:\\nav_integration_g2_20261023\\delivery_trim_batch_20261025.json",
+        "--prior-pnr",
+        "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+        "--prior-state",
+        "F:\\nav_integration_g2_20261023\\lane2_row_read_shared_after_pnr19_once_retry1",
+        "--state-dir",
+        "F:\\nav_integration_g2_20261023\\lane2_delivery_trim_serial_queue3"
+      ],
+      "cwd": "D:\\Desktop\\SOC FPGA\\nav"
+    },
+    "same_profile_id_order": [
+      "01_oled_off",
+      "02_offline_debug_off",
+      "03_console_storage_off",
+      "04_navigation_medium",
+      "05_navigation_strong"
+    ],
+    "total_PNR_seconds": 0,
+    "silent_PNR_seconds": 0,
+    "maximum_simultaneous_PNR": 1
+  },
+  "current_PNR21": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_oled_off_pnr21",
+    "runtime": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-25T16:54:05.060306+08:00",
+      "max_runtime_s": 0.0,
+      "max_no_observable_progress_s": 0.0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 13840,
+      "elapsed_s": 6216.7970000000205,
+      "no_observable_progress_s": 5786.2970000000205,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          2058529,
+          1792918873724035200
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          2058104,
+          1792918873724035200
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          2352324,
+          1792918849675931600
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          13731156,
+          1792918850111566000
+        ]
+      ]
+    },
+    "identities": [
+      {
+        "pid": 13840,
+        "created_epoch": 1792918445.119888,
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "run.tcl"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\sfp_lane2_oled_off_pnr21"
+      },
+      {
+        "pid": 25452,
+        "created_epoch": 1792918442.310089,
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\pnr_from_netlist.py",
+          "F:\\nav_integration_g2_20261023\\lane2_delivery_trim_serial_queue3\\01_oled_off\\pnr_inputs",
+          "--out",
+          "F:\\nav_integration_g2_20261023\\sfp_lane2_oled_off_pnr21",
+          "--wide-split",
+          "1",
+          "--replicate-resources",
+          "1",
+          "--place-option",
+          "1",
+          "--route-option",
+          "2",
+          "--timing-driven",
+          "1",
+          "--max-runtime-minutes",
+          "0",
+          "--max-no-progress-minutes",
+          "0",
+          "--routing-evidence",
+          "--capture-system-telemetry"
+        ],
+        "cwd": "D:\\Desktop\\SOC FPGA\\nav"
+      }
+    ],
+    "final_report_exists": false,
+    "interrupted": false,
+    "inputs_changed": false
+  },
+  "offline_retry": {
+    "job": "F:\\nav_integration_g2_20261023\\lane2_trim_parallel_SYN_cache2\\02_offline_debug_off\\job.json",
+    "phase": "waiting_for_prepared_review_memory",
+    "controller_pid": 29556,
+    "controller_created_epoch": 1792921316.3291368,
+    "start_memory_policy": {
+      "minimum_physical_GiB": 3.0,
+      "minimum_commit_reserve_GiB": 5.0,
+      "consecutive_qualifying_samples": 2,
+      "sample_interval_seconds": 15
+    },
+    "last_memory_observation": {
+      "recorded_at": "2026-10-25T18:38:00.766377+08:00",
+      "available_physical_bytes": 3296292864,
+      "available_commit_bytes": 5048438784,
+      "thresholds_met": false,
+      "consecutive_qualifying_samples": 0,
+      "required_samples": 2
+    },
+    "original_incomplete_site_preserved": true
+  },
+  "next_action": "After natural PNR21 collection, continue the unchanged serial queue from the offline profile; await its guarded retry/precheck, then consume the reviewed console/medium/strong caches without resynthesis if preceding results require another distinct candidate. Routing with clean reported timing is retained for full signoff.",
+  "physical_timing_or_deployment_accepted": false,
+  "programmed": false
+}
