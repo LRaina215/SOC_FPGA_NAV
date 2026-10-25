@@ -9,6 +9,7 @@ Metadata is byte length and modification time, never a content hash.
 import argparse
 from datetime import datetime
 import json
+import math
 import os
 from pathlib import Path
 import shutil
@@ -193,8 +194,9 @@ def run_owned(command, directory, label, cpu_core, save,
               max_rss_mib=1536, max_private_mib=1536,
               minimum_phys_mib=1536, minimum_commit_mib=3072):
     log = directory/(label+'.log')
+    pressure_log = directory/(label+'_memory_pressure.jsonl')
     started = now()
-    with log.open('w', encoding='utf-8') as output:
+    with log.open('w', encoding='utf-8') as output, pressure_log.open('w', encoding='utf-8') as pressure:
         child = subprocess.Popen(command, cwd=ROOT, stdout=output, stderr=subprocess.STDOUT,
             creationflags=subprocess.CREATE_NO_WINDOW | subprocess.IDLE_PRIORITY_CLASS)
         process = psutil.Process(child.pid)
@@ -206,6 +208,13 @@ def run_owned(command, directory, label, cpu_core, save,
         low = 0
         peak_rss = 0
         peak_private = 0
+        minimum_host_physical = None
+        minimum_host_commit = None
+        samples = 0
+        host_low_streak = []
+        trigger_sample = None
+        trigger_consecutive_samples = []
+        final_sample = None
         while child.poll() is None:
             try:
                 tree = [process]+process.children(recursive=True)
@@ -217,16 +226,35 @@ def run_owned(command, directory, label, cpu_core, save,
             except psutil.NoSuchProcess:
                 rss = private = 0
             memory = memory_status()
-            danger = (memory.avail_phys < minimum_phys_mib*MIB or
-                      memory.avail_page < minimum_commit_mib*MIB)
+            samples += 1
+            minimum_host_physical = memory.avail_phys if minimum_host_physical is None else min(minimum_host_physical, memory.avail_phys)
+            minimum_host_commit = memory.avail_page if minimum_host_commit is None else min(minimum_host_commit, memory.avail_page)
+            conditions = dict(host_physical_below_reserve=memory.avail_phys < minimum_phys_mib*MIB,
+                host_commit_below_reserve=memory.avail_page < minimum_commit_mib*MIB,
+                owned_RSS_above_limit=rss > max_rss_mib*MIB,
+                owned_private_commit_above_limit=private > max_private_mib*MIB)
+            danger = conditions['host_physical_below_reserve'] or conditions['host_commit_below_reserve']
             low = low+1 if danger else 0
-            if rss > max_rss_mib*MIB:
+            final_sample = dict(recorded_at=now(), sample_number=samples,
+                available_physical_bytes=memory.avail_phys, available_commit_bytes=memory.avail_page,
+                process_tree_RSS_bytes=rss, process_tree_private_commit_bytes=private,
+                conditions=conditions, consecutive_host_low_samples=low)
+            if danger:
+                host_low_streak.append(final_sample)
+            else:
+                host_low_streak = []
+            if any(conditions.values()):
+                pressure.write(json.dumps(final_sample)+'\n')
+                pressure.flush()
+            if conditions['owned_RSS_above_limit']:
                 reason = 'new_child_tree_RSS_limit'
-            elif private > max_private_mib*MIB:
+            elif conditions['owned_private_commit_above_limit']:
                 reason = 'new_child_tree_private_commit_limit'
             elif low >= 2:
                 reason = 'new_child_only_host_reserve_protection'
             if reason:
+                trigger_sample = final_sample
+                trigger_consecutive_samples = list(host_low_streak)
                 stop_owned_tree(child)
                 break
             time.sleep(1)
@@ -239,6 +267,12 @@ def run_owned(command, directory, label, cpu_core, save,
         maximum_process_tree_private_commit_MiB=max_private_mib,
         minimum_runtime_host_physical_MiB=minimum_phys_mib,
         minimum_runtime_host_commit_reserve_MiB=minimum_commit_mib,
+        memory_sample_count=samples,
+        minimum_observed_host_physical_bytes=minimum_host_physical,
+        minimum_observed_host_commit_reserve_bytes=minimum_host_commit,
+        memory_pressure_log=str(pressure_log), final_memory_sample=final_sample,
+        protection_trigger_sample=trigger_sample,
+        protection_consecutive_host_low_samples=trigger_consecutive_samples,
         priority='IDLE', cpu_core=cpu_core, log=str(log))
     write(directory/(label+'_runtime.json'), record)
     save(active_child=None, active_log=str(log), last_command_runtime=record)
@@ -270,7 +304,9 @@ def _source_binding_matches(synthesis, prepared):
     return job
 
 
-def produce(profile, directory, cpu_core, review_only=False):
+def produce(profile, directory, cpu_core, review_only=False,
+            minimum_start_physical_gib=2, minimum_start_commit_gib=4,
+            start_stable_samples=1):
     prepared = Path(profile['prepared']).resolve()
     synthesis = Path(profile['synthesis']).resolve()
     baseline = Path(profile['baseline']).resolve()
@@ -295,6 +331,9 @@ def produce(profile, directory, cpu_core, review_only=False):
         controller_pid=os.getpid(), controller_created_epoch=psutil.Process().create_time(),
         programmed=False, deployment_accepted=False, PNR_started=False,
         review_attempt=int(current.get('review_attempt', 0)),
+        start_memory_policy=dict(minimum_physical_GiB=minimum_start_physical_gib,
+            minimum_commit_reserve_GiB=minimum_start_commit_gib,
+            consecutive_qualifying_samples=start_stable_samples, sample_interval_seconds=15),
         phase='reserved', prior_phase=current.get('phase'))
     if current.get('prepared_input_metadata'):
         state['prepared_input_metadata'] = current['prepared_input_metadata']
@@ -307,9 +346,16 @@ def produce(profile, directory, cpu_core, review_only=False):
 
     def memory_wait(phase):
         save(phase)
+        stable = 0
         while True:
             memory = memory_status()
-            if memory.avail_phys >= 2*GIB and memory.avail_page >= 4*GIB:
+            admitted = (memory.avail_phys >= minimum_start_physical_gib*GIB and
+                        memory.avail_page >= minimum_start_commit_gib*GIB)
+            stable = stable+1 if admitted else 0
+            save(start_memory_observation=dict(recorded_at=now(), available_physical_bytes=memory.avail_phys,
+                available_commit_bytes=memory.avail_page, thresholds_met=admitted,
+                consecutive_qualifying_samples=stable, required_samples=start_stable_samples))
+            if stable >= start_stable_samples:
                 return memory
             time.sleep(15)
 
@@ -413,6 +459,12 @@ def main():
     parser.add_argument('--registry', type=Path, required=True)
     parser.add_argument('--state-dir', type=Path, required=True)
     parser.add_argument('--cpu-core', type=int, required=True)
+    parser.add_argument('--profile', dest='profile_ids', action='append', metavar='PROFILE_ID',
+        help='produce only these registered RTL profiles, in registry order; repeat to select several')
+    parser.add_argument('--minimum-start-physical-gib', type=float, default=2)
+    parser.add_argument('--minimum-start-commit-gib', type=float, default=4)
+    parser.add_argument('--start-stable-samples', type=int, default=1,
+        help='consecutive qualifying host-memory observations, 15 seconds apart')
     parser.add_argument('--review-only', metavar='PROFILE_ID')
     parser.add_argument('--validate-only', action='store_true')
     args = parser.parse_args()
@@ -420,12 +472,27 @@ def main():
     specification = load(registry)
     profiles = [p for p in specification['profiles'] if p['kind'] == 'rtl_source']
     assert len(profiles) == 4 and len({p['id'] for p in profiles}) == 4
+    assert all(math.isfinite(value) and value > 0 for value in
+        (args.minimum_start_physical_gib, args.minimum_start_commit_gib)), 'start-memory thresholds must be finite and positive'
+    assert args.start_stable_samples >= 1, 'stable start-memory sample count must be positive'
+    assert not (args.profile_ids and args.review_only), '--profile and --review-only cannot be combined'
+    if args.profile_ids:
+        assert len(args.profile_ids) == len(set(args.profile_ids)), 'duplicate profile selection'
+        selected = set(args.profile_ids)
+        assert selected <= {p['id'] for p in profiles}, 'unknown RTL profile selection'
+        profiles = [p for p in profiles if p['id'] in selected]
+    if args.review_only:
+        profiles = [p for p in profiles if p['id'] == args.review_only]
+        assert len(profiles) == 1, 'unknown review-only profile'
     for profile in profiles:
         assert profile['reviewer'] == 'review_delivery_trim_joint'
         assert Path(profile['parallel_synthesis_cache_job']).resolve() == folder/profile['id']/'job.json'
     assert args.cpu_core in psutil.Process().cpu_affinity(), 'selected spare CPU core is unavailable'
     if args.validate_only:
         print(json.dumps(dict(passed=True, profiles=[p['id'] for p in profiles], starts_tools=False,
+            start_memory_policy=dict(minimum_physical_GiB=args.minimum_start_physical_gib,
+                minimum_commit_reserve_GiB=args.minimum_start_commit_gib,
+                consecutive_qualifying_samples=args.start_stable_samples, sample_interval_seconds=15),
             metadata_API='frozen_input_metadata(build); validate_ready_cache(job_or_path, profile=None)')))
         return 0
     folder.mkdir(parents=True, exist_ok=True)
@@ -442,16 +509,18 @@ def main():
         json.dump(identity(me), stream, indent=2)
     state = dict(schema_version=1, controller_pid=me.pid, controller_created_epoch=me.create_time(),
         registry=str(registry), cpu_core=args.cpu_core, completed_profiles=[],
+        selected_profiles=[p['id'] for p in profiles],
+        start_memory_policy=dict(minimum_physical_GiB=args.minimum_start_physical_gib,
+            minimum_commit_reserve_GiB=args.minimum_start_commit_gib,
+            consecutive_qualifying_samples=args.start_stable_samples, sample_interval_seconds=15),
         single_serial_SYN_producer=True, maximum_simultaneous_new_SYN=1,
         PNR_started=False, programmed=False, deployment_accepted=False)
     try:
-        if args.review_only:
-            profiles = [p for p in profiles if p['id'] == args.review_only]
-            assert len(profiles) == 1, 'unknown review-only profile'
         for profile in profiles:
             state.update(phase='producing_one_unique_SYN_cache', active_profile=profile['id'], updated_at=now())
             write(folder/'job.json', state)
-            result = produce(profile, folder/profile['id'], args.cpu_core, bool(args.review_only))
+            result = produce(profile, folder/profile['id'], args.cpu_core, bool(args.review_only),
+                args.minimum_start_physical_gib, args.minimum_start_commit_gib, args.start_stable_samples)
             state['completed_profiles'].append(dict(profile_id=profile['id'], phase=result['phase'],
                 cache_job=str(folder/profile['id']/'job.json')))
         state.update(phase='all_unique_SYN_caches_collected', active_profile=None, updated_at=now())
