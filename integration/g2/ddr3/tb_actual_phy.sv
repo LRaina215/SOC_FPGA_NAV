@@ -24,6 +24,17 @@ module tb_actual_c;
  // Observe public DRAM pins and native phase; no forced training state.
  always@(resetn) $display("DDR_RESET_PIN time_us=%0.6f value=%b cke=%b",$realtime/1000.0,resetn,cke);
  always@(cal) $display("CALIBRATION_PIN time_us=%0.6f value=%b reads=%0d writes=%0d",$realtime/1000.0,cal,reads,writes);
+`ifdef OBSERVE_VENDOR_PUBLIC_CALIBRATION
+ // These are published .vo wires, not objects inside the protected DQS.
+ wire[7:0]eye_cor0=dut.\gw3_top/u_ddr_phy_top/u_eye_calib_rmove_mod/eye_calib_gen[0].cor_cnt ;
+ wire[7:0]eye_cor1=dut.\gw3_top/u_ddr_phy_top/u_eye_calib_rmove_mod/eye_calib_gen[1].cor_cnt ;
+ wire[7:0]eye_cor2=dut.\gw3_top/u_ddr_phy_top/u_eye_calib_rmove_mod/eye_calib_gen[2].cor_cnt ;
+ wire[7:0]eye_cor3=dut.\gw3_top/u_ddr_phy_top/u_eye_calib_rmove_mod/eye_calib_gen[3].cor_cnt ;
+ wire[31:0]write_step=dut.\gw3_top/u_ddr_phy_top/wstep_Z ;
+ initial forever begin #100000;
+   $display("PUBLIC_CAL time_us=%0.6f eye_correct=%h/%h/%h/%h write_step=%h",$realtime/1000.0,eye_cor0,eye_cor1,eye_cor2,eye_cor3,write_step);
+ end
+`endif
  always@(posedge ui)cyc=cyc+1;
  always@(posedge ck)if(resetn && cke && !cs)case({ras,cas,wen})
  3'b000:begin

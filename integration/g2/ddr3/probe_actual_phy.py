@@ -36,13 +36,18 @@ def run(args):
     assert (model/'ddr3_model.sv').is_file()
     assert (model/'ddr3_model_parameters.vh').is_file()
     prim = args.simlib.resolve()
-    for name in ('prim_sim.v', 'DQS_sim_M.vp'):
-        assert (prim/name).is_file(), name
+    assert (prim/'prim_sim.v').is_file()
+    dqs = args.dqs_model.resolve() if args.dqs_model else prim/'DQS_sim_M.vp'
+    assert dqs.is_file()
+    import psutil
+    active = [p.pid for p in psutil.process_iter(['name'])
+              if (p.info['name'] or '').lower() in ('vsim.exe', 'vsimk.exe')]
+    assert not active, 'preserve the existing single licensed runtime: '+str(active)
     out.mkdir(parents=True)
     wrapper = '\n'.join([
         '`include "'+(prim/'prim_sim.v').as_posix()+'"',
         '`timescale 1ns/1ps',
-        '`include "'+(prim/'DQS_sim_M.vp').as_posix()+'"',
+        '`include "'+dqs.as_posix()+'"',
         '`timescale 1ns/1ps',
         '`include "'+args.pll.resolve().as_posix()+'"', ''])
     (out/'vendor_lib.v').write_text(wrapper)
@@ -57,12 +62,15 @@ def run(args):
     env['LM_LICENSE_FILE'] = env['MGLS_LICENSE_FILE']
     commands = [
         ['vlib.exe', 'work'],
-        ['vlog.exe', '-sv', '+incdir+'+str(model), 'vendor_lib.v', str(vo),
+        ['vlog.exe', '-sv', *(['+define+OBSERVE_VENDOR_PUBLIC_CALIBRATION']
+          if args.observe_public_calibration else []),
+         '+incdir+'+str(model), 'vendor_lib.v', str(vo),
          str(model/'ddr3_model.sv'), 'tb_actual_phy.sv'],
         ['vsim.exe', '-c', '-t', '1ps', 'work.tb_actual_c', '-do', 'run.do']]
     result = dict(started_at=datetime.now().astimezone().isoformat(),
         original_vendor_models_unmodified=True, forced_calibration=False,
-        vendor_model=str(vo), pll=str(args.pll.resolve()),
+        vendor_model=str(vo), vendor_dqs_model=str(dqs), pll=str(args.pll.resolve()),
+        public_calibration_net_observation=args.observe_public_calibration,
         reset_hold_ns=args.reset_hold_ns, license_used_child_environment_only=True,
         actual_board_training_verified=False, unconditional_service_bound=False,
         complete_UPDATE_5ms_verified=False, full_joint_build_started=False,
@@ -104,5 +112,7 @@ if __name__ == '__main__':
     p.add_argument('--license-file', type=Path, required=True)
     p.add_argument('--simulator', type=Path, default=Path('E:/modelsim_ae/win32aloem'))
     p.add_argument('--simlib', type=Path, default=Path('D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/simlib/gw5a'))
+    p.add_argument('--dqs-model', type=Path)
+    p.add_argument('--observe-public-calibration', action='store_true')
     p.add_argument('--reset-hold-ns', type=int, default=200)
     run(p.parse_args())
