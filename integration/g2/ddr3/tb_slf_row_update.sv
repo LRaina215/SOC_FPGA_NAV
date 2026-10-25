@@ -66,6 +66,8 @@ module tb_slf_row_update;
         cycles++;
         if(fault)$fatal(1,"unexpected DDR fault");
 `ifndef MAPPED_ROW_UPDATE
+        if(!rst&&|(dut.ire&dut.iwe))
+            $fatal(1,"row bank read/write overlap violates normal-mode contract");
         if(dut.phase==4&&dut.lf_busy&&!dut.ce)ce_stalls++;
         if(!rst&&dut.ce&&dut.u_lf.v1&&dut.u_lf.inr1&&$isunknown(dut.lf_q))
             $fatal(1,"unknown LF read row=%0d col=%0d pending=%b",dut.u_lf.r1,dut.u_lf.c1,dut.read_pending);

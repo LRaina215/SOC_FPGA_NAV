@@ -60,7 +60,10 @@ module nav_ddr_row_stream (
         reg[17:0]q;
         always@(posedge clk)begin
             if(in_we[b])input_row[in_addr[b*8+:8]]<=in_data[b*18+:18];
-            if(in_re[b])q<=input_row[in_addr[b*8+:8]];
+            // The caller never reads a bank while writing that bank. Keep
+            // its last read result during writes; GW5A true dual-port RAM
+            // supports normal mode, but rejects read-before-write mode.
+            else if(in_re[b])q<=input_row[in_addr[b*8+:8]];
         end
         always@(posedge ui_clk)
             if(unpack&&held_bank==b)
