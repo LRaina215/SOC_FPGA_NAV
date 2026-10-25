@@ -21,14 +21,17 @@ def section(text, title, following):
 
 def review(build):
     pnr = build / 'impl/pnr'
-    timing = (pnr / 'g2_top.tr').read_text(encoding='utf-8')
-    report = (pnr / 'g2_top.rpt.txt').read_text(encoding='utf-8')
+    timing_files=sorted(pnr.glob('*.tr'))
+    assert len(timing_files)==1, ('one actual timing report required',timing_files)
+    report_stem=timing_files[0].stem
+    timing = timing_files[0].read_text(encoding='utf-8')
+    report = (pnr / (report_stem+'.rpt.txt')).read_text(encoding='utf-8')
     log = (build / 'physical.log').read_text(encoding='utf-8')
     runtime = json.loads((build / 'physical_runtime.json').read_text())
     assert runtime['tool_exit'] == 0 and not runtime['cancelled'], runtime
     assert 'Placement and routing completed' in log
     assert not re.search(r'\bERROR\s*\(|Error:', log)
-    assert (pnr / 'g2_top.vo').is_file()
+    assert (pnr / (report_stem+'.vo')).is_file()
     counts = {}
     for name, title in [('setup', 'Setup Violated Endpoints'), ('hold', 'Hold Violated Endpoints'),
                         ('paths', 'Paths Analyzed'), ('endpoints', 'Endpoints Analyzed')]:
@@ -62,7 +65,7 @@ def review(build):
         resources[key] = int(m[1]) if m else None
     resources['RAM16'] = int(re.search(r'--SSRAM\(RAM16\)\s*\|\s*(\d+)', report)[1])
     resources['LUT'] = int(re.search(r'\((\d+) LUT,', report)[1])
-    physical_text=(pnr/'g2_top.vo').read_text(encoding='utf-8')
+    physical_text=(pnr/(report_stem+'.vo')).read_text(encoding='utf-8')
     primitive_counts=Counter(m[1] for m in CELLS.finditer(physical_text))
     assert sum(v for k,v in primitive_counts.items() if k.startswith('DFF'))==resources['Register']
     physical_bsram=sum(primitive_counts[k] for k in BSRAM)
@@ -74,7 +77,7 @@ def review(build):
         if '| PRIMARY' in line or '| LW ' in line:
             fields = line.split('|')
             globals_used.append(dict(net=fields[0].strip(), resource=fields[1].strip()))
-    return dict(build=str(build), report=str(pnr/'g2_top.rpt.txt'), timing_report=str(pnr/'g2_top.tr'),
+    return dict(build=str(build), report=str(pnr/(report_stem+'.rpt.txt')), timing_report=str(timing_files[0]),
                 runtime=runtime, routing_completed=True,
                 explicit_unrouted_count=None, routing_evidence='Natural successful routing completion, physical netlist and STA; no explicit unrouted count printed.',
                 clocks=clocks, counts=counts, resources=resources, paths=paths, reset_pulse=extras,

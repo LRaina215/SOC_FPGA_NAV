@@ -1,0 +1,1122 @@
+{
+  "recorded_at": "2026-10-25T14:32:38.559808+08:00",
+  "request": "Diagnose LOCAL routing constraint behavior and verify shared extractor50MHz without extra global resources, preserving PNR19.",
+  "vendor_manual": {
+    "path": "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/doc/EN/SUG1541-1.0E_Gowin Software Physical Constraints User Guide.pdf",
+    "section": "2.8, printed pages18-19",
+    "syntax": "CLOCK_LOC \"net_name\" LOCAL_CLOCK;",
+    "signal_type_not_allowed": true
+  },
+  "tool_version": "V1.9.12.04 (64-bit)",
+  "part": "GW5AT-LV138PG484AC1/I0 C",
+  "cases": {
+    "literal_bit_names": {
+      "directory": "F:\\nav_integration_g2_20261023\\row_read_context_localroutes_probe1",
+      "phase": "local_analysis_failed_requires_review",
+      "failure": "unexpected spare global allocation requires review",
+      "runtime": {
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "physical.tcl"
+        ],
+        "started_at": "2026-10-25T14:06:26.701916+08:00",
+        "maximum_runtime_s": 0,
+        "maximum_silent_s": 0,
+        "startup_free_bytes": 4936732672,
+        "startup_commit_reserve_bytes": 5906825216,
+        "priority": "BELOW_NORMAL",
+        "cpu_affinity": [
+          19
+        ],
+        "cancelled": false,
+        "maximum_owned_rss_bytes": 1610612736,
+        "pid": 57328,
+        "created_epoch": 1792908386.7061427,
+        "tool_exit": 0,
+        "elapsed_s": 111.60999999998603,
+        "peak_owned_rss_bytes": 1353674752,
+        "ended_at": "2026-10-25T14:08:18.336581+08:00"
+      },
+      "CST": "CLOCK_LOC \"u_extract/n6609_4\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/n7021_4\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/n7631_4\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/rb_ra[0]\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/rb_ra[1]\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/rb_ra[2]\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/rb_ra[3]\" LOCAL_CLOCK;\n",
+      "errors": [],
+      "placement_started": true,
+      "actual_clock_resources": [
+        {
+          "net": "clk_d",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/rb_ra[0]",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/rb_ra[1]",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/rb_ra[2]",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/rb_ra[3]",
+          "resource": "PRIMARY"
+        }
+      ],
+      "clock_timing": [
+        {
+          "name": "clk50",
+          "required_mhz": 50.0,
+          "actual_mhz": 88.829
+        }
+      ]
+    },
+    "escaped_bit_names": {
+      "directory": "F:\\nav_integration_g2_20261023\\row_read_context_escaped_bits_probe2",
+      "phase": "local_analysis_failed_requires_review",
+      "failure": "{'command': ['D:\\\\Gowin2\\\\Gowin_V1.9.12.04_x64\\\\IDE\\\\bin\\\\gw_sh.exe', 'physical.tcl'], 'started_at': '2026-10-25T14:19:05.559954+08:00', 'maximum_runtime_s': 0, 'maximum_silent_s': 0, 'startup_free_bytes': 4175552512, 'startup_commit_reserve_bytes': 6110236672, 'priority': 'BELOW_NORMAL', 'cpu_affinity': [19], 'cancelled': False, 'maximum_owned_rss_bytes': 1610612736, 'pid': 56768, 'created_epoch': 1792909145.5631208, 'tool_exit': 1, 'elapsed_s': 5.0, 'peak_owned_rss_bytes': 677343232, 'ended_at': '2026-10-25T14:19:10.573290+08:00'}",
+      "runtime": {
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "physical.tcl"
+        ],
+        "started_at": "2026-10-25T14:19:05.559954+08:00",
+        "maximum_runtime_s": 0,
+        "maximum_silent_s": 0,
+        "startup_free_bytes": 4175552512,
+        "startup_commit_reserve_bytes": 6110236672,
+        "priority": "BELOW_NORMAL",
+        "cpu_affinity": [
+          19
+        ],
+        "cancelled": false,
+        "maximum_owned_rss_bytes": 1610612736,
+        "pid": 56768,
+        "created_epoch": 1792909145.5631208,
+        "tool_exit": 1,
+        "elapsed_s": 5.0,
+        "peak_owned_rss_bytes": 677343232,
+        "ended_at": "2026-10-25T14:19:10.573290+08:00"
+      },
+      "CST": "CLOCK_LOC \"u_extract/n6609_4\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/n7021_4\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/n7631_4\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/rb_ra\\[0\\]\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/rb_ra\\[1\\]\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/rb_ra\\[2\\]\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/rb_ra\\[3\\]\" LOCAL_CLOCK;\n",
+      "errors": [
+        "ERROR  (CT1135) : \"F:\\nav_integration_g2_20261023\\row_read_context_escaped_bits_probe2\\baseline\\local_only.cst\":4 | Can't find object named 'u_extract/rb_ra\\[0\\]'",
+        "ERROR  (CT1135) : \"F:\\nav_integration_g2_20261023\\row_read_context_escaped_bits_probe2\\baseline\\local_only.cst\":5 | Can't find object named 'u_extract/rb_ra\\[1\\]'",
+        "ERROR  (CT1135) : \"F:\\nav_integration_g2_20261023\\row_read_context_escaped_bits_probe2\\baseline\\local_only.cst\":6 | Can't find object named 'u_extract/rb_ra\\[2\\]'",
+        "ERROR  (CT1135) : \"F:\\nav_integration_g2_20261023\\row_read_context_escaped_bits_probe2\\baseline\\local_only.cst\":7 | Can't find object named 'u_extract/rb_ra\\[3\\]'"
+      ],
+      "placement_started": false
+    },
+    "whole_bus_name": {
+      "directory": "F:\\nav_integration_g2_20261023\\row_read_context_whole_bus_probe3",
+      "phase": "local_analysis_failed_requires_review",
+      "failure": "{'command': ['D:\\\\Gowin2\\\\Gowin_V1.9.12.04_x64\\\\IDE\\\\bin\\\\gw_sh.exe', 'physical.tcl'], 'started_at': '2026-10-25T14:19:37.072602+08:00', 'maximum_runtime_s': 0, 'maximum_silent_s': 0, 'startup_free_bytes': 4218044416, 'startup_commit_reserve_bytes': 6264311808, 'priority': 'BELOW_NORMAL', 'cpu_affinity': [19], 'cancelled': False, 'maximum_owned_rss_bytes': 1610612736, 'pid': 54368, 'created_epoch': 1792909177.0748625, 'tool_exit': 1, 'elapsed_s': 4.64000000001397, 'peak_owned_rss_bytes': 714665984, 'ended_at': '2026-10-25T14:19:41.726122+08:00'}",
+      "runtime": {
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "physical.tcl"
+        ],
+        "started_at": "2026-10-25T14:19:37.072602+08:00",
+        "maximum_runtime_s": 0,
+        "maximum_silent_s": 0,
+        "startup_free_bytes": 4218044416,
+        "startup_commit_reserve_bytes": 6264311808,
+        "priority": "BELOW_NORMAL",
+        "cpu_affinity": [
+          19
+        ],
+        "cancelled": false,
+        "maximum_owned_rss_bytes": 1610612736,
+        "pid": 54368,
+        "created_epoch": 1792909177.0748625,
+        "tool_exit": 1,
+        "elapsed_s": 4.64000000001397,
+        "peak_owned_rss_bytes": 714665984,
+        "ended_at": "2026-10-25T14:19:41.726122+08:00"
+      },
+      "CST": "CLOCK_LOC \"u_extract/n6609_4\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/n7021_4\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/n7631_4\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/rb_ra\" LOCAL_CLOCK;\n",
+      "errors": [
+        "ERROR  (CT1135) : \"F:\\nav_integration_g2_20261023\\row_read_context_whole_bus_probe3\\baseline\\local_only.cst\":4 | Can't find object named 'u_extract/rb_ra'"
+      ],
+      "placement_started": false
+    },
+    "reversible_scalar_names": {
+      "directory": "F:\\nav_integration_g2_20261023\\row_read_context_scalar_names_probe4",
+      "phase": "local_analysis_failed_requires_review",
+      "failure": "unexpected spare global allocation requires review",
+      "runtime": {
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "physical.tcl"
+        ],
+        "started_at": "2026-10-25T14:21:17.950103+08:00",
+        "maximum_runtime_s": 0,
+        "maximum_silent_s": 0,
+        "startup_free_bytes": 4064530432,
+        "startup_commit_reserve_bytes": 6157230080,
+        "priority": "BELOW_NORMAL",
+        "cpu_affinity": [
+          19
+        ],
+        "cancelled": false,
+        "maximum_owned_rss_bytes": 1610612736,
+        "pid": 43260,
+        "created_epoch": 1792909277.9667473,
+        "tool_exit": 0,
+        "elapsed_s": 115.98499999998603,
+        "peak_owned_rss_bytes": 1334398976,
+        "ended_at": "2026-10-25T14:23:13.949554+08:00"
+      },
+      "CST": "CLOCK_LOC \"u_extract/n6609_4\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/n7021_4\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/n7631_4\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/diagnostic_read_address_0\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/diagnostic_read_address_1\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/diagnostic_read_address_2\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/diagnostic_read_address_3\" LOCAL_CLOCK;\n",
+      "errors": [],
+      "placement_started": true,
+      "actual_clock_resources": [
+        {
+          "net": "clk_d",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/diagnostic_read_address_0",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/diagnostic_read_address_1",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/diagnostic_read_address_2",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "u_extract/diagnostic_read_address_3",
+          "resource": "PRIMARY"
+        }
+      ],
+      "clock_timing": [
+        {
+          "name": "clk50",
+          "required_mhz": 50.0,
+          "actual_mhz": 88.829
+        }
+      ]
+    },
+    "explicit_LOCAL_logic_type": {
+      "directory": "F:\\nav_integration_g2_20261023\\row_read_context_local_logic_probe5",
+      "phase": "local_analysis_failed_requires_review",
+      "failure": "{'command': ['D:\\\\Gowin2\\\\Gowin_V1.9.12.04_x64\\\\IDE\\\\bin\\\\gw_sh.exe', 'physical.tcl'], 'started_at': '2026-10-25T14:24:44.243455+08:00', 'maximum_runtime_s': 0, 'maximum_silent_s': 0, 'startup_free_bytes': 4679221248, 'startup_commit_reserve_bytes': 6782427136, 'priority': 'BELOW_NORMAL', 'cpu_affinity': [19], 'cancelled': False, 'maximum_owned_rss_bytes': 1610612736, 'pid': 60100, 'created_epoch': 1792909484.24646, 'tool_exit': 1, 'elapsed_s': 4.125, 'peak_owned_rss_bytes': 533950464, 'ended_at': '2026-10-25T14:24:48.370283+08:00'}",
+      "runtime": {
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "physical.tcl"
+        ],
+        "started_at": "2026-10-25T14:24:44.243455+08:00",
+        "maximum_runtime_s": 0,
+        "maximum_silent_s": 0,
+        "startup_free_bytes": 4679221248,
+        "startup_commit_reserve_bytes": 6782427136,
+        "priority": "BELOW_NORMAL",
+        "cpu_affinity": [
+          19
+        ],
+        "cancelled": false,
+        "maximum_owned_rss_bytes": 1610612736,
+        "pid": 60100,
+        "created_epoch": 1792909484.24646,
+        "tool_exit": 1,
+        "elapsed_s": 4.125,
+        "peak_owned_rss_bytes": 533950464,
+        "ended_at": "2026-10-25T14:24:48.370283+08:00"
+      },
+      "CST": "CLOCK_LOC \"u_extract/n6609_4\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/n7021_4\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/n7631_4\" LOCAL_CLOCK;\nCLOCK_LOC \"u_extract/rb_ra[0]\" LOCAL_CLOCK = LOGIC;\nCLOCK_LOC \"u_extract/rb_ra[1]\" LOCAL_CLOCK = LOGIC;\nCLOCK_LOC \"u_extract/rb_ra[2]\" LOCAL_CLOCK = LOGIC;\nCLOCK_LOC \"u_extract/rb_ra[3]\" LOCAL_CLOCK = LOGIC;\n",
+      "errors": [
+        "ERROR  (CT2000) : \"F:\\nav_integration_g2_20261023\\row_read_context_local_logic_probe5\\baseline\\local_only.cst\":4 | 'syntax error' near token '='"
+      ],
+      "placement_started": false
+    }
+  },
+  "occupied_budget_result": "F:\\nav_integration_g2_20261023\\row_read_context_occupied_globals_probe6\\result.json",
+  "occupied_budget_results": {
+    "baseline": {
+      "build": "F:\\nav_integration_g2_20261023\\row_read_context_occupied_globals_probe6\\baseline",
+      "report": "F:\\nav_integration_g2_20261023\\row_read_context_occupied_globals_probe6\\baseline\\impl\\pnr\\g2_top.rpt.txt",
+      "timing_report": "F:\\nav_integration_g2_20261023\\row_read_context_occupied_globals_probe6\\baseline\\impl\\pnr\\g2_top.tr",
+      "runtime": {
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "physical.tcl"
+        ],
+        "started_at": "2026-10-25T14:28:22.768011+08:00",
+        "maximum_runtime_s": 0,
+        "maximum_silent_s": 0,
+        "startup_free_bytes": 4470034432,
+        "startup_commit_reserve_bytes": 6637604864,
+        "priority": "BELOW_NORMAL",
+        "cpu_affinity": [
+          19
+        ],
+        "cancelled": false,
+        "maximum_owned_rss_bytes": 1610612736,
+        "pid": 33864,
+        "created_epoch": 1792909702.7738516,
+        "tool_exit": 0,
+        "elapsed_s": 100.95300000009593,
+        "peak_owned_rss_bytes": 1354395648,
+        "ended_at": "2026-10-25T14:30:03.740091+08:00"
+      },
+      "routing_completed": true,
+      "explicit_unrouted_count": null,
+      "routing_evidence": "Natural successful routing completion, physical netlist and STA; no explicit unrouted count printed.",
+      "clocks": [
+        {
+          "name": "clk50",
+          "required_mhz": 50.0,
+          "actual_mhz": 68.48
+        }
+      ],
+      "counts": {
+        "setup": 0,
+        "hold": 0,
+        "paths": 7696,
+        "endpoints": 9310
+      },
+      "resources": {
+        "Logic": 2749,
+        "Register": 2327,
+        "CLS": 2065,
+        "BSRAM": 0,
+        "RAM16": 250,
+        "LUT": 972
+      },
+      "paths": {
+        "setup": {
+          "worst_reported_slack_ns": 5.397,
+          "reported_rows": 25,
+          "worst": {
+            "slack_ns": 5.397,
+            "source": "u_extract/dz3_0_s0/Q",
+            "destination": "u_extract/pb_waddr_0_s0/CE",
+            "source_clock": "clk50:[R]",
+            "destination_clock": "clk50:[R]",
+            "data_delay_ns": 14.281
+          },
+          "row_memory_rows": []
+        },
+        "hold": {
+          "worst_reported_slack_ns": 0.234,
+          "reported_rows": 25,
+          "worst": {
+            "slack_ns": 0.234,
+            "source": "u_extract/rb_wa_3_s0/Q",
+            "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[3].mem_g_slf_row_banks.g_row_bank[3].mem_0_13_s/WAD[3]",
+            "source_clock": "clk50:[R]",
+            "destination_clock": "clk50:[R]",
+            "data_delay_ns": 0.287
+          },
+          "row_memory_rows": [
+            {
+              "slack_ns": 0.234,
+              "source": "u_extract/rb_wa_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[3].mem_g_slf_row_banks.g_row_bank[3].mem_0_13_s/WAD[3]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.287
+            },
+            {
+              "slack_ns": 0.249,
+              "source": "u_extract/rb_wa_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[3].mem_g_slf_row_banks.g_row_bank[3].mem_0_9_s/WAD[3]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.331
+            },
+            {
+              "slack_ns": 0.254,
+              "source": "u_extract/rb_wa_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[1].mem_g_slf_row_banks.g_row_bank[1].mem_0_8_s/WAD[3]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.333
+            },
+            {
+              "slack_ns": 0.257,
+              "source": "u_extract/rb_wa_2_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[3].mem_g_slf_row_banks.g_row_bank[3].mem_0_13_s/WAD[2]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.314
+            },
+            {
+              "slack_ns": 0.258,
+              "source": "u_extract/rb_wa_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[4].mem_g_slf_row_banks.g_row_bank[4].mem_0_8_s/WAD[3]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.333
+            },
+            {
+              "slack_ns": 0.26,
+              "source": "u_extract/rb_wa_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[4].mem_g_slf_row_banks.g_row_bank[4].mem_0_0_s/WAD[3]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.313
+            },
+            {
+              "slack_ns": 0.275,
+              "source": "u_extract/rb_wa_0_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[0].mem_g_slf_row_banks.g_row_bank[0].mem_0_0_s/WAD[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.329
+            },
+            {
+              "slack_ns": 0.278,
+              "source": "u_extract/rb_wa_1_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[0].mem_g_slf_row_banks.g_row_bank[0].mem_0_0_s/WAD[1]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.332
+            },
+            {
+              "slack_ns": 0.283,
+              "source": "u_extract/rb_wa_2_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[5].mem_g_slf_row_banks.g_row_bank[5].mem_0_0_s/WAD[2]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.345
+            },
+            {
+              "slack_ns": 0.288,
+              "source": "u_extract/rb_wd_97_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].mem_g_slf_row_banks.g_row_bank[7].mem_0_24_s/DI[1]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.343
+            },
+            {
+              "slack_ns": 0.294,
+              "source": "u_extract/rb_wd_97_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[6].mem_g_slf_row_banks.g_row_bank[6].mem_0_24_s/DI[1]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.35
+            },
+            {
+              "slack_ns": 0.298,
+              "source": "u_extract/rb_wd_97_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[1].mem_g_slf_row_banks.g_row_bank[1].mem_0_24_s/DI[1]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.35
+            },
+            {
+              "slack_ns": 0.3,
+              "source": "u_extract/rb_wa_0_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].mem_g_slf_row_banks.g_row_bank[7].mem_0_0_s/WAD[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.357
+            },
+            {
+              "slack_ns": 0.3,
+              "source": "u_extract/rb_wa_0_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[5].mem_g_slf_row_banks.g_row_bank[5].mem_0_0_s/WAD[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.35
+            }
+          ]
+        }
+      },
+      "reset_pulse": {
+        "recovery": {
+          "reported_rows": 0,
+          "worst_slack_ns": null
+        },
+        "removal": {
+          "reported_rows": 0,
+          "worst_slack_ns": null
+        },
+        "pulse": {
+          "reported_rows": 10,
+          "worst_slack_ns": 7.774
+        }
+      },
+      "global_allocations": [
+        {
+          "net": "clk_d",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "measurement_primary_1",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "measurement_primary_2",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "measurement_primary_3",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "measurement_primary_4",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "measurement_primary_5",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "measurement_primary_6",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "measurement_primary_7",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "measurement_lw_0",
+          "resource": "LW"
+        },
+        {
+          "net": "measurement_lw_1",
+          "resource": "LW"
+        },
+        {
+          "net": "measurement_lw_2",
+          "resource": "LW"
+        },
+        {
+          "net": "measurement_lw_3",
+          "resource": "LW"
+        },
+        {
+          "net": "measurement_lw_4",
+          "resource": "LW"
+        },
+        {
+          "net": "measurement_lw_5",
+          "resource": "LW"
+        },
+        {
+          "net": "measurement_lw_6",
+          "resource": "LW"
+        },
+        {
+          "net": "measurement_lw_7",
+          "resource": "LW"
+        }
+      ],
+      "internal_clock_50MHz_pass": true,
+      "fixture_external_IO_delays_constrained": false,
+      "joint_global_resource_occupancy_reproduced": false,
+      "all_row_read_paths_individually_listed": false,
+      "full_joint_acceptance": false,
+      "global_assignments_match_budget": true,
+      "extractor_extra_global_resources_used": false,
+      "original_extractor_FF": 2297
+    },
+    "shared": {
+      "build": "F:\\nav_integration_g2_20261023\\row_read_context_occupied_globals_probe6\\shared",
+      "report": "F:\\nav_integration_g2_20261023\\row_read_context_occupied_globals_probe6\\shared\\impl\\pnr\\g2_top.rpt.txt",
+      "timing_report": "F:\\nav_integration_g2_20261023\\row_read_context_occupied_globals_probe6\\shared\\impl\\pnr\\g2_top.tr",
+      "runtime": {
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "physical.tcl"
+        ],
+        "started_at": "2026-10-25T14:30:03.805891+08:00",
+        "maximum_runtime_s": 0,
+        "maximum_silent_s": 0,
+        "startup_free_bytes": 4665802752,
+        "startup_commit_reserve_bytes": 6834966528,
+        "priority": "BELOW_NORMAL",
+        "cpu_affinity": [
+          19
+        ],
+        "cancelled": false,
+        "maximum_owned_rss_bytes": 1610612736,
+        "pid": 35984,
+        "created_epoch": 1792909803.8112495,
+        "tool_exit": 0,
+        "elapsed_s": 95.03099999995902,
+        "peak_owned_rss_bytes": 1352232960,
+        "ended_at": "2026-10-25T14:31:38.849283+08:00"
+      },
+      "routing_completed": true,
+      "explicit_unrouted_count": null,
+      "routing_evidence": "Natural successful routing completion, physical netlist and STA; no explicit unrouted count printed.",
+      "clocks": [
+        {
+          "name": "clk50",
+          "required_mhz": 50.0,
+          "actual_mhz": 83.65
+        }
+      ],
+      "counts": {
+        "setup": 0,
+        "hold": 0,
+        "paths": 5923,
+        "endpoints": 6637
+      },
+      "resources": {
+        "Logic": 2836,
+        "Register": 1436,
+        "CLS": 2184,
+        "BSRAM": 0,
+        "RAM16": 250,
+        "LUT": 1059
+      },
+      "paths": {
+        "setup": {
+          "worst_reported_slack_ns": 8.045,
+          "reported_rows": 25,
+          "worst": {
+            "slack_ns": 8.045,
+            "source": "u_extract/fu_3_s0/Q",
+            "destination": "u_extract/u_rb/g_slf_row_banks.qr_25_s0/D",
+            "source_clock": "clk50:[R]",
+            "destination_clock": "clk50:[R]",
+            "data_delay_ns": 11.983
+          },
+          "row_memory_rows": [
+            {
+              "slack_ns": 8.045,
+              "source": "u_extract/fu_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_25_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 11.983
+            },
+            {
+              "slack_ns": 8.359,
+              "source": "u_extract/fu_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_11_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 11.651
+            },
+            {
+              "slack_ns": 8.381,
+              "source": "u_extract/fu_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_45_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 11.654
+            },
+            {
+              "slack_ns": 8.438,
+              "source": "u_extract/fu_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_24_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 11.585
+            },
+            {
+              "slack_ns": 8.456,
+              "source": "u_extract/fu_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_62_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 11.585
+            },
+            {
+              "slack_ns": 8.466,
+              "source": "u_extract/fu_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_63_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 11.566
+            },
+            {
+              "slack_ns": 8.521,
+              "source": "u_extract/fu_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_27_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 11.465
+            },
+            {
+              "slack_ns": 8.538,
+              "source": "u_extract/u_4_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_31_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 11.388
+            },
+            {
+              "slack_ns": 8.606,
+              "source": "u_extract/fu_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_26_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 11.417
+            },
+            {
+              "slack_ns": 8.643,
+              "source": "u_extract/fu_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_44_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 11.392
+            },
+            {
+              "slack_ns": 8.656,
+              "source": "u_extract/fu_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_46_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 11.382
+            },
+            {
+              "slack_ns": 8.666,
+              "source": "u_extract/fu_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_47_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 11.372
+            },
+            {
+              "slack_ns": 8.904,
+              "source": "u_extract/fu_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_10_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 11.105
+            },
+            {
+              "slack_ns": 8.928,
+              "source": "u_extract/u_4_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_30_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.998
+            },
+            {
+              "slack_ns": 8.941,
+              "source": "u_extract/fu_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_58_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 11.098
+            },
+            {
+              "slack_ns": 8.969,
+              "source": "u_extract/u_4_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_61_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.984
+            },
+            {
+              "slack_ns": 8.99,
+              "source": "u_extract/u_4_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_29_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.946
+            },
+            {
+              "slack_ns": 8.995,
+              "source": "u_extract/u_4_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_60_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.959
+            },
+            {
+              "slack_ns": 9.214,
+              "source": "u_extract/fu_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_51_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.805
+            },
+            {
+              "slack_ns": 9.249,
+              "source": "u_extract/u_4_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_28_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.671
+            },
+            {
+              "slack_ns": 9.299,
+              "source": "u_extract/fu_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_95_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.708
+            },
+            {
+              "slack_ns": 9.325,
+              "source": "u_extract/fu_3_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.qr_35_s0/D",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 10.704
+            }
+          ]
+        },
+        "hold": {
+          "worst_reported_slack_ns": 0.169,
+          "reported_rows": 25,
+          "worst": {
+            "slack_ns": 0.169,
+            "source": "u_extract/rb_wd_67_s0/Q",
+            "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[2].mem_g_slf_row_banks.g_row_bank[2].mem_0_16_s/DI[3]",
+            "source_clock": "clk50:[R]",
+            "destination_clock": "clk50:[R]",
+            "data_delay_ns": 0.221
+          },
+          "row_memory_rows": [
+            {
+              "slack_ns": 0.169,
+              "source": "u_extract/rb_wd_67_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[2].mem_g_slf_row_banks.g_row_bank[2].mem_0_16_s/DI[3]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.221
+            },
+            {
+              "slack_ns": 0.177,
+              "source": "u_extract/rb_wa_0_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[1].mem_g_slf_row_banks.g_row_bank[1].mem_0_16_s/WAD[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.223
+            },
+            {
+              "slack_ns": 0.188,
+              "source": "u_extract/rb_wd_79_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[9].mem_g_slf_row_banks.g_row_bank[9].mem_0_19_s/DI[3]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.258
+            },
+            {
+              "slack_ns": 0.191,
+              "source": "u_extract/rb_wd_79_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[2].mem_g_slf_row_banks.g_row_bank[2].mem_0_19_s/DI[3]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.26
+            },
+            {
+              "slack_ns": 0.193,
+              "source": "u_extract/rb_wa_0_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[3].mem_g_slf_row_banks.g_row_bank[3].mem_0_16_s/WAD[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.234
+            },
+            {
+              "slack_ns": 0.194,
+              "source": "u_extract/rb_wd_38_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].mem_g_slf_row_banks.g_row_bank[7].mem_0_9_s/DI[2]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.261
+            },
+            {
+              "slack_ns": 0.208,
+              "source": "u_extract/rb_wd_37_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[9].mem_g_slf_row_banks.g_row_bank[9].mem_0_9_s/DI[1]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.263
+            },
+            {
+              "slack_ns": 0.211,
+              "source": "u_extract/rb_wd_37_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[3].mem_g_slf_row_banks.g_row_bank[3].mem_0_9_s/DI[1]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.263
+            },
+            {
+              "slack_ns": 0.237,
+              "source": "u_extract/rb_wd_66_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[2].mem_g_slf_row_banks.g_row_bank[2].mem_0_16_s/DI[2]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.289
+            },
+            {
+              "slack_ns": 0.256,
+              "source": "u_extract/rb_wd_68_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[3].mem_g_slf_row_banks.g_row_bank[3].mem_0_17_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.302
+            },
+            {
+              "slack_ns": 0.259,
+              "source": "u_extract/rb_wa_0_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[2].mem_g_slf_row_banks.g_row_bank[2].mem_0_16_s/WAD[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.31
+            },
+            {
+              "slack_ns": 0.26,
+              "source": "u_extract/rb_wd_63_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[5].mem_g_slf_row_banks.g_row_bank[5].mem_0_15_s/DI[3]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.305
+            },
+            {
+              "slack_ns": 0.261,
+              "source": "u_extract/rb_wd_37_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[7].mem_g_slf_row_banks.g_row_bank[7].mem_0_9_s/DI[1]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.328
+            },
+            {
+              "slack_ns": 0.264,
+              "source": "u_extract/rb_wd_64_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[5].mem_g_slf_row_banks.g_row_bank[5].mem_0_16_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.308
+            },
+            {
+              "slack_ns": 0.264,
+              "source": "u_extract/rb_wa_0_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[0].mem_g_slf_row_banks.g_row_bank[0].mem_0_16_s/WAD[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.311
+            },
+            {
+              "slack_ns": 0.264,
+              "source": "u_extract/rb_wd_63_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[6].mem_g_slf_row_banks.g_row_bank[6].mem_0_15_s/DI[3]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.332
+            },
+            {
+              "slack_ns": 0.265,
+              "source": "u_extract/rb_wd_64_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[1].mem_g_slf_row_banks.g_row_bank[1].mem_0_16_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.31
+            },
+            {
+              "slack_ns": 0.265,
+              "source": "u_extract/rb_wd_64_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[2].mem_g_slf_row_banks.g_row_bank[2].mem_0_16_s/DI[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.315
+            },
+            {
+              "slack_ns": 0.268,
+              "source": "u_extract/rb_wa_0_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[5].mem_g_slf_row_banks.g_row_bank[5].mem_0_16_s/WAD[0]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.313
+            },
+            {
+              "slack_ns": 0.268,
+              "source": "u_extract/rb_wd_65_s0/Q",
+              "destination": "u_extract/u_rb/g_slf_row_banks.g_row_bank[1].mem_g_slf_row_banks.g_row_bank[1].mem_0_16_s/DI[1]",
+              "source_clock": "clk50:[R]",
+              "destination_clock": "clk50:[R]",
+              "data_delay_ns": 0.313
+            }
+          ]
+        }
+      },
+      "reset_pulse": {
+        "recovery": {
+          "reported_rows": 0,
+          "worst_slack_ns": null
+        },
+        "removal": {
+          "reported_rows": 0,
+          "worst_slack_ns": null
+        },
+        "pulse": {
+          "reported_rows": 10,
+          "worst_slack_ns": 7.784
+        }
+      },
+      "global_allocations": [
+        {
+          "net": "clk_d",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "measurement_primary_1",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "measurement_primary_2",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "measurement_primary_3",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "measurement_primary_4",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "measurement_primary_5",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "measurement_primary_6",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "measurement_primary_7",
+          "resource": "PRIMARY"
+        },
+        {
+          "net": "measurement_lw_0",
+          "resource": "LW"
+        },
+        {
+          "net": "measurement_lw_1",
+          "resource": "LW"
+        },
+        {
+          "net": "measurement_lw_2",
+          "resource": "LW"
+        },
+        {
+          "net": "measurement_lw_3",
+          "resource": "LW"
+        },
+        {
+          "net": "measurement_lw_4",
+          "resource": "LW"
+        },
+        {
+          "net": "measurement_lw_5",
+          "resource": "LW"
+        },
+        {
+          "net": "measurement_lw_6",
+          "resource": "LW"
+        },
+        {
+          "net": "measurement_lw_7",
+          "resource": "LW"
+        }
+      ],
+      "internal_clock_50MHz_pass": true,
+      "fixture_external_IO_delays_constrained": false,
+      "joint_global_resource_occupancy_reproduced": false,
+      "all_row_read_paths_individually_listed": false,
+      "full_joint_acceptance": false,
+      "global_assignments_match_budget": true,
+      "extractor_extra_global_resources_used": false,
+      "original_extractor_FF": 1406
+    }
+  },
+  "fixture_connectivity": {
+    "baseline": {
+      "original_cells": 4197,
+      "all_original_cell_connections_equal": true,
+      "extra_primitives": {
+        "DFFRE": 30,
+        "OBUF": 15
+      },
+      "analysis_copy_changes_only_instance_whitespace": true,
+      "PNR_input_not_modified": true
+    },
+    "shared": {
+      "original_cells": 3099,
+      "all_original_cell_connections_equal": true,
+      "extra_primitives": {
+        "DFFRE": 30,
+        "OBUF": 15
+      },
+      "analysis_copy_changes_only_instance_whitespace": true,
+      "PNR_input_not_modified": true
+    }
+  },
+  "fixture_source_proofs": {
+    "baseline": {
+      "original_netlist": "F:\\nav_integration_g2_20261023\\row_read_context_timing_probe1\\baseline\\impl\\gwsynthesis\\g2_top.vg",
+      "measured_netlist": "F:\\nav_integration_g2_20261023\\row_read_context_occupied_globals_probe6\\baseline\\g2_top.vg",
+      "exact_inverse_proof_passed": true,
+      "original_extractor_and_memory_text_unchanged": true,
+      "added_registers": 30,
+      "added_outputs": 15,
+      "synthesis_repeated": false
+    },
+    "shared": {
+      "original_netlist": "F:\\nav_integration_g2_20261023\\row_read_context_timing_probe1\\shared\\impl\\gwsynthesis\\g2_top.vg",
+      "measured_netlist": "F:\\nav_integration_g2_20261023\\row_read_context_occupied_globals_probe6\\shared\\g2_top.vg",
+      "exact_inverse_proof_passed": true,
+      "original_extractor_and_memory_text_unchanged": true,
+      "added_registers": 30,
+      "added_outputs": 15,
+      "synthesis_repeated": false
+    }
+  },
+  "confirmed_facts": [
+    "The original literal bit names resolve without object-not-found errors, and the CST file is included in actual cmd.do.",
+    "LOCAL removes three scalar CE nets from LW, but four RAM16 RAD data nets still auto-promote to PRIMARY while slots are available.",
+    "Escaped bit and whole-bus names fail CT1135 before placement; not valid fixes.",
+    "Exactly reversible scalar-only wire renaming leaves the same four PRIMARY allocations: brackets alone are not the cause.",
+    "Explicit LOCAL_CLOCK=LOGIC fails CT2000 before placement, consistent with the current manual.",
+    "With the joint global budget occupied by explicit stand-ins, both extractor variants use ordinary routing and satisfy50MHz."
+  ],
+  "diagnosis": "Observed constraint-execution discrepancy at automatic promotion of RAM16 read-address data nets; not a wrong spelling, unsupported LOCAL syntax, or inherently unroutable RAM address.",
+  "unresolved": "The closed tool does not expose why LOCAL_CLOCK is overridden or not applied to those data-pin fanouts. Internal mechanism and vendor defect classification remain unverified.",
+  "structural_scope": "Exact original extractor primitive connections and parameters retained. Only measurement top adds30FF/15OBUF; no resynthesis.",
+  "limitations": [
+    "Occupied global-resource count is reproduced, not whole-chip congestion, regions, other clocks100/125MHz or full joint clock/CDC/IO/reset signoff.",
+    "Fixture external input/output delays are unconstrained; local reports have no recovery/removal rows.",
+    "Local function/clock results make the candidate eligible for further joint evaluation, not joint routing acceptance."
+  ],
+  "local_no_extra_global_50MHz_pass": true,
+  "full_joint_candidate_accepted": false,
+  "programmed": false,
+  "protected_joint_build": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_smallblocks_pnr19",
+    "pid": 13244,
+    "started_at": "2026-10-25T12:35:04.604978+08:00",
+    "total_limit_s": 0.0,
+    "idle_limit_s": 0.0,
+    "input_metadata": {
+      "g2_top.vg": [
+        22995611,
+        1792902901855743100
+      ],
+      "g2.sdc": [
+        19601,
+        1792902901857242100
+      ],
+      "g2.cst": [
+        6207,
+        1792902901857242100
+      ],
+      "run.tcl": [
+        944,
+        1792902904599521100
+      ],
+      "ip\\serdes.csr": [
+        10840,
+        1792902901858313500
+      ]
+    },
+    "created_epoch": 1792902904.664652,
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ]
+  },
+  "protected_joint_inputs_unchanged": true
+}
