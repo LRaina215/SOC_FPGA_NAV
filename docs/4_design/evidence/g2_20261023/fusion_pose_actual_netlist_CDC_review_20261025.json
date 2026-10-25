@@ -1,0 +1,3202 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-25T22:29:27.346298+08:00",
+  "passed": true,
+  "scope": "Actual completed SYN structural/resource/INIT/26CDC preflight only; does not prove changed fusion/pose arithmetic, physical timing,IO or deployment",
+  "source_frozen_netlist": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\impl\\gwsynthesis\\g2_top.vg",
+  "baseline_frozen_netlist": "F:\\nav_integration_g2_20261023\\baseline_rep1_replay_pnr27\\g2_top.vg",
+  "source_build": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50",
+  "source_complete_SYN_evidence": "100% report generation and GowinSynthesis finish, actual VG and vendor XML exist",
+  "changed_HW_inputs": [
+    "control/imu_fusion.v",
+    "nav/rtl/top/nav_subsystem.v"
+  ],
+  "unchanged_HW_input_count": 61,
+  "all_original_FW_source_inputs_byte_identical": true,
+  "asset_identity_count": 69,
+  "asset_changes": [
+    "firmware/nav_fw.bin",
+    "firmware/ram_b0.hex",
+    "firmware/ram_b1.hex",
+    "firmware/ram_b2.hex",
+    "firmware/ram_b3.hex",
+    "firmware/ram_w.hex",
+    "ram_b0.hex",
+    "ram_b1.hex",
+    "ram_b2.hex",
+    "ram_b3.hex",
+    "ram_w.hex"
+  ],
+  "unchanged_non_CPU_assets": 58,
+  "all_original_weights_and_bias_and_ELU_assets_byte_identical": true,
+  "original_4500_and_125Hz_tick_RTL_byte_identical": true,
+  "CPU_128KiB_capacity_proved_from_actual64SP_INIT_and_HEX": true,
+  "CPU_actual_INIT_only_changed_byte_offsets": [
+    48950,
+    48952,
+    48953,
+    48955,
+    48956
+  ],
+  "CPU_difference_bound_to_exact_build_banner": {
+    "passed": true,
+    "old_bin_bytes": 51712,
+    "new_bin_bytes": 51712,
+    "old_boot_text": "nav fw Oct 22 2026 17:20:20  RAM %u KB",
+    "new_boot_text": "nav fw Oct 22 2026 18:57:33  RAM %u KB",
+    "different_byte_offsets": [
+      48950,
+      48952,
+      48953,
+      48955,
+      48956
+    ],
+    "only_build_print_literal_different": true
+  },
+  "actual_BSRAM_source_count": 314,
+  "wide32_36_leaves": 18,
+  "predicted_physical_BSRAM_under_split1": 332,
+  "physical_BSRAM_not_yet_measured": true,
+  "BSRAM_by_top": {
+    "u_soc": 64,
+    "u_control": 48,
+    "u_nav": 202
+  },
+  "RAM_mode_geometry_parameters_identical": true,
+  "RAM_all_pin_names_identical": false,
+  "RAM_port_name_differences": 686,
+  "RAM_port_logic_equivalence_proved_by_this_review": false,
+  "RAM_port_name_difference_evidence": "F:\\nav_integration_g2_20261023\\fusion_pose_unsigned_pre_pnr_review1\\actual_memory_port_name_differences.json",
+  "all_non_CPU_memory_parameters_and_INIT_identical": true,
+  "actual_source_clock_roots": [
+    "clk50",
+    "rgmii_rxc"
+  ],
+  "unchanged_clock_periods_ns": {
+    "clk50": 20,
+    "rgmii_rxc": 10
+  },
+  "actual_direct_CDC_paths": 26,
+  "paths": [
+    {
+      "group": "rx_write_gray",
+      "source_register": "u_nav/u_netl/u_rxf/wp_b_11_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_11_s1",
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_11_s1",
+      "source_clock": "rgmii_rxc_d",
+      "target_clock": "clk50_d",
+      "route_max_delay_ns": 8.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_11_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_11_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_b_11_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_b[11]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n116_5"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/wr"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r1_11_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[11]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_b[11]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r2_11_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r2[11]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[11]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_10_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_10_s1",
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_10_s1",
+      "source_clock": "rgmii_rxc_d",
+      "target_clock": "clk50_d",
+      "route_max_delay_ns": 8.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_10_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_10_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_10_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g[10]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n151_3"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/wr"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r1_10_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[10]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g[10]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r2_10_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r2[10]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[10]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_9_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_9_s1",
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_9_s1",
+      "source_clock": "rgmii_rxc_d",
+      "target_clock": "clk50_d",
+      "route_max_delay_ns": 8.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_9_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_9_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_9_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g[9]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n150_3"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/wr"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r1_9_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[9]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g[9]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r2_9_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r2[9]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[9]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_8_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_8_s1",
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_8_s1",
+      "source_clock": "rgmii_rxc_d",
+      "target_clock": "clk50_d",
+      "route_max_delay_ns": 8.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_8_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_8_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_8_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g[8]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n149_3"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/wr"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r1_8_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[8]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g[8]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r2_8_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r2[8]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[8]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_7_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_7_s1",
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_7_s1",
+      "source_clock": "rgmii_rxc_d",
+      "target_clock": "clk50_d",
+      "route_max_delay_ns": 8.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_7_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_7_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_7_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g[7]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n148_3"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/wr"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r1_7_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[7]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g[7]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r2_7_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r2[7]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[7]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_6_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_6_s1",
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_6_s1",
+      "source_clock": "rgmii_rxc_d",
+      "target_clock": "clk50_d",
+      "route_max_delay_ns": 8.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_6_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_6_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_6_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g[6]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n147_3"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/wr"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r1_6_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[6]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g[6]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r2_6_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r2[6]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[6]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_5_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_5_s1",
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_5_s1",
+      "source_clock": "rgmii_rxc_d",
+      "target_clock": "clk50_d",
+      "route_max_delay_ns": 8.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_5_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_5_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_5_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g[5]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n146_3"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/wr"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r1_5_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[5]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g[5]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r2_5_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r2[5]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[5]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_4_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_4_s1",
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_4_s1",
+      "source_clock": "rgmii_rxc_d",
+      "target_clock": "clk50_d",
+      "route_max_delay_ns": 8.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_4_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_4_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_4_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g[4]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n145_5"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/wr"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r1_4_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[4]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g[4]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r2_4_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r2[4]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[4]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_3_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_3_s1",
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_3_s1",
+      "source_clock": "rgmii_rxc_d",
+      "target_clock": "clk50_d",
+      "route_max_delay_ns": 8.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_3_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_3_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_3_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g[3]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n144_5"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/wr"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r1_3_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[3]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g[3]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r2_3_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r2[3]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[3]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_2_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_2_s1",
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_2_s1",
+      "source_clock": "rgmii_rxc_d",
+      "target_clock": "clk50_d",
+      "route_max_delay_ns": 8.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_2_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_2_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_2_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g[2]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n143_5"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/wr"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r1_2_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[2]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g[2]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r2_2_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r2[2]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[2]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_1_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_1_s1",
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_1_s1",
+      "source_clock": "rgmii_rxc_d",
+      "target_clock": "clk50_d",
+      "route_max_delay_ns": 8.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_1_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_1_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_1_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g[1]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n142_5"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/wr"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r1_1_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[1]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g[1]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r2_1_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r2[1]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[1]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_0_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_0_s1",
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_0_s1",
+      "source_clock": "rgmii_rxc_d",
+      "target_clock": "clk50_d",
+      "route_max_delay_ns": 8.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_0_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/wp_g_r2_0_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_0_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g[0]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n141_6"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/wr"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r1_0_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[0]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g[0]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/wp_g_r2_0_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/wp_g_r2[0]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/wp_g_r1[0]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "source_register": "u_nav/u_netl/u_rxf/rp_b_11_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_11_s1",
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_11_s1",
+      "source_clock": "clk50_d",
+      "target_clock": "rgmii_rxc_d",
+      "route_max_delay_ns": 18.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_11_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_11_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_b_11_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_b[11]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n326_5"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/rd"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w1_11_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[11]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_b[11]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w2_11_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w2[11]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[11]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_10_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_10_s1",
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_10_s1",
+      "source_clock": "clk50_d",
+      "target_clock": "rgmii_rxc_d",
+      "route_max_delay_ns": 18.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_10_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_10_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_10_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g[10]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n361_3"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/rd"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w1_10_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[10]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g[10]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w2_10_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w2[10]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[10]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_9_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_9_s1",
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_9_s1",
+      "source_clock": "clk50_d",
+      "target_clock": "rgmii_rxc_d",
+      "route_max_delay_ns": 18.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_9_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_9_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_9_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g[9]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n360_3"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/rd"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w1_9_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[9]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g[9]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w2_9_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w2[9]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[9]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_8_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_8_s1",
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_8_s1",
+      "source_clock": "clk50_d",
+      "target_clock": "rgmii_rxc_d",
+      "route_max_delay_ns": 18.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_8_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_8_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_8_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g[8]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n359_3"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/rd"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w1_8_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[8]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g[8]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w2_8_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w2[8]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[8]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_7_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_7_s1",
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_7_s1",
+      "source_clock": "clk50_d",
+      "target_clock": "rgmii_rxc_d",
+      "route_max_delay_ns": 18.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_7_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_7_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_7_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g[7]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n358_3"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/rd"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w1_7_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[7]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g[7]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w2_7_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w2[7]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[7]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_6_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_6_s1",
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_6_s1",
+      "source_clock": "clk50_d",
+      "target_clock": "rgmii_rxc_d",
+      "route_max_delay_ns": 18.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_6_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_6_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_6_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g[6]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n357_3"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/rd"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w1_6_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[6]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g[6]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w2_6_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w2[6]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[6]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_5_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_5_s1",
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_5_s1",
+      "source_clock": "clk50_d",
+      "target_clock": "rgmii_rxc_d",
+      "route_max_delay_ns": 18.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_5_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_5_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_5_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g[5]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n356_3"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/rd"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w1_5_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[5]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g[5]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w2_5_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w2[5]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[5]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_4_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_4_s1",
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_4_s1",
+      "source_clock": "clk50_d",
+      "target_clock": "rgmii_rxc_d",
+      "route_max_delay_ns": 18.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_4_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_4_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_4_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g[4]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n355_5"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/rd"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w1_4_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[4]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g[4]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w2_4_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w2[4]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[4]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_3_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_3_s1",
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_3_s1",
+      "source_clock": "clk50_d",
+      "target_clock": "rgmii_rxc_d",
+      "route_max_delay_ns": 18.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_3_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_3_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_3_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g[3]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n354_5"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/rd"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w1_3_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[3]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g[3]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w2_3_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w2[3]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[3]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_2_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_2_s1",
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_2_s1",
+      "source_clock": "clk50_d",
+      "target_clock": "rgmii_rxc_d",
+      "route_max_delay_ns": 18.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_2_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_2_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_2_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g[2]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n353_5"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/rd"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w1_2_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[2]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g[2]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w2_2_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w2[2]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[2]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_1_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_1_s1",
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_1_s1",
+      "source_clock": "clk50_d",
+      "target_clock": "rgmii_rxc_d",
+      "route_max_delay_ns": 18.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_1_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_1_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_1_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g[1]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n352_5"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/rd"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w1_1_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[1]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g[1]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w2_1_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w2[1]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[1]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_0_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_0_s1",
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_0_s1",
+      "source_clock": "clk50_d",
+      "target_clock": "rgmii_rxc_d",
+      "route_max_delay_ns": 18.0,
+      "first_q_direct_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_0_s1",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_nav/u_netl/u_rxf/rp_g_w2_0_s1",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_0_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g[0]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/n351_6"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "u_nav/u_netl/u_rxf/rd"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w1_0_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[0]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g[0]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_nav/u_netl/u_rxf/rp_g_w2_0_s1",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/u_netl/u_rxf/rp_g_w2[0]"
+              ],
+              "D": [
+                "u_nav/u_netl/u_rxf/rp_g_w1[0]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "r2_174"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "rx_clock_monitor",
+      "source_register": "u_lmac/rdiv_5_s0",
+      "first_register": "u_lmac/rsync_0_s0",
+      "second_register": "u_lmac/rsync_1_s0",
+      "source_clock": "rgmii_rxc_d",
+      "target_clock": "clk50_d",
+      "route_max_delay_ns": 8.0,
+      "first_q_direct_loads": [
+        [
+          "u_lmac/rsync_1_s0",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_lmac/rsync_1_s0",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_lmac/rdiv_5_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_lmac/rdiv[5]"
+              ],
+              "D": [
+                "u_lmac/n3078_1"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_lmac/rsync_0_s0",
+            "kind": "DFFCE",
+            "ports": {
+              "Q": [
+                "u_lmac/rsync[0]"
+              ],
+              "D": [
+                "u_lmac/rdiv[5]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "CLEAR": [
+                "GND"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_lmac/rsync_1_s0",
+            "kind": "DFFCE",
+            "ports": {
+              "Q": [
+                "u_lmac/rsync[1]"
+              ],
+              "D": [
+                "u_lmac/rsync[0]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "CLEAR": [
+                "GND"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    },
+    {
+      "group": "rx_sampling_select",
+      "source_register": "u_nav/u_rf/r_NETL_CTRL_4_s0",
+      "first_register": "u_lmac/neg_s_0_s0",
+      "second_register": "u_lmac/neg_s_1_s0",
+      "source_clock": "clk50_d",
+      "target_clock": "rgmii_rxc_d",
+      "route_max_delay_ns": 18.0,
+      "first_q_direct_loads": [
+        [
+          "u_lmac/neg_s_1_s0",
+          "D"
+        ]
+      ],
+      "passed": true,
+      "failures": [],
+      "all_vendor_direction_first_Q_loads": [
+        [
+          "u_lmac/neg_s_1_s0",
+          "D"
+        ]
+      ],
+      "actual_frozen_SYN_register_records": {
+        "source_register": {
+          "primitive": {
+            "name": "u_nav/u_rf/r_NETL_CTRL_4_s0",
+            "kind": "DFFSE",
+            "ports": {
+              "Q": [
+                "l_rx_neg"
+              ],
+              "D": [
+                "u_nav/wd_q[4]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "SET": [
+                "r2"
+              ],
+              "CE": [
+                "u_nav/u_rf/n15988_3"
+              ]
+            }
+          },
+          "parameters": {}
+        },
+        "first_register": {
+          "primitive": {
+            "name": "u_lmac/neg_s_0_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_lmac/neg_s[0]"
+              ],
+              "D": [
+                "l_rx_neg"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        },
+        "second_register": {
+          "primitive": {
+            "name": "u_lmac/neg_s_1_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_lmac/neg_s[1]"
+              ],
+              "D": [
+                "u_lmac/neg_s[0]"
+              ],
+              "CLK": [
+                "rgmii_rxc_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          }
+        }
+      }
+    }
+  ],
+  "actual_CDC_registers_raw_identical": false,
+  "actual_CDC_source_first_second_roles_preserved_or_driving_cone_proved": true,
+  "proved_CDC_connection_differences": {
+    "proved_RESET_alias": 36,
+    "proved_CE_function_remap": 1
+  },
+  "actual_CDC_driving_cone_proof": "F:\\nav_integration_g2_20261023\\fusion_pose_unsigned_pre_pnr_review1\\CDC_control_cone_proof.json",
+  "CPU_actual_INIT_binding_proof": "F:\\nav_integration_g2_20261023\\fusion_pose_unsigned_pre_pnr_review1\\cpu_INIT_hex_binding.json",
+  "first_Q_only_unique_second_D": true,
+  "hold_only_false_paths": 26,
+  "explicit_max_delays": 26,
+  "candidate_full_sdc": "F:\\nav_integration_g2_20261023\\fusion_pose_unsigned_pre_pnr_review1\\g2_lidar26_candidate.sdc",
+  "candidate_fragment": "F:\\nav_integration_g2_20261023\\fusion_pose_unsigned_pre_pnr_review1\\lidar26_first_stage_only.sdc",
+  "original_clock_SDC_bytes_preserved": true,
+  "source_hardware_metadata": [
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\command_lease_guard.v",
+      "bytes": 4683,
+      "mtime_ns": 1792666658055276100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\bmi088.v",
+      "bytes": 14824,
+      "mtime_ns": 1792654237930538000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\board_uart_tx.v",
+      "bytes": 986,
+      "mtime_ns": 1792654237930538000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\fc_v4_round_sat.v",
+      "bytes": 842,
+      "mtime_ns": 1792654237932555100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\imu_fusion.v",
+      "bytes": 20521,
+      "mtime_ns": 1792666658055276100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\imu_isqrt.v",
+      "bytes": 1997,
+      "mtime_ns": 1792654237934567300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\imu_recip.v",
+      "bytes": 2836,
+      "mtime_ns": 1792654237934567300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\ir_remote_control.v",
+      "bytes": 5317,
+      "mtime_ns": 1792654237936451400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\leg_ik_ff.v",
+      "bytes": 3328,
+      "mtime_ns": 1792654237936451400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\mem_policy.v",
+      "bytes": 6039,
+      "mtime_ns": 1792654237949475900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\model_wheel_response.v",
+      "bytes": 3889,
+      "mtime_ns": 1792654237950611500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\motor520_closed_loop.v",
+      "bytes": 13317,
+      "mtime_ns": 1792654237951695000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\motor520_hybrid_speed.v",
+      "bytes": 4818,
+      "mtime_ns": 1792654237952235800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\motor520_speed.v",
+      "bytes": 4866,
+      "mtime_ns": 1792654237953311500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\oled.v",
+      "bytes": 22421,
+      "mtime_ns": 1792654237954372200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\oled_driver.v",
+      "bytes": 18497,
+      "mtime_ns": 1792654237954922000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\oled_front.v",
+      "bytes": 22554,
+      "mtime_ns": 1792654237955984100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\policy_action_map.v",
+      "bytes": 2194,
+      "mtime_ns": 1792654237955984100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\rl_observation_v5.v",
+      "bytes": 7026,
+      "mtime_ns": 1792666658040084300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\rl_policy_tick_v5.v",
+      "bytes": 6461,
+      "mtime_ns": 1792654237955984100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\servo_driver.v",
+      "bytes": 3774,
+      "mtime_ns": 1792654237955984100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\uart_speed_rx.v",
+      "bytes": 5465,
+      "mtime_ns": 1792654237959443800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control\\uart_telemetry.v",
+      "bytes": 2738,
+      "mtime_ns": 1792654237959443800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\control4500_core.v",
+      "bytes": 20992,
+      "mtime_ns": 1792666658040084300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\fc_v4_top.v",
+      "bytes": 9630,
+      "mtime_ns": 1792666658194105500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\fixed4500_weight_rom.v",
+      "bytes": 8907,
+      "mtime_ns": 1792666658177482200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\g2_top.v",
+      "bytes": 11556,
+      "mtime_ns": 1792666657811110400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\common\\nav_async_fifo.v",
+      "bytes": 2817,
+      "mtime_ns": 1790576791603219900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\common\\nav_cdc.v",
+      "bytes": 1386,
+      "mtime_ns": 1790572090502241000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\common\\nav_fifo.v",
+      "bytes": 1490,
+      "mtime_ns": 1790572046080465600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\common\\nav_fifo_ob.v",
+      "bytes": 2005,
+      "mtime_ns": 1790572027429446300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\common\\nav_ram_banked.v",
+      "bytes": 986,
+      "mtime_ns": 1792666649579748300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\common\\nav_ram_sdp.v",
+      "bytes": 1679,
+      "mtime_ns": 1792666649579748300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\common\\nav_ram_sp.v",
+      "bytes": 549,
+      "mtime_ns": 1792666649579748300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\common\\nav_skid.v",
+      "bytes": 1105,
+      "mtime_ns": 1790572090542511900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\common\\nav_timebase.v",
+      "bytes": 909,
+      "mtime_ns": 1790572090522941400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\io\\imu_uart.v",
+      "bytes": 4825,
+      "mtime_ns": 1790574902989411700
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\io\\nav_bus_arb.v",
+      "bytes": 1686,
+      "mtime_ns": 1790579868615088000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\io\\uart_bus_bridge.v",
+      "bytes": 4875,
+      "mtime_ns": 1790780126218731200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\lidar\\pc_filter.v",
+      "bytes": 5278,
+      "mtime_ns": 1792637326240750500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\lidar\\pc_project.v",
+      "bytes": 4375,
+      "mtime_ns": 1790695003825995900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\lidar\\pc_transform.v",
+      "bytes": 3297,
+      "mtime_ns": 1790573294751332900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\lidar\\xt_frame_rx.v",
+      "bytes": 21682,
+      "mtime_ns": 1792560591328812200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\map\\elev_map.v",
+      "bytes": 5531,
+      "mtime_ns": 1792577985557741500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\map\\map_subsys.v",
+      "bytes": 7248,
+      "mtime_ns": 1792577985470940600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\map\\support_coverage.v",
+      "bytes": 5664,
+      "mtime_ns": 1792666649579748300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\map\\trav_v3.v",
+      "bytes": 29698,
+      "mtime_ns": 1792577985559739200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\match\\slf_extract.v",
+      "bytes": 7361,
+      "mtime_ns": 1790624067091016500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\match\\slf_lf.v",
+      "bytes": 22807,
+      "mtime_ns": 1790704268190287100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\match\\slf_match.v",
+      "bytes": 25552,
+      "mtime_ns": 1790702039427240100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\net\\host_mbx.v",
+      "bytes": 10339,
+      "mtime_ns": 1790847260548485200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\net\\net_port.v",
+      "bytes": 9501,
+      "mtime_ns": 1790772515351049500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\net\\raw_cap.v",
+      "bytes": 4279,
+      "mtime_ns": 1790772476276012900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\net\\rgmii_mac100.v",
+      "bytes": 14201,
+      "mtime_ns": 1790761904838793900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\net\\udp_rx.v",
+      "bytes": 9015,
+      "mtime_ns": 1790694356176079100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\net\\udp_tx.v",
+      "bytes": 8013,
+      "mtime_ns": 1790772386066598300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\plan\\safety_guard.v",
+      "bytes": 4814,
+      "mtime_ns": 1790576449357670100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\plan\\traj_eval.v",
+      "bytes": 8380,
+      "mtime_ns": 1790577267346979000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\regs\\nav_regfile.v",
+      "bytes": 25589,
+      "mtime_ns": 1792637326928195000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\soc\\nav_soc.v",
+      "bytes": 8852,
+      "mtime_ns": 1790668228800705900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\soc\\third_party\\picorv32.v",
+      "bytes": 94829,
+      "mtime_ns": 1790678117446238800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav\\rtl\\top\\nav_subsystem.v",
+      "bytes": 32862,
+      "mtime_ns": 1792666649579748300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\nav_command_units.v",
+      "bytes": 2172,
+      "mtime_ns": 1792666658055276100
+    }
+  ],
+  "VG_metadata": {
+    "path": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\impl\\gwsynthesis\\g2_top.vg",
+    "bytes": 24438494,
+    "mtime_ns": 1792667037137116600
+  },
+  "SDC_metadata": {
+    "path": "F:\\nav_integration_g2_20261023\\fusion_pose_unsigned_pre_pnr_review1\\g2_lidar26_candidate.sdc",
+    "bytes": 6571,
+    "mtime_ns": 1792938566511224700
+  },
+  "actual_memory_evidence": "F:\\nav_integration_g2_20261023\\fusion_pose_unsigned_pre_pnr_review1\\memory_binding_records.json",
+  "resource_inventory_evidence": "F:\\nav_integration_g2_20261023\\fusion_pose_unsigned_pre_pnr_review1\\new_actual_VG_inventory.json",
+  "same_domain_setup_relaxed": false,
+  "previous5003_setup_not_excepted": true,
+  "source_functional_pipeline_latency_proved_by_this_review": false,
+  "physical_constraint_application_or_delay_signoff": false,
+  "MTBF_or_full_CDC_signoff": false,
+  "reset_release_IO_signoff": false,
+  "new_build_started": false,
+  "running_inputs_modified": false,
+  "deployment_accepted": false,
+  "execution_policy": {
+    "priority": 64,
+    "cpu_affinity": [
+      16
+    ]
+  },
+  "reviewed_netlist_copy": "F:\\nav_integration_g2_20261023\\fusion_pose_unsigned_pre_pnr_review1\\reviewed_g2_top.vg",
+  "reviewed_sdc_copy": "F:\\nav_integration_g2_20261023\\fusion_pose_unsigned_pre_pnr_review1\\reviewed_g2.sdc",
+  "audited_constraints": [
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/wp_b_11_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/wp_g_r1_11_s1/D",
+      "max_delay_ns": 8.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/wp_g_10_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/wp_g_r1_10_s1/D",
+      "max_delay_ns": 8.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/wp_g_9_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/wp_g_r1_9_s1/D",
+      "max_delay_ns": 8.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/wp_g_8_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/wp_g_r1_8_s1/D",
+      "max_delay_ns": 8.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/wp_g_7_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/wp_g_r1_7_s1/D",
+      "max_delay_ns": 8.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/wp_g_6_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/wp_g_r1_6_s1/D",
+      "max_delay_ns": 8.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/wp_g_5_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/wp_g_r1_5_s1/D",
+      "max_delay_ns": 8.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/wp_g_4_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/wp_g_r1_4_s1/D",
+      "max_delay_ns": 8.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/wp_g_3_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/wp_g_r1_3_s1/D",
+      "max_delay_ns": 8.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/wp_g_2_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/wp_g_r1_2_s1/D",
+      "max_delay_ns": 8.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/wp_g_1_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/wp_g_r1_1_s1/D",
+      "max_delay_ns": 8.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/wp_g_0_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/wp_g_r1_0_s1/D",
+      "max_delay_ns": 8.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/rp_b_11_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/rp_g_w1_11_s1/D",
+      "max_delay_ns": 18.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/rp_g_10_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/rp_g_w1_10_s1/D",
+      "max_delay_ns": 18.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/rp_g_9_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/rp_g_w1_9_s1/D",
+      "max_delay_ns": 18.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/rp_g_8_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/rp_g_w1_8_s1/D",
+      "max_delay_ns": 18.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/rp_g_7_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/rp_g_w1_7_s1/D",
+      "max_delay_ns": 18.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/rp_g_6_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/rp_g_w1_6_s1/D",
+      "max_delay_ns": 18.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/rp_g_5_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/rp_g_w1_5_s1/D",
+      "max_delay_ns": 18.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/rp_g_4_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/rp_g_w1_4_s1/D",
+      "max_delay_ns": 18.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/rp_g_3_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/rp_g_w1_3_s1/D",
+      "max_delay_ns": 18.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/rp_g_2_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/rp_g_w1_2_s1/D",
+      "max_delay_ns": 18.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/rp_g_1_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/rp_g_w1_1_s1/D",
+      "max_delay_ns": 18.0
+    },
+    {
+      "from_pin": "u_nav/u_netl/u_rxf/rp_g_0_s0/Q",
+      "to_pin": "u_nav/u_netl/u_rxf/rp_g_w1_0_s1/D",
+      "max_delay_ns": 18.0
+    },
+    {
+      "from_pin": "u_lmac/rdiv_5_s0/Q",
+      "to_pin": "u_lmac/rsync_0_s0/D",
+      "max_delay_ns": 8.0
+    },
+    {
+      "from_pin": "u_nav/u_rf/r_NETL_CTRL_4_s0/Q",
+      "to_pin": "u_lmac/neg_s_0_s0/D",
+      "max_delay_ns": 18.0
+    }
+  ]
+}

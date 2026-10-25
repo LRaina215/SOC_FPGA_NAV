@@ -241,3 +241,15 @@ RK双UART本轮基础只读实测：P11在20.04秒收1998帧完整126字节V2、
 **2026-10-25 21:48 PNR27已自然布通，旧基线可布通性与时序失败均复现；PNR28继续routing。** PNR27于21:46:51退出0、cancelled=false，总0/静默0，原VG/CST/SDC字节和实际PNR参数保持；厂商总28m17s、布局6m57s、Routing Phase1为21m2s、峰值2528MB。实际RAM332/340、Logic89584、FF39957、CLS55557、DSP163.5，与旧报告一致。已生成真实.tr，routing_passed=true、没有未布通错误；报告没有单列未布通数值，不伪造额外计数。核心50MHz仍Fmax26.313MHz、5003 setup，另8条全局hold；雷达100MHz域报123.530MHz。布通结果可复现，但不是50MHz或部署通过。见[PNR27真实最终结果](../4_design/evidence/g2_20261023/frozen_baseline_PNR27_routed_timing_failed_20261025.json)。
 
 最差setup已读到融合归一化egz→sqrt_value约37.915ns/−18.004ns；另有NAV地址→投影DSP长路径，不能只修一个模块就声称全域过关。8条hold都属雷达FIFO首级跨域，与核心5003 setup分开审。PNR28原工具54744/控制44808仍同一无截止routing，无最终报告，未修改输入。暂不启动新的分配/裁剪物理变体，先完成已授权诊断。
+
+## 22:33 最小改动推进时序
+
+**2026-10-25 22:33 按用户请求优化真实时序，PNR29已并行启动。** 从已复现布通的PNR27出发，针对fusion→sqrt_value的37.915ns和NAV地址→投影DSP的37.028ns长路径，只采用融合平方寄存边界重排及POSE写地址预译码；原4500/权重/125Hz、完整SLF/地图/CPU容量、双UART与停止源码保持。前者复用20万拍对照，后者复用3091拍/541事务/83脉冲/2复位证明，输出周期保持；未采用尚未完成帧尾/模式证明的新增点缓冲。
+
+复用已完成的`directed_fusion_pose_unsigned_coverage_effective50`联合SYN，没有重复综合：63硬件输入中61份相同、两份改动与证明源全文绑定，31头相同。69资产中58份相同，其余11份已由实际64个SP/4096项INIT→HEX→BIN逐位核实，仅51712字节启动镜像的5个编译时间字符不同；算法代码和全部权重相同。实际SYN为314源RAM/18宽叶，拆分332仍为预测；FF+129/LUT+88/ALU−96，DSP不变。[来源与旧证明复用审阅](../4_design/evidence/g2_20261023/fusion_pose_existing_SYN_reuse_review_20261025.json)。
+
+26条雷达跨域源/首级/二级、真实20/10ns时钟及INIT均重新绑定新VG；36处复位改名和1处CE译码重排已按实际两级复位转移/组合锥完成6项unsat证明，未按自动编号猜别名。SDC只增加26 hold-only和26个8/18ns max-delay，不豁免核心setup或第二级。686处内存端口网名差异另档，资源/参数/INIT保持不代表已证明完整网表逻辑等价；物理52条Actived、连接/延迟、MTBF/复位/IO仍待。[实际网表与CDC审阅](../4_design/evidence/g2_20261023/fusion_pose_actual_netlist_CDC_review_20261025.json)。
+
+PNR29 `baseline_fusion_pose_timing_pnr29`于22:30:24.113193启动，工具61168创建22:30:24.115581、控制58384；启动物理/提交各约4.29GiB，通过原2/4GiB门槛。实际cmd.do除路径外与已布通PNR27一致，保持route0/place1/复制1/宽拆分1/global50；CST原字节保持，VG及54条有效SDC命令与审阅快照逐字对应。当前已进入布局，无新物理/时序结果；总0/静默0无截止。PNR28工具54744仍同一routing，未改其输入、时限或进程，未恢复已暂停自动监督。[实际启动及身份](../4_design/evidence/g2_20261023/fusion_pose_timing_PNR29_launch_20261025.json)。
+
+这份SYN估计44.852MHz并非50MHz通过，最差已转动作→执行器映射；旧NAV路径后半段也不能由预译码证明消除。另已查到具备数值/周期对照的动作精确位宽候选及完整SYN缓存，当前未叠加，须根据新物理报告继续定位。新轮结束先收真实布通/资源/分配/长路径、全域setup/hold及52条有效约束与CDC/复位/IO，未验证不放行，不以综合估计或布通代替部署门槛。

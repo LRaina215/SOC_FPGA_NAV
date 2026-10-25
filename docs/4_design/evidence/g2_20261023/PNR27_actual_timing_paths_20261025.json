@@ -1,0 +1,1155 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-25T21:52:28.985732+08:00",
+  "scope": "Read-only actual PNR27 timing review; no source or build mutations. No deployment acceptance. Compact summary of the vendor 25-path sample, not all5003 failed endpoints.",
+  "build": "F:\\nav_integration_g2_20261023\\baseline_rep1_replay_pnr27",
+  "timing_report": {
+    "path": "F:\\nav_integration_g2_20261023\\baseline_rep1_replay_pnr27\\impl\\pnr\\g2_top.tr",
+    "bytes": 498797,
+    "mtime_ns": 1792936008326846400
+  },
+  "runtime": {
+    "pid": 64096,
+    "started_at": "2026-10-25T21:17:38.849127+08:00",
+    "ended_at": "2026-10-25T21:46:51.122994+08:00",
+    "tool_exit": 0,
+    "cancelled": false,
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0
+  },
+  "result": {
+    "routing_passed": true,
+    "resource_core_gate_passed": false,
+    "BSRAM": 332,
+    "setup_violated_endpoints": 5003,
+    "hold_violated_endpoints": 8,
+    "clock_reports": [
+      {
+        "name": "clk50",
+        "constraint_mhz": 50.0,
+        "actual_fmax_mhz": 26.313,
+        "levels": 24,
+        "entity": "TOP"
+      },
+      {
+        "name": "rgmii_rxc",
+        "constraint_mhz": 100.0,
+        "actual_fmax_mhz": 123.53,
+        "levels": 9,
+        "entity": "TOP"
+      }
+    ],
+    "per_clock_violations": {
+      "clk50": {
+        "setup": {
+          "tns_ns": -25715.209,
+          "violated_endpoints": 5003
+        },
+        "hold": {
+          "tns_ns": 0.0,
+          "violated_endpoints": 0
+        }
+      },
+      "rgmii_rxc": {
+        "setup": {
+          "tns_ns": 0.0,
+          "violated_endpoints": 0
+        },
+        "hold": {
+          "tns_ns": 0.0,
+          "violated_endpoints": 0
+        }
+      }
+    },
+    "reset_pulse_report_pass": true
+  },
+  "exact_replay": {
+    "frozen_inputs": [
+      {
+        "relative_path": "g2_top.vg",
+        "old": {
+          "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_rep1_effective50\\g2_top.vg",
+          "bytes": 24413952,
+          "mtime_ns": 1792661343089183600
+        },
+        "replay": {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_rep1_replay_pnr27\\g2_top.vg",
+          "bytes": 24413952,
+          "mtime_ns": 1792934258261681000
+        },
+        "exact_bytes_equal": true
+      },
+      {
+        "relative_path": "g2.cst",
+        "old": {
+          "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_rep1_effective50\\g2.cst",
+          "bytes": 5495,
+          "mtime_ns": 1792661343089183600
+        },
+        "replay": {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_rep1_replay_pnr27\\g2.cst",
+          "bytes": 5495,
+          "mtime_ns": 1792934258261681000
+        },
+        "exact_bytes_equal": true
+      },
+      {
+        "relative_path": "g2.sdc",
+        "old": {
+          "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_rep1_effective50\\g2.sdc",
+          "bytes": 122,
+          "mtime_ns": 1792661343091791800
+        },
+        "replay": {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_rep1_replay_pnr27\\g2.sdc",
+          "bytes": 122,
+          "mtime_ns": 1792934258261681000
+        },
+        "exact_bytes_equal": true
+      },
+      {
+        "relative_path": "impl/pnr/device.cfg",
+        "old": {
+          "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_rep1_effective50\\impl\\pnr\\device.cfg",
+          "bytes": 565,
+          "mtime_ns": 1792661345332731400
+        },
+        "replay": {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_rep1_replay_pnr27\\impl\\pnr\\device.cfg",
+          "bytes": 565,
+          "mtime_ns": 1792934260224029100
+        },
+        "exact_bytes_equal": true
+      }
+    ],
+    "normalized_actual_command_equal": true,
+    "normalized_actual_command": [
+      "-d @BUILD@\\g2_top.vg",
+      "-p GW5AT-138C-PBGA484A-1",
+      "-pn GW5AT-LV138PG484AC1/I0",
+      "-cst @BUILD@\\g2.cst",
+      "-cfg @BUILD@\\impl\\pnr\\device.cfg",
+      "-sdc @BUILD@\\g2.sdc",
+      "-bit",
+      "-tr",
+      "-ph",
+      "-o",
+      "-timing",
+      "-ireg_not_in_iob",
+      "-oreg_not_in_iob",
+      "-ioreg_not_in_iob",
+      "-replicate",
+      "-cst_error",
+      "-convert_sdp32_36_to_sdp16_18",
+      "-place_option 1",
+      "-route_option 0",
+      "-retiming_resource none",
+      "-clock_route_order 0",
+      "-correct_hold 1",
+      "-route_maxfan 23",
+      "-global_freq 50.000"
+    ],
+    "effective_options_tcl_present_in_replay": false,
+    "actual_command_is_authoritative": true,
+    "physical_VO_differences": [
+      {
+        "line": 5,
+        "old": "//Created Time: Thu Oct 22 17:57:31 2026",
+        "replay": "//Created Time: Sun Oct 25 21:46:39 2026"
+      }
+    ],
+    "physical_VO_only_creation_timestamp_changed": true,
+    "RPT_from_resource_usage_to_end_exactly_equal": true,
+    "TR_actual_section2_to_end_exactly_equal": true
+  },
+  "setup_analysis": {
+    "full_violated_endpoints": 5003,
+    "detailed_report_limit": 25,
+    "reported_25_destination_groups": {
+      "control/fusion": 23,
+      "NAV/projector_DSP": 2
+    },
+    "unreported_4978_endpoint_module_distribution": "unknown; do not extrapolate the 25-path sample to all endpoints",
+    "worst": {
+      "rank": 1,
+      "slack_ns": -18.004,
+      "arrival_ns": 41.785,
+      "required_ns": 23.781,
+      "from": "u_control/model_thread/fusion/egz_2_s0",
+      "to": "u_control/model_thread/fusion/sqrt_value_47_s0",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "logic_level": 24,
+      "data_delay": {
+        "cell_ns": 9.858,
+        "cell_percent": 26.0,
+        "route_ns": 27.713,
+        "route_percent": 73.092,
+        "tC2Q_ns": 0.344,
+        "tC2Q_percent": 0.908
+      },
+      "largest_data_net_segments": [
+        {
+          "arrival_ns": 26.702,
+          "delay_ns": 11.595,
+          "type": "tNET",
+          "fanout": 41,
+          "location": "DSP_R37[4]",
+          "node": "u_control/model_thread/fusion/n7400_s/B[22]"
+        },
+        {
+          "arrival_ns": 39.751,
+          "delay_ns": 10.541,
+          "type": "tNET",
+          "fanout": 2,
+          "location": "R36C180[0][A]",
+          "node": "u_control/model_thread/fusion/n7410_s0/I1"
+        },
+        {
+          "arrival_ns": 14.696,
+          "delay_ns": 1.106,
+          "type": "tNET",
+          "fanout": 1,
+          "location": "R27C158[3][A]",
+          "node": "u_control/model_thread/fusion/n7257_s0/I0"
+        },
+        {
+          "arrival_ns": 41.526,
+          "delay_ns": 0.747,
+          "type": "tNET",
+          "fanout": 1,
+          "location": "R34C175[2][A]",
+          "node": "u_control/model_thread/fusion/n8626_s35/I1"
+        },
+        {
+          "arrival_ns": 6.899,
+          "delay_ns": 0.614,
+          "type": "tNET",
+          "fanout": 1,
+          "location": "R26C175[2][A]",
+          "node": "u_control/model_thread/fusion/n7271_s1/I1"
+        },
+        {
+          "arrival_ns": 4.784,
+          "delay_ns": 0.569,
+          "type": "tNET",
+          "fanout": 1,
+          "location": "R26C173[0][A]",
+          "node": "u_control/model_thread/fusion/n7275_s1/I1"
+        }
+      ],
+      "report_from_line": 225
+    },
+    "second_independent_bottleneck": {
+      "rank": 7,
+      "slack_ns": -17.589,
+      "arrival_ns": 41.007,
+      "required_ns": 23.418,
+      "from": "u_nav/a_q_8_s0",
+      "to": "u_nav/u_pp/n311_s",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "logic_level": 10,
+      "data_delay": {
+        "cell_ns": 3.831,
+        "cell_percent": 10.345,
+        "route_ns": 32.853,
+        "route_percent": 88.725,
+        "tC2Q_ns": 0.344,
+        "tC2Q_percent": 0.93
+      },
+      "largest_data_net_segments": [
+        {
+          "arrival_ns": 41.007,
+          "delay_ns": 9.833,
+          "type": "tNET",
+          "fanout": 1,
+          "location": "DSP_R55[22]",
+          "node": "u_nav/u_pp/n311_s/A[0]"
+        },
+        {
+          "arrival_ns": 10.006,
+          "delay_ns": 5.682,
+          "type": "tNET",
+          "fanout": 1,
+          "location": "R76C62[3][B]",
+          "node": "u_nav/n7374_s16/I3"
+        },
+        {
+          "arrival_ns": 20.337,
+          "delay_ns": 3.697,
+          "type": "tNET",
+          "fanout": 1,
+          "location": "R92C117[3][A]",
+          "node": "u_nav/u_map/u_em/acc_s2/I1"
+        },
+        {
+          "arrival_ns": 29.174,
+          "delay_ns": 3.615,
+          "type": "tNET",
+          "fanout": 1,
+          "location": "R7C110[2][B]",
+          "node": "u_nav/u_xt/u_ob/b1_33_s5/I0"
+        },
+        {
+          "arrival_ns": 13.752,
+          "delay_ns": 3.254,
+          "type": "tNET",
+          "fanout": 1,
+          "location": "R41C90[3][A]",
+          "node": "u_nav/u_xt/n12012_s4/I1"
+        },
+        {
+          "arrival_ns": 23.078,
+          "delay_ns": 2.249,
+          "type": "tNET",
+          "fanout": 1,
+          "location": "R72C96[3][A]",
+          "node": "u_nav/u_pf/pt_ready_s0/I2"
+        }
+      ],
+      "report_from_line": 800
+    },
+    "reported_setup_slack_table": [
+      {
+        "rank": 1,
+        "slack_ns": -18.004,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_47_s0",
+        "logic_level": 24,
+        "data_delay": {
+          "cell_ns": 9.858,
+          "cell_percent": 26.0,
+          "route_ns": 27.713,
+          "route_percent": 73.092,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.908
+        },
+        "report_from_line": 225
+      },
+      {
+        "rank": 2,
+        "slack_ns": -17.958,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_48_s0",
+        "logic_level": 24,
+        "data_delay": {
+          "cell_ns": 10.107,
+          "cell_percent": 26.682,
+          "route_ns": 27.426,
+          "route_percent": 72.409,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.909
+        },
+        "report_from_line": 323
+      },
+      {
+        "rank": 3,
+        "slack_ns": -17.943,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_49_s0",
+        "logic_level": 24,
+        "data_delay": {
+          "cell_ns": 9.708,
+          "cell_percent": 25.648,
+          "route_ns": 27.799,
+          "route_percent": 73.442,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.909
+        },
+        "report_from_line": 424
+      },
+      {
+        "rank": 4,
+        "slack_ns": -17.886,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_43_s0",
+        "logic_level": 23,
+        "data_delay": {
+          "cell_ns": 9.929,
+          "cell_percent": 26.263,
+          "route_ns": 27.532,
+          "route_percent": 72.826,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.911
+        },
+        "report_from_line": 525
+      },
+      {
+        "rank": 5,
+        "slack_ns": -17.823,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_40_s0",
+        "logic_level": 23,
+        "data_delay": {
+          "cell_ns": 9.788,
+          "cell_percent": 25.939,
+          "route_ns": 27.602,
+          "route_percent": 73.149,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.912
+        },
+        "report_from_line": 616
+      },
+      {
+        "rank": 6,
+        "slack_ns": -17.745,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_39_s0",
+        "logic_level": 23,
+        "data_delay": {
+          "cell_ns": 9.79,
+          "cell_percent": 25.991,
+          "route_ns": 27.532,
+          "route_percent": 73.095,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.914
+        },
+        "report_from_line": 709
+      },
+      {
+        "rank": 7,
+        "slack_ns": -17.589,
+        "from": "u_nav/a_q_8_s0",
+        "to": "u_nav/u_pp/n311_s",
+        "logic_level": 10,
+        "data_delay": {
+          "cell_ns": 3.831,
+          "cell_percent": 10.345,
+          "route_ns": 32.853,
+          "route_percent": 88.725,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.93
+        },
+        "report_from_line": 800
+      },
+      {
+        "rank": 8,
+        "slack_ns": -17.56,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_44_s0",
+        "logic_level": 23,
+        "data_delay": {
+          "cell_ns": 9.676,
+          "cell_percent": 25.815,
+          "route_ns": 27.46,
+          "route_percent": 73.266,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.918
+        },
+        "report_from_line": 861
+      },
+      {
+        "rank": 9,
+        "slack_ns": -17.535,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_46_s0",
+        "logic_level": 24,
+        "data_delay": {
+          "cell_ns": 9.963,
+          "cell_percent": 26.593,
+          "route_ns": 27.156,
+          "route_percent": 72.488,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.919
+        },
+        "report_from_line": 954
+      },
+      {
+        "rank": 10,
+        "slack_ns": -17.494,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_45_s0",
+        "logic_level": 23,
+        "data_delay": {
+          "cell_ns": 9.768,
+          "cell_percent": 26.102,
+          "route_ns": 27.309,
+          "route_percent": 72.978,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.92
+        },
+        "report_from_line": 1051
+      },
+      {
+        "rank": 11,
+        "slack_ns": -17.476,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_41_s0",
+        "logic_level": 23,
+        "data_delay": {
+          "cell_ns": 9.592,
+          "cell_percent": 25.651,
+          "route_ns": 27.459,
+          "route_percent": 73.428,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.921
+        },
+        "report_from_line": 1146
+      },
+      {
+        "rank": 12,
+        "slack_ns": -17.354,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_37_s0",
+        "logic_level": 23,
+        "data_delay": {
+          "cell_ns": 9.47,
+          "cell_percent": 25.413,
+          "route_ns": 27.451,
+          "route_percent": 73.663,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.924
+        },
+        "report_from_line": 1233
+      },
+      {
+        "rank": 13,
+        "slack_ns": -17.298,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_35_s0",
+        "logic_level": 23,
+        "data_delay": {
+          "cell_ns": 9.616,
+          "cell_percent": 25.846,
+          "route_ns": 27.243,
+          "route_percent": 73.228,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.925
+        },
+        "report_from_line": 1320
+      },
+      {
+        "rank": 14,
+        "slack_ns": -17.288,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_38_s0",
+        "logic_level": 23,
+        "data_delay": {
+          "cell_ns": 9.441,
+          "cell_percent": 25.38,
+          "route_ns": 27.414,
+          "route_percent": 73.695,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.925
+        },
+        "report_from_line": 1407
+      },
+      {
+        "rank": 15,
+        "slack_ns": -17.036,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_34_s0",
+        "logic_level": 22,
+        "data_delay": {
+          "cell_ns": 9.162,
+          "cell_percent": 24.805,
+          "route_ns": 27.431,
+          "route_percent": 74.263,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.932
+        },
+        "report_from_line": 1496
+      },
+      {
+        "rank": 16,
+        "slack_ns": -17.021,
+        "from": "u_nav/a_q_8_s0",
+        "to": "u_nav/u_pp/n311_s",
+        "logic_level": 10,
+        "data_delay": {
+          "cell_ns": 3.831,
+          "cell_percent": 10.511,
+          "route_ns": 32.271,
+          "route_percent": 88.545,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.945
+        },
+        "report_from_line": 1581
+      },
+      {
+        "rank": 17,
+        "slack_ns": -17.008,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_36_s0",
+        "logic_level": 22,
+        "data_delay": {
+          "cell_ns": 9.274,
+          "cell_percent": 25.121,
+          "route_ns": 27.298,
+          "route_percent": 73.947,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.933
+        },
+        "report_from_line": 1642
+      },
+      {
+        "rank": 18,
+        "slack_ns": -16.999,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_42_s0",
+        "logic_level": 23,
+        "data_delay": {
+          "cell_ns": 9.613,
+          "cell_percent": 26.031,
+          "route_ns": 26.971,
+          "route_percent": 73.037,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.932
+        },
+        "report_from_line": 1727
+      },
+      {
+        "rank": 19,
+        "slack_ns": -16.727,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_27_s0",
+        "logic_level": 23,
+        "data_delay": {
+          "cell_ns": 9.038,
+          "cell_percent": 24.669,
+          "route_ns": 27.254,
+          "route_percent": 74.391,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.94
+        },
+        "report_from_line": 1816
+      },
+      {
+        "rank": 20,
+        "slack_ns": -16.632,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_33_s0",
+        "logic_level": 22,
+        "data_delay": {
+          "cell_ns": 9.108,
+          "cell_percent": 24.93,
+          "route_ns": 27.081,
+          "route_percent": 74.128,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.942
+        },
+        "report_from_line": 1909
+      },
+      {
+        "rank": 21,
+        "slack_ns": -16.6,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_30_s0",
+        "logic_level": 24,
+        "data_delay": {
+          "cell_ns": 9.126,
+          "cell_percent": 25.001,
+          "route_ns": 27.031,
+          "route_percent": 74.056,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.943
+        },
+        "report_from_line": 1994
+      },
+      {
+        "rank": 22,
+        "slack_ns": -16.429,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_28_s0",
+        "logic_level": 23,
+        "data_delay": {
+          "cell_ns": 8.775,
+          "cell_percent": 24.147,
+          "route_ns": 27.219,
+          "route_percent": 74.906,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.947
+        },
+        "report_from_line": 2093
+      },
+      {
+        "rank": 23,
+        "slack_ns": -16.342,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_29_s0",
+        "logic_level": 24,
+        "data_delay": {
+          "cell_ns": 8.867,
+          "cell_percent": 24.465,
+          "route_ns": 27.031,
+          "route_percent": 74.585,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.95
+        },
+        "report_from_line": 2188
+      },
+      {
+        "rank": 24,
+        "slack_ns": -16.291,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_26_s0",
+        "logic_level": 23,
+        "data_delay": {
+          "cell_ns": 8.835,
+          "cell_percent": 24.399,
+          "route_ns": 27.031,
+          "route_percent": 74.65,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.951
+        },
+        "report_from_line": 2285
+      },
+      {
+        "rank": 25,
+        "slack_ns": -16.277,
+        "from": "u_control/model_thread/fusion/egz_2_s0",
+        "to": "u_control/model_thread/fusion/sqrt_value_31_s0",
+        "logic_level": 23,
+        "data_delay": {
+          "cell_ns": 9.213,
+          "cell_percent": 25.45,
+          "route_ns": 26.641,
+          "route_percent": 73.599,
+          "tC2Q_ns": 0.344,
+          "tC2Q_percent": 0.951
+        },
+        "report_from_line": 2376
+      }
+    ]
+  },
+  "hold_analysis": {
+    "global_negative_paths": [
+      {
+        "rank": 1,
+        "slack_ns": -0.211,
+        "arrival_ns": 21.74,
+        "required_ns": 21.951,
+        "from": "u_nav/u_netl/u_rxf/wp_g_0_s0",
+        "to": "u_nav/u_netl/u_rxf/wp_g_r1_0_s1",
+        "launch_clock": "rgmii_rxc:[R]",
+        "latch_clock": "clk50:[R]",
+        "logic_level": 1,
+        "data_delay": {
+          "cell_ns": 0.0,
+          "cell_percent": 0.0,
+          "route_ns": 0.197,
+          "route_percent": 60.833,
+          "tC2Q_ns": 0.127,
+          "tC2Q_percent": 39.167
+        },
+        "largest_data_net_segments": [
+          {
+            "arrival_ns": 21.74,
+            "delay_ns": 0.197,
+            "type": "tNET",
+            "fanout": 1,
+            "location": "R97C89[2][A]",
+            "node": "u_nav/u_netl/u_rxf/wp_g_r1_0_s1/D"
+          }
+        ],
+        "report_from_line": 2466
+      },
+      {
+        "rank": 2,
+        "slack_ns": -0.183,
+        "arrival_ns": 21.756,
+        "required_ns": 21.94,
+        "from": "u_nav/u_netl/u_rxf/wp_g_5_s0",
+        "to": "u_nav/u_netl/u_rxf/wp_g_r1_5_s1",
+        "launch_clock": "rgmii_rxc:[R]",
+        "latch_clock": "clk50:[R]",
+        "logic_level": 1,
+        "data_delay": {
+          "cell_ns": 0.0,
+          "cell_percent": 0.0,
+          "route_ns": 0.215,
+          "route_percent": 62.402,
+          "tC2Q_ns": 0.13,
+          "tC2Q_percent": 37.598
+        },
+        "largest_data_net_segments": [
+          {
+            "arrival_ns": 21.756,
+            "delay_ns": 0.215,
+            "type": "tNET",
+            "fanout": 1,
+            "location": "R97C89[2][B]",
+            "node": "u_nav/u_netl/u_rxf/wp_g_r1_5_s1/D"
+          }
+        ],
+        "report_from_line": 2509
+      },
+      {
+        "rank": 3,
+        "slack_ns": -0.177,
+        "arrival_ns": 21.76,
+        "required_ns": 21.936,
+        "from": "u_nav/u_netl/u_rxf/wp_g_1_s0",
+        "to": "u_nav/u_netl/u_rxf/wp_g_r1_1_s1",
+        "launch_clock": "rgmii_rxc:[R]",
+        "latch_clock": "clk50:[R]",
+        "logic_level": 1,
+        "data_delay": {
+          "cell_ns": 0.0,
+          "cell_percent": 0.0,
+          "route_ns": 0.215,
+          "route_percent": 62.402,
+          "tC2Q_ns": 0.13,
+          "tC2Q_percent": 37.598
+        },
+        "largest_data_net_segments": [
+          {
+            "arrival_ns": 21.759,
+            "delay_ns": 0.215,
+            "type": "tNET",
+            "fanout": 1,
+            "location": "R97C90[1][B]",
+            "node": "u_nav/u_netl/u_rxf/wp_g_r1_1_s1/D"
+          }
+        ],
+        "report_from_line": 2553
+      },
+      {
+        "rank": 4,
+        "slack_ns": -0.174,
+        "arrival_ns": 21.764,
+        "required_ns": 21.938,
+        "from": "u_nav/u_netl/u_rxf/wp_g_9_s0",
+        "to": "u_nav/u_netl/u_rxf/wp_g_r1_9_s1",
+        "launch_clock": "rgmii_rxc:[R]",
+        "latch_clock": "clk50:[R]",
+        "logic_level": 1,
+        "data_delay": {
+          "cell_ns": 0.0,
+          "cell_percent": 0.0,
+          "route_ns": 0.215,
+          "route_percent": 62.402,
+          "tC2Q_ns": 0.13,
+          "tC2Q_percent": 37.598
+        },
+        "largest_data_net_segments": [
+          {
+            "arrival_ns": 21.764,
+            "delay_ns": 0.215,
+            "type": "tNET",
+            "fanout": 1,
+            "location": "R96C90[2][A]",
+            "node": "u_nav/u_netl/u_rxf/wp_g_r1_9_s1/D"
+          }
+        ],
+        "report_from_line": 2597
+      },
+      {
+        "rank": 5,
+        "slack_ns": -0.101,
+        "arrival_ns": 21.839,
+        "required_ns": 21.94,
+        "from": "u_nav/u_netl/u_rxf/wp_g_3_s0",
+        "to": "u_nav/u_netl/u_rxf/wp_g_r1_3_s1",
+        "launch_clock": "rgmii_rxc:[R]",
+        "latch_clock": "clk50:[R]",
+        "logic_level": 1,
+        "data_delay": {
+          "cell_ns": 0.0,
+          "cell_percent": 0.0,
+          "route_ns": 0.301,
+          "route_percent": 69.937,
+          "tC2Q_ns": 0.13,
+          "tC2Q_percent": 30.063
+        },
+        "largest_data_net_segments": [
+          {
+            "arrival_ns": 21.839,
+            "delay_ns": 0.301,
+            "type": "tNET",
+            "fanout": 1,
+            "location": "R97C87[1][B]",
+            "node": "u_nav/u_netl/u_rxf/wp_g_r1_3_s1/D"
+          }
+        ],
+        "report_from_line": 2641
+      },
+      {
+        "rank": 6,
+        "slack_ns": -0.094,
+        "arrival_ns": 21.847,
+        "required_ns": 21.941,
+        "from": "u_nav/u_netl/u_rxf/wp_g_6_s0",
+        "to": "u_nav/u_netl/u_rxf/wp_g_r1_6_s1",
+        "launch_clock": "rgmii_rxc:[R]",
+        "latch_clock": "clk50:[R]",
+        "logic_level": 1,
+        "data_delay": {
+          "cell_ns": 0.0,
+          "cell_percent": 0.0,
+          "route_ns": 0.301,
+          "route_percent": 69.937,
+          "tC2Q_ns": 0.13,
+          "tC2Q_percent": 30.063
+        },
+        "largest_data_net_segments": [
+          {
+            "arrival_ns": 21.847,
+            "delay_ns": 0.301,
+            "type": "tNET",
+            "fanout": 1,
+            "location": "R96C87[1][B]",
+            "node": "u_nav/u_netl/u_rxf/wp_g_r1_6_s1/D"
+          }
+        ],
+        "report_from_line": 2685
+      },
+      {
+        "rank": 7,
+        "slack_ns": -0.086,
+        "arrival_ns": 21.852,
+        "required_ns": 21.938,
+        "from": "u_nav/u_netl/u_rxf/wp_g_8_s0",
+        "to": "u_nav/u_netl/u_rxf/wp_g_r1_8_s1",
+        "launch_clock": "rgmii_rxc:[R]",
+        "latch_clock": "clk50:[R]",
+        "logic_level": 1,
+        "data_delay": {
+          "cell_ns": 0.0,
+          "cell_percent": 0.0,
+          "route_ns": 0.303,
+          "route_percent": 70.062,
+          "tC2Q_ns": 0.13,
+          "tC2Q_percent": 29.938
+        },
+        "largest_data_net_segments": [
+          {
+            "arrival_ns": 21.852,
+            "delay_ns": 0.303,
+            "type": "tNET",
+            "fanout": 1,
+            "location": "R96C90[3][B]",
+            "node": "u_nav/u_netl/u_rxf/wp_g_r1_8_s1/D"
+          }
+        ],
+        "report_from_line": 2729
+      },
+      {
+        "rank": 8,
+        "slack_ns": -0.018,
+        "arrival_ns": 21.922,
+        "required_ns": 21.94,
+        "from": "u_nav/u_netl/u_rxf/wp_g_10_s0",
+        "to": "u_nav/u_netl/u_rxf/wp_g_r1_10_s1",
+        "launch_clock": "rgmii_rxc:[R]",
+        "latch_clock": "clk50:[R]",
+        "logic_level": 1,
+        "data_delay": {
+          "cell_ns": 0.0,
+          "cell_percent": 0.0,
+          "route_ns": 0.376,
+          "route_percent": 74.377,
+          "tC2Q_ns": 0.13,
+          "tC2Q_percent": 25.623
+        },
+        "largest_data_net_segments": [
+          {
+            "arrival_ns": 21.922,
+            "delay_ns": 0.376,
+            "type": "tNET",
+            "fanout": 1,
+            "location": "R97C85[3][A]",
+            "node": "u_nav/u_netl/u_rxf/wp_g_r1_10_s1/D"
+          }
+        ],
+        "report_from_line": 2773
+      }
+    ],
+    "all_eight_are_lidar_FIFO_gray_source_to_first_sync": true,
+    "all_eight_launch_100MHz_capture_50MHz": true,
+    "same_domain_hold_violations": 0,
+    "current_SDC_has_CDC_exceptions": false,
+    "qualification": "These are asynchronous first-stage paths, separate from the 5003 synchronous setup failures. Physical two-stage CDC/source/Gray role and actual max delay require review before narrowly scoped hold-only treatment; no blanket clock-group or setup exceptions."
+  },
+  "actual_high_fanout_top10": [
+    {
+      "fanout": 44315,
+      "net": "clk50_d",
+      "worst_slack_ns": -18.004,
+      "max_delay_ns": 3.372
+    },
+    {
+      "fanout": 9155,
+      "net": "u_control/n2371_7",
+      "worst_slack_ns": 0.585,
+      "max_delay_ns": 4.805
+    },
+    {
+      "fanout": 6885,
+      "net": "r2",
+      "worst_slack_ns": 0.585,
+      "max_delay_ns": 3.94
+    },
+    {
+      "fanout": 4366,
+      "net": "u_control/model_thread/observation/n331_7",
+      "worst_slack_ns": 2.847,
+      "max_delay_ns": 5.105
+    },
+    {
+      "fanout": 4032,
+      "net": "u_control/model_thread/policy/snapshot_0_9",
+      "worst_slack_ns": 7.487,
+      "max_delay_ns": 4.682
+    },
+    {
+      "fanout": 4001,
+      "net": "u_control/model_thread/observation/n15679_10",
+      "worst_slack_ns": 9.383,
+      "max_delay_ns": 8.952
+    },
+    {
+      "fanout": 1000,
+      "net": "u_control/model_thread/policy/n1700_10",
+      "worst_slack_ns": 9.352,
+      "max_delay_ns": 5.949
+    },
+    {
+      "fanout": 1000,
+      "net": "u_control/model_thread/policy/n1700_11",
+      "worst_slack_ns": 7.577,
+      "max_delay_ns": 9.194
+    },
+    {
+      "fanout": 1000,
+      "net": "u_control/model_thread/policy/n1700_12",
+      "worst_slack_ns": 8.259,
+      "max_delay_ns": 5.61
+    },
+    {
+      "fanout": 1000,
+      "net": "u_control/model_thread/policy/n1700_13",
+      "worst_slack_ns": 5.171,
+      "max_delay_ns": 7.862
+    }
+  ],
+  "actual_congestion_top10": [
+    {
+      "location": "R16C52",
+      "congestion": 0.889
+    },
+    {
+      "location": "R51C64",
+      "congestion": 0.889
+    },
+    {
+      "location": "R53C68",
+      "congestion": 0.889
+    },
+    {
+      "location": "R66C61",
+      "congestion": 0.875
+    },
+    {
+      "location": "R55C69",
+      "congestion": 0.875
+    },
+    {
+      "location": "R9C55",
+      "congestion": 0.875
+    },
+    {
+      "location": "R50C64",
+      "congestion": 0.875
+    },
+    {
+      "location": "R19C51",
+      "congestion": 0.861
+    },
+    {
+      "location": "R24C52",
+      "congestion": 0.861
+    },
+    {
+      "location": "R62C73",
+      "congestion": 0.861
+    }
+  ],
+  "specific_interventions_to_evaluate": [
+    {
+      "priority": 1,
+      "target": "IMU fusion renormalization stage",
+      "source": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50\\control\\imu_fusion.v",
+      "lines": [
+        174,
+        176,
+        349,
+        350,
+        351,
+        352,
+        353
+      ],
+      "observed": "egz abs24 -> square multiply -> sum -> sqrt_value in one cycle; 24 logic levels; worst37.915ns includes27.713ns routing. DSP incoming11.595ns plus outgoing10.541ns.",
+      "minimal_direction": "Backport only exact normalization staging, with absolute values/squares or sum separated and sqrt_start/valid/reset state aligned; preserve original arithmetic widths/rounding/125Hz and sample acceptance. Do not enable the unrelated optimization bundle.",
+      "risk": "Added latency/state and registers must be checked against sample period and fault/reset handling. This alone does not fix NAV readiness path."
+    },
+    {
+      "priority": 2,
+      "target": "NAV cross-module ready/backpressure path into projection DSP",
+      "source_refs": [
+        {
+          "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50\\nav\\rtl\\top\\nav_subsystem.v",
+          "lines": [
+            256,
+            261,
+            282,
+            284,
+            298,
+            300,
+            321,
+            338,
+            351
+          ]
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50\\nav\\rtl\\lidar\\pc_project.v",
+          "lines": [
+            48,
+            49,
+            80,
+            83,
+            88
+          ]
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50\\nav\\rtl\\lidar\\pc_transform.v",
+          "lines": [
+            31,
+            32
+          ]
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50\\nav\\rtl\\lidar\\pc_filter.v",
+          "lines": [
+            46,
+            47
+          ]
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50\\nav\\rtl\\common\\nav_skid.v",
+          "lines": [
+            16,
+            17
+          ]
+        }
+      ],
+      "observed": "Actual path7 spans a_q -> XT -> support -> EM acceptance -> filter ready -> transform ready -> XT FIFO output -> projection DSP;10 logic levels,32.853ns routing (88.725%).",
+      "minimal_direction": "Evaluate one two-entry elastic boundary (existing nav_skid is a candidate) on the returned-ready chain, carrying the entire point payload/valid/SOF/EOF/PV together, so one local ready hop cannot traverse the whole pipeline. First locate the best actual cut using this path.",
+      "risk": "A plain ready register without skid capacity can drop an in-flight beat; backpressure/reset/last-point/empty-frame/full-throughput must remain correct. Existing nav_skid not newly validated here."
+    },
+    {
+      "priority": 3,
+      "target": "Only audited radar FIFO source-Q to first sync D crossings",
+      "observed": "Eight negative hold paths −0.211 to−0.018ns; no same-domain hold violations. No CDC exception in replay SDC.",
+      "minimal_direction": "Re-audit all26 physical CDC pairs on this exact VG/VO; only then apply source-to-first hold-only constraints plus max delay while retaining first-to-second setup/hold checks.",
+      "risk": "Do not treat negative cross-domain hold as solved or deploy before applied exception/max-delay/CDC/reset signoff."
+    }
+  ],
+  "not_changed": [
+    "PNR28 or any active process",
+    "source/clock constraints",
+    "SYN/PNR scheduling",
+    "algorithm/precision/4500/weights/125Hz"
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "scope": "read-only source/previous-proof audit; no new simulation, synthesis, routing or programming",
+  "source": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50",
+  "routed_origin": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50",
+  "passed_source_and_cycle_contract_review": true,
+  "checks": {
+    "exact_five_text_transform_from_routed_baseline": true,
+    "proof_candidate_full_text_matches_target": true,
+    "original_decode_rf_and_headers_match_current_reference": true,
+    "compiled_project_inputs_exact_manifest": true,
+    "complete_synthesis_finish_and_generated_netlist": true,
+    "original_CST_SDC_bytes_equal": true,
+    "firmware_all_noncache_files_equal": true,
+    "binary_equal_except_compile_banner_timestamp": true,
+    "existing_finite_proof_result_passed": true
+  },
+  "hardware_inputs": 63,
+  "changed_hardware_inputs": [
+    "nav/rtl/top/nav_subsystem.v",
+    "control/imu_fusion.v"
+  ],
+  "assets": 69,
+  "changed_asset_paths": [
+    "ram_b0.hex",
+    "ram_b1.hex",
+    "ram_b2.hex",
+    "ram_b3.hex",
+    "ram_w.hex",
+    "firmware/nav_fw.bin",
+    "firmware/ram_b0.hex",
+    "firmware/ram_b1.hex",
+    "firmware/ram_b2.hex",
+    "firmware/ram_b3.hex",
+    "firmware/ram_w.hex"
+  ],
+  "firmware": {
+    "compilable_noncache_files": 61,
+    "all_source_bytes_unchanged": true,
+    "old_banner": "Oct 22 2026 17:20:20",
+    "candidate_banner": "Oct 22 2026 18:57:33",
+    "different_binary_offsets": [
+      48950,
+      48952,
+      48953,
+      48955,
+      48956
+    ],
+    "image_checks": [
+      {
+        "build": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50",
+        "image_bytes": 51712,
+        "RAM_bytes": 131072,
+        "all_10_images_exactly_reconstruct_padded_binary": true
+      },
+      {
+        "build": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50",
+        "image_bytes": 51712,
+        "RAM_bytes": 131072,
+        "all_10_images_exactly_reconstruct_padded_binary": true
+      }
+    ],
+    "reason_source": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\fw\\app\\main.c:8"
+  },
+  "existing_proof": {
+    "path": "F:\\nav_integration_g2_20261022\\pose_predecode_equivalence\\result.json",
+    "actual_log": "F:\\nav_integration_g2_20261022\\pose_predecode_equivalence\\xsim.log",
+    "candidate_bound_by_full_text": "F:\\nav_integration_g2_20261022\\pose_predecode_equivalence\\nav_candidate.v",
+    "result": {
+      "pass_": true,
+      "cycle_comparisons": 3091,
+      "pose_pulses": 83,
+      "bus_transactions": 541,
+      "reset_scenarios": 2,
+      "reference": "unmodified nav_regfile POSE_COMMIT output in actual nav_subsystem bus FSM",
+      "scope": "finite pulse/cycle equivalence; no full-system or physical timing acceptance"
+    }
+  },
+  "contract": {
+    "post_clock_equation": "pose_predecoded_q == rf_wr && (a_q==16'h2070)",
+    "same_edge_as_old_rf_write_and_aligned_address": true,
+    "alignment_aliases": [
+      "0x2070",
+      "0x2071",
+      "0x2072",
+      "0x2073"
+    ],
+    "data_zero_still_triggers": true,
+    "read_never_triggers": true,
+    "special_window_branches_never_trigger": true,
+    "reset_clears_both_on_same_clock": true,
+    "XT_pose_commit_and_coverage_frame_start_replaced_only": true,
+    "coverage_match_only_gate_unchanged": true,
+    "new_point_buffer_or_data_latency": false,
+    "no_SOF_EOF_Rt_depth_ROI_mode_or_capture_epoch_logic_added": true,
+    "held_request_boundary": "B_END returns IDLE unconditionally as before; no new claim that a request held after ACK is accepted only once"
+  },
+  "synthesis_source_resource_counts": {
+    "name": "g2_top",
+    "Register": "26",
+    "Alu": "25",
+    "Lut": "3",
+    "T_Register": "38184(26)",
+    "T_Alu": "9618(25)",
+    "T_Lut": "53019(3)",
+    "T_MULTALU27X18": "77(0)",
+    "T_MULT12X12": "23(0)",
+    "T_MULT27X36": "37(0)",
+    "T_MULTADDALU12X12": "1(0)",
+    "T_Bsram": "314(0)",
+    "T_Ssram": "3855(0)",
+    "T_ROM16": "3650(0)"
+  },
+  "not_proven_by_this_review": [
+    "physical routing success",
+    "50MHz setup/hold closure",
+    "new current-netlist clock/CDC/CST preflight",
+    "full-system/vehicle behavior"
+  ],
+  "reuse_conclusion": "Existing complete joint synthesis is a valid exploratory implementation candidate without adding the unfinished point buffer. Existing pose cycle proof applies exactly. Retain its own CPU images (only compile banner differs); swapping images invalidates exact VG binding unless re-synthesized. Actual netlist/pre-PNR checks and physical timing remain required."
+}

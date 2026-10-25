@@ -1,0 +1,2825 @@
+{
+  "passed": true,
+  "scope": "Exact changed CDC reset two-stage transitions and source CE Boolean cone/next-state at corresponding actual register/input boundaries; not whole-design sequential equivalence",
+  "old_netlist": "F:\\nav_integration_g2_20261022\\directed_static_coverage_effective50\\impl\\gwsynthesis\\g2_top.vg",
+  "new_netlist": "F:\\nav_integration_g2_20261022\\directed_fusion_pose_unsigned_coverage_effective50\\impl\\gwsynthesis\\g2_top.vg",
+  "reset_alias": {
+    "old": "r2_172",
+    "new": "r2_174",
+    "driver": "u_lrr/r2_s1",
+    "two_stages": [
+      {
+        "old": {
+          "name": "u_lrr/r1_s1",
+          "kind": "DFFPE",
+          "ports": {
+            "Q": [
+              "u_lrr/r1"
+            ],
+            "D": [
+              "GND"
+            ],
+            "CLK": [
+              "rgmii_rxc_d"
+            ],
+            "PRESET": [
+              "r2"
+            ],
+            "CE": [
+              "VCC"
+            ]
+          }
+        },
+        "new": {
+          "name": "u_lrr/r1_s1",
+          "kind": "DFFPE",
+          "ports": {
+            "Q": [
+              "u_lrr/r1"
+            ],
+            "D": [
+              "GND"
+            ],
+            "CLK": [
+              "rgmii_rxc_d"
+            ],
+            "PRESET": [
+              "r2"
+            ],
+            "CE": [
+              "VCC"
+            ]
+          }
+        },
+        "old_parameters": {
+          "INIT": "1'b1"
+        },
+        "new_parameters": {
+          "INIT": "1'b1"
+        },
+        "effective_INIT": 1,
+        "same_clock": true
+      },
+      {
+        "old": {
+          "name": "u_lrr/r2_s1",
+          "kind": "DFFPE",
+          "ports": {
+            "Q": [
+              "r2_172"
+            ],
+            "D": [
+              "u_lrr/r1"
+            ],
+            "CLK": [
+              "rgmii_rxc_d"
+            ],
+            "PRESET": [
+              "r2"
+            ],
+            "CE": [
+              "VCC"
+            ]
+          }
+        },
+        "new": {
+          "name": "u_lrr/r2_s1",
+          "kind": "DFFPE",
+          "ports": {
+            "Q": [
+              "r2_174"
+            ],
+            "D": [
+              "u_lrr/r1"
+            ],
+            "CLK": [
+              "rgmii_rxc_d"
+            ],
+            "PRESET": [
+              "r2"
+            ],
+            "CE": [
+              "VCC"
+            ]
+          }
+        },
+        "old_parameters": {
+          "INIT": "1'b1"
+        },
+        "new_parameters": {
+          "INIT": "1'b1"
+        },
+        "effective_INIT": 1,
+        "same_clock": true
+      }
+    ],
+    "all_nonQ_inputs_and_effective_INIT_equal": true
+  },
+  "CE_alias": {
+    "old": "u_nav/u_rf/n15988_8",
+    "new": "u_nav/u_rf/n15988_3",
+    "old_actual_cone": {
+      "root": "u_nav/u_rf/n15988_8",
+      "cells": {
+        "u_nav/u_rf/n15988_8": {
+          "primitive": {
+            "name": "u_nav/u_rf/n15988_s3",
+            "kind": "LUT4",
+            "ports": {
+              "F": [
+                "u_nav/u_rf/n15988_8"
+              ],
+              "I0": [
+                "u_nav/rf_wr"
+              ],
+              "I1": [
+                "u_nav/n809_15"
+              ],
+              "I2": [
+                "u_nav/wr_9"
+              ],
+              "I3": [
+                "u_nav/n16340_10"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "16'h8000"
+          },
+          "output_pin": "F"
+        },
+        "u_nav/rf_wr": {
+          "primitive": {
+            "name": "u_nav/rf_wr_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/rf_wr"
+              ],
+              "D": [
+                "u_nav/n10942_11"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/n809_15": {
+          "primitive": {
+            "name": "u_nav/u_netl/g_raw.u_rcap/n809_s8",
+            "kind": "LUT4",
+            "ports": {
+              "F": [
+                "u_nav/n809_15"
+              ],
+              "I0": [
+                "u_nav/a_q[14]"
+              ],
+              "I1": [
+                "u_nav/a_q[15]"
+              ],
+              "I2": [
+                "u_nav/a_q[13]"
+              ],
+              "I3": [
+                "u_nav/a_q[12]"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "16'h0100"
+          },
+          "output_pin": "F"
+        },
+        "u_nav/a_q[14]": {
+          "primitive": {
+            "name": "u_nav/a_q_14_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[14]"
+              ],
+              "D": [
+                "s_addr_Z[14]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[15]": {
+          "primitive": {
+            "name": "u_nav/a_q_15_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[15]"
+              ],
+              "D": [
+                "s_addr_Z[15]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[13]": {
+          "primitive": {
+            "name": "u_nav/a_q_13_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[13]"
+              ],
+              "D": [
+                "s_addr_Z[13]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[12]": {
+          "primitive": {
+            "name": "u_nav/a_q_12_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[12]"
+              ],
+              "D": [
+                "s_addr_Z[12]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/wr_9": {
+          "primitive": {
+            "name": "u_nav/u_imu/u_txf/wr_s5",
+            "kind": "LUT4",
+            "ports": {
+              "F": [
+                "u_nav/wr_9"
+              ],
+              "I0": [
+                "u_nav/n7374_15"
+              ],
+              "I1": [
+                "u_nav/a_q[6]"
+              ],
+              "I2": [
+                "u_nav/a_q[7]"
+              ],
+              "I3": [
+                "u_nav/a_q[8]"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "16'h0002"
+          },
+          "output_pin": "F"
+        },
+        "u_nav/n7374_15": {
+          "primitive": {
+            "name": "u_nav/n7374_s11",
+            "kind": "LUT3",
+            "ports": {
+              "F": [
+                "u_nav/n7374_15"
+              ],
+              "I0": [
+                "u_nav/a_q[9]"
+              ],
+              "I1": [
+                "u_nav/a_q[10]"
+              ],
+              "I2": [
+                "u_nav/a_q[11]"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "8'h01"
+          },
+          "output_pin": "F"
+        },
+        "u_nav/a_q[9]": {
+          "primitive": {
+            "name": "u_nav/a_q_9_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[9]"
+              ],
+              "D": [
+                "s_addr_Z[9]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[10]": {
+          "primitive": {
+            "name": "u_nav/a_q_10_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[10]"
+              ],
+              "D": [
+                "s_addr_Z[10]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[11]": {
+          "primitive": {
+            "name": "u_nav/a_q_11_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[11]"
+              ],
+              "D": [
+                "s_addr_Z[11]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[6]": {
+          "primitive": {
+            "name": "u_nav/a_q_6_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[6]"
+              ],
+              "D": [
+                "s_addr_Z[6]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[7]": {
+          "primitive": {
+            "name": "u_nav/a_q_7_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[7]"
+              ],
+              "D": [
+                "s_addr_Z[7]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[8]": {
+          "primitive": {
+            "name": "u_nav/a_q_8_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[8]"
+              ],
+              "D": [
+                "s_addr_Z[8]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/n16340_10": {
+          "primitive": {
+            "name": "u_nav/u_rf/n16340_s5",
+            "kind": "LUT4",
+            "ports": {
+              "F": [
+                "u_nav/n16340_10"
+              ],
+              "I0": [
+                "u_nav/a_q[2]"
+              ],
+              "I1": [
+                "u_nav/a_q[3]"
+              ],
+              "I2": [
+                "u_nav/a_q[5]"
+              ],
+              "I3": [
+                "u_nav/a_q[4]"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "16'h0100"
+          },
+          "output_pin": "F"
+        },
+        "u_nav/a_q[2]": {
+          "primitive": {
+            "name": "u_nav/a_q_2_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[2]"
+              ],
+              "D": [
+                "s_addr_Z[2]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[3]": {
+          "primitive": {
+            "name": "u_nav/a_q_3_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[3]"
+              ],
+              "D": [
+                "s_addr_Z[3]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[5]": {
+          "primitive": {
+            "name": "u_nav/a_q_5_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[5]"
+              ],
+              "D": [
+                "s_addr_Z[5]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[4]": {
+          "primitive": {
+            "name": "u_nav/a_q_4_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[4]"
+              ],
+              "D": [
+                "s_addr_Z[4]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        }
+      },
+      "leaves": {
+        "u_nav/rf_wr": {
+          "old": {
+            "name": "u_nav/rf_wr_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/rf_wr"
+              ],
+              "D": [
+                "u_nav/n10942_11"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/rf_wr_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/rf_wr"
+              ],
+              "D": [
+                "u_nav/n10957_9"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[14]": {
+          "old": {
+            "name": "u_nav/a_q_14_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[14]"
+              ],
+              "D": [
+                "s_addr_Z[14]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_14_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[14]"
+              ],
+              "D": [
+                "s_addr[14]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[15]": {
+          "old": {
+            "name": "u_nav/a_q_15_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[15]"
+              ],
+              "D": [
+                "s_addr_Z[15]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_15_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[15]"
+              ],
+              "D": [
+                "s_addr[15]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[13]": {
+          "old": {
+            "name": "u_nav/a_q_13_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[13]"
+              ],
+              "D": [
+                "s_addr_Z[13]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_13_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[13]"
+              ],
+              "D": [
+                "s_addr[13]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[12]": {
+          "old": {
+            "name": "u_nav/a_q_12_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[12]"
+              ],
+              "D": [
+                "s_addr_Z[12]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_12_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[12]"
+              ],
+              "D": [
+                "s_addr[12]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[9]": {
+          "old": {
+            "name": "u_nav/a_q_9_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[9]"
+              ],
+              "D": [
+                "s_addr_Z[9]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_9_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[9]"
+              ],
+              "D": [
+                "s_addr[9]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[10]": {
+          "old": {
+            "name": "u_nav/a_q_10_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[10]"
+              ],
+              "D": [
+                "s_addr_Z[10]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_10_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[10]"
+              ],
+              "D": [
+                "s_addr[10]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[11]": {
+          "old": {
+            "name": "u_nav/a_q_11_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[11]"
+              ],
+              "D": [
+                "s_addr_Z[11]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_11_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[11]"
+              ],
+              "D": [
+                "s_addr[11]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[6]": {
+          "old": {
+            "name": "u_nav/a_q_6_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[6]"
+              ],
+              "D": [
+                "s_addr_Z[6]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_6_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[6]"
+              ],
+              "D": [
+                "s_addr[6]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[7]": {
+          "old": {
+            "name": "u_nav/a_q_7_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[7]"
+              ],
+              "D": [
+                "s_addr_Z[7]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_7_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[7]"
+              ],
+              "D": [
+                "s_addr[7]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[8]": {
+          "old": {
+            "name": "u_nav/a_q_8_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[8]"
+              ],
+              "D": [
+                "s_addr_Z[8]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_8_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[8]"
+              ],
+              "D": [
+                "s_addr[8]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[2]": {
+          "old": {
+            "name": "u_nav/a_q_2_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[2]"
+              ],
+              "D": [
+                "s_addr_Z[2]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_2_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[2]"
+              ],
+              "D": [
+                "s_addr[2]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[3]": {
+          "old": {
+            "name": "u_nav/a_q_3_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[3]"
+              ],
+              "D": [
+                "s_addr_Z[3]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_3_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[3]"
+              ],
+              "D": [
+                "s_addr[3]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[5]": {
+          "old": {
+            "name": "u_nav/a_q_5_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[5]"
+              ],
+              "D": [
+                "s_addr_Z[5]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_5_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[5]"
+              ],
+              "D": [
+                "s_addr[5]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[4]": {
+          "old": {
+            "name": "u_nav/a_q_4_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[4]"
+              ],
+              "D": [
+                "s_addr_Z[4]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_4_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[4]"
+              ],
+              "D": [
+                "s_addr[4]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        }
+      }
+    },
+    "new_actual_cone": {
+      "root": "u_nav/u_rf/n15988_3",
+      "cells": {
+        "u_nav/u_rf/n15988_3": {
+          "primitive": {
+            "name": "u_nav/u_rf/n15988_s0",
+            "kind": "LUT2",
+            "ports": {
+              "F": [
+                "u_nav/u_rf/n15988_3"
+              ],
+              "I0": [
+                "u_nav/rf_wr"
+              ],
+              "I1": [
+                "u_nav/n15988_7"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "4'h8"
+          },
+          "output_pin": "F"
+        },
+        "u_nav/rf_wr": {
+          "primitive": {
+            "name": "u_nav/rf_wr_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/rf_wr"
+              ],
+              "D": [
+                "u_nav/n10957_9"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/n15988_7": {
+          "primitive": {
+            "name": "u_nav/u_rf/n15988_s3",
+            "kind": "LUT4",
+            "ports": {
+              "F": [
+                "u_nav/n15988_7"
+              ],
+              "I0": [
+                "u_nav/n809_5"
+              ],
+              "I1": [
+                "u_nav/a_q[12]"
+              ],
+              "I2": [
+                "u_nav/wr_7"
+              ],
+              "I3": [
+                "u_nav/n16340_10"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "16'h8000"
+          },
+          "output_pin": "F"
+        },
+        "u_nav/n809_5": {
+          "primitive": {
+            "name": "u_nav/u_netl/g_raw.u_rcap/n809_s2",
+            "kind": "LUT3",
+            "ports": {
+              "F": [
+                "u_nav/n809_5"
+              ],
+              "I0": [
+                "u_nav/a_q[13]"
+              ],
+              "I1": [
+                "u_nav/a_q[14]"
+              ],
+              "I2": [
+                "u_nav/a_q[15]"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "8'h01"
+          },
+          "output_pin": "F"
+        },
+        "u_nav/a_q[13]": {
+          "primitive": {
+            "name": "u_nav/a_q_13_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[13]"
+              ],
+              "D": [
+                "s_addr[13]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[14]": {
+          "primitive": {
+            "name": "u_nav/a_q_14_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[14]"
+              ],
+              "D": [
+                "s_addr[14]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[15]": {
+          "primitive": {
+            "name": "u_nav/a_q_15_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[15]"
+              ],
+              "D": [
+                "s_addr[15]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[12]": {
+          "primitive": {
+            "name": "u_nav/a_q_12_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[12]"
+              ],
+              "D": [
+                "s_addr[12]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/wr_7": {
+          "primitive": {
+            "name": "u_nav/u_imu/u_txf/wr_s3",
+            "kind": "LUT4",
+            "ports": {
+              "F": [
+                "u_nav/wr_7"
+              ],
+              "I0": [
+                "u_nav/n7374_13"
+              ],
+              "I1": [
+                "u_nav/a_q[6]"
+              ],
+              "I2": [
+                "u_nav/a_q[7]"
+              ],
+              "I3": [
+                "u_nav/a_q[8]"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "16'h0002"
+          },
+          "output_pin": "F"
+        },
+        "u_nav/n7374_13": {
+          "primitive": {
+            "name": "u_nav/n7374_s10",
+            "kind": "LUT3",
+            "ports": {
+              "F": [
+                "u_nav/n7374_13"
+              ],
+              "I0": [
+                "u_nav/a_q[9]"
+              ],
+              "I1": [
+                "u_nav/a_q[10]"
+              ],
+              "I2": [
+                "u_nav/a_q[11]"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "8'h01"
+          },
+          "output_pin": "F"
+        },
+        "u_nav/a_q[9]": {
+          "primitive": {
+            "name": "u_nav/a_q_9_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[9]"
+              ],
+              "D": [
+                "s_addr[9]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[10]": {
+          "primitive": {
+            "name": "u_nav/a_q_10_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[10]"
+              ],
+              "D": [
+                "s_addr[10]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[11]": {
+          "primitive": {
+            "name": "u_nav/a_q_11_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[11]"
+              ],
+              "D": [
+                "s_addr[11]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[6]": {
+          "primitive": {
+            "name": "u_nav/a_q_6_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[6]"
+              ],
+              "D": [
+                "s_addr[6]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[7]": {
+          "primitive": {
+            "name": "u_nav/a_q_7_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[7]"
+              ],
+              "D": [
+                "s_addr[7]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[8]": {
+          "primitive": {
+            "name": "u_nav/a_q_8_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[8]"
+              ],
+              "D": [
+                "s_addr[8]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/n16340_10": {
+          "primitive": {
+            "name": "u_nav/u_rf/n16340_s5",
+            "kind": "LUT4",
+            "ports": {
+              "F": [
+                "u_nav/n16340_10"
+              ],
+              "I0": [
+                "u_nav/a_q[2]"
+              ],
+              "I1": [
+                "u_nav/a_q[3]"
+              ],
+              "I2": [
+                "u_nav/a_q[5]"
+              ],
+              "I3": [
+                "u_nav/a_q[4]"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "16'h0100"
+          },
+          "output_pin": "F"
+        },
+        "u_nav/a_q[2]": {
+          "primitive": {
+            "name": "u_nav/a_q_2_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[2]"
+              ],
+              "D": [
+                "s_addr[2]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[3]": {
+          "primitive": {
+            "name": "u_nav/a_q_3_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[3]"
+              ],
+              "D": [
+                "s_addr[3]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[5]": {
+          "primitive": {
+            "name": "u_nav/a_q_5_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[5]"
+              ],
+              "D": [
+                "s_addr[5]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        },
+        "u_nav/a_q[4]": {
+          "primitive": {
+            "name": "u_nav/a_q_4_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[4]"
+              ],
+              "D": [
+                "s_addr[4]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        }
+      },
+      "leaves": {
+        "u_nav/rf_wr": {
+          "old": {
+            "name": "u_nav/rf_wr_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/rf_wr"
+              ],
+              "D": [
+                "u_nav/n10942_11"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/rf_wr_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/rf_wr"
+              ],
+              "D": [
+                "u_nav/n10957_9"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "VCC"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[13]": {
+          "old": {
+            "name": "u_nav/a_q_13_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[13]"
+              ],
+              "D": [
+                "s_addr_Z[13]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_13_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[13]"
+              ],
+              "D": [
+                "s_addr[13]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[14]": {
+          "old": {
+            "name": "u_nav/a_q_14_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[14]"
+              ],
+              "D": [
+                "s_addr_Z[14]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_14_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[14]"
+              ],
+              "D": [
+                "s_addr[14]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[15]": {
+          "old": {
+            "name": "u_nav/a_q_15_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[15]"
+              ],
+              "D": [
+                "s_addr_Z[15]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_15_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[15]"
+              ],
+              "D": [
+                "s_addr[15]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[12]": {
+          "old": {
+            "name": "u_nav/a_q_12_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[12]"
+              ],
+              "D": [
+                "s_addr_Z[12]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_12_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[12]"
+              ],
+              "D": [
+                "s_addr[12]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[9]": {
+          "old": {
+            "name": "u_nav/a_q_9_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[9]"
+              ],
+              "D": [
+                "s_addr_Z[9]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_9_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[9]"
+              ],
+              "D": [
+                "s_addr[9]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[10]": {
+          "old": {
+            "name": "u_nav/a_q_10_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[10]"
+              ],
+              "D": [
+                "s_addr_Z[10]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_10_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[10]"
+              ],
+              "D": [
+                "s_addr[10]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[11]": {
+          "old": {
+            "name": "u_nav/a_q_11_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[11]"
+              ],
+              "D": [
+                "s_addr_Z[11]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_11_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[11]"
+              ],
+              "D": [
+                "s_addr[11]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[6]": {
+          "old": {
+            "name": "u_nav/a_q_6_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[6]"
+              ],
+              "D": [
+                "s_addr_Z[6]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_6_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[6]"
+              ],
+              "D": [
+                "s_addr[6]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[7]": {
+          "old": {
+            "name": "u_nav/a_q_7_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[7]"
+              ],
+              "D": [
+                "s_addr_Z[7]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_7_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[7]"
+              ],
+              "D": [
+                "s_addr[7]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[8]": {
+          "old": {
+            "name": "u_nav/a_q_8_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[8]"
+              ],
+              "D": [
+                "s_addr_Z[8]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_8_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[8]"
+              ],
+              "D": [
+                "s_addr[8]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[2]": {
+          "old": {
+            "name": "u_nav/a_q_2_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[2]"
+              ],
+              "D": [
+                "s_addr_Z[2]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_2_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[2]"
+              ],
+              "D": [
+                "s_addr[2]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[3]": {
+          "old": {
+            "name": "u_nav/a_q_3_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[3]"
+              ],
+              "D": [
+                "s_addr_Z[3]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_3_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[3]"
+              ],
+              "D": [
+                "s_addr[3]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[5]": {
+          "old": {
+            "name": "u_nav/a_q_5_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[5]"
+              ],
+              "D": [
+                "s_addr_Z[5]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_5_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[5]"
+              ],
+              "D": [
+                "s_addr[5]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        },
+        "u_nav/a_q[4]": {
+          "old": {
+            "name": "u_nav/a_q_4_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[4]"
+              ],
+              "D": [
+                "s_addr_Z[4]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_15"
+              ]
+            }
+          },
+          "new": {
+            "name": "u_nav/a_q_4_s0",
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_nav/a_q[4]"
+              ],
+              "D": [
+                "s_addr[4]"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "GND"
+              ],
+              "CE": [
+                "u_nav/a_q_15_10"
+              ]
+            }
+          },
+          "old_parameters": {
+            "INIT": "1'b0"
+          },
+          "new_parameters": {
+            "INIT": "1'b0"
+          },
+          "effective_INIT": 0,
+          "same_clock": true
+        }
+      }
+    }
+  },
+  "checks": [
+    {
+      "label": "u_lrr/r1_s1:next_state",
+      "status": "unsat",
+      "passed": true
+    },
+    {
+      "label": "u_lrr/r1_s1:async_PRESET",
+      "status": "unsat",
+      "passed": true
+    },
+    {
+      "label": "u_lrr/r2_s1:next_state",
+      "status": "unsat",
+      "passed": true
+    },
+    {
+      "label": "u_lrr/r2_s1:async_PRESET",
+      "status": "unsat",
+      "passed": true
+    },
+    {
+      "label": "NETL_CTRL4 actual CE function",
+      "status": "unsat",
+      "passed": true
+    },
+    {
+      "label": "u_nav/u_rf/r_NETL_CTRL_4_s0:complete_next_state_at_shared_actual_register_boundaries",
+      "status": "unsat",
+      "passed": true
+    }
+  ],
+  "solver": "Z3 5.3.1",
+  "boundary": "Shared symbols only for the same actual primitive instance with matching kind/clock/effective INIT. Bus address/rf_wr leaf evolution is covered by independently retained bus-capture source/cycle contract; this proof compares the mapped CE truth functions, not the CPU/serial state machines.",
+  "no_numeric_alias_assumptions": true,
+  "MTBF_or_reset_release_signoff": false,
+  "PNR_started": false
+}

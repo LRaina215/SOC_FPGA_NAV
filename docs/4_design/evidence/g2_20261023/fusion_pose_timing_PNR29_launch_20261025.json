@@ -1,0 +1,163 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-25T22:33:55.997721+08:00",
+  "scope": "Real reviewed-input reuse and PNR launch, not physical timing acceptance",
+  "build": "F:\\nav_integration_g2_20261023\\baseline_fusion_pose_timing_pnr29",
+  "source_review": "F:\\nav_integration_g2_20261023\\baseline_existing_fusion_pose_review_20261025\\reuse_review.json",
+  "netlist_CDC_review": "F:\\nav_integration_g2_20261023\\fusion_pose_unsigned_pre_pnr_review1\\review_result.json",
+  "reused_completed_SYN": true,
+  "new_SYN_started": false,
+  "source_RTL_changes": [
+    "control/imu_fusion.v",
+    "nav/rtl/top/nav_subsystem.v"
+  ],
+  "CPU_boot_banner_only_difference_bytes": 5,
+  "weights_and_original4500_and125Hz_retained": true,
+  "functional_proof_reused": {
+    "fusion_cycles": 200000,
+    "pose_cycles": 3091,
+    "pose_transactions": 541
+  },
+  "source_BSRAM": 314,
+  "source_wide_leaves": 18,
+  "predicted_physical_BSRAM": 332,
+  "actual_physical_BSRAM": null,
+  "original_clock_periods_ns": {
+    "clk50": 20,
+    "rgmii_rxc": 10
+  },
+  "first_stage_hold_only": 26,
+  "first_stage_max_delays": 26,
+  "setup_exceptions_added": false,
+  "actual_options_match_routed_PNR27": true,
+  "actual_input_bytes_match_review": true,
+  "controller": {
+    "pid": 58384,
+    "created_epoch": 1792938623.730391,
+    "command": [
+      "D:\\Anaconda\\python.exe",
+      "-X",
+      "utf8",
+      "D:/Desktop/SOC FPGA/nav/integration/g2/run_baseline_timing_candidate.py"
+    ],
+    "cwd": "D:\\Desktop\\SOC FPGA\\nav",
+    "parent_pid": 24704
+  },
+  "tool": {
+    "pid": 61168,
+    "created_epoch": 1792938624.1155813,
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "cwd": "F:\\nav_integration_g2_20261023\\baseline_fusion_pose_timing_pnr29",
+    "parent_pid": 58384
+  },
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-25T22:30:24.113193+08:00",
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 61168,
+    "elapsed_s": 210.3279999999795,
+    "no_observable_progress_s": 104.10900000005495,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        924,
+        1792938730200205800
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        472,
+        1792938730200205800
+      ]
+    ]
+  },
+  "startup_memory": {
+    "available_physical_bytes": 4609662976,
+    "available_commit_bytes": 4609671168,
+    "minimum_physical_bytes": 2147483648,
+    "minimum_commit_bytes": 4294967296
+  },
+  "parallel_PNR28": {
+    "build": "F:\\nav_integration_g2_20261023\\uart_host_no_sfp_clk25_diag_pnr28",
+    "tool": {
+      "pid": 54744,
+      "created_epoch": 1792934258.851413,
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "cwd": "F:\\nav_integration_g2_20261023\\uart_host_no_sfp_clk25_diag_pnr28",
+      "parent_pid": 44808
+    },
+    "runtime": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-25T21:17:38.849127+08:00",
+      "max_runtime_s": 0,
+      "max_no_observable_progress_s": 0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 54744,
+      "elapsed_s": 4565.734999999986,
+      "no_observable_progress_s": 4110.968999999925,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          1977035,
+          1792934712052058600
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          1976583,
+          1792934712052058600
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          2245360,
+          1792934685367009900
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          13016774,
+          1792934685877948700
+        ]
+      ]
+    },
+    "inputs_modified": false
+  },
+  "PNR27_actual_reference": {
+    "routing_passed": true,
+    "setup_endpoints": 5003,
+    "hold_endpoints": 8,
+    "core_Fmax_MHz": 26.313
+  },
+  "remaining": {
+    "actual_route_and_resources": false,
+    "all_setup_hold_zero": false,
+    "physical52_constraints": false,
+    "complete_CDC_IO": false
+  },
+  "SYN_estimate_caveat": {
+    "core_Fmax_MHz": 44.852,
+    "next_risk": "actions to actuator_map/rk_us; not PNR29 timing evidence"
+  },
+  "physical_acceptance": false,
+  "programmed": false,
+  "automation_resumed": false
+}
