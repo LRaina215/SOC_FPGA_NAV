@@ -300,3 +300,11 @@ RTL和厂商实际综合网表/原语各通过**200706次结构图＋53250次高
 相对PNR15的184条，904未布通明显退化；Logic89813→95609、FF43646→51777、CLS57316→59259，RAM减少不能代表整体布线改善。没有.tr、逐网失败身份、拥塞/位置和真实长路径，setup/hold、154有效约束、DDR载荷及额外CDC/PCS/复位/脉宽/IO仍未验证，不能编造904根因、原样重跑或烧录。66312/66408/36164已退出，下一PNR未启动。
 
 DDR `ddr_actual_c_official138k_reset200_probe2`于11:30:24自然结束；4ms有限仿真末cal0、训练读17855/写149、未开始应用读回，工具退出0仍不通过。160条tWLH/128条tWLS及零时刻诊断保留，不能当实板故障。既有等待12656已自动启动唯一`ddr_actual_c_public_stages_probe3`：包装26912、ModelSim53876创建11:30:30.746960，同C网表/原保护DQS/两份模型/200us复位，未强制校准。公开观察器的旧驻留标签存在拼接位序颠倒；已修生成器并按真实MSB顺序解码现有捕获，不改当前运行输入，也不重跑仿真。最初700us向量实际是初始化IDLE/READ_CAL_IDLE/WRLVL_IDLE，不能误称卡在RSEL_ADJ。有限1.6ms诊断继续采集真正训练阶段；真实读回/服务/完整UPDATE≤5ms仍待。定时项保持PAUSED，事件诊断独立运行，未触硬件。见[实际904/259与校准结果](../4_design/evidence/g2_20261023/ddr_maps_PNR18_unrouted904_and_calibration_20261025.json)。
+
+## 失败网络诊断工具与替代流程核查
+
+**2026-10-25 12:02 布线诊断工具核查：替代工具有基础支持，但完整DDR/SFP流程尚不可替换。** 已查nextpnr/Apicula官方README、GTR12/DQS/DDRDLL支持页，并静态核对当前上游16份Gowin后端源码和7350行打包器，未找到这些必需专用宏的实现标识；138K基础支持不等于本联合工程完整支持。Vivado器件支持表不含Gowin，不能用其route-status命令查询当前物理失败。未安装/运行不完整替代构建，也未删DDR/SFP或改硬件合同。
+
+本机高云公开Tcl实际列举无net/route-status查询，set_option -debug明确unknown option；只做查询、未启动综合/PNR。SUG1541实页56说明Show Place View/Multi-View只在PNR成功后开放，网表树不是失败网清单。桌面接口两次初始化均因kernel assets路径错误失败，未实际操作查看器，不能声称GUI已经验证拿不到。原.db/.p均写于10:27，最终904失败在11:37，不能假设保存最终路由状态；保护.p未解密。原SDC已经请求拥塞/高扇出报告，但失败后无.tr，这个请求本身未补齐诊断。
+
+已准备本地复现包`F:/nav_integration_g2_20261023/routing_diagnostics_tool_audit_20261025/PNR18_local_reproducer.zip`：同一完整冻结网表/CST/SDC/CSR和原实际日志/报告/数据库、相对路径复现脚本及明确要求失败网名/驱动终端/位置/路由状态的说明，输入回读保持；没有外发、没有运行复现或新PNR。下一步优先查正式失败诊断入口/能保留失败路由的诊断版本；184/326和904/259现场及全部合同保持，不能再用面积改善代替已定位的布线收益。见[工具核查与本地复现证据](../4_design/evidence/g2_20261023/routing_diagnostic_toolchain_audit_20261025.json)。

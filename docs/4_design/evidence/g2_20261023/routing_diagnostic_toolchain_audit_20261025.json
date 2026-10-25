@@ -1,0 +1,72 @@
+{
+  "at": "2026-10-25T12:02:37.970671+08:00",
+  "task": "verify alternative complete physical toolchains and obtain actual unrouted-net diagnostics",
+  "target": "GW5AT-LV138PG484AC1/I0 versionC",
+  "complete_replacement_confirmed": false,
+  "alternatives": [
+    {
+      "tool": "Vivado",
+      "complete_Gowin_physical_implementation_supported": false,
+      "source": "https://docs.amd.com/r/2024.1-English/ug973-vivado-release-notes-install-license/Supported-Devices"
+    },
+    {
+      "tool": "nextpnr-himbaechel + Apicula",
+      "some_GW5AST138C_support": true,
+      "complete_current_GTR_and_DDR_flow_confirmed": false,
+      "README_notes": "initial basic clock support; do not treat board listing as full hard-macro support",
+      "macro_support_pages": {
+        "GTR12_QUAD": "https://github.com/YosysHQ/apicula/wiki/GTR12",
+        "DQS": "https://github.com/YosysHQ/apicula/wiki/DQS",
+        "DDRDLL": "https://github.com/YosysHQ/apicula/wiki/DDRDLL"
+      },
+      "current_upstream_nextpnr_gowin_sources_scanned": 16,
+      "current_upstream_packer_scanned_lines": 7350,
+      "current_source_scans_found_no_required_macro_identifiers": true,
+      "source_scan": "F:\\nav_integration_g2_20261023\\routing_diagnostics_tool_audit_20261025\\upstream_macro_support_scan.json",
+      "scope": "wiki is dated2024; current source scan cross-checks absent macro handling, not proof about every possible fork or private tool"
+    }
+  ],
+  "Gowin_public_diagnostics": {
+    "Tcl_query_log": "F:\\nav_integration_g2_20261023\\routing_diagnostics_tool_audit_20261025\\query_shell_commands.log",
+    "route_status_or_net_query_not_exposed_by_public_shell": true,
+    "debug_option_rejected": true,
+    "debug_probe_log": "F:\\nav_integration_g2_20261023\\routing_diagnostics_tool_audit_20261025\\query_diagnostic_options.log",
+    "physical_view_manual": "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/doc/EN/SUG1541-1.0E_Gowin Software Physical Constraints User Guide.pdf",
+    "manual_printed_page56": "Show Place View and Show Multi-View available only after successful Place & Route",
+    "manual_net_tree_not_failed_route_list": true,
+    "GUI_actually_inspected": false,
+    "GUI_interface_start_failure": "failed to write kernel assets: system cannot find specified path; reset/retry same failure; stopped UI attempts",
+    "floorplanner_and_sdceditor_help_no_response": true,
+    "route_congestion_request_already_in_original_SDC": true,
+    "timing_report_absent_after_failure": true
+  },
+  "saved_database_files": [
+    {
+      "name": "g2_top.db",
+      "modified_at": "2026-10-25T10:27:05.985410+08:00"
+    },
+    {
+      "name": "g2_top.p",
+      "modified_at": "2026-10-25T10:27:06.531742+08:00"
+    }
+  ],
+  "database_scope": "Both saved before final routing failure; final904 status cannot be assumed present; protected.p not decoded",
+  "local_reproducer": {
+    "path": "F:\\nav_integration_g2_20261023\\routing_diagnostics_tool_audit_20261025\\PNR18_local_reproducer.zip",
+    "bytes": 19320134,
+    "members": 17,
+    "includes_same_frozen_netlist_CST_SDC_CSR": true,
+    "included_inputs_read_back": true,
+    "submitted_or_uploaded": false,
+    "started": false
+  },
+  "new_synthesis_or_PNR_started": false,
+  "active_simulation_inputs_untouched": true,
+  "unrouted_net_list_obtained": false,
+  "root_cause_unproven": true,
+  "remaining_work": [
+    "Find a supported failure-diagnostic interface or vendor diagnostic build that retains final failed routes",
+    "Keep original184/326 and904/259 cases; choose subsequent experiment from actual evidence",
+    "Do not remove GTR/DDR hard macros to misrepresent an incomplete alternate build as the joint image"
+  ]
+}
