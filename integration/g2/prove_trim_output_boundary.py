@@ -85,6 +85,50 @@ def prove(before, after, oldparams, newparams, directions, logic_old=None, logic
         timing_or_deployment_accepted=False)
 
 
+def result_contract_records(before,after,oldparams,newparams):
+    """Actual registered storage boundaries, in LSB-first bus order.
+
+    These are observations for a parent next-state miter. They are never
+    combination aliases or memo cuts; the masks may have been fused into LUTs.
+    """
+    records=[]
+    for module,bus_state in (('u_nav/u_match',8),('u_nav/u_tr',6)):
+        valid=[c for n,c in after.items() if n.startswith(module+'/')
+            and n.rsplit('/',1)[-1]=='result_address_valid_s0' and c['kind'].startswith('DFF')]
+        if not valid:
+            continue  # Original-capacity profiles do not add a validity mask.
+        assert len(valid)==1
+        prefix=module+'/u_res/'
+        a={n:c for n,c in before.items() if n.startswith(prefix) and c['kind'].startswith('DFF')}
+        b={n:c for n,c in after.items() if n.startswith(prefix) and c['kind'].startswith('DFF')}
+        assert a.keys()==b.keys() and len(a)==32, ('result storage FF boundary changed unexpectedly',module)
+        pairs=[]
+        for name,c in a.items():
+            d=b[name]
+            assert c['kind']==d['kind']=='DFFRE'
+            assert c['ports']['CLK']==d['ports']['CLK']==['clk50_d']
+            assert c['ports']['RESET']==d['ports']['RESET']==['GND']
+            assert oldparams(c)==newparams(d)
+            x,=c['ports']['Q'];y,=d['ports']['Q']
+            ix=re.search(r'\[(\d+)\]$',x);iy=re.search(r'\[(\d+)\]$',y)
+            assert ix and iy and ix[1]==iy[1]
+            pairs.append(dict(bit=int(ix[1]),primitive_instance=name,
+                old_read_FF=c,new_read_FF=d,parameters=oldparams(c)))
+        pairs.sort(key=lambda r:r['bit'])
+        assert [r['bit'] for r in pairs]==list(range(32))
+        v=valid[0]
+        assert v['kind']=='DFFRE' and v['ports']['CLK']==['clk50_d'] and v['ports']['RESET']==['r2']
+        records.append(dict(module=module,bus_state=bus_state,bit_order='LSB_first',
+            old_stored_nets=[r['old_read_FF']['ports']['Q'][0] for r in pairs],
+            new_stored_nets=[r['new_read_FF']['ports']['Q'][0] for r in pairs],
+            new_valid_net=v['ports']['Q'][0],actual_read_register_pairs=pairs,
+            actual_new_valid_FF=v,actual_new_valid_parameters=newparams(v),
+            masks_fused_into_parent_LUTs_no_standalone_result_net_assumed=True,
+            permits_combinational_memo_cut=False,
+            parent_selected_bus_next_state_proof_required=True))
+    return records
+
+
 def top_endpoints(before,after,old_definitions,new_definitions,directions):
     def ports(definitions):
         return {n.lstrip('\\'):(direction,int(hi) if hi else None,int(lo) if lo else None)
