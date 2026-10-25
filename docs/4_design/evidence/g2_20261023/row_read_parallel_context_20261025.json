@@ -1,0 +1,80 @@
+{
+  "recorded_at": "2026-10-25T13:09:00.887984+08:00",
+  "request": "Validate row-read sharing in parallel without interrupting the current joint PNR.",
+  "live_result": "F:\\nav_integration_g2_20261023\\row_read_context_timing_probe1\\result.json",
+  "controller_pid": 42072,
+  "controller_created_epoch": 1792904823.6522412,
+  "phase_at_record": "waiting_for_small_probe_memory",
+  "host_memory_at_record": {
+    "free_bytes": 2909999104,
+    "commit_reserve_bytes": 2740625408
+  },
+  "policy": {
+    "priority": "BELOW_NORMAL",
+    "maximum_cpu_cores": 1,
+    "maximum_owned_rss_bytes": 805306368,
+    "small_start_physical_bytes": 1073741824,
+    "small_start_commit_bytes": 3221225472,
+    "physical_start_physical_bytes": 2147483648,
+    "physical_start_commit_bytes": 4294967296,
+    "own_PNR_total_s": 0,
+    "own_PNR_idle_s": 0,
+    "changes_to_existing_PNR": false
+  },
+  "assigned_cpu": [
+    19
+  ],
+  "existing_joint_PNR": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_smallblocks_pnr19",
+    "pid": 13244,
+    "started_at": "2026-10-25T12:35:04.604978+08:00",
+    "total_limit_s": 0.0,
+    "idle_limit_s": 0.0,
+    "input_metadata": {
+      "g2_top.vg": [
+        22995611,
+        1792902901855743100
+      ],
+      "g2.sdc": [
+        19601,
+        1792902901857242100
+      ],
+      "g2.cst": [
+        6207,
+        1792902901857242100
+      ],
+      "run.tcl": [
+        944,
+        1792902904599521100
+      ],
+      "ip\\serdes.csr": [
+        10840,
+        1792902901858313500
+      ]
+    },
+    "created_epoch": 1792902904.664652,
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ]
+  },
+  "prior_memory_proof": "F:\\nav_integration_g2_20261023\\row_read_share_probe1",
+  "scope": "Original complete slf_extract is byte-identical in both variants. Only the already-proven160x98 RAM read organization differs.",
+  "work": [
+    "Cycle comparison of valid point output, count, done and busy across contiguous/gapped frames, disabled extraction,4096 saturation and reset interruption.",
+    "Two small contextual SYNs with identical50MHz clock and fixture-only input launch registers, exposing actual u/fu read-address and rbq1 consumer paths.",
+    "Sequential isolated PNR/STA using each measured netlist without re-synthesis. Own PNR total and idle limits are zero. Final path coverage must be reviewed."
+  ],
+  "small_start_free_GiB": 1,
+  "small_start_commit_GiB": 3,
+  "local_PNR_start_free_GiB": 2,
+  "local_PNR_start_commit_GiB": 4,
+  "candidate_in_current_joint_build": false,
+  "parallel_validation_authorized": true,
+  "context_function_pass": null,
+  "local_physical_timing_pass": null,
+  "full_joint_routing_pass": false,
+  "full_joint_candidate_accepted": false,
+  "programmed": false,
+  "caveat": "Prepared/queued is not test completion. Low priority and one core limit competition, but do not prove zero host-load impact. Local success cannot guarantee joint routability."
+}
