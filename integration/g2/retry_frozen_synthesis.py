@@ -13,6 +13,7 @@ import shutil
 import subprocess
 import sys
 import time
+import psutil
 from preflight import validate
 
 
@@ -34,6 +35,12 @@ def main():
     launch.add_argument('--wait-pid',type=int)
     launch.add_argument('--start-now',action='store_true',help='explicit serial launch after the prior tool has exited')
     ap.add_argument('--resume-settings-only',action='store_true',help='retry one preserved settings timeout only when synthesis has never started')
+    ap.add_argument('--tool-priority',choices=['normal','below_normal','idle'],help='apply only to this runner and its new descendants')
+    ap.add_argument('--tool-cpu-core',type=int,help='restrict only this runner and new descendants to one logical CPU')
+    ap.add_argument('--tool-max-rss-mib',type=int,default=0,help='0 preserves the old policy; positive limit stops only this new SYN tree')
+    ap.add_argument('--tool-max-private-mib',type=int,default=0,help='cap the new SYN tree private commit independently from its working set')
+    ap.add_argument('--minimum-runtime-physical-mib',type=int,default=0,help='additional reserve for a concurrent protected PNR')
+    ap.add_argument('--minimum-runtime-commit-mib',type=int,default=0,help='additional reserve for a concurrent protected PNR')
     ap.add_argument('--gyro-sum-exact-widths',action='store_true',help='derive only the already-validated17-bit gyro sum from frozen RTL')
     ap.add_argument('--trig-block-rom',action='store_true',help='derive initialized navigation lookup storage from the frozen directed RTL')
     ap.add_argument('--snapshot-mux-fanout',action='store_true',help='derive cycle-exact snapshot mux fanout from frozen scheduler RTL')
@@ -51,12 +58,22 @@ def main():
     ap.add_argument('--select-small-block-mailboxes',action='store_true',help='explicitly opt in only the three mailbox instances; preserve same-shaped candidate/result tables')
     ap.add_argument('--sfp-lane2-from-build',type=Path,help='adopt proved SFP1 Lane2 generated wrapper/CSR; preserve other frozen RTL and joint timing requirements')
     a=ap.parse_args();src=a.source.resolve();out=a.out.resolve()
+    assert min(a.tool_max_rss_mib,a.tool_max_private_mib,a.minimum_runtime_physical_mib,a.minimum_runtime_commit_mib)>=0
+    me=psutil.Process()
+    if a.tool_priority:
+        me.nice({'normal':psutil.NORMAL_PRIORITY_CLASS,'below_normal':psutil.BELOW_NORMAL_PRIORITY_CLASS,
+                 'idle':psutil.IDLE_PRIORITY_CLASS}[a.tool_priority])
+    if a.tool_cpu_core is not None:
+        assert a.tool_cpu_core in me.cpu_affinity(), 'requested logical CPU is unavailable'
+        me.cpu_affinity([a.tool_cpu_core])
     assert (a.wait_pid is None or a.wait_pid>0) and out!=src and src not in out.parents and out not in src.parents
     if a.resume_settings_only:
         prior=json.loads((out/'job.json').read_text(encoding='utf-8'))
         assert prior['phase']=='validating_frozen_settings' and 'tool_pid' not in prior
         assert Path(prior['source']).resolve()==src and not (out/'impl').exists() and not (out/'gw_sh.log').exists()
-        assert not any(v for k,v in vars(a).items() if k not in ('source','out','start_now','wait_pid','resume_settings_only')), 'settings resume cannot add an RTL transform'
+        execution_args=('tool_priority','tool_cpu_core','tool_max_rss_mib','tool_max_private_mib',
+                        'minimum_runtime_physical_mib','minimum_runtime_commit_mib')
+        assert not any(v for k,v in vars(a).items() if k not in ('source','out','start_now','wait_pid','resume_settings_only')+execution_args), 'settings resume cannot add an RTL transform'
         archive=out/'first_settings_timeout';archive.mkdir(exist_ok=False)
         for name in ('job.json','preflight.log','preflight.tcl','effective_options.tcl'):
             if (out/name).exists():shutil.copyfile(out/name,archive/name)
@@ -218,6 +235,12 @@ def main():
         settings_only_resume=a.resume_settings_only,
         modified_rtl_inputs=modified,
         scope='one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance')
+    state['execution_policy']=dict(priority=me.nice(),affinity=me.cpu_affinity(),
+        maximum_new_SYN_tree_RSS_MiB=a.tool_max_rss_mib,
+        maximum_new_SYN_tree_private_commit_MiB=a.tool_max_private_mib,
+        minimum_runtime_physical_MiB=a.minimum_runtime_physical_mib,
+        minimum_runtime_commit_reserve_MiB=a.minimum_runtime_commit_mib,
+        applies_to='this runner and newly created descendants only; no existing PNR process is modified')
     def status(phase,**extra):
         state.update(phase=phase,updated_at=datetime.now().astimezone().isoformat(),**extra)
         (out/'job.json').write_text(json.dumps(state,indent=2),encoding='utf-8')
@@ -256,19 +279,48 @@ def main():
         process=subprocess.Popen([str(tool),'run.tcl'],cwd=out,stdout=log,stderr=subprocess.STDOUT,
             creationflags=subprocess.CREATE_NO_WINDOW)
         state.update(tool_pid=process.pid,synthesis_started_at=datetime.now().astimezone().isoformat())
-        low=0;started=time.monotonic();last_heartbeat=0
+        tool_identity=psutil.Process(process.pid)
+        if a.tool_priority:tool_identity.nice(me.nice())
+        if a.tool_cpu_core is not None:tool_identity.cpu_affinity([a.tool_cpu_core])
+        state['tool_created_epoch']=tool_identity.create_time()
+        state['actual_tool_priority']=tool_identity.nice();state['actual_tool_affinity']=tool_identity.cpu_affinity()
+        low=0;started=time.monotonic();last_heartbeat=0;peak_owned_rss=0;peak_owned_private=0
         while process.poll()is None:
             memory=memory_status()
             now=time.monotonic()
+            owned=[]
+            try:
+                owned=[tool_identity]+tool_identity.children(recursive=True)
+                infos=[p.memory_info() for p in owned if p.is_running()]
+                owned_rss=sum(info.rss for info in infos)
+                owned_private=sum(getattr(info,'private',info.vms) for info in infos)
+            except psutil.NoSuchProcess:owned_rss=owned_private=0
+            peak_owned_rss=max(peak_owned_rss,owned_rss)
+            peak_owned_private=max(peak_owned_private,owned_private)
             if now-last_heartbeat>=30:
                 state.update(elapsed_s=now-started,free_bytes=memory.avail_phys,available_commit_bytes=memory.avail_page,
+                    owned_tool_RSS_bytes=owned_rss,peak_owned_tool_RSS_bytes=peak_owned_rss,
+                    owned_tool_private_bytes=owned_private,peak_owned_tool_private_bytes=peak_owned_private,
                     updated_at=datetime.now().astimezone().isoformat())
                 (out/'job.json').write_text(json.dumps(state,indent=2),encoding='utf-8');last_heartbeat=now
             danger=memory.avail_page<512*1024**2 or (memory.avail_phys<256*1024**2 and memory.avail_page<1024**3)
+            protected_reserve=(memory.avail_phys<a.minimum_runtime_physical_mib*1024**2 or
+                memory.avail_page<a.minimum_runtime_commit_mib*1024**2 or
+                (a.tool_max_rss_mib and owned_rss>a.tool_max_rss_mib*1024**2) or
+                (a.tool_max_private_mib and owned_private>a.tool_max_private_mib*1024**2))
+            danger=danger or protected_reserve
             low=low+1 if danger else 0
             if low>=2:
+                # Only descendants of the newly created SYN are eligible. Never
+                # enumerate or stop a sibling/parent, including the existing PNR.
+                for child in reversed(owned[1:]):
+                    try:child.kill()
+                    except psutil.NoSuchProcess:pass
                 process.kill();process.wait()
-                status('cancelled_host_memory',free_bytes=memory.avail_phys,available_commit_bytes=memory.avail_page,tool_exit=process.returncode);return 1
+                status('cancelled_host_memory',free_bytes=memory.avail_phys,available_commit_bytes=memory.avail_page,
+                    peak_owned_tool_RSS_bytes=peak_owned_rss,protected_concurrent_PNR_reserve=bool(protected_reserve),
+                    peak_owned_tool_private_bytes=peak_owned_private,
+                    tool_exit=process.returncode);return 1
             if now-started>=40*60:
                 process.kill();process.wait()
                 status('cancelled_runtime_budget',tool_exit=process.returncode);return 1
@@ -280,7 +332,8 @@ def main():
     here=Path(__file__).resolve().parent
     for script,name in [('collect_evidence.py','synthesis_summary.json'),('audit_netlist_memories.py','memory_inventory.json')]:
         subprocess.run([sys.executable,'-X','utf8',str(here/script),str(out),'--out',str(out/name)],check=True)
-    status('synthesis_complete',tool_exit=process.returncode,joint_pnr_measured=False)
+    status('synthesis_complete',tool_exit=process.returncode,joint_pnr_measured=False,
+           peak_owned_tool_RSS_bytes=peak_owned_rss,peak_owned_tool_private_bytes=peak_owned_private)
     return 0
 
 

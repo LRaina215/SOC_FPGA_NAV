@@ -1,0 +1,565 @@
+{
+  "recorded_at": "2026-10-25T16:42:51.479323+08:00",
+  "latest_authorization": "User requests the remaining four complete SYNs and actual netlist checks before the ongoing PNR finishes. This supersedes the earlier one-Gowin-at-a-time scheduling for those explicitly bounded background SYNs, not for concurrent PNRs.",
+  "dispatch": {
+    "started_at": "2026-10-25T16:40:50.767061+08:00",
+    "latest_authorization": "Run four complete SYNs and actual netlist checks ahead of the existing PNR, without interrupting or adding a PNR deadline.",
+    "protected_PNR_before": {
+      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+      "pid": 21252,
+      "started_at": "2026-10-25T15:05:03.098004+08:00",
+      "total_limit_s": 0.0,
+      "idle_limit_s": 0.0,
+      "input_metadata": {
+        "g2_top.vg": [
+          22817897,
+          1792911900644920900
+        ],
+        "g2.sdc": [
+          19601,
+          1792911900646228400
+        ],
+        "g2.cst": [
+          6207,
+          1792911900646228400
+        ],
+        "run.tcl": [
+          960,
+          1792911903094503500
+        ],
+        "ip\\serdes.csr": [
+          10840,
+          1792911900646228400
+        ]
+      },
+      "created_epoch": 1792911903.1623285,
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ]
+    },
+    "protected_PNR_after": {
+      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+      "pid": 21252,
+      "started_at": "2026-10-25T15:05:03.098004+08:00",
+      "total_limit_s": 0.0,
+      "idle_limit_s": 0.0,
+      "input_metadata": {
+        "g2_top.vg": [
+          22817897,
+          1792911900644920900
+        ],
+        "g2.sdc": [
+          19601,
+          1792911900646228400
+        ],
+        "g2.cst": [
+          6207,
+          1792911900646228400
+        ],
+        "run.tcl": [
+          960,
+          1792911903094503500
+        ],
+        "ip\\serdes.csr": [
+          10840,
+          1792911900646228400
+        ]
+      },
+      "created_epoch": 1792911903.1623285,
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ]
+    },
+    "PNR_inputs_unchanged": true,
+    "protected_PNR_process_priority_or_affinity_changed": false,
+    "PNR_total_or_idle_deadline_added": false,
+    "producer": {
+      "schema_version": 1,
+      "controller_pid": 26768,
+      "controller_created_epoch": 1792917650.359681,
+      "registry": "F:\\nav_integration_g2_20261023\\delivery_trim_batch_20261025.json",
+      "cpu_core": 16,
+      "completed_profiles": [],
+      "single_serial_SYN_producer": true,
+      "maximum_simultaneous_new_SYN": 1,
+      "PNR_started": false,
+      "programmed": false,
+      "deployment_accepted": false,
+      "phase": "producing_one_unique_SYN_cache",
+      "active_profile": "02_offline_debug_off",
+      "updated_at": "2026-10-25T16:40:50.648635+08:00"
+    },
+    "producer_command": [
+      "D:\\Anaconda\\python.exe",
+      "-X",
+      "utf8",
+      "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\parallel_trim_synthesis.py",
+      "--registry",
+      "F:\\nav_integration_g2_20261023\\delivery_trim_batch_20261025.json",
+      "--state-dir",
+      "F:\\nav_integration_g2_20261023\\lane2_trim_parallel_SYN_cache1",
+      "--cpu-core",
+      "16"
+    ],
+    "consumer": {
+      "controller_pid": 62896,
+      "controller_created_epoch": 1792917650.354967,
+      "registry": "F:\\nav_integration_g2_20261023\\delivery_trim_batch_20261025.json",
+      "prior_PNR": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+      "prior_state": "F:\\nav_integration_g2_20261023\\lane2_row_read_shared_after_pnr19_once_retry1",
+      "profiles": {},
+      "completed_order": [],
+      "PNR_total_seconds": 0,
+      "PNR_silent_seconds": 0,
+      "maximum_simultaneous_PNR_runs": 1,
+      "optional_parallel_SYN_runs": 1,
+      "programmed": false,
+      "deployment_accepted": false,
+      "phase": "waiting_for_PNR20_natural_exit_and_collection",
+      "updated_at": "2026-10-25T16:40:50.610255+08:00",
+      "protected_inputs": {
+        "g2_top.vg": [
+          22817897,
+          1792911900644920900
+        ],
+        "g2.sdc": [
+          19601,
+          1792911900646228400
+        ],
+        "g2.cst": [
+          6207,
+          1792911900646228400
+        ],
+        "run.tcl": [
+          960,
+          1792911903094503500
+        ],
+        "ip\\serdes.csr": [
+          10840,
+          1792911900646228400
+        ]
+      },
+      "protected_processes": [
+        {
+          "pid": 21252,
+          "created_epoch": 1792911903.1623285,
+          "command": [
+            "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+            "run.tcl"
+          ]
+        },
+        {
+          "pid": 13724,
+          "created_epoch": 1792911900.49652,
+          "command": [
+            "D:\\Anaconda\\python.exe",
+            "-X",
+            "utf8",
+            "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\pnr_from_netlist.py",
+            "F:\\nav_integration_g2_20261023\\lane2_row_read_shared_after_pnr19_once_retry1\\pnr_inputs",
+            "--out",
+            "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+            "--wide-split",
+            "1",
+            "--replicate-resources",
+            "1",
+            "--place-option",
+            "1",
+            "--route-option",
+            "2",
+            "--timing-driven",
+            "1",
+            "--max-runtime-minutes",
+            "0",
+            "--max-no-progress-minutes",
+            "0",
+            "--routing-evidence",
+            "--capture-system-telemetry"
+          ]
+        },
+        {
+          "pid": 33696,
+          "created_epoch": 1792911486.3670444,
+          "command": [
+            "D:\\Anaconda\\python.exe",
+            "-X",
+            "utf8",
+            "D:/Desktop/SOC FPGA/nav/integration/g2/continue_row_read_joint_once.py",
+            "--prepared",
+            "F:/nav_integration_g2_20261023/lane2_row_read_shared_prepared1",
+            "--prior-pnr",
+            "F:/nav_integration_g2_20261023/sfp_lane2_smallblocks_pnr19",
+            "--prior-state",
+            "F:/nav_integration_g2_20261023/lane2_smallblocks_checked_one_shot",
+            "--syn-out",
+            "F:/nav_integration_g2_20261023/sfp_lane2_row_read_shared_syn17",
+            "--pnr-out",
+            "F:/nav_integration_g2_20261023/sfp_lane2_row_read_shared_pnr20",
+            "--state-dir",
+            "F:/nav_integration_g2_20261023/lane2_row_read_shared_after_pnr19_once_retry1",
+            "--resume-settings-only"
+          ]
+        }
+      ]
+    },
+    "consumer_command": [
+      "D:\\Anaconda\\python.exe",
+      "-X",
+      "utf8",
+      "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\run_delivery_trim_queue.py",
+      "--registry",
+      "F:\\nav_integration_g2_20261023\\delivery_trim_batch_20261025.json",
+      "--prior-pnr",
+      "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+      "--prior-state",
+      "F:\\nav_integration_g2_20261023\\lane2_row_read_shared_after_pnr19_once_retry1",
+      "--state-dir",
+      "F:\\nav_integration_g2_20261023\\lane2_delivery_trim_serial_queue3"
+    ],
+    "retired_idle_consumer": {
+      "controller_pid": 44484,
+      "controller_created_epoch": 1792914350.1020324,
+      "registry": "F:\\nav_integration_g2_20261023\\delivery_trim_batch_20261025.json",
+      "prior_PNR": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+      "prior_state": "F:\\nav_integration_g2_20261023\\lane2_row_read_shared_after_pnr19_once_retry1",
+      "profiles": {},
+      "completed_order": [],
+      "PNR_total_seconds": 0,
+      "PNR_silent_seconds": 0,
+      "maximum_simultaneous_Gowin_builds": 1,
+      "programmed": false,
+      "deployment_accepted": false,
+      "phase": "idle_PNR_consumer_replaced_before_any_build_for_prebuilt_SYN_cache_reuse",
+      "updated_at": "2026-10-25T15:45:50.324474+08:00",
+      "protected_inputs": {
+        "g2_top.vg": [
+          22817897,
+          1792911900644920900
+        ],
+        "g2.sdc": [
+          19601,
+          1792911900646228400
+        ],
+        "g2.cst": [
+          6207,
+          1792911900646228400
+        ],
+        "run.tcl": [
+          960,
+          1792911903094503500
+        ],
+        "ip\\serdes.csr": [
+          10840,
+          1792911900646228400
+        ]
+      },
+      "protected_processes": [
+        {
+          "pid": 21252,
+          "created_epoch": 1792911903.1623285,
+          "command": [
+            "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+            "run.tcl"
+          ]
+        },
+        {
+          "pid": 13724,
+          "created_epoch": 1792911900.49652,
+          "command": [
+            "D:\\Anaconda\\python.exe",
+            "-X",
+            "utf8",
+            "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\pnr_from_netlist.py",
+            "F:\\nav_integration_g2_20261023\\lane2_row_read_shared_after_pnr19_once_retry1\\pnr_inputs",
+            "--out",
+            "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+            "--wide-split",
+            "1",
+            "--replicate-resources",
+            "1",
+            "--place-option",
+            "1",
+            "--route-option",
+            "2",
+            "--timing-driven",
+            "1",
+            "--max-runtime-minutes",
+            "0",
+            "--max-no-progress-minutes",
+            "0",
+            "--routing-evidence",
+            "--capture-system-telemetry"
+          ]
+        },
+        {
+          "pid": 33696,
+          "created_epoch": 1792911486.3670444,
+          "command": [
+            "D:\\Anaconda\\python.exe",
+            "-X",
+            "utf8",
+            "D:/Desktop/SOC FPGA/nav/integration/g2/continue_row_read_joint_once.py",
+            "--prepared",
+            "F:/nav_integration_g2_20261023/lane2_row_read_shared_prepared1",
+            "--prior-pnr",
+            "F:/nav_integration_g2_20261023/sfp_lane2_smallblocks_pnr19",
+            "--prior-state",
+            "F:/nav_integration_g2_20261023/lane2_smallblocks_checked_one_shot",
+            "--syn-out",
+            "F:/nav_integration_g2_20261023/sfp_lane2_row_read_shared_syn17",
+            "--pnr-out",
+            "F:/nav_integration_g2_20261023/sfp_lane2_row_read_shared_pnr20",
+            "--state-dir",
+            "F:/nav_integration_g2_20261023/lane2_row_read_shared_after_pnr19_once_retry1",
+            "--resume-settings-only"
+          ]
+        }
+      ],
+      "replaced_at": "2026-10-25T16:40:49.943478+08:00",
+      "replacement": "F:\\nav_integration_g2_20261023\\lane2_delivery_trim_serial_queue3"
+    },
+    "registry": "F:\\nav_integration_g2_20261023\\delivery_trim_batch_20261025.json",
+    "startup_physical_GiB": 3.16058349609375,
+    "startup_commit_reserve_GiB": 4.907123565673828,
+    "new_work_policy": {
+      "priority": "IDLE",
+      "logical_CPU": 16,
+      "maximum_own_RSS_MiB": 1536,
+      "maximum_own_private_commit_MiB": 1536,
+      "minimum_running_physical_MiB": 1536,
+      "minimum_running_commit_MiB": 3072,
+      "minimum_starting_physical_GiB": 2,
+      "minimum_starting_commit_GiB": 4,
+      "stop_scope": "only newly launched producer child and its descendants; never current PNR",
+      "PNR_runs_started": 0
+    },
+    "programmed": false,
+    "deployment_accepted": false
+  },
+  "producer_current": {
+    "schema_version": 1,
+    "controller_pid": 26768,
+    "controller_created_epoch": 1792917650.359681,
+    "registry": "F:\\nav_integration_g2_20261023\\delivery_trim_batch_20261025.json",
+    "cpu_core": 16,
+    "completed_profiles": [],
+    "single_serial_SYN_producer": true,
+    "maximum_simultaneous_new_SYN": 1,
+    "PNR_started": false,
+    "programmed": false,
+    "deployment_accepted": false,
+    "phase": "producing_one_unique_SYN_cache",
+    "active_profile": "02_offline_debug_off",
+    "updated_at": "2026-10-25T16:40:50.648635+08:00"
+  },
+  "consumer_current": {
+    "controller_pid": 62896,
+    "controller_created_epoch": 1792917650.354967,
+    "registry": "F:\\nav_integration_g2_20261023\\delivery_trim_batch_20261025.json",
+    "prior_PNR": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+    "prior_state": "F:\\nav_integration_g2_20261023\\lane2_row_read_shared_after_pnr19_once_retry1",
+    "profiles": {},
+    "completed_order": [],
+    "PNR_total_seconds": 0,
+    "PNR_silent_seconds": 0,
+    "maximum_simultaneous_PNR_runs": 1,
+    "optional_parallel_SYN_runs": 1,
+    "programmed": false,
+    "deployment_accepted": false,
+    "phase": "waiting_for_PNR20_natural_exit_and_collection",
+    "updated_at": "2026-10-25T16:40:50.610255+08:00",
+    "protected_inputs": {
+      "g2_top.vg": [
+        22817897,
+        1792911900644920900
+      ],
+      "g2.sdc": [
+        19601,
+        1792911900646228400
+      ],
+      "g2.cst": [
+        6207,
+        1792911900646228400
+      ],
+      "run.tcl": [
+        960,
+        1792911903094503500
+      ],
+      "ip\\serdes.csr": [
+        10840,
+        1792911900646228400
+      ]
+    },
+    "protected_processes": [
+      {
+        "pid": 21252,
+        "created_epoch": 1792911903.1623285,
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "run.tcl"
+        ]
+      },
+      {
+        "pid": 13724,
+        "created_epoch": 1792911900.49652,
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\pnr_from_netlist.py",
+          "F:\\nav_integration_g2_20261023\\lane2_row_read_shared_after_pnr19_once_retry1\\pnr_inputs",
+          "--out",
+          "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+          "--wide-split",
+          "1",
+          "--replicate-resources",
+          "1",
+          "--place-option",
+          "1",
+          "--route-option",
+          "2",
+          "--timing-driven",
+          "1",
+          "--max-runtime-minutes",
+          "0",
+          "--max-no-progress-minutes",
+          "0",
+          "--routing-evidence",
+          "--capture-system-telemetry"
+        ]
+      },
+      {
+        "pid": 33696,
+        "created_epoch": 1792911486.3670444,
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:/Desktop/SOC FPGA/nav/integration/g2/continue_row_read_joint_once.py",
+          "--prepared",
+          "F:/nav_integration_g2_20261023/lane2_row_read_shared_prepared1",
+          "--prior-pnr",
+          "F:/nav_integration_g2_20261023/sfp_lane2_smallblocks_pnr19",
+          "--prior-state",
+          "F:/nav_integration_g2_20261023/lane2_smallblocks_checked_one_shot",
+          "--syn-out",
+          "F:/nav_integration_g2_20261023/sfp_lane2_row_read_shared_syn17",
+          "--pnr-out",
+          "F:/nav_integration_g2_20261023/sfp_lane2_row_read_shared_pnr20",
+          "--state-dir",
+          "F:/nav_integration_g2_20261023/lane2_row_read_shared_after_pnr19_once_retry1",
+          "--resume-settings-only"
+        ]
+      }
+    ]
+  },
+  "first_new_SYN": {
+    "directory": "F:\\nav_integration_g2_20261023\\sfp_lane2_offline_trim_syn18",
+    "runner_job": {
+      "source": "F:\\nav_integration_g2_20261023\\lane2_trim_offline_prepared1",
+      "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_offline_trim_syn18",
+      "wait_pid": null,
+      "programmed": false,
+      "source_frozen_before_wait": true,
+      "automatic_pnr": false,
+      "settings_only_resume": false,
+      "modified_rtl_inputs": [],
+      "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+      "execution_policy": {
+        "priority": 64,
+        "affinity": [
+          16
+        ],
+        "maximum_new_SYN_tree_RSS_MiB": 1536,
+        "maximum_new_SYN_tree_private_commit_MiB": 1536,
+        "minimum_runtime_physical_MiB": 1536,
+        "minimum_runtime_commit_reserve_MiB": 3072,
+        "applies_to": "this runner and newly created descendants only; no existing PNR process is modified"
+      },
+      "phase": "synthesizing",
+      "updated_at": "2026-10-25T16:42:30.841117+08:00",
+      "minimum_start_free_bytes": 2147483648,
+      "minimum_start_available_commit_bytes": 4294967296,
+      "max_runtime_minutes": 40,
+      "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+      "tool_pid": 47772,
+      "synthesis_started_at": "2026-10-25T16:40:57.820273+08:00",
+      "tool_created_epoch": 1792917657.8155348,
+      "actual_tool_priority": 64,
+      "actual_tool_affinity": [
+        16
+      ],
+      "elapsed_s": 93.0,
+      "free_bytes": 2974900224,
+      "available_commit_bytes": 4729229312,
+      "owned_tool_RSS_bytes": 532815872,
+      "peak_owned_tool_RSS_bytes": 747757568,
+      "owned_tool_private_bytes": 540213248,
+      "peak_owned_tool_private_bytes": 747167744
+    },
+    "actual_pid": 47772,
+    "actual_created_epoch": 1792917657.8155348,
+    "actual_priority": 64,
+    "actual_affinity": [
+      16
+    ]
+  },
+  "current_PNR20": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+    "pid": 21252,
+    "started_at": "2026-10-25T15:05:03.098004+08:00",
+    "total_limit_s": 0.0,
+    "idle_limit_s": 0.0,
+    "input_metadata": {
+      "g2_top.vg": [
+        22817897,
+        1792911900644920900
+      ],
+      "g2.sdc": [
+        19601,
+        1792911900646228400
+      ],
+      "g2.cst": [
+        6207,
+        1792911900646228400
+      ],
+      "run.tcl": [
+        960,
+        1792911903094503500
+      ],
+      "ip\\serdes.csr": [
+        10840,
+        1792911900646228400
+      ]
+    },
+    "created_epoch": 1792911903.1623285,
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ]
+  },
+  "protected_PNR_priority_unchanged": true,
+  "protected_PNR_affinity_unchanged": true,
+  "protected_PNR_inputs_unchanged": true,
+  "protected_PNR_deadlines_still_zero": true,
+  "observed_host_memory": {
+    "available_physical_GiB": 2.6736297607421875,
+    "available_commit_GiB": 4.324321746826172
+  },
+  "no_claim_of_zero_resource_contention": true,
+  "priority_and_reserves_bound_new_work_only": true,
+  "cache_policy": {
+    "producer_only": "Exactly one new complete SYN at a time, then one actual source/RAM/driver/clock/CDC review. No PNR in producer.",
+    "consumer_only": "After PNR20 naturally ends and is collected, keep one PNR at a time and reuse a metadata-validated completed cache without resynthesis.",
+    "failures": "Preserve actual failures, continue independent remaining SYNs; fix review evidence against the same SYN with review-only, never bypass a check or repeat an actual SYN.",
+    "PNR_total_seconds": 0,
+    "PNR_silent_seconds": 0,
+    "SYN_minutes": 40
+  },
+  "actual_new_SYN_resources_available": false,
+  "actual_new_physical_results_available": false,
+  "programmed": false,
+  "deployment_accepted": false
+}

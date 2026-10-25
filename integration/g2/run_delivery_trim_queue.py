@@ -93,7 +93,8 @@ def main():
     state = dict(controller_pid=me.pid, controller_created_epoch=me.create_time(),
         registry=str(registry), prior_PNR=str(prior), prior_state=str(prior_state),
         profiles={}, completed_order=[], PNR_total_seconds=0, PNR_silent_seconds=0,
-        maximum_simultaneous_Gowin_builds=1, programmed=False, deployment_accepted=False)
+        maximum_simultaneous_PNR_runs=1, optional_parallel_SYN_runs=1,
+        programmed=False, deployment_accepted=False)
 
     def save(phase, **extra):
         state.update(phase=phase, updated_at=datetime.now().astimezone().isoformat(), **extra)
@@ -173,46 +174,85 @@ def main():
             preparation = load(prepared/'prepared_source_review.json')
             assert preparation['passed'], ('preparation failed', pid)
             source = prepared
+            cache = None
             record = dict(profile=profile, phase='prepared_proof_check', started_at=datetime.now().astimezone().isoformat())
             state['profiles'][pid] = record
             save('profile_prepared_for_serial_execution', active_profile=pid)
             if profile['kind'] == 'rtl_source':
                 source = Path(profile['synthesis']).resolve()
-                assert not source.exists(), ('refuse duplicate synthesis', source)
-                memory = memory_wait('waiting_for_serial_SYN_memory')
-                command = [sys.executable, '-X', 'utf8', str(ROOT/'integration/g2/retry_frozen_synthesis.py'),
-                    str(prepared), '--out', str(source), '--start-now']
-                code = command_run(command, item/'synthesis.log', 'one_profile_joint_SYN_running')
-                if code:
-                    job = load(source/'job.json') if (source/'job.json').exists() else {}
-                    text = (item/'synthesis.log').read_text(encoding='utf-8')
-                    preflight = (source/'preflight.log').read_text(encoding='utf-8') if (source/'preflight.log').exists() else ''
-                    settings_only = (job.get('phase') == 'validating_frozen_settings' and 'tool_pid' not in job
-                        and 'TimeoutExpired' in text and 'ERROR' not in preflight
-                        and (source/'effective_options.tcl').exists() and not (source/'impl').exists()
-                        and not (source/'gw_sh.log').exists())
-                    if settings_only:
-                        code = command_run(command+['--resume-settings-only'], item/'settings_only_retry.log',
-                            'one_preserved_settings_only_retry_no_SYN_repetition')
-                assert code == 0 and load(source/'job.json')['phase'] == 'synthesis_complete', ('SYN failed', pid)
-                record['synthesis_start_free_bytes'] = memory.avail_phys
-                record['synthesis_start_commit_reserve_bytes'] = memory.avail_page
+                cache_path = profile.get('parallel_synthesis_cache_job')
+                if cache_path:
+                    # The producer owns the only SYN. Do not compete with it,
+                    # restart it, or discard a completed source after review.
+                    cache_path = Path(cache_path)
+                    save('waiting_for_parallel_SYN_and_actual_netlist_review', parallel_synthesis_cache_job=str(cache_path))
+                    while True:
+                        cache = load(cache_path) if cache_path.exists() else None
+                        if cache and cache.get('phase') == 'ready_for_PNR':
+                            from parallel_trim_synthesis import validate_ready_cache
+                            cache = validate_ready_cache(cache_path, profile)
+                            assert Path(cache['synthesis']).resolve() == source
+                            assert Path(cache['prepared']).resolve() == prepared
+                            record['parallel_completed_SYN_reused'] = True
+                            record['parallel_synthesis_cache_job'] = str(cache_path)
+                            break
+                        if cache and cache.get('phase') == 'synthesis_failed':
+                            record.update(phase='synthesis_failed_no_retry', parallel_synthesis_cache_job=str(cache_path))
+                            state['completed_order'].append(pid)
+                            save('independent_profile_SYN_failed_other_prepared_profiles_remain', last_result=record)
+                            break
+                        if cache and cache.get('phase') == 'pre_pnr_review_failed':
+                            # A targeted review-only repair may publish ready
+                            # later, using exactly this completed synthesis.
+                            save('waiting_for_targeted_review_only_repair_no_resynthesis',
+                                 parallel_synthesis_cache_job=str(cache_path), review_error=cache.get('review_error'))
+                        time.sleep(15)
+                    if record.get('phase') == 'synthesis_failed_no_retry':
+                        continue
+                else:
+                    assert not source.exists(), ('refuse duplicate synthesis', source)
+                    memory = memory_wait('waiting_for_serial_SYN_memory')
+                    command = [sys.executable, '-X', 'utf8', str(ROOT/'integration/g2/retry_frozen_synthesis.py'),
+                        str(prepared), '--out', str(source), '--start-now']
+                    code = command_run(command, item/'synthesis.log', 'one_profile_joint_SYN_running')
+                    if code:
+                        job = load(source/'job.json') if (source/'job.json').exists() else {}
+                        text = (item/'synthesis.log').read_text(encoding='utf-8')
+                        preflight = (source/'preflight.log').read_text(encoding='utf-8') if (source/'preflight.log').exists() else ''
+                        settings_only = (job.get('phase') == 'validating_frozen_settings' and 'tool_pid' not in job
+                            and 'TimeoutExpired' in text and 'ERROR' not in preflight
+                            and (source/'effective_options.tcl').exists() and not (source/'impl').exists()
+                            and not (source/'gw_sh.log').exists())
+                        if settings_only:
+                            code = command_run(command+['--resume-settings-only'], item/'settings_only_retry.log',
+                                'one_preserved_settings_only_retry_no_SYN_repetition')
+                    assert code == 0 and load(source/'job.json')['phase'] == 'synthesis_complete', ('SYN failed', pid)
+                    record['synthesis_start_free_bytes'] = memory.avail_phys
+                    record['synthesis_start_commit_reserve_bytes'] = memory.avail_page
 
             # Re-import on each serial profile so completed, reviewed checker
             # fixes can be used before a later profile begins, never mid-check.
-            reviewer = importlib.import_module(profile['reviewer'])
-            reviewer = importlib.reload(reviewer)
-            shutil.copyfile(Path(reviewer.__file__), item/'reviewer_snapshot.py')
-            save('reviewing_profile_source_actual_RAM_clocks_CDC_and_tradeoffs')
-            with (item/'validation.log').open('w', encoding='utf-8') as log:
-                try:
-                    result = reviewer.review(source, baseline)
-                    write(item/'pre_pnr_checks.json', result)
-                    assert result['passed'], ('new netlist prechecks failed', pid)
-                    log.write('Pre-PNR source, resource, driver and CDC checks passed.\n')
-                except Exception:
-                    log.write(traceback.format_exc())
-                    raise
+            if cache:
+                result = load(cache['pre_pnr_checks'])
+                assert result['passed'], ('parallel review did not pass', pid)
+                shutil.copyfile(cache['pre_pnr_checks'], item/'pre_pnr_checks.json')
+                shutil.copyfile(cache['reviewer_snapshot'], item/'reviewer_snapshot.py')
+                (item/'validation.log').write_text('Reused completed source/RAM/clock/CDC review after exact file metadata revalidation; no SYN repeated.\n', encoding='utf-8')
+                save('completed_parallel_SYN_and_actual_review_reused')
+            else:
+                reviewer = importlib.import_module(profile['reviewer'])
+                reviewer = importlib.reload(reviewer)
+                shutil.copyfile(Path(reviewer.__file__), item/'reviewer_snapshot.py')
+                save('reviewing_profile_source_actual_RAM_clocks_CDC_and_tradeoffs')
+                with (item/'validation.log').open('w', encoding='utf-8') as log:
+                    try:
+                        result = reviewer.review(source, baseline)
+                        write(item/'pre_pnr_checks.json', result)
+                        assert result['passed'], ('new netlist prechecks failed', pid)
+                        log.write('Pre-PNR source, resource, driver and CDC checks passed.\n')
+                    except Exception:
+                        log.write(traceback.format_exc())
+                        raise
             inputs = item/'pnr_inputs'
             (inputs/'impl/gwsynthesis').mkdir(parents=True)
             (inputs/'ip').mkdir()
