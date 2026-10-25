@@ -1,0 +1,156 @@
+{
+  "recorded_at": "2026-10-26T02:31:59.478186+08:00",
+  "scope": "Read-only report-coverage research. No synthesis, placement, routing, current build input changes, private database decoding, or hash checking.",
+  "tool_version": "Gowin V1.9.12.04 (64-bit)",
+  "confirmed_current_report": {
+    "file": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35\\impl\\pnr\\g2_top.tr",
+    "setup_violated_endpoints": 3781,
+    "setup_report_command": "report_timing -setup -max_paths 25 -max_common_paths 1",
+    "setup_path_table_rows": 25,
+    "original_sdc_has_report_timing": false
+  },
+  "confirmed_documented_commands": {
+    "global": "report_timing -setup -max_paths 5000 -max_common_paths 1",
+    "module": "report_timing -setup -mod_ins {u_control/model_thread/fusion} -max_paths 256 -max_common_paths 1",
+    "endpoint": "report_timing -setup -to [get_pins {u_control/model_thread/actuator_map/left_mmps_18_s1/D}] -max_paths 1 -max_common_paths 1",
+    "max_paths": "Positive integer; default 25. No maximum value documented in the parameter table.",
+    "max_common_paths": "Positive integer; default 1. CN table explicitly says same clock and same object constitute the same endpoint. Keep 1 for endpoint coverage; increase only for alternative paths into one endpoint.",
+    "mod_ins": "Reports timing paths related to specified design submodule instances. Candidate hierarchy must still exist after synthesis.",
+    "from_to_objects": "get_clocks, get_ports, get_regs, get_pins",
+    "through_objects": "get_nets, get_pins",
+    "wildcards": "? matches one character; * matches zero or more characters including across hierarchy.",
+    "module_fmax": "report_max_frequency -mod_ins {instance0 instance1}; based on worst synchronous timing path ending inside the module; not detailed endpoint coverage."
+  },
+  "local_actual_help": {
+    "log": "F:\\nav_integration_g2_20261023\\timing_report_coverage_review1\\public_help_only.log",
+    "probe": "F:\\nav_integration_g2_20261023\\timing_report_coverage_review1\\public_help_only.tcl",
+    "probe_opens_project": false,
+    "probe_runs_build": false,
+    "report_timing_public_shell_command_exists": false,
+    "get_pins_public_shell_command_exists": false,
+    "read_sdc_read_db_read_checkpoint_read_pr_exist": false,
+    "run_flows": [
+      "syn",
+      "pnr",
+      "all"
+    ],
+    "no_set_option_max_paths_or_report_path_count_in_help": true,
+    "gen_text_timing_rpt_removed_in_SUG1220_2_1": true
+  },
+  "application_conditions": [
+    "Put report_timing in an enabled SDC consumed by the next selected candidate. It is an SDC report command, not a directly callable gw_sh shell command.",
+    "Append the single report_timing command to the NEXT candidate own existing g2.sdc before freezing it; retain all original clock/CDC/exception commands in that same g2.sdc.",
+    "Do not add/enable report_only_setup5000.sdc as a second SDC. SUG940 p8 says the last added SDC takes effect by default; SUG100 p30 says only one same-type constraint/configuration file can be enabled and adding another disables the previous file.",
+    "Do not change place_option, route_option, timing_driven, route_maxfan, correct_hold_violation, clock periods, exceptions, netlist, or physical constraints for the purpose of increasing report coverage.",
+    "Do not modify or append a running/frozen candidate. This research did not do so.",
+    "Officially documented route is PNR producing reports; the current public gw_sh interface has no verified fixed-route/STA-only entry point. Thus no supported way was found to enlarge the already completed PNR35 report without a later PNR/report-generating flow.",
+    "This does not prove that Gowin has no private or vendor-supported standalone STA mechanism. No private database decoding was attempted.",
+    "Do not enable incremental PNR merely to obtain a report; it is a PNR strategy change, not a documented STA-only flow."
+  ],
+  "next_result_acceptance": [
+    "Check the new .tr Report Command contains the requested max_paths and all requested filters rather than default 25.",
+    "Check Timing Constraints Report State is Actived for each report_timing command; inspect command/matching warnings.",
+    "Check actual path-table rows, negative-slack paths and unique (latch clock, endpoint object) coverage against the new run violated-endpoint total. 5000 exceeds PNR35 count 3781 but does not guarantee a changed candidate has fewer than 5000 violations.",
+    "For multiple simultaneous report_timing statements, check each requested Report Command and resulting section are present; coexistence/ordering was not runtime-tested here.",
+    "The new candidate route may differ; larger report count itself is not timing improvement or proof of 50MHz closure."
+  ],
+  "not_verified": [
+    "No report-only PNR was run.",
+    "No statement that parser accepts arbitrary huge max_paths values.",
+    "No runtime measurement of report-generation memory/time for 5000 paths.",
+    "No proof that several report_timing commands retain every report section in this exact build until inspected in a future result."
+  ],
+  "sources": [
+    {
+      "id": "SUG940_CN",
+      "path": "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/doc/CN/SUG940-2.0.5_Gowin设计时序约束用户指南.pdf",
+      "url": "https://cdn.gowinsemi.com.cn/SUG940.pdf",
+      "version": "2.0.5, 2026-09-22",
+      "locations": [
+        "printed p40: report_timing explicitly called an SDC command for paths beyond default 25",
+        "printed pp71-73: report_timing syntax and parameters; table5-13",
+        "printed p72: same-clock+same-object endpoint definition",
+        "printed pp51-52: Timing Constraints Report Actived/Invalid and SDC Detail Command"
+      ]
+    },
+    {
+      "id": "SUG940_EN",
+      "path": "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/doc/EN/SUG940-2.0.5E_Gowin Design Timing Constraints User Guide.pdf",
+      "url": "https://cdn.gowinsemi.com.cn/SUG940E.pdf",
+      "locations": [
+        "printed p8 / PDF18 section3.3.3 Note: last added SDC takes effect by default",
+        "printed pp26-28 / PDF36-38: Timing Constraints Editor report settings",
+        "printed p37 / PDF47: save all constraints to SDC",
+        "printed p42 / PDF52: default 25 and SDC report_timing",
+        "printed p54 / PDF64: Timing Constraints Report State",
+        "printed p55 / PDF65: wildcard matching",
+        "printed pp73-76 / PDF83-86: report_timing syntax, table5-13, examples5.37-5.40",
+        "printed pp79-80 / PDF89-90: module Fmax report"
+      ]
+    },
+    {
+      "id": "SUG1220_EN",
+      "path": "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/doc/EN/SUG1220-2.1E_Gowin Software Tcl Commands User Guide.pdf",
+      "url": "https://cdn.gowinsemi.com.cn/SUG1220E.pdf",
+      "locations": [
+        "version history: 2.1E removes set_option -gen_text_timing_rpt",
+        "printed pp16-17 / PDF23-24: run syn/pnr/all",
+        "printed p2-3 / PDF9-10: gw_sh shell and script invocation"
+      ]
+    },
+    {
+      "id": "SUG100_EN",
+      "path": "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/doc/EN/SUG100-4.4.7E_Gowin Software User Guide.pdf",
+      "url": "https://cdn.gowinsemi.com.cn/SUG100E.pdf",
+      "locations": [
+        "printed p30 / PDF42 Enable Project Files: only one same-type constraint/configuration file enabled; new addition disables previous one",
+        "printed p56: Place & Route generates reports",
+        "printed pp47-48: incremental PNR reuses p/pr but remains placement/routing compilation"
+      ]
+    },
+    {
+      "id": "PNR35_TR",
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35\\impl\\pnr\\g2_top.tr",
+      "lines": {
+        "setup_violation_count": 61,
+        "default_setup_report_command": 88,
+        "setup_detail_report_command": 224
+      }
+    },
+    {
+      "id": "LOCAL_ACTUAL_HELP",
+      "path": "F:\\nav_integration_g2_20261023\\timing_report_coverage_review1\\public_help_only.log"
+    }
+  ],
+  "coverage_checker": {
+    "script": "F:\\nav_integration_g2_20261023\\timing_report_coverage_review1\\check_setup_endpoint_coverage.py",
+    "requires": "Python3 standard library only",
+    "invocation": "python check_setup_endpoint_coverage.py PATH_TO_NEW_FINAL_TR --output coverage.json --endpoints-out failed_endpoints.tsv",
+    "grouping": [
+      "printed To Clock including active edge",
+      "printed To Node"
+    ],
+    "negative_zero_handling": "A printed minus sign is counted as a failed slack, including -0.000 after report rounding.",
+    "pnr35_observed": {
+      "summary_failed_endpoints": 3781,
+      "printed_unique_failed_endpoints": 25,
+      "not_printed_under_same_grouping": 3756,
+      "coverage_percent": 0.6612007405448295
+    },
+    "input_safety": "Opens only public .tr text. No EDA launch, project load, database read, hashes, or build-input mutation."
+  },
+  "terminology": "Increasing report_timing max_paths broadens the paths/endpoints printed for review; it does not expand the STA engine analysis itself.",
+  "multi_sdc_correction": {
+    "previous_recommendation_withdrawn": true,
+    "reason": "The earlier extra add_file recommendation was incorrect: it conflated adding files with simultaneous enabled constraints and missed the explicit note immediately below SUG940 section3.3.3.",
+    "confirmed_rule": "Only one constraint/configuration file of the same type can be enabled. A newly added same-type file disables the previous one. For multiple added SDCs the last added takes effect by default.",
+    "failure_mode": "Adding report-only SDC could deactivate the original g2.sdc and omit its clock/CDC/exception commands.",
+    "safe_default": "Append the single report command to the next candidate existing private g2.sdc before freezing, preserving all previous commands in the same active file.",
+    "candidate_inputs_modified": false,
+    "build_validation_run": false,
+    "sources": [
+      "SUG940-2.0.5E section3.3.3 printed p8 / PDF18",
+      "SUG100-4.4.7E section4.3.2 Enable Project Files printed p30 / PDF42"
+    ]
+  }
+}

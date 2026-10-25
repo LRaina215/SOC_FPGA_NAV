@@ -13,7 +13,7 @@
 | 原4500控制 | 固定`6443f56`策略、ROM、125Hz推理、BMI088、编码器与执行器 | 既有独立控制与数字合同记录保留 | G2共同工程测量中 | 最后实板记录为13:20切入4B28恒零输出B1诊断；22:53本轮仅离线构建，未重新读取当时供电/镜像状态；原控制源码/权重未改 |
 | 接受导航N1c | `reference/nav_n1c_20261021/fw` | 旧严格口径28/50，只归对应运行器 | 未与当前控制工程联合接受 | 不将旧结果写成当前整车通过 |
 | AS/AY/BJ/BH2实验 | AS在fw，其他以补丁重建 | BJ主机0失败/90轨迹一致；BH2有33项C合同及7880项名义几何 | 无同一候选联合通过关键工况 | 未部署；暂停新增FPGA地形存储和扩大批量 |
-| G2共同资源 | PNR35已布通332/340、33.197MHz；PNR36继续独立融合流水 | PNR35 52约束有效/26首级正延迟、hold12→0；SYN26真实DSP寄存映射及CSA模块DSP0已核 | PNR35 setup仍3781；PNR36无截止运行，CSA独立SYN27等实际2/4GiB余量 | 双UART失联合并候选已备；全域50MHz/完整CDC/IO/停止未准入，未烧录 |
+| G2共同资源 | PNR35布通332/340、33.197MHz/hold0保留；PNR36失败1256不采用 | 动作CSA SYN27映射/314源18宽/CPU64/两钟26CDC过；FIFO停钟复位反例及单文件修复有限对照过 | PNR37工具65148于02:47无截止启动；PNR38同SYN26两条全局请求+5000报告独立等2/4GiB | 全域50MHz、完整复位/CDC/IO/停止未准入，未烧录 |
 | 终点精度/停止 | 航向逐包截断隔离修复、独立计数反馈/窗口候选 | 24组C积分通过；BJ单例147→134mm，AS仍超时；重建主机0失败/90轨迹一致、RV128KiB通过 | 候选未合入，未消除定位/漂移 | 150mm不变；2s漂移仍13.7mm，导航零偏未建立 |
 | 命令有效期 | 统一年龄/owner/session/有界减速原型；G2可选接入NAV | 实际UART CRC解析＋监管器24项故障注入；500ms默认停稳门限，测试缩放10ms | 带监管静态边界版PNR占用332并布通，时序失败；旧UART仍无序号/session | 无实车/刹停包络通过；本次已授权专项实施 |
 | G3现有板接入/BMI诊断 | B1原驱动/编码器诊断，控制引脚保持；十路执行器恒低 | B1既有独立物理时序/引脚及3023＋6013帧六轴恢复证据保留 | BMI采样恢复已确认；零偏/轴向/融合及停止仍待接受；本次01:44只读复核为独立SFP镜像91FB，不能读取其中不存在的BMI遥测 | 用户本轮确认整车上电/支撑，授权本次夜间联合门槛后直接SRAM及必要支撑工况整车测试；不重复索取同意，状态改变再核实；未发动作/写Flash |
@@ -25,6 +25,16 @@
 提交`cd9b816`保留此前未提交源码和既有团队文档内容，未将失败实验说成接受基线。N1c的54个构建/源码文件已从被忽略目录另存进Git；AS源码在fw，AY/BJ/BH2补丁及构建脚本在sim/closed_loop/candidates。见[检查点说明](../../reference/checkpoints/README.md)。原始点云、完整物理状态、视频和失败数据保留在`F:/nav_terrain4500_20261022/evidence`，仓库sim/build/terrain4500_20261022仍为联接。
 
 ## 2. 先完成G2：真实共同工程资源
+
+**2026-10-26 03:02 PNR36自然失败1256条，独立动作CSA PNR37已启动；追加有依据的全局请求对照而非原样重跑。** PNR36工具20732于02:35:45.721077自然退出1、cancelled=false、总0/静默0；实际RAM332、Logic89481/FF40090/CLS55539/DSP157.5，相对32 Logic−136/FF−2/DSP−6但CLS+22，没有.tr，setup/hold及Fmax未知，不采用或混入已备组合源。两钟、332物理叶几何/INIT/18宽拆分及26连接保持。实际sensor 388负载失PRIMARY、观测4001负载失LW、support112失LW，两个303/306负载小网新增PRIMARY、357负载网新增LW；这些是分配变化，仍非1256条失败身份或唯一根因。[实际物理比较](../4_design/evidence/g2_20261023/fusion_square2_PNR36_actual_physical_comparison_20261026.json)。
+
+SYN27于02:47:06.904469完整结束0，仅动作CSA叠加原已布通融合版，不含失败square2。对SYN23 LUT−147、FF+2、ALU+154、MULTALU27X18−6；314源/18宽/CPU64及128KiB INIT、两钟/26连接审阅通过，50个轮输出真实DFF的532网D锥任何层级DSP0。原接续36312启动唯一PNR37，工具65148创建02:47:48.907166，NORMAL全20核、原CST/20–10ns/route0、0/0，无52例外。SYN期间02:44已在35/36自然结束后把该自有工具从单核IDLE恢复NORMAL全核，未重启、未改输入/40分钟或运行保护。[实际启动与映射](../4_design/evidence/g2_20261023/action_CSA_SYN27_actual_mapping_PNR37_started_20261026.json)。
+
+PNR38 `baseline_fusion_square2_obs_global_pnr38`复用同一完整SYN26，CST只请求4001观测网BUFG=CE|LOGIC并将新占LW的357地图网LOCAL_CLOCK，两小锥至5个真实FF的种类/INIT/输入/时钟/CE/reset一致已证。BUFG无索引仅是全局请求，不保证LW或布通，须最终报告实测；非支持BUFS未使用。独立控制49232于02:56:19.608325启动，尚等原2GiB物理/4GiB提交门槛，没有PNR37退出依赖、没有重综合或新Gowin工具，计划PNR0/0。准备后仅对核对数据增加两旧VO的直接元数据行，原加载validate会逐项核对；脚本补强版本mtime晚于控制启动已单独记录，未假称当前源码是当时加载字节，VG/CST/SDC/TCL未改、未重启。[请求与驱动证明](../4_design/evidence/g2_20261023/fusion_square2_observation_global_request_preflight_20261026.json)；[显式入场复核](../4_design/evidence/g2_20261023/PNR38_root_explicit_prelaunch_guard_review_20261026.json)。
+
+官方SUG940确认同一SDC可追加`report_timing -setup -max_paths 5000 -max_common_paths 1`扩大明细。PNR38仅在原两钟同一g2.sdc追加这一报告命令，未放宽约束；输出必须核实际Report Command及唯一负端点覆盖，5000不预称全部覆盖。Gowin同类SDC仅启用一份，后加文件默认取代原文件，因此第二份只含report的SDC建议已撤下，禁止以此丢原clock/CDC。当前公共shell未找到固定路由单独STA入口。[官方入口](../4_design/evidence/g2_20261023/setup_report_coverage_official_entry_20261026.json)；[单SDC修正证据](../4_design/evidence/g2_20261023/single_active_SDC_report_request_safety_20261026.json)。
+
+并行复位审阅在原DW10/AW11 RTL构造并复现条件反例：已空但WP=RP=4时停接收钟再共同复位，wrst虽断言但同步写指针仍4，core清RP后第89–92拍重放4旧字；写钟继续的同源对照0，未声称实板发生或UDP/XT接受。最小候选只改nav_async_fifo一文件，两端指针/同步/转换及私有FWFT状态异步断言，沿原各域同步释放；RAM不复位、公共nav_fifo_ob不改。有限60,400周期、10,000词回绕/反压、2050满容量、4中途复位及28次reset写尝试通过；原重放4/候选0、恢复24新词。12,243写/12,218读的25差为中途reset有意丢弃在途词，非正常丢词。尚未SYN/PNR或实板；仅适用当前共同复位，非单域独立reset支持；MAC尾部可能入FIFO不等于已证应用重放。[原RTL反例](../4_design/evidence/g2_20261023/async_FIFO_clock_stop_reset_actual_counterexample_20261026.json)；[修复有限对照](../4_design/evidence/g2_20261023/async_FIFO_common_reset_repair_candidate_20261026.json)。当前仍以PNR35布通/hold0作锚点，完整50MHz及功能/停止/CDC/IO门槛前不烧录。
 
 **2026-10-26 02:31 PNR35自然布通，已审异步首级hold归零；50MHz setup仍待实现优化。** 原工具22316于02:23:41.906573自然退出0、cancelled=false、总0/静默0；实际RAM332/340，core Fmax33.197MHz、setup3781/TNS−9110.266不变，hold12→0，RGMII100MHz域setup/hold仍0。52条明确Actived、没有新增其它例外，26实际首级全部满足8/18ns上界：12写Gray线延迟0.398–1.585ns、12读Gray0.396–1.698ns、监测0.417ns、采样选择2.949ns。含C2Q最大分别1.929/2.042/0.761/3.293ns，均正余量。整份物理VO 1,026,412行仅创建时间一行差异，78寄存器种类/连接/INIT/CE/reset及唯一首级负载逐字保持；未声称全部位置或每网延迟相同。[严格最终审阅](../4_design/evidence/g2_20261023/fusion32_CDC52_PNR35_final_routed_hold0_setup3781_20261026.json)。
 

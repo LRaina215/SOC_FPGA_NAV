@@ -1,0 +1,36 @@
+{
+  "recorded_at": "2026-10-26T02:36:12.006290+08:00",
+  "finding": "Multiple SDC files may be listed in the project, but they are not simultaneously active by default. Official documentation explicitly permits only one enabled constraint file of a given type.",
+  "sources": [
+    {
+      "path": "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/doc/EN/SUG940-2.0.5E_Gowin Design Timing Constraints User Guide.pdf",
+      "section": "3.3.3 Add Constraints File",
+      "printed_page": 8,
+      "pdf_page": 18,
+      "exact_short_quote": "When multiple files are added, the last one added takes effect by default."
+    },
+    {
+      "path": "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/doc/EN/SUG100-4.4.7E_Gowin Software User Guide.pdf",
+      "section": "4.3.2 Enable Project Files",
+      "printed_page": 30,
+      "pdf_page": 42,
+      "exact_short_quote": "only one file can be enabled",
+      "rule": "For same-type constraint/configuration files only one is enabled; creating or adding a new file disables the previous file."
+    }
+  ],
+  "withdrawn_action": "Adding report_only_setup5000.sdc using an additional add_file -type sdc line.",
+  "replacement_action": "Only for the next meaningful candidate: append report_timing -setup -max_paths 5000 -max_common_paths 1 to its own existing private g2.sdc before freezing; retain existing clock/CDC commands in that same file.",
+  "corrected_files": [
+    "usage.txt",
+    "coverage_review.json",
+    "report_only_setup5000.sdc"
+  ],
+  "not_changed": [
+    "PNR36 inputs",
+    "CSA continuation36312 inputs",
+    "any existing candidate inputs",
+    "running processes"
+  ],
+  "build_started": false,
+  "validation": "Documentation-only correction. No build or project mutation performed."
+}

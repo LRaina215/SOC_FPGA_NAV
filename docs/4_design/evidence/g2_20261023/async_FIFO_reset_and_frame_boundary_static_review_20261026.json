@@ -1,0 +1,330 @@
+{
+  "common_reset_for_all4_FIFOs_confirmed": true,
+  "actual_asynchronous_FIFOs": [
+    "u_nav/u_netl/u_rxf"
+  ],
+  "same_clock_FIFOs": [
+    "u_nav/u_netl/u_txf",
+    "u_nav/u_neth/u_rxf",
+    "u_nav/u_neth/u_txf"
+  ],
+  "independent_one_sided_reset_found": false,
+  "CPU_HOLD_resets_only_CPU_not_FIFO": true,
+  "actual_counterexample": "F:\\nav_integration_g2_20261023\\fifo_clock_stop_reset_counterexample1\\result.json",
+  "old_empty_nonzero_pointer_replay_confirmed_by_existing_RTL_run": true,
+  "minimal_sufficient_conditions": [
+    "Both endpoints are asserted by the common reset before either endpoint can reopen",
+    "All binary/Gray pointers, pointer synchronizers, registered converted remote pointers and output validity are cleared without requiring the stopped clock",
+    "Reset deassertion is synchronized separately in each domain by the existing wrappers; no RAM clear",
+    "No independent one-sided reset is added; a future independent PHY flush must reset both endpoints or use explicit epoch/ready coordination"
+  ],
+  "normal_no_reset_throughput_latency_or_addressing_intentionally_changed": false,
+  "MAC_frame_boundary_review": {
+    "no_explicit_SOF_input": true,
+    "start_b_is_local_first_valid_after_in_frame0": true,
+    "admit_tests_only_available_space_not_real_SOF": true,
+    "reset_sets_in_frame0_even_if_MAC_RX_in_progress": true,
+    "RX_FSM_has_no_reset_branch": true,
+    "partial_tail_can_enter_FIFO_after_reset": true,
+    "accepted_partial_tail_is_not_proof_of_accepted_UDP_or_application": true,
+    "UDP_header_destination_checksum_and_XT_frame_checks_can_reject_it": true,
+    "second_application_level_failure_proved": false,
+    "minimum_followup": "Either establish actual idle/frame-end before admission, or reset/re-arm MAC RX using its own synchronized reset and a wait-for-idle state; do not assume start_b is true external SOF"
+  },
+  "unverified_assumptions": [
+    "Real PHY RX clock stop/start and reset behavior, exact on-board occurrence of the demonstrated sequence",
+    "RAM dual-clock primitive collision/electrical behavior and whole FIFO protocol formal proof",
+    "Physical asynchronous-reset recovery/removal and reset-tree fanout after changing reset style",
+    "Maximum input frame length<=1536 and no unbounded jumbo frames while RX s_ready is intentionally unused",
+    "Complete end-to-end packet/freshness/vehicle outcome of a stale byte replay"
+  ],
+  "source_evidence": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\g2_top.v",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\g2_top.v",
+        "bytes": 11556,
+        "mtime_ns": 1792936600560105400
+      },
+      "evidence_lines": [
+        {
+          "line": 57,
+          "text": "    nav_rst_sync u_rs (.clk(clk), .arst(~key_rst_n | ~pll_lock), .rst(rst));"
+        },
+        {
+          "line": 112,
+          "text": "    nav_rst_sync u_lrr (.clk(l_rx_clk), .arst(rst), .rst(l_rx_rst));"
+        },
+        {
+          "line": 113,
+          "text": "    nav_rst_sync u_ltr (.clk(l_tx_clk), .arst(rst), .rst(l_tx_rst));"
+        },
+        {
+          "line": 132,
+          "text": "    nav_rst_sync u_hrr (.clk(h_rx_clk), .arst(rst), .rst(h_rx_rst));"
+        },
+        {
+          "line": 133,
+          "text": "    nav_rst_sync u_htr (.clk(h_tx_clk), .arst(rst), .rst(h_tx_rst));"
+        }
+      ]
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\top\\nav_subsystem.v",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\top\\nav_subsystem.v",
+        "bytes": 33080,
+        "mtime_ns": 1792936600546603200
+      },
+      "evidence_lines": [
+        {
+          "line": 100,
+          "text": "    net_port #(.RX_AW(11), .TX_AW(11), .PL_AW(11), .RAW(1)) u_netl ("
+        },
+        {
+          "line": 107,
+          "text": "        .cfg_enable(r_NETL_CTRL[0]), .cfg_any_ip(r_NETL_CTRL[1]), .cfg_arp_en(r_NETL_CTRL[2]), .cfg_learn(r_NETL_CTRL[3]),"
+        },
+        {
+          "line": 142,
+          "text": "    net_port #(.RX_AW(12), .TX_AW(11), .PL_AW(11)) u_neth ("
+        },
+        {
+          "line": 149,
+          "text": "        .cfg_enable(r_NETH_CTRL[0]), .cfg_any_ip(r_NETH_CTRL[1]), .cfg_arp_en(r_NETH_CTRL[2]), .cfg_learn(r_NETH_CTRL[3]),"
+        },
+        {
+          "line": 204,
+          "text": "        .cfg_enable(r_LIDAR_CTRL[0]), .cfg_hdr_le(r_LIDAR_CTRL[1]), .cfg_pix_le(r_LIDAR_CTRL[2]),"
+        },
+        {
+          "line": 328,
+          "text": "        .clk(clk), .rst(rst), .cfg_enable(r_MAP_CTRL[0]), .cfg_auto_sweep(r_MAP_CTRL[2]),"
+        },
+        {
+          "line": 443,
+          "text": "        .cfg_enable(r_SAFE_CTRL[0]), .cfg_holonomic(r_SAFE_CTRL[1]), .cfg_estop(r_SAFE_CTRL[2]),"
+        }
+      ]
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\net\\net_port.v",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\net\\net_port.v",
+        "bytes": 9501,
+        "mtime_ns": 1792936600542581000
+      },
+      "evidence_lines": [
+        {
+          "line": 7,
+          "text": "module net_port #("
+        },
+        {
+          "line": 36,
+          "text": "    input  wire        cfg_enable,"
+        },
+        {
+          "line": 93,
+          "text": "    reg  in_frame, dropping;"
+        },
+        {
+          "line": 94,
+          "text": "    wire start_b = rx_mac_valid & ~in_frame;"
+        },
+        {
+          "line": 95,
+          "text": "    wire admit   = start_b ? (rx_wfree > MAXF) : ~dropping;"
+        },
+        {
+          "line": 98,
+          "text": "            in_frame <= 1'b0; dropping <= 1'b0; st_rx_drop <= 0;"
+        },
+        {
+          "line": 104,
+          "text": "            in_frame <= ~rx_mac_last;"
+        },
+        {
+          "line": 110,
+          "text": "    nav_async_fifo #(.DW(10), .AW(RX_AW)) u_rxf ("
+        },
+        {
+          "line": 111,
+          "text": "        .wclk(rx_mac_clk), .wrst(rx_mac_rst), .s_valid(rx_mac_valid & admit),"
+        },
+        {
+          "line": 113,
+          "text": "        .rclk(clk), .rrst(rst), .m_valid(rf_v), .m_data(rf_d), .m_ready(1'b1)"
+        },
+        {
+          "line": 121,
+          "text": "        .cfg_enable(cfg_enable), .cfg_any_ip(cfg_any_ip), .cfg_arp_en(cfg_arp_en), .cfg_mcast_ip(cfg_mcast_ip),"
+        },
+        {
+          "line": 144,
+          "text": "                .clk(clk), .rst(rst), .cfg_enable(raw_rx_en), .my_mac(cfg_mac), .my_ip(cfg_ip),"
+        },
+        {
+          "line": 186,
+          "text": "    nav_async_fifo #(.DW(9), .AW(TX_AW)) u_txf ("
+        },
+        {
+          "line": 187,
+          "text": "        .wclk(clk), .wrst(rst), .s_valid(t_v), .s_data({t_l, t_d}), .s_ready(t_r), .wfree(),"
+        },
+        {
+          "line": 188,
+          "text": "        .rclk(tx_mac_clk), .rrst(tx_mac_rst), .m_valid(tf_v), .m_data(tf_d), .m_ready(tf_r)"
+        }
+      ]
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_async_fifo.v",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_async_fifo.v",
+        "bytes": 2817,
+        "mtime_ns": 1792936600532515900
+      },
+      "evidence_lines": [
+        {
+          "line": 3,
+          "text": "module nav_async_fifo #("
+        },
+        {
+          "line": 8,
+          "text": "    input  wire          wrst,"
+        },
+        {
+          "line": 15,
+          "text": "    input  wire          rrst,"
+        },
+        {
+          "line": 35,
+          "text": "    always @(posedge wclk) rp_b_w <= wrst ? {AW+1{1'b0}} : g2b(rp_g_w2);"
+        },
+        {
+          "line": 43,
+          "text": "        if (wrst) begin"
+        },
+        {
+          "line": 60,
+          "text": "    always @(posedge rclk) wp_b_r <= rrst ? {AW+1{1'b0}} : g2b(wp_g_r2);"
+        },
+        {
+          "line": 66,
+          "text": "        if (rrst) begin"
+        },
+        {
+          "line": 79,
+          "text": "        .clk(rclk), .rst(rrst), .ram_avail(ravail), .ram_rd(rd), .ram_q(q),"
+        }
+      ]
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_fifo_ob.v",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_fifo_ob.v",
+        "bytes": 2005,
+        "mtime_ns": 1792936600532515900
+      },
+      "evidence_lines": []
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_cdc.v",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_cdc.v",
+        "bytes": 1386,
+        "mtime_ns": 1792936600532515900
+      },
+      "evidence_lines": [
+        {
+          "line": 42,
+          "text": "module nav_rst_sync ("
+        }
+      ]
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\net\\rgmii_mac100.v",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\net\\rgmii_mac100.v",
+        "bytes": 14201,
+        "mtime_ns": 1792936600548012600
+      },
+      "evidence_lines": [
+        {
+          "line": 66,
+          "text": "    always @(posedge rgmii_rxc) begin rxd_p <= rgmii_rxd; dv_p <= rgmii_rx_ctl; neg_s <= {neg_s[0], rx_neg}; end"
+        },
+        {
+          "line": 77,
+          "text": "    always @(posedge rgmii_rxc) begin"
+        },
+        {
+          "line": 111,
+          "text": "    initial begin rs = R_IDLE; rx_valid = 1'b0; hold_v = 1'b0; neg_s = 2'b00; end"
+        },
+        {
+          "line": 282,
+          "text": "    always @(posedge rgmii_rxc) rdiv <= rdiv + 1'b1;"
+        }
+      ]
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\net\\udp_rx.v",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\net\\udp_rx.v",
+        "bytes": 9015,
+        "mtime_ns": 1792936600540541200
+      },
+      "evidence_lines": [
+        {
+          "line": 15,
+          "text": "    input  wire        cfg_enable,"
+        },
+        {
+          "line": 98,
+          "text": "          if (s_valid && cfg_enable) begin"
+        },
+        {
+          "line": 101,
+          "text": "            if (bc == 0) ts0 <= time_us;"
+        },
+        {
+          "line": 144,
+          "text": "                    pkt_len <= ulen - 16'd8; pkt_ts <= ts0;"
+        }
+      ]
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\regs\\nav_regfile.v",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\regs\\nav_regfile.v",
+        "bytes": 25589,
+        "mtime_ns": 1792936600545603300
+      },
+      "evidence_lines": [
+        {
+          "line": 247,
+          "text": "            r_NETL_CTRL <= 32'h0000007D;"
+        },
+        {
+          "line": 337,
+          "text": "            16'h1010: r_NETL_CTRL <= wdata;"
+        }
+      ]
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\soc\\nav_soc.v",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\soc\\nav_soc.v",
+        "bytes": 8852,
+        "mtime_ns": 1792936600548012600
+      },
+      "evidence_lines": [
+        {
+          "line": 50,
+          "text": "    wire         cpu_rst = rst | hold;"
+        }
+      ]
+    }
+  ]
+}

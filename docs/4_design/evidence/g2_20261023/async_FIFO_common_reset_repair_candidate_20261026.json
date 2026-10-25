@@ -1,0 +1,107 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T02:54:22.448567+08:00",
+  "prepared": true,
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23",
+  "candidate": "F:\\nav_integration_g2_20261023\\fifo_async_assert_candidate3",
+  "modified_inputs": [
+    "nav/rtl/common/nav_async_fifo.v"
+  ],
+  "public_nav_fifo_ob_byte_identical": true,
+  "private_FWFT_helper_in_async_FIFO_file": true,
+  "common_reset_only_not_unilateral_reset_support": true,
+  "RAM_processes_and_capacity_preserved": true,
+  "RAM_not_reset": true,
+  "normal_data_and_handshake_cycles_intended_identical": true,
+  "joint_SYN_PNR_started": false,
+  "programmed": false,
+  "deployment_accepted": false,
+  "metrics": {
+    "normal_writes": 12243,
+    "normal_reads": 12218,
+    "port_cycle_checks": 60400,
+    "full_capacity_words": 2050,
+    "continuous_read_streak": 2051,
+    "wrap_writes": 10000,
+    "old_stopped_write_replays": 4,
+    "candidate_stopped_write_replays": 0,
+    "candidate_recovery_words": 24,
+    "stopped_read_cases": 1,
+    "middle_reset_phases": 4,
+    "reset_checks": 451,
+    "reset_write_attempts": 28,
+    "pending_words_deliberately_discarded_at_reset": 25
+  },
+  "old_counterexample_preserved": "F:\\nav_integration_g2_20261023\\fifo_clock_stop_reset_counterexample1\\result.json",
+  "runs": [
+    {
+      "tool": "xvlog",
+      "exit_code": 0,
+      "log": "F:\\nav_integration_g2_20261023\\fifo_async_assert_candidate3\\0_xvlog_stdout.log"
+    },
+    {
+      "tool": "xvlog",
+      "exit_code": 0,
+      "log": "F:\\nav_integration_g2_20261023\\fifo_async_assert_candidate3\\1_xvlog_stdout.log"
+    },
+    {
+      "tool": "xelab",
+      "exit_code": 0,
+      "log": "F:\\nav_integration_g2_20261023\\fifo_async_assert_candidate3\\2_xelab_stdout.log"
+    },
+    {
+      "tool": "xsim",
+      "exit_code": 0,
+      "log": "F:\\nav_integration_g2_20261023\\fifo_async_assert_candidate3\\3_xsim_stdout.log"
+    }
+  ],
+  "static_review": "F:\\nav_integration_g2_20261023\\fifo_async_assert_candidate3\\static_reset_and_frame_boundary_review.json",
+  "source_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_async_fifo.v",
+      "bytes": 2817,
+      "mtime_ns": 1792936600532515900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_fifo_ob.v",
+      "bytes": 2005,
+      "mtime_ns": 1792936600532515900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_cdc.v",
+      "bytes": 1386,
+      "mtime_ns": 1792936600532515900
+    }
+  ],
+  "candidate_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\fifo_async_assert_candidate3\\nav_async_fifo.v",
+      "bytes": 5023,
+      "mtime_ns": 1792954443984275800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\fifo_async_assert_candidate3\\nav_fifo_ob.v",
+      "bytes": 2005,
+      "mtime_ns": 1792954443985025400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\fifo_async_assert_candidate3\\tb_fifo_async_assert.sv",
+      "bytes": 12033,
+      "mtime_ns": 1792954443985025400
+    }
+  ],
+  "no_pointer_or_clock_force_used": true,
+  "proof_scope": "Finite behavioral RTL boundary comparison and actual common-reset stopped-clock cases; not mapped RAM, CDC/MTBF, whole application or physical timing acceptance",
+  "synthesis_or_PNR_started": false,
+  "physical_timing_accepted": false,
+  "finite_RTL_parameters": {
+    "DW": 10,
+    "AW": 11
+  },
+  "remaining": [
+    "Mapped reset/CE/INIT/RAM mode and resource/fanout changes are not measured",
+    "Other DW/AW configurations are not separately simulated by this finite test",
+    "Unilateral reset, full protocol formal proof, CDC MTBF/physical timing and board behavior are not signed off",
+    "MAC reset/frame-boundary resynchronization and end-to-end packet acceptance remain separate"
+  ]
+}

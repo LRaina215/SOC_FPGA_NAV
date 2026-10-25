@@ -1,0 +1,152 @@
+{
+  "passed_with_stated_scope": true,
+  "recorded_at": "2026-10-26T03:04:11.717541+08:00",
+  "review_kind": "Independent read-only source/test/result review; no simulation or build rerun",
+  "candidate_result": "F:\\nav_integration_g2_20261023\\fifo_async_assert_candidate3\\result.json",
+  "candidate_source_exact_transform_reproduced_in_memory": true,
+  "modified_hardware_input_only": "nav/rtl/common/nav_async_fifo.v",
+  "public_nav_fifo_ob_current_bytes_identical": true,
+  "private_helper_only_for_async_FIFO_instances": true,
+  "RAM_read_write_process_text_and_depth_preserved": true,
+  "reset_state_review": {
+    "pointer_and_remote_pointer_state": "All binary/Gray pointers, 2-stage sync pointers and converted remote pointers asynchronously clear on local reset; release must remain supplied by original nav_rst_sync synchronizers.",
+    "output_FWFT": "Only pend/cnt asynchronously clear. b0/b1 payload remain posedge-only/no data reset; the split cases preserve no-reset count and payload updates.",
+    "reset_gates": "wr and s_ready gated by~wrst; private ram_rd/m_valid gated by~rst; hence no logical RAM write/read or valid handshake during asserted local reset.",
+    "supported_contract": "Common reset that reaches both endpoints before reopening. Independently asserted single-side reset is not supported or proved."
+  },
+  "finite_metrics": {
+    "normal_writes": 12243,
+    "normal_reads": 12218,
+    "port_cycle_checks": 60400,
+    "full_capacity_words": 2050,
+    "continuous_read_streak": 2051,
+    "wrap_writes": 10000,
+    "old_stopped_write_replays": 4,
+    "candidate_stopped_write_replays": 0,
+    "candidate_recovery_words": 24,
+    "stopped_read_cases": 1,
+    "middle_reset_phases": 4,
+    "reset_checks": 451,
+    "reset_write_attempts": 28
+  },
+  "coverage_meanings": {
+    "port_cycle_checks60400": "Sum of phase1 non-reset write-clock ready/free checks and read-clock valid/data checks. Not60400 transactions, reset scenarios or distinct clock alignments.",
+    "normal_writes12243_reads12218": "Cumulative phase1 transfers;25 pending words are intentionally dropped at common resets. Separate phase3 fresh recovery adds24 words outside these counters.",
+    "full_capacity_words2050": "2048-word RAM plus unchanged2-word FWFT output/in-flight capacity; not a RAM depth increase.",
+    "continuous_read_streak2051": "Maximum measured consecutive normal-phase read handshakes over the whole test; not a universal throughput guarantee.",
+    "wrap_writes10000": "Finite faster-producer/backpressure/valid-gap run spanning2 full12-bit pointer wraps; only DW10/AW11 exercised.",
+    "reset_checks451": "Sum of asserted-reset reader/writer clock-edge checks, not451 distinct reset events.",
+    "reset_write_attempts28": "28 write-clock observations with s_valid high during local reset, checking wr/ready0; retained mem[0] checked per selected FWFT shape, not a sweep of every RAM address.",
+    "middle_reset_phases4": "Selected FWFT(cnt,pend)=(0,1),(1,0),(1,1),(2,0), with both clocks running; does not cover every combined clock-stop/nonempty-buffer case."
+  },
+  "raw_CASE_lines": [
+    "CASE full/read-first registered capture PASS words=2050 continuous_reads=2050",
+    "CASE wrap/backpressure PASS writes=10000 reads=10000",
+    "CASE stopped-write common reset PASS old_replay=4 candidate_replay=0",
+    "CASE candidate no-second-reset recovery PASS words=24",
+    "CASE stopped-read common reset and recovery PASS"
+  ],
+  "actual_counterexample_fixed_with_no_second_reset_recovery": {
+    "original_replays": 4,
+    "candidate_replays": 0,
+    "fresh_recovery_words": 24,
+    "source_of_original_failure": "F:\\nav_integration_g2_20261023\\fifo_clock_stop_reset_counterexample1\\result.json"
+  },
+  "remaining_unknowns": [
+    "No mapped primitive/reset/CE/INIT/RAM collision-mode or actual RAM/DSP/fanout measurement for this candidate.",
+    "No recovery/removal, reset routing, metastability/MTBF, physical CDC delay or full state-space FIFO proof.",
+    "Finite clock ratios/alignments and DW10/AW11 only; simultaneous clock stops, very short reset pulses and all stop/nonempty combinations are not separately proved.",
+    "Unilateral reset/restart needs a separate common flush or explicit epoch/ready coordination; no such support is implied.",
+    "FIFO fixes do not reset the existing rgmii RX FSM, prove external SOF, or prevent admission of a post-reset partial frame tail. End-to-end frame validation, timestamp freshness and vehicle effects remain unverified."
+  ],
+  "line_references": {
+    "candidate": [
+      {
+        "line": 35,
+        "text": "    always @(posedge wclk or posedge wrst) rp_b_w <= wrst ? {AW+1{1'b0}} : g2b(rp_g_w2);"
+      },
+      {
+        "line": 38,
+        "text": "    wire        wr     = ~wrst & s_valid & ~wfull;"
+      },
+      {
+        "line": 39,
+        "text": "    assign s_ready = ~wrst & ~wfull;"
+      },
+      {
+        "line": 42,
+        "text": "    always @(posedge wclk or posedge wrst) begin"
+      },
+      {
+        "line": 60,
+        "text": "    always @(posedge rclk or posedge rrst) wp_b_r <= rrst ? {AW+1{1'b0}} : g2b(wp_g_r2);"
+      },
+      {
+        "line": 65,
+        "text": "    always @(posedge rclk or posedge rrst) begin"
+      },
+      {
+        "line": 109,
+        "text": "    assign ram_rd  = ~rst & ram_avail & (occ < 3'd2);"
+      },
+      {
+        "line": 110,
+        "text": "    assign m_valid = ~rst & (cnt != 2'd0);"
+      },
+      {
+        "line": 116,
+        "text": "    always @(posedge clk or posedge rst) begin"
+      },
+      {
+        "line": 129,
+        "text": "    always @(posedge clk) begin"
+      }
+    ],
+    "testbench": [
+      {
+        "line": 53,
+        "text": "                port_checks=port_checks+1;"
+      },
+      {
+        "line": 72,
+        "text": "            port_checks=port_checks+1;"
+      },
+      {
+        "line": 140,
+        "text": "        if(new_ready!==0 || old_ready!==0 || new_free!==0 || wi!=2050)$fatal(1,\"full capacity mismatch words=%0d free=%0d\",wi,new_free);"
+      },
+      {
+        "line": 142,
+        "text": "        if(max_streak<2048)$fatal(1,\"FWFT throughput regressed max=%0d\",max_streak);"
+      },
+      {
+        "line": 148,
+        "text": "        for(integer i=0;i<10000;i=i+1)begin"
+      },
+      {
+        "line": 166,
+        "text": "        if(replay_old!=4 || replay_new!=0 || wrst!==1 || candidate.wp_b!==0 || candidate.rp_b!==0)"
+      },
+      {
+        "line": 174,
+        "text": "        if(recovered!=24)$fatal(1,\"candidate did not recover after stopped writer\");"
+      },
+      {
+        "line": 202,
+        "text": "                    case(p)"
+      },
+      {
+        "line": 225,
+        "text": "        if(reset_phases!=4 || reset_write_attempts<16)$fatal(1,\"reset boundary coverage missing\");"
+      }
+    ]
+  },
+  "not_claimed": [
+    "Full application correctness",
+    "Board fault occurrence",
+    "50MHz closure",
+    "Joint acceptance",
+    "Deployment readiness"
+  ],
+  "new_simulation_SYN_PNR_or_hardware_action": false
+}

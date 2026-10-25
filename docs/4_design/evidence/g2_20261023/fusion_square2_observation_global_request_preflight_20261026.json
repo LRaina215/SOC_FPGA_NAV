@@ -1,0 +1,695 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T02:51:55.313247+08:00",
+  "baseline": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32",
+  "candidate": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_pnr36",
+  "intervention": "request4001-load observation on genericBUFG; route new357-load LW control via ordinary fabric",
+  "original_LW_restored_by_this_proof": false,
+  "actual_resource_type_requires_PNR_report": true,
+  "driver_input_cone_proofs": [
+    {
+      "net": "u_control/model_thread/observation/n15679_10",
+      "passed": true,
+      "method": "exact_LUT_function_dag_to_same_actual_FF_kind_INIT_CLK_Q_boundary",
+      "canonical_expression": [
+        "LUT3",
+        "8'h10",
+        [
+          [
+            "same_actual_state_primitive",
+            "u_control/model_thread/observation/state_0_s0",
+            "DFFCE",
+            [
+              "clk50_d"
+            ],
+            [
+              [
+                "INIT",
+                "1'b0"
+              ]
+            ],
+            "Q",
+            0
+          ],
+          [
+            "same_actual_state_primitive",
+            "u_control/model_thread/observation/state_1_s0",
+            "DFFCE",
+            [
+              "clk50_d"
+            ],
+            [
+              [
+                "INIT",
+                "1'b0"
+              ]
+            ],
+            "Q",
+            0
+          ],
+          [
+            "same_actual_state_primitive",
+            "u_control/model_thread/observation/state_2_s0",
+            "DFFCE",
+            [
+              "clk50_d"
+            ],
+            [
+              [
+                "INIT",
+                "1'b0"
+              ]
+            ],
+            "Q",
+            0
+          ]
+        ]
+      ]
+    },
+    {
+      "net": "u_nav/u_map/u_tv/n25284_7",
+      "passed": true,
+      "method": "exact_LUT_function_dag_to_same_actual_FF_kind_INIT_CLK_Q_boundary",
+      "canonical_expression": [
+        "LUT2",
+        "4'h4",
+        [
+          [
+            "same_actual_state_primitive",
+            "u_rs/r2_s1",
+            "DFFPE",
+            [
+              "clk50_d"
+            ],
+            [
+              [
+                "INIT",
+                "1'b1"
+              ]
+            ],
+            "Q",
+            0
+          ],
+          [
+            "same_actual_state_primitive",
+            "u_nav/u_map/u_tv/wval_s0",
+            "DFFRE",
+            [
+              "clk50_d"
+            ],
+            [
+              [
+                "INIT",
+                "1'b0"
+              ]
+            ],
+            "Q",
+            0
+          ]
+        ]
+      ]
+    }
+  ],
+  "state_boundary_exact_checks": [
+    {
+      "net": "r2",
+      "actual_cell": {
+        "name": "u_rs/r2_s1",
+        "kind": "DFFPE",
+        "ports": {
+          "D": [
+            "u_rs/r1"
+          ],
+          "CLK": [
+            "clk50_d"
+          ],
+          "CE": [
+            "VCC"
+          ],
+          "PRESET": [
+            "n8_6"
+          ],
+          "Q": [
+            "r2"
+          ]
+        },
+        "parameters": {
+          "INIT": "1'b1"
+        },
+        "output_pin": "Q",
+        "output_index_MSB_first": 0
+      },
+      "all_ports_and_explicit_INIT_identical": true
+    },
+    {
+      "net": "u_control/model_thread/observation/state[0]",
+      "actual_cell": {
+        "name": "u_control/model_thread/observation/state_0_s0",
+        "kind": "DFFCE",
+        "ports": {
+          "D": [
+            "u_control/model_thread/observation/n15678_19"
+          ],
+          "CLK": [
+            "clk50_d"
+          ],
+          "CE": [
+            "VCC"
+          ],
+          "CLEAR": [
+            "u_control/model_thread/observation/n331_7"
+          ],
+          "Q": [
+            "u_control/model_thread/observation/state[0]"
+          ]
+        },
+        "parameters": {
+          "INIT": "1'b0"
+        },
+        "output_pin": "Q",
+        "output_index_MSB_first": 0
+      },
+      "all_ports_and_explicit_INIT_identical": true
+    },
+    {
+      "net": "u_control/model_thread/observation/state[1]",
+      "actual_cell": {
+        "name": "u_control/model_thread/observation/state_1_s0",
+        "kind": "DFFCE",
+        "ports": {
+          "D": [
+            "u_control/model_thread/observation/n15677_18"
+          ],
+          "CLK": [
+            "clk50_d"
+          ],
+          "CE": [
+            "VCC"
+          ],
+          "CLEAR": [
+            "u_control/model_thread/observation/n331_7"
+          ],
+          "Q": [
+            "u_control/model_thread/observation/state[1]"
+          ]
+        },
+        "parameters": {
+          "INIT": "1'b0"
+        },
+        "output_pin": "Q",
+        "output_index_MSB_first": 0
+      },
+      "all_ports_and_explicit_INIT_identical": true
+    },
+    {
+      "net": "u_control/model_thread/observation/state[2]",
+      "actual_cell": {
+        "name": "u_control/model_thread/observation/state_2_s0",
+        "kind": "DFFCE",
+        "ports": {
+          "D": [
+            "u_control/model_thread/observation/n15676_21"
+          ],
+          "CLK": [
+            "clk50_d"
+          ],
+          "CE": [
+            "VCC"
+          ],
+          "CLEAR": [
+            "u_control/model_thread/observation/n331_7"
+          ],
+          "Q": [
+            "u_control/model_thread/observation/state[2]"
+          ]
+        },
+        "parameters": {
+          "INIT": "1'b0"
+        },
+        "output_pin": "Q",
+        "output_index_MSB_first": 0
+      },
+      "all_ports_and_explicit_INIT_identical": true
+    },
+    {
+      "net": "u_nav/u_map/u_tv/wval",
+      "actual_cell": {
+        "name": "u_nav/u_map/u_tv/wval_s0",
+        "kind": "DFFRE",
+        "ports": {
+          "D": [
+            "u_nav/u_map/u_tv/n6136_7"
+          ],
+          "CLK": [
+            "clk50_d"
+          ],
+          "CE": [
+            "VCC"
+          ],
+          "RESET": [
+            "r2"
+          ],
+          "Q": [
+            "u_nav/u_map/u_tv/wval"
+          ]
+        },
+        "parameters": {
+          "INIT": "1'b0"
+        },
+        "output_pin": "Q",
+        "output_index_MSB_first": 0
+      },
+      "all_ports_and_explicit_INIT_identical": true
+    }
+  ],
+  "actual_drivers_before": {
+    "r2": {
+      "name": "u_rs/r2_s1",
+      "kind": "DFFPE",
+      "ports": {
+        "D": [
+          "u_rs/r1"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "PRESET": [
+          "n8_6"
+        ],
+        "Q": [
+          "r2"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b1"
+      },
+      "output_pin": "Q",
+      "output_index_MSB_first": 0
+    },
+    "u_control/model_thread/observation/n15679_10": {
+      "name": "u_control/model_thread/observation/n15680_s4",
+      "kind": "LUT3",
+      "ports": {
+        "I0": [
+          "u_control/model_thread/observation/state[0]"
+        ],
+        "I1": [
+          "u_control/model_thread/observation/state[1]"
+        ],
+        "I2": [
+          "u_control/model_thread/observation/state[2]"
+        ],
+        "F": [
+          "u_control/model_thread/observation/n15679_10"
+        ]
+      },
+      "parameters": {
+        "INIT": "8'h10"
+      },
+      "output_pin": "F",
+      "output_index_MSB_first": 0
+    },
+    "u_control/model_thread/observation/state[2]": {
+      "name": "u_control/model_thread/observation/state_2_s0",
+      "kind": "DFFCE",
+      "ports": {
+        "D": [
+          "u_control/model_thread/observation/n15676_21"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "CLEAR": [
+          "u_control/model_thread/observation/n331_7"
+        ],
+        "Q": [
+          "u_control/model_thread/observation/state[2]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      },
+      "output_pin": "Q",
+      "output_index_MSB_first": 0
+    },
+    "u_control/model_thread/observation/state[1]": {
+      "name": "u_control/model_thread/observation/state_1_s0",
+      "kind": "DFFCE",
+      "ports": {
+        "D": [
+          "u_control/model_thread/observation/n15677_18"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "CLEAR": [
+          "u_control/model_thread/observation/n331_7"
+        ],
+        "Q": [
+          "u_control/model_thread/observation/state[1]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      },
+      "output_pin": "Q",
+      "output_index_MSB_first": 0
+    },
+    "u_control/model_thread/observation/state[0]": {
+      "name": "u_control/model_thread/observation/state_0_s0",
+      "kind": "DFFCE",
+      "ports": {
+        "D": [
+          "u_control/model_thread/observation/n15678_19"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "CLEAR": [
+          "u_control/model_thread/observation/n331_7"
+        ],
+        "Q": [
+          "u_control/model_thread/observation/state[0]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      },
+      "output_pin": "Q",
+      "output_index_MSB_first": 0
+    },
+    "u_nav/u_map/u_tv/n25284_7": {
+      "name": "u_nav/u_map/u_tv/n25284_s2",
+      "kind": "LUT2",
+      "ports": {
+        "I0": [
+          "r2"
+        ],
+        "I1": [
+          "u_nav/u_map/u_tv/wval"
+        ],
+        "F": [
+          "u_nav/u_map/u_tv/n25284_7"
+        ]
+      },
+      "parameters": {
+        "INIT": "4'h4"
+      },
+      "output_pin": "F",
+      "output_index_MSB_first": 0
+    },
+    "u_nav/u_map/u_tv/wval": {
+      "name": "u_nav/u_map/u_tv/wval_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/u_map/u_tv/n6136_7"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "RESET": [
+          "r2"
+        ],
+        "Q": [
+          "u_nav/u_map/u_tv/wval"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      },
+      "output_pin": "Q",
+      "output_index_MSB_first": 0
+    }
+  },
+  "actual_drivers_after": {
+    "r2": {
+      "name": "u_rs/r2_s1",
+      "kind": "DFFPE",
+      "ports": {
+        "D": [
+          "u_rs/r1"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "PRESET": [
+          "n8_6"
+        ],
+        "Q": [
+          "r2"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b1"
+      },
+      "output_pin": "Q",
+      "output_index_MSB_first": 0
+    },
+    "u_control/model_thread/observation/n15679_10": {
+      "name": "u_control/model_thread/observation/n15680_s4",
+      "kind": "LUT3",
+      "ports": {
+        "I0": [
+          "u_control/model_thread/observation/state[0]"
+        ],
+        "I1": [
+          "u_control/model_thread/observation/state[1]"
+        ],
+        "I2": [
+          "u_control/model_thread/observation/state[2]"
+        ],
+        "F": [
+          "u_control/model_thread/observation/n15679_10"
+        ]
+      },
+      "parameters": {
+        "INIT": "8'h10"
+      },
+      "output_pin": "F",
+      "output_index_MSB_first": 0
+    },
+    "u_control/model_thread/observation/state[2]": {
+      "name": "u_control/model_thread/observation/state_2_s0",
+      "kind": "DFFCE",
+      "ports": {
+        "D": [
+          "u_control/model_thread/observation/n15676_21"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "CLEAR": [
+          "u_control/model_thread/observation/n331_7"
+        ],
+        "Q": [
+          "u_control/model_thread/observation/state[2]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      },
+      "output_pin": "Q",
+      "output_index_MSB_first": 0
+    },
+    "u_control/model_thread/observation/state[1]": {
+      "name": "u_control/model_thread/observation/state_1_s0",
+      "kind": "DFFCE",
+      "ports": {
+        "D": [
+          "u_control/model_thread/observation/n15677_18"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "CLEAR": [
+          "u_control/model_thread/observation/n331_7"
+        ],
+        "Q": [
+          "u_control/model_thread/observation/state[1]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      },
+      "output_pin": "Q",
+      "output_index_MSB_first": 0
+    },
+    "u_control/model_thread/observation/state[0]": {
+      "name": "u_control/model_thread/observation/state_0_s0",
+      "kind": "DFFCE",
+      "ports": {
+        "D": [
+          "u_control/model_thread/observation/n15678_19"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "CLEAR": [
+          "u_control/model_thread/observation/n331_7"
+        ],
+        "Q": [
+          "u_control/model_thread/observation/state[0]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      },
+      "output_pin": "Q",
+      "output_index_MSB_first": 0
+    },
+    "u_nav/u_map/u_tv/n25284_7": {
+      "name": "u_nav/u_map/u_tv/n25284_s2",
+      "kind": "LUT2",
+      "ports": {
+        "I0": [
+          "r2"
+        ],
+        "I1": [
+          "u_nav/u_map/u_tv/wval"
+        ],
+        "F": [
+          "u_nav/u_map/u_tv/n25284_7"
+        ]
+      },
+      "parameters": {
+        "INIT": "4'h4"
+      },
+      "output_pin": "F",
+      "output_index_MSB_first": 0
+    },
+    "u_nav/u_map/u_tv/wval": {
+      "name": "u_nav/u_map/u_tv/wval_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/u_map/u_tv/n6136_7"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "RESET": [
+          "r2"
+        ],
+        "Q": [
+          "u_nav/u_map/u_tv/wval"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      },
+      "output_pin": "Q",
+      "output_index_MSB_first": 0
+    }
+  },
+  "observation_loads": {
+    "net": "u_control/model_thread/observation/n15679_10",
+    "loads": 4001,
+    "pins": {
+      "CE": 4000,
+      "D": 1
+    },
+    "load_primitives": {
+      "DFFCE": 4001
+    },
+    "drivers": [
+      {
+        "name": "u_control/model_thread/observation/n15680_s4",
+        "kind": "LUT3",
+        "ports": {
+          "I0": "\\u_control/model_thread/observation/state [0]",
+          "I1": "\\u_control/model_thread/observation/state [1]",
+          "I2": "\\u_control/model_thread/observation/state [2]",
+          "F": "\\u_control/model_thread/observation/n15679_10 "
+        },
+        "parameters": {
+          "INIT": "8'h10"
+        },
+        "output_pin": "F"
+      }
+    ],
+    "exists": true,
+    "failed_route_identity_verified": false
+  },
+  "local_loads": {
+    "net": "u_nav/u_map/u_tv/n25284_7",
+    "loads": 357,
+    "pins": {
+      "I3": 2,
+      "CE": 355
+    },
+    "load_primitives": {
+      "LUT4": 2,
+      "DFFRE": 352,
+      "DFFSE": 3
+    },
+    "drivers": [
+      {
+        "name": "u_nav/u_map/u_tv/n25284_s2",
+        "kind": "LUT2",
+        "ports": {
+          "I0": "r2",
+          "I1": "\\u_nav/u_map/u_tv/wval ",
+          "F": "\\u_nav/u_map/u_tv/n25284_7 "
+        },
+        "parameters": {
+          "INIT": "4'h4"
+        },
+        "output_pin": "F"
+      }
+    ],
+    "exists": true,
+    "failed_route_identity_verified": false
+  },
+  "no_guessed_numeric_aliases": true,
+  "no_functional_change_to_RTL_or_netlist": true,
+  "full_design_equivalence_or_physical_timing_not_claimed": true,
+  "requested_CST": [
+    "CLOCK_LOC \"u_control/model_thread/observation/n15679_10\" BUFG = CE|LOGIC;",
+    "CLOCK_LOC \"u_nav/u_map/u_tv/n25284_7\" LOCAL_CLOCK;"
+  ],
+  "official_source": "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/doc/EN/SUG1541-1.0E_Gowin Software Physical Constraints User Guide.pdf",
+  "official_section": "2.8, printed18-20 / PDF28-30",
+  "syntax_semantics": {
+    "BUFG_without_index": "tool selects a global line; not a guarantee ofLW",
+    "LOCAL_CLOCK": "ordinary routing, no dedicated clock resource",
+    "BUFS": "LW-specific but unsupported on thisAroraV device; deliberately not used"
+  },
+  "new_build_or_test_started": false,
+  "execution_policy": {
+    "priority": 64,
+    "affinity": [
+      16
+    ]
+  }
+}

@@ -1,0 +1,186 @@
+{
+  "counterexample_confirmed": true,
+  "recorded_at": "2026-10-26T02:39:51.053712+08:00",
+  "actual_frozen_source": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23",
+  "source_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_async_fifo.v",
+      "bytes": 2817,
+      "mtime_ns": 1792936600532515900,
+      "copied_file": "F:\\nav_integration_g2_20261023\\fifo_clock_stop_reset_counterexample1\\nav_async_fifo.v",
+      "copied_bytes_identical": true
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_fifo_ob.v",
+      "bytes": 2005,
+      "mtime_ns": 1792936600532515900,
+      "copied_file": "F:\\nav_integration_g2_20261023\\fifo_clock_stop_reset_counterexample1\\nav_fifo_ob.v",
+      "copied_bytes_identical": true
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_cdc.v",
+      "bytes": 1386,
+      "mtime_ns": 1792936600532515900,
+      "copied_file": "F:\\nav_integration_g2_20261023\\fifo_clock_stop_reset_counterexample1\\nav_cdc.v",
+      "copied_bytes_identical": true
+    }
+  ],
+  "parameters": {
+    "DW": 10,
+    "AW": 11
+  },
+  "initial_FIFO_truly_empty_with_nonzero_synchronized_pointers": true,
+  "pre_reset_pointer": 4,
+  "reset_topology": "actual nav_rst_sync core arst -> rst, RX nav_rst_sync arst=rst -> wrst; FIFO own pointer processes are posedge-only",
+  "stopped_write_clock_remains_low_through_common_reset_and_all_replays": true,
+  "write_pointer_remains4_while_read_pointer_resets0": true,
+  "write_reset_signal_does_assert": true,
+  "no_new_write_during_reset_or_replay": true,
+  "m_ready_constant1_like_RX_net_port": true,
+  "metrics": {
+    "DW": 10,
+    "AW": 11,
+    "words": 4,
+    "initial_reads": 4,
+    "replay_reads": 4,
+    "control_post_reset_reads": 0,
+    "read_reset_release_cycle": 84,
+    "first_replay_cycle": 89,
+    "replay_cycles": [
+      89,
+      90,
+      91,
+      92
+    ],
+    "s_valid_during_reset_and_replay": 0,
+    "write_clock_resumed": 0
+  },
+  "read_events": [
+    {
+      "kind": "FIRST",
+      "cycle": 41,
+      "time_ps": 810000,
+      "index": 0,
+      "data_hex": "011",
+      "time_ns": 810.0
+    },
+    {
+      "kind": "FIRST",
+      "cycle": 43,
+      "time_ps": 850000,
+      "index": 1,
+      "data_hex": "022",
+      "time_ns": 850.0
+    },
+    {
+      "kind": "FIRST",
+      "cycle": 45,
+      "time_ps": 890000,
+      "index": 2,
+      "data_hex": "033",
+      "time_ns": 890.0
+    },
+    {
+      "kind": "FIRST",
+      "cycle": 47,
+      "time_ps": 930000,
+      "index": 3,
+      "data_hex": "144",
+      "time_ns": 930.0
+    },
+    {
+      "kind": "REPLAY",
+      "cycle": 89,
+      "time_ps": 1770000,
+      "index": 0,
+      "data_hex": "011",
+      "time_ns": 1770.0
+    },
+    {
+      "kind": "REPLAY",
+      "cycle": 90,
+      "time_ps": 1790000,
+      "index": 1,
+      "data_hex": "022",
+      "time_ns": 1790.0
+    },
+    {
+      "kind": "REPLAY",
+      "cycle": 91,
+      "time_ps": 1810000,
+      "index": 2,
+      "data_hex": "033",
+      "time_ns": 1810.0
+    },
+    {
+      "kind": "REPLAY",
+      "cycle": 92,
+      "time_ps": 1830000,
+      "index": 3,
+      "data_hex": "144",
+      "time_ns": 1830.0
+    }
+  ],
+  "runs": [
+    {
+      "tool": "xvlog",
+      "exit_code": 0,
+      "log": "F:\\nav_integration_g2_20261023\\fifo_clock_stop_reset_counterexample1\\0_xvlog_stdout.log"
+    },
+    {
+      "tool": "xvlog",
+      "exit_code": 0,
+      "log": "F:\\nav_integration_g2_20261023\\fifo_clock_stop_reset_counterexample1\\1_xvlog_stdout.log"
+    },
+    {
+      "tool": "xelab",
+      "exit_code": 0,
+      "log": "F:\\nav_integration_g2_20261023\\fifo_clock_stop_reset_counterexample1\\2_xelab_stdout.log"
+    },
+    {
+      "tool": "xsim",
+      "exit_code": 0,
+      "log": "F:\\nav_integration_g2_20261023\\fifo_clock_stop_reset_counterexample1\\3_xsim_stdout.log"
+    }
+  ],
+  "raw_log": "F:\\nav_integration_g2_20261023\\fifo_clock_stop_reset_counterexample1\\xsim.log",
+  "control_same_RTL_same_reset_write_clock_continues_no_replay": true,
+  "trigger": "Empty but WP=RP=P>0; RX wclk absent during shared reset. wrst asserts but cannot clear synchronous write pointers. Running core clears RP, then resynchronizes retained WP=P and rereads old mem[0..P-1].",
+  "separate_wr_during_wrst_interface_issue_not_used_or_claimed_as_cause": true,
+  "limits": [
+    "Finite RTL counterexample under the declared clock/reset stimulus, not a measured board fault.",
+    "Only the FIFO/raw-byte boundary is demonstrated; no claim that replayed words form accepted Ethernet/UDP/application commands.",
+    "Whether this exact stopped-clock/reset sequence occurs in the operating vehicle has not been measured.",
+    "No repair, unilateral-reset protocol, synthesis, PNR, running controller, or hardware was changed."
+  ],
+  "execution_policy": {
+    "priority": 64,
+    "cpu_affinity": [
+      16
+    ]
+  },
+  "wiring_and_test_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\g2_top.v",
+      "bytes": 11556,
+      "mtime_ns": 1792936600560105400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\net\\net_port.v",
+      "bytes": 9501,
+      "mtime_ns": 1792936600542581000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\top\\nav_subsystem.v",
+      "bytes": 33080,
+      "mtime_ns": 1792936600546603200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\fifo_clock_stop_reset_counterexample1\\tb_counterexample.sv",
+      "bytes": 6505,
+      "mtime_ns": 1792953571351806500
+    }
+  ],
+  "raw_time_label_correction": "Raw display labels say time_ns, but Verilog %t renders at the global1ps precision. read_events preserve the raw integer as time_ps and explicitly convert to time_ns; no simulation rerun or raw-log edit.",
+  "result_metadata_completed_at": "2026-10-26T02:41:19.360872+08:00"
+}
