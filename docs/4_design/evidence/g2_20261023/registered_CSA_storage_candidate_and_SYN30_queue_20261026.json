@@ -1,0 +1,235 @@
+{
+  "recorded_at": "2026-10-26T05:42:50.321110+08:00",
+  "passed": true,
+  "scope": "New exact private storage source and finite proof only; full SYN30 memory-gated and not yet started; PNR41 unchanged",
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_CSA_syn29",
+  "candidate": "F:\\nav_integration_g2_20261023\\action_registered_CSA_storage_candidate1",
+  "prepared": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_CSA_storage_prepared1",
+  "source_review": {
+    "passed": true,
+    "recorded_at": "2026-10-26T05:39:59.966281+08:00",
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23",
+    "candidate": "F:\\nav_integration_g2_20261023\\action_registered_CSA_storage_candidate1",
+    "prepared": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_CSA_storage_prepared1",
+    "modified_rtl_inputs": [
+      "control/policy_action_map.v",
+      "control/rl_policy_tick_v5.v",
+      "control/mem_policy.v"
+    ],
+    "hardware_inputs": 63,
+    "unchanged_hardware_inputs": 60,
+    "identical_assets": 69,
+    "identical_headers": 31,
+    "firmware_files": {
+      "fw": 61,
+      "firmware": 92
+    },
+    "firmware_not_recompiled": true,
+    "clock_CST_and_SDC_unchanged": true,
+    "inference_core_algorithm_all_weights_125Hz_and_external_actuation_edges_unchanged": true,
+    "CPU128KiB_NAV_capacities_and_stop_contract_preserved": true,
+    "new_SYN_or_PNR_started": false,
+    "private_preview_owned_by_same_original_scheduler_publication": true,
+    "global_clock_requests_or_new_timing_exceptions": 0,
+    "actual_new_RAM_INIT_clocks_CDC_product_mapping_and_full_timing_review_pending": true,
+    "bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_CSA_storage_candidate1\\control\\policy_action_map.v",
+        "bytes": 4794,
+        "mtime_ns": 1792964372950983700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_CSA_storage_candidate1\\control\\rl_policy_tick_v5.v",
+        "bytes": 6550,
+        "mtime_ns": 1792964372948978900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_CSA_storage_candidate1\\control\\mem_policy.v",
+        "bytes": 6138,
+        "mtime_ns": 1792964372950983700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_CSA_storage_candidate1\\prepared_review.json",
+        "bytes": 2724,
+        "mtime_ns": 1792964372960740600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_CSA_storage_candidate1\\arithmetic_result.json",
+        "bytes": 711,
+        "mtime_ns": 1792964386417178900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_CSA_storage_candidate1\\policy_result.json",
+        "bytes": 1491,
+        "mtime_ns": 1792964399408752800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_CSA_storage_prepared1\\control\\policy_action_map.v",
+        "bytes": 4794,
+        "mtime_ns": 1792964399910686400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_CSA_storage_prepared1\\control\\rl_policy_tick_v5.v",
+        "bytes": 6550,
+        "mtime_ns": 1792964399910686400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_CSA_storage_prepared1\\control\\mem_policy.v",
+        "bytes": 6138,
+        "mtime_ns": 1792964399910686400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_CSA_storage_prepared1\\g2.cst",
+        "bytes": 5495,
+        "mtime_ns": 1792964399904474700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_CSA_storage_prepared1\\g2.sdc",
+        "bytes": 122,
+        "mtime_ns": 1792964399905472100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_CSA_storage_prepared1\\firmware\\nav_fw.bin",
+        "bytes": 51712,
+        "mtime_ns": 1792660824309244200
+      }
+    ],
+    "registered_product_storage_only_vs_SYN29": true,
+    "range_proof": "F:\\nav_integration_g2_20261023\\action_registered_CSA_storage_candidate1\\range_proof.json",
+    "private_product_bits_before_mapping": 118,
+    "actual_joint_mapping_or_timing_passed": false
+  },
+  "range_proof": {
+    "passed": true,
+    "proof": "For every signed24 input the unchanged clip returns a signed integer in [-4096,4096]. Exhaust all 8193 results for each call-site gain; truncation followed by sign extension is identity.",
+    "combinations": 32772,
+    "ranges": [
+      {
+        "gain": 19,
+        "bits": 18,
+        "minimum": -77824,
+        "maximum": 77824,
+        "checked_values": 8193
+      },
+      {
+        "gain": -19,
+        "bits": 18,
+        "minimum": -77824,
+        "maximum": 77824,
+        "checked_values": 8193
+      },
+      {
+        "gain": 600,
+        "bits": 23,
+        "minimum": -2457600,
+        "maximum": 2457600,
+        "checked_values": 8193
+      },
+      {
+        "gain": -600,
+        "bits": 23,
+        "minimum": -2457600,
+        "maximum": 2457600,
+        "checked_values": 8193
+      }
+    ],
+    "rounding_64bit_function_unchanged": true,
+    "precision_loss_or_saturation_change": false,
+    "recorded_at": "2026-10-26T05:39:32.960740+08:00",
+    "source_binding": {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_CSA_syn29\\control\\policy_action_map.v",
+      "bytes": 4564,
+      "mtime_ns": 1792962583153160000
+    },
+    "candidate_binding": {
+      "path": "F:\\nav_integration_g2_20261023\\action_registered_CSA_storage_candidate1\\control\\policy_action_map.v",
+      "bytes": 4794,
+      "mtime_ns": 1792964372950983700
+    }
+  },
+  "arithmetic": {
+    "passed": true,
+    "summary": "TEST PASSED frames=8770 clip_domain_values=8193 invalid_cycles=64 stops=64 resets=1 parameter_sets=2",
+    "scope": "Finite isolated action map arithmetic/output-edge proof under explicit one-edge preview relation; scheduler integration and physical mapping still pending",
+    "candidate_bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_CSA_storage_candidate1\\control\\policy_action_map.v",
+        "bytes": 4794,
+        "mtime_ns": 1792964372950983700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_CSA_storage_candidate1\\tb_arithmetic.sv",
+        "bytes": 2987,
+        "mtime_ns": 1792964372945464700
+      }
+    ]
+  },
+  "scheduler": {
+    "passed": true,
+    "summary": "SNAPSHOT_FANOUT_PASS cycles=42000 publications=34 writes=10080 resets=5",
+    "unchanged_actual_scheduler": true,
+    "source_frame_ownership_relation_checked": true,
+    "actuator_outputs_compared_each_cycle": true,
+    "ff_changes_every_cycle_and_sample_edge_preserved": true,
+    "parameter_sets": 2,
+    "scope": "Actual original scheduler and candidate with an explicit inference test double; transport/rejection/stop/reset and output timing only, not full original4500 inference",
+    "injected_cases": [
+      "core error",
+      "saturation",
+      "frame ID mismatch",
+      "deadline",
+      "enable",
+      "sensor",
+      "global reset",
+      "retry"
+    ],
+    "candidate_bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_CSA_storage_candidate1\\control\\policy_action_map.v",
+        "bytes": 4794,
+        "mtime_ns": 1792964372950983700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_CSA_storage_candidate1\\control\\rl_policy_tick_v5.v",
+        "bytes": 6550,
+        "mtime_ns": 1792964372948978900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_CSA_storage_candidate1\\control\\mem_policy.v",
+        "bytes": 6138,
+        "mtime_ns": 1792964372950983700
+      }
+    ],
+    "test_binding": {
+      "path": "F:\\nav_integration_g2_20261023\\action_registered_CSA_storage_candidate1\\tb_policy.sv",
+      "bytes": 6068,
+      "mtime_ns": 1792964386417178900
+    },
+    "new_SYN_PNR_started": false
+  },
+  "exact_64bit_CSA_combinational_function_preserved": true,
+  "storage_source_bits_before384_after118": true,
+  "measured_SYN29_product_FFs": 188,
+  "new_product_FFs_not_measured": true,
+  "actual_LUT_FF_RAM_DSP_or_timing_benefit_not_claimed": true,
+  "controller": {
+    "controller_pid": 59828,
+    "controller_created_epoch": 1792964429.2318952,
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_CSA_storage_prepared1",
+    "output": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_CSA_storage_syn30",
+    "PNR38_exit_dependency": false,
+    "SYN_max_runtime_minutes": 40,
+    "automatic_PNR": false,
+    "programmed": false,
+    "phase": "waiting_for_actual_memory_admission",
+    "updated_at": "2026-10-26T05:42:39.777778+08:00",
+    "free_bytes": 2023731200,
+    "available_commit_bytes": 3603906560,
+    "minimum_physical_bytes": 2147483648,
+    "minimum_commit_bytes": 4294967296
+  },
+  "PNR41_input_modified": false,
+  "PNR42_started": false,
+  "new_SFP_DDR_or_global_requests": false,
+  "no_function_capacity_weight_inference_rate_or_public_cycle_change": true
+}
