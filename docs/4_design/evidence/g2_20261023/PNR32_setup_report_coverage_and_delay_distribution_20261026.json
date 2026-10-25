@@ -1,0 +1,1940 @@
+{
+  "passed": true,
+  "analysis_scope": "All available saved PNR32 report files, not all153093 analyzed paths or all3781 failing endpoints",
+  "recorded_at": "2026-10-26T02:26:24.788934+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32",
+  "read_only": true,
+  "complete_report_inventory": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32\\impl\\pnr\\g2_top.tr",
+      "bytes": 465681,
+      "mtime_ns": 1792946354023569000,
+      "contains_additional_setup_endpoints": null
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32\\impl\\pnr\\g2_top.rpt.txt",
+      "bytes": 92693,
+      "mtime_ns": 1792946345384422400,
+      "contains_additional_setup_endpoints": false
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32\\impl\\pnr\\g2_top_tr_content.html",
+      "bytes": 663858,
+      "mtime_ns": 1792946353945356200,
+      "contains_additional_setup_endpoints": false
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32\\impl\\pnr\\g2_top.timing_paths",
+      "bytes": 35258,
+      "mtime_ns": 1792946353806702400,
+      "contains_additional_setup_endpoints": false
+    }
+  ],
+  "report_coverage": {
+    "paths_analyzed": 153093,
+    "endpoints_analyzed": 168630,
+    "setup_violated_endpoints": 3781,
+    "setup_report_command": "report_timing -setup -max_paths 25 -max_common_paths 1",
+    "explicit_setup_path_rows": 25,
+    "unique_reported_failing_endpoints": 25,
+    "unlisted_failing_endpoints": 3756,
+    "listed_failing_endpoint_fraction": 0.006612007405448294,
+    "html_detailed_setup_paths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25
+    ],
+    "GUI_timing_paths_SETUP_count": 25,
+    "PNR_resource_report_has_setup_path_table": false,
+    "HTML_and_GUI_file_repeat_same25_not_additional3781_entries": true
+  },
+  "known_overall": {
+    "core_clock_MHz": 50,
+    "core_Fmax_MHz": 33.197,
+    "core_setup_TNS_ns": -9110.266,
+    "core_setup_violated_endpoints": 3781,
+    "RX_constraint_MHz": 100,
+    "RX_Fmax_MHz": 104.748,
+    "RX_domain_reported_setup_violations": 0,
+    "reported_negative_hold": 12
+  },
+  "available_setup_paths": [
+    {
+      "index": 1,
+      "slack_ns": -10.124,
+      "source": "u_control/model_thread/policy/actions_61_s1/Q",
+      "target": "u_control/model_thread/actuator_map/left_mmps_18_s1/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": 0.0,
+      "data_delay_ns": 30.066,
+      "endpoint_group": "actuator_map",
+      "logic_levels": 19,
+      "reported_data_delay_parts_ns": {
+        "cell": 7.762,
+        "route": 21.96,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.7303931351027739,
+      "cell_fraction": 0.2581653695203885,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 18.366,
+          "delay_ns": 11.042,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 89,
+          "site": "DSP_R19[0]",
+          "node": "u_control/model_thread/actuator_map/n92_s/A[8]",
+          "from_node": "u_control/model_thread/actuator_map/n3745_s3/F"
+        },
+        {
+          "arrival_ns": 26.593,
+          "delay_ns": 6.234,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R24C124[3][B]",
+          "node": "u_control/model_thread/actuator_map/n3933_s3/I1",
+          "from_node": "u_control/model_thread/actuator_map/n92_s/DOUT[12]"
+        },
+        {
+          "arrival_ns": 5.652,
+          "delay_ns": 1.179,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R40C125[2][B]",
+          "node": "u_control/model_thread/actuator_map/n41_s7/I1",
+          "from_node": "u_control/model_thread/policy/actions_61_s1/Q"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 1.994,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 20.36,
+          "delay_ns": 1.994,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 7,
+          "site": "DSP_R19[0]",
+          "node": "u_control/model_thread/actuator_map/n92_s/DOUT[12]"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "slack_ns": -10.118,
+      "source": "u_control/model_thread/policy/actions_61_s1/Q",
+      "target": "u_control/model_thread/actuator_map/left_mmps_22_s1/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": 0.0,
+      "data_delay_ns": 30.061,
+      "endpoint_group": "actuator_map",
+      "logic_levels": 18,
+      "reported_data_delay_parts_ns": {
+        "cell": 7.759,
+        "route": 21.958,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.7304480888859319,
+      "cell_fraction": 0.25810851269086194,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 18.366,
+          "delay_ns": 11.042,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 89,
+          "site": "DSP_R19[0]",
+          "node": "u_control/model_thread/actuator_map/n92_s/A[8]",
+          "from_node": "u_control/model_thread/actuator_map/n3745_s3/F"
+        },
+        {
+          "arrival_ns": 26.593,
+          "delay_ns": 6.234,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R24C124[3][B]",
+          "node": "u_control/model_thread/actuator_map/n3933_s3/I1",
+          "from_node": "u_control/model_thread/actuator_map/n92_s/DOUT[12]"
+        },
+        {
+          "arrival_ns": 5.652,
+          "delay_ns": 1.179,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R40C125[2][B]",
+          "node": "u_control/model_thread/actuator_map/n41_s7/I1",
+          "from_node": "u_control/model_thread/policy/actions_61_s1/Q"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 1.994,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 20.36,
+          "delay_ns": 1.994,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 7,
+          "site": "DSP_R19[0]",
+          "node": "u_control/model_thread/actuator_map/n92_s/DOUT[12]"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "slack_ns": -10.09,
+      "source": "u_control/model_thread/fusion/egy_0_s0/Q",
+      "target": "u_control/model_thread/fusion/norm_square_y_47_s0/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.061,
+      "data_delay_ns": 30.099,
+      "endpoint_group": "fusion",
+      "logic_levels": 21,
+      "reported_data_delay_parts_ns": {
+        "cell": 9.286,
+        "route": 20.469,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.6800558158078341,
+      "cell_fraction": 0.3085152330642214,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 24.348,
+          "delay_ns": 9.156,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 40,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/B[23]",
+          "from_node": "u_control/model_thread/fusion/n7013_s1/F"
+        },
+        {
+          "arrival_ns": 33.864,
+          "delay_ns": 6.677,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R33C142[3][A]",
+          "node": "u_control/model_thread/fusion/n8591_s35/I1",
+          "from_node": "u_control/model_thread/fusion/n7157_s/DOUT[47]"
+        },
+        {
+          "arrival_ns": 8.728,
+          "delay_ns": 0.614,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R30C178[0][B]",
+          "node": "u_control/model_thread/fusion/n7024_s1/I1",
+          "from_node": "u_control/model_thread/fusion/n7025_s1/F"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 2.84,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 27.187,
+          "delay_ns": 2.84,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/DOUT[47]"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "slack_ns": -10.087,
+      "source": "u_control/model_thread/fusion/egy_0_s0/Q",
+      "target": "u_control/model_thread/fusion/norm_square_y_45_s0/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.055,
+      "data_delay_ns": 30.085,
+      "endpoint_group": "fusion",
+      "logic_levels": 21,
+      "reported_data_delay_parts_ns": {
+        "cell": 9.405,
+        "route": 20.335,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.6759182316769154,
+      "cell_fraction": 0.3126142595978062,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 24.348,
+          "delay_ns": 9.156,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 40,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/B[23]",
+          "from_node": "u_control/model_thread/fusion/n7013_s1/F"
+        },
+        {
+          "arrival_ns": 33.626,
+          "delay_ns": 6.543,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R32C142[1][B]",
+          "node": "u_control/model_thread/fusion/n8593_s35/I1",
+          "from_node": "u_control/model_thread/fusion/n7157_s/DOUT[45]"
+        },
+        {
+          "arrival_ns": 8.728,
+          "delay_ns": 0.614,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R30C178[0][B]",
+          "node": "u_control/model_thread/fusion/n7024_s1/I1",
+          "from_node": "u_control/model_thread/fusion/n7025_s1/F"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 2.735,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 27.083,
+          "delay_ns": 2.735,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/DOUT[45]"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "slack_ns": -10.078,
+      "source": "u_control/model_thread/policy/actions_61_s1/Q",
+      "target": "u_control/model_thread/actuator_map/left_mmps_30_s1/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": 0.0,
+      "data_delay_ns": 30.02,
+      "endpoint_group": "actuator_map",
+      "logic_levels": 19,
+      "reported_data_delay_parts_ns": {
+        "cell": 7.74,
+        "route": 21.936,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.7307128580946036,
+      "cell_fraction": 0.25782811459027316,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 18.366,
+          "delay_ns": 11.042,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 89,
+          "site": "DSP_R19[0]",
+          "node": "u_control/model_thread/actuator_map/n92_s/A[8]",
+          "from_node": "u_control/model_thread/actuator_map/n3745_s3/F"
+        },
+        {
+          "arrival_ns": 26.593,
+          "delay_ns": 6.234,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R24C124[3][B]",
+          "node": "u_control/model_thread/actuator_map/n3933_s3/I1",
+          "from_node": "u_control/model_thread/actuator_map/n92_s/DOUT[12]"
+        },
+        {
+          "arrival_ns": 5.652,
+          "delay_ns": 1.179,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R40C125[2][B]",
+          "node": "u_control/model_thread/actuator_map/n41_s7/I1",
+          "from_node": "u_control/model_thread/policy/actions_61_s1/Q"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 1.994,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 20.36,
+          "delay_ns": 1.994,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 7,
+          "site": "DSP_R19[0]",
+          "node": "u_control/model_thread/actuator_map/n92_s/DOUT[12]"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "slack_ns": -9.993,
+      "source": "u_control/model_thread/fusion/egy_0_s0/Q",
+      "target": "u_control/model_thread/fusion/norm_square_y_44_s0/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.062,
+      "data_delay_ns": 29.998,
+      "endpoint_group": "fusion",
+      "logic_levels": 21,
+      "reported_data_delay_parts_ns": {
+        "cell": 9.417,
+        "route": 20.236,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.674578305220348,
+      "cell_fraction": 0.3139209280618708,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 24.348,
+          "delay_ns": 9.156,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 40,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/B[23]",
+          "from_node": "u_control/model_thread/fusion/n7013_s1/F"
+        },
+        {
+          "arrival_ns": 33.529,
+          "delay_ns": 6.444,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R34C142[2][A]",
+          "node": "u_control/model_thread/fusion/n8594_s35/I1",
+          "from_node": "u_control/model_thread/fusion/n7157_s/DOUT[44]"
+        },
+        {
+          "arrival_ns": 8.728,
+          "delay_ns": 0.614,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R30C178[0][B]",
+          "node": "u_control/model_thread/fusion/n7024_s1/I1",
+          "from_node": "u_control/model_thread/fusion/n7025_s1/F"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 2.737,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 27.085,
+          "delay_ns": 2.737,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/DOUT[44]"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "slack_ns": -9.938,
+      "source": "u_control/model_thread/fusion/egy_0_s0/Q",
+      "target": "u_control/model_thread/fusion/norm_square_y_42_s0/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.061,
+      "data_delay_ns": 29.941,
+      "endpoint_group": "fusion",
+      "logic_levels": 21,
+      "reported_data_delay_parts_ns": {
+        "cell": 9.245,
+        "route": 20.351,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.6797034167195485,
+      "cell_fraction": 0.3087739220466918,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 24.348,
+          "delay_ns": 9.156,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 40,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/B[23]",
+          "from_node": "u_control/model_thread/fusion/n7013_s1/F"
+        },
+        {
+          "arrival_ns": 33.733,
+          "delay_ns": 6.559,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R33C142[2][A]",
+          "node": "u_control/model_thread/fusion/n8596_s35/I1",
+          "from_node": "u_control/model_thread/fusion/n7157_s/DOUT[42]"
+        },
+        {
+          "arrival_ns": 8.728,
+          "delay_ns": 0.614,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R30C178[0][B]",
+          "node": "u_control/model_thread/fusion/n7024_s1/I1",
+          "from_node": "u_control/model_thread/fusion/n7025_s1/F"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 2.826,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 27.174,
+          "delay_ns": 2.826,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/DOUT[42]"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "slack_ns": -9.927,
+      "source": "u_control/model_thread/fusion/egy_0_s0/Q",
+      "target": "u_control/model_thread/fusion/norm_square_y_46_s0/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.071,
+      "data_delay_ns": 29.94,
+      "endpoint_group": "fusion",
+      "logic_levels": 21,
+      "reported_data_delay_parts_ns": {
+        "cell": 9.429,
+        "route": 20.167,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.6735804943219773,
+      "cell_fraction": 0.3149298597194389,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 24.348,
+          "delay_ns": 9.156,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 40,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/B[23]",
+          "from_node": "u_control/model_thread/fusion/n7013_s1/F"
+        },
+        {
+          "arrival_ns": 33.535,
+          "delay_ns": 6.374,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R34C141[1][B]",
+          "node": "u_control/model_thread/fusion/n8592_s35/I1",
+          "from_node": "u_control/model_thread/fusion/n7157_s/DOUT[46]"
+        },
+        {
+          "arrival_ns": 8.728,
+          "delay_ns": 0.614,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R30C178[0][B]",
+          "node": "u_control/model_thread/fusion/n7024_s1/I1",
+          "from_node": "u_control/model_thread/fusion/n7025_s1/F"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 2.813,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 27.161,
+          "delay_ns": 2.813,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/DOUT[46]"
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "slack_ns": -9.888,
+      "source": "u_control/model_thread/fusion/egy_0_s0/Q",
+      "target": "u_control/model_thread/fusion/norm_square_y_40_s0/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.062,
+      "data_delay_ns": 29.893,
+      "endpoint_group": "fusion",
+      "logic_levels": 21,
+      "reported_data_delay_parts_ns": {
+        "cell": 9.157,
+        "route": 20.392,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.6821663934700432,
+      "cell_fraction": 0.30632589569464425,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 24.348,
+          "delay_ns": 9.156,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 40,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/B[23]",
+          "from_node": "u_control/model_thread/fusion/n7013_s1/F"
+        },
+        {
+          "arrival_ns": 33.488,
+          "delay_ns": 6.599,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R34C140[2][B]",
+          "node": "u_control/model_thread/fusion/n8598_s35/I1",
+          "from_node": "u_control/model_thread/fusion/n7157_s/DOUT[40]"
+        },
+        {
+          "arrival_ns": 8.728,
+          "delay_ns": 0.614,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R30C178[0][B]",
+          "node": "u_control/model_thread/fusion/n7024_s1/I1",
+          "from_node": "u_control/model_thread/fusion/n7025_s1/F"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 2.541,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 26.888,
+          "delay_ns": 2.541,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/DOUT[40]"
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "slack_ns": -9.885,
+      "source": "u_control/model_thread/fusion/egy_0_s0/Q",
+      "target": "u_control/model_thread/fusion/norm_square_y_43_s0/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.055,
+      "data_delay_ns": 29.883,
+      "endpoint_group": "fusion",
+      "logic_levels": 21,
+      "reported_data_delay_parts_ns": {
+        "cell": 9.319,
+        "route": 20.22,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.6766388916775424,
+      "cell_fraction": 0.31184954656493663,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 24.348,
+          "delay_ns": 9.156,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 40,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/B[23]",
+          "from_node": "u_control/model_thread/fusion/n7013_s1/F"
+        },
+        {
+          "arrival_ns": 33.478,
+          "delay_ns": 6.427,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R32C142[1][A]",
+          "node": "u_control/model_thread/fusion/n8595_s35/I1",
+          "from_node": "u_control/model_thread/fusion/n7157_s/DOUT[43]"
+        },
+        {
+          "arrival_ns": 8.728,
+          "delay_ns": 0.614,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R30C178[0][B]",
+          "node": "u_control/model_thread/fusion/n7024_s1/I1",
+          "from_node": "u_control/model_thread/fusion/n7025_s1/F"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 2.703,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 27.051,
+          "delay_ns": 2.703,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/DOUT[43]"
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "slack_ns": -9.873,
+      "source": "u_control/model_thread/fusion/egy_0_s0/Q",
+      "target": "u_control/model_thread/fusion/norm_square_y_38_s0/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.062,
+      "data_delay_ns": 29.878,
+      "endpoint_group": "fusion",
+      "logic_levels": 21,
+      "reported_data_delay_parts_ns": {
+        "cell": 9.194,
+        "route": 20.34,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.6807684583974831,
+      "cell_fraction": 0.3077180534172301,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 24.348,
+          "delay_ns": 9.156,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 40,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/B[23]",
+          "from_node": "u_control/model_thread/fusion/n7013_s1/F"
+        },
+        {
+          "arrival_ns": 33.409,
+          "delay_ns": 6.548,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R34C140[2][A]",
+          "node": "u_control/model_thread/fusion/n8600_s35/I1",
+          "from_node": "u_control/model_thread/fusion/n7157_s/DOUT[38]"
+        },
+        {
+          "arrival_ns": 8.728,
+          "delay_ns": 0.614,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R30C178[0][B]",
+          "node": "u_control/model_thread/fusion/n7024_s1/I1",
+          "from_node": "u_control/model_thread/fusion/n7025_s1/F"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 2.514,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 26.862,
+          "delay_ns": 2.514,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/DOUT[38]"
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "slack_ns": -9.849,
+      "source": "u_control/model_thread/policy/actions_61_s1/Q",
+      "target": "u_control/model_thread/actuator_map/left_mmps_15_s1/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": 0.0,
+      "data_delay_ns": 29.792,
+      "endpoint_group": "actuator_map",
+      "logic_levels": 17,
+      "reported_data_delay_parts_ns": {
+        "cell": 7.764,
+        "route": 21.683,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.72781283566058,
+      "cell_fraction": 0.26060687432867885,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 18.366,
+          "delay_ns": 11.042,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 89,
+          "site": "DSP_R19[0]",
+          "node": "u_control/model_thread/actuator_map/n92_s/A[8]",
+          "from_node": "u_control/model_thread/actuator_map/n3745_s3/F"
+        },
+        {
+          "arrival_ns": 26.593,
+          "delay_ns": 6.234,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R24C124[3][B]",
+          "node": "u_control/model_thread/actuator_map/n3933_s3/I1",
+          "from_node": "u_control/model_thread/actuator_map/n92_s/DOUT[12]"
+        },
+        {
+          "arrival_ns": 5.652,
+          "delay_ns": 1.179,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R40C125[2][B]",
+          "node": "u_control/model_thread/actuator_map/n41_s7/I1",
+          "from_node": "u_control/model_thread/policy/actions_61_s1/Q"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 1.994,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 20.36,
+          "delay_ns": 1.994,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 7,
+          "site": "DSP_R19[0]",
+          "node": "u_control/model_thread/actuator_map/n92_s/DOUT[12]"
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "slack_ns": -9.831,
+      "source": "u_control/model_thread/fusion/egy_0_s0/Q",
+      "target": "u_control/model_thread/fusion/norm_square_y_36_s0/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.064,
+      "data_delay_ns": 29.837,
+      "endpoint_group": "fusion",
+      "logic_levels": 21,
+      "reported_data_delay_parts_ns": {
+        "cell": 8.966,
+        "route": 20.527,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.6879713107886182,
+      "cell_fraction": 0.3004993799644736,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 24.348,
+          "delay_ns": 9.156,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 40,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/B[23]",
+          "from_node": "u_control/model_thread/fusion/n7013_s1/F"
+        },
+        {
+          "arrival_ns": 33.478,
+          "delay_ns": 6.734,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R32C141[3][B]",
+          "node": "u_control/model_thread/fusion/n8602_s35/I1",
+          "from_node": "u_control/model_thread/fusion/n7157_s/DOUT[36]"
+        },
+        {
+          "arrival_ns": 8.728,
+          "delay_ns": 0.614,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R30C178[0][B]",
+          "node": "u_control/model_thread/fusion/n7024_s1/I1",
+          "from_node": "u_control/model_thread/fusion/n7025_s1/F"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 2.396,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 26.744,
+          "delay_ns": 2.396,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/DOUT[36]"
+        }
+      ]
+    },
+    {
+      "index": 14,
+      "slack_ns": -9.821,
+      "source": "u_control/model_thread/fusion/egy_0_s0/Q",
+      "target": "u_control/model_thread/fusion/norm_square_y_34_s0/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.062,
+      "data_delay_ns": 29.826,
+      "endpoint_group": "fusion",
+      "logic_levels": 21,
+      "reported_data_delay_parts_ns": {
+        "cell": 8.928,
+        "route": 20.554,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.6891302890095888,
+      "cell_fraction": 0.29933614966807487,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 24.348,
+          "delay_ns": 9.156,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 40,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/B[23]",
+          "from_node": "u_control/model_thread/fusion/n7013_s1/F"
+        },
+        {
+          "arrival_ns": 33.421,
+          "delay_ns": 6.761,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R34C142[0][B]",
+          "node": "u_control/model_thread/fusion/n8604_s35/I1",
+          "from_node": "u_control/model_thread/fusion/n7157_s/DOUT[34]"
+        },
+        {
+          "arrival_ns": 8.728,
+          "delay_ns": 0.614,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R30C178[0][B]",
+          "node": "u_control/model_thread/fusion/n7024_s1/I1",
+          "from_node": "u_control/model_thread/fusion/n7025_s1/F"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 2.312,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 26.66,
+          "delay_ns": 2.312,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/DOUT[34]"
+        }
+      ]
+    },
+    {
+      "index": 15,
+      "slack_ns": -9.763,
+      "source": "u_control/model_thread/policy/actions_61_s1/Q",
+      "target": "u_control/model_thread/actuator_map/left_mmps_21_s1/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": 0.0,
+      "data_delay_ns": 29.705,
+      "endpoint_group": "actuator_map",
+      "logic_levels": 18,
+      "reported_data_delay_parts_ns": {
+        "cell": 7.453,
+        "route": 21.908,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.737518936206026,
+      "cell_fraction": 0.2509005217976772,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 18.366,
+          "delay_ns": 11.042,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 89,
+          "site": "DSP_R19[0]",
+          "node": "u_control/model_thread/actuator_map/n92_s/A[8]",
+          "from_node": "u_control/model_thread/actuator_map/n3745_s3/F"
+        },
+        {
+          "arrival_ns": 26.593,
+          "delay_ns": 6.234,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R24C124[3][B]",
+          "node": "u_control/model_thread/actuator_map/n3933_s3/I1",
+          "from_node": "u_control/model_thread/actuator_map/n92_s/DOUT[12]"
+        },
+        {
+          "arrival_ns": 5.652,
+          "delay_ns": 1.179,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R40C125[2][B]",
+          "node": "u_control/model_thread/actuator_map/n41_s7/I1",
+          "from_node": "u_control/model_thread/policy/actions_61_s1/Q"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 1.994,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 20.36,
+          "delay_ns": 1.994,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 7,
+          "site": "DSP_R19[0]",
+          "node": "u_control/model_thread/actuator_map/n92_s/DOUT[12]"
+        }
+      ]
+    },
+    {
+      "index": 16,
+      "slack_ns": -9.713,
+      "source": "u_control/model_thread/fusion/egy_0_s0/Q",
+      "target": "u_control/model_thread/fusion/norm_square_y_41_s0/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.064,
+      "data_delay_ns": 29.72,
+      "endpoint_group": "fusion",
+      "logic_levels": 21,
+      "reported_data_delay_parts_ns": {
+        "cell": 9.223,
+        "route": 20.152,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.6780619111709287,
+      "cell_fraction": 0.3103297442799462,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 24.348,
+          "delay_ns": 9.156,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 40,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/B[23]",
+          "from_node": "u_control/model_thread/fusion/n7013_s1/F"
+        },
+        {
+          "arrival_ns": 33.315,
+          "delay_ns": 6.36,
+          "type": "tNET",
+          "transition": "FF",
+          "fanout": 1,
+          "site": "R32C141[1][A]",
+          "node": "u_control/model_thread/fusion/n8597_s35/I1",
+          "from_node": "u_control/model_thread/fusion/n7157_s/DOUT[41]"
+        },
+        {
+          "arrival_ns": 8.728,
+          "delay_ns": 0.614,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R30C178[0][B]",
+          "node": "u_control/model_thread/fusion/n7024_s1/I1",
+          "from_node": "u_control/model_thread/fusion/n7025_s1/F"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 2.607,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 26.955,
+          "delay_ns": 2.607,
+          "type": "tINS",
+          "transition": "RF",
+          "fanout": 1,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/DOUT[41]"
+        }
+      ]
+    },
+    {
+      "index": 17,
+      "slack_ns": -9.674,
+      "source": "u_control/model_thread/fusion/egy_0_s0/Q",
+      "target": "u_control/model_thread/fusion/norm_square_y_39_s0/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.062,
+      "data_delay_ns": 29.679,
+      "endpoint_group": "fusion",
+      "logic_levels": 21,
+      "reported_data_delay_parts_ns": {
+        "cell": 9.182,
+        "route": 20.152,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.6789986185518381,
+      "cell_fraction": 0.3093770005727956,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 24.348,
+          "delay_ns": 9.156,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 40,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/B[23]",
+          "from_node": "u_control/model_thread/fusion/n7013_s1/F"
+        },
+        {
+          "arrival_ns": 33.274,
+          "delay_ns": 6.36,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R34C140[0][B]",
+          "node": "u_control/model_thread/fusion/n8599_s35/I1",
+          "from_node": "u_control/model_thread/fusion/n7157_s/DOUT[39]"
+        },
+        {
+          "arrival_ns": 8.728,
+          "delay_ns": 0.614,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R30C178[0][B]",
+          "node": "u_control/model_thread/fusion/n7024_s1/I1",
+          "from_node": "u_control/model_thread/fusion/n7025_s1/F"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 2.566,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 26.914,
+          "delay_ns": 2.566,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/DOUT[39]"
+        }
+      ]
+    },
+    {
+      "index": 18,
+      "slack_ns": -9.659,
+      "source": "u_control/model_thread/policy/actions_61_s1/Q",
+      "target": "u_control/model_thread/actuator_map/left_mmps_16_s1/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.002,
+      "data_delay_ns": 29.604,
+      "endpoint_group": "actuator_map",
+      "logic_levels": 17,
+      "reported_data_delay_parts_ns": {
+        "cell": 7.764,
+        "route": 21.495,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.7260843129306851,
+      "cell_fraction": 0.2622618565058776,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 18.366,
+          "delay_ns": 11.042,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 89,
+          "site": "DSP_R19[0]",
+          "node": "u_control/model_thread/actuator_map/n92_s/A[8]",
+          "from_node": "u_control/model_thread/actuator_map/n3745_s3/F"
+        },
+        {
+          "arrival_ns": 26.593,
+          "delay_ns": 6.234,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R24C124[3][B]",
+          "node": "u_control/model_thread/actuator_map/n3933_s3/I1",
+          "from_node": "u_control/model_thread/actuator_map/n92_s/DOUT[12]"
+        },
+        {
+          "arrival_ns": 5.652,
+          "delay_ns": 1.179,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R40C125[2][B]",
+          "node": "u_control/model_thread/actuator_map/n41_s7/I1",
+          "from_node": "u_control/model_thread/policy/actions_61_s1/Q"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 1.994,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 20.36,
+          "delay_ns": 1.994,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 7,
+          "site": "DSP_R19[0]",
+          "node": "u_control/model_thread/actuator_map/n92_s/DOUT[12]"
+        }
+      ]
+    },
+    {
+      "index": 19,
+      "slack_ns": -9.649,
+      "source": "u_control/model_thread/policy/actions_61_s1/Q",
+      "target": "u_control/model_thread/actuator_map/left_mmps_17_s1/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.011,
+      "data_delay_ns": 29.603,
+      "endpoint_group": "actuator_map",
+      "logic_levels": 17,
+      "reported_data_delay_parts_ns": {
+        "cell": 7.399,
+        "route": 21.86,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.7384386717562409,
+      "cell_fraction": 0.24994088436982737,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 18.366,
+          "delay_ns": 11.042,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 89,
+          "site": "DSP_R19[0]",
+          "node": "u_control/model_thread/actuator_map/n92_s/A[8]",
+          "from_node": "u_control/model_thread/actuator_map/n3745_s3/F"
+        },
+        {
+          "arrival_ns": 26.593,
+          "delay_ns": 6.234,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R24C124[3][B]",
+          "node": "u_control/model_thread/actuator_map/n3933_s3/I1",
+          "from_node": "u_control/model_thread/actuator_map/n92_s/DOUT[12]"
+        },
+        {
+          "arrival_ns": 5.652,
+          "delay_ns": 1.179,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R40C125[2][B]",
+          "node": "u_control/model_thread/actuator_map/n41_s7/I1",
+          "from_node": "u_control/model_thread/policy/actions_61_s1/Q"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 1.994,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 20.36,
+          "delay_ns": 1.994,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 7,
+          "site": "DSP_R19[0]",
+          "node": "u_control/model_thread/actuator_map/n92_s/DOUT[12]"
+        }
+      ]
+    },
+    {
+      "index": 20,
+      "slack_ns": -9.631,
+      "source": "u_control/model_thread/fusion/egy_0_s0/Q",
+      "target": "u_control/model_thread/fusion/norm_square_y_37_s0/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.062,
+      "data_delay_ns": 29.636,
+      "endpoint_group": "fusion",
+      "logic_levels": 21,
+      "reported_data_delay_parts_ns": {
+        "cell": 9.14,
+        "route": 20.152,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.6799838034822514,
+      "cell_fraction": 0.3084086921311918,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 24.348,
+          "delay_ns": 9.156,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 40,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/B[23]",
+          "from_node": "u_control/model_thread/fusion/n7013_s1/F"
+        },
+        {
+          "arrival_ns": 33.177,
+          "delay_ns": 6.36,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R34C140[1][B]",
+          "node": "u_control/model_thread/fusion/n8601_s35/I1",
+          "from_node": "u_control/model_thread/fusion/n7157_s/DOUT[37]"
+        },
+        {
+          "arrival_ns": 8.728,
+          "delay_ns": 0.614,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R30C178[0][B]",
+          "node": "u_control/model_thread/fusion/n7024_s1/I1",
+          "from_node": "u_control/model_thread/fusion/n7025_s1/F"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 2.47,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 26.818,
+          "delay_ns": 2.47,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/DOUT[37]"
+        }
+      ]
+    },
+    {
+      "index": 21,
+      "slack_ns": -9.577,
+      "source": "u_control/model_thread/fusion/egy_0_s0/Q",
+      "target": "u_control/model_thread/fusion/norm_square_y_35_s0/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.062,
+      "data_delay_ns": 29.583,
+      "endpoint_group": "fusion",
+      "logic_levels": 21,
+      "reported_data_delay_parts_ns": {
+        "cell": 8.984,
+        "route": 20.254,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.6846499678869622,
+      "cell_fraction": 0.3036879288780719,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 24.348,
+          "delay_ns": 9.156,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 40,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/B[23]",
+          "from_node": "u_control/model_thread/fusion/n7013_s1/F"
+        },
+        {
+          "arrival_ns": 33.118,
+          "delay_ns": 6.462,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R34C142[3][A]",
+          "node": "u_control/model_thread/fusion/n8603_s35/I1",
+          "from_node": "u_control/model_thread/fusion/n7157_s/DOUT[35]"
+        },
+        {
+          "arrival_ns": 8.728,
+          "delay_ns": 0.614,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R30C178[0][B]",
+          "node": "u_control/model_thread/fusion/n7024_s1/I1",
+          "from_node": "u_control/model_thread/fusion/n7025_s1/F"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 2.308,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 26.656,
+          "delay_ns": 2.308,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/DOUT[35]"
+        }
+      ]
+    },
+    {
+      "index": 22,
+      "slack_ns": -9.568,
+      "source": "u_control/model_thread/fusion/egy_0_s0/Q",
+      "target": "u_control/model_thread/fusion/norm_square_y_33_s0/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.062,
+      "data_delay_ns": 29.573,
+      "endpoint_group": "fusion",
+      "logic_levels": 21,
+      "reported_data_delay_parts_ns": {
+        "cell": 8.927,
+        "route": 20.302,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.6865045818821222,
+      "cell_fraction": 0.30186318601426976,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 24.348,
+          "delay_ns": 9.156,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 40,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/B[23]",
+          "from_node": "u_control/model_thread/fusion/n7013_s1/F"
+        },
+        {
+          "arrival_ns": 33.114,
+          "delay_ns": 6.509,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R34C142[2][B]",
+          "node": "u_control/model_thread/fusion/n8605_s35/I1",
+          "from_node": "u_control/model_thread/fusion/n7157_s/DOUT[33]"
+        },
+        {
+          "arrival_ns": 8.728,
+          "delay_ns": 0.614,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R30C178[0][B]",
+          "node": "u_control/model_thread/fusion/n7024_s1/I1",
+          "from_node": "u_control/model_thread/fusion/n7025_s1/F"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 2.257,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 26.605,
+          "delay_ns": 2.257,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/DOUT[33]"
+        }
+      ]
+    },
+    {
+      "index": 23,
+      "slack_ns": -9.552,
+      "source": "u_control/model_thread/fusion/egx_0_s0/Q",
+      "target": "u_control/model_thread/fusion/norm_square_x_46_s0/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.041,
+      "data_delay_ns": 29.535,
+      "endpoint_group": "fusion",
+      "logic_levels": 20,
+      "reported_data_delay_parts_ns": {
+        "cell": 10.969,
+        "route": 18.222,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.6169629253428136,
+      "cell_fraction": 0.37138987641780935,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 25.845,
+          "delay_ns": 9.98,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 42,
+          "site": "DSP_R37[18]",
+          "node": "u_control/model_thread/fusion/n6963_s/B[21]",
+          "from_node": "u_control/model_thread/fusion/n6821_s0/F"
+        },
+        {
+          "arrival_ns": 33.144,
+          "delay_ns": 4.407,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R34C131[0][B]",
+          "node": "u_control/model_thread/fusion/n8528_s35/I1",
+          "from_node": "u_control/model_thread/fusion/n6963_s/DOUT[46]"
+        },
+        {
+          "arrival_ns": 5.317,
+          "delay_ns": 0.908,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R31C176[3][A]",
+          "node": "u_control/model_thread/fusion/n6838_s1/I3",
+          "from_node": "u_control/model_thread/fusion/egx_0_s0/Q"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 2.892,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 28.737,
+          "delay_ns": 2.892,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "DSP_R37[18]",
+          "node": "u_control/model_thread/fusion/n6963_s/DOUT[46]"
+        }
+      ]
+    },
+    {
+      "index": 24,
+      "slack_ns": -9.515,
+      "source": "u_control/model_thread/fusion/egy_0_s0/Q",
+      "target": "u_control/model_thread/fusion/norm_square_y_31_s0/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.059,
+      "data_delay_ns": 29.516,
+      "endpoint_group": "fusion",
+      "logic_levels": 21,
+      "reported_data_delay_parts_ns": {
+        "cell": 8.793,
+        "route": 20.379,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.6904390838867056,
+      "cell_fraction": 0.29790622035506165,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 24.348,
+          "delay_ns": 9.156,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 40,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/B[23]",
+          "from_node": "u_control/model_thread/fusion/n7013_s1/F"
+        },
+        {
+          "arrival_ns": 33.047,
+          "delay_ns": 6.587,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R31C141[0][B]",
+          "node": "u_control/model_thread/fusion/n8607_s35/I1",
+          "from_node": "u_control/model_thread/fusion/n7157_s/DOUT[31]"
+        },
+        {
+          "arrival_ns": 8.728,
+          "delay_ns": 0.614,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R30C178[0][B]",
+          "node": "u_control/model_thread/fusion/n7024_s1/I1",
+          "from_node": "u_control/model_thread/fusion/n7025_s1/F"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 2.112,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 26.46,
+          "delay_ns": 2.112,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "DSP_R19[4]",
+          "node": "u_control/model_thread/fusion/n7157_s/DOUT[31]"
+        }
+      ]
+    },
+    {
+      "index": 25,
+      "slack_ns": -9.473,
+      "source": "u_control/model_thread/policy/actions_61_s1/Q",
+      "target": "u_control/model_thread/actuator_map/left_mmps_20_s1/D",
+      "launch_clock": "clk50:[R]",
+      "latch_clock": "clk50:[R]",
+      "relationship_ns": 20.0,
+      "skew_ns": -0.008,
+      "data_delay_ns": 29.424,
+      "endpoint_group": "actuator_map",
+      "logic_levels": 17,
+      "reported_data_delay_parts_ns": {
+        "cell": 7.129,
+        "route": 21.951,
+        "tC2Q": 0.344
+      },
+      "route_fraction": 0.7460236541598695,
+      "cell_fraction": 0.24228520935290918,
+      "largest_route_segments": [
+        {
+          "arrival_ns": 18.366,
+          "delay_ns": 11.042,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 89,
+          "site": "DSP_R19[0]",
+          "node": "u_control/model_thread/actuator_map/n92_s/A[8]",
+          "from_node": "u_control/model_thread/actuator_map/n3745_s3/F"
+        },
+        {
+          "arrival_ns": 26.593,
+          "delay_ns": 6.234,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R24C124[3][B]",
+          "node": "u_control/model_thread/actuator_map/n3933_s3/I1",
+          "from_node": "u_control/model_thread/actuator_map/n92_s/DOUT[12]"
+        },
+        {
+          "arrival_ns": 5.652,
+          "delay_ns": 1.179,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "site": "R40C125[2][B]",
+          "node": "u_control/model_thread/actuator_map/n41_s7/I1",
+          "from_node": "u_control/model_thread/policy/actions_61_s1/Q"
+        }
+      ],
+      "DSP_site_insertion_delay_sum_ns": 1.994,
+      "DSP_site_insertion_events": [
+        {
+          "arrival_ns": 20.36,
+          "delay_ns": 1.994,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 7,
+          "site": "DSP_R19[0]",
+          "node": "u_control/model_thread/actuator_map/n92_s/DOUT[12]"
+        }
+      ]
+    }
+  ],
+  "sample_endpoint_groups": {
+    "actuator_map": {
+      "reported_paths": 8,
+      "unique_sources": [
+        "u_control/model_thread/policy/actions_61_s1/Q"
+      ],
+      "unique_targets": [
+        "u_control/model_thread/actuator_map/left_mmps_15_s1/D",
+        "u_control/model_thread/actuator_map/left_mmps_16_s1/D",
+        "u_control/model_thread/actuator_map/left_mmps_17_s1/D",
+        "u_control/model_thread/actuator_map/left_mmps_18_s1/D",
+        "u_control/model_thread/actuator_map/left_mmps_20_s1/D",
+        "u_control/model_thread/actuator_map/left_mmps_21_s1/D",
+        "u_control/model_thread/actuator_map/left_mmps_22_s1/D",
+        "u_control/model_thread/actuator_map/left_mmps_30_s1/D"
+      ],
+      "slack_ns": {
+        "minimum": -10.124,
+        "maximum": -9.473,
+        "mean": -9.839125,
+        "sum": -78.713
+      },
+      "data_delay_ns": {
+        "minimum": 29.424,
+        "maximum": 30.066,
+        "mean": 29.784375,
+        "sum": 238.275
+      },
+      "logic_levels": {
+        "minimum": 17,
+        "maximum": 19,
+        "mean": 17.75,
+        "sum": 142
+      },
+      "cell_delay_ns": {
+        "minimum": 7.129,
+        "maximum": 7.764,
+        "mean": 7.59625,
+        "sum": 60.77
+      },
+      "route_delay_ns": {
+        "minimum": 21.495,
+        "maximum": 21.96,
+        "mean": 21.843875,
+        "sum": 174.751
+      },
+      "weighted_route_fraction": 0.7334004826356101,
+      "weighted_cell_fraction": 0.255041443709999,
+      "sample_only_not_total_group_violation_count": true
+    },
+    "fusion": {
+      "reported_paths": 17,
+      "unique_sources": [
+        "u_control/model_thread/fusion/egx_0_s0/Q",
+        "u_control/model_thread/fusion/egy_0_s0/Q"
+      ],
+      "unique_targets": [
+        "u_control/model_thread/fusion/norm_square_x_46_s0/D",
+        "u_control/model_thread/fusion/norm_square_y_31_s0/D",
+        "u_control/model_thread/fusion/norm_square_y_33_s0/D",
+        "u_control/model_thread/fusion/norm_square_y_34_s0/D",
+        "u_control/model_thread/fusion/norm_square_y_35_s0/D",
+        "u_control/model_thread/fusion/norm_square_y_36_s0/D",
+        "u_control/model_thread/fusion/norm_square_y_37_s0/D",
+        "u_control/model_thread/fusion/norm_square_y_38_s0/D",
+        "u_control/model_thread/fusion/norm_square_y_39_s0/D",
+        "u_control/model_thread/fusion/norm_square_y_40_s0/D",
+        "u_control/model_thread/fusion/norm_square_y_41_s0/D",
+        "u_control/model_thread/fusion/norm_square_y_42_s0/D",
+        "u_control/model_thread/fusion/norm_square_y_43_s0/D",
+        "u_control/model_thread/fusion/norm_square_y_44_s0/D",
+        "u_control/model_thread/fusion/norm_square_y_45_s0/D",
+        "u_control/model_thread/fusion/norm_square_y_46_s0/D",
+        "u_control/model_thread/fusion/norm_square_y_47_s0/D"
+      ],
+      "slack_ns": {
+        "minimum": -10.09,
+        "maximum": -9.515,
+        "mean": -9.797823529411765,
+        "sum": -166.563
+      },
+      "data_delay_ns": {
+        "minimum": 29.516,
+        "maximum": 30.099,
+        "mean": 29.801294117647057,
+        "sum": 506.62200000000007
+      },
+      "logic_levels": {
+        "minimum": 20,
+        "maximum": 21,
+        "mean": 20.941176470588236,
+        "sum": 356
+      },
+      "cell_delay_ns": {
+        "minimum": 8.793,
+        "maximum": 10.969,
+        "mean": 9.268470588235294,
+        "sum": 157.564
+      },
+      "route_delay_ns": {
+        "minimum": 18.222,
+        "maximum": 20.554,
+        "mean": 20.188470588235294,
+        "sum": 343.20400000000006
+      },
+      "weighted_route_fraction": 0.6774360371243254,
+      "weighted_cell_fraction": 0.3110089968457745,
+      "sample_only_not_total_group_violation_count": true
+    }
+  },
+  "high_fanout_report": [
+    {
+      "fanout": 44450,
+      "net": "clk50_d",
+      "reported_worst_slack_ns": -10.124,
+      "max_delay_ns": 3.603
+    },
+    {
+      "fanout": 9160,
+      "net": "u_control/n2371_7",
+      "reported_worst_slack_ns": 2.705,
+      "max_delay_ns": 4.345
+    },
+    {
+      "fanout": 6885,
+      "net": "r2",
+      "reported_worst_slack_ns": 0.854,
+      "max_delay_ns": 4.002
+    },
+    {
+      "fanout": 4366,
+      "net": "u_control/model_thread/observation/n331_7",
+      "reported_worst_slack_ns": 2.463,
+      "max_delay_ns": 5.381
+    },
+    {
+      "fanout": 4032,
+      "net": "u_control/model_thread/policy/snapshot_0_9",
+      "reported_worst_slack_ns": 6.428,
+      "max_delay_ns": 4.339
+    },
+    {
+      "fanout": 4001,
+      "net": "u_control/model_thread/observation/n15679_10",
+      "reported_worst_slack_ns": 11.75,
+      "max_delay_ns": 6.981
+    },
+    {
+      "fanout": 1000,
+      "net": "u_control/model_thread/policy/n1700_10",
+      "reported_worst_slack_ns": 5.65,
+      "max_delay_ns": 5.99
+    },
+    {
+      "fanout": 1000,
+      "net": "u_control/model_thread/policy/n1700_11",
+      "reported_worst_slack_ns": 10.982,
+      "max_delay_ns": 5.513
+    },
+    {
+      "fanout": 1000,
+      "net": "u_control/model_thread/policy/n1700_12",
+      "reported_worst_slack_ns": 6.629,
+      "max_delay_ns": 5.304
+    },
+    {
+      "fanout": 1000,
+      "net": "u_control/model_thread/policy/n1700_13",
+      "reported_worst_slack_ns": 4.615,
+      "max_delay_ns": 7.931
+    }
+  ],
+  "route_congestion_report": [
+    {
+      "grid": "R50C80",
+      "reported_congestion": 0.903
+    },
+    {
+      "grid": "R50C72",
+      "reported_congestion": 0.889
+    },
+    {
+      "grid": "R22C45",
+      "reported_congestion": 0.875
+    },
+    {
+      "grid": "R61C67",
+      "reported_congestion": 0.875
+    },
+    {
+      "grid": "R68C74",
+      "reported_congestion": 0.875
+    },
+    {
+      "grid": "R69C73",
+      "reported_congestion": 0.875
+    },
+    {
+      "grid": "R15C56",
+      "reported_congestion": 0.875
+    },
+    {
+      "grid": "R58C71",
+      "reported_congestion": 0.875
+    },
+    {
+      "grid": "R52C76",
+      "reported_congestion": 0.875
+    },
+    {
+      "grid": "R68C69",
+      "reported_congestion": 0.861
+    }
+  ],
+  "confirmed_next_bottleneck_outside_fusion_and_action_map": null,
+  "reason": "Every available listed setup path ends in actuator_map or fusion norm_square. The saved text, HTML and GUI timing files all cap setup at25. The other3756 failing endpoints have no exported identity/slack/cell-route details here.",
+  "non_conclusions": [
+    "NoNAV endpoint in top25 does not prove NAV50MHz.",
+    "Do not treat25 path sample group counts or route fractions as full3781 endpoint module distribution.",
+    "The non-clock nets in the top10 high-fanout table have positive reported worst slack; this is neither a full timing signoff nor evidence that high fanout caused unlisted setup failures.",
+    "Congestion grids are reported but have not been linked to unlisted failing endpoint identities."
+  ],
+  "priorities": [
+    {
+      "priority": 1,
+      "action": "UsePNR36 actual final report to measure whether the square pipeline removes the observed norm_square failures, while retaining original50/100MHz constraints."
+    },
+    {
+      "priority": 2,
+      "action": "Evaluate the separately proved action-CSA candidate against the actions-to-actuator mapping failures; its actual physical timing must decide usefulness."
+    },
+    {
+      "priority": 3,
+      "action": "After these observed bottlenecks are relieved, obtain a larger/hierarchy-grouped saved timing endpoint export before selecting another RTL target. No such STA rerun or tool session is executed here."
+    }
+  ],
+  "PNR36_observation": {
+    "checked_at": "2026-10-26T02:26:24.788934+08:00",
+    "build": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_pnr36",
+    "final_files_present": {
+      "g2_top.tr": false,
+      "g2_top.rpt.txt": false,
+      "g2_top.vo": false
+    },
+    "last_logged_phase": "[60%] Routing Phase 0 completed",
+    "final_timing_available": false
+  },
+  "execution_policy": {
+    "priority": 64,
+    "affinity": [
+      16
+    ]
+  },
+  "new_test_SYN_PNR_or_input_changes": false,
+  "full50MHz_or_deployment_acceptance": false
+}

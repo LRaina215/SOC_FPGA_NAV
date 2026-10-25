@@ -1,0 +1,1520 @@
+{
+  "passed": true,
+  "review_completed": true,
+  "recorded_at": "2026-10-26T02:28:42.043815+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35",
+  "baseline": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32",
+  "reference": "F:\\nav_integration_g2_20261023\\fusion32_CDC52_preflight1\\review_result.json",
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-26T01:40:51.087282+08:00",
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 22316,
+    "elapsed_s": 2570.8279999999795,
+    "no_observable_progress_s": 2.0,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        2164,
+        1792952617464682000
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        1724,
+        1792952617464682000
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2388180,
+        1792950445936029100
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        13826251,
+        1792950446408943400
+      ],
+      [
+        "impl\\pnr\\g2_top.pr",
+        238642736,
+        1792952578785275300
+      ],
+      [
+        "impl\\pnr\\g2_top.tr",
+        547343,
+        1792952617350824300
+      ],
+      [
+        "impl\\pnr\\g2_top.rpt.txt",
+        92704,
+        1792952606869077600
+      ],
+      [
+        "impl\\pnr\\g2_top.vo",
+        44583016,
+        1792952610812603800
+      ]
+    ],
+    "tool_exit": 0,
+    "ended_at": "2026-10-26T02:23:41.906573+08:00"
+  },
+  "scope": "exact26 first-stage physical identity,52 active commands and26 reported delays; not full CDC or deployment acceptance",
+  "routing_passed": true,
+  "actual_BSRAM": 332.0,
+  "source_and_CST_byte_identical": true,
+  "physical_netlist_identity_except_creation_header": {
+    "passed": true,
+    "lines": 1026412,
+    "differences": [
+      {
+        "line": 5,
+        "before": "//Created Time: Mon Oct 26 00:39:05 2026",
+        "after": "//Created Time: Mon Oct 26 02:23:27 2026"
+      }
+    ],
+    "all_actual_primitive_connections_parameters_and_INIT_identical": true,
+    "placement_or_route_delay_identity_claimed": false
+  },
+  "all78_actual_register_kinds_connections_effective_INIT_and_reset_CE_clock_preserved": true,
+  "source32_actual_replica_proofs_inherited": [
+    {
+      "consumer": "u_nav/u_rf/r_NETL_CTRL_4_s0",
+      "pin": "D",
+      "original_state": {
+        "name": "u_nav/wd_q_4_s0",
+        "kind": "DFFRE",
+        "ports": {
+          "Q": [
+            "u_nav/wd_q[4]"
+          ],
+          "D": [
+            "s_wdata[4]"
+          ],
+          "CLK": [
+            "clk50_d"
+          ],
+          "RESET": [
+            "GND"
+          ],
+          "CE": [
+            "u_nav/a_q_15_15"
+          ]
+        }
+      },
+      "physical_replica": {
+        "name": "u_nav/gowin_replicate_reg_wd_q[4]_1",
+        "kind": "DFFRE",
+        "ports": {
+          "D": [
+            "s_wdata[4]"
+          ],
+          "CLK": [
+            "clk50_d"
+          ],
+          "CE": [
+            "u_nav/a_q_15_15"
+          ],
+          "RESET": [
+            "GND"
+          ],
+          "Q": [
+            "u_nav/gowin_reg_wd_q[4]_1"
+          ]
+        }
+      },
+      "original_parameters": {
+        "INIT": "1'b0"
+      },
+      "replica_parameters": {
+        "INIT": "1'b0"
+      },
+      "all_state_inputs_identical": true,
+      "effective_INIT_identical": true,
+      "proof": "Same initial state and identical D/CLK/CE/reset transition; inductive state equality, no generated-name assumption"
+    }
+  ],
+  "clocks": [
+    {
+      "name": "clk50",
+      "constraint_mhz": 50.0,
+      "actual_fmax_mhz": 33.197,
+      "levels": 19,
+      "entity": "TOP"
+    },
+    {
+      "name": "rgmii_rxc",
+      "constraint_mhz": 100.0,
+      "actual_fmax_mhz": 104.748,
+      "levels": 9,
+      "entity": "TOP"
+    }
+  ],
+  "setup_violations": 3781,
+  "hold_violations": 0,
+  "baseline_setup_violations": 3781,
+  "baseline_hold_violations": 12,
+  "active_commands": 54,
+  "hold_only_false_paths_active": 26,
+  "max_delay_paths_active": 26,
+  "all26_explicit_max_delay_slacks_and_physical_data_budgets_passed": true,
+  "groups": {
+    "core_read_gray": {
+      "paths": 12,
+      "budget_ns": 18.0,
+      "route_min_ns": 0.396,
+      "route_max_ns": 1.698,
+      "route_spread_ns": 1.302,
+      "data_C2Q_plus_route_min_ns": 0.74,
+      "data_C2Q_plus_route_max_ns": 2.042,
+      "minimum_reported_slack_ns": 14.507,
+      "second_stage_setup_clean_domain_paths": 12
+    },
+    "rx_clock_monitor": {
+      "paths": 1,
+      "budget_ns": 8.0,
+      "route_min_ns": 0.417,
+      "route_max_ns": 0.417,
+      "route_spread_ns": 0.0,
+      "data_C2Q_plus_route_min_ns": 0.761,
+      "data_C2Q_plus_route_max_ns": 0.761,
+      "minimum_reported_slack_ns": 8.531,
+      "second_stage_setup_clean_domain_paths": 0
+    },
+    "rx_sampling_select": {
+      "paths": 1,
+      "budget_ns": 18.0,
+      "route_min_ns": 2.949,
+      "route_max_ns": 2.949,
+      "route_spread_ns": 0.0,
+      "data_C2Q_plus_route_min_ns": 3.293,
+      "data_C2Q_plus_route_max_ns": 3.293,
+      "minimum_reported_slack_ns": 13.224,
+      "second_stage_setup_clean_domain_paths": 1
+    },
+    "rx_write_gray": {
+      "paths": 12,
+      "budget_ns": 8.0,
+      "route_min_ns": 0.398,
+      "route_max_ns": 1.585,
+      "route_spread_ns": 1.187,
+      "data_C2Q_plus_route_min_ns": 0.742,
+      "data_C2Q_plus_route_max_ns": 1.929,
+      "minimum_reported_slack_ns": 7.412,
+      "second_stage_setup_clean_domain_paths": 0
+    }
+  },
+  "paths": [
+    {
+      "group": "rx_write_gray",
+      "constraint_index": 1,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/wp_b_11_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/wp_g_r1_11_s1/D}] 8.000",
+      "budget_ns": 8.0,
+      "source_register": "u_nav/u_netl/u_rxf/wp_b_11_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_11_s1",
+      "launch_clock": "rgmii_rxc:[R]",
+      "capture_clock": "clk50:[R]",
+      "vendor_setup_exception_slack_ns": 8.36,
+      "data_arrival_ns": 3.731,
+      "data_required_ns": 12.091,
+      "clock_skew_ns": 1.385,
+      "relationship_ns": 8.0,
+      "route_Q_to_D_ns": 0.588,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 0.932,
+      "physical_source_location": "R96C89[2][B]",
+      "physical_first_location": "R98C89[2][A]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_11_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/wp_g_r2_11_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/wp_g_r1_11_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/wp_g_r2_11_s1/D",
+        "clock": "clk50",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 20.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": false,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": true,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "constraint_index": 2,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/wp_g_10_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/wp_g_r1_10_s1/D}] 8.000",
+      "budget_ns": 8.0,
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_10_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_10_s1",
+      "launch_clock": "rgmii_rxc:[R]",
+      "capture_clock": "clk50:[R]",
+      "vendor_setup_exception_slack_ns": 8.498,
+      "data_arrival_ns": 3.593,
+      "data_required_ns": 12.091,
+      "clock_skew_ns": 1.385,
+      "relationship_ns": 8.0,
+      "route_Q_to_D_ns": 0.45,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 0.794,
+      "physical_source_location": "R96C89[2][A]",
+      "physical_first_location": "R98C89[2][B]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_10_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/wp_g_r2_10_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/wp_g_r1_10_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/wp_g_r2_10_s1/D",
+        "clock": "clk50",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 20.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": false,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": true,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "constraint_index": 3,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/wp_g_9_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/wp_g_r1_9_s1/D}] 8.000",
+      "budget_ns": 8.0,
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_9_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_9_s1",
+      "launch_clock": "rgmii_rxc:[R]",
+      "capture_clock": "clk50:[R]",
+      "vendor_setup_exception_slack_ns": 8.542,
+      "data_arrival_ns": 3.541,
+      "data_required_ns": 12.082,
+      "clock_skew_ns": 1.376,
+      "relationship_ns": 8.0,
+      "route_Q_to_D_ns": 0.398,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 0.742,
+      "physical_source_location": "R98C88[1][B]",
+      "physical_first_location": "R98C88[3][A]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_9_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/wp_g_r2_9_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/wp_g_r1_9_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/wp_g_r2_9_s1/D",
+        "clock": "clk50",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 20.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": false,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": true,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "constraint_index": 4,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/wp_g_8_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/wp_g_r1_8_s1/D}] 8.000",
+      "budget_ns": 8.0,
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_8_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_8_s1",
+      "launch_clock": "rgmii_rxc:[R]",
+      "capture_clock": "clk50:[R]",
+      "vendor_setup_exception_slack_ns": 8.131,
+      "data_arrival_ns": 3.983,
+      "data_required_ns": 12.114,
+      "clock_skew_ns": 1.408,
+      "relationship_ns": 8.0,
+      "route_Q_to_D_ns": 0.84,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 1.184,
+      "physical_source_location": "R96C85[1][B]",
+      "physical_first_location": "R97C91[1][A]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_8_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/wp_g_r2_8_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/wp_g_r1_8_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/wp_g_r2_8_s1/D",
+        "clock": "clk50",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 20.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": false,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": true,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "constraint_index": 5,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/wp_g_7_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/wp_g_r1_7_s1/D}] 8.000",
+      "budget_ns": 8.0,
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_7_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_7_s1",
+      "launch_clock": "rgmii_rxc:[R]",
+      "capture_clock": "clk50:[R]",
+      "vendor_setup_exception_slack_ns": 7.959,
+      "data_arrival_ns": 4.151,
+      "data_required_ns": 12.11,
+      "clock_skew_ns": 1.404,
+      "relationship_ns": 8.0,
+      "route_Q_to_D_ns": 1.008,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 1.352,
+      "physical_source_location": "R96C85[3][A]",
+      "physical_first_location": "R95C90[2][A]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_7_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/wp_g_r2_7_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/wp_g_r1_7_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/wp_g_r2_7_s1/D",
+        "clock": "clk50",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 20.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": false,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": true,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "constraint_index": 6,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/wp_g_6_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/wp_g_r1_6_s1/D}] 8.000",
+      "budget_ns": 8.0,
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_6_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_6_s1",
+      "launch_clock": "rgmii_rxc:[R]",
+      "capture_clock": "clk50:[R]",
+      "vendor_setup_exception_slack_ns": 8.558,
+      "data_arrival_ns": 3.539,
+      "data_required_ns": 12.097,
+      "clock_skew_ns": 1.393,
+      "relationship_ns": 8.0,
+      "route_Q_to_D_ns": 0.398,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 0.742,
+      "physical_source_location": "R97C85[0][B]",
+      "physical_first_location": "R97C85[3][B]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_6_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/wp_g_r2_6_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/wp_g_r1_6_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/wp_g_r2_6_s1/D",
+        "clock": "clk50",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 20.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": false,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": true,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "constraint_index": 7,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/wp_g_5_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/wp_g_r1_5_s1/D}] 8.000",
+      "budget_ns": 8.0,
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_5_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_5_s1",
+      "launch_clock": "rgmii_rxc:[R]",
+      "capture_clock": "clk50:[R]",
+      "vendor_setup_exception_slack_ns": 8.533,
+      "data_arrival_ns": 3.556,
+      "data_required_ns": 12.089,
+      "clock_skew_ns": 1.385,
+      "relationship_ns": 8.0,
+      "route_Q_to_D_ns": 0.415,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 0.759,
+      "physical_source_location": "R97C85[0][A]",
+      "physical_first_location": "R97C86[1][B]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_5_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/wp_g_r2_5_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/wp_g_r1_5_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/wp_g_r2_5_s1/D",
+        "clock": "clk50",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 20.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": false,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": true,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "constraint_index": 8,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/wp_g_4_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/wp_g_r1_4_s1/D}] 8.000",
+      "budget_ns": 8.0,
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_4_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_4_s1",
+      "launch_clock": "rgmii_rxc:[R]",
+      "capture_clock": "clk50:[R]",
+      "vendor_setup_exception_slack_ns": 7.412,
+      "data_arrival_ns": 4.685,
+      "data_required_ns": 12.097,
+      "clock_skew_ns": 1.434,
+      "relationship_ns": 8.0,
+      "route_Q_to_D_ns": 1.585,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 1.929,
+      "physical_source_location": "R102C69[0][B]",
+      "physical_first_location": "R97C85[2][B]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_4_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/wp_g_r2_4_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/wp_g_r1_4_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/wp_g_r2_4_s1/D",
+        "clock": "clk50",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 20.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": false,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": true,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "constraint_index": 9,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/wp_g_3_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/wp_g_r1_3_s1/D}] 8.000",
+      "budget_ns": 8.0,
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_3_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_3_s1",
+      "launch_clock": "rgmii_rxc:[R]",
+      "capture_clock": "clk50:[R]",
+      "vendor_setup_exception_slack_ns": 8.548,
+      "data_arrival_ns": 3.541,
+      "data_required_ns": 12.089,
+      "clock_skew_ns": 1.4,
+      "relationship_ns": 8.0,
+      "route_Q_to_D_ns": 0.415,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 0.759,
+      "physical_source_location": "R98C86[0][B]",
+      "physical_first_location": "R97C86[2][A]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_3_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/wp_g_r2_3_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/wp_g_r1_3_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/wp_g_r2_3_s1/D",
+        "clock": "clk50",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 20.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": false,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": true,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "constraint_index": 10,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/wp_g_2_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/wp_g_r1_2_s1/D}] 8.000",
+      "budget_ns": 8.0,
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_2_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_2_s1",
+      "launch_clock": "rgmii_rxc:[R]",
+      "capture_clock": "clk50:[R]",
+      "vendor_setup_exception_slack_ns": 8.377,
+      "data_arrival_ns": 3.712,
+      "data_required_ns": 12.089,
+      "clock_skew_ns": 1.4,
+      "relationship_ns": 8.0,
+      "route_Q_to_D_ns": 0.586,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 0.93,
+      "physical_source_location": "R98C86[1][A]",
+      "physical_first_location": "R97C86[3][A]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_2_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/wp_g_r2_2_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/wp_g_r1_2_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/wp_g_r2_2_s1/D",
+        "clock": "clk50",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 20.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": false,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": true,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "constraint_index": 11,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/wp_g_1_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/wp_g_r1_1_s1/D}] 8.000",
+      "budget_ns": 8.0,
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_1_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_1_s1",
+      "launch_clock": "rgmii_rxc:[R]",
+      "capture_clock": "clk50:[R]",
+      "vendor_setup_exception_slack_ns": 8.567,
+      "data_arrival_ns": 3.541,
+      "data_required_ns": 12.108,
+      "clock_skew_ns": 1.419,
+      "relationship_ns": 8.0,
+      "route_Q_to_D_ns": 0.415,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 0.759,
+      "physical_source_location": "R98C90[1][A]",
+      "physical_first_location": "R98C91[1][B]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_1_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/wp_g_r2_1_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/wp_g_r1_1_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/wp_g_r2_1_s1/D",
+        "clock": "clk50",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 20.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": false,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": true,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "rx_write_gray",
+      "constraint_index": 12,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/wp_g_0_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/wp_g_r1_0_s1/D}] 8.000",
+      "budget_ns": 8.0,
+      "source_register": "u_nav/u_netl/u_rxf/wp_g_0_s0",
+      "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_0_s1",
+      "launch_clock": "rgmii_rxc:[R]",
+      "capture_clock": "clk50:[R]",
+      "vendor_setup_exception_slack_ns": 8.187,
+      "data_arrival_ns": 3.92,
+      "data_required_ns": 12.108,
+      "clock_skew_ns": 1.448,
+      "relationship_ns": 8.0,
+      "route_Q_to_D_ns": 0.824,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 1.168,
+      "physical_source_location": "R103C90[2][B]",
+      "physical_first_location": "R98C91[2][B]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_0_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/wp_g_r2_0_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/wp_g_r1_0_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/wp_g_r2_0_s1/D",
+        "clock": "clk50",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 20.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": false,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": true,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "constraint_index": 13,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/rp_b_11_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/rp_g_w1_11_s1/D}] 18.000",
+      "budget_ns": 18.0,
+      "source_register": "u_nav/u_netl/u_rxf/rp_b_11_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_11_s1",
+      "launch_clock": "clk50:[R]",
+      "capture_clock": "rgmii_rxc:[R]",
+      "vendor_setup_exception_slack_ns": 15.138,
+      "data_arrival_ns": 5.553,
+      "data_required_ns": 20.691,
+      "clock_skew_ns": -1.38,
+      "relationship_ns": 18.0,
+      "route_Q_to_D_ns": 1.045,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 1.389,
+      "physical_source_location": "R101C89[3][B]",
+      "physical_first_location": "R99C85[1][B]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_11_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/rp_g_w2_11_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/rp_g_w1_11_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/rp_g_w2_11_s1/D",
+        "clock": "rgmii_rxc",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 10.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": true,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": false,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "constraint_index": 14,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/rp_g_10_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/rp_g_w1_10_s1/D}] 18.000",
+      "budget_ns": 18.0,
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_10_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_10_s1",
+      "launch_clock": "clk50:[R]",
+      "capture_clock": "rgmii_rxc:[R]",
+      "vendor_setup_exception_slack_ns": 15.774,
+      "data_arrival_ns": 4.908,
+      "data_required_ns": 20.682,
+      "clock_skew_ns": -1.393,
+      "relationship_ns": 18.0,
+      "route_Q_to_D_ns": 0.396,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 0.74,
+      "physical_source_location": "R99C86[2][B]",
+      "physical_first_location": "R99C86[0][B]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_10_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/rp_g_w2_10_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/rp_g_w1_10_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/rp_g_w2_10_s1/D",
+        "clock": "rgmii_rxc",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 10.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": true,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": false,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "constraint_index": 15,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/rp_g_9_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/rp_g_w1_9_s1/D}] 18.000",
+      "budget_ns": 18.0,
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_9_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_9_s1",
+      "launch_clock": "clk50:[R]",
+      "capture_clock": "rgmii_rxc:[R]",
+      "vendor_setup_exception_slack_ns": 15.423,
+      "data_arrival_ns": 5.282,
+      "data_required_ns": 20.705,
+      "clock_skew_ns": -1.391,
+      "relationship_ns": 18.0,
+      "route_Q_to_D_ns": 0.768,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.331,
+      "data_clock_to_Q_plus_route_ns": 1.099,
+      "physical_source_location": "R96C86[3][A]",
+      "physical_first_location": "R95C82[3][B]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_9_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/rp_g_w2_9_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/rp_g_w1_9_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/rp_g_w2_9_s1/D",
+        "clock": "rgmii_rxc",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 10.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": true,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": false,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "constraint_index": 16,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/rp_g_8_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/rp_g_w1_8_s1/D}] 18.000",
+      "budget_ns": 18.0,
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_8_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_8_s1",
+      "launch_clock": "clk50:[R]",
+      "capture_clock": "rgmii_rxc:[R]",
+      "vendor_setup_exception_slack_ns": 14.659,
+      "data_arrival_ns": 6.018,
+      "data_required_ns": 20.677,
+      "clock_skew_ns": -1.399,
+      "relationship_ns": 18.0,
+      "route_Q_to_D_ns": 1.505,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 1.849,
+      "physical_source_location": "R99C86[3][A]",
+      "physical_first_location": "R103C68[3][A]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_8_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/rp_g_w2_8_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/rp_g_w1_8_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/rp_g_w2_8_s1/D",
+        "clock": "rgmii_rxc",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 10.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": true,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": false,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "constraint_index": 17,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/rp_g_7_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/rp_g_w1_7_s1/D}] 18.000",
+      "budget_ns": 18.0,
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_7_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_7_s1",
+      "launch_clock": "clk50:[R]",
+      "capture_clock": "rgmii_rxc:[R]",
+      "vendor_setup_exception_slack_ns": 15.599,
+      "data_arrival_ns": 5.096,
+      "data_required_ns": 20.695,
+      "clock_skew_ns": -1.38,
+      "relationship_ns": 18.0,
+      "route_Q_to_D_ns": 0.584,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 0.928,
+      "physical_source_location": "R99C86[1][B]",
+      "physical_first_location": "R97C86[0][A]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_7_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/rp_g_w2_7_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/rp_g_w1_7_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/rp_g_w2_7_s1/D",
+        "clock": "rgmii_rxc",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 10.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": true,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": false,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "constraint_index": 18,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/rp_g_6_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/rp_g_w1_6_s1/D}] 18.000",
+      "budget_ns": 18.0,
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_6_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_6_s1",
+      "launch_clock": "clk50:[R]",
+      "capture_clock": "rgmii_rxc:[R]",
+      "vendor_setup_exception_slack_ns": 15.582,
+      "data_arrival_ns": 5.115,
+      "data_required_ns": 20.697,
+      "clock_skew_ns": -1.378,
+      "relationship_ns": 18.0,
+      "route_Q_to_D_ns": 0.603,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 0.947,
+      "physical_source_location": "R99C86[2][A]",
+      "physical_first_location": "R98C87[2][B]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_6_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/rp_g_w2_6_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/rp_g_w1_6_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/rp_g_w2_6_s1/D",
+        "clock": "rgmii_rxc",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 10.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": true,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": false,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "constraint_index": 19,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/rp_g_5_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/rp_g_w1_5_s1/D}] 18.000",
+      "budget_ns": 18.0,
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_5_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_5_s1",
+      "launch_clock": "clk50:[R]",
+      "capture_clock": "rgmii_rxc:[R]",
+      "vendor_setup_exception_slack_ns": 15.608,
+      "data_arrival_ns": 5.068,
+      "data_required_ns": 20.677,
+      "clock_skew_ns": -1.371,
+      "relationship_ns": 18.0,
+      "route_Q_to_D_ns": 0.584,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 0.928,
+      "physical_source_location": "R102C68[3][A]",
+      "physical_first_location": "R103C68[0][A]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_5_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/rp_g_w2_5_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/rp_g_w1_5_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/rp_g_w2_5_s1/D",
+        "clock": "rgmii_rxc",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 10.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": true,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": false,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "constraint_index": 20,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/rp_g_4_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/rp_g_w1_4_s1/D}] 18.000",
+      "budget_ns": 18.0,
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_4_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_4_s1",
+      "launch_clock": "clk50:[R]",
+      "capture_clock": "rgmii_rxc:[R]",
+      "vendor_setup_exception_slack_ns": 15.777,
+      "data_arrival_ns": 4.9,
+      "data_required_ns": 20.677,
+      "clock_skew_ns": -1.371,
+      "relationship_ns": 18.0,
+      "route_Q_to_D_ns": 0.415,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 0.759,
+      "physical_source_location": "R102C68[2][B]",
+      "physical_first_location": "R103C68[0][B]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_4_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/rp_g_w2_4_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/rp_g_w1_4_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/rp_g_w2_4_s1/D",
+        "clock": "rgmii_rxc",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 10.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": true,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": false,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "constraint_index": 21,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/rp_g_3_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/rp_g_w1_3_s1/D}] 18.000",
+      "budget_ns": 18.0,
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_3_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_3_s1",
+      "launch_clock": "clk50:[R]",
+      "capture_clock": "rgmii_rxc:[R]",
+      "vendor_setup_exception_slack_ns": 15.534,
+      "data_arrival_ns": 5.129,
+      "data_required_ns": 20.663,
+      "clock_skew_ns": -1.391,
+      "relationship_ns": 18.0,
+      "route_Q_to_D_ns": 0.638,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 0.982,
+      "physical_source_location": "R101C71[2][A]",
+      "physical_first_location": "R102C73[2][B]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_3_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/rp_g_w2_3_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/rp_g_w1_3_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/rp_g_w2_3_s1/D",
+        "clock": "rgmii_rxc",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 10.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": true,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": false,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "constraint_index": 22,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/rp_g_2_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/rp_g_w1_2_s1/D}] 18.000",
+      "budget_ns": 18.0,
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_2_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_2_s1",
+      "launch_clock": "clk50:[R]",
+      "capture_clock": "rgmii_rxc:[R]",
+      "vendor_setup_exception_slack_ns": 14.507,
+      "data_arrival_ns": 6.189,
+      "data_required_ns": 20.695,
+      "clock_skew_ns": -1.359,
+      "relationship_ns": 18.0,
+      "route_Q_to_D_ns": 1.698,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 2.042,
+      "physical_source_location": "R101C71[3][A]",
+      "physical_first_location": "R97C90[3][A]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_2_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/rp_g_w2_2_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/rp_g_w1_2_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/rp_g_w2_2_s1/D",
+        "clock": "rgmii_rxc",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 10.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": true,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": false,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "constraint_index": 23,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/rp_g_1_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/rp_g_w1_1_s1/D}] 18.000",
+      "budget_ns": 18.0,
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_1_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_1_s1",
+      "launch_clock": "clk50:[R]",
+      "capture_clock": "rgmii_rxc:[R]",
+      "vendor_setup_exception_slack_ns": 15.384,
+      "data_arrival_ns": 5.279,
+      "data_required_ns": 20.663,
+      "clock_skew_ns": -1.385,
+      "relationship_ns": 18.0,
+      "route_Q_to_D_ns": 0.794,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 1.138,
+      "physical_source_location": "R102C86[3][A]",
+      "physical_first_location": "R102C83[2][A]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_1_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/rp_g_w2_1_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/rp_g_w1_1_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/rp_g_w2_1_s1/D",
+        "clock": "rgmii_rxc",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 10.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": true,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": false,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "core_read_gray",
+      "constraint_index": 24,
+      "command": "set_max_delay -from [get_pins {u_nav/u_netl/u_rxf/rp_g_0_s0/Q}] -to [get_pins {u_nav/u_netl/u_rxf/rp_g_w1_0_s1/D}] 18.000",
+      "budget_ns": 18.0,
+      "source_register": "u_nav/u_netl/u_rxf/rp_g_0_s0",
+      "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_0_s1",
+      "launch_clock": "clk50:[R]",
+      "capture_clock": "rgmii_rxc:[R]",
+      "vendor_setup_exception_slack_ns": 15.77,
+      "data_arrival_ns": 4.928,
+      "data_required_ns": 20.697,
+      "clock_skew_ns": -1.376,
+      "relationship_ns": 18.0,
+      "route_Q_to_D_ns": 0.417,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 0.761,
+      "physical_source_location": "R98C87[1][A]",
+      "physical_first_location": "R98C87[3][B]",
+      "bounded_delay_passed": true,
+      "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_0_s1",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_nav/u_netl/u_rxf/rp_g_w2_0_s1",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_nav/u_netl/u_rxf/rp_g_w1_0_s1/Q",
+        "target_pin": "u_nav/u_netl/u_rxf/rp_g_w2_0_s1/D",
+        "clock": "rgmii_rxc",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 10.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": true,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": false,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "rx_clock_monitor",
+      "constraint_index": 25,
+      "command": "set_max_delay -from [get_pins {u_lmac/rdiv_5_s0/Q}] -to [get_pins {u_lmac/rsync_0_s0/D}] 8.000",
+      "budget_ns": 8.0,
+      "source_register": "u_lmac/rdiv_5_s0",
+      "first_register": "u_lmac/rsync_0_s0",
+      "launch_clock": "rgmii_rxc:[R]",
+      "capture_clock": "clk50:[R]",
+      "vendor_setup_exception_slack_ns": 8.531,
+      "data_arrival_ns": 3.533,
+      "data_required_ns": 12.064,
+      "clock_skew_ns": 1.385,
+      "relationship_ns": 8.0,
+      "route_Q_to_D_ns": 0.417,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 0.761,
+      "physical_source_location": "R87C65[2][A]",
+      "physical_first_location": "R87C66[0][A]",
+      "bounded_delay_passed": true,
+      "second_register": "u_lmac/rsync_1_s0",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_lmac/rsync_1_s0",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_lmac/rsync_0_s0/Q",
+        "target_pin": "u_lmac/rsync_1_s0/D",
+        "clock": "clk50",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 20.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": false,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": true,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    },
+    {
+      "group": "rx_sampling_select",
+      "constraint_index": 26,
+      "command": "set_max_delay -from [get_pins {u_nav/u_rf/r_NETL_CTRL_4_s0/Q}] -to [get_pins {u_lmac/neg_s_0_s0/D}] 18.000",
+      "budget_ns": 18.0,
+      "source_register": "u_nav/u_rf/r_NETL_CTRL_4_s0",
+      "first_register": "u_lmac/neg_s_0_s0",
+      "launch_clock": "clk50:[R]",
+      "capture_clock": "rgmii_rxc:[R]",
+      "vendor_setup_exception_slack_ns": 13.224,
+      "data_arrival_ns": 7.491,
+      "data_required_ns": 20.715,
+      "clock_skew_ns": -1.391,
+      "relationship_ns": 18.0,
+      "route_Q_to_D_ns": 2.949,
+      "combinational_cell_ns": 0.0,
+      "clock_to_Q_ns": 0.344,
+      "data_clock_to_Q_plus_route_ns": 3.293,
+      "physical_source_location": "R57C73[1][B]",
+      "physical_first_location": "R92C69[2][A]",
+      "bounded_delay_passed": true,
+      "second_register": "u_lmac/neg_s_1_s0",
+      "actual_source_first_second_and_INIT_inherited_by_exact_physical_netlist_identity": true,
+      "actual_first_Q_unique_consumer": [
+        "u_lmac/neg_s_1_s0",
+        "D"
+      ],
+      "all52_exact_endpoint_constraints_active": true,
+      "second_stage": {
+        "source_pin": "u_lmac/neg_s_0_s0/Q",
+        "target_pin": "u_lmac/neg_s_1_s0/D",
+        "clock": "rgmii_rxc",
+        "same_clock": true,
+        "hold_or_setup_exceptions_on_second_stage": false,
+        "setup_constraint_period_ns": 10.0,
+        "matching_public_report_rows": {
+          "setup": [],
+          "hold": []
+        },
+        "hold_passed_by_global_zero_unexcepted_endpoints": true,
+        "setup_passed_by_clean_same_clock_domain_or_explicit_path": true,
+        "setup_unknown_when_domain_has_other_violations_and_no_individual_path": false,
+        "individual_Q_to_D_delay_and_metastability_resolution_time_available": false
+      }
+    }
+  ],
+  "second_stage_hold_timing_passed_paths": 26,
+  "second_stage_setup_clean_domain_or_explicit_paths": 13,
+  "second_stage_setup_individually_unverified_paths": 13,
+  "second_stage_timing_or_same_domain_setup_not_excepted": true,
+  "reported_reset_and_pulse_checks": {
+    "recovery": {
+      "available": true,
+      "reported_rows": 25,
+      "worst_slack_ns": 4.518,
+      "negative_reported_rows": 0
+    },
+    "removal": {
+      "available": true,
+      "reported_rows": 25,
+      "worst_slack_ns": 0.582,
+      "negative_reported_rows": 0
+    },
+    "minimum_pulse_width": {
+      "available": true,
+      "reported_rows": 10,
+      "worst_slack_ns": 2.843,
+      "negative_reported_rows": 0
+    }
+  },
+  "unmet_signoff": [
+    {
+      "topic": "first-to-second metastability resolution/MTBF",
+      "status": "not_signed_off",
+      "evidence": "26 unique two-flop chains and equal INIT/reset/CE proven; individual stage1-Q to stage2-D delays absent from these limited reports; device tau/T0 and event rates unavailable"
+    },
+    {
+      "topic": "second-stage setup in clk50 domain",
+      "status": "not_fully_available",
+      "evidence": "13 destination-clk50 chains remain timed, global setup3781; not listed in 25 worst setup rows, which cannot prove their individual setup slack"
+    },
+    {
+      "topic": "Gray pointer coherency and payload",
+      "status": "partially_supported_not_protocol_signoff",
+      "evidence": "Both 12-bit groups have registered b2g(pointer+1) RTL and actual direct endpoint delays below source-period budget; no formal FIFO occupancy/reset-phase proof or dual-port memory collision/read-after-write/CDC payload acceptance is supplied here"
+    },
+    {
+      "topic": "reset assertion/deassertion and clock absence",
+      "status": "partially_supported_not_full_reset_signoff",
+      "evidence": "RTL nav_rst_sync async-assert/sync-release; reported recovery/removal sampled worst slacks positive. Need actual clock-start/stop/reset sequencing, domain-release invariants and all independently asynchronous reset sources"
+    },
+    {
+      "topic": "pulse width and source-synchronous/async board IO",
+      "status": "internal_report_supported_board_IO_pending",
+      "evidence": "Internal MPW worst table positive under declared clocks. RGMII external PHY timing/skew, async UART/IR/encoder capture, I2C/MDIO electrical/protocol and actuator pulse/reset/fault acceptance remain separate; missing input/output_delay does not make every IO fail"
+    },
+    {
+      "topic": "static RX edge selection",
+      "status": "hardware_sync_proven_software_protocol_pending",
+      "evidence": "rx_neg has a two-stage synchronizer but changing it while a frame is active can alter sampling; safe configuration/quiescence protocol must be accepted"
+    },
+    {
+      "topic": "all remaining crossings",
+      "status": "not_claimed",
+      "evidence": "These52 commands cover only four explicit RGMII/core groups; no blanket asynchronous clock group, resets or other multi-bit/level/pulse crossing is signed off by this audit"
+    }
+  ],
+  "all_physical_paths_compared_not_retimed_or_rebuilt": true,
+  "input_files_modified": false,
+  "new_build_started": false,
+  "programmed": false,
+  "full_CDC_signoff": false,
+  "deployment_accepted": false,
+  "evidence_metadata": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\fusion32_CDC52_preflight1\\review_result.json",
+      "bytes": 134842,
+      "mtime_ns": 1792949879230780200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35\\job.json",
+      "bytes": 2472,
+      "mtime_ns": 1792952629133418600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35\\tool_runtime.json",
+      "bytes": 1357,
+      "mtime_ns": 1792952621906573300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35\\g2.sdc",
+      "bytes": 6571,
+      "mtime_ns": 1792950051047192700
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35\\g2_top.vg",
+      "bytes": 24442439,
+      "mtime_ns": 1792950051045162200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35\\g2.cst",
+      "bytes": 5495,
+      "mtime_ns": 1792950051046864700
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35\\impl\\pnr\\g2_top.tr",
+      "bytes": 547343,
+      "mtime_ns": 1792952617350824300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35\\impl\\pnr\\g2_top.vo",
+      "bytes": 44583016,
+      "mtime_ns": 1792952610812603800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32\\impl\\pnr\\g2_top.vo",
+      "bytes": 44583016,
+      "mtime_ns": 1792946347849585200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32\\impl\\pnr\\g2_top.tr",
+      "bytes": 465681,
+      "mtime_ns": 1792946354023569000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_async_fifo.v",
+      "bytes": 2817,
+      "mtime_ns": 1792936600532515900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_cdc.v",
+      "bytes": 1386,
+      "mtime_ns": 1792936600532515900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\net\\rgmii_mac100.v",
+      "bytes": 14201,
+      "mtime_ns": 1792936600548012600
+    }
+  ]
+}
