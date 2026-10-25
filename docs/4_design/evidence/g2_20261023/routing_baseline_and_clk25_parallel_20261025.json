@@ -1,0 +1,104 @@
+{
+  "recorded_at": "2026-10-25T21:19:57.154623+08:00",
+  "user_authorized_parallel": true,
+  "launch": {
+    "started_at": "2026-10-25T21:17:38.559657+08:00",
+    "user_authorized_parallel_PNR": true,
+    "no_deadlines": true,
+    "available_physical_bytes": 4652695552,
+    "available_commit_bytes": 7397478400,
+    "controllers": [
+      {
+        "case": "baseline",
+        "output": "F:\\nav_integration_g2_20261023\\baseline_rep1_replay_pnr27",
+        "pid": 63980,
+        "created_epoch": 1792934258.5614328,
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\run_routing_replay.py",
+          "baseline"
+        ]
+      },
+      {
+        "case": "clk25",
+        "output": "F:\\nav_integration_g2_20261023\\uart_host_no_sfp_clk25_diag_pnr28",
+        "pid": 44808,
+        "created_epoch": 1792934258.5659103,
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\run_routing_replay.py",
+          "clk25"
+        ]
+      }
+    ],
+    "diagnostic_only": true,
+    "programmed": false
+  },
+  "actual_processes_and_options_checked": [
+    {
+      "case": "baseline",
+      "build": "F:\\nav_integration_g2_20261023\\baseline_rep1_replay_pnr27",
+      "runtime": "F:\\nav_integration_g2_20261023\\baseline_rep1_replay_pnr27\\tool_runtime.json",
+      "job": "F:\\nav_integration_g2_20261023\\baseline_rep1_replay_pnr27\\replay_job.json",
+      "tool_pid": 64096,
+      "tool_created_epoch": 1792934258.8514223,
+      "controller_pid": 63980,
+      "started_at": "2026-10-25T21:17:38.849127+08:00",
+      "total_limit_s": 0,
+      "silent_limit_s": 0,
+      "actual_PNR_options_equal_reference": true,
+      "source": "F:\\nav_integration_g2_20261022\\directed_static_coverage_rep1_effective50"
+    },
+    {
+      "case": "clk25",
+      "build": "F:\\nav_integration_g2_20261023\\uart_host_no_sfp_clk25_diag_pnr28",
+      "runtime": "F:\\nav_integration_g2_20261023\\uart_host_no_sfp_clk25_diag_pnr28\\tool_runtime.json",
+      "job": "F:\\nav_integration_g2_20261023\\uart_host_no_sfp_clk25_diag_pnr28\\replay_job.json",
+      "tool_pid": 54744,
+      "tool_created_epoch": 1792934258.851413,
+      "controller_pid": 44808,
+      "started_at": "2026-10-25T21:17:38.849127+08:00",
+      "total_limit_s": 0,
+      "silent_limit_s": 0,
+      "actual_PNR_options_equal_reference": true,
+      "source": "F:\\nav_integration_g2_20261023\\uart_host_no_sfp_pnr26"
+    }
+  ],
+  "input_bytes_unchanged_except_declared_clk_period": true,
+  "baseline_route_option": 0,
+  "PNR28_route_option": 2,
+  "clk25_only_SDC_change": "clk50 period20ns ->40ns; rgmii10ns and26 hold+26 max-delay unchanged; global_freq50 unchanged",
+  "physical_clock_changed": false,
+  "diagnostic_only": true,
+  "deployment_accepted": false,
+  "memory_cleanup": {
+    "recorded_at": "2026-10-25T21:15:15.418606+08:00",
+    "user_authorized_nonessential_cleanup": true,
+    "before": {
+      "physical_bytes": 4724633600,
+      "commit_bytes": 7582228480
+    },
+    "after": {
+      "physical_bytes": 4724617216,
+      "commit_bytes": 7582228480
+    },
+    "actions": [
+      {
+        "wallpaper_action_error": "NoSuchProcess"
+      }
+    ],
+    "Zcode_and_ChatGPT_not_touched": true,
+    "RK_services_not_touched": true,
+    "documents_browsers_and_system_services_not_touched": true
+  },
+  "interpretation_limits": [
+    "baseline reroute success/failure alone does not prove universal reproducibility or impossibility",
+    "clk25 route success shows sensitivity to this SDC change, not physical25MHz/125Hz deployment acceptance",
+    "clk25 route failure does not uniquely prove pure congestion; 100MHz/CDC constraints and algorithm/allocation effects remain"
+  ],
+  "programmed": false
+}

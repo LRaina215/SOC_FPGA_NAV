@@ -220,3 +220,18 @@ OLED档PNR21已于16:54:05启动真实工具13840（创建16:54:05.119888）、�
 经2/4GiB启动门槛（约3.685/5.977GiB），唯一`uart_host_no_sfp_pnr26`于19:42:50.134366实际启动工具24304（创建19:42:50.190971），包装52112、控制63304；父子/目录/命令及真实cmd.do已读回：50MHz、timing1/place1/route2/复制1/宽拆分1/correct_hold1，未使用SerDes CSR。工具已通过网表/物理约束解析进入布局，总0/静默0，无截止、无其它大构建。当前未布通、物理资源与全部时序均未知。本轮为显式diagnostic_only，不能凭位流或资源门槛自动烧录；串口完整业务、主机断连停止、物理时序和IO等全过后才能正式释放。见[真实PNR26启动](evidence/g2_20261023/sfp_off_uart_PNR26_started_20261025.json)。
 
 RK双串口现场已复核：CH340曾被BRLTTY误识别抢占；仅给当前USB路径的对应规则加排除，备份规则并恢复ch341，未停Web/ModemManager/相机。当前`/dev/yuntuo-ctl→ttyUSB0`、`/dev/yuntuo-fpga→ttyACM0`（CH9102 serial5910012847）均出现且未被占用；没有打开串口或发动作，RK仍为原mock UDP。用户提供的SSH凭据只保存到本机私有连接文档供后续复用，不提交口令；JTAG下载线保留PC，两串口接RK不占JTAG。详见[双UART现场与业务边界](g2_dual_uart_contract_20261025.md)。
+
+## 21:07 PNR26实际去SFP对照
+
+**2026-10-25 21:07 PNR26去SFP对照自然失败226条，RAM实际323/340。** 工具于20:55:41结束，cancelled=false，总时限0/静默0，厂商总1h12m39s、布局6m17s、Routing Phase1为1h6m21s、峰值2199MB；24304/52112/63304均已退出。Logic83676、FF40758、CLS53905/69120、DSP151.5，PRIMARY/LW仍8/8。相对正确完整SFP的PNR15（184/326），RAM少3、Logic少6137、FF少2888，但未布通多42；去掉SFP没有解决问题，也不能将SFP或RAM总量单独认定唯一根因。没有.tr或实际setup/hold，52条雷达约束有效延迟、全部CDC/复位/脉宽/IO仍未签核；不是时序0违规。见[PNR26真实最终结果](../4_design/evidence/g2_20261023/sfp_off_uart_final_unrouted226_20261025.json)。
+
+当前无活动PNR，不等旧PID、不原样重跑；继续核对10宽拆分、实际全局分配、26雷达物理连接和可得失败结构。双UART基础链路只读核对与独立失联软件候选并行，后者既有3240项轻量合同不能代替RV32/完整回归、硬响应边界或实车停稳；恢复队列和显式idle握手继续复审。当前镜像不更换，未写寄存器/发动作或烧录。所有后续PNR仍总0/静默0，不设置截止。
+
+
+## 21:18 冻结重放与25MHz约束诊断
+
+**2026-10-25 21:18 按用户新授权并行启动两项冻结布线诊断，替代新分配变体。** PNR27为`baseline_rep1_replay_pnr27`，复用`directed_static_coverage_rep1_effective50`原VG/CST/SDC字节，原TCL仅替换输出路径；实际工具64096创建21:17:38.851422，控制63980。PNR28为`uart_host_no_sfp_clk25_diag_pnr28`，PNR26原VG/CST逐字相同，仅SDC的clk50从20ns改40ns，100MHz雷达与26 hold-only＋26 max-delay保持，global_freq仍50；工具54744创建21:17:38.851413，控制44808。两轮均21:17:38实际启动、已进入布局，真实cmd.do除路径外分别与原轮逐项相同，旧轮route0、新轮route2均保留。启动约4.33GiB物理/6.89GiB提交，总0/静默0无截止。检查时动态壁纸已自行退出，未结束Zcode/ChatGPT/文档/RK服务。见[两轮真实并行启动](../4_design/evidence/g2_20261023/routing_baseline_and_clk25_parallel_20261025.json)。
+
+PNR26存储实际323块全部核算，CPU64/控制44/导航215，10宽拆分全匹配；14请求、两真钟与26雷达物理连接通过，后者不代表52约束有效延迟/完整CDC签核。旧布通→PNR26为RAM332→323、Logic89584→83676、LUT52789→50110、FF39957→40758、CLS55557→53905、DSP163.5→151.5；寄存器增加801，不是43k+。旧版有2真实时钟、PRIMARY/LW各8/8，且50MHz只报26.313MHz、5003 setup/8全局hold违规，历史布通不等于时序通过。63个共同RTL中52逐字相同、11改变，新加host_control_tx；开关数不等于线数，也没有实际拥塞/失败网身份来证明全部窄化都增线。见[同口径真实比较](../4_design/evidence/g2_20261023/sfp_off_uart_vs_old_routed_baseline_20261025.json)。一次基线复跑失败不能证明50MHz系统性不可行；40ns诊断失败也不能单独证明纯拥塞，成功也不代表物理降频或125Hz部署通过。
+
+RK双UART本轮基础只读实测：P11在20.04秒收1998帧完整126字节V2、CRC0/缺序0、设备时间10ms连续递增；持续status10/sensor_error1/fusion_flags1、推理计数0，证明链路传输而非BMI/平衡/停稳。CH9102只读SYS_ID查询0应答，版本未验证；没有发送任务或写寄存器，mock UDP配置保持。独立失联候选继续修正旧队列idle恢复和正常新任务握手，不把轻量合同或32位时间戳当USB迟到会话证明。见[基础实测](../4_design/evidence/g2_20261023/rk_dual_uart_baseline_readonly_20261025.json)。

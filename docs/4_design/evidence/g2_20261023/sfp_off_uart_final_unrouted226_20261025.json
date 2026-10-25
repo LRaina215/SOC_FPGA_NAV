@@ -1,0 +1,141 @@
+{
+  "recorded_at": "2026-10-25T21:07:44.731757+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\uart_host_no_sfp_pnr26",
+  "source": "F:\\nav_integration_g2_20261023\\uart_host_no_sfp_syn22",
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-25T19:42:50.134366+08:00",
+    "max_runtime_s": 0.0,
+    "max_no_observable_progress_s": 0.0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 24304,
+    "elapsed_s": 4371.25,
+    "no_observable_progress_s": 0.0,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        1977566,
+        1792932938183059800
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        1977147,
+        1792932938183059800
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2245360,
+        1792928951391634000
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        13016986,
+        1792928951985222700
+      ],
+      [
+        "impl\\pnr\\g2_top.rpt.txt",
+        93273,
+        1792932935904356000
+      ],
+      [
+        "impl\\pnr\\g2_top.vo",
+        42006577,
+        1792932938183059800
+      ]
+    ],
+    "tool_exit": 1,
+    "ended_at": "2026-10-25T20:55:41.376872+08:00"
+  },
+  "natural_failure": true,
+  "error": "PR0004",
+  "unrouted_nets": 226,
+  "resources": {
+    "logic": {
+      "used": 83676.0,
+      "capacity": 138240.0
+    },
+    "register": {
+      "used": 40758.0,
+      "capacity": 139095.0
+    },
+    "bsram": {
+      "used": 323.0,
+      "capacity": 340.0
+    },
+    "dsp": {
+      "used": 151.5,
+      "capacity": 298.0
+    },
+    "io_port": {
+      "used": 51.0,
+      "capacity": 297.0
+    }
+  },
+  "CLS": 53905,
+  "CLS_capacity": 69120,
+  "vendor_total": "1h12m39s",
+  "vendor_placement": "6m17s",
+  "vendor_routing_phase1": "1h6m21s",
+  "peak_memory_MB": 2199,
+  "original_processes_exited": [
+    24304,
+    52112,
+    63304
+  ],
+  "timing_report": null,
+  "setup_violations": null,
+  "hold_violations": null,
+  "effective_52_radar_constraints_verified": false,
+  "physical_memory_split_and_CDC_review": "actual323 primitives,10 splits,14 allocations and26 radar connections checked; no timing/active constraint signoff",
+  "global_resources": {
+    "PRIMARY": [
+      8,
+      8
+    ],
+    "LW": [
+      8,
+      8
+    ]
+  },
+  "comparison_to_correct_SFP_PNR15": {
+    "unrouted_before": 184,
+    "unrouted_after": 226,
+    "unrouted_delta": 42,
+    "RAM_before": 326.0,
+    "RAM_after": 323.0,
+    "RAM_delta": -3.0,
+    "logic_delta": -6137.0,
+    "register_delta": -2888.0
+  },
+  "conclusions": {
+    "SFP_disabled_did_not_resolve_routing": true,
+    "SFP_sole_root_cause_proven": false,
+    "RAM_count_only_cause_proven": false,
+    "failed_net_identities_available": false,
+    "timing_pass_proven": false,
+    "deployment_accepted": false
+  },
+  "programmed": false,
+  "remaining": [
+    "physical resource/allocation/26 radar connections review",
+    "real full UART tasks/status/map/telemetry",
+    "host-disconnect software guard and full firmware validation",
+    "physical routing0/setup0/hold0 and complete CDC/reset/IO signoff"
+  ],
+  "actual_BSRAM_by_module": {
+    "CPU": 64,
+    "control": 44,
+    "navigation": 215
+  },
+  "memory_counts_reconciled": true,
+  "matched_wide_splits": 10,
+  "radar_physical_connectivity_passed": true,
+  "physical_review_evidence": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\sfp_off_uart_PNR26_physical_review_20261025.json"
+}

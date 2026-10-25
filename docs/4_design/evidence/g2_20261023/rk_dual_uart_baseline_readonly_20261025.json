@@ -1,0 +1,195 @@
+{
+  "started_at": "2026-10-25T21:09:35.842339+08:00",
+  "existing_image_only": true,
+  "new_joint_image_or_function_passed": false,
+  "production_config_before": {
+    "YUNTUO_FPGA_LINK": "udp:127.0.0.1:9000",
+    "YUNTUO_FPGA_IS_MOCK": "true",
+    "YUNTUO_CONTROL_TELEMETRY": "udp:127.0.0.1:9104"
+  },
+  "no_command_or_register_write_packets": true,
+  "services_restarted": false,
+  "production_configuration_changed": false,
+  "requested_DTR": false,
+  "requested_RTS": false,
+  "electrical_modem_line_transients_measured": false,
+  "port_identity": {
+    "/dev/yuntuo-fpga": {
+      "DEVNAME": "/dev/ttyACM0",
+      "ID_VENDOR_ID": "1a86",
+      "ID_MODEL_ID": "55d4",
+      "ID_SERIAL_SHORT": "5910012847",
+      "ID_USB_DRIVER": "cdc_acm",
+      "ID_PATH": "platform-fc880000.usb-usb-0:1.4:1.0"
+    },
+    "/dev/yuntuo-ctl": {
+      "DEVNAME": "/dev/ttyUSB0",
+      "ID_VENDOR_ID": "1a86",
+      "ID_MODEL_ID": "7523",
+      "ID_USB_DRIVER": "ch341",
+      "ID_PATH": "platform-fc880000.usb-usb-0:1.2:1.0"
+    }
+  },
+  "owners_before": {
+    "/dev/yuntuo-fpga": [],
+    "/dev/yuntuo-ctl": []
+  },
+  "navigation": {
+    "baud": 921600,
+    "query_passed": false,
+    "version_verified": false,
+    "register_write_packets": 0,
+    "error": "LinkError: 读 0x0000 无应答",
+    "transactions": [
+      {
+        "address": "0x0000",
+        "tx_hex": "520000",
+        "rx_hex": "",
+        "requested_at": 241359.057964143
+      }
+    ],
+    "tx_bytes": 3,
+    "rx_bytes": 0
+  },
+  "control_telemetry": {
+    "baud": 230400,
+    "tx_bytes": 0,
+    "capture_seconds_requested": 20,
+    "passive_receive_only": true,
+    "elapsed_s": 20.03935758798616,
+    "rx_bytes": 251904,
+    "valid_frames": 1998,
+    "crc_errors": 0,
+    "protocol_versions": {
+      "2": 1998
+    },
+    "sequence_events": {
+      "next": 1997
+    },
+    "missing_sequence_values": 0,
+    "timestamp_step_ms_histogram": {
+      "10": 1997
+    },
+    "latest_received_age_s": 0.009661721996963024,
+    "device_timestamp_advancing": true,
+    "decoded_stream_freshness_verified": true,
+    "sensor_sample_freshness_independently_verified": false,
+    "physical_stop_or_motion_verified": false,
+    "status_histogram": {
+      "10": 1998
+    },
+    "host_frame_rate_hz": 100.28075629449906,
+    "device_frame_rate_hz": 100.0,
+    "observed_existing_image_field_ranges": {
+      "sensor_error": {
+        "min": 1,
+        "max": 1
+      },
+      "fusion_flags": {
+        "min": 1,
+        "max": 1
+      },
+      "policy_fault": {
+        "min": 0,
+        "max": 0
+      },
+      "left_fault": {
+        "min": 0,
+        "max": 0
+      },
+      "right_fault": {
+        "min": 0,
+        "max": 0
+      },
+      "forward_q12": {
+        "min": 0,
+        "max": 0
+      },
+      "yaw_q12": {
+        "min": 0,
+        "max": 0
+      },
+      "height_q12": {
+        "min": 535,
+        "max": 535
+      },
+      "left_target_mmps": {
+        "min": 0,
+        "max": 0
+      },
+      "right_target_mmps": {
+        "min": 0,
+        "max": 0
+      },
+      "left_cms": {
+        "min": 0,
+        "max": 0
+      },
+      "right_cms": {
+        "min": 0,
+        "max": 0
+      },
+      "left_duty": {
+        "min": 0,
+        "max": 0
+      },
+      "right_duty": {
+        "min": 0,
+        "max": 0
+      },
+      "completed_frames": {
+        "min": 0,
+        "max": 0
+      },
+      "inference_cycles": {
+        "min": 0,
+        "max": 0
+      },
+      "left_control_sequence": {
+        "min": 0,
+        "max": 0
+      },
+      "right_control_sequence": {
+        "min": 0,
+        "max": 0
+      }
+    }
+  },
+  "owners_after": {
+    "/dev/yuntuo-fpga": [],
+    "/dev/yuntuo-ctl": []
+  },
+  "production_config_after": {
+    "YUNTUO_FPGA_LINK": "udp:127.0.0.1:9000",
+    "YUNTUO_FPGA_IS_MOCK": "true",
+    "YUNTUO_CONTROL_TELEMETRY": "udp:127.0.0.1:9104"
+  },
+  "production_configuration_unchanged": true,
+  "completed_at": "2026-10-25T21:09:56.373838+08:00",
+  "limitations": [
+    "Existing SRAM image identity is not established by USB identity or successful serial decoding.",
+    "No NV task, mode, goal, target, map or register write was sent; BoardUartLink.send/recv were never called.",
+    "Device packet time progression is not proof that each sensor field was freshly sampled.",
+    "The running production bridge remains on its existing mock UDP links; no real-UART deployment is accepted."
+  ],
+  "raw_files": {
+    "control_rx": "F:\\nav_integration_g2_20261023\\rk_dual_uart_baseline_probe1\\control_rx.bin",
+    "control_frames": "F:\\nav_integration_g2_20261023\\rk_dual_uart_baseline_probe1\\control_frames.json"
+  },
+  "static_readonly_review": {
+    "BoardUartLink_constructor_read_only_except_input_buffer_discard": true,
+    "send_and_recv_never_called": true,
+    "RegisterBus_wr_and_wr_burst_blocked_by_packet_whitelist": true,
+    "navigation_allowed_read_registers": [
+      "0x0000",
+      "0x0004",
+      "0x0008",
+      "0x1244"
+    ],
+    "actual_only_transmitted_packet": "520000",
+    "control_application_TX_bytes": 0,
+    "no_serial_echo_or_flow_control_enabled": true,
+    "existing_remote_links_source_capture": "F:\\nav_integration_g2_20261023\\rk_dual_uart_baseline_probe1\\links.py",
+    "existing_remote_telemetry_decoder_source_capture": "F:\\nav_integration_g2_20261023\\rk_dual_uart_baseline_probe1\\telemetry.py"
+  }
+}

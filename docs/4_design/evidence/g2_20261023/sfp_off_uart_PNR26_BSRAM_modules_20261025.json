@@ -1,0 +1,1597 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-25T21:19:26.459689+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\uart_host_no_sfp_pnr26",
+  "netlist": {
+    "path": "F:\\nav_integration_g2_20261023\\uart_host_no_sfp_pnr26\\impl\\pnr\\g2_top.vo",
+    "bytes": 42006577,
+    "mtime_ns": 1792932938183059800
+  },
+  "scope": "Actual post-PNR BSRAM primitives only. Distributed RAM16/ROM16, registers and capacity estimates are excluded.",
+  "actual_BSRAM": 323,
+  "by_top": {
+    "u_soc": 64,
+    "u_control": 44,
+    "u_nav": 215
+  },
+  "by_second_level": [
+    {
+      "scope": "u_control/display",
+      "blocks": 2,
+      "by_primitive": {
+        "SDPB": 2
+      }
+    },
+    {
+      "scope": "u_control/model_thread",
+      "blocks": 42,
+      "by_primitive": {
+        "pROM": 20,
+        "pROMX9": 22
+      }
+    },
+    {
+      "scope": "u_nav/g_support.u_support",
+      "blocks": 8,
+      "by_primitive": {
+        "SDPX9B": 8
+      }
+    },
+    {
+      "scope": "u_nav/u_map",
+      "blocks": 74,
+      "by_primitive": {
+        "SDPX9B": 52,
+        "SDPB": 22
+      }
+    },
+    {
+      "scope": "u_nav/u_match",
+      "blocks": 86,
+      "by_primitive": {
+        "SDPX9B": 72,
+        "SDPB": 12,
+        "pROM": 2
+      }
+    },
+    {
+      "scope": "u_nav/u_mbx",
+      "blocks": 2,
+      "by_primitive": {
+        "SDPB": 2
+      }
+    },
+    {
+      "scope": "u_nav/u_neth",
+      "blocks": 1,
+      "by_primitive": {
+        "SDPB": 1
+      }
+    },
+    {
+      "scope": "u_nav/u_netl",
+      "blocks": 3,
+      "by_primitive": {
+        "SDPB": 2,
+        "SDPX9B": 1
+      }
+    },
+    {
+      "scope": "u_nav/u_pp",
+      "blocks": 20,
+      "by_primitive": {
+        "SDPX9B": 20
+      }
+    },
+    {
+      "scope": "u_nav/u_tr",
+      "blocks": 2,
+      "by_primitive": {
+        "pROM": 2
+      }
+    },
+    {
+      "scope": "u_nav/u_xt",
+      "blocks": 19,
+      "by_primitive": {
+        "SDPB": 19
+      }
+    },
+    {
+      "scope": "u_soc/g_lane[0].u_ram",
+      "blocks": 16,
+      "by_primitive": {
+        "SP": 16
+      }
+    },
+    {
+      "scope": "u_soc/g_lane[1].u_ram",
+      "blocks": 16,
+      "by_primitive": {
+        "SP": 16
+      }
+    },
+    {
+      "scope": "u_soc/g_lane[2].u_ram",
+      "blocks": 16,
+      "by_primitive": {
+        "SP": 16
+      }
+    },
+    {
+      "scope": "u_soc/g_lane[3].u_ram",
+      "blocks": 16,
+      "by_primitive": {
+        "SP": 16
+      }
+    }
+  ],
+  "by_third_level": [
+    {
+      "scope": "u_control/display/axes_display.thread",
+      "blocks": 2,
+      "by_primitive": {
+        "SDPB": 2
+      }
+    },
+    {
+      "scope": "u_control/model_thread/ik",
+      "blocks": 3,
+      "by_primitive": {
+        "pROMX9": 2,
+        "pROM": 1
+      }
+    },
+    {
+      "scope": "u_control/model_thread/policy",
+      "blocks": 39,
+      "by_primitive": {
+        "pROM": 19,
+        "pROMX9": 20
+      }
+    },
+    {
+      "scope": "u_nav/g_support.u_support/u_ram",
+      "blocks": 8,
+      "by_primitive": {
+        "SDPX9B": 8
+      }
+    },
+    {
+      "scope": "u_nav/u_map/u_cm0",
+      "blocks": 8,
+      "by_primitive": {
+        "SDPB": 8
+      }
+    },
+    {
+      "scope": "u_nav/u_map/u_cm1",
+      "blocks": 8,
+      "by_primitive": {
+        "SDPB": 8
+      }
+    },
+    {
+      "scope": "u_nav/u_map/u_em",
+      "blocks": 48,
+      "by_primitive": {
+        "SDPX9B": 48
+      }
+    },
+    {
+      "scope": "u_nav/u_map/u_tv",
+      "blocks": 10,
+      "by_primitive": {
+        "SDPX9B": 4,
+        "SDPB": 6
+      }
+    },
+    {
+      "scope": "u_nav/u_match/u_cos",
+      "blocks": 2,
+      "by_primitive": {
+        "pROM": 2
+      }
+    },
+    {
+      "scope": "u_nav/u_match/u_lf",
+      "blocks": 8,
+      "by_primitive": {
+        "SDPB": 8
+      }
+    },
+    {
+      "scope": "u_nav/u_match/u_pb",
+      "blocks": 8,
+      "by_primitive": {
+        "SDPX9B": 8
+      }
+    },
+    {
+      "scope": "u_nav/u_match/u_sm",
+      "blocks": 64,
+      "by_primitive": {
+        "SDPX9B": 64
+      }
+    },
+    {
+      "scope": "u_nav/u_match/u_touch",
+      "blocks": 4,
+      "by_primitive": {
+        "SDPB": 4
+      }
+    },
+    {
+      "scope": "u_nav/u_mbx/u_rxb",
+      "blocks": 2,
+      "by_primitive": {
+        "SDPB": 2
+      }
+    },
+    {
+      "scope": "u_nav/u_neth/u_txf",
+      "blocks": 1,
+      "by_primitive": {
+        "SDPB": 1
+      }
+    },
+    {
+      "scope": "u_nav/u_netl/u_rxf",
+      "blocks": 2,
+      "by_primitive": {
+        "SDPB": 2
+      }
+    },
+    {
+      "scope": "u_nav/u_netl/u_txf",
+      "blocks": 1,
+      "by_primitive": {
+        "SDPX9B": 1
+      }
+    },
+    {
+      "scope": "u_nav/u_pp/u_lut",
+      "blocks": 20,
+      "by_primitive": {
+        "SDPX9B": 20
+      }
+    },
+    {
+      "scope": "u_nav/u_tr/u_cos",
+      "blocks": 2,
+      "by_primitive": {
+        "pROM": 2
+      }
+    },
+    {
+      "scope": "u_nav/u_xt/u_fb",
+      "blocks": 19,
+      "by_primitive": {
+        "SDPB": 19
+      }
+    },
+    {
+      "scope": "u_soc/g_lane[0].u_ram",
+      "blocks": 16,
+      "by_primitive": {
+        "SP": 16
+      }
+    },
+    {
+      "scope": "u_soc/g_lane[1].u_ram",
+      "blocks": 16,
+      "by_primitive": {
+        "SP": 16
+      }
+    },
+    {
+      "scope": "u_soc/g_lane[2].u_ram",
+      "blocks": 16,
+      "by_primitive": {
+        "SP": 16
+      }
+    },
+    {
+      "scope": "u_soc/g_lane[3].u_ram",
+      "blocks": 16,
+      "by_primitive": {
+        "SP": 16
+      }
+    }
+  ],
+  "actual_leaves": [
+    {
+      "path": "u_soc/g_lane[0].u_ram/mem_mem_0_0_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[0].u_ram/mem_mem_0_1_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[0].u_ram/mem_mem_0_2_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[0].u_ram/mem_mem_0_3_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[0].u_ram/mem_mem_0_4_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[0].u_ram/mem_mem_0_5_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[0].u_ram/mem_mem_0_6_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[0].u_ram/mem_mem_0_7_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[0].u_ram/mem_mem_1_0_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[0].u_ram/mem_mem_1_1_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[0].u_ram/mem_mem_1_2_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[0].u_ram/mem_mem_1_3_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[0].u_ram/mem_mem_1_4_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[0].u_ram/mem_mem_1_5_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[0].u_ram/mem_mem_1_6_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[0].u_ram/mem_mem_1_7_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[1].u_ram/mem_mem_0_0_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[1].u_ram/mem_mem_0_1_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[1].u_ram/mem_mem_0_2_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[1].u_ram/mem_mem_0_3_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[1].u_ram/mem_mem_0_4_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[1].u_ram/mem_mem_0_5_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[1].u_ram/mem_mem_0_6_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[1].u_ram/mem_mem_0_7_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[1].u_ram/mem_mem_1_0_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[1].u_ram/mem_mem_1_1_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[1].u_ram/mem_mem_1_2_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[1].u_ram/mem_mem_1_3_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[1].u_ram/mem_mem_1_4_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[1].u_ram/mem_mem_1_5_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[1].u_ram/mem_mem_1_6_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[1].u_ram/mem_mem_1_7_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[2].u_ram/mem_mem_0_0_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[2].u_ram/mem_mem_0_1_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[2].u_ram/mem_mem_0_2_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[2].u_ram/mem_mem_0_3_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[2].u_ram/mem_mem_0_4_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[2].u_ram/mem_mem_0_5_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[2].u_ram/mem_mem_0_6_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[2].u_ram/mem_mem_0_7_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[2].u_ram/mem_mem_1_0_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[2].u_ram/mem_mem_1_1_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[2].u_ram/mem_mem_1_2_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[2].u_ram/mem_mem_1_3_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[2].u_ram/mem_mem_1_4_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[2].u_ram/mem_mem_1_5_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[2].u_ram/mem_mem_1_6_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[2].u_ram/mem_mem_1_7_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[3].u_ram/mem_mem_0_0_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[3].u_ram/mem_mem_0_1_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[3].u_ram/mem_mem_0_2_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[3].u_ram/mem_mem_0_3_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[3].u_ram/mem_mem_0_4_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[3].u_ram/mem_mem_0_5_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[3].u_ram/mem_mem_0_6_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[3].u_ram/mem_mem_0_7_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[3].u_ram/mem_mem_1_0_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[3].u_ram/mem_mem_1_1_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[3].u_ram/mem_mem_1_2_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[3].u_ram/mem_mem_1_3_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[3].u_ram/mem_mem_1_4_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[3].u_ram/mem_mem_1_5_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[3].u_ram/mem_mem_1_6_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_soc/g_lane[3].u_ram/mem_mem_1_7_s",
+      "primitive": "SP"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/elu_mem_elu_mem_0_0_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/elu_mem_elu_mem_0_1_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/elu_mem_elu_mem_0_2_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/elu_mem_elu_mem_0_3_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/high_bank0_0_high_bank0_0_0_0_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/high_bank0_0_high_bank0_0_0_1_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/high_bank0_2_high_bank0_2_0_0_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/high_bank0_2_high_bank0_2_0_1_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/high_bank0_4_high_bank0_4_0_0_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/high_bank0_4_high_bank0_4_0_1_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/high_bank1_1_high_bank1_1_0_0_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/high_bank1_1_high_bank1_1_0_1_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/high_bank1_3_high_bank1_3_0_0_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/high_bank1_3_high_bank1_3_0_1_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/high_bank2_0_high_bank2_0_0_0_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/high_bank2_0_high_bank2_0_0_1_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/high_bank2_2_high_bank2_2_0_0_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/high_bank2_2_high_bank2_2_0_1_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank0_low_bank0_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank1_low_bank1_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank2_low_bank2_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank3_low_bank3_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank4_low_bank4_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank5_low_bank5_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank6_low_bank6_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank7_low_bank7_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank8_low_bank8_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank9_low_bank9_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank10_low_bank10_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank11_low_bank11_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank12_low_bank12_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank13_low_bank13_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank14_low_bank14_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank15_low_bank15_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank16_low_bank16_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank17_low_bank17_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank18_low_bank18_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/low_bank19_low_bank19_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/policy/core/weights/high_bank2_4_high_bank2_4_0_0_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/ik/rom_lh_rom_lh_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/model_thread/ik/rom_rk_rom_rk_0_0_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_control/model_thread/ik/gowin_add_rom_lh_rom_lh_0_0_s",
+      "primitive": "pROMX9"
+    },
+    {
+      "path": "u_control/display/axes_display.thread/driver/gram_gram_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_control/display/axes_display.thread/driver/gram_gram_0_0_s0",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_netl/u_rxf/mem_mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_netl/u_rxf/mem_mem_0_1_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_netl/u_txf/mem_mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_neth/u_txf/mem_mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_mbx/u_rxb/g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_mbx/u_rxb/g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[0].mem_g_bank[0].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[1].mem_g_bank[1].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[2].mem_g_bank[2].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[3].mem_g_bank[3].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[4].mem_g_bank[4].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[5].mem_g_bank[5].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[6].mem_g_bank[6].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[7].mem_g_bank[7].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[8].mem_g_bank[8].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[9].mem_g_bank[9].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[10].mem_g_bank[10].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[11].mem_g_bank[11].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[12].mem_g_bank[12].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[13].mem_g_bank[13].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[14].mem_g_bank[14].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[15].mem_g_bank[15].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[16].mem_g_bank[16].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[17].mem_g_bank[17].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_xt/u_fb/g_bank[18].mem_g_bank[18].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[0].mem_g_bank[0].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[0].mem_g_bank[0].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[1].mem_g_bank[1].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[1].mem_g_bank[1].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[2].mem_g_bank[2].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[2].mem_g_bank[2].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[3].mem_g_bank[3].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[3].mem_g_bank[3].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[4].mem_g_bank[4].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[4].mem_g_bank[4].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[5].mem_g_bank[5].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[5].mem_g_bank[5].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[6].mem_g_bank[6].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[6].mem_g_bank[6].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[7].mem_g_bank[7].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[7].mem_g_bank[7].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[8].mem_g_bank[8].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[8].mem_g_bank[8].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[9].mem_g_bank[9].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_pp/u_lut/g_bank[9].mem_g_bank[9].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_2_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_2_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[2].mem_g_banked.g_bank[2].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[2].mem_g_banked.g_bank[2].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[2].mem_g_banked.g_bank[2].mem_0_2_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[3].mem_g_banked.g_bank[3].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[3].mem_g_banked.g_bank[3].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[3].mem_g_banked.g_bank[3].mem_0_2_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[4].mem_g_banked.g_bank[4].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[4].mem_g_banked.g_bank[4].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[4].mem_g_banked.g_bank[4].mem_0_2_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[5].mem_g_banked.g_bank[5].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[5].mem_g_banked.g_bank[5].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[5].mem_g_banked.g_bank[5].mem_0_2_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[6].mem_g_banked.g_bank[6].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[6].mem_g_banked.g_bank[6].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[6].mem_g_banked.g_bank[6].mem_0_2_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[7].mem_g_banked.g_bank[7].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[7].mem_g_banked.g_bank[7].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[7].mem_g_banked.g_bank[7].mem_0_2_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[8].mem_g_banked.g_bank[8].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[8].mem_g_banked.g_bank[8].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[8].mem_g_banked.g_bank[8].mem_0_2_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[9].mem_g_banked.g_bank[9].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[9].mem_g_banked.g_bank[9].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[9].mem_g_banked.g_bank[9].mem_0_2_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[10].mem_g_banked.g_bank[10].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[10].mem_g_banked.g_bank[10].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[10].mem_g_banked.g_bank[10].mem_0_2_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[11].mem_g_banked.g_bank[11].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[11].mem_g_banked.g_bank[11].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[11].mem_g_banked.g_bank[11].mem_0_2_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[12].mem_g_banked.g_bank[12].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[12].mem_g_banked.g_bank[12].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[12].mem_g_banked.g_bank[12].mem_0_2_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[13].mem_g_banked.g_bank[13].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[13].mem_g_banked.g_bank[13].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[13].mem_g_banked.g_bank[13].mem_0_2_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[14].mem_g_banked.g_bank[14].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[14].mem_g_banked.g_bank[14].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[14].mem_g_banked.g_bank[14].mem_0_2_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[15].mem_g_banked.g_bank[15].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[15].mem_g_banked.g_bank[15].mem_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[15].mem_g_banked.g_bank[15].mem_0_2_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_tv/lb1_lb1_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_tv/lb1_lb1_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_tv/lb3_lb3_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_tv/lb3_lb3_0_1_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_tv/vc_vc_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_tv/gowin_add_SDPX9B_lb1_lb1_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_tv/gowin_add_SDPX9B_lb1_lb1_0_1_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_map/u_tv/gowin_add_SDPB_lb3_lb3_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_tv/gowin_add_SDPB_lb3_lb3_0_1_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_tv/gowin_add_SDPB_vc_vc_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_cm0/g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_cm0/g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_cm0/g_banked.g_bank[2].mem_g_banked.g_bank[2].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_cm0/g_banked.g_bank[3].mem_g_banked.g_bank[3].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_cm0/g_banked.g_bank[4].mem_g_banked.g_bank[4].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_cm0/g_banked.g_bank[5].mem_g_banked.g_bank[5].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_cm0/g_banked.g_bank[6].mem_g_banked.g_bank[6].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_cm0/g_banked.g_bank[7].mem_g_banked.g_bank[7].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_cm1/g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_cm1/g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_cm1/g_banked.g_bank[2].mem_g_banked.g_bank[2].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_cm1/g_banked.g_bank[3].mem_g_banked.g_bank[3].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_cm1/g_banked.g_bank[4].mem_g_banked.g_bank[4].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_cm1/g_banked.g_bank[5].mem_g_banked.g_bank[5].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_cm1/g_banked.g_bank[6].mem_g_banked.g_bank[6].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_map/u_cm1/g_banked.g_bank[7].mem_g_banked.g_bank[7].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/g_support.u_support/u_ram/g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/g_support.u_support/u_ram/g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/g_support.u_support/u_ram/g_banked.g_bank[2].mem_g_banked.g_bank[2].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/g_support.u_support/u_ram/g_banked.g_bank[3].mem_g_banked.g_bank[3].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/g_support.u_support/u_ram/g_banked.g_bank[4].mem_g_banked.g_bank[4].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/g_support.u_support/u_ram/g_banked.g_bank[5].mem_g_banked.g_bank[5].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/g_support.u_support/u_ram/g_banked.g_bank[6].mem_g_banked.g_bank[6].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/g_support.u_support/u_ram/g_banked.g_bank[7].mem_g_banked.g_bank[7].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_pb/g_slf_point_planes.g_point_bank[0].high_mem_g_slf_point_planes.g_point_bank[0].high_mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_pb/g_slf_point_planes.g_point_bank[0].low_mem_g_slf_point_planes.g_point_bank[0].low_mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_pb/g_slf_point_planes.g_point_bank[1].high_mem_g_slf_point_planes.g_point_bank[1].high_mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_pb/g_slf_point_planes.g_point_bank[1].low_mem_g_slf_point_planes.g_point_bank[1].low_mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_pb/g_slf_point_planes.g_point_bank[2].high_mem_g_slf_point_planes.g_point_bank[2].high_mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_pb/g_slf_point_planes.g_point_bank[2].low_mem_g_slf_point_planes.g_point_bank[2].low_mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_pb/g_slf_point_planes.g_point_bank[3].high_mem_g_slf_point_planes.g_point_bank[3].high_mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_pb/g_slf_point_planes.g_point_bank[3].low_mem_g_slf_point_planes.g_point_bank[3].low_mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[2].mem_g_banked.g_bank[2].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[3].mem_g_banked.g_bank[3].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[4].mem_g_banked.g_bank[4].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[5].mem_g_banked.g_bank[5].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[6].mem_g_banked.g_bank[6].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[7].mem_g_banked.g_bank[7].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[8].mem_g_banked.g_bank[8].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[9].mem_g_banked.g_bank[9].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[10].mem_g_banked.g_bank[10].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[11].mem_g_banked.g_bank[11].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[12].mem_g_banked.g_bank[12].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[13].mem_g_banked.g_bank[13].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[14].mem_g_banked.g_bank[14].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[15].mem_g_banked.g_bank[15].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[16].mem_g_banked.g_bank[16].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[17].mem_g_banked.g_bank[17].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[18].mem_g_banked.g_bank[18].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[19].mem_g_banked.g_bank[19].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[20].mem_g_banked.g_bank[20].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[21].mem_g_banked.g_bank[21].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[22].mem_g_banked.g_bank[22].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[23].mem_g_banked.g_bank[23].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[24].mem_g_banked.g_bank[24].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[25].mem_g_banked.g_bank[25].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[26].mem_g_banked.g_bank[26].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[27].mem_g_banked.g_bank[27].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[28].mem_g_banked.g_bank[28].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[29].mem_g_banked.g_bank[29].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[30].mem_g_banked.g_bank[30].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[31].mem_g_banked.g_bank[31].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[32].mem_g_banked.g_bank[32].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[33].mem_g_banked.g_bank[33].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[34].mem_g_banked.g_bank[34].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[35].mem_g_banked.g_bank[35].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[36].mem_g_banked.g_bank[36].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[37].mem_g_banked.g_bank[37].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[38].mem_g_banked.g_bank[38].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[39].mem_g_banked.g_bank[39].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[40].mem_g_banked.g_bank[40].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[41].mem_g_banked.g_bank[41].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[42].mem_g_banked.g_bank[42].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[43].mem_g_banked.g_bank[43].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[44].mem_g_banked.g_bank[44].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[45].mem_g_banked.g_bank[45].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[46].mem_g_banked.g_bank[46].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[47].mem_g_banked.g_bank[47].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[48].mem_g_banked.g_bank[48].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[49].mem_g_banked.g_bank[49].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[50].mem_g_banked.g_bank[50].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[51].mem_g_banked.g_bank[51].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[52].mem_g_banked.g_bank[52].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[53].mem_g_banked.g_bank[53].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[54].mem_g_banked.g_bank[54].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[55].mem_g_banked.g_bank[55].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[56].mem_g_banked.g_bank[56].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[57].mem_g_banked.g_bank[57].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[58].mem_g_banked.g_bank[58].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[59].mem_g_banked.g_bank[59].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[60].mem_g_banked.g_bank[60].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[61].mem_g_banked.g_bank[61].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[62].mem_g_banked.g_bank[62].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_sm/g_banked.g_bank[63].mem_g_banked.g_bank[63].mem_0_0_s",
+      "primitive": "SDPX9B"
+    },
+    {
+      "path": "u_nav/u_match/u_lf/lb1_lb1_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_match/u_lf/lb1_lb1_0_1_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_match/u_lf/lb3_lb3_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_match/u_lf/lb3_lb3_0_1_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_match/u_lf/gowin_add_SDPB_lb1_lb1_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_match/u_lf/gowin_add_SDPB_lb1_lb1_0_1_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_match/u_lf/gowin_add_SDPB_lb3_lb3_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_match/u_lf/gowin_add_SDPB_lb3_lb3_0_1_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_match/u_touch/g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_match/u_touch/g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_match/u_touch/g_banked.g_bank[2].mem_g_banked.g_bank[2].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_match/u_touch/g_banked.g_bank[3].mem_g_banked.g_bank[3].mem_0_0_s",
+      "primitive": "SDPB"
+    },
+    {
+      "path": "u_nav/u_match/u_cos/g_init_block.mem_g_init_block.mem_0_0_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_nav/u_match/u_cos/g_init_block.mem_g_init_block.mem_0_0_s0",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_nav/u_tr/u_cos/g_init_block.mem_g_init_block.mem_0_0_s",
+      "primitive": "pROM"
+    },
+    {
+      "path": "u_nav/u_tr/u_cos/g_init_block.mem_g_init_block.mem_0_0_s0",
+      "primitive": "pROM"
+    }
+  ],
+  "report_count_reconciled": true
+}
