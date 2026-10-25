@@ -1,0 +1,2313 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T04:35:11.354665+08:00",
+  "baseline": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32",
+  "candidate": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_preview_pnr39",
+  "requested_CST": [
+    "CLOCK_LOC \"u_control/model_thread/observation/n15679_10\" BUFG = CE|LOGIC;",
+    "CLOCK_LOC \"u_control/model_thread/observation/n331_7\" BUFG = SR|LOGIC;",
+    "CLOCK_LOC \"u_nav/u_pf/n3967_6\" LOCAL_CLOCK;",
+    "CLOCK_LOC \"u_nav/u_map/u_tv/n25284_7\" LOCAL_CLOCK;"
+  ],
+  "single_factor": "Prefer both original observation CE and reset global roles; free two new small LW controls, unchanged netlist/SDC/options.",
+  "distinction_from_PNR38": "PNR39 lost BOTH4001CE and4366reset LW roles. PNR36/38 retained resetLW and tested only the CE role; source here isSYN28 productOREG, not failedSYN26 square2.",
+  "actual_four_cone_checks": [
+    {
+      "net": "u_control/model_thread/observation/n15679_10",
+      "passed": true,
+      "expression": [
+        "LUT3",
+        "8'h10",
+        [
+          [
+            "same_actual_FF",
+            "u_control/model_thread/observation/state_0_s0",
+            "Q",
+            0
+          ],
+          [
+            "same_actual_FF",
+            "u_control/model_thread/observation/state_1_s0",
+            "Q",
+            0
+          ],
+          [
+            "same_actual_FF",
+            "u_control/model_thread/observation/state_2_s0",
+            "Q",
+            0
+          ]
+        ]
+      ],
+      "actual_driver": {
+        "name": "u_control/model_thread/observation/n15680_s4",
+        "kind": "LUT3",
+        "ports": {
+          "I0": [
+            "u_control/model_thread/observation/state[0]"
+          ],
+          "I1": [
+            "u_control/model_thread/observation/state[1]"
+          ],
+          "I2": [
+            "u_control/model_thread/observation/state[2]"
+          ],
+          "F": [
+            "u_control/model_thread/observation/n15679_10"
+          ]
+        },
+        "parameters": {
+          "INIT": "8'h10"
+        }
+      }
+    },
+    {
+      "net": "u_control/model_thread/observation/n331_7",
+      "passed": true,
+      "expression": [
+        "LUT4",
+        "16'hEFFF",
+        [
+          [
+            "same_actual_FF",
+            "u_control/model_thread/stop_latched_s0",
+            "Q",
+            0
+          ],
+          [
+            "same_actual_FF",
+            "u_rs/r2_s1",
+            "Q",
+            0
+          ],
+          [
+            "LUT4",
+            "16'h8000",
+            [
+              [
+                "same_actual_FF",
+                "u_control/startup_4_s0",
+                "Q",
+                0
+              ],
+              [
+                "same_actual_FF",
+                "u_control/startup_5_s0",
+                "Q",
+                0
+              ],
+              [
+                "same_actual_FF",
+                "u_control/startup_6_s0",
+                "Q",
+                0
+              ],
+              [
+                "same_actual_FF",
+                "u_control/startup_7_s0",
+                "Q",
+                0
+              ]
+            ]
+          ],
+          [
+            "LUT4",
+            "16'h8000",
+            [
+              [
+                "same_actual_FF",
+                "u_control/startup_0_s2",
+                "Q",
+                0
+              ],
+              [
+                "same_actual_FF",
+                "u_control/startup_1_s0",
+                "Q",
+                0
+              ],
+              [
+                "same_actual_FF",
+                "u_control/startup_2_s0",
+                "Q",
+                0
+              ],
+              [
+                "same_actual_FF",
+                "u_control/startup_3_s0",
+                "Q",
+                0
+              ]
+            ]
+          ]
+        ]
+      ],
+      "actual_driver": {
+        "name": "u_control/model_thread/observation/n331_s2",
+        "kind": "LUT4",
+        "ports": {
+          "I0": [
+            "u_control/model_status_flags_1[6]"
+          ],
+          "I1": [
+            "r2"
+          ],
+          "I2": [
+            "u_control/n6_4"
+          ],
+          "I3": [
+            "u_control/n6_5"
+          ],
+          "F": [
+            "u_control/model_thread/observation/n331_7"
+          ]
+        },
+        "parameters": {
+          "INIT": "16'hEFFF"
+        }
+      }
+    },
+    {
+      "net": "u_nav/u_pf/n3967_6",
+      "passed": true,
+      "expression": [
+        "LUT4",
+        "16'h5455",
+        [
+          [
+            "same_actual_FF",
+            "u_rs/r2_s1",
+            "Q",
+            0
+          ],
+          [
+            "same_actual_FF",
+            "u_nav/u_rf/r_LIDAR_CTRL_5_s0",
+            "Q",
+            0
+          ],
+          [
+            "LUT3",
+            "8'hB0",
+            [
+              [
+                "LUT3",
+                "8'h01",
+                [
+                  [
+                    "same_actual_FF",
+                    "u_nav/u_map/sweep_pend_s0",
+                    "Q",
+                    0
+                  ],
+                  [
+                    "same_actual_FF",
+                    "u_nav/u_map/u_tv/busy_s4",
+                    "Q",
+                    0
+                  ],
+                  [
+                    "same_actual_FF",
+                    "u_nav/u_map/u_em/clr_act_s0",
+                    "Q",
+                    0
+                  ]
+                ]
+              ],
+              [
+                "same_actual_FF",
+                "u_nav/u_rf/r_MAP_CTRL_0_s0",
+                "Q",
+                0
+              ],
+              [
+                "LUT4",
+                "16'h0100",
+                [
+                  [
+                    "same_actual_FF",
+                    "u_nav/g_support.u_support/state_2_s1",
+                    "Q",
+                    0
+                  ],
+                  [
+                    "LUT2",
+                    "4'h4",
+                    [
+                      [
+                        "same_actual_FF",
+                        "u_nav/u_rf/r_LIDAR_CTRL_5_s0",
+                        "Q",
+                        0
+                      ],
+                      [
+                        "LUT4",
+                        "16'h4000",
+                        [
+                          [
+                            "same_actual_FF",
+                            "u_nav/a_q_15_s0",
+                            "Q",
+                            0
+                          ],
+                          [
+                            "same_actual_FF",
+                            "u_nav/gowin_replicate_reg_rf_wr_5",
+                            "Q",
+                            0
+                          ],
+                          [
+                            "LUT4",
+                            "16'h1000",
+                            [
+                              [
+                                "same_actual_FF",
+                                "u_nav/a_q_2_s0",
+                                "Q",
+                                0
+                              ],
+                              [
+                                "same_actual_FF",
+                                "u_nav/a_q_3_s0",
+                                "Q",
+                                0
+                              ],
+                              [
+                                "same_actual_FF",
+                                "u_nav/a_q_4_s0",
+                                "Q",
+                                0
+                              ],
+                              [
+                                "same_actual_FF",
+                                "u_nav/a_q_5_s0",
+                                "Q",
+                                0
+                              ]
+                            ]
+                          ],
+                          [
+                            "LUT4",
+                            "16'h0400",
+                            [
+                              [
+                                "same_actual_FF",
+                                "u_nav/a_q_14_s0",
+                                "Q",
+                                0
+                              ],
+                              [
+                                "LUT4",
+                                "16'h0008",
+                                [
+                                  [
+                                    "LUT3",
+                                    "8'h01",
+                                    [
+                                      [
+                                        "same_actual_FF",
+                                        "u_nav/a_q_9_s0",
+                                        "Q",
+                                        0
+                                      ],
+                                      [
+                                        "same_actual_FF",
+                                        "u_nav/a_q_10_s0",
+                                        "Q",
+                                        0
+                                      ],
+                                      [
+                                        "same_actual_FF",
+                                        "u_nav/a_q_11_s0",
+                                        "Q",
+                                        0
+                                      ]
+                                    ]
+                                  ],
+                                  [
+                                    "same_actual_FF",
+                                    "u_nav/a_q_6_s0",
+                                    "Q",
+                                    0
+                                  ],
+                                  [
+                                    "same_actual_FF",
+                                    "u_nav/a_q_7_s0",
+                                    "Q",
+                                    0
+                                  ],
+                                  [
+                                    "same_actual_FF",
+                                    "u_nav/a_q_8_s0",
+                                    "Q",
+                                    0
+                                  ]
+                                ]
+                              ],
+                              [
+                                "same_actual_FF",
+                                "u_nav/a_q_12_s0",
+                                "Q",
+                                0
+                              ],
+                              [
+                                "same_actual_FF",
+                                "u_nav/a_q_13_s0",
+                                "Q",
+                                0
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "LUT2",
+                    "4'h4",
+                    [
+                      [
+                        "same_actual_FF",
+                        "u_nav/cov_got_s0",
+                        "Q",
+                        0
+                      ],
+                      [
+                        "same_actual_FF",
+                        "u_nav/el_req_s1",
+                        "Q",
+                        0
+                      ]
+                    ]
+                  ],
+                  [
+                    "LUT4",
+                    "16'h0001",
+                    [
+                      [
+                        "same_actual_FF",
+                        "u_nav/g_support.u_support/state_0_s1",
+                        "Q",
+                        0
+                      ],
+                      [
+                        "same_actual_FF",
+                        "u_nav/g_support.u_support/state_1_s1",
+                        "Q",
+                        0
+                      ],
+                      [
+                        "same_actual_FF",
+                        "u_nav/g_support.u_support/pending_frame_s4",
+                        "Q",
+                        0
+                      ],
+                      [
+                        "ALU",
+                        [
+                          [
+                            "ALU_MODE",
+                            "3"
+                          ]
+                        ],
+                        "COUT",
+                        0,
+                        [
+                          [
+                            "CIN",
+                            [
+                              [
+                                "ALU",
+                                [
+                                  [
+                                    "ALU_MODE",
+                                    "3"
+                                  ]
+                                ],
+                                "COUT",
+                                0,
+                                [
+                                  [
+                                    "CIN",
+                                    [
+                                      [
+                                        "ALU",
+                                        [
+                                          [
+                                            "ALU_MODE",
+                                            "3"
+                                          ]
+                                        ],
+                                        "COUT",
+                                        0,
+                                        [
+                                          [
+                                            "CIN",
+                                            [
+                                              [
+                                                "ALU",
+                                                [
+                                                  [
+                                                    "ALU_MODE",
+                                                    "3"
+                                                  ]
+                                                ],
+                                                "COUT",
+                                                0,
+                                                [
+                                                  [
+                                                    "CIN",
+                                                    [
+                                                      [
+                                                        "ALU",
+                                                        [
+                                                          [
+                                                            "ALU_MODE",
+                                                            "3"
+                                                          ]
+                                                        ],
+                                                        "COUT",
+                                                        0,
+                                                        [
+                                                          [
+                                                            "CIN",
+                                                            [
+                                                              [
+                                                                "ALU",
+                                                                [
+                                                                  [
+                                                                    "ALU_MODE",
+                                                                    "3"
+                                                                  ]
+                                                                ],
+                                                                "COUT",
+                                                                0,
+                                                                [
+                                                                  [
+                                                                    "CIN",
+                                                                    [
+                                                                      [
+                                                                        "ALU",
+                                                                        [
+                                                                          [
+                                                                            "ALU_MODE",
+                                                                            "3"
+                                                                          ]
+                                                                        ],
+                                                                        "COUT",
+                                                                        0,
+                                                                        [
+                                                                          [
+                                                                            "CIN",
+                                                                            [
+                                                                              [
+                                                                                "literal",
+                                                                                "GND"
+                                                                              ]
+                                                                            ]
+                                                                          ],
+                                                                          [
+                                                                            "I0",
+                                                                            [
+                                                                              [
+                                                                                "same_actual_FF",
+                                                                                "u_nav/g_support.u_support/seen_epoch_0_s1",
+                                                                                "Q",
+                                                                                0
+                                                                              ]
+                                                                            ]
+                                                                          ],
+                                                                          [
+                                                                            "I1",
+                                                                            [
+                                                                              [
+                                                                                "same_actual_FF",
+                                                                                "u_nav/support_epoch_0_s1",
+                                                                                "Q",
+                                                                                0
+                                                                              ]
+                                                                            ]
+                                                                          ],
+                                                                          [
+                                                                            "I3",
+                                                                            [
+                                                                              [
+                                                                                "literal",
+                                                                                "GND"
+                                                                              ]
+                                                                            ]
+                                                                          ]
+                                                                        ]
+                                                                      ]
+                                                                    ]
+                                                                  ],
+                                                                  [
+                                                                    "I0",
+                                                                    [
+                                                                      [
+                                                                        "same_actual_FF",
+                                                                        "u_nav/g_support.u_support/seen_epoch_1_s1",
+                                                                        "Q",
+                                                                        0
+                                                                      ]
+                                                                    ]
+                                                                  ],
+                                                                  [
+                                                                    "I1",
+                                                                    [
+                                                                      [
+                                                                        "same_actual_FF",
+                                                                        "u_nav/support_epoch_1_s0",
+                                                                        "Q",
+                                                                        0
+                                                                      ]
+                                                                    ]
+                                                                  ],
+                                                                  [
+                                                                    "I3",
+                                                                    [
+                                                                      [
+                                                                        "literal",
+                                                                        "GND"
+                                                                      ]
+                                                                    ]
+                                                                  ]
+                                                                ]
+                                                              ]
+                                                            ]
+                                                          ],
+                                                          [
+                                                            "I0",
+                                                            [
+                                                              [
+                                                                "same_actual_FF",
+                                                                "u_nav/g_support.u_support/seen_epoch_2_s1",
+                                                                "Q",
+                                                                0
+                                                              ]
+                                                            ]
+                                                          ],
+                                                          [
+                                                            "I1",
+                                                            [
+                                                              [
+                                                                "same_actual_FF",
+                                                                "u_nav/support_epoch_2_s0",
+                                                                "Q",
+                                                                0
+                                                              ]
+                                                            ]
+                                                          ],
+                                                          [
+                                                            "I3",
+                                                            [
+                                                              [
+                                                                "literal",
+                                                                "GND"
+                                                              ]
+                                                            ]
+                                                          ]
+                                                        ]
+                                                      ]
+                                                    ]
+                                                  ],
+                                                  [
+                                                    "I0",
+                                                    [
+                                                      [
+                                                        "same_actual_FF",
+                                                        "u_nav/g_support.u_support/seen_epoch_3_s1",
+                                                        "Q",
+                                                        0
+                                                      ]
+                                                    ]
+                                                  ],
+                                                  [
+                                                    "I1",
+                                                    [
+                                                      [
+                                                        "same_actual_FF",
+                                                        "u_nav/support_epoch_3_s0",
+                                                        "Q",
+                                                        0
+                                                      ]
+                                                    ]
+                                                  ],
+                                                  [
+                                                    "I3",
+                                                    [
+                                                      [
+                                                        "literal",
+                                                        "GND"
+                                                      ]
+                                                    ]
+                                                  ]
+                                                ]
+                                              ]
+                                            ]
+                                          ],
+                                          [
+                                            "I0",
+                                            [
+                                              [
+                                                "same_actual_FF",
+                                                "u_nav/g_support.u_support/seen_epoch_4_s1",
+                                                "Q",
+                                                0
+                                              ]
+                                            ]
+                                          ],
+                                          [
+                                            "I1",
+                                            [
+                                              [
+                                                "same_actual_FF",
+                                                "u_nav/support_epoch_4_s0",
+                                                "Q",
+                                                0
+                                              ]
+                                            ]
+                                          ],
+                                          [
+                                            "I3",
+                                            [
+                                              [
+                                                "literal",
+                                                "GND"
+                                              ]
+                                            ]
+                                          ]
+                                        ]
+                                      ]
+                                    ]
+                                  ],
+                                  [
+                                    "I0",
+                                    [
+                                      [
+                                        "same_actual_FF",
+                                        "u_nav/g_support.u_support/seen_epoch_5_s1",
+                                        "Q",
+                                        0
+                                      ]
+                                    ]
+                                  ],
+                                  [
+                                    "I1",
+                                    [
+                                      [
+                                        "same_actual_FF",
+                                        "u_nav/support_epoch_5_s0",
+                                        "Q",
+                                        0
+                                      ]
+                                    ]
+                                  ],
+                                  [
+                                    "I3",
+                                    [
+                                      [
+                                        "literal",
+                                        "GND"
+                                      ]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                          ],
+                          [
+                            "I0",
+                            [
+                              [
+                                "same_actual_FF",
+                                "u_nav/g_support.u_support/seen_epoch_6_s1",
+                                "Q",
+                                0
+                              ]
+                            ]
+                          ],
+                          [
+                            "I1",
+                            [
+                              [
+                                "same_actual_FF",
+                                "u_nav/support_epoch_6_s0",
+                                "Q",
+                                0
+                              ]
+                            ]
+                          ],
+                          [
+                            "I3",
+                            [
+                              [
+                                "literal",
+                                "GND"
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ],
+          [
+            "same_actual_FF",
+            "u_nav/u_pf/m_valid_s0",
+            "Q",
+            0
+          ]
+        ]
+      ],
+      "actual_driver": {
+        "name": "u_nav/u_pf/n3967_s2",
+        "kind": "LUT4",
+        "ports": {
+          "I0": [
+            "r2"
+          ],
+          "I1": [
+            "u_nav/r_LIDAR_CTRL_Z[5]"
+          ],
+          "I2": [
+            "u_nav/pt_ready_3"
+          ],
+          "I3": [
+            "u_nav/pf_valid"
+          ],
+          "F": [
+            "u_nav/u_pf/n3967_6"
+          ]
+        },
+        "parameters": {
+          "INIT": "16'h5455"
+        }
+      }
+    },
+    {
+      "net": "u_nav/u_map/u_tv/n25284_7",
+      "passed": true,
+      "expression": [
+        "LUT2",
+        "4'h4",
+        [
+          [
+            "same_actual_FF",
+            "u_rs/r2_s1",
+            "Q",
+            0
+          ],
+          [
+            "same_actual_FF",
+            "u_nav/u_map/u_tv/wval_s0",
+            "Q",
+            0
+          ]
+        ]
+      ],
+      "actual_driver": {
+        "name": "u_nav/u_map/u_tv/n25284_s2",
+        "kind": "LUT2",
+        "ports": {
+          "I0": [
+            "r2"
+          ],
+          "I1": [
+            "u_nav/u_map/u_tv/wval"
+          ],
+          "F": [
+            "u_nav/u_map/u_tv/n25284_7"
+          ]
+        },
+        "parameters": {
+          "INIT": "4'h4"
+        }
+      }
+    }
+  ],
+  "actual_FF_boundary_cells": {
+    "u_control/model_thread/observation/state_0_s0": {
+      "name": "u_control/model_thread/observation/state_0_s0",
+      "kind": "DFFCE",
+      "ports": {
+        "D": [
+          "u_control/model_thread/observation/n15678_19"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "CLEAR": [
+          "u_control/model_thread/observation/n331_7"
+        ],
+        "Q": [
+          "u_control/model_thread/observation/state[0]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_control/model_thread/observation/state_1_s0": {
+      "name": "u_control/model_thread/observation/state_1_s0",
+      "kind": "DFFCE",
+      "ports": {
+        "D": [
+          "u_control/model_thread/observation/n15677_18"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "CLEAR": [
+          "u_control/model_thread/observation/n331_7"
+        ],
+        "Q": [
+          "u_control/model_thread/observation/state[1]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_control/model_thread/observation/state_2_s0": {
+      "name": "u_control/model_thread/observation/state_2_s0",
+      "kind": "DFFCE",
+      "ports": {
+        "D": [
+          "u_control/model_thread/observation/n15676_21"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "CLEAR": [
+          "u_control/model_thread/observation/n331_7"
+        ],
+        "Q": [
+          "u_control/model_thread/observation/state[2]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_control/model_thread/stop_latched_s0": {
+      "name": "u_control/model_thread/stop_latched_s0",
+      "kind": "DFFCE",
+      "ports": {
+        "D": [
+          "VCC"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_control/model_thread/n414_3"
+        ],
+        "CLEAR": [
+          "u_control/n2371_7"
+        ],
+        "Q": [
+          "u_control/model_status_flags_1[6]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_rs/r2_s1": {
+      "name": "u_rs/r2_s1",
+      "kind": "DFFPE",
+      "ports": {
+        "D": [
+          "u_rs/r1"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "PRESET": [
+          "n8_6"
+        ],
+        "Q": [
+          "r2"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b1"
+      }
+    },
+    "u_control/startup_4_s0": {
+      "name": "u_control/startup_4_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_control/n12_1"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_control/startup_6_10"
+        ],
+        "RESET": [
+          "r2"
+        ],
+        "Q": [
+          "u_control/startup[4]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_control/startup_5_s0": {
+      "name": "u_control/startup_5_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_control/n11_1"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_control/startup_6_10"
+        ],
+        "RESET": [
+          "r2"
+        ],
+        "Q": [
+          "u_control/startup[5]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_control/startup_6_s0": {
+      "name": "u_control/startup_6_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_control/n10_1"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_control/startup_6_10"
+        ],
+        "RESET": [
+          "r2"
+        ],
+        "Q": [
+          "u_control/startup[6]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_control/startup_7_s0": {
+      "name": "u_control/startup_7_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_control/n9_1"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_control/startup_6_10"
+        ],
+        "RESET": [
+          "r2"
+        ],
+        "Q": [
+          "u_control/startup[7]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_control/startup_0_s2": {
+      "name": "u_control/startup_0_s2",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_control/n16_12"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "RESET": [
+          "r2"
+        ],
+        "Q": [
+          "u_control/startup[0]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_control/startup_1_s0": {
+      "name": "u_control/startup_1_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_control/n15_1"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_control/startup_6_10"
+        ],
+        "RESET": [
+          "r2"
+        ],
+        "Q": [
+          "u_control/startup[1]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_control/startup_2_s0": {
+      "name": "u_control/startup_2_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_control/n14_1"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_control/startup_6_10"
+        ],
+        "RESET": [
+          "r2"
+        ],
+        "Q": [
+          "u_control/startup[2]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_control/startup_3_s0": {
+      "name": "u_control/startup_3_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_control/n13_1"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_control/startup_6_10"
+        ],
+        "RESET": [
+          "r2"
+        ],
+        "Q": [
+          "u_control/startup[3]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/u_rf/r_LIDAR_CTRL_5_s0": {
+      "name": "u_nav/u_rf/r_LIDAR_CTRL_5_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/gowin_reg_wd_q[5]_1"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/u_rf/n16628_3"
+        ],
+        "RESET": [
+          "r2"
+        ],
+        "Q": [
+          "u_nav/r_LIDAR_CTRL_Z[5]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/u_map/sweep_pend_s0": {
+      "name": "u_nav/u_map/sweep_pend_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "VCC"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/u_map/n1159_4"
+        ],
+        "RESET": [
+          "u_nav/u_map/n1160_3"
+        ],
+        "Q": [
+          "u_nav/sweep_pend"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/u_map/u_tv/busy_s4": {
+      "name": "u_nav/u_map/u_tv/busy_s4",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/u_map/u_tv/n6002_27"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "RESET": [
+          "r2"
+        ],
+        "Q": [
+          "u_nav/swp_busy"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/u_map/u_em/clr_act_s0": {
+      "name": "u_nav/u_map/u_em/clr_act_s0",
+      "kind": "DFFSE",
+      "ports": {
+        "D": [
+          "GND"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/u_map/u_em/n1865_3"
+        ],
+        "SET": [
+          "u_nav/u_map/u_em/n1866_3"
+        ],
+        "Q": [
+          "u_nav/u_map/clr_act"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b1"
+      }
+    },
+    "u_nav/u_rf/r_MAP_CTRL_0_s0": {
+      "name": "u_nav/u_rf/r_MAP_CTRL_0_s0",
+      "kind": "DFFSE",
+      "ports": {
+        "D": [
+          "u_nav/gowin_reg_wd_q[0]_1"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/u_rf/n17268_3"
+        ],
+        "SET": [
+          "r2"
+        ],
+        "Q": [
+          "u_nav/r_MAP_CTRL_Z[0]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b1"
+      }
+    },
+    "u_nav/g_support.u_support/state_2_s1": {
+      "name": "u_nav/g_support.u_support/state_2_s1",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/g_support.u_support/n2485_23"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/g_support.u_support/state_2_11"
+        ],
+        "RESET": [
+          "u_nav/g_support.u_support/n489_4"
+        ],
+        "Q": [
+          "u_nav/state[2]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/a_q_15_s0": {
+      "name": "u_nav/a_q_15_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "s_addr[15]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/a_q_15_15"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/a_q[15]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/gowin_replicate_reg_rf_wr_5": {
+      "name": "u_nav/gowin_replicate_reg_rf_wr_5",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/n10942_11"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "RESET": [
+          "r2"
+        ],
+        "Q": [
+          "u_nav/gowin_reg_rf_wr_5"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/a_q_2_s0": {
+      "name": "u_nav/a_q_2_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "s_addr[2]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/a_q_15_15"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/a_q[2]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/a_q_3_s0": {
+      "name": "u_nav/a_q_3_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "s_addr[3]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/a_q_15_15"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/a_q[3]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/a_q_4_s0": {
+      "name": "u_nav/a_q_4_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "s_addr[4]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/a_q_15_15"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/a_q[4]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/a_q_5_s0": {
+      "name": "u_nav/a_q_5_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "s_addr[5]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/a_q_15_15"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/a_q[5]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/a_q_14_s0": {
+      "name": "u_nav/a_q_14_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "s_addr[14]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/a_q_15_15"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/a_q[14]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/a_q_9_s0": {
+      "name": "u_nav/a_q_9_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "s_addr[9]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/a_q_15_15"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/a_q[9]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/a_q_10_s0": {
+      "name": "u_nav/a_q_10_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "s_addr[10]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/a_q_15_15"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/a_q[10]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/a_q_11_s0": {
+      "name": "u_nav/a_q_11_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "s_addr[11]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/a_q_15_15"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/a_q[11]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/a_q_6_s0": {
+      "name": "u_nav/a_q_6_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "s_addr[6]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/a_q_15_15"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/a_q[6]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/a_q_7_s0": {
+      "name": "u_nav/a_q_7_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "s_addr[7]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/a_q_15_15"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/a_q[7]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/a_q_8_s0": {
+      "name": "u_nav/a_q_8_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "s_addr[8]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/a_q_15_15"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/a_q[8]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/a_q_12_s0": {
+      "name": "u_nav/a_q_12_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "s_addr[12]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/a_q_15_15"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/a_q[12]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/a_q_13_s0": {
+      "name": "u_nav/a_q_13_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "s_addr[13]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/a_q_15_15"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/a_q[13]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/cov_got_s0": {
+      "name": "u_nav/cov_got_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "VCC"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/cov_ack"
+        ],
+        "RESET": [
+          "u_nav/n12045_3"
+        ],
+        "Q": [
+          "u_nav/cov_got"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/el_req_s1": {
+      "name": "u_nav/el_req_s1",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/n7374_3"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/el_req_8"
+        ],
+        "RESET": [
+          "r2"
+        ],
+        "Q": [
+          "u_nav/el_req"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/g_support.u_support/state_0_s1": {
+      "name": "u_nav/g_support.u_support/state_0_s1",
+      "kind": "DFFSE",
+      "ports": {
+        "D": [
+          "u_nav/g_support.u_support/n2487_32"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/g_support.u_support/state_2_11"
+        ],
+        "SET": [
+          "u_nav/g_support.u_support/n489_4"
+        ],
+        "Q": [
+          "u_nav/state[0]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b1"
+      }
+    },
+    "u_nav/g_support.u_support/state_1_s1": {
+      "name": "u_nav/g_support.u_support/state_1_s1",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/g_support.u_support/n2486_24"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/g_support.u_support/state_2_11"
+        ],
+        "RESET": [
+          "u_nav/g_support.u_support/n489_4"
+        ],
+        "Q": [
+          "u_nav/state[1]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/g_support.u_support/pending_frame_s4": {
+      "name": "u_nav/g_support.u_support/pending_frame_s4",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/g_support.u_support/n492_14"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "RESET": [
+          "u_nav/g_support.u_support/n489_4"
+        ],
+        "Q": [
+          "u_nav/pending_frame"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/g_support.u_support/seen_epoch_0_s1": {
+      "name": "u_nav/g_support.u_support/seen_epoch_0_s1",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/support_epoch[0]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/g_support.u_support/seen_epoch_6_8"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/g_support.u_support/seen_epoch[0]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/support_epoch_0_s1": {
+      "name": "u_nav/support_epoch_0_s1",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/n60_12"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "RESET": [
+          "u_nav/n40_3"
+        ],
+        "Q": [
+          "u_nav/support_epoch[0]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/g_support.u_support/seen_epoch_1_s1": {
+      "name": "u_nav/g_support.u_support/seen_epoch_1_s1",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/support_epoch[1]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/g_support.u_support/seen_epoch_6_8"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/g_support.u_support/seen_epoch[1]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/support_epoch_1_s0": {
+      "name": "u_nav/support_epoch_1_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/n59_1"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/n11837_8"
+        ],
+        "RESET": [
+          "u_nav/n40_3"
+        ],
+        "Q": [
+          "u_nav/support_epoch[1]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/g_support.u_support/seen_epoch_2_s1": {
+      "name": "u_nav/g_support.u_support/seen_epoch_2_s1",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/support_epoch[2]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/g_support.u_support/seen_epoch_6_8"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/g_support.u_support/seen_epoch[2]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/support_epoch_2_s0": {
+      "name": "u_nav/support_epoch_2_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/n58_1"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/n11837_8"
+        ],
+        "RESET": [
+          "u_nav/n40_3"
+        ],
+        "Q": [
+          "u_nav/support_epoch[2]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/g_support.u_support/seen_epoch_3_s1": {
+      "name": "u_nav/g_support.u_support/seen_epoch_3_s1",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/support_epoch[3]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/g_support.u_support/seen_epoch_6_8"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/g_support.u_support/seen_epoch[3]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/support_epoch_3_s0": {
+      "name": "u_nav/support_epoch_3_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/n57_1"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/n11837_8"
+        ],
+        "RESET": [
+          "u_nav/n40_3"
+        ],
+        "Q": [
+          "u_nav/support_epoch[3]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/g_support.u_support/seen_epoch_4_s1": {
+      "name": "u_nav/g_support.u_support/seen_epoch_4_s1",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/support_epoch[4]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/g_support.u_support/seen_epoch_6_8"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/g_support.u_support/seen_epoch[4]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/support_epoch_4_s0": {
+      "name": "u_nav/support_epoch_4_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/n56_1"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/n11837_8"
+        ],
+        "RESET": [
+          "u_nav/n40_3"
+        ],
+        "Q": [
+          "u_nav/support_epoch[4]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/g_support.u_support/seen_epoch_5_s1": {
+      "name": "u_nav/g_support.u_support/seen_epoch_5_s1",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/support_epoch[5]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/g_support.u_support/seen_epoch_6_8"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/g_support.u_support/seen_epoch[5]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/support_epoch_5_s0": {
+      "name": "u_nav/support_epoch_5_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/n55_1"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/n11837_8"
+        ],
+        "RESET": [
+          "u_nav/n40_3"
+        ],
+        "Q": [
+          "u_nav/support_epoch[5]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/g_support.u_support/seen_epoch_6_s1": {
+      "name": "u_nav/g_support.u_support/seen_epoch_6_s1",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/support_epoch[6]"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/g_support.u_support/seen_epoch_6_8"
+        ],
+        "RESET": [
+          "GND"
+        ],
+        "Q": [
+          "u_nav/g_support.u_support/seen_epoch[6]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/support_epoch_6_s0": {
+      "name": "u_nav/support_epoch_6_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/n54_1"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/n11837_8"
+        ],
+        "RESET": [
+          "u_nav/n40_3"
+        ],
+        "Q": [
+          "u_nav/support_epoch[6]"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/u_pf/m_valid_s0": {
+      "name": "u_nav/u_pf/m_valid_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/u_pf/n605_3"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "u_nav/pt_ready"
+        ],
+        "RESET": [
+          "r2"
+        ],
+        "Q": [
+          "u_nav/pf_valid"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    },
+    "u_nav/u_map/u_tv/wval_s0": {
+      "name": "u_nav/u_map/u_tv/wval_s0",
+      "kind": "DFFRE",
+      "ports": {
+        "D": [
+          "u_nav/u_map/u_tv/n6136_7"
+        ],
+        "CLK": [
+          "clk50_d"
+        ],
+        "CE": [
+          "VCC"
+        ],
+        "RESET": [
+          "r2"
+        ],
+        "Q": [
+          "u_nav/u_map/u_tv/wval"
+        ]
+      },
+      "parameters": {
+        "INIT": "1'b0"
+      }
+    }
+  },
+  "all_boundary_D_CLK_CE_reset_INIT_byte_identical": true,
+  "selected_actual_loads": {
+    "u_control/model_thread/observation/n15679_10": {
+      "net": "u_control/model_thread/observation/n15679_10",
+      "loads": 4001,
+      "pins": {
+        "CE": 4000,
+        "D": 1
+      },
+      "load_primitives": {
+        "DFFCE": 4001
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/observation/n15680_s4",
+          "kind": "LUT3",
+          "ports": {
+            "I0": "\\u_control/model_thread/observation/state [0]",
+            "I1": "\\u_control/model_thread/observation/state [1]",
+            "I2": "\\u_control/model_thread/observation/state [2]",
+            "F": "\\u_control/model_thread/observation/n15679_10 "
+          },
+          "parameters": {
+            "INIT": "8'h10"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/observation/n331_7": {
+      "net": "u_control/model_thread/observation/n331_7",
+      "loads": 4366,
+      "pins": {
+        "I0": 3,
+        "CLEAR": 4360,
+        "PRESET": 1,
+        "RESET": 2
+      },
+      "load_primitives": {
+        "LUT2": 1,
+        "LUT4": 2,
+        "DFFCE": 4360,
+        "DFFPE": 1,
+        "MULTALU27X18": 2
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/observation/n331_s2",
+          "kind": "LUT4",
+          "ports": {
+            "I0": "\\u_control/model_status_flags_1 [6]",
+            "I1": "r2",
+            "I2": "\\u_control/n6_4 ",
+            "I3": "\\u_control/n6_5 ",
+            "F": "\\u_control/model_thread/observation/n331_7 "
+          },
+          "parameters": {
+            "INIT": "16'hEFFF"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/u_pf/n3967_6": {
+      "net": "u_nav/u_pf/n3967_6",
+      "loads": 361,
+      "pins": {
+        "CE": 361
+      },
+      "load_primitives": {
+        "DFFRE": 359,
+        "MULTALU27X18": 2
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_pf/n3967_s2",
+          "kind": "LUT4",
+          "ports": {
+            "I0": "r2",
+            "I1": "\\u_nav/r_LIDAR_CTRL_Z [5]",
+            "I2": "\\u_nav/pt_ready_3 ",
+            "I3": "\\u_nav/pf_valid ",
+            "F": "\\u_nav/u_pf/n3967_6 "
+          },
+          "parameters": {
+            "INIT": "16'h5455"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/u_map/u_tv/n25284_7": {
+      "net": "u_nav/u_map/u_tv/n25284_7",
+      "loads": 357,
+      "pins": {
+        "I3": 2,
+        "CE": 355
+      },
+      "load_primitives": {
+        "LUT4": 2,
+        "DFFRE": 352,
+        "DFFSE": 3
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_map/u_tv/n25284_s2",
+          "kind": "LUT2",
+          "ports": {
+            "I0": "r2",
+            "I1": "\\u_nav/u_map/u_tv/wval ",
+            "F": "\\u_nav/u_map/u_tv/n25284_7 "
+          },
+          "parameters": {
+            "INIT": "4'h4"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    }
+  },
+  "only_known_clock_root_for_boundary": [
+    "clk50_d"
+  ],
+  "no_numeric_aliases": true,
+  "no_RTL_VG_clock_or_timing_exception_change": true,
+  "actual_LW_assignment_and_routing_not_guaranteed": true,
+  "failed_net_identities_unknown": true,
+  "new_build_started": false,
+  "official_source": "SUG1541-1.0E section2.8; genericBUFG SR/CE/LOGIC and LOCAL_CLOCK. BUFS is not supported on this AroraV device.",
+  "evidence_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32\\impl\\pnr\\g2_top.vo",
+      "bytes": 44583016,
+      "mtime_ns": 1792946347849585200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_preview_pnr39\\impl\\pnr\\g2_top.vo",
+      "bytes": 44625864,
+      "mtime_ns": 1792960107324560200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\pnr39_final_actual_review1\\final_review.json",
+      "bytes": 62114,
+      "mtime_ns": 1792960291781409200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\pnr39_final_actual_review1\\actual_storage_controls.json",
+      "bytes": 1616456,
+      "mtime_ns": 1792960291777842800
+    }
+  ]
+}

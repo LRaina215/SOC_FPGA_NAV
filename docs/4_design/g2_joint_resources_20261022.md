@@ -888,3 +888,15 @@ MAC帧边界修复复用原l_rx_rst，仅在接收FSM尾置R_BAD并清hold_v/val
 新独立跨层审阅确认六个动作MULTALU27X18均启用OREG=CLK0=clk50_d、CE0恒1、RESET0恒0，其余A/B/D/P寄存BYPASS；输入组合锥精确落在六组原policy/core/action0..5真实FF，不经过晚一拍的policy/actions。源码384乘积位被DSP输出寄存吸收，额外独立product DFF为0，不能把源码位数当实际开销或称DSP消除；完整SYN仍增加36显式FF。真实50MHz和物理布通仍待。[实际乘积边界](evidence/g2_20261023/action_preview_SYN28_actual_product_mapping_20261026.json)。
 
 据此启动唯一`baseline_fusion_action_preview_pnr39`：03:59:37.376615、工具64632创建03:59:37.379797、父26396创建03:59:36.495146，NORMAL全20核；入场物理5326295040B/提交7576920064B，超过原2/4GiB。复用完整SYN28、CST/实际options/device同已布通PNR35，20/10ns与原26 hold-only+26个8/18ns max-delay由新实际26路径重生成且逐字同35；同一SDC仅加5000报告，无新全局请求、setup豁免或截止。当前布局Phase2，没有本轮实际RAM/时序；不是把38约束套37的重复实验，没有新综合或烧录。[39实际启动](evidence/g2_20261023/action_preview_PNR39_actual_start_20261026.json)。每30分钟继续，失败按真实结果调整，完整部署门槛不变。
+
+## 2026-10-26 04:27 独立冻结后续安全与双UART源
+
+**2026-10-26 04:27 在途独立工作：后续安全与双UART源候选已冻结，未启动新综合或改动PNR39。** `baseline_fusion_preview_FIFO_MAC_UART_prepared1`以实际SYN28为源，只追加已分别证明的FIFO共同复位修复、MAC复位后等待真DV idle和RK双UART失联受控停机固件。相对SYN28仅3份RTL（g2_top/nav_async_fifo/rgmii_mac100），相对SYN23共6份，原63硬件输入保留；69资产只有11份CPU映像改变、58其余资产/全部权重保持。复用既有52164B BIN/ELF及128KiB零填充HEX、25份C预处理和冻结RK上下文31握手证明，未重复编译/仿真。FW为2改2增/63文件、头32，RK仍仅core.py覆盖且不采用实时工作区。源码拼接检查通过不代表联合数值/复位/停止通过；特别是FIFO异步断言会有意改变实际FF复位种类/控制，下一份网表必须重新证明，不能套旧78寄存器种类相同结论或盲搬26对象。没有新SYN/PNR、串口/部署或生产服务动作；先结合39结果和联合功能验证决定接入。[冻结来源与待证项](evidence/g2_20261023/action_preview_FIFO_MAC_UART_combined_source_20261026.json)。
+
+## 2026-10-26 04:39 PNR39实际失败与双观测请求对照
+
+**2026-10-26 04:39 PNR39自然失败293条；同一网表的双观测全局请求PNR40已启动。** 39于04:28:29.057993自然PR0004退出1、cancelled=false、总0/静默0，26396/64632均已退出。实际332RAM/Logic89703/FF40129/CLS55602/DSP163.5，对32为Logic+86/FF+37/CLS+85，全部RAM几何/显式INIT保持；六动作DSP OREG=CLK0在物理VO仍保留，26物理连接匹配。无TR，不能说新流水已改善setup、52已生效或50MHz通过，也未取得293失败逐网身份。[39实际最终审阅](evidence/g2_20261023/action_preview_PNR39_final_unrouted293_20261026.json)。
+
+这次实际观测4001负载CE和4366负载复位网同时失去原LW，两条新361 CE/357 CE+LOGIC导航网占LW；原sensor388也失PRIMARY，其他分配和区域变化一并保留。39与只失观测CE、复位仍LW的36/38不同，且使用SYN28动作OREG网表；不能从38失败推断本次双观测对照已做过，也不能把分配变化当失败网络或唯一根因。已重读32/39实际VO，四个拟约束驱动输入锥（含真实ALU模式/COUT）到55个实际FF的D/CLK/CE/reset/INIT全部逐字同，别名0；初读器仅保留LUT/FF而漏ALU COUT的失败记录保留，补全真实ALU模式/输入表达式后严格等式通过，未放宽对象检查。[新4锥证明](evidence/g2_20261023/action_preview_observation_pair_request_preflight_20261026.json)。
+
+唯一PNR40于04:36:36.624475实际启动工具34404（创建04:36:36.626895）、父65108创建04:36:35.428496；入场物理5531123712B/提交7671599104B，NORMAL全20核、总0/静默0。复用完整SYN28，VG/SDC20-10ns/原52命令/同SDC5000报告/实际options/device与39保持；CST只请求两观测BUFG CE|LOGIC与SR|LOGIC，并将已核361/357两小网LOCAL，共4条，无新综合。通用BUFG不保证LW，必须最终实测；不使用AroraV不支持的BUFS。若此有依据的分配对照仍失败，不继续轮换参数。[40实际启动](evidence/g2_20261023/action_preview_obs_pair_PNR40_actual_start_20261026.json)。PNR35布通/hold0锚点及全部部署门槛保持，当前未烧录。
