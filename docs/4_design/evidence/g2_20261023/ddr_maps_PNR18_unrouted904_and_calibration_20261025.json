@@ -1,0 +1,964 @@
+{
+  "recorded_at": "2026-10-25T11:53:20.338896+08:00",
+  "PNR": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_ddr_maps_explicit_pnr18",
+    "runtime": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-25T10:19:43.373727+08:00",
+      "max_runtime_s": 0.0,
+      "max_no_observable_progress_s": 0.0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 66312,
+      "elapsed_s": 4652.8279999999795,
+      "no_observable_progress_s": 0.0,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          1954455,
+          1792899433198125800
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          1954003,
+          1792899433198125800
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          2678688,
+          1792895225985410400
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          16234089,
+          1792895226531741600
+        ],
+        [
+          "impl\\pnr\\g2_top.rpt.txt",
+          112055,
+          1792899430183678000
+        ],
+        [
+          "impl\\pnr\\g2_top.vo",
+          52294795,
+          1792899433182986800
+        ]
+      ],
+      "tool_exit": 1,
+      "ended_at": "2026-10-25T11:37:16.203823+08:00"
+    },
+    "unrouted_nets": 904,
+    "natural_failure": true,
+    "error": "PR0004",
+    "physical_RAM": 259,
+    "capacity": 340,
+    "saved_against_correct_Lane2_PNR15": 67,
+    "saving_percent": 20.552147239263803,
+    "physical_RAM_by_top": {
+      "u_ddr_phy": 32,
+      "u_soc": 64,
+      "u_control": 44,
+      "u_nav": 119
+    },
+    "explicit_source_leaves": 217,
+    "protected_DDR_source_leaves": 16,
+    "source_report_total": 233,
+    "explicit_wide_pairs_matched": 10,
+    "protected_DDR_physical_leaves": 32,
+    "physical_accounting": "217 explicit + 10 matched additions + 32 protected DDR physical leaves =259; do not call explicit-only counts_reconciled=false an unexplained deficit",
+    "row_input_two_DPX9B_modes": "00/00 in actual physical netlist",
+    "logic": 95609,
+    "FF": 51777,
+    "CLS": 59259,
+    "DSP": 153.5,
+    "PRIMARY": 8,
+    "LW": 8,
+    "requested_seven_control_reset_assignments_all_verified": true,
+    "global_loads": [
+      {
+        "net": "clk50_d",
+        "resource": "PRIMARY",
+        "drivers": [
+          {
+            "kind": "IBUF",
+            "name": "clk50_ibuf",
+            "ports": {
+              "I": "clk50",
+              "O": "clk50_d"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "CLK": 48287,
+          "I": 1,
+          "CLKA": 112,
+          "CLKB": 112
+        },
+        "direct_load_kinds": {
+          "DFFCE": 10108,
+          "DFFPE": 194,
+          "DFFRE": 32936,
+          "DFFSE": 782,
+          "RAM16SDP4": 2982,
+          "MULT27X36": 25,
+          "SP": 64,
+          "INV": 1,
+          "MULTALU27X18": 52,
+          "pROM": 24,
+          "MULT12X12": 9,
+          "pROMX9": 22,
+          "SDPB": 119,
+          "SDPX9B": 103,
+          "RAM16SDP1": 1088,
+          "MULTADDALU12X12": 1,
+          "DPX9B": 2
+        },
+        "load_examples": [
+          [
+            "DFFCE",
+            "hb_24_s0",
+            "CLK"
+          ],
+          [
+            "DFFCE",
+            "hb_23_s0",
+            "CLK"
+          ],
+          [
+            "DFFCE",
+            "hb_22_s0",
+            "CLK"
+          ],
+          [
+            "DFFCE",
+            "hb_21_s0",
+            "CLK"
+          ]
+        ]
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "resource": "PRIMARY",
+        "drivers": [
+          {
+            "kind": "IBUF",
+            "name": "rgmii_rxc_ibuf",
+            "ports": {
+              "I": "rgmii_rxc",
+              "O": "rgmii_rxc_d"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "CLK": 137,
+          "I": 1,
+          "CLKA": 2
+        },
+        "direct_load_kinds": {
+          "DFFRE": 134,
+          "INV": 1,
+          "DFFPE": 3,
+          "SDPB": 2
+        },
+        "load_examples": [
+          [
+            "DFFRE",
+            "u_lmac/rxd_p_2_s0",
+            "CLK"
+          ],
+          [
+            "DFFRE",
+            "u_lmac/rxd_p_1_s0",
+            "CLK"
+          ],
+          [
+            "DFFRE",
+            "u_lmac/rxd_p_0_s0",
+            "CLK"
+          ],
+          [
+            "DFFRE",
+            "u_lmac/dv_p_s0",
+            "CLK"
+          ]
+        ]
+      },
+      {
+        "net": "ddr_memory_clk",
+        "resource": "PRIMARY",
+        "drivers": [],
+        "direct_pin_counts": {},
+        "direct_load_kinds": {},
+        "load_examples": []
+      },
+      {
+        "net": "ddr_ui_clk",
+        "resource": "PRIMARY",
+        "drivers": [],
+        "direct_pin_counts": {
+          "CLK": 6356,
+          "CLKA": 32,
+          "CLKB": 36,
+          "I": 1
+        },
+        "direct_load_kinds": {
+          "DFFCE": 5490,
+          "DFFPE": 96,
+          "DFFRE": 769,
+          "SDPX9B": 34,
+          "SDPB": 32,
+          "INV": 1,
+          "DPX9B": 2,
+          "MULT12X12": 1
+        },
+        "load_examples": [
+          [
+            "DFFCE",
+            "u_ddr_phy/gw3_top/u_gwmc_top/eye_calib_start_addr_s0",
+            "CLK"
+          ],
+          [
+            "DFFCE",
+            "u_ddr_phy/gw3_top/u_gwmc_top/app_en_s0",
+            "CLK"
+          ],
+          [
+            "DFFCE",
+            "u_ddr_phy/gw3_top/u_gwmc_top/app_cmd_2_s0",
+            "CLK"
+          ],
+          [
+            "DFFCE",
+            "u_ddr_phy/gw3_top/u_gwmc_top/app_cmd_1_s0",
+            "CLK"
+          ]
+        ]
+      },
+      {
+        "net": "h_rx_clk",
+        "resource": "PRIMARY",
+        "drivers": [],
+        "direct_pin_counts": {
+          "CLK": 609,
+          "CLKA": 3
+        },
+        "direct_load_kinds": {
+          "DFFCE": 477,
+          "DFFRE": 92,
+          "DFFPE": 38,
+          "RAM16SDP4": 2,
+          "SDPB": 3
+        },
+        "load_examples": [
+          [
+            "DFFCE",
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/rx_even_d1_s0",
+            "CLK"
+          ],
+          [
+            "DFFCE",
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/rx_even_d2_s0",
+            "CLK"
+          ],
+          [
+            "DFFCE",
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/rx_decode_k_d1_s0",
+            "CLK"
+          ],
+          [
+            "DFFCE",
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/rx_decode_k_d2_s0",
+            "CLK"
+          ]
+        ]
+      },
+      {
+        "net": "h_tx_clk",
+        "resource": "PRIMARY",
+        "drivers": [],
+        "direct_pin_counts": {
+          "CLK": 641,
+          "CLKB": 1
+        },
+        "direct_load_kinds": {
+          "DFFCE": 490,
+          "DFFRE": 101,
+          "DFFPE": 50,
+          "SDPX9B": 1
+        },
+        "load_examples": [
+          [
+            "DFFCE",
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/gmii_tx_en_d1_s0",
+            "CLK"
+          ],
+          [
+            "DFFCE",
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/gmii_tx_er_d1_s0",
+            "CLK"
+          ],
+          [
+            "DFFCE",
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/gmii_txd_d1_7_s0",
+            "CLK"
+          ],
+          [
+            "DFFCE",
+            "u_sfp/u_mac/u_serdes/Giga_Serial_Ethernet_Top_inst/u_ge_pcs/gmii_txd_d1_6_s0",
+            "CLK"
+          ]
+        ]
+      },
+      {
+        "net": "n2371_7",
+        "resource": "PRIMARY",
+        "drivers": [
+          {
+            "kind": "LUT3",
+            "name": "u_control/n2371_s2",
+            "ports": {
+              "I0": "\\u_rs/gowin_reg_r2_13 ",
+              "I1": "\\u_control/n6_4 ",
+              "I2": "\\u_control/n6_5 ",
+              "F": "n2371_7"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "I2": 13,
+          "CLEAR": 3498,
+          "PRESET": 101,
+          "RESET": 1437,
+          "I0": 9,
+          "SET": 83,
+          "I1": 9,
+          "D": 1
+        },
+        "direct_load_kinds": {
+          "LUT4": 23,
+          "DFFCE": 3499,
+          "DFFPE": 101,
+          "MULTALU27X18": 8,
+          "DFFRE": 1418,
+          "DFFSE": 83,
+          "LUT3": 8,
+          "MULT27X36": 8,
+          "MULT12X12": 2,
+          "SDPB": 1
+        },
+        "load_examples": [
+          [
+            "LUT4",
+            "u_control/command_yaw_q12_0_s3",
+            "I2"
+          ],
+          [
+            "DFFCE",
+            "u_control/imu_telemetry_snapshot_95_s0",
+            "CLEAR"
+          ],
+          [
+            "DFFCE",
+            "u_control/imu_telemetry_snapshot_94_s0",
+            "CLEAR"
+          ],
+          [
+            "DFFCE",
+            "u_control/imu_telemetry_snapshot_93_s0",
+            "CLEAR"
+          ]
+        ]
+      },
+      {
+        "net": "n7460_5",
+        "resource": "PRIMARY",
+        "drivers": [
+          {
+            "kind": "LUT2",
+            "name": "u_nav/u_match/n7460_s1",
+            "ports": {
+              "I0": "\\u_rs/gowin_reg_r2_33 ",
+              "I1": "\\u_ddr_reset/gowin_reg_protocol_ready_16 ",
+              "F": "n7460_5"
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "RESET": 6066,
+          "CLEAR": 65,
+          "PRESET": 59,
+          "SET": 338
+        },
+        "direct_load_kinds": {
+          "PLL": 1,
+          "DFFCE": 65,
+          "DFFPE": 59,
+          "DFFRE": 6064,
+          "DFFSE": 338,
+          "MULT12X12": 1
+        },
+        "load_examples": [
+          [
+            "PLL",
+            "u_ddr_pll/PLL_inst",
+            "RESET"
+          ],
+          [
+            "DFFCE",
+            "u_ddr_phy/gw3_top/u_ddr_phy_top/ddr_init_internal_rr_s0",
+            "CLEAR"
+          ],
+          [
+            "DFFCE",
+            "u_ddr_phy/gw3_top/u_ddr_phy_top/eye_calib_start_r_s0",
+            "CLEAR"
+          ],
+          [
+            "DFFCE",
+            "u_ddr_phy/gw3_top/u_ddr_phy_top/eye_calib_start_rr_s0",
+            "CLEAR"
+          ]
+        ]
+      },
+      {
+        "net": "u_ddr_phy/gw3_top/ddr_controller_reset",
+        "resource": "LW",
+        "drivers": [
+          {
+            "kind": "DFFCE",
+            "name": "u_ddr_phy/gw3_top/u_ddr_phy_top/ddr_rsti_reg_2_s0",
+            "ports": {
+              "D": "\\u_ddr_phy/gw3_top/u_ddr_phy_top/ddr_rsti_reg [1]",
+              "CLK": "clk50_d",
+              "CE": "VCC",
+              "CLEAR": "GND",
+              "Q": "\\u_ddr_phy/gw3_top/ddr_controller_reset "
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "CLEAR": 663
+        },
+        "direct_load_kinds": {
+          "DFFCE": 663
+        },
+        "load_examples": [
+          [
+            "DFFCE",
+            "u_ddr_phy/gw3_top/u_gwmc_top/eye_calib_start_addr_s0",
+            "CLEAR"
+          ],
+          [
+            "DFFCE",
+            "u_ddr_phy/gw3_top/u_gwmc_top/app_en_s0",
+            "CLEAR"
+          ],
+          [
+            "DFFCE",
+            "u_ddr_phy/gw3_top/u_gwmc_top/app_cmd_2_s0",
+            "CLEAR"
+          ],
+          [
+            "DFFCE",
+            "u_ddr_phy/gw3_top/u_gwmc_top/app_cmd_1_s0",
+            "CLEAR"
+          ]
+        ]
+      },
+      {
+        "net": "u_control/model_thread/observation/n12472_10",
+        "resource": "LW",
+        "drivers": [
+          {
+            "kind": "LUT3",
+            "name": "u_control/model_thread/observation/n12506_s4",
+            "ports": {
+              "I0": "\\u_control/model_thread/observation/state [0]",
+              "I1": "\\u_control/model_thread/observation/state [1]",
+              "I2": "\\u_control/model_thread/observation/state [2]",
+              "F": "\\u_control/model_thread/observation/n12472_10 "
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "D": 1,
+          "CE": 3892
+        },
+        "direct_load_kinds": {
+          "DFFCE": 3893
+        },
+        "load_examples": [
+          [
+            "DFFCE",
+            "u_control/model_thread/observation/valid_s0",
+            "D"
+          ],
+          [
+            "DFFCE",
+            "u_control/model_thread/observation/current_flat_671_s0",
+            "CE"
+          ],
+          [
+            "DFFCE",
+            "u_control/model_thread/observation/current_flat_666_s0",
+            "CE"
+          ],
+          [
+            "DFFCE",
+            "u_control/model_thread/observation/current_flat_665_s0",
+            "CE"
+          ]
+        ]
+      },
+      {
+        "net": "u_control/model_thread/observation/n971_7",
+        "resource": "LW",
+        "drivers": [
+          {
+            "kind": "LUT4",
+            "name": "u_control/model_thread/observation/n971_s2",
+            "ports": {
+              "I0": "\\u_control/model_status_flags_1 [6]",
+              "I1": "\\u_rs/gowin_reg_r2_17 ",
+              "I2": "\\u_control/n6_4 ",
+              "I3": "\\u_control/n6_5 ",
+              "F": "\\u_control/model_thread/observation/n971_7 "
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "I3": 1,
+          "I0": 3,
+          "CLEAR": 4312,
+          "PRESET": 1,
+          "RESET": 2
+        },
+        "direct_load_kinds": {
+          "LUT4": 3,
+          "LUT2": 1,
+          "DFFCE": 4312,
+          "DFFPE": 1,
+          "MULTALU27X18": 2
+        },
+        "load_examples": [
+          [
+            "LUT4",
+            "u_control/model_thread/observation/n523_s0",
+            "I3"
+          ],
+          [
+            "LUT2",
+            "u_control/model_thread/observation/left_numerator_63_s2",
+            "I0"
+          ],
+          [
+            "LUT4",
+            "u_control/model_thread/observation/n2152_s88",
+            "I0"
+          ],
+          [
+            "LUT4",
+            "u_control/model_thread/observation/words_s2882",
+            "I0"
+          ]
+        ]
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_update",
+        "resource": "LW",
+        "drivers": [
+          {
+            "kind": "LUT4",
+            "name": "u_control/model_thread/policy/snapshot_update_s0",
+            "ports": {
+              "I0": "\\u_control/model_thread/policy/snapshot_update_18 ",
+              "I1": "\\u_control/model_thread/policy/snapshot_shift_select ",
+              "I2": "\\u_control/model_thread/policy/snapshot_update_16 ",
+              "I3": "model_ready",
+              "F": "\\u_control/model_thread/policy/snapshot_update "
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "I1": 1,
+          "CE": 4032
+        },
+        "direct_load_kinds": {
+          "LUT2": 1,
+          "DFFRE": 4032
+        },
+        "load_examples": [
+          [
+            "LUT2",
+            "u_control/model_thread/policy/n310_s1",
+            "I1"
+          ],
+          [
+            "DFFRE",
+            "u_control/model_thread/policy/snapshot_4030_s0",
+            "CE"
+          ],
+          [
+            "DFFRE",
+            "u_control/model_thread/policy/snapshot_4029_s0",
+            "CE"
+          ],
+          [
+            "DFFRE",
+            "u_control/model_thread/policy/snapshot_4028_s0",
+            "CE"
+          ]
+        ]
+      },
+      {
+        "net": "u_control/telemetry_thread/n1315_4",
+        "resource": "LW",
+        "drivers": [
+          {
+            "kind": "LUT4",
+            "name": "u_control/telemetry_thread/n1315_s1",
+            "ports": {
+              "I0": "n1315_5",
+              "I1": "n1315_6",
+              "I2": "index[6]",
+              "I3": "\\u_control/telemetry_thread/n179_4 ",
+              "F": "\\u_control/telemetry_thread/n1315_4 "
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "I2": 837,
+          "I3": 56,
+          "I0": 41,
+          "I1": 29
+        },
+        "direct_load_kinds": {
+          "LUT3": 857,
+          "LUT4": 56,
+          "LUT2": 50
+        },
+        "load_examples": [
+          [
+            "LUT3",
+            "u_control/telemetry_thread/n1315_s0",
+            "I2"
+          ],
+          [
+            "LUT3",
+            "u_control/telemetry_thread/n1316_s0",
+            "I2"
+          ],
+          [
+            "LUT3",
+            "u_control/telemetry_thread/n1317_s0",
+            "I2"
+          ],
+          [
+            "LUT3",
+            "u_control/telemetry_thread/n1318_s0",
+            "I2"
+          ]
+        ]
+      },
+      {
+        "net": "u_control/telemetry_thread/snapshot_959_10",
+        "resource": "LW",
+        "drivers": [
+          {
+            "kind": "LUT4",
+            "name": "u_control/telemetry_thread/snapshot_959_s4",
+            "ports": {
+              "I0": "active",
+              "I1": "busy",
+              "I2": "\\u_control/telemetry_thread/n6538_14 ",
+              "I3": "\\u_control/telemetry_thread/n1315_4 ",
+              "F": "\\u_control/telemetry_thread/snapshot_959_10 "
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "CE": 960
+        },
+        "direct_load_kinds": {
+          "DFFCE": 960
+        },
+        "load_examples": [
+          [
+            "DFFCE",
+            "u_control/telemetry_thread/snapshot_959_s1",
+            "CE"
+          ],
+          [
+            "DFFCE",
+            "u_control/telemetry_thread/snapshot_958_s1",
+            "CE"
+          ],
+          [
+            "DFFCE",
+            "u_control/telemetry_thread/snapshot_957_s1",
+            "CE"
+          ],
+          [
+            "DFFCE",
+            "u_control/telemetry_thread/snapshot_956_s1",
+            "CE"
+          ]
+        ]
+      },
+      {
+        "net": "u_nav/a_q_15_9",
+        "resource": "LW",
+        "drivers": [
+          {
+            "kind": "LUT3",
+            "name": "u_nav/a_q_15_s4",
+            "ports": {
+              "I0": "\\u_rs/gowin_reg_r2_19 ",
+              "I1": "\\u_ddr_reset/gowin_reg_protocol_ready_2 ",
+              "I2": "\\u_nav/a_q_15_11 ",
+              "F": "\\u_nav/a_q_15_9 "
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "I3": 1,
+          "CE": 303
+        },
+        "direct_load_kinds": {
+          "LUT4": 1,
+          "DFFRE": 303
+        },
+        "load_examples": [
+          [
+            "LUT4",
+            "u_nav/lr_rx_ra_4_s3",
+            "I3"
+          ],
+          [
+            "DFFRE",
+            "u_nav/a_q_15_s0",
+            "CE"
+          ],
+          [
+            "DFFRE",
+            "u_nav/a_q_14_s0",
+            "CE"
+          ],
+          [
+            "DFFRE",
+            "u_nav/a_q_13_s0",
+            "CE"
+          ]
+        ]
+      },
+      {
+        "net": "u_nav/u_pf/n3967_6",
+        "resource": "LW",
+        "drivers": [
+          {
+            "kind": "LUT3",
+            "name": "u_nav/u_pf/n3967_s2",
+            "ports": {
+              "I0": "\\u_rs/gowin_reg_r2_29 ",
+              "I1": "\\u_ddr_reset/gowin_reg_protocol_ready_12 ",
+              "I2": "\\u_nav/pt_ready ",
+              "F": "\\u_nav/u_pf/n3967_6 "
+            }
+          }
+        ],
+        "direct_pin_counts": {
+          "CE": 365
+        },
+        "direct_load_kinds": {
+          "DFFRE": 363,
+          "MULTALU27X18": 2
+        },
+        "load_examples": [
+          [
+            "DFFRE",
+            "u_nav/u_pf/sof1_s0",
+            "CE"
+          ],
+          [
+            "DFFRE",
+            "u_nav/u_pf/eof1_s0",
+            "CE"
+          ],
+          [
+            "DFFRE",
+            "u_nav/u_pf/pv1_s0",
+            "CE"
+          ],
+          [
+            "DFFRE",
+            "u_nav/u_pf/keep1_s0",
+            "CE"
+          ]
+        ]
+      }
+    ],
+    "physical_lidar_connections_passed": true,
+    "physical_host_connections_passed": true,
+    "timing_report_available": false,
+    "setup_hold": null,
+    "failed_net_identities_available": false,
+    "congestion_or_positions_available": false,
+    "full_signoff": false
+  },
+  "comparison": {
+    "reference": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+    "unrouted_before": 184,
+    "unrouted_after": 904,
+    "BSRAM_before": 326,
+    "BSRAM_after": 259,
+    "logic_before": 89813,
+    "logic_after": 95609,
+    "FF_before": 43646,
+    "FF_after": 51777,
+    "CLS_before": 57316,
+    "CLS_after": 59259,
+    "root_cause_not_established": true,
+    "interpretation": "RAM savings are physically confirmed; additional DDR/interface/adaptation logic and routing/global-clock pressure are candidate factors, not an identified failure-net root cause"
+  },
+  "DDR_probe2": {
+    "directory": "F:\\nav_integration_g2_20261023\\ddr_actual_c_official138k_reset200_probe2",
+    "started_at": "2026-10-25T08:05:48.383754+08:00",
+    "completed_at": "2026-10-25T11:30:24.952288+08:00",
+    "calibration_observed": false,
+    "readback_passed": false,
+    "strict_protocol_passed": false,
+    "finite_simulated_watchdog_us": 4000,
+    "application_tasks_never_started": true,
+    "final_training_reads": 17855,
+    "final_training_writes": 149,
+    "final_diagnostics": "F:\\nav_integration_g2_20261023\\ddr_actual_c_official138k_reset200_probe2\\final_diagnostics.json",
+    "diagnostics": [
+      {
+        "phase": "before_calibration_marker",
+        "severity": "error",
+        "kind": "other",
+        "count": 1
+      },
+      {
+        "phase": "before_calibration_marker",
+        "severity": "warning",
+        "kind": "other",
+        "count": 1
+      },
+      {
+        "phase": "before_calibration_marker",
+        "severity": "warning",
+        "kind": "tWLH",
+        "count": 160
+      },
+      {
+        "phase": "before_calibration_marker",
+        "severity": "warning",
+        "kind": "tWLS",
+        "count": 128
+      },
+      {
+        "phase": "time_zero",
+        "severity": "error",
+        "kind": "reset_CKE",
+        "count": 2
+      },
+      {
+        "phase": "time_zero",
+        "severity": "error",
+        "kind": "vsim-8630",
+        "count": 2
+      },
+      {
+        "phase": "time_zero",
+        "severity": "warning",
+        "kind": "reset_minimum",
+        "count": 2
+      }
+    ],
+    "tool_exit_zero_not_acceptance": true
+  },
+  "DDR_stage_snapshot": {
+    "directory": "F:\\nav_integration_g2_20261023\\ddr_actual_c_public_stages_probe3",
+    "runtime": {
+      "pid": 53876,
+      "command": [
+        "vsim.exe",
+        "-c",
+        "-t",
+        "1ps",
+        "work.tb_actual_c",
+        "-do",
+        "run.do"
+      ],
+      "started_at": "2026-10-25T11:30:30.846386+08:00"
+    },
+    "last_sample": {
+      "time_us": 700.0,
+      "raw": "# PUBLIC_STAGE time_us=700.000000 init=10000 read=01000 write=100 read_sel=0 burst_seen=0 burst_check=0 burst_counts=0000000000 dll=00000000 eye_err=0 eye_done=0 eye_valid=0 changes=1",
+      "init_state": [
+        "IDLE"
+      ],
+      "read_cal_state": [
+        "READ_CAL_IDLE"
+      ],
+      "wrlvl_state": [
+        "WRLVL_IDLE"
+      ],
+      "fields": {
+        "time_us": "700.000000",
+        "init": "10000",
+        "read": "01000",
+        "write": "100",
+        "read_sel": "0",
+        "burst_seen": "0",
+        "burst_check": "0",
+        "burst_counts": "0000000000",
+        "dll": "00000000",
+        "eye_err": "0",
+        "eye_done": "0",
+        "eye_valid": "0",
+        "changes": "1"
+      },
+      "read_dwell_ui_cycles": {
+        "READ_CAL_WRITE_CMD_WAIT": 0,
+        "READ_CAL_WRITE_CMD": 0,
+        "READ_CAL_WAIT": 0,
+        "READ_CAL_RSEL_ADJ_WAIT": 0,
+        "READ_CAL_RSEL_ADJ": 0,
+        "READ_CAL_READ_CMD_WAIT": 0,
+        "READ_CAL_READ_CMD": 0,
+        "READ_CAL_RBURST_CHECK_WAIT1": 0,
+        "READ_CAL_RBURST_CHECK_WAIT": 0,
+        "READ_CAL_RBURST_CHECK": 0,
+        "READ_CAL_PRECHARGE_WAIT": 0,
+        "READ_CAL_PRECHARGE": 0,
+        "READ_CAL_IDLE": 44978,
+        "READ_CAL_HOLD": 0,
+        "READ_CAL_DONE": 0,
+        "READ_CAL_ACTIVE_CMD_WAIT": 0,
+        "READ_CAL_ACTIVE_CMD": 0
+      }
+    },
+    "old_dwell_labels_corrected": true,
+    "correction": "Verilog concatenation puts the first sorted declaration at MSB; original dwell labels were reversed. Captured vectors are unchanged and decoded without rerunning or editing the active simulator.",
+    "protected_DQS_access": false,
+    "diagnostic_only": true
+  },
+  "real_UPDATE_5ms_verified": false,
+  "deployment_blocked": true,
+  "programmed": false,
+  "new_PNR_started": false,
+  "automation_status_preserved": "PAUSED",
+  "next_actions": [
+    "Analyze actual physical placement/connectivity before choosing the next candidate; no original-input rerun or ungrounded parameter change",
+    "Let existing finite public-stage diagnostic finish, decode real init/read states and burst checks; then correct only a demonstrated model/fixture/implementation issue",
+    "Keep physical exploration parallel to functional verification; all deployment gates remain"
+  ]
+}
