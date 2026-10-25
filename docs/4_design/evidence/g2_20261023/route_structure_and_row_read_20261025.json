@@ -1,0 +1,610 @@
+{
+  "at": "2026-10-25T12:59:08.918416+08:00",
+  "acceptance_priority": "original function, performance, complete routing and timing; resource reduction alone is not acceptance",
+  "physical_diagnostic": {
+    "official_schematic_manual": "https://cdn.gowinsemi.com.cn/SUG755E.pdf",
+    "entry": "Tools > Schematic View > Post-Synthesis Netlist Viewer",
+    "minimum_stage": "successful synthesis",
+    "can_show_logical_source_and_sinks": true,
+    "shows_failed_physical_routes_verified": false,
+    "physical_view_requires_successful_PNR_per_SUG1541_printed_page56": true,
+    "GUI_inspected": false,
+    "GUI_initialization_failed": true,
+    "viewer": "F:\\nav_integration_g2_20261023\\routing_structure_view_PNR15\\index.html",
+    "viewer_data": "F:\\nav_integration_g2_20261023\\routing_structure_view_PNR15\\connections.json",
+    "cells_scanned": 120323,
+    "endpoint_source_lines_verified": 25627,
+    "cross_checked_prior_pin_counts": 7,
+    "viewer_script_syntax_checked": true,
+    "browser_rendering_verified": false,
+    "unrouted_net_list_obtained": false,
+    "physical_congestion_or_coordinates_available": false,
+    "targets": [
+      {
+        "net": "r2",
+        "sink_count": 6274,
+        "sink_pins": {
+          "I0": 246,
+          "I1": 36,
+          "I2": 83,
+          "RESET": 5049,
+          "I": 1,
+          "I3": 17,
+          "PRESET": 12,
+          "SET": 330,
+          "CLEAR": 497,
+          "CE": 3
+        },
+        "reported_global": "PRIMARY",
+        "route_status": "unknown"
+      },
+      {
+        "net": "n2371_7",
+        "sink_count": 5152,
+        "sink_pins": {
+          "I2": 13,
+          "CLEAR": 3498,
+          "PRESET": 101,
+          "RESET": 1438,
+          "I0": 9,
+          "SET": 83,
+          "I1": 9,
+          "D": 1
+        },
+        "reported_global": "PRIMARY",
+        "route_status": "unknown"
+      },
+      {
+        "net": "u_control/model_thread/observation/n971_7",
+        "sink_count": 4319,
+        "sink_pins": {
+          "I3": 1,
+          "I0": 3,
+          "CLEAR": 4312,
+          "PRESET": 1,
+          "RESET": 2
+        },
+        "reported_global": "PRIMARY",
+        "route_status": "unknown"
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_update",
+        "sink_count": 4033,
+        "sink_pins": {
+          "I1": 1,
+          "CE": 4032
+        },
+        "reported_global": "PRIMARY",
+        "route_status": "unknown"
+      },
+      {
+        "net": "u_control/model_thread/observation/n12472_10",
+        "sink_count": 3893,
+        "sink_pins": {
+          "D": 1,
+          "CE": 3892
+        },
+        "reported_global": "LW",
+        "route_status": "unknown"
+      },
+      {
+        "net": "u_control/telemetry_thread/n1315_4",
+        "sink_count": 963,
+        "sink_pins": {
+          "I2": 837,
+          "I3": 56,
+          "I0": 41,
+          "I1": 29
+        },
+        "reported_global": "LW",
+        "route_status": "unknown"
+      },
+      {
+        "net": "u_control/telemetry_thread/snapshot_959_10",
+        "sink_count": 960,
+        "sink_pins": {
+          "CE": 960
+        },
+        "reported_global": "LW",
+        "route_status": "unknown"
+      },
+      {
+        "net": "u_nav/u_match/u_ex/u_rb/g_slf_row_banks.row_selected_1_9",
+        "sink_count": 25,
+        "sink_pins": {
+          "I1": 2,
+          "S0": 23
+        },
+        "reported_global": null,
+        "route_status": "unknown"
+      }
+    ]
+  },
+  "row_read_candidate": {
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_smallblocks_selected_syn16",
+    "proof": "F:\\nav_integration_g2_20261023\\row_read_share_probe1\\result.json",
+    "capacity_bits": 15680,
+    "checks": [
+      {
+        "variant": "rtl_zero",
+        "result": "TEST PASSED checks=116682 reads=71288 writes=45345 collisions=170 holds=45394 all25600_pairs=1 all98bits=1"
+      },
+      {
+        "variant": "rtl_nonzero",
+        "result": "TEST PASSED checks=116682 reads=71288 writes=45345 collisions=170 holds=45394 all25600_pairs=1 all98bits=1"
+      },
+      {
+        "variant": "mapped",
+        "result": "TEST PASSED checks=116682 reads=71288 writes=45345 collisions=170 holds=45394 all25600_pairs=1 all98bits=1"
+      }
+    ],
+    "area_delta": {
+      "ff": -891,
+      "bsram": 0,
+      "T_Lut": 85,
+      "T_Ssram": 0
+    },
+    "original_inventory": {
+      "primitives": {
+        "IBUF": 117,
+        "OBUF": 98,
+        "LUT3": 519,
+        "LUT4": 103,
+        "LUT2": 2,
+        "DFFRE": 989,
+        "RAM16SDP4": 250,
+        "MUX2_LUT5": 196,
+        "MUX2_LUT6": 98,
+        "VCC": 2,
+        "GND": 2,
+        "GSR": 1
+      },
+      "bsram": 0,
+      "ff": 989,
+      "maximum_nonclock_load": 250,
+      "high_loads": [
+        {
+          "net": "raddr_d[0]",
+          "loads": 250,
+          "pins": {
+            "RAD": 250
+          }
+        },
+        {
+          "net": "raddr_d[1]",
+          "loads": 250,
+          "pins": {
+            "RAD": 250
+          }
+        },
+        {
+          "net": "raddr_d[2]",
+          "loads": 250,
+          "pins": {
+            "RAD": 250
+          }
+        },
+        {
+          "net": "raddr_d[3]",
+          "loads": 250,
+          "pins": {
+            "RAD": 250
+          }
+        },
+        {
+          "net": "waddr_d[0]",
+          "loads": 250,
+          "pins": {
+            "WAD": 250
+          }
+        },
+        {
+          "net": "waddr_d[1]",
+          "loads": 250,
+          "pins": {
+            "WAD": 250
+          }
+        },
+        {
+          "net": "waddr_d[2]",
+          "loads": 250,
+          "pins": {
+            "WAD": 250
+          }
+        },
+        {
+          "net": "waddr_d[3]",
+          "loads": 250,
+          "pins": {
+            "WAD": 250
+          }
+        },
+        {
+          "net": "u_ram/g_slf_row_banks.row_selected_0_14",
+          "loads": 128,
+          "pins": {
+            "I2": 128
+          }
+        },
+        {
+          "net": "u_ram/g_slf_row_banks.row_selected_0_16",
+          "loads": 128,
+          "pins": {
+            "I2": 128
+          }
+        },
+        {
+          "net": "u_ram/g_slf_row_banks.row_selected[0]",
+          "loads": 109,
+          "pins": {
+            "I2": 107,
+            "I0": 2
+          }
+        },
+        {
+          "net": "u_ram/g_slf_row_banks.row_selected[1]",
+          "loads": 100,
+          "pins": {
+            "I0": 1,
+            "S0": 99
+          }
+        },
+        {
+          "net": "u_ram/g_slf_row_banks.row_selected[2]",
+          "loads": 100,
+          "pins": {
+            "I0": 2,
+            "S0": 98
+          }
+        },
+        {
+          "net": "u_ram/g_slf_row_banks.row_selected[3]",
+          "loads": 100,
+          "pins": {
+            "I1": 1,
+            "I0": 98,
+            "I2": 1
+          }
+        },
+        {
+          "net": "u_ram/g_slf_row_banks.row_selected_1_9",
+          "loads": 99,
+          "pins": {
+            "I0": 1,
+            "I1": 1,
+            "S0": 97
+          }
+        },
+        {
+          "net": "u_ram/n1228_3",
+          "loads": 98,
+          "pins": {
+            "CE": 98
+          }
+        }
+      ]
+    },
+    "candidate_inventory": {
+      "primitives": {
+        "IBUF": 117,
+        "OBUF": 98,
+        "LUT4": 606,
+        "LUT3": 4,
+        "LUT2": 99,
+        "DFFRE": 98,
+        "RAM16SDP4": 250,
+        "VCC": 2,
+        "GND": 2,
+        "GSR": 1
+      },
+      "bsram": 0,
+      "ff": 98,
+      "maximum_nonclock_load": 250,
+      "high_loads": [
+        {
+          "net": "raddr_d[0]",
+          "loads": 250,
+          "pins": {
+            "RAD": 250
+          }
+        },
+        {
+          "net": "raddr_d[1]",
+          "loads": 250,
+          "pins": {
+            "RAD": 250
+          }
+        },
+        {
+          "net": "raddr_d[2]",
+          "loads": 250,
+          "pins": {
+            "RAD": 250
+          }
+        },
+        {
+          "net": "raddr_d[3]",
+          "loads": 250,
+          "pins": {
+            "RAD": 250
+          }
+        },
+        {
+          "net": "waddr_d[0]",
+          "loads": 250,
+          "pins": {
+            "WAD": 250
+          }
+        },
+        {
+          "net": "waddr_d[1]",
+          "loads": 250,
+          "pins": {
+            "WAD": 250
+          }
+        },
+        {
+          "net": "waddr_d[2]",
+          "loads": 250,
+          "pins": {
+            "WAD": 250
+          }
+        },
+        {
+          "net": "waddr_d[3]",
+          "loads": 250,
+          "pins": {
+            "WAD": 250
+          }
+        },
+        {
+          "net": "re_d",
+          "loads": 98,
+          "pins": {
+            "CE": 98
+          }
+        },
+        {
+          "net": "u_ram/g_slf_row_banks.row_read_bank[0]",
+          "loads": 98,
+          "pins": {
+            "I0": 98
+          }
+        },
+        {
+          "net": "u_ram/g_slf_row_banks.row_read_bank[1]",
+          "loads": 98,
+          "pins": {
+            "I2": 98
+          }
+        },
+        {
+          "net": "u_ram/g_slf_row_banks.row_read_bank[2]",
+          "loads": 98,
+          "pins": {
+            "I0": 98
+          }
+        },
+        {
+          "net": "u_ram/g_slf_row_banks.row_read_bank[3]",
+          "loads": 98,
+          "pins": {
+            "I2": 98
+          }
+        },
+        {
+          "net": "u_ram/g_slf_row_banks.row_read_bank[4]",
+          "loads": 98,
+          "pins": {
+            "I0": 98
+          }
+        },
+        {
+          "net": "u_ram/g_slf_row_banks.row_read_bank[5]",
+          "loads": 98,
+          "pins": {
+            "I2": 98
+          }
+        },
+        {
+          "net": "u_ram/g_slf_row_banks.row_read_bank[6]",
+          "loads": 98,
+          "pins": {
+            "I0": 98
+          }
+        }
+      ]
+    },
+    "timing_path_review": {
+      "baseline": {
+        "netlist": "F:\\nav_integration_g2_20261023\\slf_row_banks_probe1\\banked\\impl\\gwsynthesis\\g2_top.vg",
+        "paths": {
+          "memory_to_register_data": {
+            "combinational_cell_levels": 0,
+            "path": [
+              "u_ram/g_slf_row_banks.g_row_bank[0].mem_g_slf_row_banks.g_row_bank[0].mem_0_24_s",
+              "u_ram/g_slf_row_banks.g_row_bank[0].qr_97_s0"
+            ],
+            "endpoint": "u_ram/g_slf_row_banks.g_row_bank[0].qr_97_s0.D"
+          },
+          "external_to_register_data": {
+            "combinational_cell_levels": 1,
+            "path": [
+              "raddr_6_ibuf",
+              "u_ram/n6_s0",
+              "u_ram/g_slf_row_banks.row_selected_2_s1"
+            ],
+            "endpoint": "u_ram/g_slf_row_banks.row_selected_2_s1.D"
+          },
+          "register_to_register_data": {
+            "combinational_cell_levels": 1,
+            "path": [
+              "u_ram/g_slf_row_banks.row_selected_2_s1",
+              "u_ram/n6_s0",
+              "u_ram/g_slf_row_banks.row_selected_2_s1"
+            ],
+            "endpoint": "u_ram/g_slf_row_banks.row_selected_2_s1.D"
+          },
+          "memory_to_output": null,
+          "external_to_output": null,
+          "register_to_output": {
+            "combinational_cell_levels": 4,
+            "path": [
+              "u_ram/g_slf_row_banks.g_row_bank[0].qr_0_s0",
+              "u_ram/rdata_0_s28",
+              "u_ram/rdata_0_s26",
+              "u_ram/rdata_0_s25",
+              "u_ram/rdata_d_0_s",
+              "rdata_0_obuf"
+            ],
+            "endpoint": "rdata_0_obuf.I"
+          }
+        },
+        "explicit_pin_references": {
+          "output": 3122,
+          "input": 9508
+        },
+        "synthesis_report_no_timing_path": false,
+        "scope": "Actual combinational cells between explicit boundaries; not physical delay, geometry, route status, or a complete IO timing check"
+      },
+      "candidate": {
+        "netlist": "F:\\nav_integration_g2_20261023\\row_read_share_probe1\\candidate_syn\\impl\\gwsynthesis\\g2_top.vg",
+        "paths": {
+          "memory_to_register_data": {
+            "combinational_cell_levels": 3,
+            "path": [
+              "u_ram/g_slf_row_banks.g_row_bank[2].mem_g_slf_row_banks.g_row_bank[2].mem_0_24_s",
+              "u_ram/g_slf_row_banks.row_mux_96_s3",
+              "u_ram/g_slf_row_banks.row_mux_96_s1",
+              "u_ram/g_slf_row_banks.row_mux_96_s0",
+              "u_ram/g_slf_row_banks.qr_96_s0"
+            ],
+            "endpoint": "u_ram/g_slf_row_banks.qr_96_s0.D"
+          },
+          "external_to_register_data": {
+            "combinational_cell_levels": 4,
+            "path": [
+              "raddr_4_ibuf",
+              "u_ram/g_slf_row_banks.row_read_bank_2_s2",
+              "u_ram/g_slf_row_banks.row_mux_96_s3",
+              "u_ram/g_slf_row_banks.row_mux_96_s1",
+              "u_ram/g_slf_row_banks.row_mux_96_s0",
+              "u_ram/g_slf_row_banks.qr_96_s0"
+            ],
+            "endpoint": "u_ram/g_slf_row_banks.qr_96_s0.D"
+          },
+          "register_to_register_data": null,
+          "memory_to_output": null,
+          "external_to_output": null,
+          "register_to_output": {
+            "combinational_cell_levels": 0,
+            "path": [
+              "u_ram/g_slf_row_banks.qr_0_s0",
+              "rdata_0_obuf"
+            ],
+            "endpoint": "rdata_0_obuf.I"
+          }
+        },
+        "explicit_pin_references": {
+          "output": 2022,
+          "input": 6623
+        },
+        "synthesis_report_no_timing_path": true,
+        "scope": "Actual combinational cells between explicit boundaries; not physical delay, geometry, route status, or a complete IO timing check"
+      },
+      "full_joint_acceptance": false,
+      "physical_delay_verified": false,
+      "decision": "withhold single-register candidate: read selection moved before capture; no valid timing evidence for the new RAM-to-register path"
+    },
+    "module_runtime": {
+      "started_at": "2026-10-25T12:54:27.093975+08:00",
+      "max_runtime_s": 180,
+      "max_owned_rss": 805306368,
+      "scope": "isolated160x98 shared read register, not a joint build",
+      "cancelled": false,
+      "pid": 29844,
+      "tool_exit": 0,
+      "elapsed_s": 3.1410000000614673
+    },
+    "startup_free_bytes": 3404312576,
+    "startup_commit_reserve_bytes": 3271794688,
+    "full_joint_candidate_accepted": false,
+    "full_candidate_prepared": false,
+    "decision": "Withheld: read selection moved across capture boundary; no valid delay evidence for full address/read/consumer path. Do not accept from FF savings or reject solely from LUT increase."
+  },
+  "DDR_diagnostic": {
+    "completed_at": "2026-10-25T12:38:26.985773+08:00",
+    "result": "F:\\nav_integration_g2_20261023\\ddr_actual_c_public_stages_probe3\\result.json",
+    "corrected_public_decode": "F:\\nav_integration_g2_20261023\\ddr_actual_c_public_stages_probe3\\decoded_public_stage_final.json",
+    "final_observation": {
+      "time_us": 1600.0,
+      "raw": "# PUBLIC_STAGE time_us=1600.000000 init=01000 read=00020 write=200 read_sel=0 burst_seen=0 burst_check=0 burst_counts=0000000000 dll=04040404 eye_err=0 eye_done=0 eye_valid=0 changes=764",
+      "init_state": [
+        "READ_CALIBRATION"
+      ],
+      "read_cal_state": [
+        "READ_CAL_READ_CMD_WAIT"
+      ],
+      "wrlvl_state": [
+        "WRLVL_DONE"
+      ],
+      "fields": {
+        "time_us": "1600.000000",
+        "init": "01000",
+        "read": "00020",
+        "write": "200",
+        "read_sel": "0",
+        "burst_seen": "0",
+        "burst_check": "0",
+        "burst_counts": "0000000000",
+        "dll": "04040404",
+        "eye_err": "0",
+        "eye_done": "0",
+        "eye_valid": "0",
+        "changes": "764"
+      },
+      "read_dwell_ui_cycles": {
+        "READ_CAL_WRITE_CMD_WAIT": 156,
+        "READ_CAL_WRITE_CMD": 12,
+        "READ_CAL_WAIT": 152,
+        "READ_CAL_RSEL_ADJ_WAIT": 132,
+        "READ_CAL_RSEL_ADJ": 11,
+        "READ_CAL_READ_CMD_WAIT": 18736,
+        "READ_CAL_READ_CMD": 335,
+        "READ_CAL_RBURST_CHECK_WAIT1": 11,
+        "READ_CAL_RBURST_CHECK_WAIT": 11,
+        "READ_CAL_RBURST_CHECK": 11,
+        "READ_CAL_PRECHARGE_WAIT": 0,
+        "READ_CAL_PRECHARGE": 0,
+        "READ_CAL_IDLE": 115359,
+        "READ_CAL_HOLD": 44,
+        "READ_CAL_DONE": 0,
+        "READ_CAL_ACTIVE_CMD_WAIT": 7,
+        "READ_CAL_ACTIVE_CMD": 1
+      }
+    },
+    "calibration_verified": false,
+    "readback_verified": false,
+    "service_bound_verified": false,
+    "complete_update_5ms_verified": false,
+    "root_cause_identified": false,
+    "repeated_simulation_started": false,
+    "conclusion": "Write leveling completed by1500us; read calibration cycles without recorded captured bursts through1600us. Finite public-state snapshot, not a final calibration failure conclusion."
+  },
+  "active_PNR": {
+    "path": "F:\\nav_integration_g2_20261023\\sfp_lane2_smallblocks_pnr19",
+    "pid": 13244,
+    "created_at": "2026-10-25T12:35:04.664652+08:00",
+    "wrapper_pid": 45432,
+    "controller_pid": 35652,
+    "identity_rechecked": true,
+    "latest_stage": "Routing Phase0 completed",
+    "max_runtime_s": 0,
+    "max_no_progress_s": 0,
+    "inputs_modified": false,
+    "new_joint_build_started": false,
+    "final_report_available": false
+  },
+  "programmed": false,
+  "deployment_accepted": false
+}
