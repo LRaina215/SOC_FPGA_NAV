@@ -347,3 +347,9 @@ PNR38 `baseline_fusion_square2_obs_global_pnr38`复用同一完整SYN26，CST只
 官方SUG940确认同一SDC可追加`report_timing -setup -max_paths 5000 -max_common_paths 1`扩大明细。PNR38仅在原两钟同一g2.sdc追加这一报告命令，未放宽约束；输出必须核实际Report Command及唯一负端点覆盖，5000不预称全部覆盖。Gowin同类SDC仅启用一份，后加文件默认取代原文件，因此第二份只含report的SDC建议已撤下，禁止以此丢原clock/CDC。当前公共shell未找到固定路由单独STA入口。[官方入口](evidence/g2_20261023/setup_report_coverage_official_entry_20261026.json)；[单SDC修正证据](evidence/g2_20261023/single_active_SDC_report_request_safety_20261026.json)。
 
 并行复位审阅在原DW10/AW11 RTL构造并复现条件反例：已空但WP=RP=4时停接收钟再共同复位，wrst虽断言但同步写指针仍4，core清RP后第89–92拍重放4旧字；写钟继续的同源对照0，未声称实板发生或UDP/XT接受。最小候选只改nav_async_fifo一文件，两端指针/同步/转换及私有FWFT状态异步断言，沿原各域同步释放；RAM不复位、公共nav_fifo_ob不改。有限60,400周期、10,000词回绕/反压、2050满容量、4中途复位及28次reset写尝试通过；原重放4/候选0、恢复24新词。12,243写/12,218读的25差为中途reset有意丢弃在途词，非正常丢词。尚未SYN/PNR或实板；仅适用当前共同复位，非单域独立reset支持；MAC尾部可能入FIFO不等于已证应用重放。[原RTL反例](evidence/g2_20261023/async_FIFO_clock_stop_reset_actual_counterexample_20261026.json)；[修复有限对照](evidence/g2_20261023/async_FIFO_common_reset_repair_candidate_20261026.json)。当前仍以PNR35布通/hold0作锚点，完整50MHz及功能/停止/CDC/IO门槛前不烧录。
+
+## 2026-10-26 06:49 失败网络入口继续核对
+
+官方[SUG1220-2.1E §3.3](https://cdn.gowinsemi.com.cn/SUG1220E.pdf)明确`.posp`只含BSRAM位置，不能将其当完整失败网/拥塞导出。旧[SUG101-1.9E（2020）§5](https://cdn.gowinsemi.com.cn/SUG101E.pdf)提供FloorPlanner加载位置与时序路径的入口，但不能据旧说明认定当前GW5AT/C失败构建可导出逐网路由状态。
+
+本次只读PNR42产物：`.p`带GOWIN保护头，未解码保护载荷；`.db`为未确认记录格式的二进制，未建立网名、位置或失败标志对应关系。尚未取得可验证的逐网失败入口，不代表已经证明所有GUI或厂商内部诊断均不可能。没有为导出信息重跑相同PNR或改动PNR43。[机器记录](evidence/g2_20261023/routing_failure_export_entry_followup_20261026.json)。
