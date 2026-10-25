@@ -1,0 +1,816 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T03:27:34.269100+08:00",
+  "baseline": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_pnr32",
+  "candidate": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_CSA_pnr37",
+  "scope": "Read-only actual physical comparison, not routing or timing acceptance",
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-26T02:47:48.898936+08:00",
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 65148,
+    "elapsed_s": 1655.905999999959,
+    "no_observable_progress_s": 0.0,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        1707,
+        1792955721523901300
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        1233,
+        1792955721523901300
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2388140,
+        1792954443231369200
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        13820321,
+        1792954443784993000
+      ],
+      [
+        "impl\\pnr\\g2_top.rpt.txt",
+        93245,
+        1792955719116879700
+      ],
+      [
+        "impl\\pnr\\g2_top.vo",
+        44566473,
+        1792955721518382900
+      ]
+    ],
+    "tool_exit": 1,
+    "ended_at": "2026-10-26T03:15:24.805679+08:00"
+  },
+  "failure": {
+    "unrouted": 1212,
+    "TR_available": false,
+    "setup_hold_verified": false,
+    "failed_net_identities_unknown": true
+  },
+  "resources": {
+    "baseline": {
+      "Logic": 89617,
+      "Register": 40092,
+      "CLS": 55517,
+      "BSRAM": 332,
+      "DSP": 163.5,
+      "LUT": 52917,
+      "ALU": 9920,
+      "ROM16": 3650,
+      "RAM16": 3855
+    },
+    "candidate": {
+      "Logic": 89637,
+      "Register": 40094,
+      "CLS": 55540,
+      "BSRAM": 332,
+      "DSP": 157.5,
+      "LUT": 52771,
+      "ALU": 10086,
+      "ROM16": 3650,
+      "RAM16": 3855
+    },
+    "delta": {
+      "Logic": 20,
+      "Register": 2,
+      "CLS": 23,
+      "BSRAM": 0,
+      "DSP": -6.0,
+      "LUT": -146,
+      "ALU": 166,
+      "ROM16": 0,
+      "RAM16": 0
+    }
+  },
+  "inputs": {
+    "CST_identical": true,
+    "SDC_identical": true,
+    "device_identical": true,
+    "options_identical": true
+  },
+  "physical_RAM332_geometry_all_explicit_INIT_identical": true,
+  "physical26_connections_and_clocks_match": true,
+  "actual_clock_roots": {
+    "clk50_d": "clk50",
+    "rgmii_rxc_d": "rgmii_rxc",
+    "u_lmac/n630_6": "clk50",
+    "u_lmac/n13_6": "rgmii_rxc"
+  },
+  "global_allocations": {
+    "baseline": [
+      {
+        "net": "clk50_d",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PTR2 PTR3 PBR0 PBR1 PBR2 PBR3"
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "resource": "PRIMARY",
+        "location": "PBR1"
+      },
+      {
+        "net": "u_control/sensor/n53_4",
+        "resource": "PRIMARY",
+        "location": "PTR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_21",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_22",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_23",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_24",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n26292_4",
+        "resource": "PRIMARY",
+        "location": "PTR2 PBR1 PBR2"
+      },
+      {
+        "net": "r2",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/n2371_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n15679_10",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n331_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_0_9",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25518_4",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n24910_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/g_support.u_support/a1_13_6",
+        "resource": "LW",
+        "location": "-"
+      }
+    ],
+    "candidate": [
+      {
+        "net": "clk50_d",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PTR2 PTR3 PBR0 PBR1 PBR2 PBR3"
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "resource": "PRIMARY",
+        "location": "PBR0 PBR1"
+      },
+      {
+        "net": "u_control/sensor/n53_4",
+        "resource": "PRIMARY",
+        "location": "PTR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n6632_7",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n6632_8",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n6632_9",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n6632_10",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n26292_4",
+        "resource": "PRIMARY",
+        "location": "PTR0 PBR0 PBR1"
+      },
+      {
+        "net": "r2",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/n2371_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n15679_10",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n331_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_0_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_xt/n7923_5",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25518_4",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n24910_7",
+        "resource": "LW",
+        "location": "-"
+      }
+    ],
+    "changed": [
+      {
+        "net": "rgmii_rxc_d",
+        "before": {
+          "net": "rgmii_rxc_d",
+          "resource": "PRIMARY",
+          "location": "PBR1"
+        },
+        "after": {
+          "net": "rgmii_rxc_d",
+          "resource": "PRIMARY",
+          "location": "PBR0 PBR1"
+        },
+        "after_actual_loads": {
+          "net": "rgmii_rxc_d",
+          "loads": 1,
+          "pins": {
+            "I": 1
+          },
+          "load_primitives": {
+            "INV": 1
+          },
+          "drivers": [
+            {
+              "name": "rgmii_rxc_ibuf",
+              "kind": "IBUF",
+              "ports": {
+                "I": "rgmii_rxc",
+                "O": "rgmii_rxc_d"
+              },
+              "parameters": {},
+              "output_pin": "O"
+            }
+          ],
+          "exists": true,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_21",
+        "before": {
+          "net": "u_control/model_thread/policy/n14311_21",
+          "resource": "PRIMARY",
+          "location": "PTR3 PBR2 PBR3"
+        },
+        "after": null,
+        "after_actual_loads": {
+          "net": "u_control/model_thread/policy/n14311_21",
+          "loads": 0,
+          "pins": {},
+          "load_primitives": {},
+          "drivers": [],
+          "exists": false,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_22",
+        "before": {
+          "net": "u_control/model_thread/policy/n14311_22",
+          "resource": "PRIMARY",
+          "location": "PBR2 PBR3"
+        },
+        "after": null,
+        "after_actual_loads": {
+          "net": "u_control/model_thread/policy/n14311_22",
+          "loads": 0,
+          "pins": {},
+          "load_primitives": {},
+          "drivers": [],
+          "exists": false,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_23",
+        "before": {
+          "net": "u_control/model_thread/policy/n14311_23",
+          "resource": "PRIMARY",
+          "location": "PTR3 PBR2 PBR3"
+        },
+        "after": null,
+        "after_actual_loads": {
+          "net": "u_control/model_thread/policy/n14311_23",
+          "loads": 0,
+          "pins": {},
+          "load_primitives": {},
+          "drivers": [],
+          "exists": false,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_24",
+        "before": {
+          "net": "u_control/model_thread/policy/n14311_24",
+          "resource": "PRIMARY",
+          "location": "PTR3 PBR2 PBR3"
+        },
+        "after": null,
+        "after_actual_loads": {
+          "net": "u_control/model_thread/policy/n14311_24",
+          "loads": 0,
+          "pins": {},
+          "load_primitives": {},
+          "drivers": [],
+          "exists": false,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/n6632_10",
+        "before": null,
+        "after": {
+          "net": "u_control/model_thread/policy/n6632_10",
+          "resource": "PRIMARY",
+          "location": "PTR3 PBR2 PBR3"
+        },
+        "after_actual_loads": {
+          "net": "u_control/model_thread/policy/n6632_10",
+          "loads": 1000,
+          "pins": {
+            "I3": 1000
+          },
+          "load_primitives": {
+            "LUT4": 1000
+          },
+          "drivers": [
+            {
+              "name": "u_control/model_thread/policy/core/n6632_s6",
+              "kind": "LUT3",
+              "ports": {
+                "I0": "\\u_control/model_thread/policy/state [0]",
+                "I1": "\\u_control/model_thread/policy/state [2]",
+                "I2": "\\u_control/model_thread/policy/state [1]",
+                "F": "\\u_control/model_thread/policy/n6632_10 "
+              },
+              "parameters": {
+                "INIT": "8'h10"
+              },
+              "output_pin": "F"
+            }
+          ],
+          "exists": true,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/n6632_7",
+        "before": null,
+        "after": {
+          "net": "u_control/model_thread/policy/n6632_7",
+          "resource": "PRIMARY",
+          "location": "PBR2 PBR3"
+        },
+        "after_actual_loads": {
+          "net": "u_control/model_thread/policy/n6632_7",
+          "loads": 1000,
+          "pins": {
+            "I0": 996,
+            "I2": 4
+          },
+          "load_primitives": {
+            "LUT4": 999,
+            "LUT3": 1
+          },
+          "drivers": [
+            {
+              "name": "u_control/model_thread/policy/core/n6632_s3",
+              "kind": "LUT3",
+              "ports": {
+                "I0": "\\u_control/model_thread/policy/state [0]",
+                "I1": "\\u_control/model_thread/policy/state [2]",
+                "I2": "\\u_control/model_thread/policy/state [1]",
+                "F": "\\u_control/model_thread/policy/n6632_7 "
+              },
+              "parameters": {
+                "INIT": "8'h10"
+              },
+              "output_pin": "F"
+            }
+          ],
+          "exists": true,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/n6632_8",
+        "before": null,
+        "after": {
+          "net": "u_control/model_thread/policy/n6632_8",
+          "resource": "PRIMARY",
+          "location": "PTR3 PBR2 PBR3"
+        },
+        "after_actual_loads": {
+          "net": "u_control/model_thread/policy/n6632_8",
+          "loads": 1000,
+          "pins": {
+            "I0": 1000
+          },
+          "load_primitives": {
+            "LUT4": 1000
+          },
+          "drivers": [
+            {
+              "name": "u_control/model_thread/policy/core/n6632_s4",
+              "kind": "LUT3",
+              "ports": {
+                "I0": "\\u_control/model_thread/policy/state [0]",
+                "I1": "\\u_control/model_thread/policy/state [2]",
+                "I2": "\\u_control/model_thread/policy/state [1]",
+                "F": "\\u_control/model_thread/policy/n6632_8 "
+              },
+              "parameters": {
+                "INIT": "8'h10"
+              },
+              "output_pin": "F"
+            }
+          ],
+          "exists": true,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/n6632_9",
+        "before": null,
+        "after": {
+          "net": "u_control/model_thread/policy/n6632_9",
+          "resource": "PRIMARY",
+          "location": "PTR3 PBR2 PBR3"
+        },
+        "after_actual_loads": {
+          "net": "u_control/model_thread/policy/n6632_9",
+          "loads": 1000,
+          "pins": {
+            "I3": 332,
+            "I0": 668
+          },
+          "load_primitives": {
+            "LUT4": 1000
+          },
+          "drivers": [
+            {
+              "name": "u_control/model_thread/policy/core/n6632_s5",
+              "kind": "LUT3",
+              "ports": {
+                "I0": "\\u_control/model_thread/policy/state [0]",
+                "I1": "\\u_control/model_thread/policy/state [2]",
+                "I2": "\\u_control/model_thread/policy/state [1]",
+                "F": "\\u_control/model_thread/policy/n6632_9 "
+              },
+              "parameters": {
+                "INIT": "8'h10"
+              },
+              "output_pin": "F"
+            }
+          ],
+          "exists": true,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_0_7",
+        "before": null,
+        "after": {
+          "net": "u_control/model_thread/policy/snapshot_0_7",
+          "resource": "LW",
+          "location": "-"
+        },
+        "after_actual_loads": {
+          "net": "u_control/model_thread/policy/snapshot_0_7",
+          "loads": 4032,
+          "pins": {
+            "CE": 4032
+          },
+          "load_primitives": {
+            "DFFCE": 4032
+          },
+          "drivers": [
+            {
+              "name": "u_control/model_thread/policy/snapshot_4031_s4",
+              "kind": "LUT4",
+              "ports": {
+                "I0": "\\u_control/model_status_flags_1 [6]",
+                "I1": "\\u_control/model_thread/gowin_reg_fusion_seen_2 ",
+                "I2": "\\u_control/model_thread/n414_4 ",
+                "I3": "\\u_control/model_thread/policy/snapshot_4031_9 ",
+                "F": "\\u_control/model_thread/policy/snapshot_0_7 "
+              },
+              "parameters": {
+                "INIT": "16'h4000"
+              },
+              "output_pin": "F"
+            }
+          ],
+          "exists": true,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_0_9",
+        "before": {
+          "net": "u_control/model_thread/policy/snapshot_0_9",
+          "resource": "LW",
+          "location": "-"
+        },
+        "after": null,
+        "after_actual_loads": {
+          "net": "u_control/model_thread/policy/snapshot_0_9",
+          "loads": 0,
+          "pins": {},
+          "load_primitives": {},
+          "drivers": [],
+          "exists": false,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_nav/g_support.u_support/a1_13_6",
+        "before": {
+          "net": "u_nav/g_support.u_support/a1_13_6",
+          "resource": "LW",
+          "location": "-"
+        },
+        "after": null,
+        "after_actual_loads": {
+          "net": "u_nav/g_support.u_support/a1_13_6",
+          "loads": 109,
+          "pins": {
+            "I3": 3,
+            "CE": 106
+          },
+          "load_primitives": {
+            "LUT4": 3,
+            "DFFRE": 105,
+            "DFFSE": 1
+          },
+          "drivers": [
+            {
+              "name": "u_nav/g_support.u_support/a1_13_s2",
+              "kind": "LUT2",
+              "ports": {
+                "I0": "\\u_nav/n40_3 ",
+                "I1": "\\u_nav/n1866_6 ",
+                "F": "\\u_nav/g_support.u_support/a1_13_6 "
+              },
+              "parameters": {
+                "INIT": "4'h1"
+              },
+              "output_pin": "F"
+            }
+          ],
+          "exists": true,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n26292_4",
+        "before": {
+          "net": "u_nav/u_map/u_tv/n26292_4",
+          "resource": "PRIMARY",
+          "location": "PTR2 PBR1 PBR2"
+        },
+        "after": {
+          "net": "u_nav/u_map/u_tv/n26292_4",
+          "resource": "PRIMARY",
+          "location": "PTR0 PBR0 PBR1"
+        },
+        "after_actual_loads": {
+          "net": "u_nav/u_map/u_tv/n26292_4",
+          "loads": 395,
+          "pins": {
+            "I3": 8,
+            "CE": 387
+          },
+          "load_primitives": {
+            "LUT4": 8,
+            "DFFRE": 387
+          },
+          "drivers": [
+            {
+              "name": "u_nav/u_map/u_tv/n26292_s1",
+              "kind": "LUT2",
+              "ports": {
+                "I0": "r2",
+                "I1": "\\u_nav/u_map/u_tv/s3 ",
+                "F": "\\u_nav/u_map/u_tv/n26292_4 "
+              },
+              "parameters": {
+                "INIT": "4'h4"
+              },
+              "output_pin": "F"
+            }
+          ],
+          "exists": true,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_nav/u_xt/n7923_5",
+        "before": null,
+        "after": {
+          "net": "u_nav/u_xt/n7923_5",
+          "resource": "LW",
+          "location": "-"
+        },
+        "after_actual_loads": {
+          "net": "u_nav/u_xt/n7923_5",
+          "loads": 416,
+          "pins": {
+            "CE": 416
+          },
+          "load_primitives": {
+            "DFFRE": 416
+          },
+          "drivers": [
+            {
+              "name": "u_nav/u_xt/n7923_s1",
+              "kind": "LUT4",
+              "ports": {
+                "I0": "\\u_nav/u_xt/n7508_5 ",
+                "I1": "\\u_nav/u_xt/n7508_6 ",
+                "I2": "\\u_nav/u_xt/fbyte ",
+                "I3": "\\u_nav/u_xt/iok ",
+                "F": "\\u_nav/u_xt/n7923_5 "
+              },
+              "parameters": {
+                "INIT": "16'h8000"
+              },
+              "output_pin": "F"
+            }
+          ],
+          "exists": true,
+          "failed_route_identity_verified": false
+        }
+      }
+    ]
+  },
+  "observation_actual": {
+    "allocation": {
+      "net": "u_control/model_thread/observation/n15679_10",
+      "resource": "LW",
+      "location": "-"
+    },
+    "loads": {
+      "net": "u_control/model_thread/observation/n15679_10",
+      "loads": 4001,
+      "pins": {
+        "CE": 4000,
+        "D": 1
+      },
+      "load_primitives": {
+        "DFFCE": 4001
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/observation/n15680_s4",
+          "kind": "LUT3",
+          "ports": {
+            "I0": "\\u_control/model_thread/observation/state [0]",
+            "I1": "\\u_control/model_thread/observation/state [1]",
+            "I2": "\\u_control/model_thread/observation/state [2]",
+            "F": "\\u_control/model_thread/observation/n15679_10 "
+          },
+          "parameters": {
+            "INIT": "8'h10"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    }
+  },
+  "PNR38_local_net_actual": {
+    "allocation": null,
+    "loads": {
+      "net": "u_nav/u_map/u_tv/n25284_7",
+      "loads": 357,
+      "pins": {
+        "I3": 2,
+        "CE": 355
+      },
+      "load_primitives": {
+        "LUT4": 2,
+        "DFFRE": 352,
+        "DFFSE": 3
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_map/u_tv/n25284_s2",
+          "kind": "LUT2",
+          "ports": {
+            "I0": "r2",
+            "I1": "\\u_nav/u_map/u_tv/wval ",
+            "F": "\\u_nav/u_map/u_tv/n25284_7 "
+          },
+          "parameters": {
+            "INIT": "4'h4"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    }
+  },
+  "decision": "Do not copy PNR38 intervention to PNR37: observation already retains LW here; the hypothesized loss did not recur. Need another independently justified structural/timing candidate or specifically proved global contrast.",
+  "same_intervention_PNR39_prepared_or_started": false,
+  "new_build_or_test_started": false,
+  "programmed": false,
+  "evidence_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\pnr34_vs_fusion32_physical_review1\\pnr32_actual_storage_loads_and_DSP.json",
+      "bytes": 1363909,
+      "mtime_ns": 1792949466124175600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\pnr36_vs_pnr32_final_review1\\review.py",
+      "bytes": 12894,
+      "mtime_ns": 1792954583753121800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_CSA_pnr37\\impl\\pnr\\g2_top.vo",
+      "bytes": 44566473,
+      "mtime_ns": 1792955721518382900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_CSA_pnr37\\impl\\pnr\\g2_top.rpt.txt",
+      "bytes": 93245,
+      "mtime_ns": 1792955719116879700
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_CSA_pnr37\\pure_CDC_physical_connection_review.json",
+      "bytes": 13549,
+      "mtime_ns": 1792955727716424800
+    }
+  ]
+}

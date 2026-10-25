@@ -1,0 +1,125 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T03:35:43.143952+08:00",
+  "output": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_obs_global_pnr38",
+  "actual_tool": {
+    "pid": 53532,
+    "parent": 49232,
+    "created_epoch": 1792955724.2285497,
+    "created_at": "2026-10-26T03:15:24.228550+08:00",
+    "cwd": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_obs_global_pnr38",
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "priority": 32,
+    "affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-26T03:15:24.218076+08:00",
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 53532,
+    "elapsed_s": 1201.2970000000205,
+    "no_observable_progress_s": 792.8279999999795,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        1092,
+        1792956131054408000
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        619,
+        1792956131054408000
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2385360,
+        1792956106691176800
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        13810107,
+        1792956107144084000
+      ]
+    ]
+  },
+  "actual_options_same_as_PNR36": true,
+  "actual_device_cfg_same": true,
+  "actual_VG_same": true,
+  "CST_only_two_additions": [
+    "CLOCK_LOC \"u_control/model_thread/observation/n15679_10\" BUFG = CE|LOGIC;",
+    "CLOCK_LOC \"u_nav/u_map/u_tv/n25284_7\" LOCAL_CLOCK;"
+  ],
+  "single_enabled_SDC": true,
+  "clock_and_report_commands": [
+    "create_clock -name clk50 -period 20 [get_ports {clk50}]",
+    "create_clock -name rgmii_rxc -period 10 [get_ports {rgmii_rxc}]",
+    "report_timing -setup -max_paths 5000 -max_common_paths 1"
+  ],
+  "physical_routing_or_timing_result_pending": true,
+  "evidence_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_obs_global_pnr38\\g2_top.vg",
+      "bytes": 24421219,
+      "mtime_ns": 1792954440108532400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_obs_global_pnr38\\g2.cst",
+      "bytes": 5703,
+      "mtime_ns": 1792954440108532400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_obs_global_pnr38\\g2.sdc",
+      "bytes": 243,
+      "mtime_ns": 1792954440108532400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_obs_global_pnr38\\run.tcl",
+      "bytes": 816,
+      "mtime_ns": 1792954440108532400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_obs_global_pnr38\\impl\\pnr\\cmd.do",
+      "bytes": 660,
+      "mtime_ns": 1792955725255754200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_obs_global_pnr38\\impl\\pnr\\device.cfg",
+      "bytes": 565,
+      "mtime_ns": 1792955725255754200
+    }
+  ],
+  "programmed": false
+}

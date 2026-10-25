@@ -867,3 +867,14 @@ SYN完成后，独立检查进程核对实际输出：精确RAM属性差异/其�
 
 
 **2026-10-24 22:37 私有快照物理失败与LW单因素对照：** PNR14自然失败377条、326块，实际根复位负载9184→5152但比270条退化107；16分配/四时钟与26＋51物理连接匹配，缺.tr/逐网失败/拥塞位置。发现3893负载观测更新失去LW，而308 CE投影获得LW，不能认定唯一根因。复用完全相同SYN11网表/SDC/CSR，只新增观测LW与投影LOCAL两条请求，全部14驱动＋四时钟、11项实际正负检查及原来源/资产/RAM/CDC检查通过。唯一PNR15于22:35:10启动，工具33684/包装53456/控制32852，原bounded_tool总0/静默0，未部署；预期分配与326仍待本轮实测。见[377实际结果](evidence/g2_20261023/lane2_private_snapshot_final_unrouted377.json)及[实际分配对照](evidence/g2_20261023/observation_lw_intervention_20261024.json)。
+
+
+## 2026-10-26 03:38 持续接续与真实动作发布边界
+
+**2026-10-26 03:38 夜间持续接续已恢复：PNR37自然失败1212，PNR38正在布线，动作真实边界流水候选独立等内存。** 用户再次明确授权不中断推进，原`fpga`定时项已恢复ACTIVE/每30分钟，不新建替代；无一般在途变化安静，阶段结束分析并接续，全部PNR总0/静默0。PNR37于03:15:24.805679自然退出1/cancelled=false，实际332 RAM/Logic89637/FF40094/CLS55540/DSP157.5；对PNR32 LUT−146/ALU+166/FF+2/DSP−6仍未保住布通。全部RAM几何/显式INIT、两钟/26物理连接保持，缺TR，不能称setup改善。实际4001观测网仍LW，原112负载支撑控制变109并失LW、新416负载XT控制占LW；这与PNR36不同，不能盲复制38的观测请求再排39，也不是1212失败逐网名单。[37最终只读比较](evidence/g2_20261023/action_CSA_PNR37_final_unrouted1212_20261026.json)。
+
+PNR38实际工具53532创建03:15:24.228550、父49232、NORMAL全20核，仍同SYN26/VG/route0/device；CST只两条预审全局请求、单个SDC保持20/10ns并追加5000路径报告，启动实查通过。当前完成Routing Phase0，无最终报告，不把BUFG请求或CPU活动当分配/收敛。PNR35的布通332/33.197MHz/3781 setup/hold0仍为锚点，完整50MHz和CDC/reset/IO/停止尚未准入。[38实际启动](evidence/g2_20261023/fusion_square2_global_PNR38_actual_start_20261026.json)。
+
+针对真实30.066ns动作路径，在原DSP输出处拆分的原延迟为含C2Q16.231ns、后段13.835ns，据此准备独立私有preview乘积级：利用core动作E1稳定、scheduler E2发布、原执行器E3消费的已有边界，E2捕获原signed64 clip×gain，E3原舍入/最新前馈/限幅与停止优先级不变，不新增外部拍数或时序例外。仅policy_action_map/rl_policy_tick/mem_policy三RTL，原4500/core/权重/125Hz/69资产/31头/全部FW及容量保持，不叠失败square2或CSA。8770帧全clip域/两参数组、64无效/64停止通过；真实原scheduler搭配显式推理替身42000拍、34发布/10080装载/5复位及错误/饱和/ID/截止/enable/sensor/retry通过，不能冒称全RL推理验证。私有乘积无reset、源码最多384位，实际映射待完整SYN。唯一接续66332创建03:34:54.946626独立等2GiB物理/4GiB提交；最近提交不足4GiB，SYN28尚未实际启动，非等待38结束的人为串行。达标后唯一完整SYN28、再审实际RAM/INIT/CPU/时钟/26CDC；自动PNR关闭，实际产品寄存边界与源审核对后才接新PNR，不抢跑。[候选及接续](evidence/g2_20261023/action_private_preview_product_candidate_20261026.json)。
+
+MAC帧边界修复复用原l_rx_rst，仅在接收FSM尾置R_BAD并清hold_v/valid，不改采样/CRC/TX/MDIO，配合已证FIFO异步断言修复做有限对照：26帧、5852字节、12744正常对照拍、14运行复位+4停钟复位、原1146尾字/候选0。真实+2ns PHY波形下，下降沿13帧CRC/error0；上升沿13帧保持原rerr1行为且CRC余式正确，未假称两种采样都健康。首夹具误要求上升沿error0及真实DV-low后仍拒绝新前导，已保留失败日志；只改夹具，候选RTL三文件逐字相同。不是完整UDP/XT/实板或物理复位签核，不混入38。[有限修复证据](evidence/g2_20261023/mac_RX_boundary_repair_finite_review_20261026.json)。

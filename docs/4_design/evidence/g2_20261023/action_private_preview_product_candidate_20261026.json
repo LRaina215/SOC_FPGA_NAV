@@ -1,0 +1,171 @@
+{
+  "prepared": {
+    "passed": true,
+    "recorded_at": "2026-10-26T03:33:21.670719+08:00",
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23",
+    "candidate": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1",
+    "prepared": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_preview_prepared1",
+    "modified_rtl_inputs": [
+      "control/policy_action_map.v",
+      "control/rl_policy_tick_v5.v",
+      "control/mem_policy.v"
+    ],
+    "hardware_inputs": 63,
+    "unchanged_hardware_inputs": 60,
+    "identical_assets": 69,
+    "identical_headers": 31,
+    "firmware_files": {
+      "fw": 61,
+      "firmware": 92
+    },
+    "firmware_not_recompiled": true,
+    "clock_CST_and_SDC_unchanged": true,
+    "inference_core_algorithm_all_weights_125Hz_and_external_actuation_edges_unchanged": true,
+    "CPU128KiB_NAV_capacities_and_stop_contract_preserved": true,
+    "new_SYN_or_PNR_started": false,
+    "private_preview_owned_by_same_original_scheduler_publication": true,
+    "global_clock_requests_or_new_timing_exceptions": 0,
+    "actual_new_RAM_INIT_clocks_CDC_product_mapping_and_full_timing_review_pending": true,
+    "bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1\\control\\policy_action_map.v",
+        "bytes": 3026,
+        "mtime_ns": 1792956660349946500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1\\control\\rl_policy_tick_v5.v",
+        "bytes": 6550,
+        "mtime_ns": 1792956660349946500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1\\control\\mem_policy.v",
+        "bytes": 6138,
+        "mtime_ns": 1792956660349946500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1\\prepared_review.json",
+        "bytes": 2176,
+        "mtime_ns": 1792956660349946500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1\\arithmetic_result.json",
+        "bytes": 697,
+        "mtime_ns": 1792956678655986300
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1\\policy_result.json",
+        "bytes": 1463,
+        "mtime_ns": 1792956755612123800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_preview_prepared1\\control\\policy_action_map.v",
+        "bytes": 3026,
+        "mtime_ns": 1792956801613000400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_preview_prepared1\\control\\rl_policy_tick_v5.v",
+        "bytes": 6550,
+        "mtime_ns": 1792956801613000400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_preview_prepared1\\control\\mem_policy.v",
+        "bytes": 6138,
+        "mtime_ns": 1792956801614648900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_preview_prepared1\\g2.cst",
+        "bytes": 5495,
+        "mtime_ns": 1792956801610623400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_preview_prepared1\\g2.sdc",
+        "bytes": 122,
+        "mtime_ns": 1792956801610623400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_preview_prepared1\\firmware\\nav_fw.bin",
+        "bytes": 51712,
+        "mtime_ns": 1792660824309244200
+      }
+    ]
+  },
+  "arithmetic": {
+    "passed": true,
+    "summary": "TEST PASSED frames=8770 clip_domain_values=8193 invalid_cycles=64 stops=64 resets=1 parameter_sets=2",
+    "scope": "Finite isolated action map arithmetic/output-edge proof under explicit one-edge preview relation; scheduler integration and physical mapping still pending",
+    "candidate_bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1\\control\\policy_action_map.v",
+        "bytes": 3026,
+        "mtime_ns": 1792956660349946500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1\\tb_arithmetic.sv",
+        "bytes": 2987,
+        "mtime_ns": 1792956660349946500
+      }
+    ]
+  },
+  "scheduler": {
+    "passed": true,
+    "summary": "SNAPSHOT_FANOUT_PASS cycles=42000 publications=34 writes=10080 resets=5",
+    "unchanged_actual_scheduler": true,
+    "source_frame_ownership_relation_checked": true,
+    "actuator_outputs_compared_each_cycle": true,
+    "ff_changes_every_cycle_and_sample_edge_preserved": true,
+    "parameter_sets": 2,
+    "scope": "Actual original scheduler and candidate with an explicit inference test double; transport/rejection/stop/reset and output timing only, not full original4500 inference",
+    "injected_cases": [
+      "core error",
+      "saturation",
+      "frame ID mismatch",
+      "deadline",
+      "enable",
+      "sensor",
+      "global reset",
+      "retry"
+    ],
+    "candidate_bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1\\control\\policy_action_map.v",
+        "bytes": 3026,
+        "mtime_ns": 1792956660349946500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1\\control\\rl_policy_tick_v5.v",
+        "bytes": 6550,
+        "mtime_ns": 1792956660349946500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1\\control\\mem_policy.v",
+        "bytes": 6138,
+        "mtime_ns": 1792956660349946500
+      }
+    ],
+    "test_binding": {
+      "path": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1\\tb_policy.sv",
+      "bytes": 6068,
+      "mtime_ns": 1792956735196685300
+    },
+    "new_SYN_PNR_started": false
+  },
+  "controller": {
+    "controller_pid": 66332,
+    "controller_created_epoch": 1792956894.946626,
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_preview_prepared1",
+    "output": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_preview_syn28",
+    "PNR38_exit_dependency": false,
+    "SYN_max_runtime_minutes": 40,
+    "automatic_PNR": false,
+    "programmed": false,
+    "phase": "waiting_for_actual_memory_admission",
+    "updated_at": "2026-10-26T03:37:31.400301+08:00",
+    "free_bytes": 2247233536,
+    "available_commit_bytes": 2958516224,
+    "minimum_physical_bytes": 2147483648,
+    "minimum_commit_bytes": 4294967296
+  },
+  "joint_SYN_started": false,
+  "PNR_started": false,
+  "physical_mapping_or_timing_not_proved": true
+}

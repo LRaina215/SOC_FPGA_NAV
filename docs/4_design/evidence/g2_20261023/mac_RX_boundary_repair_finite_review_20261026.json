@@ -1,0 +1,132 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T03:28:46.786184+08:00",
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23",
+  "candidate": "F:\\nav_integration_g2_20261023\\mac_rx_boundary_candidate2",
+  "modified_MAC_top_inputs": [
+    "nav/rtl/net/rgmii_mac100.v",
+    "g2_top.v"
+  ],
+  "existing_reset_used": "g2_top.l_rx_rst from u_lrr",
+  "unchanged_RX_body_except_last_priority_override": true,
+  "original_initial_register_values_retained": true,
+  "unchanged_TX_MDIO_samplers_clock_monitor_and_public_FPGA_IO": true,
+  "added_source_register_bits": 0,
+  "physical_resource_mapping_not_measured": true,
+  "paired_FIFO_candidate": "F:\\nav_integration_g2_20261023\\fifo_async_assert_candidate3",
+  "archived_FIFO_bytes_identical": true,
+  "admission_fragment_matches_actual_net_port": true,
+  "metrics": {
+    "normal_frames": 26,
+    "mac_frames": 26,
+    "FIFO_frames": 26,
+    "byte_checks": 5852,
+    "cycle_checks": 12744,
+    "running_reset_cases": 14,
+    "stopped_RX_reset_cases": 4,
+    "reject_tail_cycle_checks": 2754,
+    "original_tail_bytes": 1146,
+    "candidate_tail_bytes": 0,
+    "RX_modes": 2,
+    "min_IFG_bytes": 12,
+    "core_period_ns": 20,
+    "RX_period_ns": 40
+  },
+  "runs": [
+    {
+      "tool": "xvlog",
+      "exit_code": 0,
+      "log": "F:\\nav_integration_g2_20261023\\mac_rx_boundary_candidate2\\0_xvlog_stdout.log"
+    },
+    {
+      "tool": "xvlog",
+      "exit_code": 0,
+      "log": "F:\\nav_integration_g2_20261023\\mac_rx_boundary_candidate2\\1_xvlog_stdout.log"
+    },
+    {
+      "tool": "xelab",
+      "exit_code": 0,
+      "log": "F:\\nav_integration_g2_20261023\\mac_rx_boundary_candidate2\\2_xelab_stdout.log"
+    },
+    {
+      "tool": "xsim",
+      "exit_code": 0,
+      "log": "F:\\nav_integration_g2_20261023\\mac_rx_boundary_candidate2\\3_xsim_stdout.log"
+    }
+  ],
+  "root_and_RX_reset_topology_matches_actual_source": true,
+  "wire_stimulus": {
+    "core_period_ns": 20,
+    "RX_period_ns": 40,
+    "PHY_data_change_ns_after_RXC_rising": 2,
+    "actual_RX_mode": "100Mb25MHz",
+    "implementation_SDC_RX_10ns_not_used_as_PHY_stimulus": true
+  },
+  "proof_scope": "Finite original/candidate byte-and-cycle comparison, falling-edge valid Ethernet/IPv4/UDP/FCS and rising-edge preservation of the original final RX-error behavior, MAC reset recovery and paired repaired FIFO; not full UDP/XT/application or physical acceptance",
+  "rising_edge_mode_diagnostic": "Original and candidate retain final error1 for the +2ns PHY waveform: CRC residual is correct, rerr1 comes from dv_p/ctl_n sampling alignment. Falling-edge mode requires error0.",
+  "source_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\net\\rgmii_mac100.v",
+      "bytes": 14201,
+      "mtime_ns": 1792936600548012600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\g2_top.v",
+      "bytes": 11556,
+      "mtime_ns": 1792936600560105400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\net\\net_port.v",
+      "bytes": 9501,
+      "mtime_ns": 1792936600542581000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_cdc.v",
+      "bytes": 1386,
+      "mtime_ns": 1792936600532515900
+    }
+  ],
+  "candidate_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\mac_rx_boundary_candidate2\\rgmii_mac100.v",
+      "bytes": 14411,
+      "mtime_ns": 1792956506112474600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\mac_rx_boundary_candidate2\\g2_top.v",
+      "bytes": 11369,
+      "mtime_ns": 1792956506113479700
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\mac_rx_boundary_candidate2\\nav_async_fifo.v",
+      "bytes": 5023,
+      "mtime_ns": 1792956506120269700
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\mac_rx_boundary_candidate2\\tb_mac_rx_boundary.sv",
+      "bytes": 11984,
+      "mtime_ns": 1792956506120269700
+    }
+  ],
+  "FIFO_proof_binding": {
+    "path": "F:\\nav_integration_g2_20261023\\fifo_async_assert_candidate3\\result.json",
+    "bytes": 4045,
+    "mtime_ns": 1792954591053661000
+  },
+  "no_internal_clock_pointer_or_calibration_force": true,
+  "existing_PNR37_PNR38_or_other_inputs_modified": false,
+  "new_SYN_or_PNR_started": false,
+  "serial_opened": false,
+  "programmed": false,
+  "deployment_accepted": false,
+  "remaining": [
+    "Actual RX-control FF/CE/INIT/reset fanout and new joint CDC/IO/timing/resource review",
+    "Whole UDP/XT/CPU behavior and physical PHY reset/idle sequencing",
+    "All possible asynchronous edge/reset/input sequences and MTBF are not proved by finite simulation"
+  ],
+  "prior_fixture_failure_preserved": "F:\\nav_integration_g2_20261023\\mac_rx_boundary_candidate1\\xsim.log",
+  "prior_failure_reason": "Original and candidate both retain final rising-edge sampling error for +2ns PHY waveform; corrected fixture checks this existing behavior and valid falling-edge mode separately. Phase6 is after DV-low, so no artificial tail rejection is required after a real frame delimiter.",
+  "candidate_RTL_unchanged_between_failed_and_corrected_fixture": true,
+  "clean_FCS_no_error_falling_edge_frames": 13,
+  "rising_edge_original_error_behavior_frames": 13
+}

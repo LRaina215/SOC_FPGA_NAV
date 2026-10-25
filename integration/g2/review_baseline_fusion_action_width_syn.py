@@ -35,6 +35,7 @@ BASELINE = Path('F:/nav_integration_g2_20261023/baseline_fusion_only_pnr32')
 REFERENCE = Path('F:/nav_integration_g2_20261023/pnr27_lidar_cdc_hold_candidate1/review_result.json')
 LIBRARY = Path('D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/simlib/gw5a/prim_sim.v')
 GIB = 1024**3
+EXPECTED_MODIFIED_RTL = ['control/policy_action_map.v']
 
 
 def load(path):
@@ -214,8 +215,8 @@ def review(source, prepared, out):
     checkpoint('binding_completed_SYN_to_exact_prepared_source')
     prepared_proof = load(prepared/'prepared_source_review.json')
     assert prepared_proof['passed']
-    expected = prepared_proof['modified_rtl_inputs']
-    assert expected == ['control/policy_action_map.v']
+    expected = sorted(prepared_proof['modified_rtl_inputs'])
+    assert expected == sorted(EXPECTED_MODIFIED_RTL)
     bind_action_contract(source, prepared, prepared_proof)
     assert hardware(ORIGINAL) == hardware(prepared) == hardware(source)
     changed = sorted(n for n in hardware(source) if not same(ORIGINAL/n, source/n))
@@ -365,7 +366,7 @@ def review(source, prepared, out):
     assert all(metadata(Path(item['path']))==item for item in frozen)
     result.update(passed=True,phase='actual_netlist_preflight_passed',
         actual_RAM_INIT_clock_26CDC_preflight_passed=True,changed_HW_inputs=changed,
-        unchanged_hardware_inputs=62,identical_assets=69,identical_headers=31,firmware_files=firmware_counts,
+        unchanged_hardware_inputs=63-len(expected),identical_assets=69,identical_headers=31,firmware_files=firmware_counts,
         excluded_host_interpreter_caches=excluded_host_bytecode,
         source_BSRAM=314,wide_leaves=18,predicted_physical_BSRAM=332,physical_BSRAM_not_yet_measured=True,
         CPU_SP_count=64,true_clocks=2,known_CDC_paths=26,actual_clock_roots=['clk50','rgmii_rxc'],
