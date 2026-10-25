@@ -419,5 +419,111 @@
   "automation_status_observed": "PAUSED",
   "pause_reason_unknown": true,
   "existing_event_controllers_independent_of_automation": true,
-  "host51reference_inherited_without_duplicate_SDC": true
+  "host51reference_inherited_without_duplicate_SDC": true,
+  "joint_SYN14_final": {
+    "source": "F:\\nav_integration_g2_20261023\\lane2_ddr_map_explicit_prepared3",
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_ddr_maps_explicit_syn14",
+    "wait_pid": null,
+    "programmed": false,
+    "source_frozen_before_wait": true,
+    "automatic_pnr": false,
+    "modified_rtl_inputs": [],
+    "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+    "phase": "synthesis_complete",
+    "updated_at": "2026-10-25T10:19:34.056739+08:00",
+    "minimum_start_free_bytes": 2147483648,
+    "minimum_start_available_commit_bytes": 4294967296,
+    "max_runtime_minutes": 40,
+    "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+    "tool_pid": 60792,
+    "synthesis_started_at": "2026-10-25T10:12:48.646969+08:00",
+    "elapsed_s": 390.094000000041,
+    "free_bytes": 3272032256,
+    "available_commit_bytes": 5668737024,
+    "tool_exit": 0,
+    "joint_pnr_measured": false
+  },
+  "whole_joint_input_RAM_mode00": [
+    {
+      "path": "g2_top/u_nav/u_match/u_store/u_update/u_dma/\\g_bank[0].input_row_primitive",
+      "module_type": "nav_ddr_row_stream",
+      "primitive": "DPX9B",
+      "parameters": {
+        "BIT_WIDTH_0": "18",
+        "BIT_WIDTH_1": "18",
+        "BLK_SEL_0": "3'b000",
+        "BLK_SEL_1": "3'b000",
+        "READ_MODE0": "1'b0",
+        "READ_MODE1": "1'b0",
+        "RESET_MODE": "\"SYNC\"",
+        "WRITE_MODE0": "2'b00",
+        "WRITE_MODE1": "2'b00"
+      }
+    },
+    {
+      "path": "g2_top/u_nav/u_match/u_store/u_update/u_dma/\\g_bank[1].input_row_primitive",
+      "module_type": "nav_ddr_row_stream",
+      "primitive": "DPX9B",
+      "parameters": {
+        "BIT_WIDTH_0": "18",
+        "BIT_WIDTH_1": "18",
+        "BLK_SEL_0": "3'b000",
+        "BLK_SEL_1": "3'b000",
+        "READ_MODE0": "1'b0",
+        "READ_MODE1": "1'b0",
+        "RESET_MODE": "\"SYNC\"",
+        "WRITE_MODE0": "2'b00",
+        "WRITE_MODE1": "2'b00"
+      }
+    }
+  ],
+  "PNR18_started": {
+    "runtime": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-25T10:19:43.373727+08:00",
+      "max_runtime_s": 0.0,
+      "max_no_observable_progress_s": 0.0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 66312,
+      "elapsed_s": 120.18700000003446,
+      "no_observable_progress_s": 114.10900000005495,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          1953618,
+          1792894788594474900
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          1953166,
+          1792894788594474900
+        ]
+      ]
+    },
+    "tool_created_at": "2026-10-25T10:19:43.432265+08:00",
+    "wrapper_pid": 66408,
+    "controller_pid": 36164,
+    "phase": "placement",
+    "source_precheck": "F:\\nav_integration_g2_20261023\\lane2_ddr_maps_pnr18_inputs\\pre_pnr_review.json",
+    "passed": true,
+    "host51_reference_copied": true,
+    "original77hold_and77max_preserved": true,
+    "clock_periods_ns": [
+      20,
+      10,
+      8,
+      8,
+      10,
+      2.5
+    ],
+    "hold_correction": 1
+  },
+  "last_updated_at": "2026-10-25T10:21:46.310358+08:00"
 }
