@@ -1,0 +1,359 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T06:19:28.183224+08:00",
+  "scope": "Independent private rounding boundary source/finite proof and actual SYN31 start; no mapped benefit or physical timing acceptance",
+  "candidate": "F:\\nav_integration_g2_20261023\\action_registered_rounding_candidate1",
+  "prepared": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_rounding_prepared1",
+  "source_review": {
+    "passed": true,
+    "recorded_at": "2026-10-26T06:16:21.656298+08:00",
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23",
+    "candidate": "F:\\nav_integration_g2_20261023\\action_registered_rounding_candidate1",
+    "prepared": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_rounding_prepared1",
+    "modified_rtl_inputs": [
+      "control/policy_action_map.v",
+      "control/rl_policy_tick_v5.v",
+      "control/mem_policy.v"
+    ],
+    "hardware_inputs": 63,
+    "unchanged_hardware_inputs": 60,
+    "identical_assets": 69,
+    "identical_headers": 31,
+    "firmware_files": {
+      "fw": 61,
+      "firmware": 92
+    },
+    "firmware_not_recompiled": true,
+    "clock_CST_and_SDC_unchanged": true,
+    "inference_core_algorithm_all_weights_125Hz_and_external_actuation_edges_unchanged": true,
+    "CPU128KiB_NAV_capacities_and_stop_contract_preserved": true,
+    "new_SYN_or_PNR_started": false,
+    "private_preview_owned_by_same_original_scheduler_publication": true,
+    "global_clock_requests_or_new_timing_exceptions": 0,
+    "actual_new_RAM_INIT_clocks_CDC_product_mapping_and_full_timing_review_pending": true,
+    "bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_rounding_candidate1\\control\\policy_action_map.v",
+        "bytes": 4706,
+        "mtime_ns": 1792966560821431900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_rounding_candidate1\\control\\rl_policy_tick_v5.v",
+        "bytes": 6550,
+        "mtime_ns": 1792966560821431900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_rounding_candidate1\\control\\mem_policy.v",
+        "bytes": 6138,
+        "mtime_ns": 1792966560821431900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_rounding_candidate1\\prepared_review.json",
+        "bytes": 2816,
+        "mtime_ns": 1792966560846867300
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_rounding_candidate1\\arithmetic_result.json",
+        "bytes": 705,
+        "mtime_ns": 1792966571046575000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_rounding_candidate1\\policy_result.json",
+        "bytes": 1479,
+        "mtime_ns": 1792966581099666300
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_rounding_prepared1\\control\\policy_action_map.v",
+        "bytes": 4706,
+        "mtime_ns": 1792966581595104100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_rounding_prepared1\\control\\rl_policy_tick_v5.v",
+        "bytes": 6550,
+        "mtime_ns": 1792966581595755100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_rounding_prepared1\\control\\mem_policy.v",
+        "bytes": 6138,
+        "mtime_ns": 1792966581596176400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_rounding_prepared1\\g2.cst",
+        "bytes": 5495,
+        "mtime_ns": 1792966581592105900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_rounding_prepared1\\g2.sdc",
+        "bytes": 122,
+        "mtime_ns": 1792966581593103700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_rounding_prepared1\\firmware\\nav_fw.bin",
+        "bytes": 51712,
+        "mtime_ns": 1792660824309244200
+      }
+    ],
+    "private_rounding_relocation_only_vs_SYN30": true,
+    "range_proof": "F:\\nav_integration_g2_20261023\\action_registered_rounding_candidate1\\range_proof.json",
+    "actual_joint_mapping_or_timing_passed": false
+  },
+  "range_proof": {
+    "passed": true,
+    "combinations": 32772,
+    "ranges": [
+      {
+        "gain": 19,
+        "bits": 6,
+        "minimum": -19,
+        "maximum": 19,
+        "values": 8193
+      },
+      {
+        "gain": -19,
+        "bits": 6,
+        "minimum": -19,
+        "maximum": 19,
+        "values": 8193
+      },
+      {
+        "gain": 600,
+        "bits": 11,
+        "minimum": -600,
+        "maximum": 600,
+        "values": 8193
+      },
+      {
+        "gain": -600,
+        "bits": 11,
+        "minimum": -600,
+        "maximum": 600,
+        "values": 8193
+      }
+    ],
+    "proof": "The unchanged clip covers exactly [-4096,4096]; the literal original signed64 CSA and rounding are pure. Capturing their composed value at the same E2 edge gives the original rounding of the captured product at E3. All 8193 clipped values for each gain fit losslessly in the indicated signed width.",
+    "precision_or_external_output_cycle_change": false,
+    "all_private_values_must_be_written_before_original_valid_consumption": true,
+    "source_binding": {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_CSA_storage_syn30\\control\\policy_action_map.v",
+      "bytes": 4794,
+      "mtime_ns": 1792964399910686400
+    },
+    "candidate_binding": {
+      "path": "F:\\nav_integration_g2_20261023\\action_registered_rounding_candidate1\\control\\policy_action_map.v",
+      "bytes": 4706,
+      "mtime_ns": 1792966560821431900
+    }
+  },
+  "arithmetic": {
+    "passed": true,
+    "summary": "TEST PASSED frames=8770 clip_domain_values=8193 invalid_cycles=64 stops=64 resets=1 parameter_sets=2",
+    "scope": "Finite isolated action map arithmetic/output-edge proof under explicit one-edge preview relation; scheduler integration and physical mapping still pending",
+    "candidate_bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_rounding_candidate1\\control\\policy_action_map.v",
+        "bytes": 4706,
+        "mtime_ns": 1792966560821431900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_rounding_candidate1\\tb_arithmetic.sv",
+        "bytes": 2987,
+        "mtime_ns": 1792966560821431900
+      }
+    ]
+  },
+  "scheduler": {
+    "passed": true,
+    "summary": "SNAPSHOT_FANOUT_PASS cycles=42000 publications=34 writes=10080 resets=5",
+    "unchanged_actual_scheduler": true,
+    "source_frame_ownership_relation_checked": true,
+    "actuator_outputs_compared_each_cycle": true,
+    "ff_changes_every_cycle_and_sample_edge_preserved": true,
+    "parameter_sets": 2,
+    "scope": "Actual original scheduler and candidate with an explicit inference test double; transport/rejection/stop/reset and output timing only, not full original4500 inference",
+    "injected_cases": [
+      "core error",
+      "saturation",
+      "frame ID mismatch",
+      "deadline",
+      "enable",
+      "sensor",
+      "global reset",
+      "retry"
+    ],
+    "candidate_bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_rounding_candidate1\\control\\policy_action_map.v",
+        "bytes": 4706,
+        "mtime_ns": 1792966560821431900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_rounding_candidate1\\control\\rl_policy_tick_v5.v",
+        "bytes": 6550,
+        "mtime_ns": 1792966560821431900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\action_registered_rounding_candidate1\\control\\mem_policy.v",
+        "bytes": 6138,
+        "mtime_ns": 1792966560821431900
+      }
+    ],
+    "test_binding": {
+      "path": "F:\\nav_integration_g2_20261023\\action_registered_rounding_candidate1\\tb_policy.sv",
+      "bytes": 6068,
+      "mtime_ns": 1792966571048369000
+    },
+    "new_SYN_PNR_started": false
+  },
+  "source_private_bits46_not_actual_FF_count": true,
+  "original_64bit_CSA_and_rounding_literal_functions_preserved": true,
+  "changed_RTL_vs_SYN30": [
+    "control/policy_action_map.v"
+  ],
+  "private_E2_capture_and_original_E3_output_ff_stop_unchanged": true,
+  "earlier_segment_may_be_slower": true,
+  "controller": {
+    "controller_pid": 68844,
+    "controller_created_epoch": 1792966618.3327055,
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_rounding_prepared1",
+    "output": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_rounding_syn31",
+    "PNR38_exit_dependency": false,
+    "SYN_max_runtime_minutes": 40,
+    "automatic_PNR": false,
+    "programmed": false,
+    "phase": "running_unique_full_SYN31",
+    "updated_at": "2026-10-26T06:16:59.108966+08:00",
+    "free_bytes": 2574204928,
+    "available_commit_bytes": 4482088960,
+    "minimum_physical_bytes": 2147483648,
+    "minimum_commit_bytes": 4294967296,
+    "runner_pid": 32876,
+    "runner_created_epoch": 1792966619.1055467,
+    "command": [
+      "D:\\Anaconda\\python.exe",
+      "-X",
+      "utf8",
+      "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\retry_frozen_synthesis.py",
+      "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_rounding_prepared1",
+      "--out",
+      "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_rounding_syn31",
+      "--start-now",
+      "--tool-priority",
+      "normal"
+    ]
+  },
+  "job": {
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_rounding_prepared1",
+    "build": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_rounding_syn31",
+    "wait_pid": null,
+    "programmed": false,
+    "source_frozen_before_wait": true,
+    "automatic_pnr": false,
+    "settings_only_resume": false,
+    "modified_rtl_inputs": [],
+    "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+    "execution_policy": {
+      "priority": 32,
+      "affinity": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "maximum_new_SYN_tree_RSS_MiB": 0,
+      "maximum_new_SYN_tree_private_commit_MiB": 0,
+      "minimum_runtime_physical_MiB": 0,
+      "minimum_runtime_commit_reserve_MiB": 0,
+      "applies_to": "this runner and newly created descendants only; no existing PNR process is modified"
+    },
+    "phase": "synthesizing",
+    "updated_at": "2026-10-26T06:19:02.135655+08:00",
+    "minimum_start_free_bytes": 2147483648,
+    "minimum_start_available_commit_bytes": 4294967296,
+    "max_runtime_minutes": 40,
+    "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+    "tool_pid": 57328,
+    "synthesis_started_at": "2026-10-26T06:17:01.084730+08:00",
+    "tool_created_epoch": 1792966621.0866833,
+    "actual_tool_priority": 32,
+    "actual_tool_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "elapsed_s": 121.04700000002049,
+    "free_bytes": 2487271424,
+    "available_commit_bytes": 3705843712,
+    "owned_tool_RSS_bytes": 548007936,
+    "peak_owned_tool_RSS_bytes": 796360704,
+    "owned_tool_private_bytes": 589651968,
+    "peak_owned_tool_private_bytes": 798937088
+  },
+  "actual_tool_pid": 57328,
+  "actual_tool_created_at": "2026-10-26T06:17:01.086683+08:00",
+  "actual_tool_command": [
+    "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+    "run.tcl"
+  ],
+  "actual_tool_directory": "F:\\nav_integration_g2_20261023\\baseline_fusion_registered_rounding_syn31",
+  "priority": 32,
+  "affinity": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "PNR42_input_modified": false,
+  "no_PNR42_exit_dependency": true,
+  "PNR43_started": false,
+  "automatic_PNR": false,
+  "programmed": false
+}
