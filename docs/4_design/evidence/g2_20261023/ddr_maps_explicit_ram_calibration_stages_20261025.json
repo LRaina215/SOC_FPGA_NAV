@@ -1,0 +1,423 @@
+{
+  "at": "2026-10-25T10:17:17.295119+08:00",
+  "completed_SYN13": "F:\\nav_integration_g2_20261023\\sfp_lane2_ddr_maps_normalmode_syn13",
+  "completed_at": "2026-10-25T10:05:45.194555+08:00",
+  "inferred_mode_fix_did_not_change_mapping": true,
+  "guard_correctly_rejected_mode_10": {
+    "controller_pid": 27236,
+    "controller_created_at": "2026-10-25T09:59:42.029408+08:00",
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_ddr_maps_normalmode_syn13",
+    "watched_SYN_pid": 55292,
+    "watched_SYN_created_at": "2026-10-25T09:58:37.960559+08:00",
+    "watched_SYN_command": [
+      "D:\\Anaconda\\python.exe",
+      "-X",
+      "utf8",
+      "integration/g2/retry_frozen_synthesis.py",
+      "F:/nav_integration_g2_20261023/lane2_ddr_map_normalmode_prepared2",
+      "--out",
+      "F:/nav_integration_g2_20261023/sfp_lane2_ddr_maps_normalmode_syn13",
+      "--start-now"
+    ],
+    "inputs": "F:\\nav_integration_g2_20261023\\lane2_ddr_maps_pnr17_inputs",
+    "pnr": "F:\\nav_integration_g2_20261023\\sfp_lane2_ddr_maps_normalmode_pnr17",
+    "programmed": false,
+    "total_PNR_limit_s": 0,
+    "idle_PNR_limit_s": 0,
+    "starts_new_synthesis": false,
+    "phase": "pre_pnr_validation_failed",
+    "updated_at": "2026-10-25T10:05:46.385877+08:00",
+    "child_pid": 68100,
+    "child_command": [
+      "D:\\Anaconda\\python.exe",
+      "-X",
+      "utf8",
+      "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\ddr3\\review_map_joint.py",
+      "--source",
+      "F:\\nav_integration_g2_20261023\\sfp_lane2_ddr_maps_normalmode_syn13",
+      "--baseline",
+      "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+      "--reference",
+      "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+      "--phy",
+      "F:\\nav_integration_g2_20261023\\ddr3_map_c_phy7_timingfix",
+      "--out",
+      "F:\\nav_integration_g2_20261023\\lane2_ddr_maps_pnr17_inputs"
+    ],
+    "validation_exit": 1,
+    "validation_log": "F:\\nav_integration_g2_20261023\\lane2_ddr_maps_normalmode_one_shot_retry1\\validation.log"
+  },
+  "PNR17_never_started": true,
+  "explicit_module_proof": {
+    "tested_at": "2026-10-25T10:12:05.021161+08:00",
+    "passed": true,
+    "timing": [
+      {
+        "case": 0,
+        "records": 1024,
+        "cycles": 110179,
+        "us_at_50MHz": 2203.58,
+        "refresh_phase": 0,
+        "ready_period": 8,
+        "read_delay": 12,
+        "stalls": 25433,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 1,
+        "records": 1024,
+        "cycles": 110125,
+        "us_at_50MHz": 2202.5,
+        "refresh_phase": 389,
+        "ready_period": 8,
+        "read_delay": 12,
+        "stalls": 25368,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 2,
+        "records": 1024,
+        "cycles": 106621,
+        "us_at_50MHz": 2132.42,
+        "refresh_phase": 200,
+        "ready_period": 8,
+        "read_delay": 12,
+        "stalls": 24152,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 3,
+        "records": 1024,
+        "cycles": 107432,
+        "us_at_50MHz": 2148.64,
+        "refresh_phase": 27,
+        "ready_period": 8,
+        "read_delay": 12,
+        "stalls": 24188,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 4,
+        "records": 0,
+        "cycles": 90464,
+        "us_at_50MHz": 1809.28,
+        "refresh_phase": 0,
+        "ready_period": 8,
+        "read_delay": 12,
+        "stalls": 23116,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 5,
+        "records": 1024,
+        "cycles": 189845,
+        "us_at_50MHz": 3796.9,
+        "refresh_phase": 101,
+        "ready_period": 16,
+        "read_delay": 20,
+        "stalls": 104542,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 6,
+        "records": 1024,
+        "cycles": 192031,
+        "us_at_50MHz": 3840.62,
+        "refresh_phase": 389,
+        "ready_period": 16,
+        "read_delay": 20,
+        "stalls": 105424,
+        "expected_meets_5ms": 1
+      },
+      {
+        "case": 7,
+        "records": 1024,
+        "cycles": 533401,
+        "us_at_50MHz": 10668.02,
+        "refresh_phase": 200,
+        "ready_period": 32,
+        "read_delay": 80,
+        "stalls": 445371,
+        "expected_meets_5ms": 0
+      }
+    ],
+    "metrics": {
+      "cases": 8,
+      "words": 524288,
+      "maximum_update_cycles": 533401,
+      "reads": 39064,
+      "writes": 38912,
+      "refresh_cycles": 200757,
+      "command_stalls": 2021268
+    },
+    "scope": "full-size update/LF RTL with original LF arithmetic and service-envelope native model",
+    "actual_point_transform_integrated": false,
+    "vendor_service_bound_verified": false,
+    "all_legal_native_service_schedules_meet_5ms": false,
+    "complete_joint_candidate": false,
+    "programmed": false,
+    "actual_vendor_DPX9B_model": true,
+    "vendor_library": "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/simlib/gw5a/prim_sim.v",
+    "hardware_source": "F:\\nav_integration_g2_20261023\\ddr_row_explicit_mode_probe3\\hardware_explicit_row_stream.v",
+    "original_8_case_cycle_counts_unchanged": true,
+    "actual_SYN_input_RAM_parameters": {
+      "\\g_bank[0].input_row_primitive": {
+        "BIT_WIDTH_0": "18",
+        "BIT_WIDTH_1": "18",
+        "BLK_SEL_0": "3'b000",
+        "BLK_SEL_1": "3'b000",
+        "READ_MODE0": "1'b0",
+        "READ_MODE1": "1'b0",
+        "RESET_MODE": "\"SYNC\"",
+        "WRITE_MODE0": "2'b00",
+        "WRITE_MODE1": "2'b00"
+      },
+      "\\g_bank[1].input_row_primitive": {
+        "BIT_WIDTH_0": "18",
+        "BIT_WIDTH_1": "18",
+        "BLK_SEL_0": "3'b000",
+        "BLK_SEL_1": "3'b000",
+        "READ_MODE0": "1'b0",
+        "READ_MODE1": "1'b0",
+        "RESET_MODE": "\"SYNC\"",
+        "WRITE_MODE0": "2'b00",
+        "WRITE_MODE1": "2'b00"
+      }
+    },
+    "actual_module_resources": {
+      "name": "g2_top",
+      "Register": "185",
+      "Alu": "55",
+      "Lut": "624",
+      "Bsram": "6",
+      "Ssram": "98",
+      "T_Register": "2674(185)",
+      "T_Alu": "1479(55)",
+      "T_Lut": "3014(624)",
+      "T_MULTALU27X18": "6(0)",
+      "T_MULT12X12": "17(0)",
+      "T_MULT27X36": "7(0)",
+      "T_Bsram": "14(6)",
+      "T_Ssram": "98(98)"
+    },
+    "actual_module_SYN_runtime": {
+      "started_at": "2026-10-25T10:11:50.996452+08:00",
+      "max_runtime_s": 180,
+      "max_owned_rss": 805306368,
+      "scope": "row RAM mode fix only; observe actual primitive mode before another joint SYN",
+      "cancelled": false,
+      "pid": 33132,
+      "tool_exit": 0,
+      "elapsed_s": 14.0
+    },
+    "PNR_mode_acceptance_verified": false,
+    "whole_joint_implementation_verified": false
+  },
+  "first_two_elaborations_failed_missing_GSR_context": true,
+  "original_library_and_GSR_context_restored": true,
+  "initial_module_SYN_reused_after_explicit_macro_selection": true,
+  "Gowin_SYΝ_does_not_define_SYNTHESIS_in_this_project": true,
+  "only_input_row_RAM_replaced_with_explicit_DPX9B": true,
+  "new_joint_SYN": {
+    "source": "F:\\nav_integration_g2_20261023\\lane2_ddr_map_explicit_prepared3",
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_ddr_maps_explicit_syn14",
+    "wait_pid": null,
+    "programmed": false,
+    "source_frozen_before_wait": true,
+    "automatic_pnr": false,
+    "modified_rtl_inputs": [],
+    "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+    "phase": "synthesizing",
+    "updated_at": "2026-10-25T10:16:48.698663+08:00",
+    "minimum_start_free_bytes": 2147483648,
+    "minimum_start_available_commit_bytes": 4294967296,
+    "max_runtime_minutes": 40,
+    "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+    "tool_pid": 60792,
+    "synthesis_started_at": "2026-10-25T10:12:48.646969+08:00",
+    "elapsed_s": 240.06299999996554,
+    "free_bytes": 3356844032,
+    "available_commit_bytes": 5676535808
+  },
+  "continuation": {
+    "controller_pid": 36164,
+    "controller_created_at": "2026-10-25T10:13:10.757335+08:00",
+    "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_ddr_maps_explicit_syn14",
+    "watched_SYN_pid": 28508,
+    "watched_SYN_created_at": "2026-10-25T10:12:46.783698+08:00",
+    "watched_SYN_command": [
+      "D:\\Anaconda\\python.exe",
+      "-X",
+      "utf8",
+      "integration/g2/retry_frozen_synthesis.py",
+      "F:/nav_integration_g2_20261023/lane2_ddr_map_explicit_prepared3",
+      "--out",
+      "F:/nav_integration_g2_20261023/sfp_lane2_ddr_maps_explicit_syn14",
+      "--start-now"
+    ],
+    "inputs": "F:\\nav_integration_g2_20261023\\lane2_ddr_maps_pnr18_inputs",
+    "pnr": "F:\\nav_integration_g2_20261023\\sfp_lane2_ddr_maps_explicit_pnr18",
+    "programmed": false,
+    "total_PNR_limit_s": 0,
+    "idle_PNR_limit_s": 0,
+    "starts_new_synthesis": false,
+    "phase": "waiting_for_owned_SYN",
+    "updated_at": "2026-10-25T10:13:10.757335+08:00"
+  },
+  "actual_controller_unchanged": {
+    "pid": 24088,
+    "wrapper": 20104,
+    "latest_progress": "# PROGRESS time=2700000000.0 ps lock=1 stop=1 reset=0 cal=0 ui=244978 ref=0 act=1 rd=8908 wr=75 memory_period_ns=2.500 ui_period_ns=10.000",
+    "last_write_leveling_off": "# DRAM_MRS time_us=1402.918750 bank=2 addr=0000 write_leveling=0 cal=0",
+    "calibration_passed": false,
+    "application_readback_passed": false,
+    "current_substate_not_logged": true,
+    "no_waveform_logged": true
+  },
+  "interpretation": "Pin log confirms write-leveling mode closed, then training reads continued; READ_CALIBRATION vs EYE_SCAN and exact repeated state remain unverified",
+  "prepared_public_stage_schema": {
+    "public_wire_groups": {
+      "init_state": [
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.BURST_MODE_RECOVER",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.CKE_EN",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.EYE_SCAN",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.IDLE",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.INIT_DONE",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.LOAD_MR",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.LOAD_MR_WAIT",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.READ_CALIBRATION",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.RESET_WAIT",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.WRITE_LEVELING",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.WRLVL_LOAD_MR1",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.WRLVL_LOAD_MR1_WAIT",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.WRLVL_LOAD_MR2",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.WRLVL_LOAD_MR2_WAIT",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.WRLVL_MODE_CLOSE1",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.WRLVL_MODE_CLOSE1_WAIT",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.WRLVL_MODE_CLOSE2",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.XPR_WAIT",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.ZQCL",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/init_state.ZQCL_WAIT"
+      ],
+      "read_cal_state": [
+        "gw3_top/u_ddr_phy_top/u_ddr_init/read_cal_state.READ_CAL_ACTIVE_CMD",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/read_cal_state.READ_CAL_ACTIVE_CMD_WAIT",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/read_cal_state.READ_CAL_DONE",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/read_cal_state.READ_CAL_HOLD",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/read_cal_state.READ_CAL_IDLE",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/read_cal_state.READ_CAL_PRECHARGE",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/read_cal_state.READ_CAL_PRECHARGE_WAIT",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/read_cal_state.READ_CAL_RBURST_CHECK",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/read_cal_state.READ_CAL_RBURST_CHECK_WAIT",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/read_cal_state.READ_CAL_RBURST_CHECK_WAIT1",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/read_cal_state.READ_CAL_READ_CMD",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/read_cal_state.READ_CAL_READ_CMD_WAIT",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/read_cal_state.READ_CAL_RSEL_ADJ",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/read_cal_state.READ_CAL_RSEL_ADJ_WAIT",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/read_cal_state.READ_CAL_WAIT",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/read_cal_state.READ_CAL_WRITE_CMD",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/read_cal_state.READ_CAL_WRITE_CMD_WAIT"
+      ],
+      "wrlvl_state": [
+        "gw3_top/u_ddr_phy_top/u_ddr_init/wrlvl_state.WRLVL_ADJ_DQS",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/wrlvl_state.WRLVL_ADJ_WAIT",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/wrlvl_state.WRLVL_DONE",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/wrlvl_state.WRLVL_IDLE",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/wrlvl_state.WRLVL_ODT_DIS",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/wrlvl_state.WRLVL_ODT_DIS_WAIT",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/wrlvl_state.WRLVL_ODT_EN",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/wrlvl_state.WRLVL_ODT_WAIT",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/wrlvl_state.WRLVL_READ_DQ",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/wrlvl_state.WRLVL_RECHECK_DQ",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/wrlvl_state.WRLVL_SEND_DQS",
+        "gw3_top/u_ddr_phy_top/u_ddr_init/wrlvl_state.WRLVL_SEND_DQS_WAIT"
+      ]
+    },
+    "extras": {
+      "read_sel": {
+        "net": "gw3_top/u_ddr_phy_top/u_ddr_init/read_rclksel_conf",
+        "width": 4
+      },
+      "burst_seen": {
+        "net": "gw3_top/u_ddr_phy_top/u_ddr_init/rburst_reg",
+        "width": 4
+      },
+      "burst_check": {
+        "net": "gw3_top/u_ddr_phy_top/u_ddr_init/rburst_cnt_check",
+        "width": 4
+      },
+      "burst_counts": {
+        "net": "gw3_top/u_ddr_phy_top/u_ddr_init/rburst_cnt",
+        "width": 40
+      },
+      "dll_codes": {
+        "net": "gw3_top/u_ddr_phy_top/realtime_dllcode_Z",
+        "width": 32
+      },
+      "eye_errors": {
+        "net": "gw3_top/u_ddr_phy_top/eye_calib_error_Z",
+        "width": 4
+      },
+      "eye_done": {
+        "net": "gw3_top/u_ddr_phy_top/eye_calib_done_Z",
+        "width": 1
+      },
+      "eye_valid": {
+        "net": "gw3_top/u_ddr_phy_top/eye_calib_valid",
+        "width": 1
+      }
+    },
+    "protected_DQS_access": false,
+    "changes_drive_no_signals": true
+  },
+  "after_original_diagnostic": {
+    "pid": 12656,
+    "created": "2026-10-25T10:15:31.395984+08:00",
+    "prior": "F:\\nav_integration_g2_20261023\\ddr_actual_c_official138k_reset200_probe2",
+    "tracked_original_processes": [
+      {
+        "pid": 20104,
+        "created": 1792886746.176479
+      },
+      {
+        "pid": 24088,
+        "created": 1792886749.4377165
+      },
+      {
+        "pid": 31476,
+        "created": 1792886749.4571638
+      },
+      {
+        "pid": 32644,
+        "created": 1792886749.483729
+      },
+      {
+        "pid": 50280,
+        "created": 1792886749.5995808
+      },
+      {
+        "pid": 52944,
+        "created": 1792886750.1627257
+      }
+    ],
+    "out": "F:\\nav_integration_g2_20261023\\ddr_actual_c_public_stages_probe3",
+    "stops_no_process": true,
+    "starts_no_joint_build": true,
+    "programmed": false,
+    "phase": "waiting_for_original_runtime_natural_exit",
+    "updated_at": "2026-10-25T10:15:31.395984+08:00"
+  },
+  "diagnostic_runtime_not_started": true,
+  "diagnostic_samples": 16,
+  "diagnostic_simulated_duration_us": 1600,
+  "diagnostic_is_not_acceptance": true,
+  "physical_RAM_prediction": 259,
+  "physical_RAM_measured": false,
+  "physical_unrouted_count_unknown": true,
+  "complete_UPDATE5ms_verified": false,
+  "programmed": false,
+  "automation_status_observed": "PAUSED",
+  "pause_reason_unknown": true,
+  "existing_event_controllers_independent_of_automation": true,
+  "host51reference_inherited_without_duplicate_SDC": true
+}

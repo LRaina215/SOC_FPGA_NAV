@@ -37,7 +37,12 @@ def review(source, baseline, reference, phy, out):
     for p in (source/'ddr3').glob('*.v'):
         if p.name in ('nav_ddr3_phy.v','nav_ddr3_pll.v','nav_ddr_board_reset.v'):continue
         expected=tested/p.name
-        if p.name=='nav_ddr_row_stream.v' and manifest.get('row_normalmode_proof'):
+        if p.name=='nav_ddr_row_stream.v' and manifest.get('row_explicit_mode_proof'):
+            explicit=Path(manifest['row_explicit_mode_proof'])
+            evidence=json.loads((explicit/'explicit_mode_result.json').read_text())
+            assert evidence['actual_vendor_DPX9B_model'] and evidence['original_8_case_cycle_counts_unchanged']
+            expected=explicit/'hardware_explicit_row_stream.v'
+        elif p.name=='nav_ddr_row_stream.v' and manifest.get('row_normalmode_proof'):
             normal_proof=Path(manifest['row_normalmode_proof'])
             normal=json.loads((normal_proof/'functional_result.json').read_text())
             assert normal['passed'] and normal['metrics']['words']==524288
@@ -67,7 +72,7 @@ def review(source, baseline, reference, phy, out):
         assert (row['primitive'],row['parameters'])==(other['primitive'],other['parameters']),row['path']
     assert len(retained)==196
     if manifest.get('row_normalmode_proof'):
-        inputs=[r for r in new['leaves'] if r['primitive']=='DPX9B' and '.input_row_' in r['path']]
+        inputs=[r for r in new['leaves'] if r['primitive']=='DPX9B' and '/u_dma/' in r['path']]
         assert len(inputs)==2 and all(r['parameters']['WRITE_MODE0']=="2'b00" for r in inputs),inputs
     for p,row in old_by.items():
         if p.startswith(moved_prefixes[0]):

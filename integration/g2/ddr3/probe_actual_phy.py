@@ -54,6 +54,18 @@ def run(args):
     tb = (HERE/'tb_actual_phy.sv').read_text()
     tb = tb.replace('parameter integer RESET_HOLD_NS=200;',
                     f'parameter integer RESET_HOLD_NS={args.reset_hold_ns};')
+    if args.observe_public_stages:
+        from public_calibration_stages import observer
+        monitor,schema=observer(vo.read_text())
+        marker=' initial begin repeat(40) begin'
+        assert tb.count(marker)==1
+        tb=tb.replace(marker,monitor+'\n'+marker,1)
+        (out/'public_stage_schema.json').write_text(json.dumps(schema,indent=2))
+    if args.calibration_snapshot_samples:
+        assert args.observe_public_stages and 14<=args.calibration_snapshot_samples<=40
+        tb=tb.replace('repeat(40) begin #100000;',f'repeat({args.calibration_snapshot_samples}) begin #100000;',1)
+        tb=tb.replace('$fatal(1,"calibration/probe watchdog");',
+                      '$display("CALIBRATION_STAGE_SNAPSHOT_COMPLETE");$finish;',1)
     (out/'tb_actual_phy.sv').write_text(tb)
     (out/'run.do').write_text('onerror {quit -code 2}\nonbreak {quit -code 3}\n'
                               'run -all\nquit -code 0\n')
@@ -72,6 +84,8 @@ def run(args):
         vendor_model=str(vo), vendor_dqs_model=str(dqs), pll=str(args.pll.resolve()),
         public_calibration_net_observation=args.observe_public_calibration,
         reset_hold_ns=args.reset_hold_ns, license_used_child_environment_only=True,
+        public_stage_observation=args.observe_public_stages,
+        diagnostic_snapshot_only=bool(args.calibration_snapshot_samples),
         actual_board_training_verified=False, unconditional_service_bound=False,
         complete_UPDATE_5ms_verified=False, full_joint_build_started=False,
         programmed=False, steps=[])
@@ -97,6 +111,7 @@ def run(args):
         unresolved_vendor_port_warning='Missing connection for port' in log)
     result['strict_protocol_probe_passed'] = result['functional_readback_passed'] and not result['model_errors'] and not any(
         'required before' in line for line in result['model_warnings']) and not result['unresolved_vendor_port_warning']
+    if args.calibration_snapshot_samples:result['strict_protocol_probe_passed']=False
     (out/'result.json').write_text(json.dumps(result, indent=2))
     print(json.dumps({k: result[k] for k in ('calibration_observed',
           'functional_readback_passed', 'strict_protocol_probe_passed')}, indent=2))
@@ -115,4 +130,7 @@ if __name__ == '__main__':
     p.add_argument('--dqs-model', type=Path)
     p.add_argument('--observe-public-calibration', action='store_true')
     p.add_argument('--reset-hold-ns', type=int, default=200)
+    p.add_argument('--observe-public-stages', action='store_true')
+    p.add_argument('--calibration-snapshot-samples', type=int,default=0,
+                   help='finite diagnostic stimulus of N*100us, never a calibration/service acceptance run')
     run(p.parse_args())

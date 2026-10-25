@@ -55,13 +55,19 @@ def main():
         if a.cdc_reference_audit:
             assert 'set_false_path' not in (out/'g2.sdc').read_text(encoding='utf-8'),'source SDC already has exceptions'
             with (out/'g2.sdc').open('a',encoding='utf-8',newline='\n') as file:file.write('\n'+fragment)
-    if a.sfp_cdc_reference:
+    sfp_reference_file=a.sfp_cdc_reference or (src/'sfp_cdc_reference.json' if (src/'sfp_cdc_reference.json').exists() else None)
+    if sfp_reference_file:
         from audit_sfp_cdc import audit as audit_sfp,sdc_fragment as sfp_fragment
-        sfp_reference=json.loads(a.sfp_cdc_reference.read_text(encoding='utf-8'))
+        sfp_reference=json.loads(sfp_reference_file.read_text(encoding='utf-8'))
         actual=audit_sfp(out/'g2_top.vg',synthesis=True)
         assert actual['passed'] and json.loads(json.dumps(actual['paths']))==sfp_reference['paths'],'SFP reference differs from this frozen netlist'
         (out/'sfp_cdc_reference.json').write_text(json.dumps(sfp_reference,indent=2),encoding='utf-8')
-        with (out/'g2.sdc').open('a',encoding='utf-8',newline='\n') as file:file.write('\n'+sfp_fragment(sfp_reference))
+        fragment=sfp_fragment(sfp_reference)
+        existing=(out/'g2.sdc').read_text(encoding='utf-8')
+        if fragment in existing:
+            assert existing.count(fragment)==1,'duplicate inherited host constraints'
+        else:
+            with (out/'g2.sdc').open('a',encoding='utf-8',newline='\n') as file:file.write('\n'+fragment)
     report_commands=[]
     if a.routing_evidence:
         # Printing more grids/nets changes no clock or exception requirement.
@@ -105,7 +111,7 @@ def main():
         original_pnr_command=cmd,replicate_resources=replicate,place_option=a.place_option,route_option=a.route_option,effective_options=effective,
         max_runtime_minutes=a.max_runtime_minutes,max_no_progress_minutes=a.max_no_progress_minutes,
         cdc_reference_audit=str(cdc_reference) if cdc_reference else None,
-        sfp_cdc_reference=str(a.sfp_cdc_reference) if a.sfp_cdc_reference else None,
+        sfp_cdc_reference=str(sfp_reference_file) if sfp_reference_file else None,
         diagnostic_only=a.diagnostic_only,timing_driven=a.timing_driven,capture_system_telemetry=a.capture_system_telemetry,
         clock_resource_plan=clock_plan,routing_evidence=a.routing_evidence,routing_report_commands=report_commands,
         source_manifest=json.loads((src/'manifest.json').read_text()),programmed=False),indent=2))

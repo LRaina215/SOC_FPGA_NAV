@@ -1,6 +1,12 @@
 // Isolated 256-word structure-map row transport. No G2 connection yet.
 // One descriptor crosses each way per ROW, never per map word. Two native
 // read/write credits hide serialization. Native ready has no assumed timeout.
+`ifdef SYNTHESIS
+`define NAV_DDR_ROW_PHYSICAL
+`endif
+`ifdef GOWIN_ROW_PRIMITIVES
+`define NAV_DDR_ROW_PHYSICAL
+`endif
 module nav_ddr_row_stream (
     input wire clk,ui_clk,rst,calib_done,
     input wire req,we,bank,input wire[7:0]row,
@@ -56,6 +62,30 @@ module nav_ddr_row_stream (
     generate for(b=0;b<2;b=b+1)begin:g_bank
         // True dual-port: UI fills an owned row; core applies updates/reads it.
         // Ownership is checked by the caller before a row changes domains.
+`ifdef NAV_DDR_ROW_PHYSICAL
+        wire[7:0]fill_address=completed*14+slot;
+        wire fill_write=unpack&&held_bank==b;
+        // Explicit mode: the inference engine retained WRITE_MODE0=10 even
+        // after the mutual-exclusion read enable was made explicit in RTL.
+        DPX9B input_row_primitive(
+            .DOA(in_q[b*18+:18]),.DOB(),
+            .CLKA(clk),.CEA(in_re[b]|in_we[b]),.OCEA(1'b0),.RESETA(1'b0),
+            .CLKB(ui_clk),.CEB(fill_write),.OCEB(1'b0),.RESETB(1'b0),
+            .WREA(in_we[b]),.WREB(1'b1),
+            .ADA({2'b00,in_addr[b*8+:8],4'b0011}),
+            .ADB({2'b00,fill_address,4'b0011}),
+            .DIA(in_data[b*18+:18]),.DIB(beats[completed[0]][slot*18+:18]),
+            .BLKSELA(3'b000),.BLKSELB(3'b000));
+        defparam input_row_primitive.BIT_WIDTH_0=18;
+        defparam input_row_primitive.BIT_WIDTH_1=18;
+        defparam input_row_primitive.READ_MODE0=1'b0;
+        defparam input_row_primitive.READ_MODE1=1'b0;
+        defparam input_row_primitive.WRITE_MODE0=2'b00;
+        defparam input_row_primitive.WRITE_MODE1=2'b00;
+        defparam input_row_primitive.RESET_MODE="SYNC";
+        defparam input_row_primitive.BLK_SEL_0=3'b000;
+        defparam input_row_primitive.BLK_SEL_1=3'b000;
+`else
         (* syn_ramstyle="block_ram" *)reg[17:0]input_row[0:255];
         reg[17:0]q;
         always@(posedge clk)begin
@@ -69,6 +99,7 @@ module nav_ddr_row_stream (
             if(unpack&&held_bank==b)
                 input_row[completed*14+slot]<=beats[completed[0]][slot*18+:18];
         assign in_q[b*18+:18]=q;
+`endif
         (* syn_ramstyle="block_ram" *)reg[17:0]output_row[0:255];
         always@(posedge clk)if(out_we&&out_bank==b)output_row[out_addr]<=out_data;
         always@(posedge ui_clk)if(fetch&&held_bank==b)out_q[b]<=output_row[fetched[7:0]];
@@ -129,3 +160,6 @@ module nav_ddr_row_stream (
         end
     end
 endmodule
+`ifdef NAV_DDR_ROW_PHYSICAL
+`undef NAV_DDR_ROW_PHYSICAL
+`endif
