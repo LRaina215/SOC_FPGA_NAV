@@ -11,6 +11,7 @@ from collections import Counter
 import json
 from pathlib import Path
 import re
+import xml.etree.ElementTree as ET
 
 from audit_netlist_memories import BSRAM
 from audit_routing_topology import primitive_directions
@@ -149,7 +150,7 @@ def changed_cells(before, after, old_params, new_params):
     return dict(added=added, removed=removed, changed=changed)
 
 
-def review(source, baseline, *, prepared_only=False):
+def review(source, baseline, *, prepared_only=False, report_stage_recovery=None):
     source, baseline = Path(source).resolve(), Path(baseline).resolve()
     assert baseline.name == 'sfp_lane2_observation_lw_pnr15', 'unreviewed physical constraint/CDC reference'
     baseline_report = (baseline/'impl/pnr/g2_top.rpt.txt').read_text(encoding='utf-8')
@@ -171,8 +172,15 @@ def review(source, baseline, *, prepared_only=False):
     if kind == 'rtl_source':
         kind = 'rtl'
     assert kind in ('rtl', 'frozen_netlist') and frozen == (kind == 'frozen_netlist')
+    recovery = None
+    if report_stage_recovery is not None:
+        assert not frozen and not prepared_only, 'recovery is only for an emitted joint-SYN netlist'
+        from recover_report_stage_netlist import validate_recovery_evidence
+        recovery = validate_recovery_evidence(report_stage_recovery, source=source)
+        assert recovery['vendor_synthesis_completed'] is False and recovery['report_stage_interrupted']
     if not frozen and not prepared_only:
-        assert job.get('phase') == 'synthesis_complete' and job.get('tool_exit') == 0
+        if recovery is None:
+            assert job.get('phase') == 'synthesis_complete' and job.get('tool_exit') == 0
         assert job.get('modified_rtl_inputs') == [], 'joint SYN must compile the prepared source without another transform'
         assert Path(manifest['frozen_source_build']).resolve() == prepared
     prepfile = prepared/'prepared_source_review.json'
@@ -296,11 +304,59 @@ def review(source, baseline, *, prepared_only=False):
     oldparams, newparams = parameter_reader(olddefs), parameter_reader(newdefs)
     changes = changed_cells(before, after, oldparams, newparams)
     allowed_init = declared(profile, 'allowed_firmware_init_prefixes') if asset_changes else []
+    soc_remapping = None
+    proved_soc_changes = set()
+    if 'nav/rtl/soc/nav_soc.v' in source_differences:
+        # Exact console-only RTL transformation and its completed public bus /
+        # HOLD proof were checked above. Removing the storage changes shared
+        # decode placement and CPU-local LUT mapping, so cell-name equality is
+        # insufficient. Prove the actual retained next-state and every CPU
+        # RAM/DSP input instead; never grant an u_soc/ scope exemption.
+        from prove_soc_console_remap import prove as prove_soc
+        soc_remapping = prove_soc(before, after, oldparams, newparams,
+                                  primitive_directions(LIBRARY))
+        assert soc_remapping['passed']
+        proved_soc_changes = {n for rows in changes.values() for n in rows if n.startswith('u_soc/')}
+    # Removed diagnostics can change globally shared decode/reset placement.
+    # Enumerate and prove the retained mapped state/opaque inputs instead of
+    # broadening an entire navigation/control hierarchy exemption.
+    structural_outside=[n for rows in changes.values() for n in rows
+                        if not within(n,allowed) and n not in proved_soc_changes]
+    shell_remapping=output_boundary=None
+    proved_shell_changes=set()
+    route_names=re.findall(r'^CLOCK_LOC "([^"]+)"', (source/'g2.cst').read_text(encoding='utf-8'), re.M)
+    if structural_outside and not frozen:
+        directions=primitive_directions(LIBRARY)
+        from prove_trim_output_boundary import prove as prove_output, result_contract_records
+        output_boundary=prove_output(before,after,oldparams,newparams,directions,
+            old_definitions=olddefs,new_definitions=newdefs)
+        assert output_boundary['passed']
+        output_boundary['navigation_result_contract_records']=result_contract_records(before,after,oldparams,newparams)
+        from prove_trim_retained_shell import prove as prove_shell
+        shell_remapping=prove_shell(before,after,oldparams,newparams,directions,allowed,
+            navigation_result_contract=bool({'nav/rtl/match/slf_match.v','nav/rtl/plan/traj_eval.v'}&set(source_differences)),
+            removed_tx_shadow_contract='nav/rtl/net/host_mbx.v' in source_differences,
+            separately_proved_soc=soc_remapping is not None,
+            external_endpoints=output_boundary['top_endpoint_pairs'],
+            global_signal_endpoints=route_names+list(CLOCKS),
+            result_contract_records=output_boundary.get('navigation_result_contract_records',[]))
+        assert shell_remapping['passed'], ('actual retained shell function not proved',
+            shell_remapping['failures'],shell_remapping['exceptions'])
+        proved_shell_changes=set(structural_outside)
     outside = []
     firmware_init = []
     for category, entries in changes.items():
         for name in entries:
             if within(name, allowed):
+                continue
+            if name in proved_soc_changes:
+                if category == 'changed' and before[name]['kind'] == after[name]['kind'] == 'SP':
+                    x,y=oldparams(before[name]),newparams(after[name])
+                    if {k:v for k,v in x.items() if k.startswith('INIT_RAM')} != {k:v for k,v in y.items() if k.startswith('INIT_RAM')}:
+                        assert within(name, allowed_init), ('CPU firmware INIT outside declared program RAM', name)
+                        firmware_init.append(name)
+                continue
+            if name in proved_shell_changes:
                 continue
             if category == 'changed' and within(name, allowed_init):
                 assert before[name] == after[name], ('firmware init exemption changed a connection', name)
@@ -311,7 +367,7 @@ def review(source, baseline, *, prepared_only=False):
                 outside.append(dict(category=category, name=name,
                     before=before.get(name), after=after.get(name)))
     assert not outside, ('explicit primitive/name/connection/INIT changed outside permitted scopes; do not guess automatic aliases', outside[:12], len(outside))
-    oled_release = None
+    oled_release = bool(output_boundary and output_boundary['OLED_pin_release']) or None
     if frozen and within('u_control/display', allowed):
         oled_cells = [c for n,c in after.items() if n.startswith('u_control/display/')]
         assert len(oled_cells) == 2 and all(c['kind'] == 'VCC' for c in oled_cells), 'OLED replacement must release both open-drain pins'
@@ -340,6 +396,11 @@ def review(source, baseline, *, prepared_only=False):
             assert x == y, ('non-trim RAM geometry/INIT changed', name)
         preserved_memories += 1
     assert memory['predicted_physical_BSRAM'] <= 336, ('wide-split resource budget exceeded', memory['predicted_physical_BSRAM'])
+    if recovery is not None:
+        observed = recovery['resources']
+        assert memory['source_BSRAM'] == observed['source_BSRAM']
+        assert memory['wide_leaves'] == observed['wide32_36_BSRAM']
+        assert memory['predicted_physical_BSRAM'] == observed['predicted_physical_BSRAM_with_split']
     for field in ('source_BSRAM', 'wide_leaves', 'predicted_physical_BSRAM'):
         expected = profile.get('expected_'+field)
         if expected is not None:
@@ -347,20 +408,33 @@ def review(source, baseline, *, prepared_only=False):
     assert sum(c['kind'] == 'GTR12_QUAD' for c in after.values()) == 1
     directions = primitive_directions(LIBRARY)
     olddrivers, newdrivers = driver_index(before, directions), driver_index(after, directions)
-    route_names = re.findall(r'^CLOCK_LOC "([^"]+)"', (source/'g2.cst').read_text(encoding='utf-8'), re.M)
     assert len(route_names) == len(set(route_names)) == 14
     driver_checks = []
     for net in route_names+list(CLOCKS):
         x, y = olddrivers.get(net, []), newdrivers.get(net, [])
         assert len(x) == len(y) == 1, ('named clock/global net absent or nonunique; inspect actual new driver', net, x, y)
-        assert x[0] == y[0] and oldparams(x[0]) == newparams(y[0]), ('named driver/input/INIT changed; no unproved alias', net, x[0], y[0])
-        driver_checks.append(dict(net=net, name=y[0]['name'], kind=y[0]['kind'], identical_inputs_and_INIT=True))
+        identical=x[0] == y[0] and oldparams(x[0]) == newparams(y[0])
+        if not identical:
+            assert shell_remapping and shell_remapping['passed'] and net in shell_remapping['named_global_or_clock_target_values_checked']
+            assert (x[0]['name'],x[0]['kind'],oldparams(x[0]))==(y[0]['name'],y[0]['kind'],newparams(y[0])), ('named target primitive identity/INIT changed',net)
+        driver_checks.append(dict(net=net, name=y[0]['name'], kind=y[0]['kind'],
+            identical_inputs_and_INIT=identical,actual_output_function_proved=bool(shell_remapping),actual_driver_instance_preserved=True))
     clockpins = verify_synthesized_clock_pins(after)
     oldclockset = {tuple(c['ports']['CLK']) for c in before.values() if c['kind'].startswith('DFF') and 'CLK' in c['ports']}
     newclockset = {tuple(c['ports']['CLK']) for c in after.values() if c['kind'].startswith('DFF') and 'CLK' in c['ports']}
     assert newclockset == oldclockset, ('register clock domain set changed', sorted(newclockset-oldclockset), sorted(oldclockset-newclockset))
     lidar_ref = load(baseline/'cdc_reference_audit.json')
-    lidar = revalidate(before, after, lidar_ref, directions, olddefs, newdefs)
+    normalized=after
+    if shell_remapping:
+        # These correspondences have already passed all retained transition,
+        # async-control, INIT and clock checks. Normalize only those proven
+        # Q/instance identities for the existing strict connectivity checks.
+        aliases={r['new']:r['old'] for r in shell_remapping['same_instance_Q_correspondences']}
+        renamed={r['new']:r['old'] for r in shell_remapping['same_Q_primitive_instance_renames']}
+        normalized={renamed.get(n,n):dict(name=renamed.get(n,n),kind=c['kind'],
+            ports={p:[aliases.get(net,net) for net in nets] for p,nets in c['ports'].items()}) for n,c in after.items()}
+        assert len(normalized)==len(after), 'proven instance normalization collided'
+    lidar = revalidate(before, normalized, lidar_ref, directions, olddefs, newdefs)
     host = audit_sfp(newvg, synthesis=True)
     assert host['passed'] and len(host['paths']) == 51
     assert json.loads(json.dumps(host['paths'])) == load(baseline/'sfp_cdc_reference.json')['paths']
@@ -369,12 +443,19 @@ def review(source, baseline, *, prepared_only=False):
             for role in ('source_register', 'first_register', 'second_register'):
                 name = row[role]
                 assert oldparams(before[name]) == newparams(after[name]), ('known CDC endpoint INIT changed', name)
-    oldedges, newedges = set(direct_edges(before)), set(direct_edges(after))
+    oldedges, newedges = set(direct_edges(before)), set(direct_edges(normalized))
     removed_edges, added_edges = sorted(oldedges-newedges), sorted(newedges-oldedges)
     assert not added_edges and not removed_edges, ('explicit direct CDC changed; targeted review is required', added_edges, removed_edges)
     summary = load(source/'synthesis_summary.json') if (source/'synthesis_summary.json').is_file() else None
     if not frozen:
-        assert summary and not summary['errors'] and summary['actual_synthesis_global_freq_mhz'] == 50
+        if recovery is None:
+            assert summary and not summary['errors'] and summary['actual_synthesis_global_freq_mhz'] == 50
+        else:
+            options={x.get('type'):x.get('value') for x in ET.parse(source/'impl/gwsynthesis/g2_top.prj').getroot().findall('./OptionList/Option')}
+            assert float(options['global_freq']) == 50
+            effective=(source/'effective_options.tcl').read_text(encoding='utf-8')
+            frequencies=re.findall(r'^set_option\s+-global_freq\s+(\S+)',effective,re.M)
+            assert len(frequencies)==1 and float(frequencies[0])==50
     def primitive_resources(cells):
         counts = Counter(c['kind'] for c in cells.values())
         return dict(explicit_cells=len(cells), FF=sum(n for k,n in counts.items() if k.startswith('DFF')),
@@ -390,7 +471,8 @@ def review(source, baseline, *, prepared_only=False):
         OLED_actual_open_drain_release_verified=oled_release,
         allowed_changed_prefixes=allowed,
         explicit_netlist_changes={k:len(v) for k,v in changes.items()}, changed_cells=changes,
-        outside_allowed_scopes_identical=True, source_BSRAM=memory['source_BSRAM'],
+        outside_allowed_scopes_identical=not structural_outside and not proved_soc_changes,
+        outside_allowed_scopes_identical_or_functionally_proved=True, source_BSRAM=memory['source_BSRAM'],
         original_explicit_primitive_resources=before_resources,
         candidate_explicit_primitive_resources=after_resources,
         primitive_resource_delta={k:after_resources[k]-v for k,v in before_resources.items()},
@@ -401,6 +483,11 @@ def review(source, baseline, *, prepared_only=False):
         non_trim_RAM_leaves_preserved=preserved_memories,
         allowed_memory_change_prefixes=memory_scopes,
         bound_firmware_INIT_changes=firmware_init,
+        actual_SoC_console_mapping_proof=soc_remapping,
+        enumerated_SoC_cell_changes_covered_by_functional_partition_proof=sorted(proved_soc_changes),
+        actual_retained_shell_mapping_proof=shell_remapping,
+        actual_OLED_arbiter_and_external_output_boundary_proof=output_boundary,
+        enumerated_retained_shell_cell_changes_covered_by_functional_partition_proof=sorted(proved_shell_changes),
         driver_checks=driver_checks, strict_targets=14, true_clocks=4,
         unproved_aliases=0, actual_Lane2_clock_pins=clockpins,
         lidar26=lidar, host51=host, explicit_direct_crossings=len(newedges),
@@ -411,6 +498,13 @@ def review(source, baseline, *, prepared_only=False):
         complete_navigation_performance_accepted=False,
         physical_CDC_timing_PCS_reset_IO_and_extra43_signoff=False,
         actual_global_resource_allocation_verified=False,
+        vendor_synthesis_completed=False if recovery is not None else not frozen,
+        report_stage_recovery=bool(recovery),
+        report_stage_recovery_evidence=str(Path(report_stage_recovery).resolve()) if recovery else None,
+        artifact_mode='recovered_emitted_netlist' if recovery else 'completed_synthesis_netlist',
+        netlist_recovery_evidence=str(Path(report_stage_recovery).resolve()) if recovery else None,
+        independent_actual_netlist_precheck_passed=True,
+        missing_vendor_reports=recovery['missing_vendor_reports'] if recovery else [],
         exploratory_PNR_precheck_only=True, deployment_accepted=False, programmed=False)
 
 
@@ -425,9 +519,11 @@ def main():
     parser.add_argument('--baseline', type=Path, required=True)
     parser.add_argument('--out', type=Path)
     parser.add_argument('--prepared-only', action='store_true')
+    parser.add_argument('--report-stage-recovery', type=Path)
     args = parser.parse_args()
     try:
-        result = review(args.source, args.baseline, prepared_only=args.prepared_only)
+        result = review(args.source, args.baseline, prepared_only=args.prepared_only,
+                        report_stage_recovery=args.report_stage_recovery)
     except (AssertionError, KeyError, FileNotFoundError, TypeError) as error:
         result = dict(passed=False, source=str(args.source.resolve()),
                       baseline=str(args.baseline.resolve()), error=str(error),
