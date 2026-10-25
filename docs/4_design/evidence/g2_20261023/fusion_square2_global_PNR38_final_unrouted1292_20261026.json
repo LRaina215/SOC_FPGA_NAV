@@ -1,0 +1,472 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T04:01:06.382954+08:00",
+  "scope": "Read-only final failed physical contrast; actual global role effect confirmed, routing still failed",
+  "reference": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_pnr36",
+  "candidate": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_obs_global_pnr38",
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-26T03:15:24.218076+08:00",
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 53532,
+    "elapsed_s": 1721.859999999986,
+    "no_observable_progress_s": 0.0,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        1787,
+        1792957442936487800
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        1289,
+        1792957442936487800
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2385360,
+        1792956106691176800
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        13810107,
+        1792956107144084000
+      ],
+      [
+        "impl\\pnr\\g2_top.rpt.txt",
+        93293,
+        1792957440503548900
+      ],
+      [
+        "impl\\pnr\\g2_top.vo",
+        44522099,
+        1792957442930538300
+      ]
+    ],
+    "tool_exit": 1,
+    "ended_at": "2026-10-26T03:44:06.079380+08:00"
+  },
+  "unrouted_before": 1256,
+  "unrouted_after": 1292,
+  "unrouted_delta": 36,
+  "actual_resources": {
+    "before": {
+      "Logic": 89481,
+      "Register": 40090,
+      "CLS": 55539,
+      "BSRAM": 332,
+      "DSP": 157.5,
+      "LUT": 52781,
+      "ALU": 9920,
+      "ROM16": 3650,
+      "RAM16": 3855
+    },
+    "after": {
+      "Logic": 89483,
+      "Register": 40090,
+      "CLS": 55562,
+      "BSRAM": 332,
+      "DSP": 157.5,
+      "LUT": 52781,
+      "ALU": 9922,
+      "ROM16": 3650,
+      "RAM16": 3855
+    }
+  },
+  "physical_RAM332_geometry_and_INIT_identical": true,
+  "physical26_connections_match": true,
+  "input_VG_identical": true,
+  "actual_options_identical": true,
+  "global_allocations": {
+    "before": [
+      {
+        "net": "clk50_d",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PTR2 PTR3 PBR0 PBR1 PBR2 PBR3"
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "resource": "PRIMARY",
+        "location": "PBR1 PBR2"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_21",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_22",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_23",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_24",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      },
+      {
+        "net": "u_nav/a_q_15_15",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PTR2 PBR1 PBR2"
+      },
+      {
+        "net": "u_nav/u_pt/n5285_4",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PBR0 PBR1"
+      },
+      {
+        "net": "r2",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/n2371_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n331_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_0_9",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n26292_4",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25518_4",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n24910_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25284_7",
+        "resource": "LW",
+        "location": "-"
+      }
+    ],
+    "after": [
+      {
+        "net": "clk50_d",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PTR2 PTR3 PBR0 PBR1 PBR2 PBR3"
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "resource": "PRIMARY",
+        "location": "PBR1 PBR2"
+      },
+      {
+        "net": "u_control/sensor/n53_4",
+        "resource": "PRIMARY",
+        "location": "PTR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_21",
+        "resource": "PRIMARY",
+        "location": "PTR2 PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_22",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_23",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_24",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_nav/u_match/u_lf/n15905_7",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1"
+      },
+      {
+        "net": "r2",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/n2371_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n15679_10",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n331_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_0_9",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n26292_4",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25518_4",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n24910_7",
+        "resource": "LW",
+        "location": "-"
+      }
+    ],
+    "changes": [
+      {
+        "net": "u_control/model_thread/observation/n15679_10",
+        "before": null,
+        "after": {
+          "net": "u_control/model_thread/observation/n15679_10",
+          "resource": "LW",
+          "location": "-"
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_21",
+        "before": {
+          "net": "u_control/model_thread/policy/n14311_21",
+          "resource": "PRIMARY",
+          "location": "PBR2 PBR3"
+        },
+        "after": {
+          "net": "u_control/model_thread/policy/n14311_21",
+          "resource": "PRIMARY",
+          "location": "PTR2 PTR3 PBR2 PBR3"
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_22",
+        "before": {
+          "net": "u_control/model_thread/policy/n14311_22",
+          "resource": "PRIMARY",
+          "location": "PBR2 PBR3"
+        },
+        "after": {
+          "net": "u_control/model_thread/policy/n14311_22",
+          "resource": "PRIMARY",
+          "location": "PTR3 PBR2 PBR3"
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_23",
+        "before": {
+          "net": "u_control/model_thread/policy/n14311_23",
+          "resource": "PRIMARY",
+          "location": "PBR2 PBR3"
+        },
+        "after": {
+          "net": "u_control/model_thread/policy/n14311_23",
+          "resource": "PRIMARY",
+          "location": "PTR3 PBR2 PBR3"
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_24",
+        "before": {
+          "net": "u_control/model_thread/policy/n14311_24",
+          "resource": "PRIMARY",
+          "location": "PBR2 PBR3"
+        },
+        "after": {
+          "net": "u_control/model_thread/policy/n14311_24",
+          "resource": "PRIMARY",
+          "location": "PTR3 PBR2 PBR3"
+        }
+      },
+      {
+        "net": "u_control/sensor/n53_4",
+        "before": null,
+        "after": {
+          "net": "u_control/sensor/n53_4",
+          "resource": "PRIMARY",
+          "location": "PTR3"
+        }
+      },
+      {
+        "net": "u_nav/a_q_15_15",
+        "before": {
+          "net": "u_nav/a_q_15_15",
+          "resource": "PRIMARY",
+          "location": "PTR0 PTR1 PTR2 PBR1 PBR2"
+        },
+        "after": null
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25284_7",
+        "before": {
+          "net": "u_nav/u_map/u_tv/n25284_7",
+          "resource": "LW",
+          "location": "-"
+        },
+        "after": null
+      },
+      {
+        "net": "u_nav/u_match/u_lf/n15905_7",
+        "before": null,
+        "after": {
+          "net": "u_nav/u_match/u_lf/n15905_7",
+          "resource": "PRIMARY",
+          "location": "PTR0 PTR1"
+        }
+      },
+      {
+        "net": "u_nav/u_pt/n5285_4",
+        "before": {
+          "net": "u_nav/u_pt/n5285_4",
+          "resource": "PRIMARY",
+          "location": "PTR0 PTR1 PBR0 PBR1"
+        },
+        "after": null
+      }
+    ]
+  },
+  "actual_intervention": {
+    "observation4001_restored_LW": true,
+    "local357_no_global": true,
+    "loads": {
+      "u_control/model_thread/observation/n15679_10": {
+        "net": "u_control/model_thread/observation/n15679_10",
+        "loads": 4001,
+        "pins": {
+          "CE": 4000,
+          "D": 1
+        },
+        "load_primitives": {
+          "DFFCE": 4001
+        },
+        "drivers": [
+          {
+            "name": "u_control/model_thread/observation/n15680_s4",
+            "kind": "LUT3",
+            "ports": {
+              "I0": "\\u_control/model_thread/observation/state [0]",
+              "I1": "\\u_control/model_thread/observation/state [1]",
+              "I2": "\\u_control/model_thread/observation/state [2]",
+              "F": "\\u_control/model_thread/observation/n15679_10 "
+            },
+            "parameters": {
+              "INIT": "8'h10"
+            },
+            "output_pin": "F"
+          }
+        ],
+        "exists": true,
+        "failed_route_identity_verified": false
+      },
+      "u_nav/u_map/u_tv/n25284_7": {
+        "net": "u_nav/u_map/u_tv/n25284_7",
+        "loads": 357,
+        "pins": {
+          "I3": 2,
+          "CE": 355
+        },
+        "load_primitives": {
+          "LUT4": 2,
+          "DFFRE": 352,
+          "DFFSE": 3
+        },
+        "drivers": [
+          {
+            "name": "u_nav/u_map/u_tv/n25284_s2",
+            "kind": "LUT2",
+            "ports": {
+              "I0": "r2",
+              "I1": "\\u_nav/u_map/u_tv/wval ",
+              "F": "\\u_nav/u_map/u_tv/n25284_7 "
+            },
+            "parameters": {
+              "INIT": "4'h4"
+            },
+            "output_pin": "F"
+          }
+        ],
+        "exists": true,
+        "failed_route_identity_verified": false
+      }
+    }
+  },
+  "TR_available": false,
+  "setup_hold_and_actual52_or_report5000_not_verified": true,
+  "failed_net_identities_unknown": true,
+  "conclusion": "Restoring this particular global role is insufficient for routing this unchanged SYN26 netlist in this contrast. It does not isolate a unique routing root cause, nor prove all global allocation or all pipelining ineffective.",
+  "no_same_input_retry": true,
+  "next_independent_source": "SYN28 original publication-edge private product, no square2 or CSA",
+  "programmed": false,
+  "evidence_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_pnr36\\g2_top.vg",
+      "bytes": 24421219,
+      "mtime_ns": 1792951500383393300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_obs_global_pnr38\\g2_top.vg",
+      "bytes": 24421219,
+      "mtime_ns": 1792954440108532400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_obs_global_pnr38\\g2.cst",
+      "bytes": 5703,
+      "mtime_ns": 1792954440108532400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_obs_global_pnr38\\g2.sdc",
+      "bytes": 243,
+      "mtime_ns": 1792954440108532400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_obs_global_pnr38\\impl\\pnr\\g2_top.rpt.txt",
+      "bytes": 93293,
+      "mtime_ns": 1792957440503548900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_obs_global_pnr38\\impl\\pnr\\g2_top.vo",
+      "bytes": 44522099,
+      "mtime_ns": 1792957442930538300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_square2_obs_global_pnr38\\pure_CDC_physical_connection_review.json",
+      "bytes": 13557,
+      "mtime_ns": 1792957448894321300
+    }
+  ]
+}

@@ -878,3 +878,13 @@ PNR38实际工具53532创建03:15:24.228550、父49232、NORMAL全20核，仍同
 针对真实30.066ns动作路径，在原DSP输出处拆分的原延迟为含C2Q16.231ns、后段13.835ns，据此准备独立私有preview乘积级：利用core动作E1稳定、scheduler E2发布、原执行器E3消费的已有边界，E2捕获原signed64 clip×gain，E3原舍入/最新前馈/限幅与停止优先级不变，不新增外部拍数或时序例外。仅policy_action_map/rl_policy_tick/mem_policy三RTL，原4500/core/权重/125Hz/69资产/31头/全部FW及容量保持，不叠失败square2或CSA。8770帧全clip域/两参数组、64无效/64停止通过；真实原scheduler搭配显式推理替身42000拍、34发布/10080装载/5复位及错误/饱和/ID/截止/enable/sensor/retry通过，不能冒称全RL推理验证。私有乘积无reset、源码最多384位，实际映射待完整SYN。唯一接续66332创建03:34:54.946626独立等2GiB物理/4GiB提交；最近提交不足4GiB，SYN28尚未实际启动，非等待38结束的人为串行。达标后唯一完整SYN28、再审实际RAM/INIT/CPU/时钟/26CDC；自动PNR关闭，实际产品寄存边界与源审核对后才接新PNR，不抢跑。[候选及接续](evidence/g2_20261023/action_private_preview_product_candidate_20261026.json)。
 
 MAC帧边界修复复用原l_rx_rst，仅在接收FSM尾置R_BAD并清hold_v/valid，不改采样/CRC/TX/MDIO，配合已证FIFO异步断言修复做有限对照：26帧、5852字节、12744正常对照拍、14运行复位+4停钟复位、原1146尾字/候选0。真实+2ns PHY波形下，下降沿13帧CRC/error0；上升沿13帧保持原rerr1行为且CRC余式正确，未假称两种采样都健康。首夹具误要求上升沿error0及真实DV-low后仍拒绝新前导，已保留失败日志；只改夹具，候选RTL三文件逐字相同。不是完整UDP/XT/实板或物理复位签核，不混入38。[有限修复证据](evidence/g2_20261023/mac_RX_boundary_repair_finite_review_20261026.json)。
+
+## 2026-10-26 04:08 全局请求对照失败与动作真实寄存边界
+
+**2026-10-26 04:08 新实际结果：观测LW恢复未能挽救PNR38；真实动作乘积边界通过完整SYN28，PNR39已无截止启动。** PNR38于03:44:06.079380自然退出1、cancelled=false、总0/静默0，实际1292条未布通，对相同SYN26的36为1256，多36；332块RAM几何/全部显式INIT保持，Logic89483/FF40090/CLS55562/DSP157.5。4001负载观测实际恢复LW，357地图控制实际LOCAL；同时sensor恢复PRIMARY、若干导航控制和全局区域也被工具重排。实际请求生效仍未布通，只能否定‘恢复这一项就足够’的假设，不能编造逐网失败身份、唯一根因或所有流水无效。26物理连接保持，无TR，setup/hold/5000报告及实际约束状态均未验证；53532/49232退出，不等或原样重跑。[38最终实际对照](evidence/g2_20261023/fusion_square2_global_PNR38_final_unrouted1292_20261026.json)。
+
+原独立接续在内存达标后于03:44:03.543414启动唯一SYN28工具16824（创建03:44:03.540434），03:50:19.818616完整结束0，后续新网表核对于03:51完成。对已布通SYN23实际LUT53059→53148（+89）、FF38183→38219（+36），ALU9618及全部DSP类别不变；314源/18宽/CPU64、128KiB INIT、所有RAM几何/INIT、两钟26跨域和69资产/31头/完整FW保持，实际108处RAM端口网名变化不是完整端口逻辑等价。[完整实际审阅](evidence/g2_20261023/action_preview_SYN28_actual_netlist_review_20261026.json)。
+
+新独立跨层审阅确认六个动作MULTALU27X18均启用OREG=CLK0=clk50_d、CE0恒1、RESET0恒0，其余A/B/D/P寄存BYPASS；输入组合锥精确落在六组原policy/core/action0..5真实FF，不经过晚一拍的policy/actions。源码384乘积位被DSP输出寄存吸收，额外独立product DFF为0，不能把源码位数当实际开销或称DSP消除；完整SYN仍增加36显式FF。真实50MHz和物理布通仍待。[实际乘积边界](evidence/g2_20261023/action_preview_SYN28_actual_product_mapping_20261026.json)。
+
+据此启动唯一`baseline_fusion_action_preview_pnr39`：03:59:37.376615、工具64632创建03:59:37.379797、父26396创建03:59:36.495146，NORMAL全20核；入场物理5326295040B/提交7576920064B，超过原2/4GiB。复用完整SYN28、CST/实际options/device同已布通PNR35，20/10ns与原26 hold-only+26个8/18ns max-delay由新实际26路径重生成且逐字同35；同一SDC仅加5000报告，无新全局请求、setup豁免或截止。当前布局Phase2，没有本轮实际RAM/时序；不是把38约束套37的重复实验，没有新综合或烧录。[39实际启动](evidence/g2_20261023/action_preview_PNR39_actual_start_20261026.json)。每30分钟继续，失败按真实结果调整，完整部署门槛不变。
