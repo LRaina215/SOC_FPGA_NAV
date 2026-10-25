@@ -1,0 +1,95 @@
+{
+  "recorded_at": "2026-10-25T19:14:15.923621+08:00",
+  "phase": "user_authorized_real_sfp_off_UART_candidate_preparing_no_active_joint_PNR",
+  "PNR21": {
+    "actual_unrouted": 465,
+    "actual_BSRAM": 324,
+    "capacity": 340,
+    "ended_at": "2026-10-25T18:50:34.658159+08:00",
+    "cancelled": false,
+    "setup": null,
+    "hold": null,
+    "timing_report_available": false,
+    "final_evidence": "oled_off_final_unrouted465_20261025.json",
+    "memory_pair_evidence": "oled_off_pnr21_physical_memories_20261025.json"
+  },
+  "offline_retry1": {
+    "started_at": "2026-10-25T18:51:23.651709+08:00",
+    "cancelled_at": "2026-10-25T18:54:24+08:00",
+    "cause": "host_physical_reserve_guard",
+    "VG_exists": false,
+    "design_compile_error_proved": false,
+    "raw_guard_evidence": "F:\\nav_integration_g2_20261023\\lane2_trim_parallel_SYN_cache2\\02_offline_debug_off\\readonly_retry18_status_20261025_1855.json"
+  },
+  "PNR23": {
+    "actual_PNR_started": false,
+    "startup_failure": "settings-only subprocess exceeded60s after options were saved",
+    "settings_recovery_plan": "F:\\nav_integration_g2_20261023\\lane2_pnr23_settings_resume_plan1\\resume_plan.json",
+    "recovery_passed_without_relaxation": true,
+    "withdrawal_before_actual_PNR": {
+      "at": "2026-10-25T19:09:47.519257+08:00",
+      "phase": "withdrawn_before_any_actual_PNR_by_latest_user_direction",
+      "reason": "prioritize real_sfp-off single-factor candidate; no active PNR interrupted",
+      "identity": {
+        "pid": 63880,
+        "created_epoch": 1792926399.8566809,
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\resume_pnr_settings_only.py",
+          "--resume-settings-only",
+          "--execute-plan",
+          "F:/nav_integration_g2_20261023/lane2_pnr23_settings_resume_plan1/resume_plan.json"
+        ]
+      },
+      "runtime_or_run_or_impl_absent": true,
+      "only_console_host_child": true,
+      "PNR_deadlines_changed": false,
+      "programmed": false
+    },
+    "original_timeout_preserved": true,
+    "actual_unrouted": null,
+    "timing": null
+  },
+  "new_user_authorization": {
+    "disable_real_SFP_for_next_single_factor_build": true,
+    "keep_navigation_control_UART": true,
+    "no_DDR": true,
+    "keep_4500_weights_125Hz": true,
+    "keep_main_map_CPU_point_capacity": true,
+    "UART_physical_answer": "existing P11-40 USB-TTL module; move only USB side from PC to RK",
+    "new_standalone_motion_UART_bypass_authorized": false
+  },
+  "hypothesis_audit": {
+    "RAM320_universal_threshold_proved": false,
+    "local_congestion_root_cause_identified": false,
+    "DDR_counterexample": {
+      "actual_RAM": 259,
+      "actual_unrouted": 904,
+      "logic": 95609,
+      "FF": 51777,
+      "timing_report_available": false,
+      "evidence": "ddr_maps_PNR18_unrouted904_and_calibration_20261025.json",
+      "meaning": "RAM reduction alone did not guarantee routability; architecture and constraints also changed, so no unique cause follows"
+    },
+    "main_clock_shared_by_control_NAV_CPU_and_interfaces": true,
+    "inference_only_25MHz_calculation_ms": 3.34136,
+    "core_inference_cycles": 83534,
+    "complete_25MHz_control_loop_verified": false,
+    "SDC_only_40ns_is_diagnostic_not_hardware_division": true
+  },
+  "serial_gate": {
+    "P11_current_G2_RX_tied_high": true,
+    "P11_for_telemetry_not_new_velocity_bypass": true,
+    "CH9102_NV_replies_require_full_TXB_shadow": true,
+    "trim_02_to05_shadow_removed_not_suitable_as_is": true,
+    "candidate_origin": "sfp_lane2_private_snapshot_syn11_retry1 / correct Lane2 PNR15",
+    "full_UART_business_and_link_loss_stop_verified": false,
+    "current_board_image_checked_this_turn": false
+  },
+  "PNR_total_seconds": 0,
+  "PNR_silent_seconds": 0,
+  "programmed": false,
+  "deployment_accepted": false
+}
