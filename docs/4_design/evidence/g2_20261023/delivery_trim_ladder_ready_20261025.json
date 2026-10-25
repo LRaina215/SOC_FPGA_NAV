@@ -1,0 +1,2009 @@
+{
+  "recorded_at": "2026-10-25T15:52:04.310375+08:00",
+  "latest_authorization": "User explicitly authorizes removing offline debug/display/optional features and simplifying navigation with documented performance sacrifices to achieve routing. Previous lossless-only restriction is superseded for these separate delivery candidates.",
+  "main_navigation_control_SFP_and_stop_protection_retained": true,
+  "original_4500_and_all_control_weights_125Hz_retained": true,
+  "arena_m": [
+    3,
+    5
+  ],
+  "unchanged_main_maps": {
+    "structure_words": 65536,
+    "structure_bits": 18,
+    "elevation_words": 16384,
+    "elevation_bits": 53,
+    "point_words": 4096,
+    "point_bits": 36,
+    "CPU_bytes": 131072
+  },
+  "profiles": [
+    {
+      "queue_entry": {
+        "id": "01_oled_off",
+        "kind": "frozen_netlist",
+        "prepared": "F:\\nav_integration_g2_20261023\\lane2_trim_oled_prepared1",
+        "PNR": "F:\\nav_integration_g2_20261023\\sfp_lane2_oled_off_pnr21",
+        "tradeoffs": [
+          "关闭OLED及其独立I2C显示；导航、控制、全遥测、SFP与停止保护保留。"
+        ],
+        "baseline": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+        "reviewer": "review_delivery_trim_joint",
+        "ready": true,
+        "pending_reason": null,
+        "pre_pnr_review": "F:\\nav_integration_g2_20261023\\lane2_trim_oled_prepared1\\pre_pnr_checks.json",
+        "actual_frozen_netlist_delta": {
+          "explicit_cells": -2654,
+          "FF": -633,
+          "LUT": -1935,
+          "source_BSRAM": -2
+        },
+        "predicted_physical_BSRAM": 324,
+        "physical_result_measured": false
+      },
+      "prepared_source_review": {
+        "passed": true,
+        "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "source_base": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "prepared": "F:\\nav_integration_g2_20261023\\lane2_trim_oled_prepared1",
+        "profile_id": "light_oled_off",
+        "kind": "frozen_netlist",
+        "created_at": "2026-10-25T15:38:57.087791+08:00",
+        "modified_rtl_inputs": [
+          "control4500_core.v"
+        ],
+        "unchanged_hardware_inputs": 67,
+        "unchanged_assets": 104,
+        "copied_headers": 31,
+        "exact_source_transform_rechecked": true,
+        "source_file_set_unchanged": true,
+        "original_4500_weights_125Hz_CPU128KiB_and_full_navigation_retained": true,
+        "control_telemetry_and_SFP_transports_retained": true,
+        "original_stop_guard_sources_unchanged": true,
+        "all_original_clock_constraints_retained": true,
+        "constraint_reference": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+        "cuts_stop_protection": false,
+        "removed_functions": [
+          "OLED display and its independent open-drain I2C traffic"
+        ],
+        "synthesis_started": false,
+        "PNR_started": false,
+        "programmed": false,
+        "deployment_accepted": false,
+        "permanent_diagnostic_lock": false,
+        "requires_complete_deployment_signoff": true,
+        "outside_explicit_cells": 113727,
+        "outside_cell_pins_identical": true,
+        "OLED_open_drain_release_proved": true,
+        "removed_primitive_counts": {
+          "LUT3": 512,
+          "LUT2": 362,
+          "LUT4": 1061,
+          "DFFRE": 614,
+          "MULTALU27X18": 2,
+          "MULT12X12": 2,
+          "ALU": 57,
+          "MUX2_LUT5": 6,
+          "INV": 7,
+          "DFFSE": 8,
+          "DFFCE": 11,
+          "SDPB": 2,
+          "MUX2_LUT6": 2,
+          "VCC": 5,
+          "GND": 5
+        },
+        "removed_explicit_primitives": 2656,
+        "expected_source_BSRAM": 314,
+        "expected_wide_leaves": 10,
+        "expected_predicted_physical_BSRAM": 324,
+        "modified_netlist_modules": [
+          "oled"
+        ],
+        "implementation_netlist_derived_without_resynthesis": true,
+        "original_IO_SDC_CSR_unchanged": true
+      },
+      "exact_tradeoff_profile": {
+        "schema_version": 1,
+        "profile_id": "light_oled_off",
+        "profile_name": "light_oled_off",
+        "kind": "frozen_netlist",
+        "origin": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "source_base": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "constraint_reference": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+        "allowed_changed_prefixes": [
+          "u_control/display/"
+        ],
+        "allowed_memory_change_prefixes": [
+          "u_control/display/"
+        ],
+        "modified_rtl_inputs": [
+          "control4500_core.v"
+        ],
+        "added_rtl_inputs": [],
+        "removed_rtl_inputs": [],
+        "allowed_changed_assets": [],
+        "tradeoffs": [
+          "OLED display and its independent open-drain I2C traffic"
+        ],
+        "cuts_stop_protection": false,
+        "full_navigation_control_SFP_retained": true,
+        "deployment_accepted": false,
+        "diagnostic_only": false,
+        "permanent_diagnostic_lock": false,
+        "max_runtime_minutes": 0,
+        "max_no_progress_minutes": 0,
+        "requires_complete_deployment_signoff": true,
+        "source_difference_proof": "prepared_source_review.json",
+        "proofs": [
+          {
+            "path": "prepared_source_review.json",
+            "required_true_fields": [
+              "passed",
+              "exact_source_transform_rechecked"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "control4500_core.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\lane2_trim_oled_prepared1\\control4500_core.v"
+              }
+            ]
+          }
+        ],
+        "expected_source_BSRAM": 314,
+        "expected_wide_leaves": 10,
+        "expected_predicted_physical_BSRAM": 324
+      },
+      "independent_review_path": "F:\\nav_integration_g2_20261023\\lane2_trim_oled_prepared1\\pre_pnr_checks.json",
+      "independent_review_passed": true,
+      "full_joint_netlist_review_completed": true,
+      "full_joint_implementation_started": false
+    },
+    {
+      "queue_entry": {
+        "id": "02_offline_debug_off",
+        "kind": "rtl_source",
+        "prepared": "F:\\nav_integration_g2_20261023\\lane2_trim_offline_prepared1",
+        "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_offline_trim_syn18",
+        "PNR": "F:\\nav_integration_g2_20261023\\sfp_lane2_offline_trim_pnr22",
+        "tradeoffs": [
+          "OLED display and its independent open-drain I2C traffic",
+          "Offline host mailbox TX mirror readback; reads return zero, live TX and all RX retained"
+        ],
+        "baseline": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+        "reviewer": "review_delivery_trim_joint",
+        "ready": true,
+        "pending_reason": null,
+        "preparation_evidence": "F:\\nav_integration_g2_20261023\\lane2_trim_offline_prepared1\\prepared_source_review.json",
+        "targeted_source_bound_proofs": [
+          {
+            "path": "F:\\nav_integration_g2_20261023\\lane2_trim_offline_prepared1\\prepared_source_review.json",
+            "required_true_fields": [
+              "passed",
+              "exact_source_transform_rechecked"
+            ],
+            "exact_source_bindings": [
+              {
+                "candidate": "control4500_core.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\lane2_trim_offline_prepared1\\control4500_core.v"
+              },
+              {
+                "candidate": "nav/rtl/net/host_mbx.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\lane2_trim_offline_prepared1\\nav\\rtl\\net\\host_mbx.v"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\result.json",
+            "required_true_fields": [
+              "passed",
+              "live_mailbox_interface_passed"
+            ],
+            "exact_source_bindings": [
+              {
+                "candidate": "nav/rtl/net/host_mbx.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\host_mbx_trim.v"
+              }
+            ]
+          }
+        ],
+        "full_joint_netlist_review": "required after new SYN; not yet measured",
+        "physical_result_measured": false
+      },
+      "prepared_source_review": {
+        "passed": true,
+        "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "source_base": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "prepared": "F:\\nav_integration_g2_20261023\\lane2_trim_offline_prepared1",
+        "profile_id": "light_oled_and_tx_readback_off",
+        "kind": "rtl_source",
+        "created_at": "2026-10-25T15:41:33.126950+08:00",
+        "modified_rtl_inputs": [
+          "control4500_core.v",
+          "nav/rtl/net/host_mbx.v"
+        ],
+        "unchanged_hardware_inputs": 66,
+        "unchanged_assets": 104,
+        "copied_headers": 31,
+        "exact_source_transform_rechecked": true,
+        "source_file_set_unchanged": true,
+        "original_4500_weights_125Hz_CPU128KiB_and_full_navigation_retained": true,
+        "control_telemetry_and_SFP_transports_retained": true,
+        "original_stop_guard_sources_unchanged": true,
+        "all_original_clock_constraints_retained": true,
+        "constraint_reference": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+        "cuts_stop_protection": false,
+        "removed_functions": [
+          "OLED display and its independent open-drain I2C traffic",
+          "Offline host mailbox TX mirror readback; reads return zero, live TX and all RX retained"
+        ],
+        "synthesis_started": false,
+        "PNR_started": false,
+        "programmed": false,
+        "deployment_accepted": false,
+        "permanent_diagnostic_lock": false,
+        "requires_complete_deployment_signoff": true,
+        "interface_proof": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\result.json",
+        "original_IO_SDC_CSR_unchanged": true
+      },
+      "exact_tradeoff_profile": {
+        "schema_version": 1,
+        "profile_id": "light_oled_and_tx_readback_off",
+        "profile_name": "light_oled_and_tx_readback_off",
+        "kind": "rtl_source",
+        "origin": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "source_base": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "constraint_reference": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+        "allowed_changed_prefixes": [
+          "u_control/display/",
+          "u_nav/u_mbx/u_txs/"
+        ],
+        "allowed_memory_change_prefixes": [
+          "u_control/display/",
+          "u_nav/u_mbx/u_txs/"
+        ],
+        "modified_rtl_inputs": [
+          "control4500_core.v",
+          "nav/rtl/net/host_mbx.v"
+        ],
+        "added_rtl_inputs": [],
+        "removed_rtl_inputs": [],
+        "allowed_changed_assets": [],
+        "tradeoffs": [
+          "OLED display and its independent open-drain I2C traffic",
+          "Offline host mailbox TX mirror readback; reads return zero, live TX and all RX retained"
+        ],
+        "cuts_stop_protection": false,
+        "full_navigation_control_SFP_retained": true,
+        "deployment_accepted": false,
+        "diagnostic_only": false,
+        "permanent_diagnostic_lock": false,
+        "max_runtime_minutes": 0,
+        "max_no_progress_minutes": 0,
+        "requires_complete_deployment_signoff": true,
+        "source_difference_proof": "prepared_source_review.json",
+        "proofs": [
+          {
+            "path": "prepared_source_review.json",
+            "required_true_fields": [
+              "passed",
+              "exact_source_transform_rechecked"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "control4500_core.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\lane2_trim_offline_prepared1\\control4500_core.v"
+              },
+              {
+                "candidate": "nav/rtl/net/host_mbx.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\lane2_trim_offline_prepared1\\nav\\rtl\\net\\host_mbx.v"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\result.json",
+            "required_true_fields": [
+              "passed",
+              "live_mailbox_interface_passed"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "nav/rtl/net/host_mbx.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\host_mbx_trim.v"
+              }
+            ]
+          }
+        ]
+      },
+      "independent_review_path": "F:\\nav_integration_g2_20261023\\lane2_trim_offline_prepared1\\prepared_contract_review.json",
+      "independent_review_passed": true,
+      "full_joint_netlist_review_completed": false,
+      "full_joint_implementation_started": false
+    },
+    {
+      "queue_entry": {
+        "id": "03_console_storage_off",
+        "kind": "rtl_source",
+        "ready": true,
+        "prepared": "F:\\nav_integration_g2_20261023\\lane2_trim_console_prepared1",
+        "baseline": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+        "reviewer": "review_delivery_trim_joint",
+        "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_console_trim_syn19",
+        "PNR": "F:\\nav_integration_g2_20261023\\sfp_lane2_console_trim_pnr23",
+        "tradeoffs": [
+          "OLED display and its independent open-drain I2C traffic",
+          "Offline host mailbox TX mirror readback; reads return zero, live TX and all RX retained",
+          "Diagnostic console character storage/readback; CPU writes ACK and counter retained, debug download/HOLD retained"
+        ],
+        "pending_reason": null,
+        "preparation_evidence": "F:\\nav_integration_g2_20261023\\lane2_trim_console_prepared1\\prepared_source_review.json",
+        "targeted_source_bound_proofs": [
+          {
+            "path": "F:\\nav_integration_g2_20261023\\lane2_trim_console_prepared1\\prepared_source_review.json",
+            "required_true_fields": [
+              "passed",
+              "exact_source_transform_rechecked"
+            ],
+            "exact_source_bindings": [
+              {
+                "candidate": "control4500_core.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\lane2_trim_console_prepared1\\control4500_core.v"
+              },
+              {
+                "candidate": "nav/rtl/net/host_mbx.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\lane2_trim_console_prepared1\\nav\\rtl\\net\\host_mbx.v"
+              },
+              {
+                "candidate": "nav/rtl/soc/nav_soc.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\lane2_trim_console_prepared1\\nav\\rtl\\soc\\nav_soc.v"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\result.json",
+            "required_true_fields": [
+              "passed",
+              "live_mailbox_interface_passed"
+            ],
+            "exact_source_bindings": [
+              {
+                "candidate": "nav/rtl/net/host_mbx.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\host_mbx_trim.v"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\delivery_trim_console_probe2\\result.json",
+            "required_true_fields": [
+              "passed",
+              "console_storage_contract_passed",
+              "CPU128KiB_hold_download_and_nav_protocol_passed"
+            ],
+            "exact_source_bindings": [
+              {
+                "candidate": "nav/rtl/soc/nav_soc.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_console_probe2\\nav_soc_trim.v"
+              }
+            ]
+          }
+        ],
+        "full_joint_netlist_review": "required after new SYN; not yet measured",
+        "physical_result_measured": false
+      },
+      "prepared_source_review": {
+        "passed": true,
+        "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "source_base": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "prepared": "F:\\nav_integration_g2_20261023\\lane2_trim_console_prepared1",
+        "profile_id": "light_oled_tx_readback_and_log_storage_off",
+        "kind": "rtl_source",
+        "created_at": "2026-10-25T15:45:48.119016+08:00",
+        "modified_rtl_inputs": [
+          "control4500_core.v",
+          "nav/rtl/net/host_mbx.v",
+          "nav/rtl/soc/nav_soc.v"
+        ],
+        "unchanged_hardware_inputs": 65,
+        "unchanged_assets": 104,
+        "copied_headers": 31,
+        "exact_source_transform_rechecked": true,
+        "source_file_set_unchanged": true,
+        "original_4500_weights_125Hz_CPU128KiB_and_full_navigation_retained": true,
+        "control_telemetry_and_SFP_transports_retained": true,
+        "original_stop_guard_sources_unchanged": true,
+        "all_original_clock_constraints_retained": true,
+        "constraint_reference": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+        "cuts_stop_protection": false,
+        "removed_functions": [
+          "OLED display and its independent open-drain I2C traffic",
+          "Offline host mailbox TX mirror readback; reads return zero, live TX and all RX retained",
+          "Diagnostic console character storage/readback; CPU writes ACK and counter retained, debug download/HOLD retained"
+        ],
+        "synthesis_started": false,
+        "PNR_started": false,
+        "programmed": false,
+        "deployment_accepted": false,
+        "permanent_diagnostic_lock": false,
+        "requires_complete_deployment_signoff": true,
+        "interface_proof": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\result.json",
+        "console_interface_proof": "F:\\nav_integration_g2_20261023\\delivery_trim_console_probe2\\result.json",
+        "complete_CPU_program_not_executed_in_console_proof": true,
+        "original_IO_SDC_CSR_unchanged": true
+      },
+      "exact_tradeoff_profile": {
+        "schema_version": 1,
+        "profile_id": "light_oled_tx_readback_and_log_storage_off",
+        "profile_name": "light_oled_tx_readback_and_log_storage_off",
+        "kind": "rtl_source",
+        "origin": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "source_base": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "constraint_reference": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+        "allowed_changed_prefixes": [
+          "u_control/display/",
+          "u_nav/u_mbx/u_txs/",
+          "u_soc/g_con[0].u_con/",
+          "u_soc/g_con[1].u_con/",
+          "u_soc/g_con[2].u_con/",
+          "u_soc/g_con[3].u_con/"
+        ],
+        "allowed_memory_change_prefixes": [
+          "u_control/display/",
+          "u_nav/u_mbx/u_txs/",
+          "u_soc/g_con[0].u_con/",
+          "u_soc/g_con[1].u_con/",
+          "u_soc/g_con[2].u_con/",
+          "u_soc/g_con[3].u_con/"
+        ],
+        "modified_rtl_inputs": [
+          "control4500_core.v",
+          "nav/rtl/net/host_mbx.v",
+          "nav/rtl/soc/nav_soc.v"
+        ],
+        "added_rtl_inputs": [],
+        "removed_rtl_inputs": [],
+        "allowed_changed_assets": [],
+        "tradeoffs": [
+          "OLED display and its independent open-drain I2C traffic",
+          "Offline host mailbox TX mirror readback; reads return zero, live TX and all RX retained",
+          "Diagnostic console character storage/readback; CPU writes ACK and counter retained, debug download/HOLD retained"
+        ],
+        "cuts_stop_protection": false,
+        "full_navigation_control_SFP_retained": true,
+        "deployment_accepted": false,
+        "diagnostic_only": false,
+        "permanent_diagnostic_lock": false,
+        "max_runtime_minutes": 0,
+        "max_no_progress_minutes": 0,
+        "requires_complete_deployment_signoff": true,
+        "source_difference_proof": "prepared_source_review.json",
+        "proofs": [
+          {
+            "path": "prepared_source_review.json",
+            "required_true_fields": [
+              "passed",
+              "exact_source_transform_rechecked"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "control4500_core.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\lane2_trim_console_prepared1\\control4500_core.v"
+              },
+              {
+                "candidate": "nav/rtl/net/host_mbx.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\lane2_trim_console_prepared1\\nav\\rtl\\net\\host_mbx.v"
+              },
+              {
+                "candidate": "nav/rtl/soc/nav_soc.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\lane2_trim_console_prepared1\\nav\\rtl\\soc\\nav_soc.v"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\result.json",
+            "required_true_fields": [
+              "passed",
+              "live_mailbox_interface_passed"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "nav/rtl/net/host_mbx.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\host_mbx_trim.v"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\delivery_trim_console_probe2\\result.json",
+            "required_true_fields": [
+              "passed",
+              "console_storage_contract_passed",
+              "CPU128KiB_hold_download_and_nav_protocol_passed"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "nav/rtl/soc/nav_soc.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_console_probe2\\nav_soc_trim.v"
+              }
+            ]
+          }
+        ]
+      },
+      "independent_review_path": "F:\\nav_integration_g2_20261023\\lane2_trim_console_prepared1\\prepared_contract_review.json",
+      "independent_review_passed": true,
+      "full_joint_netlist_review_completed": false,
+      "full_joint_implementation_started": false
+    },
+    {
+      "queue_entry": {
+        "id": "04_navigation_medium",
+        "kind": "rtl_source",
+        "prepared": "F:\\nav_integration_g2_20261023\\lane2_nav_medium_prepared1",
+        "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_nav_medium_syn20",
+        "PNR": "F:\\nav_integration_g2_20261023\\sfp_lane2_nav_medium_pnr24",
+        "tradeoffs": [
+          {
+            "feature": "OLED",
+            "before": "display enabled",
+            "after": "pins released; display unavailable"
+          },
+          {
+            "feature": "offline TX shadow",
+            "before": "sent payload readback",
+            "after": "readback zero; live TX/RX and telemetry retained"
+          },
+          {
+            "feature": "offline console log storage",
+            "before": "four byte-bank diagnostic log RAMs and E000-EFFF log readback",
+            "after": "log writes ACK and counter retained; log readback zero; CPU HOLD/download and UART/navigation protocol retained"
+          },
+          {
+            "feature": "matching batch",
+            "before": 256,
+            "after": 128,
+            "tracking_before": 245,
+            "tracking_after": 125,
+            "tracking_halfwidth_mm": 76,
+            "tracking_halfwidth_angle_units": 256,
+            "coarse_step_mm": 100,
+            "coarse_step_angle": 182,
+            "global_range_limit_mm": 32000,
+            "risk": "coarser localization grid may reject or mislocalize scenes; physical positioning performance unverified"
+          },
+          {
+            "feature": "trajectory candidates",
+            "before": 64,
+            "after": 32,
+            "default_generated_before": 46,
+            "default_generated_after": 25,
+            "holonomic_generated_after": 29,
+            "steps": 20,
+            "dt_ms": 100,
+            "safe_steps": 12,
+            "risk": "fewer high-speed curve choices; strong tier keeps straight high-speed and slow arcs, may detour or stop more often"
+          }
+        ],
+        "baseline": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+        "reviewer": "review_delivery_trim_joint",
+        "ready": true,
+        "pending_reason": null,
+        "preparation_evidence": "F:\\nav_integration_g2_20261023\\lane2_nav_medium_prepared1\\prepared_source_review.json",
+        "targeted_source_bound_proofs": [
+          {
+            "path": "F:\\nav_integration_g2_20261023\\nav_density_medium_probe1\\result.json",
+            "required_true_fields": [
+              "passed",
+              "selected_matcher_candidate_arithmetic_passed",
+              "trajectory_cap_and_exact_arithmetic_passed",
+              "invalid_result_address_returns_zero"
+            ],
+            "exact_source_bindings": [
+              {
+                "candidate": "nav/rtl/match/slf_match.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_density_medium_probe1\\matcher\\slf_match.v"
+              },
+              {
+                "candidate": "nav/rtl/plan/traj_eval.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_density_medium_probe1\\trajectory\\traj_eval.v"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\result.json",
+            "required_true_fields": [
+              "passed",
+              "live_mailbox_interface_passed",
+              "OLED_release_source_contract_passed"
+            ],
+            "exact_source_bindings": [
+              {
+                "candidate": "control4500_core.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\control4500_core_trim.v"
+              },
+              {
+                "candidate": "nav/rtl/net/host_mbx.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\host_mbx_trim.v"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\result.json",
+            "required_true_fields": [
+              "passed",
+              "global_initialization_radius_and_relocation_radius_retained",
+              "generated_inverse_indices_match_literal_candidate_feeds",
+              "all_batches_within_actual_hardware_capacity",
+              "slow_forward_turn_and_reverse_categories_retained",
+              "failed_HAL_returns_zero_command"
+            ],
+            "exact_source_bindings": [
+              {
+                "candidate": "fw/nav/local_planner.h",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\fw\\nav\\local_planner.h"
+              },
+              {
+                "candidate": "fw/nav/local_planner.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\fw\\nav\\local_planner.c"
+              },
+              {
+                "candidate": "fw/nav/pose_match.h",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\fw\\nav\\pose_match.h"
+              },
+              {
+                "candidate": "fw/nav/pose_match.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\fw\\nav\\pose_match.c"
+              },
+              {
+                "candidate": "fw/nav/loc.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\fw\\nav\\loc.c"
+              },
+              {
+                "candidate": "fw/drv/hal_fpga.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\fw\\drv\\hal_fpga.c"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\delivery_trim_console_probe2\\result.json",
+            "required_true_fields": [
+              "passed",
+              "console_storage_contract_passed",
+              "CPU128KiB_hold_download_and_nav_protocol_passed"
+            ],
+            "exact_source_bindings": [
+              {
+                "candidate": "nav/rtl/soc/nav_soc.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_console_probe2\\nav_soc_trim.v"
+              }
+            ]
+          }
+        ],
+        "full_joint_netlist_review": "required after new SYN; not yet measured",
+        "physical_result_measured": false,
+        "source_contract_review": "F:\\nav_integration_g2_20261023\\lane2_nav_medium_prepared1\\prepared_contract_review.json"
+      },
+      "prepared_source_review": {
+        "passed": true,
+        "phase": "prepared_targeted_proofs_passed_waiting_for_serial_joint_queue",
+        "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "prepared": "F:\\nav_integration_g2_20261023\\lane2_nav_medium_prepared1",
+        "modified_rtl_inputs": [
+          "control4500_core.v",
+          "nav/rtl/match/slf_match.v",
+          "nav/rtl/net/host_mbx.v",
+          "nav/rtl/plan/traj_eval.v",
+          "nav/rtl/soc/nav_soc.v"
+        ],
+        "unchanged_hardware_inputs": 63,
+        "assets_total": 104,
+        "unchanged_assets": 93,
+        "firmware_modified_inputs": [
+          "fw/nav/local_planner.h",
+          "fw/nav/local_planner.c",
+          "fw/nav/pose_match.h",
+          "fw/nav/pose_match.c",
+          "fw/nav/loc.c",
+          "fw/drv/hal_fpga.c"
+        ],
+        "SYN_started": false,
+        "PNR_started": false,
+        "programmed": false,
+        "changed_assets": [
+          "firmware/nav_fw.bin",
+          "firmware/ram_b0.hex",
+          "firmware/ram_b1.hex",
+          "firmware/ram_b2.hex",
+          "firmware/ram_b3.hex",
+          "firmware/ram_w.hex",
+          "ram_b0.hex",
+          "ram_b1.hex",
+          "ram_b2.hex",
+          "ram_b3.hex",
+          "ram_w.hex"
+        ],
+        "unchanged_assets104": false,
+        "original_asset_paths104_retained": true,
+        "firmware_build": {
+          "source": "F:\\nav_integration_g2_20261023\\lane2_nav_medium_prepared1\\fw",
+          "command": [
+            "D:/Anaconda/python.exe",
+            "-X",
+            "utf8",
+            "F:\\nav_integration_g2_20261023\\lane2_nav_medium_prepared1\\fw\\bsp\\build_rv.py",
+            "--ram-kb",
+            "128",
+            "--output-dir",
+            "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1",
+            "--copy-to",
+            "F:\\nav_integration_g2_20261023\\lane2_nav_medium_prepared1"
+          ],
+          "compiler": "D:/tools/xpack-riscv-none-elf-gcc-15.2.0-1/bin/riscv-none-elf-gcc.exe",
+          "compiled_elf": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\nav_fw.elf",
+          "image_bytes": 51708,
+          "stack_analysis": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\stack_analysis.json",
+          "static_stack_bound_bytes": 2528,
+          "RAM_bytes": 131072,
+          "stack_reserve_bytes": 6144,
+          "source_modified_inputs": [
+            "fw/drv/hal_fpga.c",
+            "fw/nav/loc.c",
+            "fw/nav/local_planner.c",
+            "fw/nav/local_planner.h",
+            "fw/nav/pose_match.c",
+            "fw/nav/pose_match.h"
+          ],
+          "output_bindings": [
+            {
+              "candidate": "firmware/nav_fw.bin",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\nav_fw.bin"
+            },
+            {
+              "candidate": "firmware/ram_b0.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_b0.hex"
+            },
+            {
+              "candidate": "firmware/ram_b1.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_b1.hex"
+            },
+            {
+              "candidate": "firmware/ram_b2.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_b2.hex"
+            },
+            {
+              "candidate": "firmware/ram_b3.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_b3.hex"
+            },
+            {
+              "candidate": "firmware/ram_w.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_w.hex"
+            },
+            {
+              "candidate": "ram_b0.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_b0.hex"
+            },
+            {
+              "candidate": "ram_b1.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_b1.hex"
+            },
+            {
+              "candidate": "ram_b2.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_b2.hex"
+            },
+            {
+              "candidate": "ram_b3.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_b3.hex"
+            },
+            {
+              "candidate": "ram_w.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_w.hex"
+            }
+          ]
+        },
+        "proofs": [
+          {
+            "path": "F:\\nav_integration_g2_20261023\\nav_density_medium_probe1\\result.json",
+            "required_true_fields": [
+              "passed",
+              "selected_matcher_candidate_arithmetic_passed",
+              "trajectory_cap_and_exact_arithmetic_passed",
+              "invalid_result_address_returns_zero"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "nav/rtl/match/slf_match.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_density_medium_probe1\\matcher\\slf_match.v"
+              },
+              {
+                "candidate": "nav/rtl/plan/traj_eval.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_density_medium_probe1\\trajectory\\traj_eval.v"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\result.json",
+            "required_true_fields": [
+              "passed",
+              "live_mailbox_interface_passed",
+              "OLED_release_source_contract_passed"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "control4500_core.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\control4500_core_trim.v"
+              },
+              {
+                "candidate": "nav/rtl/net/host_mbx.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\host_mbx_trim.v"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\result.json",
+            "required_true_fields": [
+              "passed",
+              "global_initialization_radius_and_relocation_radius_retained",
+              "generated_inverse_indices_match_literal_candidate_feeds",
+              "all_batches_within_actual_hardware_capacity",
+              "slow_forward_turn_and_reverse_categories_retained",
+              "failed_HAL_returns_zero_command"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "fw/nav/local_planner.h",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\fw\\nav\\local_planner.h"
+              },
+              {
+                "candidate": "fw/nav/local_planner.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\fw\\nav\\local_planner.c"
+              },
+              {
+                "candidate": "fw/nav/pose_match.h",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\fw\\nav\\pose_match.h"
+              },
+              {
+                "candidate": "fw/nav/pose_match.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\fw\\nav\\pose_match.c"
+              },
+              {
+                "candidate": "fw/nav/loc.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\fw\\nav\\loc.c"
+              },
+              {
+                "candidate": "fw/drv/hal_fpga.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\fw\\drv\\hal_fpga.c"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\delivery_trim_console_probe2\\result.json",
+            "required_true_fields": [
+              "passed",
+              "console_storage_contract_passed",
+              "CPU128KiB_hold_download_and_nav_protocol_passed"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "nav/rtl/soc/nav_soc.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_console_probe2\\nav_soc_trim.v"
+              }
+            ]
+          }
+        ],
+        "source_and_proof_byte_bindings_passed": true,
+        "original_4500_all_weights_125Hz_safety_full_telemetry_retained": true,
+        "hardware_resources_or_timing_claimed": false,
+        "navigation_tradeoff_quality_not_yet_accepted": true,
+        "console_log_storage_removed": true,
+        "console_CPU_ACK_counter_HOLD_download_retained": true
+      },
+      "exact_tradeoff_profile": {
+        "schema_version": 1,
+        "profile_id": "nav_medium",
+        "kind": "rtl",
+        "origin": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "constraint_source": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+        "modified_rtl_inputs": [
+          "control4500_core.v",
+          "nav/rtl/match/slf_match.v",
+          "nav/rtl/net/host_mbx.v",
+          "nav/rtl/plan/traj_eval.v",
+          "nav/rtl/soc/nav_soc.v"
+        ],
+        "added_rtl_inputs": [],
+        "removed_rtl_inputs": [],
+        "allowed_changed_prefixes": [
+          "u_nav/u_match/",
+          "u_nav/u_tr/",
+          "u_control/display/",
+          "u_nav/u_mbx/u_txs/",
+          "u_soc/g_con[0].u_con/",
+          "u_soc/g_con[1].u_con/",
+          "u_soc/g_con[2].u_con/",
+          "u_soc/g_con[3].u_con/"
+        ],
+        "allowed_firmware_init_prefixes": [
+          "u_soc/"
+        ],
+        "allowed_memory_change_prefixes": [
+          "u_nav/u_match/u_cand/",
+          "u_nav/u_match/u_res/",
+          "u_nav/u_tr/u_cand/",
+          "u_nav/u_tr/u_res/",
+          "u_nav/u_mbx/u_txs/",
+          "u_control/display/",
+          "u_soc/g_con[0].u_con/",
+          "u_soc/g_con[1].u_con/",
+          "u_soc/g_con[2].u_con/",
+          "u_soc/g_con[3].u_con/"
+        ],
+        "firmware_modified_inputs": [
+          "fw/nav/local_planner.h",
+          "fw/nav/local_planner.c",
+          "fw/nav/pose_match.h",
+          "fw/nav/pose_match.c",
+          "fw/nav/loc.c",
+          "fw/drv/hal_fpga.c"
+        ],
+        "allowed_changed_assets": [
+          "firmware/nav_fw.bin",
+          "firmware/ram_b0.hex",
+          "firmware/ram_b1.hex",
+          "firmware/ram_b2.hex",
+          "firmware/ram_b3.hex",
+          "firmware/ram_w.hex",
+          "ram_b0.hex",
+          "ram_b1.hex",
+          "ram_b2.hex",
+          "ram_b3.hex",
+          "ram_w.hex"
+        ],
+        "firmware_provenance": {
+          "source": "F:\\nav_integration_g2_20261023\\lane2_nav_medium_prepared1\\fw",
+          "command": [
+            "D:/Anaconda/python.exe",
+            "-X",
+            "utf8",
+            "F:\\nav_integration_g2_20261023\\lane2_nav_medium_prepared1\\fw\\bsp\\build_rv.py",
+            "--ram-kb",
+            "128",
+            "--output-dir",
+            "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1",
+            "--copy-to",
+            "F:\\nav_integration_g2_20261023\\lane2_nav_medium_prepared1"
+          ],
+          "compiler": "D:/tools/xpack-riscv-none-elf-gcc-15.2.0-1/bin/riscv-none-elf-gcc.exe",
+          "compiled_elf": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\nav_fw.elf",
+          "image_bytes": 51708,
+          "stack_analysis": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\stack_analysis.json",
+          "static_stack_bound_bytes": 2528,
+          "RAM_bytes": 131072,
+          "stack_reserve_bytes": 6144,
+          "source_modified_inputs": [
+            "fw/drv/hal_fpga.c",
+            "fw/nav/loc.c",
+            "fw/nav/local_planner.c",
+            "fw/nav/local_planner.h",
+            "fw/nav/pose_match.c",
+            "fw/nav/pose_match.h"
+          ],
+          "output_bindings": [
+            {
+              "candidate": "firmware/nav_fw.bin",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\nav_fw.bin"
+            },
+            {
+              "candidate": "firmware/ram_b0.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_b0.hex"
+            },
+            {
+              "candidate": "firmware/ram_b1.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_b1.hex"
+            },
+            {
+              "candidate": "firmware/ram_b2.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_b2.hex"
+            },
+            {
+              "candidate": "firmware/ram_b3.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_b3.hex"
+            },
+            {
+              "candidate": "firmware/ram_w.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_w.hex"
+            },
+            {
+              "candidate": "ram_b0.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_b0.hex"
+            },
+            {
+              "candidate": "ram_b1.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_b1.hex"
+            },
+            {
+              "candidate": "ram_b2.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_b2.hex"
+            },
+            {
+              "candidate": "ram_b3.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_b3.hex"
+            },
+            {
+              "candidate": "ram_w.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_medium_firmware1\\ram_w.hex"
+            }
+          ]
+        },
+        "proofs": [
+          {
+            "path": "F:\\nav_integration_g2_20261023\\nav_density_medium_probe1\\result.json",
+            "required_true_fields": [
+              "passed",
+              "selected_matcher_candidate_arithmetic_passed",
+              "trajectory_cap_and_exact_arithmetic_passed",
+              "invalid_result_address_returns_zero"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "nav/rtl/match/slf_match.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_density_medium_probe1\\matcher\\slf_match.v"
+              },
+              {
+                "candidate": "nav/rtl/plan/traj_eval.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_density_medium_probe1\\trajectory\\traj_eval.v"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\result.json",
+            "required_true_fields": [
+              "passed",
+              "live_mailbox_interface_passed",
+              "OLED_release_source_contract_passed"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "control4500_core.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\control4500_core_trim.v"
+              },
+              {
+                "candidate": "nav/rtl/net/host_mbx.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\host_mbx_trim.v"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\result.json",
+            "required_true_fields": [
+              "passed",
+              "global_initialization_radius_and_relocation_radius_retained",
+              "generated_inverse_indices_match_literal_candidate_feeds",
+              "all_batches_within_actual_hardware_capacity",
+              "slow_forward_turn_and_reverse_categories_retained",
+              "failed_HAL_returns_zero_command"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "fw/nav/local_planner.h",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\fw\\nav\\local_planner.h"
+              },
+              {
+                "candidate": "fw/nav/local_planner.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\fw\\nav\\local_planner.c"
+              },
+              {
+                "candidate": "fw/nav/pose_match.h",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\fw\\nav\\pose_match.h"
+              },
+              {
+                "candidate": "fw/nav/pose_match.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\fw\\nav\\pose_match.c"
+              },
+              {
+                "candidate": "fw/nav/loc.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\fw\\nav\\loc.c"
+              },
+              {
+                "candidate": "fw/drv/hal_fpga.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_medium_firmware_boundary_probe2\\fw\\drv\\hal_fpga.c"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\delivery_trim_console_probe2\\result.json",
+            "required_true_fields": [
+              "passed",
+              "console_storage_contract_passed",
+              "CPU128KiB_hold_download_and_nav_protocol_passed"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "nav/rtl/soc/nav_soc.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_console_probe2\\nav_soc_trim.v"
+              }
+            ]
+          }
+        ],
+        "tradeoffs": [
+          {
+            "feature": "OLED",
+            "before": "display enabled",
+            "after": "pins released; display unavailable"
+          },
+          {
+            "feature": "offline TX shadow",
+            "before": "sent payload readback",
+            "after": "readback zero; live TX/RX and telemetry retained"
+          },
+          {
+            "feature": "offline console log storage",
+            "before": "four byte-bank diagnostic log RAMs and E000-EFFF log readback",
+            "after": "log writes ACK and counter retained; log readback zero; CPU HOLD/download and UART/navigation protocol retained"
+          },
+          {
+            "feature": "matching batch",
+            "before": 256,
+            "after": 128,
+            "tracking_before": 245,
+            "tracking_after": 125,
+            "tracking_halfwidth_mm": 76,
+            "tracking_halfwidth_angle_units": 256,
+            "coarse_step_mm": 100,
+            "coarse_step_angle": 182,
+            "global_range_limit_mm": 32000,
+            "risk": "coarser localization grid may reject or mislocalize scenes; physical positioning performance unverified"
+          },
+          {
+            "feature": "trajectory candidates",
+            "before": 64,
+            "after": 32,
+            "default_generated_before": 46,
+            "default_generated_after": 25,
+            "holonomic_generated_after": 29,
+            "steps": 20,
+            "dt_ms": 100,
+            "safe_steps": 12,
+            "risk": "fewer high-speed curve choices; strong tier keeps straight high-speed and slow arcs, may detour or stop more often"
+          }
+        ],
+        "preserved_contracts": [
+          "4500 and all original weights",
+          "125Hz control",
+          "complete SFP telemetry and stop priority",
+          "CPU128KiB",
+          "65536x18 structure map",
+          "16384x53 elevation map",
+          "4096x36 points",
+          "150mm goal threshold and original motion/support guards"
+        ]
+      },
+      "independent_review_path": "F:\\nav_integration_g2_20261023\\lane2_nav_medium_prepared1\\prepared_contract_review.json",
+      "independent_review_passed": true,
+      "full_joint_netlist_review_completed": false,
+      "full_joint_implementation_started": false
+    },
+    {
+      "queue_entry": {
+        "id": "05_navigation_strong",
+        "kind": "rtl_source",
+        "prepared": "F:\\nav_integration_g2_20261023\\lane2_nav_strong_prepared1",
+        "synthesis": "F:\\nav_integration_g2_20261023\\sfp_lane2_nav_strong_syn21",
+        "PNR": "F:\\nav_integration_g2_20261023\\sfp_lane2_nav_strong_pnr25",
+        "tradeoffs": [
+          {
+            "feature": "OLED",
+            "before": "display enabled",
+            "after": "pins released; display unavailable"
+          },
+          {
+            "feature": "offline TX shadow",
+            "before": "sent payload readback",
+            "after": "readback zero; live TX/RX and telemetry retained"
+          },
+          {
+            "feature": "offline console log storage",
+            "before": "four byte-bank diagnostic log RAMs and E000-EFFF log readback",
+            "after": "log writes ACK and counter retained; log readback zero; CPU HOLD/download and UART/navigation protocol retained"
+          },
+          {
+            "feature": "matching batch",
+            "before": 256,
+            "after": 64,
+            "tracking_before": 245,
+            "tracking_after": 27,
+            "tracking_halfwidth_mm": 75,
+            "tracking_halfwidth_angle_units": 256,
+            "coarse_step_mm": 125,
+            "coarse_step_angle": 364,
+            "global_range_limit_mm": 32000,
+            "risk": "coarser localization grid may reject or mislocalize scenes; physical positioning performance unverified"
+          },
+          {
+            "feature": "trajectory candidates",
+            "before": 64,
+            "after": 16,
+            "default_generated_before": 46,
+            "default_generated_after": 11,
+            "holonomic_generated_after": 15,
+            "steps": 20,
+            "dt_ms": 100,
+            "safe_steps": 12,
+            "risk": "fewer high-speed curve choices; strong tier keeps straight high-speed and slow arcs, may detour or stop more often"
+          }
+        ],
+        "baseline": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+        "reviewer": "review_delivery_trim_joint",
+        "ready": true,
+        "pending_reason": null,
+        "preparation_evidence": "F:\\nav_integration_g2_20261023\\lane2_nav_strong_prepared1\\prepared_source_review.json",
+        "targeted_source_bound_proofs": [
+          {
+            "path": "F:\\nav_integration_g2_20261023\\nav_density_strong_probe1\\result.json",
+            "required_true_fields": [
+              "passed",
+              "selected_matcher_candidate_arithmetic_passed",
+              "trajectory_cap_and_exact_arithmetic_passed",
+              "invalid_result_address_returns_zero"
+            ],
+            "exact_source_bindings": [
+              {
+                "candidate": "nav/rtl/match/slf_match.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_density_strong_probe1\\matcher\\slf_match.v"
+              },
+              {
+                "candidate": "nav/rtl/plan/traj_eval.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_density_strong_probe1\\trajectory\\traj_eval.v"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\result.json",
+            "required_true_fields": [
+              "passed",
+              "live_mailbox_interface_passed",
+              "OLED_release_source_contract_passed"
+            ],
+            "exact_source_bindings": [
+              {
+                "candidate": "control4500_core.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\control4500_core_trim.v"
+              },
+              {
+                "candidate": "nav/rtl/net/host_mbx.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\host_mbx_trim.v"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\result.json",
+            "required_true_fields": [
+              "passed",
+              "global_initialization_radius_and_relocation_radius_retained",
+              "generated_inverse_indices_match_literal_candidate_feeds",
+              "all_batches_within_actual_hardware_capacity",
+              "slow_forward_turn_and_reverse_categories_retained",
+              "failed_HAL_returns_zero_command"
+            ],
+            "exact_source_bindings": [
+              {
+                "candidate": "fw/nav/local_planner.h",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\fw\\nav\\local_planner.h"
+              },
+              {
+                "candidate": "fw/nav/local_planner.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\fw\\nav\\local_planner.c"
+              },
+              {
+                "candidate": "fw/nav/pose_match.h",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\fw\\nav\\pose_match.h"
+              },
+              {
+                "candidate": "fw/nav/pose_match.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\fw\\nav\\pose_match.c"
+              },
+              {
+                "candidate": "fw/nav/loc.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\fw\\nav\\loc.c"
+              },
+              {
+                "candidate": "fw/drv/hal_fpga.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\fw\\drv\\hal_fpga.c"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\delivery_trim_console_probe2\\result.json",
+            "required_true_fields": [
+              "passed",
+              "console_storage_contract_passed",
+              "CPU128KiB_hold_download_and_nav_protocol_passed"
+            ],
+            "exact_source_bindings": [
+              {
+                "candidate": "nav/rtl/soc/nav_soc.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_console_probe2\\nav_soc_trim.v"
+              }
+            ]
+          }
+        ],
+        "full_joint_netlist_review": "required after new SYN; not yet measured",
+        "physical_result_measured": false,
+        "source_contract_review": "F:\\nav_integration_g2_20261023\\lane2_nav_strong_prepared1\\prepared_contract_review.json"
+      },
+      "prepared_source_review": {
+        "passed": true,
+        "phase": "prepared_targeted_proofs_passed_waiting_for_serial_joint_queue",
+        "source": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "prepared": "F:\\nav_integration_g2_20261023\\lane2_nav_strong_prepared1",
+        "modified_rtl_inputs": [
+          "control4500_core.v",
+          "nav/rtl/match/slf_match.v",
+          "nav/rtl/net/host_mbx.v",
+          "nav/rtl/plan/traj_eval.v",
+          "nav/rtl/soc/nav_soc.v"
+        ],
+        "unchanged_hardware_inputs": 63,
+        "assets_total": 104,
+        "unchanged_assets": 93,
+        "firmware_modified_inputs": [
+          "fw/nav/local_planner.h",
+          "fw/nav/local_planner.c",
+          "fw/nav/pose_match.h",
+          "fw/nav/pose_match.c",
+          "fw/nav/loc.c",
+          "fw/drv/hal_fpga.c"
+        ],
+        "SYN_started": false,
+        "PNR_started": false,
+        "programmed": false,
+        "changed_assets": [
+          "firmware/nav_fw.bin",
+          "firmware/ram_b0.hex",
+          "firmware/ram_b1.hex",
+          "firmware/ram_b2.hex",
+          "firmware/ram_b3.hex",
+          "firmware/ram_w.hex",
+          "ram_b0.hex",
+          "ram_b1.hex",
+          "ram_b2.hex",
+          "ram_b3.hex",
+          "ram_w.hex"
+        ],
+        "unchanged_assets104": false,
+        "original_asset_paths104_retained": true,
+        "firmware_build": {
+          "source": "F:\\nav_integration_g2_20261023\\lane2_nav_strong_prepared1\\fw",
+          "command": [
+            "D:/Anaconda/python.exe",
+            "-X",
+            "utf8",
+            "F:\\nav_integration_g2_20261023\\lane2_nav_strong_prepared1\\fw\\bsp\\build_rv.py",
+            "--ram-kb",
+            "128",
+            "--output-dir",
+            "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1",
+            "--copy-to",
+            "F:\\nav_integration_g2_20261023\\lane2_nav_strong_prepared1"
+          ],
+          "compiler": "D:/tools/xpack-riscv-none-elf-gcc-15.2.0-1/bin/riscv-none-elf-gcc.exe",
+          "compiled_elf": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\nav_fw.elf",
+          "image_bytes": 51600,
+          "stack_analysis": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\stack_analysis.json",
+          "static_stack_bound_bytes": 2432,
+          "RAM_bytes": 131072,
+          "stack_reserve_bytes": 6144,
+          "source_modified_inputs": [
+            "fw/drv/hal_fpga.c",
+            "fw/nav/loc.c",
+            "fw/nav/local_planner.c",
+            "fw/nav/local_planner.h",
+            "fw/nav/pose_match.c",
+            "fw/nav/pose_match.h"
+          ],
+          "output_bindings": [
+            {
+              "candidate": "firmware/nav_fw.bin",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\nav_fw.bin"
+            },
+            {
+              "candidate": "firmware/ram_b0.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_b0.hex"
+            },
+            {
+              "candidate": "firmware/ram_b1.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_b1.hex"
+            },
+            {
+              "candidate": "firmware/ram_b2.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_b2.hex"
+            },
+            {
+              "candidate": "firmware/ram_b3.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_b3.hex"
+            },
+            {
+              "candidate": "firmware/ram_w.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_w.hex"
+            },
+            {
+              "candidate": "ram_b0.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_b0.hex"
+            },
+            {
+              "candidate": "ram_b1.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_b1.hex"
+            },
+            {
+              "candidate": "ram_b2.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_b2.hex"
+            },
+            {
+              "candidate": "ram_b3.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_b3.hex"
+            },
+            {
+              "candidate": "ram_w.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_w.hex"
+            }
+          ]
+        },
+        "proofs": [
+          {
+            "path": "F:\\nav_integration_g2_20261023\\nav_density_strong_probe1\\result.json",
+            "required_true_fields": [
+              "passed",
+              "selected_matcher_candidate_arithmetic_passed",
+              "trajectory_cap_and_exact_arithmetic_passed",
+              "invalid_result_address_returns_zero"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "nav/rtl/match/slf_match.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_density_strong_probe1\\matcher\\slf_match.v"
+              },
+              {
+                "candidate": "nav/rtl/plan/traj_eval.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_density_strong_probe1\\trajectory\\traj_eval.v"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\result.json",
+            "required_true_fields": [
+              "passed",
+              "live_mailbox_interface_passed",
+              "OLED_release_source_contract_passed"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "control4500_core.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\control4500_core_trim.v"
+              },
+              {
+                "candidate": "nav/rtl/net/host_mbx.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\host_mbx_trim.v"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\result.json",
+            "required_true_fields": [
+              "passed",
+              "global_initialization_radius_and_relocation_radius_retained",
+              "generated_inverse_indices_match_literal_candidate_feeds",
+              "all_batches_within_actual_hardware_capacity",
+              "slow_forward_turn_and_reverse_categories_retained",
+              "failed_HAL_returns_zero_command"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "fw/nav/local_planner.h",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\fw\\nav\\local_planner.h"
+              },
+              {
+                "candidate": "fw/nav/local_planner.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\fw\\nav\\local_planner.c"
+              },
+              {
+                "candidate": "fw/nav/pose_match.h",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\fw\\nav\\pose_match.h"
+              },
+              {
+                "candidate": "fw/nav/pose_match.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\fw\\nav\\pose_match.c"
+              },
+              {
+                "candidate": "fw/nav/loc.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\fw\\nav\\loc.c"
+              },
+              {
+                "candidate": "fw/drv/hal_fpga.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\fw\\drv\\hal_fpga.c"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\delivery_trim_console_probe2\\result.json",
+            "required_true_fields": [
+              "passed",
+              "console_storage_contract_passed",
+              "CPU128KiB_hold_download_and_nav_protocol_passed"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "nav/rtl/soc/nav_soc.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_console_probe2\\nav_soc_trim.v"
+              }
+            ]
+          }
+        ],
+        "source_and_proof_byte_bindings_passed": true,
+        "original_4500_all_weights_125Hz_safety_full_telemetry_retained": true,
+        "hardware_resources_or_timing_claimed": false,
+        "navigation_tradeoff_quality_not_yet_accepted": true,
+        "console_log_storage_removed": true,
+        "console_CPU_ACK_counter_HOLD_download_retained": true
+      },
+      "exact_tradeoff_profile": {
+        "schema_version": 1,
+        "profile_id": "nav_strong",
+        "kind": "rtl",
+        "origin": "F:\\nav_integration_g2_20261023\\sfp_lane2_private_snapshot_syn11_retry1",
+        "constraint_source": "F:\\nav_integration_g2_20261023\\sfp_lane2_observation_lw_pnr15",
+        "modified_rtl_inputs": [
+          "control4500_core.v",
+          "nav/rtl/match/slf_match.v",
+          "nav/rtl/net/host_mbx.v",
+          "nav/rtl/plan/traj_eval.v",
+          "nav/rtl/soc/nav_soc.v"
+        ],
+        "added_rtl_inputs": [],
+        "removed_rtl_inputs": [],
+        "allowed_changed_prefixes": [
+          "u_nav/u_match/",
+          "u_nav/u_tr/",
+          "u_control/display/",
+          "u_nav/u_mbx/u_txs/",
+          "u_soc/g_con[0].u_con/",
+          "u_soc/g_con[1].u_con/",
+          "u_soc/g_con[2].u_con/",
+          "u_soc/g_con[3].u_con/"
+        ],
+        "allowed_firmware_init_prefixes": [
+          "u_soc/"
+        ],
+        "allowed_memory_change_prefixes": [
+          "u_nav/u_match/u_cand/",
+          "u_nav/u_match/u_res/",
+          "u_nav/u_tr/u_cand/",
+          "u_nav/u_tr/u_res/",
+          "u_nav/u_mbx/u_txs/",
+          "u_control/display/",
+          "u_soc/g_con[0].u_con/",
+          "u_soc/g_con[1].u_con/",
+          "u_soc/g_con[2].u_con/",
+          "u_soc/g_con[3].u_con/"
+        ],
+        "firmware_modified_inputs": [
+          "fw/nav/local_planner.h",
+          "fw/nav/local_planner.c",
+          "fw/nav/pose_match.h",
+          "fw/nav/pose_match.c",
+          "fw/nav/loc.c",
+          "fw/drv/hal_fpga.c"
+        ],
+        "allowed_changed_assets": [
+          "firmware/nav_fw.bin",
+          "firmware/ram_b0.hex",
+          "firmware/ram_b1.hex",
+          "firmware/ram_b2.hex",
+          "firmware/ram_b3.hex",
+          "firmware/ram_w.hex",
+          "ram_b0.hex",
+          "ram_b1.hex",
+          "ram_b2.hex",
+          "ram_b3.hex",
+          "ram_w.hex"
+        ],
+        "firmware_provenance": {
+          "source": "F:\\nav_integration_g2_20261023\\lane2_nav_strong_prepared1\\fw",
+          "command": [
+            "D:/Anaconda/python.exe",
+            "-X",
+            "utf8",
+            "F:\\nav_integration_g2_20261023\\lane2_nav_strong_prepared1\\fw\\bsp\\build_rv.py",
+            "--ram-kb",
+            "128",
+            "--output-dir",
+            "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1",
+            "--copy-to",
+            "F:\\nav_integration_g2_20261023\\lane2_nav_strong_prepared1"
+          ],
+          "compiler": "D:/tools/xpack-riscv-none-elf-gcc-15.2.0-1/bin/riscv-none-elf-gcc.exe",
+          "compiled_elf": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\nav_fw.elf",
+          "image_bytes": 51600,
+          "stack_analysis": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\stack_analysis.json",
+          "static_stack_bound_bytes": 2432,
+          "RAM_bytes": 131072,
+          "stack_reserve_bytes": 6144,
+          "source_modified_inputs": [
+            "fw/drv/hal_fpga.c",
+            "fw/nav/loc.c",
+            "fw/nav/local_planner.c",
+            "fw/nav/local_planner.h",
+            "fw/nav/pose_match.c",
+            "fw/nav/pose_match.h"
+          ],
+          "output_bindings": [
+            {
+              "candidate": "firmware/nav_fw.bin",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\nav_fw.bin"
+            },
+            {
+              "candidate": "firmware/ram_b0.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_b0.hex"
+            },
+            {
+              "candidate": "firmware/ram_b1.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_b1.hex"
+            },
+            {
+              "candidate": "firmware/ram_b2.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_b2.hex"
+            },
+            {
+              "candidate": "firmware/ram_b3.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_b3.hex"
+            },
+            {
+              "candidate": "firmware/ram_w.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_w.hex"
+            },
+            {
+              "candidate": "ram_b0.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_b0.hex"
+            },
+            {
+              "candidate": "ram_b1.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_b1.hex"
+            },
+            {
+              "candidate": "ram_b2.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_b2.hex"
+            },
+            {
+              "candidate": "ram_b3.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_b3.hex"
+            },
+            {
+              "candidate": "ram_w.hex",
+              "compiled_output": "F:\\nav_integration_g2_20261023\\nav_density_strong_firmware1\\ram_w.hex"
+            }
+          ]
+        },
+        "proofs": [
+          {
+            "path": "F:\\nav_integration_g2_20261023\\nav_density_strong_probe1\\result.json",
+            "required_true_fields": [
+              "passed",
+              "selected_matcher_candidate_arithmetic_passed",
+              "trajectory_cap_and_exact_arithmetic_passed",
+              "invalid_result_address_returns_zero"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "nav/rtl/match/slf_match.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_density_strong_probe1\\matcher\\slf_match.v"
+              },
+              {
+                "candidate": "nav/rtl/plan/traj_eval.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_density_strong_probe1\\trajectory\\traj_eval.v"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\result.json",
+            "required_true_fields": [
+              "passed",
+              "live_mailbox_interface_passed",
+              "OLED_release_source_contract_passed"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "control4500_core.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\control4500_core_trim.v"
+              },
+              {
+                "candidate": "nav/rtl/net/host_mbx.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_interface_probe3\\host_mbx_trim.v"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\result.json",
+            "required_true_fields": [
+              "passed",
+              "global_initialization_radius_and_relocation_radius_retained",
+              "generated_inverse_indices_match_literal_candidate_feeds",
+              "all_batches_within_actual_hardware_capacity",
+              "slow_forward_turn_and_reverse_categories_retained",
+              "failed_HAL_returns_zero_command"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "fw/nav/local_planner.h",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\fw\\nav\\local_planner.h"
+              },
+              {
+                "candidate": "fw/nav/local_planner.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\fw\\nav\\local_planner.c"
+              },
+              {
+                "candidate": "fw/nav/pose_match.h",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\fw\\nav\\pose_match.h"
+              },
+              {
+                "candidate": "fw/nav/pose_match.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\fw\\nav\\pose_match.c"
+              },
+              {
+                "candidate": "fw/nav/loc.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\fw\\nav\\loc.c"
+              },
+              {
+                "candidate": "fw/drv/hal_fpga.c",
+                "proof_source": "F:\\nav_integration_g2_20261023\\nav_strong_firmware_boundary_probe2\\fw\\drv\\hal_fpga.c"
+              }
+            ]
+          },
+          {
+            "path": "F:\\nav_integration_g2_20261023\\delivery_trim_console_probe2\\result.json",
+            "required_true_fields": [
+              "passed",
+              "console_storage_contract_passed",
+              "CPU128KiB_hold_download_and_nav_protocol_passed"
+            ],
+            "source_bindings": [
+              {
+                "candidate": "nav/rtl/soc/nav_soc.v",
+                "proof_source": "F:\\nav_integration_g2_20261023\\delivery_trim_console_probe2\\nav_soc_trim.v"
+              }
+            ]
+          }
+        ],
+        "tradeoffs": [
+          {
+            "feature": "OLED",
+            "before": "display enabled",
+            "after": "pins released; display unavailable"
+          },
+          {
+            "feature": "offline TX shadow",
+            "before": "sent payload readback",
+            "after": "readback zero; live TX/RX and telemetry retained"
+          },
+          {
+            "feature": "offline console log storage",
+            "before": "four byte-bank diagnostic log RAMs and E000-EFFF log readback",
+            "after": "log writes ACK and counter retained; log readback zero; CPU HOLD/download and UART/navigation protocol retained"
+          },
+          {
+            "feature": "matching batch",
+            "before": 256,
+            "after": 64,
+            "tracking_before": 245,
+            "tracking_after": 27,
+            "tracking_halfwidth_mm": 75,
+            "tracking_halfwidth_angle_units": 256,
+            "coarse_step_mm": 125,
+            "coarse_step_angle": 364,
+            "global_range_limit_mm": 32000,
+            "risk": "coarser localization grid may reject or mislocalize scenes; physical positioning performance unverified"
+          },
+          {
+            "feature": "trajectory candidates",
+            "before": 64,
+            "after": 16,
+            "default_generated_before": 46,
+            "default_generated_after": 11,
+            "holonomic_generated_after": 15,
+            "steps": 20,
+            "dt_ms": 100,
+            "safe_steps": 12,
+            "risk": "fewer high-speed curve choices; strong tier keeps straight high-speed and slow arcs, may detour or stop more often"
+          }
+        ],
+        "preserved_contracts": [
+          "4500 and all original weights",
+          "125Hz control",
+          "complete SFP telemetry and stop priority",
+          "CPU128KiB",
+          "65536x18 structure map",
+          "16384x53 elevation map",
+          "4096x36 points",
+          "150mm goal threshold and original motion/support guards"
+        ]
+      },
+      "independent_review_path": "F:\\nav_integration_g2_20261023\\lane2_nav_strong_prepared1\\prepared_contract_review.json",
+      "independent_review_passed": true,
+      "full_joint_netlist_review_completed": false,
+      "full_joint_implementation_started": false
+    }
+  ],
+  "profile_count": 5,
+  "all_five_prepared_and_source_admitted": true,
+  "source_admission_is_not_physical_timing_or_navigation_precision_acceptance": true,
+  "queue": {
+    "controller_pid": 44484,
+    "controller_created_epoch": 1792914350.1020324,
+    "registry": "F:\\nav_integration_g2_20261023\\delivery_trim_batch_20261025.json",
+    "prior_PNR": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+    "prior_state": "F:\\nav_integration_g2_20261023\\lane2_row_read_shared_after_pnr19_once_retry1",
+    "profiles": {},
+    "completed_order": [],
+    "PNR_total_seconds": 0,
+    "PNR_silent_seconds": 0,
+    "maximum_simultaneous_Gowin_builds": 1,
+    "programmed": false,
+    "deployment_accepted": false,
+    "phase": "waiting_for_PNR20_natural_exit_and_collection",
+    "updated_at": "2026-10-25T15:45:50.324474+08:00",
+    "protected_inputs": {
+      "g2_top.vg": [
+        22817897,
+        1792911900644920900
+      ],
+      "g2.sdc": [
+        19601,
+        1792911900646228400
+      ],
+      "g2.cst": [
+        6207,
+        1792911900646228400
+      ],
+      "run.tcl": [
+        960,
+        1792911903094503500
+      ],
+      "ip\\serdes.csr": [
+        10840,
+        1792911900646228400
+      ]
+    },
+    "protected_processes": [
+      {
+        "pid": 21252,
+        "created_epoch": 1792911903.1623285,
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "run.tcl"
+        ]
+      },
+      {
+        "pid": 13724,
+        "created_epoch": 1792911900.49652,
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\pnr_from_netlist.py",
+          "F:\\nav_integration_g2_20261023\\lane2_row_read_shared_after_pnr19_once_retry1\\pnr_inputs",
+          "--out",
+          "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+          "--wide-split",
+          "1",
+          "--replicate-resources",
+          "1",
+          "--place-option",
+          "1",
+          "--route-option",
+          "2",
+          "--timing-driven",
+          "1",
+          "--max-runtime-minutes",
+          "0",
+          "--max-no-progress-minutes",
+          "0",
+          "--routing-evidence",
+          "--capture-system-telemetry"
+        ]
+      },
+      {
+        "pid": 33696,
+        "created_epoch": 1792911486.3670444,
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:/Desktop/SOC FPGA/nav/integration/g2/continue_row_read_joint_once.py",
+          "--prepared",
+          "F:/nav_integration_g2_20261023/lane2_row_read_shared_prepared1",
+          "--prior-pnr",
+          "F:/nav_integration_g2_20261023/sfp_lane2_smallblocks_pnr19",
+          "--prior-state",
+          "F:/nav_integration_g2_20261023/lane2_smallblocks_checked_one_shot",
+          "--syn-out",
+          "F:/nav_integration_g2_20261023/sfp_lane2_row_read_shared_syn17",
+          "--pnr-out",
+          "F:/nav_integration_g2_20261023/sfp_lane2_row_read_shared_pnr20",
+          "--state-dir",
+          "F:/nav_integration_g2_20261023/lane2_row_read_shared_after_pnr19_once_retry1",
+          "--resume-settings-only"
+        ]
+      }
+    ]
+  },
+  "queue_command": [
+    "D:\\Anaconda\\python.exe",
+    "-X",
+    "utf8",
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\run_delivery_trim_queue.py",
+    "--registry",
+    "F:\\nav_integration_g2_20261023\\delivery_trim_batch_20261025.json",
+    "--prior-pnr",
+    "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+    "--prior-state",
+    "F:\\nav_integration_g2_20261023\\lane2_row_read_shared_after_pnr19_once_retry1",
+    "--state-dir",
+    "F:\\nav_integration_g2_20261023\\lane2_delivery_trim_serial_queue2"
+  ],
+  "registry": "F:\\nav_integration_g2_20261023\\delivery_trim_batch_20261025.json",
+  "sequential_policy": {
+    "simultaneous_Gowin_builds": 1,
+    "first": "Wait for unchanged PNR20 to finish naturally and collect actual reports.",
+    "continue_on": "Natural PR0004, or actually reported setup/hold violations: evaluate the next distinct, prepared tradeoff.",
+    "stop_on": "Routing and reported timing clean: preserve it for complete signoff. Other specific tool/validation failures: targeted diagnosis; no repeated SYN/PNR.",
+    "pre_PNR": "Each newly synthesized profile must pass the actual new source/RAM/driver/clock/knownCDC/154 constraint reviewer.",
+    "deployment": "Still requires complete physical CDC/PCS/IO/reset/timing and profile-specific navigation acceptance.",
+    "PNR_total_seconds": 0,
+    "PNR_silent_seconds": 0,
+    "SYN_minutes": 40,
+    "start_minimum_physical_GiB": 2,
+    "start_minimum_available_commit_GiB": 4
+  },
+  "actual_PNR20_snapshot": {
+    "build": "F:\\nav_integration_g2_20261023\\sfp_lane2_row_read_shared_pnr20",
+    "pid": 21252,
+    "started_at": "2026-10-25T15:05:03.098004+08:00",
+    "total_limit_s": 0.0,
+    "idle_limit_s": 0.0,
+    "input_metadata": {
+      "g2_top.vg": [
+        22817897,
+        1792911900644920900
+      ],
+      "g2.sdc": [
+        19601,
+        1792911900646228400
+      ],
+      "g2.cst": [
+        6207,
+        1792911900646228400
+      ],
+      "run.tcl": [
+        960,
+        1792911903094503500
+      ],
+      "ip\\serdes.csr": [
+        10840,
+        1792911900646228400
+      ]
+    },
+    "created_epoch": 1792911903.1623285,
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ]
+  },
+  "current_build_interrupted": false,
+  "current_inputs_or_deadlines_changed": false,
+  "idle_waiter_replacements": [
+    {
+      "pid": 68528,
+      "scope": "LF-only idle waiter, no child build existed"
+    },
+    {
+      "pid": 51008,
+      "scope": "Four-profile idle dispatcher, replaced before any child build to freeze five profiles and current classifier"
+    }
+  ],
+  "sole_active_delivery_dispatcher": 44484,
+  "physical_tradeoff_results_measured": false,
+  "programmed": false,
+  "deployment_accepted": false
+}
