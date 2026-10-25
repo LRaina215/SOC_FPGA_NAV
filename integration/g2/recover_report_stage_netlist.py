@@ -240,6 +240,51 @@ def audit(source, prepared, runtime_path, reference):
             'Source/INIT/clock/CDC/profile checks and PNR signoff still require the independent joint reviewer.'])
 
 
+def validate_recovery_evidence(path, *, source=None):
+    """Rebind preserved evidence to present bytes; never promote the source job."""
+    evidence = load(path)
+    for field in ('passed', 'report_stage_interrupted', 'original_job_unchanged',
+                  'original_synthesis_processes_exited', 'tool_log_netlist_generation_completed',
+                  'all_source_bindings_bytes_identical', 'manifest_immutable_fields_identical',
+                  'permits_independent_exploratory_review'):
+        assert evidence.get(field) is True, ('recovery proof condition absent', field)
+    for field in ('vendor_synthesis_completed', 'vendor_normal_exit_observed',
+                  'vendor_resource_report_available', 'exploratory_PNR_precheck_passed',
+                  'synthesis_or_PNR_started', 'programmed', 'deployment_accepted'):
+        assert evidence.get(field) is False, ('recovery proof claims completion/acceptance', field)
+    build, prepared = Path(evidence['source']).resolve(), Path(evidence['prepared']).resolve()
+    if source is not None:
+        assert build == Path(source).resolve(), 'recovery evidence belongs to a different source'
+    assert evidence['definition_integrity']['passed']
+    for record in evidence['preserved_artifacts']:
+        assert record == metadata(record['path']), ('preserved artifact changed', record['path'])
+    bindings = evidence['source_bindings']
+    names = [row['relative_path'] for row in bindings]
+    assert len(names) == len(set(names))
+    for row in bindings:
+        relative = Path(row['relative_path'])
+        assert not relative.is_absolute() and '..' not in relative.parts
+        a, b = (prepared/relative).resolve(), (build/relative).resolve()
+        assert row['prepared'] == metadata(a) and row['synthesis'] == metadata(b), ('frozen binding metadata changed', str(relative))
+        assert row['bytes_identical'] is True and a.read_bytes() == b.read_bytes(), ('frozen binding bytes changed', str(relative))
+    job, manifest = load(build/'job.json'), load(build/'manifest.json')
+    assert job['phase'] == evidence['original_job_phase'] != 'synthesis_complete'
+    assert job.get('tool_exit') is None and not job.get('modified_rtl_inputs') and not job['programmed']
+    assert Path(job['source']).resolve() == prepared == Path(manifest['frozen_source_build']).resolve()
+    hardware = {Path(name).resolve().relative_to(build).as_posix() for name in manifest['source_files']}
+    assert hardware <= set(names) and len(hardware) == evidence['frozen_hardware_inputs_identical'] == 68
+    runtime = load(evidence['original_cancellation_runtime_path'])
+    assert runtime == evidence['original_cancellation_runtime'] and runtime['cancelled']
+    assert runtime['protection_reason'] == 'new_child_only_host_reserve_protection'
+    for pid, creation in ((runtime['pid'], runtime['created_epoch']), (job['tool_pid'], job['tool_created_epoch'])):
+        try:
+            process = psutil.Process(pid)
+            assert abs(process.create_time()-creation) >= .1, ('original interrupted process is active', pid)
+        except psutil.NoSuchProcess:
+            pass
+    return evidence
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source', type=Path, required=True)
