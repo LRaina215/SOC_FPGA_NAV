@@ -10,10 +10,11 @@ import sys
 from datetime import datetime
 
 from prepare_lf_line_joint import assets, source_files
-from trim_peripheral_rtl import trim_oled, trim_tx_shadow, OLED_RELATIVE, TX_SHADOW_RELATIVE
+from trim_peripheral_rtl import trim_oled, trim_tx_shadow, trim_console_storage, OLED_RELATIVE, TX_SHADOW_RELATIVE, CONSOLE_RELATIVE
 
 MATCH='nav/rtl/match/slf_match.v'
 TRAJ='nav/rtl/plan/traj_eval.v'
+CONSOLE_SCOPES=[f'u_soc/g_con[{i}].u_con/' for i in range(4)]
 PROFILES={
  'medium':dict(match_log=7,traj_log=5,half=2,half_ang=2,step=38,angle=128,coarse=100,coarse_angle=182,nv=3,nw=5,fine1=38,fine2=15,fine_angle1=128,fine_angle2=64),
  'strong':dict(match_log=6,traj_log=4,half=1,half_ang=1,step=75,angle=256,coarse=125,coarse_angle=364,nv=1,nw=1,fine1=75,fine2=30,fine_angle1=256,fine_angle2=128),
@@ -96,7 +97,7 @@ def prepare(source,out,baseline,tier):
     for rel in set(hardware)|set(data)|extra|headers:
         (out/rel).parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(source/rel,out/rel)
     shutil.copytree(source/'fw',out/'fw',dirs_exist_ok=True)
-    changes={MATCH:transform_match((source/MATCH).read_text(encoding='utf-8'),p),TRAJ:transform_traj((source/TRAJ).read_text(encoding='utf-8'),p),OLED_RELATIVE:trim_oled((source/OLED_RELATIVE).read_text(encoding='utf-8')),TX_SHADOW_RELATIVE:trim_tx_shadow((source/TX_SHADOW_RELATIVE).read_text(encoding='utf-8'))}
+    changes={MATCH:transform_match((source/MATCH).read_text(encoding='utf-8'),p),TRAJ:transform_traj((source/TRAJ).read_text(encoding='utf-8'),p),OLED_RELATIVE:trim_oled((source/OLED_RELATIVE).read_text(encoding='utf-8')),TX_SHADOW_RELATIVE:trim_tx_shadow((source/TX_SHADOW_RELATIVE).read_text(encoding='utf-8')),CONSOLE_RELATIVE:trim_console_storage((source/CONSOLE_RELATIVE).read_text(encoding='utf-8'))}
     for rel,text in changes.items():(out/rel).write_text(text,encoding='utf-8',newline='\n')
     fw_changed=[]
     for rel in ['nav/local_planner.h','nav/local_planner.c','nav/pose_match.h','nav/pose_match.c','nav/loc.c','drv/hal_fpga.c']:
@@ -114,8 +115,11 @@ def prepare(source,out,baseline,tier):
     changed=sorted(rel for rel in hardware if (source/rel).read_bytes()!=(out/rel).read_bytes());assert changed==sorted(changes)
     profile=dict(schema_version=1,profile_id='nav_'+tier,kind='rtl',origin=str(source),constraint_source=str(baseline),modified_rtl_inputs=changed,added_rtl_inputs=[],removed_rtl_inputs=[],allowed_changed_prefixes=['u_nav/u_match/','u_nav/u_tr/','u_control/display/','u_nav/u_mbx/u_txs/'],allowed_firmware_init_prefixes=['u_soc/'],allowed_memory_change_prefixes=['u_nav/u_match/u_cand/','u_nav/u_match/u_res/','u_nav/u_tr/u_cand/','u_nav/u_tr/u_res/','u_nav/u_mbx/u_txs/'],firmware_modified_inputs=fw_changed,allowed_changed_assets=[],firmware_provenance={},proofs=[],tradeoffs=[dict(feature='OLED',before='display enabled',after='pins released; display unavailable'),dict(feature='offline TX shadow',before='sent payload readback',after='readback zero; live TX/RX and telemetry retained'),dict(feature='matching batch',before=256,after=1<<p['match_log'],tracking_before=245,tracking_after=(2*p['half']+1)**2*(2*p['half_ang']+1),tracking_halfwidth_mm=p['half']*p['step'],tracking_halfwidth_angle_units=p['half_ang']*p['angle'],coarse_step_mm=p['coarse'],coarse_step_angle=p['coarse_angle'],global_range_limit_mm=32000,risk='coarser localization grid may reject or mislocalize scenes; physical positioning performance unverified'),dict(feature='trajectory candidates',before=64,after=1<<p['traj_log'],default_generated_before=46,default_generated_after=p['nv']*p['nw']+10,holonomic_generated_after=p['nv']*p['nw']+14,steps=20,dt_ms=100,safe_steps=12,risk='fewer high-speed curve choices; strong tier keeps straight high-speed and slow arcs, may detour or stop more often')],preserved_contracts=['4500 and all original weights','125Hz control','complete SFP telemetry and stop priority','CPU128KiB','65536x18 structure map','16384x53 elevation map','4096x36 points','150mm goal threshold and original motion/support guards'])
     profile['allowed_memory_change_prefixes'].append('u_control/display/')
+    profile['allowed_changed_prefixes'].extend(CONSOLE_SCOPES)
+    profile['allowed_memory_change_prefixes'].extend(CONSOLE_SCOPES)
+    profile['tradeoffs'].insert(2,dict(feature='offline console log storage',before='four byte-bank diagnostic log RAMs and E000-EFFF log readback',after='log writes ACK and counter retained; log readback zero; CPU HOLD/download and UART/navigation protocol retained'))
     (out/'trim_profile.json').write_text(json.dumps(profile,indent=2)+'\n')
-    state=dict(passed=False,phase='prepared_source_waiting_for_firmware_and_targeted_proofs',source=str(source),prepared=str(out),modified_rtl_inputs=changed,unchanged_hardware_inputs=64,assets_total=104,unchanged_assets=104,firmware_modified_inputs=fw_changed,SYN_started=False,PNR_started=False,programmed=False)
+    state=dict(passed=False,phase='prepared_source_waiting_for_firmware_and_targeted_proofs',source=str(source),prepared=str(out),modified_rtl_inputs=changed,unchanged_hardware_inputs=63,assets_total=104,unchanged_assets=104,firmware_modified_inputs=fw_changed,SYN_started=False,PNR_started=False,programmed=False)
     (out/'prepared_source_review.json').write_text(json.dumps(state,indent=2)+'\n');(out/'job.json').write_text(json.dumps(state,indent=2)+'\n')
     return state
 
