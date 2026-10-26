@@ -1,0 +1,461 @@
+{
+  "recorded_at": "2026-10-26T11:03:58.019688+08:00",
+  "scope": "Finite actual CPU/RAM/checkpoint/guard/HAL results,not full G2/UART/whole-loop deadline or physical stop signoff",
+  "candidate": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_candidate2",
+  "probe": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1",
+  "job": {
+    "phase": "complete",
+    "physical_available": 3644329984,
+    "commit_available": 5292916736,
+    "simulator": "Vivado CPU-only; no ModelSim",
+    "controller": {
+      "pid": 38280,
+      "created_epoch": 1792982990.734747,
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "F:/nav_integration_g2_20261023/CPU250_frontier_checkpoint_CPU_probe1/run_xsim.py",
+        "--suite",
+        "frontier"
+      ],
+      "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1\\frontier"
+    },
+    "processes": [
+      {
+        "phase": "xvlog",
+        "pid": 57992,
+        "created_epoch": 1792982990.9797683,
+        "parent_pid": 38280,
+        "command": [
+          "cmd",
+          "/c",
+          "E:\\2026.1\\Vivado\\bin\\xvlog.bat",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1\\rtl\\nav_ram_sp.v",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1\\rtl\\nav_ram_sdp.v",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1\\rtl\\picorv32.v",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1\\rtl\\nav_soc.v"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xvlog",
+        "pid": 19292,
+        "created_epoch": 1792982993.0395877,
+        "parent_pid": 38280,
+        "command": [
+          "cmd",
+          "/c",
+          "E:\\2026.1\\Vivado\\bin\\xvlog.bat",
+          "-sv",
+          "tb_cpu250_segments.sv"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xvlog",
+        "pid": 35116,
+        "created_epoch": 1792982994.0657475,
+        "parent_pid": 19292,
+        "command": [
+          "E:/2026.1/Vivado/bin/unwrapped/win64.o/xvlog.exe",
+          "-sv",
+          "tb_cpu250_segments.sv"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xelab",
+        "pid": 13716,
+        "created_epoch": 1792982995.1199431,
+        "parent_pid": 38280,
+        "command": [
+          "cmd",
+          "/c",
+          "E:\\2026.1\\Vivado\\bin\\xelab.bat",
+          "tb_cpu250_segments",
+          "-s",
+          "snapshot"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xelab",
+        "pid": 7044,
+        "created_epoch": 1792982996.169951,
+        "parent_pid": 13716,
+        "command": [
+          "E:/2026.1/Vivado/bin/unwrapped/win64.o/xelab.exe",
+          "tb_cpu250_segments",
+          "-s",
+          "snapshot"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xsim",
+        "pid": 61412,
+        "created_epoch": 1792982998.2088623,
+        "parent_pid": 38280,
+        "command": [
+          "cmd",
+          "/c",
+          "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+          "snapshot",
+          "-R"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xsim",
+        "pid": 47764,
+        "created_epoch": 1792982999.2982955,
+        "parent_pid": 61412,
+        "command": [
+          "E:/2026.1/Vivado/bin/unwrapped/win64.o/xsim.exe",
+          "snapshot",
+          "-R"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xsim",
+        "pid": 56352,
+        "created_epoch": 1792982999.7543404,
+        "parent_pid": 47764,
+        "command": [
+          "xsim.dir/snapshot/xsimk.exe",
+          "-runall",
+          "-simmode",
+          "gui",
+          "-wdb",
+          "snapshot.wdb",
+          "-simrunnum",
+          "0",
+          "-socket",
+          "51984"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xsim",
+        "pid": 56780,
+        "created_epoch": 1792982999.8715143,
+        "parent_pid": 56352,
+        "command": [
+          "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+          "0x4"
+        ],
+        "cwd": "C:\\WINDOWS"
+      }
+    ],
+    "updated_epoch": 1792983718.8757672,
+    "current_pid": 61412,
+    "current_command": [
+      "cmd",
+      "/c",
+      "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+      "snapshot",
+      "-R"
+    ],
+    "last_returncode": 0,
+    "result": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1\\frontier\\result.json"
+  },
+  "actual_result": {
+    "passed": true,
+    "scope": "Actual PicoRV32/128KiB/50MHz plus actual candidate guard/checkpoint/HAL with synthetic timer/mailbox register service; not full G2/UART or physical stop",
+    "rows": [
+      {
+        "kind": 0,
+        "result": 1,
+        "x": 4049,
+        "y": 3049,
+        "frontier": 2076,
+        "cycles": 10640444,
+        "max_gap": 135396,
+        "checks": 146,
+        "locked": 0,
+        "messages": 4,
+        "time_us": 212808.88,
+        "max_checkpoint_gap_us": 2707.92
+      },
+      {
+        "kind": 1,
+        "result": 1,
+        "x": 4049,
+        "y": 3049,
+        "frontier": 2076,
+        "cycles": 49542110,
+        "max_gap": 766712,
+        "checks": 146,
+        "locked": 0,
+        "messages": 19,
+        "time_us": 990842.2,
+        "max_checkpoint_gap_us": 15334.24
+      },
+      {
+        "kind": 2,
+        "result": 0,
+        "x": 99,
+        "y": 99,
+        "frontier": 0,
+        "cycles": 58418,
+        "max_gap": 8253,
+        "checks": 8,
+        "locked": 1,
+        "messages": 0,
+        "time_us": 1168.36,
+        "max_checkpoint_gap_us": 165.06
+      }
+    ],
+    "zero_commit": [
+      {
+        "age_us": 250166,
+        "now_us": 1281196,
+        "last_rx_us": 1031030
+      }
+    ],
+    "max_checkpoint_gap_us": 15334.24,
+    "kernel_observer_effect": true,
+    "whole_loop_WCET_proven": false,
+    "physical_stop500ms_proven": false,
+    "uses_actual_250ms_threshold": true,
+    "healthy_50ms_mailbox_heartbeat_preserved": true
+  },
+  "independent_RTL_byte_check": {
+    "common/nav_ram_sp.v": true,
+    "common/nav_ram_sdp.v": true,
+    "soc/third_party/picorv32.v": true,
+    "soc/nav_soc.v": true
+  },
+  "independent_FW_copy_byte_check": {
+    "app/nav_app.c": true,
+    "nav/explore.c": true,
+    "nav/nav_task.c": true,
+    "nav/host_link_guard.c": true,
+    "drv/hal_fpga.c": true
+  },
+  "original_controller_tool_identities_exited": {
+    "38280": true,
+    "47764": true,
+    "56352": true
+  },
+  "log_final_markers": [
+    "CHECKPOINT_CPU kind=0 result=1 x=4049 y=3049 frontier=2076 cycles=10640444 max_gap=135396 checks=146 locked=0 messages=4",
+    "CHECKPOINT_CPU kind=1 result=1 x=4049 y=3049 frontier=2076 cycles=49542110 max_gap=766712 checks=146 locked=0 messages=19",
+    "CHECKPOINT_ZERO_AGE age=250166 now=1281196 last_rx=1031030",
+    "CHECKPOINT_CPU kind=2 result=0 x=99 y=99 frontier=0 cycles=58418 max_gap=8253 checks=8 locked=1 messages=0",
+    "SEGMENT_PROBE_FINISHED",
+    "$finish called at time : 1281383650 ns : File \"F:/nav_integration_g2_20261023/CPU250_frontier_checkpoint_CPU_probe1/frontier/tb_cpu250_segments.sv\" Line 51",
+    "run: Time (s): cpu = 00:00:00 ; elapsed = 00:11:56 . Memory (MB): peak = 229.191 ; gain = 0.000",
+    "INFO: [Common 17-206] Exiting xsim at Mon Oct 26 11:01:57 2026..."
+  ],
+  "full_firmware_memory": {
+    "image_bytes": 52624,
+    "layout": {
+      "linked_symbols": {
+        "RAM_SIZE": 131072,
+        "STACK_RESERVE": 6144,
+        "_bss_start": 52624,
+        "_bss_end": 122608,
+        "_stack_top": 131072
+      },
+      "load_file_bytes": 52624,
+      "load_memory_bytes": 122608,
+      "aligned_remaining_bytes": 2320
+    },
+    "stack": {
+      "complete": true,
+      "static_bound_bytes": 2576,
+      "direct_call_bound_bytes": 2576,
+      "path": [
+        "main",
+        "nav_app_poll",
+        "task_step_local.constprop.0",
+        "drive_to.constprop.0",
+        "candidate_check.constprop.0",
+        "support_check.constprop.0",
+        "cell",
+        "hal_map_support",
+        "hal_map_info"
+      ],
+      "resolved_switches": [
+        {
+          "function": "task_step_local.constprop.0",
+          "table": ".L1545",
+          "targets": [
+            ".L1544",
+            ".L1512",
+            ".L1509",
+            ".L1546",
+            ".L1544"
+          ]
+        },
+        {
+          "function": "xt_link_poll.constprop.0",
+          "table": ".L1852",
+          "targets": [
+            ".L1856",
+            ".L1855",
+            ".L1854",
+            ".L1853",
+            ".L1851"
+          ]
+        }
+      ],
+      "unresolved_indirect": [],
+      "nonstatic_frames": [],
+      "unresolved_sp_writes": [],
+      "irq_disabled": true,
+      "stack_reserved_bytes": 6144,
+      "largest_frames": [
+        [
+          "support_check.constprop.0",
+          992
+        ],
+        [
+          "drive_to.constprop.0",
+          624
+        ],
+        [
+          "nav_app_poll",
+          400
+        ],
+        [
+          "drain_host_messages",
+          384
+        ],
+        [
+          "nav_app_search_checkpoint",
+          288
+        ],
+        [
+          "motion_segment.constprop.0",
+          240
+        ],
+        [
+          "task_step_local.constprop.0",
+          240
+        ],
+        [
+          "xt_link_poll.constprop.0",
+          240
+        ]
+      ],
+      "scope": "linked image, no IRQ/recursion/heap; tail calls conservatively nested; board watermark still pending"
+    },
+    "full_fw_compile_passed": true,
+    "source_only_not_hardware_candidate": true,
+    "new_snapshot_arrays": false
+  },
+  "memory_same_prepared3_delta": {
+    "image_bytes": 384,
+    "BSS_bytes": 16,
+    "remaining_bytes": -400,
+    "scratch_bytes": 20992,
+    "new_snapshot_arrays": 0
+  },
+  "host_proofs": {
+    "passed": true,
+    "algorithm": "FRONTIER_PROOF passed cases=256 cancel_restart=8 checks=1091 scratch_bytes=20992",
+    "actual_app_mailbox_and_lock": "APP_CHECKPOINT_PROOF passed checks=25 buffer=1100 pending_dispatch_once=1",
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_emptyIMU_prepared3",
+    "candidate": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_candidate2",
+    "actual_CPU_timing_proof": false,
+    "physical_stop_proven": false,
+    "old249p9arrival_251processing_false_timeout_counterexample_retained": true,
+    "fresh_arrival_continuity_not_healing_fault": true,
+    "wrap32_covered": true,
+    "arrival_gap_ge250ms_and_expired_processing_do_not_renew": true
+  },
+  "algorithm_structure_review": {
+    "original_explore_text_restored_after_removing_checkpoints_and_identical_range_chunked_clear": true,
+    "original_nav_task_text_restored_after_removing_two_stop_before_fallback_guards": true,
+    "fixed_initialization_ranges_cover4096_once": [
+      [
+        0,
+        256
+      ],
+      [
+        256,
+        512
+      ],
+      [
+        512,
+        768
+      ],
+      [
+        768,
+        1024
+      ],
+      [
+        1024,
+        1280
+      ],
+      [
+        1280,
+        1536
+      ],
+      [
+        1536,
+        1792
+      ],
+      [
+        1792,
+        2048
+      ],
+      [
+        2048,
+        2304
+      ],
+      [
+        2304,
+        2560
+      ],
+      [
+        2560,
+        2816
+      ],
+      [
+        2816,
+        3072
+      ],
+      [
+        3072,
+        3328
+      ],
+      [
+        3328,
+        3584
+      ],
+      [
+        3584,
+        3840
+      ],
+      [
+        3840,
+        4096
+      ]
+    ],
+    "queue_and_distance_capacities_unchanged": 4096,
+    "scratch_header_bytes_identical": true,
+    "scoring_formula_DX4_neighbor_order_strict_less_tie_rule_and_final_coordinate_conversion": "entire original function text restored",
+    "snapshot_reason": "IRQ off; checkpoint dispatches no on_msg and only no-op TARGET may continue; gm/seen/visited/blacklist are not mutated between chunks",
+    "cancellation_reason": "Other message retained in same receive buffer; before either fallback,interrupted flag jumps to zero publication; original on_msg runs only after nav_task_step returns",
+    "not_a_full_350ms_or500ms_WCET_proof": true
+  },
+  "exact_zero_metric": "Synthetic register fixture starts with accepted real C lease249ms old,observes actual CPU SAFE_CMD_V=0 and following SAFE_CMD_W commit with WZ=0;age250166us is measured from recorded last_rx,not from experiment start",
+  "normal_mailbox_metric": "50ms no-op TARGET packets carry actual fixture arrival timestamps;real HAL/proto/guard process4 and19 messages without timeout during full searches",
+  "stop_and_capacity_preserved": "All4096 distances/queue entries,scoring and strict tie rule retained;new nonheartbeat packet cancels before fallback then original dispatch follows coordinate-view unwind",
+  "limits": [
+    "No wire UART/real arbiter or actuation is modeled",
+    "Other APP/HAL non-yielding regions not universally bounded",
+    "drain_host_messages retains original until-empty for(;;),so continuous-RX fairness remains unproved",
+    "Kernel wrapper/compiled layout affects timing;finite measurements are not WCET",
+    "8-blacklist search remains990.8422ms total,so navigation/pose freshness and100ms planning timing are not accepted",
+    "350ms physical/whole-APP bound and500ms standstill remain unproved"
+  ],
+  "next_evidence_based_direction": "Explore exact squared-distance threshold comparisons for positive radii in frontier/blacklist tests,instead of repeated floor integer square roots;must prove identical predicate semantics and numeric range before a new candidate",
+  "no_board_vsims_joint_SYN_PNR_or_original_prepared3_changes": true,
+  "deployment_accepted": false
+}

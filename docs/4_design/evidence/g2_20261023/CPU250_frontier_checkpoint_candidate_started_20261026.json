@@ -1,0 +1,367 @@
+{
+  "recorded_at": "2026-10-26T11:00:25.590831+08:00",
+  "scope": "Frozen original segment results and independent frontier checkpoint source/host proofs; CPU fixture in flight, not a deployment gate",
+  "original": {
+    "root": "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1",
+    "frontier_max_call_us": 208068.88,
+    "frontier_BFS_scoring_us": 204767.38,
+    "astar_max_call_us": 46324.06,
+    "astar_phase_maxima": {
+      "empty_rdcycle_bracket": {
+        "kind": 99,
+        "mode": 99,
+        "chunk": 0,
+        "phase": 0,
+        "cycles": 4,
+        "time_us_at50MHz": 0.08
+      },
+      "astar_cost_snapshot": {
+        "kind": 0,
+        "mode": 0,
+        "chunk": 0,
+        "phase": 1,
+        "cycles": 127016,
+        "time_us_at50MHz": 2540.32
+      },
+      "astar_distance_transform": {
+        "kind": 3,
+        "mode": 0,
+        "chunk": 0,
+        "phase": 2,
+        "cycles": 1468292,
+        "time_us_at50MHz": 29365.84
+      },
+      "astar_coordinate_and_g_parent_heap_initialization": {
+        "kind": 0,
+        "mode": 0,
+        "chunk": 0,
+        "phase": 3,
+        "cycles": 205206,
+        "time_us_at50MHz": 4104.12
+      },
+      "astar_up_to128_heap_pops": {
+        "kind": 2,
+        "mode": 0,
+        "chunk": 6,
+        "phase": 4,
+        "cycles": 646860,
+        "time_us_at50MHz": 12937.2
+      },
+      "astar_backtrace_and_atomic_path_publication": {
+        "kind": 2,
+        "mode": 0,
+        "chunk": 29,
+        "phase": 5,
+        "cycles": 142710,
+        "time_us_at50MHz": 2854.2
+      }
+    },
+    "input_scope": "Finite64x64 accepted C/API/APP configurations,not a measured current RK3x5m mission or full APP WCET"
+  },
+  "candidate": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_candidate2",
+  "preparation": {
+    "recorded_at": "2026-10-26T10:43:50.692294+08:00",
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_emptyIMU_prepared3",
+    "out": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_candidate2",
+    "scope": "Independent FW checkpoint candidate, not an integrated hardware source or deployment image",
+    "changed_existing_FW": [
+      "nav/explore.c",
+      "nav/nav_task.c",
+      "app/nav_app.c",
+      "nav/host_link_guard.c"
+    ],
+    "new_FW": [
+      "nav/nav_search_checkpoint.h"
+    ],
+    "new_map_snapshot_arrays": 0,
+    "shared_scratch_source_byte_identical": true,
+    "algorithm_BFS_queue_distance_scoring_and_tie_order_unchanged": true,
+    "init_items_between_checkpoints": 256,
+    "BFS_nodes_between_checkpoints": 32,
+    "checkpoint_processes_at_most_one_existing_mailbox_message": true,
+    "continues_only_for_noop_TARGET_heartbeat": true,
+    "other_message_retained_in_original1100B_buffer_until_stack_unwinds": true,
+    "host_timeout_us": 250000,
+    "threshold_relaxed": false,
+    "no_board_SYN_PNR_or_production_FW_edits": true
+  },
+  "memory": {
+    "image_bytes": 52624,
+    "layout": {
+      "linked_symbols": {
+        "RAM_SIZE": 131072,
+        "STACK_RESERVE": 6144,
+        "_bss_start": 52624,
+        "_bss_end": 122608,
+        "_stack_top": 131072
+      },
+      "load_file_bytes": 52624,
+      "load_memory_bytes": 122608,
+      "aligned_remaining_bytes": 2320
+    },
+    "stack": {
+      "complete": true,
+      "static_bound_bytes": 2576,
+      "direct_call_bound_bytes": 2576,
+      "path": [
+        "main",
+        "nav_app_poll",
+        "task_step_local.constprop.0",
+        "drive_to.constprop.0",
+        "candidate_check.constprop.0",
+        "support_check.constprop.0",
+        "cell",
+        "hal_map_support",
+        "hal_map_info"
+      ],
+      "resolved_switches": [
+        {
+          "function": "task_step_local.constprop.0",
+          "table": ".L1545",
+          "targets": [
+            ".L1544",
+            ".L1512",
+            ".L1509",
+            ".L1546",
+            ".L1544"
+          ]
+        },
+        {
+          "function": "xt_link_poll.constprop.0",
+          "table": ".L1852",
+          "targets": [
+            ".L1856",
+            ".L1855",
+            ".L1854",
+            ".L1853",
+            ".L1851"
+          ]
+        }
+      ],
+      "unresolved_indirect": [],
+      "nonstatic_frames": [],
+      "unresolved_sp_writes": [],
+      "irq_disabled": true,
+      "stack_reserved_bytes": 6144,
+      "largest_frames": [
+        [
+          "support_check.constprop.0",
+          992
+        ],
+        [
+          "drive_to.constprop.0",
+          624
+        ],
+        [
+          "nav_app_poll",
+          400
+        ],
+        [
+          "drain_host_messages",
+          384
+        ],
+        [
+          "nav_app_search_checkpoint",
+          288
+        ],
+        [
+          "motion_segment.constprop.0",
+          240
+        ],
+        [
+          "task_step_local.constprop.0",
+          240
+        ],
+        [
+          "xt_link_poll.constprop.0",
+          240
+        ]
+      ],
+      "scope": "linked image, no IRQ/recursion/heap; tail calls conservatively nested; board watermark still pending"
+    },
+    "full_fw_compile_passed": true,
+    "source_only_not_hardware_candidate": true,
+    "new_snapshot_arrays": false
+  },
+  "same_baseline_memory_delta": {
+    "image_bytes": 384,
+    "BSS_bytes": 16,
+    "remaining_bytes": -400
+  },
+  "algorithm_structure": {
+    "original_explore_text_restored_after_removing_checkpoints_and_identical_range_chunked_clear": true,
+    "original_nav_task_text_restored_after_removing_two_stop_before_fallback_guards": true,
+    "fixed_initialization_ranges_cover4096_once": [
+      [
+        0,
+        256
+      ],
+      [
+        256,
+        512
+      ],
+      [
+        512,
+        768
+      ],
+      [
+        768,
+        1024
+      ],
+      [
+        1024,
+        1280
+      ],
+      [
+        1280,
+        1536
+      ],
+      [
+        1536,
+        1792
+      ],
+      [
+        1792,
+        2048
+      ],
+      [
+        2048,
+        2304
+      ],
+      [
+        2304,
+        2560
+      ],
+      [
+        2560,
+        2816
+      ],
+      [
+        2816,
+        3072
+      ],
+      [
+        3072,
+        3328
+      ],
+      [
+        3328,
+        3584
+      ],
+      [
+        3584,
+        3840
+      ],
+      [
+        3840,
+        4096
+      ]
+    ],
+    "queue_and_distance_capacities_unchanged": 4096,
+    "scratch_header_bytes_identical": true,
+    "scoring_formula_DX4_neighbor_order_strict_less_tie_rule_and_final_coordinate_conversion": "entire original function text restored",
+    "snapshot_reason": "IRQ off; checkpoint dispatches no on_msg and only no-op TARGET may continue; gm/seen/visited/blacklist are not mutated between chunks",
+    "cancellation_reason": "Other message retained in same receive buffer; before either fallback,interrupted flag jumps to zero publication; original on_msg runs only after nav_task_step returns",
+    "not_a_full_350ms_or500ms_WCET_proof": true
+  },
+  "focused_proofs": {
+    "passed": true,
+    "algorithm": "FRONTIER_PROOF passed cases=256 cancel_restart=8 checks=1091 scratch_bytes=20992",
+    "actual_app_mailbox_and_lock": "APP_CHECKPOINT_PROOF passed checks=25 buffer=1100 pending_dispatch_once=1",
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_emptyIMU_prepared3",
+    "candidate": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_candidate2",
+    "actual_CPU_timing_proof": false,
+    "physical_stop_proven": false,
+    "old249p9arrival_251processing_false_timeout_counterexample_retained": true,
+    "fresh_arrival_continuity_not_healing_fault": true,
+    "wrap32_covered": true,
+    "arrival_gap_ge250ms_and_expired_processing_do_not_renew": true
+  },
+  "new_entry_points": [
+    "integration/g2/prepare_frontier_checkpoint_candidate.py",
+    "integration/g2/prove_frontier_checkpoint_candidate.py",
+    "integration/g2/probe_frontier_checkpoint_cpu.py"
+  ],
+  "CPU_fixture": {
+    "root": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1",
+    "controller_job": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1\\frontier\\job.json",
+    "final_result": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1\\frontier\\result.json",
+    "phase_at_snapshot": "running_xsim",
+    "admission": {
+      "physical_available": 3644329984,
+      "commit_available": 5292916736
+    },
+    "verified_live_processes": [
+      {
+        "pid": 38280,
+        "created_epoch": 1792982990.734747,
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "F:/nav_integration_g2_20261023/CPU250_frontier_checkpoint_CPU_probe1/run_xsim.py",
+          "--suite",
+          "frontier"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1"
+      },
+      {
+        "pid": 47764,
+        "created_epoch": 1792982999.2982955,
+        "command": [
+          "E:/2026.1/Vivado/bin/unwrapped/win64.o/xsim.exe",
+          "snapshot",
+          "-R"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1\\frontier"
+      },
+      {
+        "pid": 56352,
+        "created_epoch": 1792982999.7543404,
+        "command": [
+          "xsim.dir/snapshot/xsimk.exe",
+          "-runall",
+          "-simmode",
+          "gui",
+          "-wdb",
+          "snapshot.wdb",
+          "-simrunnum",
+          "0",
+          "-socket",
+          "51984"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_CPU_probe1\\frontier"
+      }
+    ],
+    "actual_rows_so_far": [
+      {
+        "kind": 0,
+        "result": 1,
+        "x": 4049,
+        "y": 3049,
+        "frontier": 2076,
+        "cycles": 10640444,
+        "max_gap": 135396,
+        "checks": 146,
+        "locked": 0,
+        "messages": 4,
+        "call_us": 212808.88,
+        "max_checkpoint_gap_us": 2707.92
+      }
+    ],
+    "zero_commit_result_pending": true,
+    "modelsim_started": false,
+    "full_G2_or_UART_wire_modeled": false
+  },
+  "lease_boundary_rule": "Only previously unlocked continuous actual arrivals strictly below250ms and still fresh precede poll;already latched faults/true arrival gaps/stale processing cannot heal",
+  "no_four_KiB_snapshot": "Original no-IRQ stack holds full queue/score state;only no-op TARGET can continue;other messages cancel and stay in original1100B buffer until frame unwinds",
+  "limitations": [
+    "drain_host_messages retains original until-empty for(;;),not a continuous-RX fairness bound",
+    "other APP/HAL non-yielding paths remain unbounded by this fixture",
+    "kernel compiler/rdcycle observer effects",
+    "synthetic timer/mailbox register service excludes real UART timing/arbitration",
+    "physical500ms standstill not tested"
+  ],
+  "no_board_PNR_SYN_or_original_prepared3_mutation": true,
+  "whole350ms_zero_or500ms_physical_stop_accepted": false
+}
