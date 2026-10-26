@@ -1,0 +1,291 @@
+{
+  "recorded_at": "2026-10-26T12:27:31.725071+08:00",
+  "scope": "Single command_lease_guard paired mapping, exact finite-cycle and mapped-state equivalence only. No jointG2 SYN/PNR, SRAM or physical timing/stop acceptance.",
+  "input_candidate": "F:\\nav_integration_g2_20261023\\lease_deadline_bounded_tree_candidate1\\command_lease_guard.v",
+  "delta": "F:\\nav_integration_g2_20261023\\lease_deadline_bounded_tree_candidate1\\delta.patch",
+  "source_delta": "Only lease deadline all1 check uses11 explicit public LUT primitives in3 levels. Preserve original counter, all32bit wrap, timeout0 arithmetic/XZ fallback, output schedule, priority and ramp.",
+  "parameter_proof": {
+    "passed": true,
+    "status": "unsat",
+    "known_age_values": 4294967296,
+    "known_parameter_bit_patterns": 4294967296,
+    "no_reachability_assumption": true,
+    "timeout0_retains_original_arithmetic_for_four_state_behavior": true
+  },
+  "focused_cycle": {
+    "passed": true,
+    "summary": "LEASE_DEADLINE_COMPARE_PASS contracts=23 compared_cycles=3123 math_parameter_XZ_cases=225",
+    "public_vendor_models_unmodified": true,
+    "no_force": true,
+    "scaled_guard_clock_parameter": 4000,
+    "production_model_probe3_clock_not_modified": true,
+    "physical_guard_timeout_or_stop_latency_not_accepted": true,
+    "full_model_probe3_untouched": true
+  },
+  "actual_completed_small_SYN": [
+    {
+      "profile": "reference",
+      "PID": 52828,
+      "created_epoch": 1792988574.583712,
+      "completed_at": "2026-10-26T12:23:00.012474+08:00",
+      "exit_code": 0,
+      "admission": {
+        "physical_bytes": 3273682944,
+        "available_commit_bytes": 3443511296
+      },
+      "max_runtime_seconds": 2400
+    },
+    {
+      "profile": "bounded_tree",
+      "PID": 65364,
+      "created_epoch": 1792988580.0160067,
+      "completed_at": "2026-10-26T12:23:05.507655+08:00",
+      "exit_code": 0,
+      "admission": {
+        "physical_bytes": 3161522176,
+        "available_commit_bytes": 3361738752
+      },
+      "max_runtime_seconds": 2400
+    }
+  ],
+  "input_scope": {
+    "only_selected_RTL": [
+      "guard.v",
+      "top.v"
+    ],
+    "only_SDC": "clock.sdc",
+    "full_G2_or_assets": false,
+    "production_clock_hz": 50000000,
+    "original_timeout_ms": 200,
+    "identical_input_launch_FFs": 100,
+    "sequential_tools": true
+  },
+  "actual_resources_before": {
+    "g2_top": {
+      "name": "g2_top",
+      "Register": "100",
+      "T_Register": "372(100)",
+      "T_Alu": "128(0)",
+      "T_Lut": "703(0)"
+    },
+    "g2_top/dut": {
+      "name": "dut",
+      "Register": "272",
+      "Alu": "128",
+      "Lut": "703",
+      "T_Register": "272(272)",
+      "T_Alu": "128(128)",
+      "T_Lut": "703(703)"
+    }
+  },
+  "actual_resources_after": {
+    "g2_top": {
+      "name": "g2_top",
+      "Register": "100",
+      "T_Register": "372(100)",
+      "T_Alu": "128(0)",
+      "T_Lut": "704(0)"
+    },
+    "g2_top/dut": {
+      "name": "dut",
+      "Register": "272",
+      "Alu": "128",
+      "Lut": "704",
+      "T_Register": "272(272)",
+      "T_Alu": "128(128)",
+      "T_Lut": "704(704)"
+    }
+  },
+  "actual_guard_equivalence": {
+    "passed": true,
+    "guard_FFs": 272,
+    "launch_FFs": 100,
+    "total_FFs": 372,
+    "sat_calls": 267,
+    "actual_FF_kind_INIT_and_clocks_same": true,
+    "actual_wrapper_ports_and_nonLUT_cells_same": true,
+    "public_output_bits": 147,
+    "scope": "Every mapped lease FF prestate and external input in this complete guard wrapper; no fullG2 physical or numerical claim.",
+    "detail": "F:\\nav_integration_g2_20261023\\lease_deadline_bounded_tree_actual_equivalence2\\result.json"
+  },
+  "actual_MAX_topology": {
+    "passed": true,
+    "explicit_LUTs": 11,
+    "actual_age_Q_to_root_levels": 3,
+    "direct_groups": true,
+    "actual_NAND32_miter_unsat": true,
+    "root_net": "dut/g_deadline_nonzero.nonmax32",
+    "root_actual_loads": [
+      [
+        "dut/n2395_s5",
+        "I1",
+        0
+      ]
+    ],
+    "output_reachability": {
+      "forward": {
+        "D": 24,
+        "CE": 0
+      },
+      "yaw": {
+        "D": 24,
+        "CE": 1
+      }
+    },
+    "output_functional_sensitivity": {
+      "forward": {
+        "D": 24,
+        "CE": 0
+      },
+      "yaw": {
+        "D": 24,
+        "CE": 1
+      }
+    },
+    "reference_small_MAX_depth": 3,
+    "reference_small_MAX_full32_support": [
+      {
+        "instance": "dut/age_ms_31_s5",
+        "kind": "LUT4",
+        "actual_ports": {
+          "F": [
+            "dut/age_ms_31_7"
+          ],
+          "I0": [
+            "dut/n998_9"
+          ],
+          "I1": [
+            "dut/age_ms_31_8"
+          ],
+          "I2": [
+            "dut/age_ms_31_9"
+          ],
+          "I3": [
+            "dut/age_ms_31_14"
+          ]
+        },
+        "parameters": {
+          "INIT": "16'h8000"
+        },
+        "age_bit_support": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31
+        ],
+        "LUT_levels": 3,
+        "in_output_D_or_CE_cones": true
+      }
+    ],
+    "candidate_pure_AND_max_levels_before_NAND": 2,
+    "detail": "F:\\nav_integration_g2_20261023\\lease_deadline_bounded_tree_candidate1\\actual_tree_topology.json"
+  },
+  "single_guard_first_estimated_path_before": {
+    "Slack": "7.671",
+    "Data Arrival Time": "12.643",
+    "Data Required Time": "20.314",
+    "From": "dut/age_ms_3_s1",
+    "To": "dut/out_yaw_q12_3_s1",
+    "Launch Clk": "clk[R]",
+    "Latch Clk": "clk[R]"
+  },
+  "single_guard_first_estimated_path_after": {
+    "Slack": "6.725",
+    "Data Arrival Time": "13.589",
+    "Data Required Time": "20.314",
+    "From": "dut/age_ms_0_s1",
+    "To": "dut/out_yaw_q12_2_s1",
+    "Launch Clk": "clk[R]",
+    "Latch Clk": "clk[R]"
+  },
+  "result_interpretation": "Explicit3level NAND32 mapping and actual state equivalence pass, but smallreference already had3level AND32 and new firstarrival12.643→13.589ns is worse. This wrapper retains272guardFF/full148outputs unlike wholeG2 lease200FF, so it does not reproduce SYN35 12level prefix. Long output-ramp ALU/control chain remains. Do not claim overall timing improvement,12→3level joint improvement,route failure cause or a PNR-ready optimization from this result.",
+  "recommendation": "Do not directly start full SYN or PNR from this result. Retain as a verified structural option; choose any next candidate from wholeG2 actual cones and prove actual mapping/priority again.",
+  "preserved_first_checker_failures": [
+    {
+      "path": "F:/nav_integration_g2_20261023/lease_deadline_bounded_tree_actual_equivalence1/failed.json",
+      "reason": "Expected byte equality rejected Windows CRLF copy; normalized decoded text exactly equal, no source/logic relaxation or rebuild"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\lease_deadline_bounded_tree_candidate1\\actual_tree_topology_failed.json",
+      "reason": "z3.simplify did not canonicalize miter to literalfalse; corrected to actual SAT UNSAT proof, no source mutation or synthesis retry"
+    }
+  ],
+  "small_admission_adjustment": {
+    "joint_threshold_unchanged": true,
+    "small_only_phys_GiB": 2,
+    "small_only_commit_GiB": 3,
+    "prior_wait_controller": "F:\\nav_integration_g2_20261023\\lease_deadline_bounded_tree_candidate1\\first_wait_controller_identity_and_adjustment.json",
+    "resumed_controller": "F:\\nav_integration_g2_20261023\\lease_deadline_bounded_tree_candidate1\\resumed_controller_identity.json",
+    "only_waiting_owned_controller_changed": true,
+    "SYN_max_minutes": 40,
+    "original_two_sample_runtime_memory_policy_preserved": true
+  },
+  "full_production_probe3_untouched": true,
+  "new_joint_SYN_PNR": false,
+  "programmed": false,
+  "bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\lease_deadline_bounded_tree_candidate1\\command_lease_guard.v",
+      "bytes": 5692,
+      "mtime_ns": 1792988262396258400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\lease_deadline_bounded_tree_candidate1\\reference\\impl\\gwsynthesis\\g2_top.vg",
+      "bytes": 231687,
+      "mtime_ns": 1792988579609125200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\lease_deadline_bounded_tree_candidate1\\bounded_tree\\impl\\gwsynthesis\\g2_top.vg",
+      "bytes": 233944,
+      "mtime_ns": 1792988585078447300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\lease_deadline_bounded_tree_candidate1\\math_proof.json",
+      "bytes": 541,
+      "mtime_ns": 1792988262424915900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\lease_deadline_bounded_tree_candidate1\\focused_cycle_result.json",
+      "bytes": 386,
+      "mtime_ns": 1792988574580234600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\lease_deadline_bounded_tree_actual_equivalence2\\result.json",
+      "bytes": 764264,
+      "mtime_ns": 1792988643663497200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\lease_deadline_bounded_tree_candidate1\\actual_tree_topology.json",
+      "bytes": 638624,
+      "mtime_ns": 1792988731578598600
+    }
+  ]
+}
