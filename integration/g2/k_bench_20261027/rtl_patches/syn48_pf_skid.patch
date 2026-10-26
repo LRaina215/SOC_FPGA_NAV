@@ -1,0 +1,40 @@
+--- a/nav/rtl/top/nav_subsystem.v (K_timing_syn47)
++++ b/nav/rtl/top/nav_subsystem.v (K_timing_syn48)
+@@ -303,16 +303,34 @@
+     wire signed [31:0] pf_cx, pf_cy;
+     wire [13:0] pf_cov_addr;
+     wire pf_cov_upd;
++    wire        pf0_valid, pf0_ready, pf0_upd, pf0_sof, pf0_eof;
++    wire [13:0] pf0_addr;
++    wire [7:0]  pf0_tag;
++    wire signed [15:0] pf0_z;
++    wire signed [31:0] pf0_cx, pf0_cy;
++    wire [13:0] pf0_cov_addr;
++    wire pf0_cov_upd;
+     pc_filter u_pf (
+         .clk(clk), .rst(rst), .cfg_inv_res(r_MAP_INV_RES[15:0]), .cfg_cx(r_MAP_CENTER_X), .cfg_cy(r_MAP_CENTER_Y),
+         .cfg_zmin(r_LIDAR_ZBAND[15:0]), .cfg_zmax(r_LIDAR_ZBAND[31:16]),
+         .s_valid(pt_valid), .s_ready(pt_ready), .s_x(pt_x), .s_y(pt_y), .s_z(pt_z), .s_pv(pt_pv),
+         .s_sof(pt_sof), .s_eof(pt_eof),
+-        .m_valid(pf_valid), .m_ready(pf_ready), .m_upd(pf_upd), .m_addr(pf_addr), .m_tag(pf_tag), .m_z(pf_z),
+-        .m_sof(pf_sof), .m_eof(pf_eof), .m_cx(pf_cx), .m_cy(pf_cy),
+-        .m_cov_addr(pf_cov_addr),.m_cov_upd(pf_cov_upd),
++        .m_valid(pf0_valid), .m_ready(pf0_ready), .m_upd(pf0_upd), .m_addr(pf0_addr), .m_tag(pf0_tag), .m_z(pf0_z),
++        .m_sof(pf0_sof), .m_eof(pf0_eof), .m_cx(pf0_cx), .m_cy(pf0_cy),
++        .m_cov_addr(pf0_cov_addr),.m_cov_upd(pf0_cov_upd),
+         .stat_upd(i_MAP_STAT_UPD), .stat_drop(i_MAP_STAT_DROP)
+     );
++    // Register slice between the filter and the map/coverage join, so the
++    // consumers' ready no longer reaches back through pc_filter/pc_transform.
++    nav_skid #(.DW(120)) u_pf_skid (
++        .clk(clk), .rst(rst),
++        .s_valid(pf0_valid),
++        .s_data({pf0_upd, pf0_addr, pf0_tag, pf0_z, pf0_sof, pf0_eof, pf0_cx, pf0_cy, pf0_cov_addr, pf0_cov_upd}),
++        .s_ready(pf0_ready),
++        .m_valid(pf_valid),
++        .m_data({pf_upd, pf_addr, pf_tag, pf_z, pf_sof, pf_eof, pf_cx, pf_cy, pf_cov_addr, pf_cov_upd}),
++        .m_ready(pf_ready)
++    );
+ 
+     // ================================================================ 地图
+     wire        cm_a_re;

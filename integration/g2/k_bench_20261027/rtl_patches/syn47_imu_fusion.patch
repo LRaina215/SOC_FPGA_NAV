@@ -1,0 +1,53 @@
+--- a/control/imu_fusion.v (SYN45)
++++ b/control/imu_fusion.v (K_timing_syn47)
+@@ -116,6 +116,12 @@
+     output reg accel_rejected = 0
+ );
+     localparam GYRO_SHIFT = 10;
++    // bmi088 updates all six axes only together with sample_valid, and state 6
++    // runs more than 90 clocks after the sample is taken, so a one-clock-old
++    // copy of the rotation gate equals the live expression there.
++    reg gyro_still_q = 1'b0;
++    always @(posedge clk)
++        gyro_still_q <= (abs16(gyro_x) + abs16(gyro_y) + abs16(gyro_z)) < GYRO_MOVE_LIMIT;
+     reg [31:0] sample_clock, last_sample_clock, integration_ticks;
+     always @(posedge clk or negedge rst_n) begin
+         if (!rst_n) begin
+@@ -172,6 +178,7 @@
+     reg signed [23:0] nx, ny, nz;       // normalized accel direction, F12
+     reg signed [31:0] avx, avy, avz;
+     reg [31:0] mag32;
++    reg [23:0] ab_x, ab_y, ab_z;        // |eg*|, registered before the renormalize squares
+ 
+     function [31:0] abs16;
+         input signed [15:0] v;
+@@ -313,8 +320,7 @@
+             // ---- is the accelerometer usable for THIS sample? ----
+             5'd6: begin
+                 if (mag32 > ACCEL_MIN && mag32 < ACCEL_MAX && mag32 != 0
+-                    && (abs16(gyro_x) + abs16(gyro_y) + abs16(gyro_z))
+-                       < GYRO_MOVE_LIMIT) begin
++                    && gyro_still_q) begin
+                     recip_d <= mag32;
+                     recip_start <= 1'b1;
+                     st <= 5'd7;
+@@ -354,9 +360,16 @@
+             // Components are F12 (|v| <= 4096), so each square is <= 2^24 and
+             // the 64-bit sum cannot overflow.
+             5'd9: begin
+-                norm_square_x<=abs24(egx) * abs24(egx);
+-                norm_square_y<=abs24(egy) * abs24(egy);
+-                norm_square_z<=abs24(egz) * abs24(egz);
++                ab_x <= abs24(egx);
++                ab_y <= abs24(egy);
++                ab_z <= abs24(egz);
++                st <= 5'd17;
++            end
++
++            5'd17: begin
++                norm_square_x<=ab_x * ab_x;
++                norm_square_y<=ab_y * ab_y;
++                norm_square_z<=ab_z * ab_z;
+                 sqrt_start <= 1'b1;
+                 st <= 5'd10;
+             end

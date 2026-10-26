@@ -1,0 +1,25 @@
+--- a/nav/rtl/net/rgmii_mac100.v (K_timing_syn47)
++++ b/nav/rtl/net/rgmii_mac100.v (K_timing_syn48)
+@@ -66,15 +66,19 @@
+     reg [1:0] neg_s;
+     always @(posedge rgmii_rxc) begin rxd_p <= rgmii_rxd; dv_p <= rgmii_rx_ctl; neg_s <= {neg_s[0], rx_neg}; end
+     always @(negedge rgmii_rxc) begin rxd_n <= rgmii_rxd; ctl_n <= rgmii_rx_ctl; end
+-    wire [3:0] rxd_s = neg_s[1] ? rxd_n : rxd_p;
+-    wire       dv_s  = neg_s[1] ? ctl_n : dv_p;
++    wire [3:0] rxd_c = neg_s[1] ? rxd_n : rxd_p;
++    wire       dv_c  = neg_s[1] ? ctl_n : dv_p;
++    wire       rer_c = !neg_s[1] && (dv_p ^ ctl_n);  // 上升沿模式：同一拍上升沿 RX_DV、下降沿 RX_DV ^ RX_ER
++    // 选沿结果再打一拍：下降沿采样到 CRC 只剩半个周期，整条接收流统一晚一拍
++    reg [3:0]  rxd_s;
++    reg        dv_s, rer;
++    always @(posedge rgmii_rxc) begin rxd_s <= rxd_c; dv_s <= dv_c; rer <= rer_c; end
+     localparam [1:0] R_IDLE = 2'd0, R_PRE = 2'd1, R_DATA = 2'd2, R_BAD = 2'd3;
+     reg [1:0]  rs;
+     reg        nib, rerr, hold_v;
+     reg [3:0]  lo;
+     reg [7:0]  hold_d;
+     reg [31:0] rcrc;
+-    wire       rer = !neg_s[1] && (dv_p ^ ctl_n);   // 上升沿模式：同一拍上升沿 RX_DV、下降沿 RX_DV ^ RX_ER
+     always @(posedge rgmii_rxc) begin
+         rx_valid <= 1'b0;
+         case (rs)
