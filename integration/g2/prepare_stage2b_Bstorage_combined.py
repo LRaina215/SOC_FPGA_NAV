@@ -42,6 +42,23 @@ def merge_disjoint(base,variants):
     return ''.join(result),[dict(old_first_line=i+1,old_stop_line=j,new_lines=len(r),contributors=o)for i,j,r,o in edits]
 
 
+def storage_payload():
+    """Pure10-file storage delta; this function never prepares a256-bit build."""
+    common='nav/rtl/common/nav_ram_sdp.v';match='nav/rtl/match/slf_match.v';top='nav/rtl/top/nav_subsystem.v'
+    host='nav/rtl/net/host_mbx.v';merged={};details={}
+    assert (TX/host).read_bytes()==(CONSOLE/host).read_bytes()
+    merged[common]=point_transform((STORES/common).read_text(encoding='utf-8'))
+    for rel,variants in (
+        (match,[('point ownership',(OWNER/match).read_text(encoding='utf-8')),('slist/trig opt-in',(STORES/match).read_text(encoding='utf-8'))]),
+        (top,[('point raw ownership',(OWNER/top).read_text(encoding='utf-8')),('TXshadow read gating',(TX/top).read_text(encoding='utf-8'))]),
+    ):
+        merged[rel],details[rel]=merge_disjoint((SOURCE/rel).read_text(encoding='utf-8'),variants)
+    for rel,root in ((host,TX),('nav/rtl/lidar/xt_frame_rx.v',OWNER),('nav/rtl/soc/nav_soc.v',CONSOLE),('fixed4500_weight_rom.v',WEIGHT),('nav/rtl/map/trav_v3.v',STORES),('nav/rtl/plan/traj_eval.v',STORES),('fc_v4_top.v',STORES)):
+        merged[rel]=(root/rel).read_text(encoding='utf-8')
+    assert len(merged)==10
+    return merged,details
+
+
 def prepare(out):
     # This explicit environmental fence is read-only. It is not an EDA launch.
     import psutil
@@ -111,7 +128,7 @@ def prepare(out):
         if old.suffix.lower()in{'.hex','.mem','.bin','.mif'}:
             assert p.exists() and old.read_bytes()==p.read_bytes(),('old asset altered',rel)
             assets.append(str(rel))
-        if old.suffix.lower()in{'.vh','.svh'}:
+        if old.suffix.lower()in{'.h','.vh','.svh'}:
             assert p.exists() and old.read_bytes()==p.read_bytes(),('header altered',rel);headers.append(str(rel))
         if rel.parts[0]=='fw':
             assert p.exists() and old.read_bytes()==p.read_bytes(),('FW altered',rel);firmware.append(str(rel))

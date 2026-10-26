@@ -1,0 +1,452 @@
+{
+  "recorded_at": "2026-10-26T19:18:17.294487+08:00",
+  "passed": true,
+  "stage": "limited stage2 RTL/C contracts; not joint synthesis or deployment",
+  "production_SLF_LOG2N": 7,
+  "SLF256_only_validation_control": true,
+  "records": [
+    {
+      "output": "F:\\nav_integration_g2_20261023\\stage2_SLF128_frontend_probe1",
+      "result": {
+        "path": "F:\\nav_integration_g2_20261023\\stage2_SLF128_frontend_probe1\\result.json",
+        "bytes": 4569,
+        "mtime_ns": 1793012471988021300
+      },
+      "passed": true,
+      "counts": null,
+      "markers": [
+        "TEST PASSED SLF FRONTEND checks=149 issued_cycles=2 highbits=18 staleACKalignments=8",
+        "$finish called at time : 3071 ns : File \"F:/nav_integration_g2_20261023/stage2_SLF128_frontend_probe1/tb_frontend.sv\" Line 55"
+      ],
+      "proof_scope": [
+        "literal frontend or isolated matcher RTL only; not whole G2/CPU/physical timing"
+      ]
+    },
+    {
+      "output": "F:\\nav_integration_g2_20261023\\stage2_SLF128_bitwise_probe2",
+      "result": {
+        "path": "F:\\nav_integration_g2_20261023\\stage2_SLF128_bitwise_probe2\\result.json",
+        "bytes": 6256,
+        "mtime_ns": 1793012653970328700
+      },
+      "passed": true,
+      "counts": null,
+      "markers": [
+        "SLF_TIMING points=1097 candidates=245 cycles=410665 us_at_50MHz=8213.300000",
+        "帧0 打分一致（245 候选）",
+        "帧0 结构图一致",
+        "SLF_TIMING points=795 candidates=245 cycles=593689 us_at_50MHz=11873.780000",
+        "帧1 打分一致（245 候选）",
+        "帧1 结构图一致",
+        "SLF_TIMING points=494 candidates=245 cycles=1150315 us_at_50MHz=23006.300000",
+        "帧2 打分一致（245 候选）",
+        "帧2 结构图一致",
+        "SLF_TIMING points=745 candidates=245 cycles=2130859 us_at_50MHz=42617.180000",
+        "帧3 打分一致（245 候选）",
+        "帧3 结构图一致",
+        "SLF_TIMING points=892 candidates=245 cycles=3003157 us_at_50MHz=60063.140000",
+        "帧4 打分一致（245 候选）",
+        "帧4 结构图一致",
+        "SLF_TIMING points=745 candidates=245 cycles=2338129 us_at_50MHz=46762.580000",
+        "有图帧3 打分一致（���������）",
+        "SLF_TIMING points=892 candidates=245 cycles=3086947 us_at_50MHz=61738.940000",
+        "有图帧4 打分一致（ ��������）",
+        "TEST PASSED",
+        "$finish called at time : 267407751 ns : File \"F:/nav_integration_g2_20261023/stage2_SLF128_bitwise_probe2/tb.sv\" Line 197"
+      ],
+      "proof_scope": [
+        "literal frontend or isolated matcher RTL only; not whole G2/CPU/physical timing"
+      ]
+    },
+    {
+      "output": "F:\\nav_integration_g2_20261023\\stage2_SLF256_bitwise_control_probe1",
+      "result": {
+        "path": "F:\\nav_integration_g2_20261023\\stage2_SLF256_bitwise_control_probe1\\result.json",
+        "bytes": 7418,
+        "mtime_ns": 1793012767319428400
+      },
+      "passed": true,
+      "counts": null,
+      "markers": [
+        "SLF_TIMING points=1097 candidates=245 cycles=410665 us_at_50MHz=8213.300000",
+        "帧0 打分一致（245 候选）",
+        "帧0 结构图一致",
+        "SLF_TIMING points=795 candidates=245 cycles=593689 us_at_50MHz=11873.780000",
+        "帧1 打分一致（245 候选）",
+        "帧1 结构图一致",
+        "SLF_TIMING points=494 candidates=245 cycles=1229695 us_at_50MHz=24593.900000",
+        "帧2 打分一致（245 候选）",
+        "帧2 结构图一致",
+        "SLF_TIMING points=745 candidates=245 cycles=2761489 us_at_50MHz=55229.780000",
+        "帧3 打分一致（245 候选）",
+        "帧3 结构图一致",
+        "SLF_TIMING points=892 candidates=245 cycles=4092427 us_at_50MHz=81848.540000",
+        "帧4 打分一致（245 候选）",
+        "帧4 结构图一致",
+        "SLF_TIMING points=745 candidates=245 cycles=3361249 us_at_50MHz=67224.980000",
+        "有图帧3 打分一致（���������）",
+        "SLF_TIMING points=892 candidates=245 cycles=4299697 us_at_50MHz=85993.940000",
+        "有图帧4 打分一致（ ��������）",
+        "TEST PASSED",
+        "$finish called at time : 378699991 ns : File \"F:/nav_integration_g2_20261023/stage2_SLF256_bitwise_control_probe1/tb.sv\" Line 197"
+      ],
+      "proof_scope": [
+        "literal frontend or isolated matcher RTL only; not whole G2/CPU/physical timing"
+      ]
+    },
+    {
+      "output": "F:\\nav_integration_g2_20261023\\stage2_SLF128_FW_components_probe2",
+      "result": {
+        "path": "F:\\nav_integration_g2_20261023\\stage2_SLF128_FW_components_probe2\\result.json",
+        "bytes": 3644,
+        "mtime_ns": 1793012883007725000
+      },
+      "passed": true,
+      "counts": {
+        "cases": 29,
+        "writes": 34,
+        "clears": 28,
+        "enables": 9,
+        "zsets": 1
+      },
+      "markers": null,
+      "proof_scope": [
+        "full nav_app host dispatch/real RK end-to-end",
+        "Pico firmware/busy stop latency",
+        "actual MMIO side-effect latency",
+        "physical mapping/INIT/timing/board"
+      ]
+    },
+    {
+      "output": "F:\\nav_integration_g2_20261023\\stage2_SLF128_forward_HAL_math_probe1",
+      "result": {
+        "path": "F:\\nav_integration_g2_20261023\\stage2_SLF128_forward_HAL_math_probe1\\result.json",
+        "bytes": 3261,
+        "mtime_ns": 1793013446282507900
+      },
+      "passed": true,
+      "counts": {
+        "calls": 6291456,
+        "all_yaw": 65536,
+        "distances": 6,
+        "inverse_values": 4,
+        "center_pairs": 4,
+        "trig_checks": 131072,
+        "tie_checks": 25,
+        "map_center_commits": 8,
+        "forward_MAP_CENTER_writes": 0
+      },
+      "markers": null,
+      "proof_scope": [
+        "full CPU/RK path or busy stop latency",
+        "actual bus order/timing beyond observed MMIO call sequence",
+        "physical mapping/timing/board"
+      ]
+    }
+  ],
+  "original_process_identities": [
+    {
+      "pid": 43900,
+      "created_epoch": 1793012463.7788188,
+      "role": "F:\\nav_integration_g2_20261023\\stage2_SLF128_frontend_probe1 wrapper",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 56208,
+      "created_epoch": 1793012463.7955632,
+      "role": "conhost.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 68332,
+      "created_epoch": 1793012464.7907813,
+      "role": "xvlog.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 4448,
+      "created_epoch": 1793012465.8354805,
+      "role": "F:\\nav_integration_g2_20261023\\stage2_SLF128_frontend_probe1 wrapper",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 62484,
+      "created_epoch": 1793012465.8416653,
+      "role": "conhost.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 60232,
+      "created_epoch": 1793012466.7546136,
+      "role": "xelab.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 69184,
+      "created_epoch": 1793012467.8933456,
+      "role": "F:\\nav_integration_g2_20261023\\stage2_SLF128_frontend_probe1 wrapper",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 48532,
+      "created_epoch": 1793012467.901472,
+      "role": "conhost.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 37692,
+      "created_epoch": 1793012468.9014544,
+      "role": "xsim.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 13188,
+      "created_epoch": 1793012469.869822,
+      "role": "xsimk.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 40212,
+      "created_epoch": 1793012469.9833956,
+      "role": "conhost.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 36044,
+      "created_epoch": 1793012585.4386337,
+      "role": "F:\\nav_integration_g2_20261023\\stage2_SLF128_bitwise_probe2 wrapper",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 28140,
+      "created_epoch": 1793012585.4530292,
+      "role": "conhost.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 61584,
+      "created_epoch": 1793012587.5015645,
+      "role": "F:\\nav_integration_g2_20261023\\stage2_SLF128_bitwise_probe2 wrapper",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 63144,
+      "created_epoch": 1793012587.51483,
+      "role": "conhost.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 28416,
+      "created_epoch": 1793012588.488066,
+      "role": "xelab.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 45360,
+      "created_epoch": 1793012592.6028163,
+      "role": "cmd.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 16272,
+      "created_epoch": 1793012592.6243982,
+      "role": "gcc.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 36200,
+      "created_epoch": 1793012593.6917133,
+      "role": "F:\\nav_integration_g2_20261023\\stage2_SLF128_bitwise_probe2 wrapper",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 46684,
+      "created_epoch": 1793012593.7060032,
+      "role": "conhost.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 47276,
+      "created_epoch": 1793012594.9882996,
+      "role": "xsim.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 28304,
+      "created_epoch": 1793012653.9934075,
+      "role": "F:\\nav_integration_g2_20261023\\stage2_SLF256_bitwise_control_probe1 wrapper",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 49944,
+      "created_epoch": 1793012654.0003595,
+      "role": "conhost.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 54620,
+      "created_epoch": 1793012658.0963168,
+      "role": "F:\\nav_integration_g2_20261023\\stage2_SLF256_bitwise_control_probe1 wrapper",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 60232,
+      "created_epoch": 1793012658.1134489,
+      "role": "conhost.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 18668,
+      "created_epoch": 1793012659.0605714,
+      "role": "xvlog.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 5912,
+      "created_epoch": 1793012660.1648989,
+      "role": "F:\\nav_integration_g2_20261023\\stage2_SLF256_bitwise_control_probe1 wrapper",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 25636,
+      "created_epoch": 1793012660.171719,
+      "role": "conhost.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 45400,
+      "created_epoch": 1793012661.0337522,
+      "role": "xelab.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 32056,
+      "created_epoch": 1793012665.2893295,
+      "role": "F:\\nav_integration_g2_20261023\\stage2_SLF256_bitwise_control_probe1 wrapper",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 26412,
+      "created_epoch": 1793012665.2961233,
+      "role": "conhost.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 30824,
+      "created_epoch": 1793012666.288156,
+      "role": "xsim.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 59472,
+      "created_epoch": 1793012666.827026,
+      "role": "xsimk.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 708,
+      "created_epoch": 1793012666.9681003,
+      "role": "conhost.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 47724,
+      "created_epoch": 1793012881.6373384,
+      "role": "F:\\nav_integration_g2_20261023\\stage2_SLF128_FW_components_probe2 controller",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 50656,
+      "created_epoch": 1793012881.8390875,
+      "role": "F:\\nav_integration_g2_20261023\\stage2_SLF128_FW_components_probe2 tool",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 16380,
+      "created_epoch": 1793012882.8319285,
+      "role": "F:\\nav_integration_g2_20261023\\stage2_SLF128_FW_components_probe2 tool",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 66108,
+      "created_epoch": 1793013445.3261945,
+      "role": "F:\\nav_integration_g2_20261023\\stage2_SLF128_forward_HAL_math_probe1 controller",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 25468,
+      "created_epoch": 1793013445.4812164,
+      "role": "F:\\nav_integration_g2_20261023\\stage2_SLF128_forward_HAL_math_probe1 tool",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 29900,
+      "created_epoch": 1793013446.0466268,
+      "role": "F:\\nav_integration_g2_20261023\\stage2_SLF128_forward_HAL_math_probe1 tool",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 39560,
+      "created_epoch": 1793012463.548214,
+      "role": "stage2_SLF128_targeted_validation1 controller",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 7384,
+      "created_epoch": 1793012585.171061,
+      "role": "stage2_SLF128_targeted_validation2 controller",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 69052,
+      "created_epoch": 1793012842.5891616,
+      "role": "stage2_SLF128_FW_components_probe1 controller",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 22684,
+      "created_epoch": 1793012291.12662,
+      "role": "stage2_SLF128_safeFW_RV_compile1 controller",
+      "original_identity_exited": true
+    }
+  ],
+  "all_original_tools_exited": true,
+  "all_tools_admitted_2GiB_physical_4GiB_commit": true,
+  "first_fixture_failures_preserved": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\stage2_SLF128_bitwise_probe1",
+      "reason": "Windows .bat generic argument split before elaboration; no RTL simulation entered; explicit fixed wrapper in probe2 only"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\stage2_SLF128_FW_components_probe1",
+      "reason": "native PE linker retained unrelated nav_app functions; missing full-app dependencies, no test run; probe2 uses literal public-setter cut with explicit substitutes"
+    }
+  ],
+  "reference_source": "F:\\nav_integration_g2_20261023\\stage2_SLF128_forward_safeFW_prepared7",
+  "safety_source": "F:\\nav_integration_g2_20261023\\stage2_SLF128_forward_safeFW_prepared8",
+  "matcher_inputs_and_all_FW_identical_between7_8": true,
+  "safety_rebase": {
+    "path": "F:\\nav_integration_g2_20261023\\stage2_SLF128_forward_safeFW_prepared8\\safety_rebase_review.json",
+    "bytes": 1744,
+    "mtime_ns": 1793013325318980600
+  },
+  "target_matcher_scope": {
+    "frames": 5,
+    "candidates_per_frame": 245,
+    "all_map_words_per_frame_128": 16384,
+    "all_map_words_per_frame_256": 65536,
+    "full_CLEAR_including_highest_slot": true,
+    "prior_scoring_and_UPDATE_hold": true,
+    "LF_centers_changed_after_UPDATE_accept_and_snapshot_preserved": true,
+    "negative_world_coordinates_wrap_tags": true
+  },
+  "remaining": [
+    "whole new safe FW on actual Pico with populated map/busy A-star and RK feedback/stop/independent ESTOP",
+    "new CPU INIT reconstructed and bound into the final storage candidate",
+    "unique joint actual memory primitives/INIT/CEB/reset/2 clocks/CDC/fanout/timing/IO",
+    "all target clocks setup/hold, successful routing and board/physical stopping"
+  ],
+  "SYN_started": false,
+  "PNR_started": false,
+  "programmed": false
+}

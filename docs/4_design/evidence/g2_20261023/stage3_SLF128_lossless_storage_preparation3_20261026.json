@@ -1,0 +1,181 @@
+{
+  "combined_source": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared3",
+  "composition": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared3\\composition_review.json",
+  "final_cpu_bound_source": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared5",
+  "firmware_binding": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared5\\firmware_binding_review.json",
+  "source_files": 63,
+  "changed_RTL_relative_to128": [
+    "fc_v4_top.v",
+    "fixed4500_weight_rom.v",
+    "nav/rtl/common/nav_ram_sdp.v",
+    "nav/rtl/lidar/xt_frame_rx.v",
+    "nav/rtl/map/trav_v3.v",
+    "nav/rtl/match/slf_match.v",
+    "nav/rtl/net/host_mbx.v",
+    "nav/rtl/plan/traj_eval.v",
+    "nav/rtl/soc/nav_soc.v",
+    "nav/rtl/top/nav_subsystem.v"
+  ],
+  "changed_RTL_relative_to_SYN40": [
+    "fc_v4_top.v",
+    "fixed4500_weight_rom.v",
+    "g2_top.v",
+    "nav/rtl/common/nav_async_fifo.v",
+    "nav/rtl/common/nav_ram_sdp.v",
+    "nav/rtl/lidar/xt_frame_rx.v",
+    "nav/rtl/map/trav_v3.v",
+    "nav/rtl/match/slf_lf.v",
+    "nav/rtl/match/slf_match.v",
+    "nav/rtl/net/host_mbx.v",
+    "nav/rtl/net/rgmii_mac100.v",
+    "nav/rtl/plan/traj_eval.v",
+    "nav/rtl/regs/nav_regfile.v",
+    "nav/rtl/soc/nav_soc.v",
+    "nav/rtl/top/nav_subsystem.v"
+  ],
+  "weight9_INIT_added": 35,
+  "selected128_headers": 38,
+  "selected128_FW_files": 64,
+  "merge_details": {
+    "nav/rtl/common/nav_ram_sdp.v": {
+      "exact_patch_operations": 3
+    },
+    "nav/rtl/match/slf_match.v": {
+      "exact_patch_operations": 23
+    },
+    "nav/rtl/top/nav_subsystem.v": {
+      "exact_patch_operations": 16
+    },
+    "nav/rtl/net/host_mbx.v": {
+      "exact_patch_operations": 1
+    },
+    "nav/rtl/lidar/xt_frame_rx.v": {
+      "exact_patch_operations": 5
+    },
+    "nav/rtl/soc/nav_soc.v": {
+      "exact_patch_operations": 3
+    },
+    "fixed4500_weight_rom.v": {
+      "exact_patch_operations": 1
+    },
+    "nav/rtl/map/trav_v3.v": {
+      "exact_patch_operations": 1
+    },
+    "nav/rtl/plan/traj_eval.v": {
+      "exact_patch_operations": 2
+    },
+    "fc_v4_top.v": {
+      "exact_patch_operations": 1
+    }
+  },
+  "safety_overlay_preserved": {
+    "g2_top.v": "exact selected safe-base bytes",
+    "nav/rtl/common/nav_async_fifo.v": "exact selected safe-base bytes",
+    "nav/rtl/net/rgmii_mac100.v": "exact selected safe-base bytes",
+    "nav/rtl/top/nav_subsystem.v": "invalid IMU read returns0 expression preserved alongside disjoint storage/point deltas"
+  },
+  "source_budget": {
+    "prediction_only": true,
+    "rows": [
+      {
+        "item": "actual SYN40 base",
+        "source": 314,
+        "wide": 18,
+        "physical": 332
+      },
+      {
+        "item": "packed_weight9",
+        "source": -5,
+        "wide": 0,
+        "physical": -5
+      },
+      {
+        "item": "point planes",
+        "source": 0,
+        "wide": -8,
+        "physical": -8
+      },
+      {
+        "item": "SLF structmap64x1024x18 ->16x1024x18",
+        "source": -48,
+        "wide": 0,
+        "physical": -48
+      },
+      {
+        "item": "touch4x16384x1 ->1x16384x1; explicit class retention",
+        "source": -3,
+        "wide": 0,
+        "physical": -3
+      },
+      {
+        "item": "bitmap",
+        "source": 1,
+        "wide": 0,
+        "physical": 1
+      },
+      {
+        "item": "TXshadow512x32",
+        "source": 1,
+        "wide": 1,
+        "physical": 2
+      },
+      {
+        "item": "injection retained distributed",
+        "source": 0,
+        "wide": 0,
+        "physical": 0
+      },
+      {
+        "item": "slist1024x14",
+        "source": 1,
+        "wide": 0,
+        "physical": 1
+      },
+      {
+        "item": "four trig1024x16",
+        "source": 4,
+        "wide": 0,
+        "physical": 4
+      },
+      {
+        "item": "four console1024x8",
+        "source": 4,
+        "wide": 0,
+        "physical": 4
+      },
+      {
+        "item": "bias425x26",
+        "source": 1,
+        "wide": 1,
+        "physical": 2
+      },
+      {
+        "item": "column scratch not migrated",
+        "source": 0,
+        "wide": 0,
+        "physical": 0
+      }
+    ],
+    "totals": {
+      "source": 270,
+      "wide": 12,
+      "physical": 282
+    },
+    "old_A_all_proposals_migration_physical": 18,
+    "old_B_without_column_migration_physical": 16,
+    "selected_migration_with_injection_retained_physical": 14,
+    "touch_is_existing_BSRAM_class_retention_not_new_optimization": true,
+    "actual_non_camera_BSRAM_limit": 300,
+    "camera_reserved_blocks_at_least": 36,
+    "hard_total_policy": 336,
+    "actual_BSRAM_LUT_FF_CLS": "unknown until authorized combined mapping; no LUT/CLS saving credited for injection or ring a second time"
+  },
+  "CPU_BIN_bytes": 53572,
+  "BSS_bytes": 70004,
+  "static_stack_bound_bytes": 2576,
+  "stack_reserved_bytes": 6144,
+  "remaining_after_stack_bytes": 1348,
+  "SYN_or_PNR_started_by_preparation": false,
+  "actual_primitive_collision_and_resources_pending": true,
+  "resolved_overlap": "slf_match command-accept edge keeps LF center snapshot and point ownership assignments together, with distinct lvalues; all other overlaps rejected."
+}

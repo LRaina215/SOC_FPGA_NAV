@@ -1,0 +1,631 @@
+{
+  "prepared": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared2",
+  "final_for_EDA": false,
+  "base128": "F:\\nav_integration_g2_20261023\\stage2_SLF128_forward_safeFW_prepared7",
+  "SLF_LOG2N": 7,
+  "source_files": 63,
+  "changed_RTL_relative_to128": [
+    "fc_v4_top.v",
+    "fixed4500_weight_rom.v",
+    "nav/rtl/common/nav_ram_sdp.v",
+    "nav/rtl/lidar/xt_frame_rx.v",
+    "nav/rtl/map/trav_v3.v",
+    "nav/rtl/match/slf_match.v",
+    "nav/rtl/net/host_mbx.v",
+    "nav/rtl/plan/traj_eval.v",
+    "nav/rtl/soc/nav_soc.v",
+    "nav/rtl/top/nav_subsystem.v"
+  ],
+  "unmodified128_headers": 38,
+  "unmodified128_FW_files": 64,
+  "inherited_assets_byte_identical": 69,
+  "weight9_INIT_added": 35,
+  "source_budget": {
+    "prediction_only": true,
+    "rows": [
+      {
+        "item": "actual SYN40 base",
+        "source": 314,
+        "wide": 18,
+        "physical": 332
+      },
+      {
+        "item": "packed_weight9",
+        "source": -5,
+        "wide": 0,
+        "physical": -5
+      },
+      {
+        "item": "point planes",
+        "source": 0,
+        "wide": -8,
+        "physical": -8
+      },
+      {
+        "item": "SLF structmap64x1024x18 ->16x1024x18",
+        "source": -48,
+        "wide": 0,
+        "physical": -48
+      },
+      {
+        "item": "touch4x16384x1 ->1x16384x1; explicit class retention",
+        "source": -3,
+        "wide": 0,
+        "physical": -3
+      },
+      {
+        "item": "bitmap",
+        "source": 1,
+        "wide": 0,
+        "physical": 1
+      },
+      {
+        "item": "TXshadow512x32",
+        "source": 1,
+        "wide": 1,
+        "physical": 2
+      },
+      {
+        "item": "injection retained distributed",
+        "source": 0,
+        "wide": 0,
+        "physical": 0
+      },
+      {
+        "item": "slist1024x14",
+        "source": 1,
+        "wide": 0,
+        "physical": 1
+      },
+      {
+        "item": "four trig1024x16",
+        "source": 4,
+        "wide": 0,
+        "physical": 4
+      },
+      {
+        "item": "four console1024x8",
+        "source": 4,
+        "wide": 0,
+        "physical": 4
+      },
+      {
+        "item": "bias425x26",
+        "source": 1,
+        "wide": 1,
+        "physical": 2
+      },
+      {
+        "item": "column scratch not migrated",
+        "source": 0,
+        "wide": 0,
+        "physical": 0
+      }
+    ],
+    "totals": {
+      "source": 270,
+      "wide": 12,
+      "physical": 282
+    },
+    "old_A_all_proposals_migration_physical": 18,
+    "old_B_without_column_migration_physical": 16,
+    "selected_migration_with_injection_retained_physical": 14,
+    "touch_is_existing_BSRAM_class_retention_not_new_optimization": true,
+    "actual_non_camera_BSRAM_limit": 300,
+    "camera_reserved_blocks_at_least": 36,
+    "hard_total_policy": 336,
+    "actual_BSRAM_LUT_FF_CLS": "unknown until authorized combined mapping; no LUT/CLS saving credited for injection or ring a second time"
+  },
+  "new_FW_RV_ELF_BIN_128KiB_lanes_bound": false,
+  "CPU_INIT": "Inherited historical bytes only, not the new128/fairness FW",
+  "firmware_source": "F:\\nav_integration_g2_20261023\\CPU250_host_drain_isolated_validation1\\isolated\\fw",
+  "SYN_entry_disabled": true,
+  "synthesis_started": false,
+  "PNR_started": false,
+  "programmed": false,
+  "blockers": [
+    "Final rebuilt profile7/d/ZHI/safety FW RV compile and ELF/BIN/128KiB lanes byte binding",
+    "All frozen combined RTL contracts and root source review",
+    "Actual primitive CEB/OCE/AD and <=300 noncamera BSRAM/LUT/FF gates after one authorized combined synthesis"
+  ],
+  "full_review": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared2\\composition_review.json",
+  "source_contracts": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared2\\source_contracts.json",
+  "patch": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared2\\storage_delta.patch",
+  "input_bindings_count": 244,
+  "input_bindings_unchanged": true,
+  "merge_details": {
+    "nav/rtl/common/nav_ram_sdp.v": [
+      {
+        "old_first_line": 5,
+        "old_stop_line": 5,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 9,
+        "old_stop_line": 9,
+        "new_lines": 22,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 25,
+        "old_stop_line": 24,
+        "new_lines": 11,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      }
+    ],
+    "nav/rtl/match/slf_match.v": [
+      {
+        "old_first_line": 19,
+        "old_stop_line": 19,
+        "new_lines": 1,
+        "contributors": [
+          "selected SLF128/profile/FW base"
+        ]
+      },
+      {
+        "old_first_line": 121,
+        "old_stop_line": 120,
+        "new_lines": 1,
+        "contributors": [
+          "selected SLF128/profile/FW base"
+        ]
+      },
+      {
+        "old_first_line": 123,
+        "old_stop_line": 123,
+        "new_lines": 1,
+        "contributors": [
+          "selected SLF128/profile/FW base"
+        ]
+      },
+      {
+        "old_first_line": 363,
+        "old_stop_line": 363,
+        "new_lines": 1,
+        "contributors": [
+          "selected SLF128/profile/FW base"
+        ]
+      },
+      {
+        "old_first_line": 507,
+        "old_stop_line": 507,
+        "new_lines": 1,
+        "contributors": [
+          "selected SLF128/profile/FW base"
+        ]
+      },
+      {
+        "old_first_line": 38,
+        "old_stop_line": 38,
+        "new_lines": 5,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 92,
+        "old_stop_line": 91,
+        "new_lines": 6,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 93,
+        "old_stop_line": 93,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 136,
+        "old_stop_line": 136,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 160,
+        "old_stop_line": 160,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 163,
+        "old_stop_line": 163,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 172,
+        "old_stop_line": 172,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 213,
+        "old_stop_line": 212,
+        "new_lines": 2,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 364,
+        "old_stop_line": 363,
+        "new_lines": 2,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 365,
+        "old_stop_line": 366,
+        "new_lines": 13,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 374,
+        "old_stop_line": 374,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 379,
+        "old_stop_line": 379,
+        "new_lines": 4,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 381,
+        "old_stop_line": 380,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 387,
+        "old_stop_line": 387,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 390,
+        "old_stop_line": 390,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 394,
+        "old_stop_line": 393,
+        "new_lines": 10,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 514,
+        "old_stop_line": 514,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "explicit_semantic_join": "LF center snapshot plus point ownership at the same original command-admission edge; disjoint register targets, both retained",
+        "parent_line": "if (cmd_update) begin lf_build_cx <= lf_cx; lf_build_cy <= lf_cy; end",
+        "storage_line": "point_owned <= 1'b1; wait_release <= 1'b0;"
+      }
+    ],
+    "nav/rtl/top/nav_subsystem.v": [
+      {
+        "old_first_line": 13,
+        "old_stop_line": 12,
+        "new_lines": 1,
+        "contributors": [
+          "selected SLF128/profile/FW base"
+        ]
+      },
+      {
+        "old_first_line": 383,
+        "old_stop_line": 382,
+        "new_lines": 2,
+        "contributors": [
+          "selected SLF128/profile/FW base"
+        ]
+      },
+      {
+        "old_first_line": 386,
+        "old_stop_line": 386,
+        "new_lines": 8,
+        "contributors": [
+          "selected SLF128/profile/FW base"
+        ]
+      },
+      {
+        "old_first_line": 396,
+        "old_stop_line": 396,
+        "new_lines": 1,
+        "contributors": [
+          "selected SLF128/profile/FW base"
+        ]
+      },
+      {
+        "old_first_line": 398,
+        "old_stop_line": 398,
+        "new_lines": 1,
+        "contributors": [
+          "selected SLF128/profile/FW base"
+        ]
+      },
+      {
+        "old_first_line": 401,
+        "old_stop_line": 401,
+        "new_lines": 1,
+        "contributors": [
+          "selected SLF128/profile/FW base"
+        ]
+      },
+      {
+        "old_first_line": 405,
+        "old_stop_line": 405,
+        "new_lines": 1,
+        "contributors": [
+          "selected SLF128/profile/FW base"
+        ]
+      },
+      {
+        "old_first_line": 409,
+        "old_stop_line": 410,
+        "new_lines": 13,
+        "contributors": [
+          "selected SLF128/profile/FW base"
+        ]
+      },
+      {
+        "old_first_line": 173,
+        "old_stop_line": 172,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 178,
+        "old_stop_line": 178,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 195,
+        "old_stop_line": 194,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 207,
+        "old_stop_line": 206,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 349,
+        "old_stop_line": 349,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 389,
+        "old_stop_line": 388,
+        "new_lines": 2,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 504,
+        "old_stop_line": 503,
+        "new_lines": 4,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      }
+    ],
+    "nav/rtl/net/host_mbx.v": [
+      {
+        "old_first_line": 243,
+        "old_stop_line": 243,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      }
+    ],
+    "nav/rtl/lidar/xt_frame_rx.v": [
+      {
+        "old_first_line": 31,
+        "old_stop_line": 30,
+        "new_lines": 2,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 391,
+        "old_stop_line": 390,
+        "new_lines": 2,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 399,
+        "old_stop_line": 399,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 401,
+        "old_stop_line": 400,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 410,
+        "old_stop_line": 410,
+        "new_lines": 2,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      }
+    ],
+    "nav/rtl/soc/nav_soc.v": [
+      {
+        "old_first_line": 102,
+        "old_stop_line": 101,
+        "new_lines": 17,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 104,
+        "old_stop_line": 106,
+        "new_lines": 3,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 149,
+        "old_stop_line": 148,
+        "new_lines": 2,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      }
+    ],
+    "fixed4500_weight_rom.v": [
+      {
+        "old_first_line": 1,
+        "old_stop_line": 125,
+        "new_lines": 119,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      }
+    ],
+    "nav/rtl/map/trav_v3.v": [
+      {
+        "old_first_line": 87,
+        "old_stop_line": 87,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      }
+    ],
+    "nav/rtl/plan/traj_eval.v": [
+      {
+        "old_first_line": 82,
+        "old_stop_line": 82,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      },
+      {
+        "old_first_line": 85,
+        "old_stop_line": 85,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      }
+    ],
+    "fc_v4_top.v": [
+      {
+        "old_first_line": 38,
+        "old_stop_line": 38,
+        "new_lines": 1,
+        "contributors": [
+          "proved storage consumer deltas"
+        ]
+      }
+    ]
+  },
+  "injection_contract": "F:\\nav_integration_g2_20261023\\stage3_injection_BSRAM_contract_review1\\result.json",
+  "supersedes_old_storage_preparation": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared1",
+  "old_preparation_unchanged": true,
+  "composed10_RTL_bytes_same_as_old_prepared1": true,
+  "FW_diff_vs_old_prepared1": [
+    "fw/app/nav_app.c",
+    "fw/nav/host_link_guard.c",
+    "fw/nav/prior.c",
+    "fw/nav/prior.h",
+    "fw/nav/proto.c",
+    "fw/nav/proto.h",
+    "fw/test/hal_py.c"
+  ],
+  "parent_frozen_FW_metadata_rechecked": true,
+  "parent_final_selected": "F:\\nav_integration_g2_20261023\\stage2_SLF128_forward_safeFW_prepared7",
+  "reproduction": [
+    "D:/Anaconda/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:/Desktop/SOC FPGA/nav/integration/g2/prepare_stage3_SLF128_lossless_storage.py",
+    "--base128",
+    "F:\\nav_integration_g2_20261023\\stage2_SLF128_forward_safeFW_prepared7",
+    "--out",
+    "<new-independent-directory>",
+    "--prepare"
+  ],
+  "actual_contract_probes": {
+    "point": "F:\\nav_integration_g2_20261023\\stage2B_point_ownership_probe1\\result.json",
+    "TXshadow": "F:\\nav_integration_g2_20261023\\stage2B_TXshadow_bus_probe2\\result.json",
+    "console": "F:\\nav_integration_g2_20261023\\stage2B_console_bus_probe1\\result.json"
+  },
+  "no_new_tools_started": true,
+  "camera_development": false,
+  "camera_reserve_BSRAM_at_least": 36,
+  "CST_SDC_manifest_disabled_entry_source_contract_also_bound": true
+}

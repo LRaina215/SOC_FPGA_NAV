@@ -1,0 +1,95 @@
+{
+  "recorded_at": "2026-10-26T19:28:17.633846+08:00",
+  "passed": true,
+  "scope": "same linked ELF strict stack review, original objcopy/INIT export and source-only combined binding; no new joint synthesis",
+  "candidate": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared5",
+  "manifest": {
+    "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared5\\manifest.json",
+    "bytes": 8701,
+    "mtime_ns": 1793013990627654900
+  },
+  "final_input_count": 248,
+  "full_bindings_file": {
+    "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared5\\firmware_binding_review.json",
+    "bytes": 47373,
+    "mtime_ns": 1793013990734228200
+  },
+  "firmware_package": "F:\\nav_integration_g2_20261023\\stage2_SLF128_safeFW_RV_finalize2",
+  "BIN_bytes": 53572,
+  "BSS_bytes": 70004,
+  "static_stack_bound_bytes": 2576,
+  "reserved_stack_bytes": 6144,
+  "linked_symbols": {
+    "STACK_RESERVE": 6144,
+    "STACK_SIZE": 6144,
+    "_bss_start": 53576,
+    "_bss_end": 123580,
+    "_stack_top": 131072,
+    "RAM_SIZE": 131072
+  },
+  "remaining_RAM_after_BSS_and_reserved_stack_bytes": 1348,
+  "CPU_reconstruction": {
+    "image_bytes": 131072,
+    "each_byte_lane_entries": 32768,
+    "all4_lanes_and_word_image_exact": true,
+    "remaining_bytes_all_zero": true,
+    "changed_CPU_assets": [
+      "ram_b0.hex",
+      "ram_b1.hex",
+      "ram_b2.hex",
+      "ram_b3.hex",
+      "ram_w.hex",
+      "firmware/ram_b0.hex",
+      "firmware/ram_b1.hex",
+      "firmware/ram_b2.hex",
+      "firmware/ram_b3.hex",
+      "firmware/ram_w.hex",
+      "firmware/nav_fw.bin"
+    ]
+  },
+  "strict_stack": {
+    "report": {
+      "path": "F:\\nav_integration_g2_20261023\\stage2_SLF128_safeFW_RV_compile1_strict_stack_review2\\result.json",
+      "bytes": 5307,
+      "mtime_ns": 1793013748488274900
+    },
+    "complete": true,
+    "all_LTO_partitions_SU_and_assembly_included": true,
+    "actual_local_jr": 3,
+    "actual_jalr": 0,
+    "all_unknown_indirect_rejected": true,
+    "accepted_new_switch": "Bounded actual CFG/reaching-def through callee-saved s4, unsigned guard dominates scale4/lw/jr; actual ELF read-only table targets all local legal instruction boundaries. No fixed-address whitelist.",
+    "original_incomplete_stack_report_preserved": "F:\\nav_integration_g2_20261023\\stage2_SLF128_safeFW_RV_compile1\\firmware\\stack_analysis.json"
+  },
+  "original_process_identities": [
+    {
+      "pid": 62320,
+      "created_epoch": 1793013879.0016682,
+      "original_identity_exited": true
+    },
+    {
+      "pid": 17660,
+      "created_epoch": 1793013879.2221055,
+      "original_identity_exited": true
+    },
+    {
+      "pid": 48212,
+      "created_epoch": 1793013879.3700664,
+      "original_identity_exited": true
+    }
+  ],
+  "source63_and_FW_unchanged_from_storage3": true,
+  "safe8_repairs_preserved": true,
+  "first_binding_preparation_failure_preserved": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared4\\binding_preparation_failure.json",
+  "old_run_entry_harderror": true,
+  "combined128_RTL_regression_still_required": true,
+  "not_proven": [
+    "real Pico boot and busy host-loss with this new image",
+    "runtime stack watermark/real RK and physical stop",
+    "new CPU primitive INIT in joint synthesis and physical mapping",
+    "routing/setup/hold/CDC/reset/IO/board"
+  ],
+  "SYN_started": false,
+  "PNR_started": false,
+  "programmed": false
+}

@@ -1,0 +1,60 @@
+{
+  "prepared": true,
+  "recorded_at": "2026-10-26T19:15:25.307944+08:00",
+  "source": "F:\\nav_integration_g2_20261023\\stage2_SLF128_forward_safeFW_prepared7",
+  "candidate": "F:\\nav_integration_g2_20261023\\stage2_SLF128_forward_safeFW_prepared8",
+  "changed_RTL": [
+    "nav/rtl/common/nav_async_fifo.v",
+    "nav/rtl/top/nav_subsystem.v",
+    "nav/rtl/net/rgmii_mac100.v",
+    "g2_top.v"
+  ],
+  "source63_count": 63,
+  "unchanged_other59_RTL": true,
+  "unchanged_all_FW": true,
+  "public_nav_fifo_ob_unchanged": true,
+  "FIFO_text_equals_proved_candidate3": true,
+  "MAC_text_equals_proved_candidate2": true,
+  "root_reset_sources_preserved": true,
+  "proof_paths": [
+    "F:\\nav_integration_g2_20261023\\fifo_async_assert_candidate3\\result.json",
+    "F:\\nav_integration_g2_20261023\\mac_rx_boundary_candidate2\\result.json",
+    "F:\\nav_integration_g2_20261023\\preview_MAC_UDP_XT_reset_probe2\\result.json",
+    "F:\\nav_integration_g2_20261023\\preview_full_G2_UART_CPU250_probe2_emptyIMU_modelsim\\result.json"
+  ],
+  "prior_SLF_validation": "F:\\nav_integration_g2_20261023\\stage2_SLF128_targeted_validation2\\job.json",
+  "no_qualified_RTL_tools_active_at_prepare": true,
+  "original_prepared7_unchanged": true,
+  "selected_FW_source": "F:\\nav_integration_g2_20261023\\CPU250_host_drain_isolated_validation1\\isolated\\fw",
+  "new_FW_compile_same_bytes_as_prepared7": true,
+  "tool_launched": false,
+  "SYN_started": false,
+  "PNR_started": false,
+  "programmed": false,
+  "remaining": [
+    "new joint primitive reset types/INIT/CE and all new reset loads",
+    "physical reset assertion/release recovery-removal, pulse width, CDC/MTBF and IO",
+    "new firmware busy host-loss/real RK stop and physical stop latency",
+    "new combined safe128 and storage proof beyond archived identical component RTL",
+    "new image reconstruction/binding after complete strict all-partition stack review"
+  ],
+  "unchanged_immediate_net_port_and_reset_wrapper_bytes": true,
+  "actual_MAC_reset_is_synchronous_RX_override": true,
+  "FIFO_private_validity_and_pointer_assert_asynchronous": true,
+  "root_reset_and_release_contract": {
+    "root": "g2_top.u_rs arst=~key_rst_n|~pll_lock, clk=core50",
+    "RX": "u_lrr arst=rst, clk=l_rx_clk",
+    "TX": "u_ltr arst=rst, clk=l_tx_clk",
+    "host": "u_hrr/u_htr arst=rst; SFP disabled so same core clock",
+    "CPU_HOLD": "nav_soc cpu_rst only, no FIFO/MAC reset",
+    "MAC_when_RX_stopped": "l_rx_rst async asserts/holds via wrapper, MAC override executes on resumed RX edges; FIFO stays closed during local reset, MAC R_BAD waits true DV idle",
+    "not_supported": "independent unilateral FIFO endpoint reset protocol"
+  },
+  "proof_binding": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\stage2_SLF128_forward_safeFW_prepared8\\safety_rebase_review.json",
+      "bytes": 1744,
+      "mtime_ns": 1793013325318980600
+    }
+  ]
+}

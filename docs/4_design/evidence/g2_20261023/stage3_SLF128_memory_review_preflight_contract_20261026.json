@@ -1,0 +1,206 @@
+{
+  "passed": true,
+  "automatic_PNR": false,
+  "deployment_accepted": false,
+  "preparation_passed": true,
+  "actual_mapping_reviewed": false,
+  "expected_source_BSRAM": 270,
+  "expected_wide_split_leaves": 12,
+  "predicted_physical_BSRAM": 282,
+  "prediction_only": true,
+  "migration_groups": [
+    {
+      "name": "structure128",
+      "prefix": "u_nav/u_match/u_sm/",
+      "count": 16,
+      "widths": [
+        18
+      ],
+      "init": "zero",
+      "read_gate": "u_nav/u_match/u_sm"
+    },
+    {
+      "name": "touch128",
+      "prefix": "u_nav/u_match/u_touch/",
+      "count": 1,
+      "widths": [
+        1
+      ],
+      "init": "zero",
+      "read_gate": "u_nav/u_match/u_touch"
+    },
+    {
+      "name": "point_planes",
+      "prefix": "u_nav/u_match/u_pb/",
+      "count": 8,
+      "widths": [
+        18
+      ],
+      "init": "zero",
+      "read_gate": "u_nav/u_match/u_pb"
+    },
+    {
+      "name": "bitmap",
+      "prefix": "u_nav/u_map/u_tv/u_bm/",
+      "count": 1,
+      "widths": [
+        1
+      ],
+      "init": "zero",
+      "read_gate": "u_nav/u_map/u_tv/u_bm"
+    },
+    {
+      "name": "TXshadow",
+      "prefix": "u_nav/u_mbx/u_txs/",
+      "count": 1,
+      "widths": [
+        32
+      ],
+      "init": "zero",
+      "read_gate": "u_nav/u_mbx/u_txs"
+    },
+    {
+      "name": "slot_list",
+      "prefix": "u_nav/u_match/u_slist/",
+      "count": 1,
+      "widths": [
+        16,
+        18
+      ],
+      "init": "zero",
+      "read_gate": "u_nav/u_match/u_slist"
+    },
+    {
+      "name": "trig_u_nav_u_match_u_sin",
+      "prefix": "u_nav/u_match/u_sin/",
+      "count": 1,
+      "widths": [
+        16
+      ],
+      "init": "sin_lut.hex"
+    },
+    {
+      "name": "trig_u_nav_u_match_u_cos",
+      "prefix": "u_nav/u_match/u_cos/",
+      "count": 1,
+      "widths": [
+        16
+      ],
+      "init": "sin_lut.hex"
+    },
+    {
+      "name": "trig_u_nav_u_tr_u_sin",
+      "prefix": "u_nav/u_tr/u_sin/",
+      "count": 1,
+      "widths": [
+        16
+      ],
+      "init": "sin_lut.hex"
+    },
+    {
+      "name": "trig_u_nav_u_tr_u_cos",
+      "prefix": "u_nav/u_tr/u_cos/",
+      "count": 1,
+      "widths": [
+        16
+      ],
+      "init": "sin_lut.hex"
+    },
+    {
+      "name": "console0",
+      "prefix": "u_soc/g_con[0].u_con/",
+      "count": 1,
+      "widths": [
+        8
+      ],
+      "init": "zero",
+      "read_gate": "u_soc/g_con[0].u_con"
+    },
+    {
+      "name": "console1",
+      "prefix": "u_soc/g_con[1].u_con/",
+      "count": 1,
+      "widths": [
+        8
+      ],
+      "init": "zero",
+      "read_gate": "u_soc/g_con[1].u_con"
+    },
+    {
+      "name": "console2",
+      "prefix": "u_soc/g_con[2].u_con/",
+      "count": 1,
+      "widths": [
+        8
+      ],
+      "init": "zero",
+      "read_gate": "u_soc/g_con[2].u_con"
+    },
+    {
+      "name": "console3",
+      "prefix": "u_soc/g_con[3].u_con/",
+      "count": 1,
+      "widths": [
+        8
+      ],
+      "init": "zero",
+      "read_gate": "u_soc/g_con[3].u_con"
+    },
+    {
+      "name": "weight9",
+      "prefix": "u_control/model_thread/policy/core/weights/",
+      "count": 35,
+      "widths": [
+        8,
+        9
+      ],
+      "init": "packed35"
+    },
+    {
+      "name": "LF_rows",
+      "prefix": "u_nav/u_match/u_lf/",
+      "count": 4,
+      "widths": [
+        32
+      ],
+      "init": "zero"
+    }
+  ],
+  "retained_distributed": [
+    "u_nav/u_mbx/u_injb",
+    "u_nav/u_map/u_tv/u_ct",
+    "u_nav/u_match/u_cand",
+    "u_nav/u_match/u_res"
+  ],
+  "gaps": [
+    "No new VG yet: actual counts/geometry/INIT/read enables unknown",
+    "Selected rebuilt BIN/lane files exist only as source evidence until reconstructed from actual VG INITs",
+    "An OCE hold never proves physical array read suppression",
+    "If collision SAT with free actual FF Qs, source-specific reachable-state invariants remain required; no assumptions or old fixture PASS are silently substituted",
+    "Packed-weight INIT matching does not by itself prove read address/output recombination; mapped arithmetic/address cones need separate review",
+    "Point-plane geometry/INIT and read-gate relation do not prove full ownership FSM mapping",
+    "After PNR recheck split pairs, every physical INIT, actual timing/CDC/reset/IO; SYN cannot supply CLS/global-resource acceptance"
+  ],
+  "prepared": {
+    "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared5\\composition_review.json",
+    "bytes": 61565,
+    "mtime_ns": 1793013990660088500
+  },
+  "scope": "Contract preparation only; no mapped storage or collision acceptance",
+  "recorded_at": "2026-10-26T19:30:34.859617+08:00",
+  "prepare_only_result": "F:\\nav_integration_g2_20261023\\stage3_SLF128_memory_review_contract2\\result.json",
+  "entry": "D:/Desktop/SOC FPGA/nav/integration/g2/review_stage3_slf128_memories.py",
+  "actual_VG_pending": "F:/nav_integration_g2_20261023/SLF128_storage_safeFW_syn41/impl/gwsynthesis/g2_top.vg",
+  "selected_BIN": {
+    "path": "F:/nav_integration_g2_20261023/stage3_SLF128_storage_RTL_prepared5/firmware/nav_fw.bin",
+    "bytes": 53572,
+    "actual_VG_INIT_reconstruction_passed": false
+  },
+  "not_run": [
+    "Synthesis",
+    "PNR",
+    "simulation",
+    "actual VG review",
+    "physical RAM/timing/CDC/reset/IO acceptance"
+  ]
+}

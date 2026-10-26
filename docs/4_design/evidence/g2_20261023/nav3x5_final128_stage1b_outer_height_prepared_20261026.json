@@ -1,0 +1,196 @@
+{
+  "recorded_at": "2026-10-26T19:36:54.325642+08:00",
+  "task": "final9211 phase1b frozen pilot preparation, not started",
+  "final_task": "C:\\Users\\Li\\.codex\\attachments\\9211a5dd-3f64-4969-bdb7-cffbe1c53825\\已粘贴的文本.txt",
+  "root": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_outer_height_stage1b_20261026",
+  "manifest": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_outer_height_stage1b_20261026\\manifest.json",
+  "planned": 16,
+  "actual_model_process_started": false,
+  "production128_fixed": true,
+  "SLF256_simulation_control_only": true,
+  "profiles": "goal/turn_loop x prior/nomap x ZHI350/1500 x SN128/256, seed1. Nomap128=selected best forward d; nomap256=original rolling reference; prior=original fixed LFO for both, no d sweep.",
+  "best_distance_source": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_long_patrol_20261026\\selected_best_distance.json",
+  "best_distance_file_currently_exists": false,
+  "binding_entry": "D:/Desktop/SOC FPGA/nav/integration/g2/prepare_stage1b_final128_outer_height.py --bind",
+  "binding_rule": "Only after real selected file exists, copy immutable selection and generate bound_manifest with explicit numeric d/env. No source/callback changes at bind. No simulations start automatically.",
+  "input_delta": {
+    "source_patch": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_outer_height_stage1b_20261026\\source_delta.patch",
+    "entry_patch": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_outer_height_stage1b_20261026\\entry_delta.patch",
+    "support_patch": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_outer_height_stage1b_20261026\\support_delta.patch",
+    "scene_patch": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_outer_height_stage1b_20261026\\scene_delta.patch",
+    "source": "Passed stage1c model only admits forward mode; window math frozen from proved stage1d functions. Entry uses synchronous real C current yaw at build, preserves original EM center and score pivot.",
+    "support": "Same passed64bit native C op5 intercept/cold MAP_CLEAR+one py_poll; audit input-center name clarified and scene_version read from actual spec.",
+    "scene": "field3x5_outer_v2_human: original inner raster and10 tested external objects preserved,2 outside1700mm human prisms added."
+  },
+  "actual_C_height_proof_inherited": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1c_outer_height_20261026\\minimal_proof.json",
+  "prior_ROI_actual_proof_inherited": true,
+  "new_human_actual_ray_visibility_tested": false,
+  "static_geometry_contract": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_outer_height_stage1b_20261026\\static_scene_contract.json",
+  "static_box_distances": [
+    {
+      "name": "room_west",
+      "bounds_m": [
+        -2.5,
+        -4.2,
+        -2.35,
+        4.2
+      ],
+      "height_m": 2,
+      "nearest_distance_to_inner_m": 2.35,
+      "furthest_corner_distance_to_inner_m": 3.67967389859482,
+      "inside_ROI_overlap": false
+    },
+    {
+      "name": "room_east",
+      "bounds_m": [
+        7.5,
+        -4.2,
+        7.65,
+        4.2
+      ],
+      "height_m": 2,
+      "nearest_distance_to_inner_m": 2.5,
+      "furthest_corner_distance_to_inner_m": 3.7831864876053896,
+      "inside_ROI_overlap": false
+    },
+    {
+      "name": "room_south",
+      "bounds_m": [
+        -2.5,
+        -4.2,
+        7.65,
+        -4.05
+      ],
+      "height_m": 2,
+      "nearest_distance_to_inner_m": 2.55,
+      "furthest_corner_distance_to_inner_m": 3.7831864876053896,
+      "inside_ROI_overlap": false
+    },
+    {
+      "name": "room_north",
+      "bounds_m": [
+        -2.5,
+        4.05,
+        7.65,
+        4.2
+      ],
+      "height_m": 2,
+      "nearest_distance_to_inner_m": 2.55,
+      "furthest_corner_distance_to_inner_m": 3.7831864876053896,
+      "inside_ROI_overlap": false
+    },
+    {
+      "name": "table_east",
+      "bounds_m": [
+        5.7,
+        -1,
+        6.6,
+        -0.25
+      ],
+      "height_m": 0.75,
+      "nearest_distance_to_inner_m": 0.7000000000000002,
+      "furthest_corner_distance_to_inner_m": 1.5999999999999996,
+      "inside_ROI_overlap": false
+    },
+    {
+      "name": "table_west",
+      "bounds_m": [
+        -1.3,
+        -0.9,
+        -0.8,
+        -0.4
+      ],
+      "height_m": 0.75,
+      "nearest_distance_to_inner_m": 0.8,
+      "furthest_corner_distance_to_inner_m": 1.3,
+      "inside_ROI_overlap": false
+    },
+    {
+      "name": "table_north",
+      "bounds_m": [
+        1,
+        2.2,
+        2,
+        2.9
+      ],
+      "height_m": 0.75,
+      "nearest_distance_to_inner_m": 0.7000000000000002,
+      "furthest_corner_distance_to_inner_m": 1.4,
+      "inside_ROI_overlap": false
+    },
+    {
+      "name": "chair_east1",
+      "bounds_m": [
+        5.7,
+        0.4,
+        6.1,
+        0.8
+      ],
+      "height_m": 0.45,
+      "nearest_distance_to_inner_m": 0.7000000000000002,
+      "furthest_corner_distance_to_inner_m": 1.0999999999999996,
+      "inside_ROI_overlap": false
+    },
+    {
+      "name": "chair_east2",
+      "bounds_m": [
+        6.3,
+        0.45,
+        6.7,
+        0.85
+      ],
+      "height_m": 0.45,
+      "nearest_distance_to_inner_m": 1.2999999999999998,
+      "furthest_corner_distance_to_inner_m": 1.7000000000000002,
+      "inside_ROI_overlap": false
+    },
+    {
+      "name": "chair_north",
+      "bounds_m": [
+        2.3,
+        2.2,
+        2.7,
+        2.6
+      ],
+      "height_m": 0.45,
+      "nearest_distance_to_inner_m": 0.7000000000000002,
+      "furthest_corner_distance_to_inner_m": 1.1,
+      "inside_ROI_overlap": false
+    },
+    {
+      "name": "person_east",
+      "bounds_m": [
+        6.0,
+        1.35,
+        6.35,
+        1.7
+      ],
+      "height_m": 1.7,
+      "nearest_distance_to_inner_m": 1.0,
+      "furthest_corner_distance_to_inner_m": 1.3647344063956177,
+      "inside_ROI_overlap": false
+    },
+    {
+      "name": "person_north",
+      "bounds_m": [
+        3.0,
+        2.35,
+        3.35,
+        2.7
+      ],
+      "height_m": 1.7,
+      "nearest_distance_to_inner_m": 0.8500000000000001,
+      "furthest_corner_distance_to_inner_m": 1.2000000000000002,
+      "inside_ROI_overlap": false
+    }
+  ],
+  "placement_distance_scope": "0.5-3m nearest face to inner field; enclosing room corners can extend beyond3m, exact furthest-corner distances explicitly listed.",
+  "original_scene_file_and_DLL_bytes_preserved": true,
+  "DLL_rebuilt": false,
+  "production_model_or_RTL_modified": false,
+  "current45668_frozen_inputs_modified": false,
+  "cache_identity": "New scenev2/SN/LFfixed/ZLO/ZHI/ROI/survey settings. No prior cache copied; all environment baselines must run anew. Nomap has no prior cache, forward selected d explicitly recorded.",
+  "root_process_memory_review_required_before_start": true,
+  "observability": "No-map loc_valid constant and lack of native lost-age definition retained; do not claim no loss fromP95 or n_lost0 alone.",
+  "automatic_EDA": false
+}
