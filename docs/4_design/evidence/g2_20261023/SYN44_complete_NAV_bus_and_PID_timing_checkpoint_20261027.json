@@ -1,0 +1,334 @@
+{
+  "recorded_at": "2026-10-27T00:08:43.883456+08:00",
+  "user_priority": "timing closure before new P11/model experiments",
+  "actual_SYN44_complete": true,
+  "synthesis_job": {
+    "source": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1",
+    "build": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_syn44",
+    "wait_pid": null,
+    "programmed": false,
+    "source_frozen_before_wait": true,
+    "automatic_pnr": false,
+    "settings_only_resume": false,
+    "modified_rtl_inputs": [],
+    "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+    "execution_policy": {
+      "priority": 32,
+      "affinity": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "maximum_new_SYN_tree_RSS_MiB": 0,
+      "maximum_new_SYN_tree_private_commit_MiB": 0,
+      "minimum_runtime_physical_MiB": 0,
+      "minimum_runtime_commit_reserve_MiB": 0,
+      "applies_to": "this runner and newly created descendants only; no existing PNR process is modified"
+    },
+    "phase": "synthesis_complete",
+    "updated_at": "2026-10-26T23:43:08.432796+08:00",
+    "minimum_start_free_bytes": 2147483648,
+    "minimum_start_available_commit_bytes": 4294967296,
+    "max_runtime_minutes": 40,
+    "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+    "tool_pid": 51268,
+    "synthesis_started_at": "2026-10-26T23:34:28.255106+08:00",
+    "tool_created_epoch": 1793028868.262156,
+    "actual_tool_priority": 32,
+    "actual_tool_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "elapsed_s": 517.2179999999935,
+    "free_bytes": 3935707136,
+    "available_commit_bytes": 6695231488,
+    "owned_tool_RSS_bytes": 114393088,
+    "peak_owned_tool_RSS_bytes": 1091047424,
+    "owned_tool_private_bytes": 116228096,
+    "peak_owned_tool_private_bytes": 1142214656,
+    "tool_exit": 0,
+    "joint_pnr_measured": false
+  },
+  "actual_source_resources": {
+    "path": "/g2_top",
+    "name": "g2_top",
+    "Register": "26",
+    "Alu": "25",
+    "Lut": "3",
+    "T_Register": "29493(26)",
+    "T_Alu": "9606(25)",
+    "T_Lut": "38933(3)",
+    "T_MULTALU27X18": "77(0)",
+    "T_MULT12X12": "23(0)",
+    "T_MULT27X36": "37(0)",
+    "T_MULTADDALU12X12": "1(0)",
+    "T_Bsram": "269(0)",
+    "T_Ssram": "1885(0)"
+  },
+  "synthesis_estimates_only": {
+    "clocks": [
+      {
+        "name": "clk50",
+        "constraint_mhz": 50.0,
+        "estimated_fmax_mhz": 44.852,
+        "levels": 24,
+        "entity": "TOP"
+      },
+      {
+        "name": "rgmii_rxc",
+        "constraint_mhz": 50.0,
+        "estimated_fmax_mhz": 100.735,
+        "levels": 6,
+        "entity": "TOP"
+      }
+    ],
+    "first_path": {
+      "Slack": "-2.296",
+      "Data Arrival Time": "22.610",
+      "Data Required Time": "20.314",
+      "From": "u_control/model_thread/policy/actions_18_s1",
+      "To": "u_control/model_thread/actuator_map/lh_us_10_s0",
+      "Launch Clk": "clk50[R]",
+      "Latch Clk": "clk50[R]"
+    },
+    "scope": "synthesis estimate only; actual PNR resource/timing acceptance must come from PNR reports"
+  },
+  "source_BSRAM": 269,
+  "predicted_physical_BSRAM": 280,
+  "predicted_wide_split_pairs": 11,
+  "physical_resources_not_measured_for_SYN44": true,
+  "ring_actual_mapping_review_pending": true,
+  "observer_frame_RAM_actual_count": 78,
+  "observer_frame_RAM_expected_count": 72,
+  "unexpected_count_must_be_explained_before_mapping_admission": true,
+  "NAV_finite_bus_probe_passed": true,
+  "NAV_metrics": {
+    "checks": 1449,
+    "transactions": 192,
+    "resets": 2,
+    "arbitration": 127,
+    "xz": 3,
+    "unknown_read_words": 0
+  },
+  "NAV_scope": "Real old/new NAV and two original arbiters, six pulses and bus/SAFE outputs compared; MAC RX idle",
+  "NAV_full_RAW_FIFO_MBX_console_concurrency_not_exercised": true,
+  "first_NAV_probe_failure": "Module-local register-map constants suppressed by shared include guard in simulation copies; original failure retained",
+  "second_NAV_probe_change": "Only comparison copies undef the header guard before including original declarations; frozen hardware unchanged",
+  "PID_math_all7_UNSAT": true,
+  "first_PID_tool_failure": "xvlog passed, xelab crashed after static elaboration with EXCEPTION_ACCESS_VIOLATION; no functional simulation result",
+  "PID_actual_fallback_job": {
+    "at": "2026-10-27T00:03:15.446917+08:00",
+    "phase": "ModelSim_running",
+    "passed": false,
+    "controller_pid": 29928,
+    "controller_created_epoch": 1793030593.8455439,
+    "source_probe": "F:\\nav_integration_g2_20261023\\PID_unity_actual_control_probe1",
+    "first_failure_preserved": {
+      "path": "F:\\nav_integration_g2_20261023\\PID_unity_actual_control_probe1\\result.json",
+      "bytes": 6816,
+      "mtime_ns": 1793030364447192700
+    },
+    "first_hardware_inputs": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\PID_unity_actual_control_probe1\\policy_action_map.v",
+        "bytes": 2194,
+        "mtime_ns": 1793030351999087500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\PID_unity_actual_control_probe1\\motor520_closed_loop.v",
+        "bytes": 13317,
+        "mtime_ns": 1793030351999087500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\PID_unity_actual_control_probe1\\target_select_pair.sv",
+        "bytes": 3787,
+        "mtime_ns": 1793030351999087500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\PID_unity_actual_control_probe1\\tb_PID_unity_equivalence.sv",
+        "bytes": 8818,
+        "mtime_ns": 1793030351999087500
+      }
+    ],
+    "gate54": {
+      "runtime": {
+        "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_place2_pnr54\\tool_runtime.json",
+        "bytes": 1357,
+        "mtime_ns": 1793027983111194400
+      },
+      "pid": 48212,
+      "original_created_epoch": 1793024323.6441314,
+      "tool_exit": 0,
+      "ended_at": "2026-10-26T23:19:43.110860+08:00",
+      "original_process_still_running": false,
+      "pid_reused_by_other_process": false,
+      "cancelled": false,
+      "total_seconds": 0,
+      "silent_seconds": 0,
+      "natural_completion_gate": true
+    },
+    "math_reused_without_rerun": true,
+    "math_checks": [
+      {
+        "name": "signed24_clip_range",
+        "result": "unsat"
+      },
+      {
+        "name": "all24_action_scale_range_-600",
+        "result": "unsat"
+      },
+      {
+        "name": "reset_valid_hold_range_induction_-600",
+        "result": "unsat"
+      },
+      {
+        "name": "all24_action_scale_range_600",
+        "result": "unsat"
+      },
+      {
+        "name": "reset_valid_hold_range_induction_600",
+        "result": "unsat"
+      },
+      {
+        "name": "unity_amplifier_identity",
+        "result": "unsat"
+      },
+      {
+        "name": "all_IR_select_unity_targets",
+        "result": "unsat"
+      }
+    ],
+    "only_fixture_change": "unsized signed32 overflow watchdog replaced by explicit SV3s time literal",
+    "frozen_inputs": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\PID_unity_actual_control_probe2_modelsim\\policy_action_map.v",
+        "bytes": 2194,
+        "mtime_ns": 1793030351999087500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\PID_unity_actual_control_probe2_modelsim\\motor520_closed_loop.v",
+        "bytes": 13317,
+        "mtime_ns": 1793030351999087500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\PID_unity_actual_control_probe2_modelsim\\target_select_pair.sv",
+        "bytes": 3787,
+        "mtime_ns": 1793030351999087500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\PID_unity_actual_control_probe2_modelsim\\tb_PID_unity_equivalence.sv",
+        "bytes": 8810,
+        "mtime_ns": 1793030595443836000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\PID_unity_actual_control_probe2_modelsim\\run.do",
+        "bytes": 231,
+        "mtime_ns": 1793030595445922300
+      }
+    ],
+    "EDA_started": true,
+    "available_physical_bytes": 3500892160,
+    "available_commit_bytes": 6768701440,
+    "actual_50MHz_PID_defaults_unchanged": true,
+    "production_feedback100Hz": true,
+    "license_content_not_read_or_copied": true,
+    "license_env_subprocess_only": [
+      "MGLS_LICENSE_FILE",
+      "LM_LICENSE_FILE"
+    ],
+    "no_synthesis_PNR_FW_or_board": true,
+    "full4500_or_fullG2_acceptance": false,
+    "deployment_ready": false,
+    "tool_runtime": {
+      "command": [
+        "E:\\modelsim_ae\\win32aloem\\vsim.exe",
+        "-c",
+        "-l",
+        "transcript.log",
+        "-do",
+        "run.do"
+      ],
+      "pid": 56144,
+      "created_epoch": 1793030595.449878,
+      "started_at": "2026-10-27T00:03:15.536015+08:00",
+      "children": []
+    }
+  },
+  "PID_fallback_not_yet_a_functional_pass": true,
+  "prior_two_place_options_both_routed": true,
+  "prior_PNR54": {
+    "BSRAM": 280,
+    "CLS": 41981,
+    "FF": 30714,
+    "clk50_setup": 2709,
+    "clk50_hold": 0,
+    "RX100_setup": 0,
+    "RX100_hold": 0
+  },
+  "new_PNR_started": false,
+  "programmed": false,
+  "deployment_accepted": false,
+  "timing_IO_reset_CDC_and_vehicle_acceptance_pending": true,
+  "bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_syn44\\job.json",
+      "bytes": 2032,
+      "mtime_ns": 1793029388432796500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_syn44\\synthesis_summary.json",
+      "bytes": 45894,
+      "mtime_ns": 1793029387671383100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\NAV_command_predecode_bus_probe2\\result.json",
+      "bytes": 19282,
+      "mtime_ns": 1793030291511202600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\NAV_command_predecode_bus_probe2\\3_xsim.log",
+      "bytes": 865,
+      "mtime_ns": 1793030290500676300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\PID_unity_actual_control_probe2_modelsim\\job.json",
+      "bytes": 4153,
+      "mtime_ns": 1793030595536015000
+    }
+  ]
+}

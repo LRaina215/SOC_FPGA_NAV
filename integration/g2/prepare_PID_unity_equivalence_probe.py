@@ -168,7 +168,7 @@ module tb_PID_unity_equivalence;
     checked_cycles,stop_phases,disable_phases,reset_phases,action_cases,fault1_seen,fault2_seen,fault3_seen,forward_seen,reverse_seen);
   $finish;
  end
- initial begin #3000000000;$fatal(1,"finite3s stimulus watchdog, not a PNR deadline");end
+ initial begin #3s;$fatal(1,"finite3s stimulus watchdog, not a PNR deadline");end
 endmodule
 '''
 
@@ -200,7 +200,7 @@ def source_texts():
     return [core,a,p],module('pnr53_target_old',ORIGINAL_TARGETS)+module('pnr53_target_new',UNITY_TARGETS)
 
 def prove_math(out):
-    import z3
+    from prove_soc_console_remap import z3
     action=z3.BitVec('action24',24);old=z3.BitVec('old_model32',32)
     clip=z3.If(action>4096,z3.BitVecVal(4096,24),z3.If(action< -4096,z3.BitVecVal(-4096,24),action))
     def rounded(p):return z3.If(p<0,-((-p+2048)>>12),(p+2048)>>12)

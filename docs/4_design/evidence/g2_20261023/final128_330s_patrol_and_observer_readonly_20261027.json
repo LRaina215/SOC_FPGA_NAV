@@ -1,0 +1,1207 @@
+{
+  "read_only_review_completed": true,
+  "recorded_at": "2026-10-27T00:02:21.525547+08:00",
+  "reviewer": {
+    "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_final128_patrol_and_observer.py",
+    "bytes": 15414,
+    "mtime_ns": 1793030527779001200
+  },
+  "original_patrol_job": {
+    "path": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_long_patrol_20261026\\job.json",
+    "bytes": 2035,
+    "mtime_ns": 1793028918108930700
+  },
+  "original_summary": {
+    "path": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_long_patrol_20261026\\summary.json",
+    "bytes": 21348,
+    "mtime_ns": 1793028918104841200
+  },
+  "localization_validity_evidence": {
+    "source": {
+      "path": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_long_patrol_20261026\\execution_tree\\sim\\closed_loop\\run_cl.py",
+      "bytes": 36504,
+      "mtime_ns": 1792521202891355500
+    },
+    "source_lines": [
+      {
+        "line": 386,
+        "text": "localized = pkg is None or (align_t is not None and loc_v[0] in (2, 3))"
+      },
+      {
+        "line": 475,
+        "text": "\"loc_final\": int(loc_v[0]) if pkg is not None else 0,"
+      },
+      {
+        "line": 476,
+        "text": "\"n_align\": int(loc_v[3]), \"n_align_fail\": int(loc_v[4]), \"n_lost\": int(loc_v[5]),"
+      }
+    ],
+    "actual_no_prior_branch_sets_loc_valid_true_without_loss_test": true,
+    "all3300_loc_valid1_and_n_lost0_are_not_independent_no_map_health_evidence": true
+  },
+  "comparison": {
+    "same_seed_scene_duration_no_prior": true,
+    "confounded_factors": "256 rolling/0mm compared with128 forward/1500mm; not a one-variable map-size causal experiment",
+    "collision_count_both": 0,
+    "complete_native_cycles_both": 9,
+    "error_P95_delta_128_minus256_mm": 430.64602380831553,
+    "reasonable_inference": "This128/forward1500 seed1 run develops a large late XY error increase while goal progression continues. Collision-free progression does not prove continuous localization.",
+    "root_cause_known": false
+  },
+  "finite_conclusions": [
+    "Both330s children exited0 naturally and continued cyclic native waypoint progression with0 observed collisions",
+    "128/forward1500 has materially worse late error than256/rolling in this one seed; relaxedP95 does not waive long-drift/localization/stop requirements",
+    "No-map health cannot be accepted from the original constant loc_valid flag or n_lost0",
+    "Stage1b truly started automatically after patrol completion; its current identity and partial outcomes are recorded, not treated as all16 completion"
+  ],
+  "unproved": [
+    "Statistical reliability across long-patrol seeds and other scenes/ZHI/prior profiles",
+    "Whether128 size, forward offset, aliasing, feature visibility or solver rejection causes the late error",
+    "True continuous XY observability, exact solver failure/skip/at_edge counts and no-map no-loss status",
+    "Truth/dwell/stop acceptance at every cyclic waypoint; fixed330s timeout is not a completed terminal-goal verdict",
+    "Real FPGA CPU timing, full4500 integration, physical IO/sensors/RK/stop and vehicle deployment"
+  ],
+  "P95_50mm_hard_gate": false,
+  "long_drift_waived": false,
+  "all_model_or_hardware_accepted": false,
+  "model_or_DLL_imported": false,
+  "new_model_started": false,
+  "source_input_modified": false,
+  "new_simulation_or_build_started": false,
+  "no_SHA": true,
+  "cases": [
+    {
+      "name": "patrol330s_control256_s1",
+      "selected_job": {
+        "SLF_SN": 256,
+        "forward_mm": 0,
+        "prior": false,
+        "seed": 1,
+        "case": "long_patrol"
+      },
+      "natural_exit": 0,
+      "original_child": {
+        "pid": 66664,
+        "exists": false,
+        "expected_identity_matches": false
+      },
+      "simulated_duration_s": 330,
+      "native_goal_selections_including_initial": 39,
+      "native_post_initial_goal_changes": 38,
+      "native_ordered_complete_waypoint_cycles": 9,
+      "native_goal_progress_scope": "Native firmware advanced goals in correct order. Initial goal selection is not an arrival; cyclic progression is not a truth/dwell/stop acceptance for every waypoint.",
+      "fixed_duration_terminal_outcome": "timeout",
+      "terminal_single_goal_accepted": false,
+      "collision_count": 0,
+      "full_trace_descriptive_statistics": {
+        "samples": 3300,
+        "begin_s": 0.1,
+        "end_s": 330.0,
+        "XY_P95_mm": 60.101988012748386,
+        "XY_RMS_mm": 25.568974570875156,
+        "XY_max_mm": 117.24367786793407,
+        "XY_last_mm": 15.454772725601607,
+        "linear_error_magnitude_trend_mm_per_min": 0.3874006738311141
+      },
+      "interval_statistics": [
+        {
+          "requested_interval_s": [
+            0,
+            60
+          ],
+          "samples": 600,
+          "begin_s": 0.1,
+          "end_s": 60.0,
+          "XY_P95_mm": 36.053883232478285,
+          "XY_RMS_mm": 16.57778634196978,
+          "XY_max_mm": 63.622716069026545,
+          "XY_last_mm": 2.0808652046685387,
+          "linear_error_magnitude_trend_mm_per_min": 1.5338041035856131
+        },
+        {
+          "requested_interval_s": [
+            120,
+            180
+          ],
+          "samples": 600,
+          "begin_s": 120.1,
+          "end_s": 180.0,
+          "XY_P95_mm": 51.38888322270859,
+          "XY_RMS_mm": 22.911529484810334,
+          "XY_max_mm": 88.88025652528232,
+          "XY_last_mm": 88.7520703983855,
+          "linear_error_magnitude_trend_mm_per_min": 5.22663612294446
+        },
+        {
+          "requested_interval_s": [
+            180,
+            240
+          ],
+          "samples": 600,
+          "begin_s": 180.1,
+          "end_s": 240.0,
+          "XY_P95_mm": 77.09591448193834,
+          "XY_RMS_mm": 30.29468957864837,
+          "XY_max_mm": 96.47061728837437,
+          "XY_last_mm": 5.531726674375761,
+          "linear_error_magnitude_trend_mm_per_min": -9.706173046548608
+        },
+        {
+          "requested_interval_s": [
+            240,
+            300
+          ],
+          "samples": 600,
+          "begin_s": 240.1,
+          "end_s": 300.0,
+          "XY_P95_mm": 55.78124385897895,
+          "XY_RMS_mm": 23.82555001113999,
+          "XY_max_mm": 93.66237238080198,
+          "XY_last_mm": 32.36309626719914,
+          "linear_error_magnitude_trend_mm_per_min": 8.474920669735152
+        },
+        {
+          "requested_interval_s": [
+            270,
+            330
+          ],
+          "samples": 600,
+          "begin_s": 270.1,
+          "end_s": 330.0,
+          "XY_P95_mm": 60.499894836661746,
+          "XY_RMS_mm": 26.249485074314578,
+          "XY_max_mm": 109.64168915152652,
+          "XY_last_mm": 15.454772725601607,
+          "linear_error_magnitude_trend_mm_per_min": 3.935719450340106
+        }
+      ],
+      "error_excursions_descriptive_only": [
+        {
+          "descriptive_threshold_mm": 100,
+          "samples_above": 3,
+          "first_above_s": 81.5,
+          "longest_contiguous_sample_run": {
+            "samples": 2,
+            "first_s": 81.5,
+            "last_s": 81.6,
+            "observed_sample_span_s": 0.09999999999999432
+          },
+          "first_crossing_existing_truth_estimate_command_sample": {
+            "t": 81.5,
+            "x": 4.5942,
+            "y": 0.6608,
+            "z": 0.0,
+            "yaw_deg": 852.374,
+            "ex": 4.493,
+            "ey": 0.72,
+            "ez": -0.036,
+            "eyaw_deg": 853.2422,
+            "cmd_vx": 0.0,
+            "cmd_wz": 1200.0,
+            "blocked": 0.0,
+            "pitch": -1.4574,
+            "epitch": -1.2799,
+            "roll": 0.0,
+            "eroll": 0.0879,
+            "true_speed_mps": 0.0007,
+            "true_yaw_rate_rps": 1.1145,
+            "loc_valid": 1.0,
+            "error_mm": 117.24367786793407
+          },
+          "last_native_goal_change_before": {
+            "t_us": 80901000,
+            "mode": 1,
+            "state": 1,
+            "goal_mm": [
+              0,
+              950
+            ]
+          },
+          "next_native_goal_change_after": {
+            "t_us": 95201000,
+            "mode": 1,
+            "state": 1,
+            "goal_mm": [
+              0,
+              0
+            ]
+          },
+          "successful_match_at_crossing": null,
+          "update_at_crossing": null,
+          "relocalization_at_crossing": null,
+          "absent_event_reason": "Old window score/update/build records have no timestamp, accepted winner/solve result or per-apply C event. Do not assign event index to time without a separate exact callback schedule proof.",
+          "acceptance_threshold": false
+        },
+        {
+          "descriptive_threshold_mm": 200,
+          "samples_above": 0,
+          "first_above_s": null,
+          "longest_contiguous_sample_run": {
+            "samples": 0,
+            "first_s": null,
+            "last_s": null,
+            "observed_sample_span_s": 0
+          },
+          "first_crossing_existing_truth_estimate_command_sample": null,
+          "last_native_goal_change_before": null,
+          "next_native_goal_change_after": null,
+          "successful_match_at_crossing": null,
+          "update_at_crossing": null,
+          "relocalization_at_crossing": null,
+          "absent_event_reason": "Old window score/update/build records have no timestamp, accepted winner/solve result or per-apply C event. Do not assign event index to time without a separate exact callback schedule proof.",
+          "acceptance_threshold": false
+        },
+        {
+          "descriptive_threshold_mm": 400,
+          "samples_above": 0,
+          "first_above_s": null,
+          "longest_contiguous_sample_run": {
+            "samples": 0,
+            "first_s": null,
+            "last_s": null,
+            "observed_sample_span_s": 0
+          },
+          "first_crossing_existing_truth_estimate_command_sample": null,
+          "last_native_goal_change_before": null,
+          "next_native_goal_change_after": null,
+          "successful_match_at_crossing": null,
+          "update_at_crossing": null,
+          "relocalization_at_crossing": null,
+          "absent_event_reason": "Old window score/update/build records have no timestamp, accepted winner/solve result or per-apply C event. Do not assign event index to time without a separate exact callback schedule proof.",
+          "acceptance_threshold": false
+        }
+      ],
+      "reported_match_applied": 2560,
+      "original_matching_event_inventory": {
+        "build_lf": {
+          "count": 3300,
+          "all_recorded_keys": [
+            "LF_N",
+            "actual_center_cells",
+            "forward_shift",
+            "instance",
+            "margin",
+            "n_struct",
+            "op",
+            "prior",
+            "requested_vehicle_center_cells",
+            "storage_SN",
+            "window_end_exclusive_cells",
+            "window_origin_cells",
+            "world_scoring_core_corners_m",
+            "world_window_corners_m"
+          ],
+          "timestamp_fields_present": []
+        },
+        "score": {
+          "count": 3300,
+          "all_recorded_keys": [
+            "LF_N",
+            "candidate_rotation_center_vehicle_mm",
+            "candidates",
+            "effective_n_valid",
+            "instance",
+            "margin",
+            "op",
+            "points_input",
+            "prior",
+            "window_origin_cells"
+          ],
+          "timestamp_fields_present": []
+        },
+        "update": {
+          "count": 2763,
+          "all_recorded_keys": [
+            "instance",
+            "op",
+            "points",
+            "prior"
+          ],
+          "timestamp_fields_present": []
+        }
+      },
+      "largest_observed100ms_error_vector_steps": [
+        {
+          "t_s": 180.2,
+          "previous_t_s": 180.1,
+          "error_vector_step_mm": 55.72019382593692,
+          "resulting_error_mm": 26.207060117456393
+        },
+        {
+          "t_s": 248.9,
+          "previous_t_s": 248.8,
+          "error_vector_step_mm": 55.67521890392494,
+          "resulting_error_mm": 31.500158729758894
+        },
+        {
+          "t_s": 15.8,
+          "previous_t_s": 15.7,
+          "error_vector_step_mm": 55.612678410592515,
+          "resulting_error_mm": 49.897995951741215
+        },
+        {
+          "t_s": 283.3,
+          "previous_t_s": 283.2,
+          "error_vector_step_mm": 55.47368745630584,
+          "resulting_error_mm": 56.417904959329924
+        },
+        {
+          "t_s": 283.2,
+          "previous_t_s": 283.1,
+          "error_vector_step_mm": 55.22046722004508,
+          "resulting_error_mm": 36.24927585483549
+        }
+      ],
+      "old_matching_event_limits": [
+        "Window score records retain only effective_n_valid from the first returned candidate, total candidate count and geometry; no best-candidate score or applied winner/delta",
+        "Original window updates are callbacks, not proof of a successful firmware solve; only aggregate match_applied is available",
+        "No per-poll n_applied/degen/delta/status history, no C clock timestamp on score/update/build, no timed no-map relocalization/skip/reject reason",
+        "Exact successful-match/update/relocalization assignment at first drift samples cannot be reconstructed from these old records alone"
+      ],
+      "reported_n_lost": 0,
+      "loc_valid_csv_values": [
+        1.0
+      ],
+      "no_map_loss_free_or_continuous_valid_localization_proved": false,
+      "original_analysis_drift_acceptance": null,
+      "input_bindings": [
+        {
+          "path": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_long_patrol_20261026\\results\\patrol330s_control256_s1\\metrics.json",
+          "bytes": 2538,
+          "mtime_ns": 1793026722645699100
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_long_patrol_20261026\\results\\patrol330s_control256_s1\\long_patrol_analysis.json",
+          "bytes": 8812,
+          "mtime_ns": 1793026728480182800
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_long_patrol_20261026\\results\\patrol330s_control256_s1\\patrol_protocol_audit.json",
+          "bytes": 5863,
+          "mtime_ns": 1793026722652819900
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_long_patrol_20261026\\results\\patrol330s_control256_s1\\runtime.json",
+          "bytes": 173,
+          "mtime_ns": 1793026727953766600
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_long_patrol_20261026\\results\\patrol330s_control256_s1\\timeseries.csv",
+          "bytes": 489601,
+          "mtime_ns": 1793026722632916800
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_long_patrol_20261026\\results\\patrol330s_control256_s1\\window_audit.json",
+          "bytes": 5632676,
+          "mtime_ns": 1793026723389108300
+        }
+      ],
+      "inputs_unchanged": true
+    },
+    {
+      "name": "patrol330s_best128_s1",
+      "selected_job": {
+        "SLF_SN": 128,
+        "forward_mm": 1500,
+        "prior": false,
+        "seed": 1,
+        "case": "long_patrol"
+      },
+      "natural_exit": 0,
+      "original_child": {
+        "pid": 20996,
+        "exists": false,
+        "expected_identity_matches": false
+      },
+      "simulated_duration_s": 330,
+      "native_goal_selections_including_initial": 37,
+      "native_post_initial_goal_changes": 36,
+      "native_ordered_complete_waypoint_cycles": 9,
+      "native_goal_progress_scope": "Native firmware advanced goals in correct order. Initial goal selection is not an arrival; cyclic progression is not a truth/dwell/stop acceptance for every waypoint.",
+      "fixed_duration_terminal_outcome": "timeout",
+      "terminal_single_goal_accepted": false,
+      "collision_count": 0,
+      "full_trace_descriptive_statistics": {
+        "samples": 3300,
+        "begin_s": 0.1,
+        "end_s": 330.0,
+        "XY_P95_mm": 490.7480118210639,
+        "XY_RMS_mm": 222.32993842758148,
+        "XY_max_mm": 610.8433923682895,
+        "XY_last_mm": 444.80405798508644,
+        "linear_error_magnitude_trend_mm_per_min": 83.25199833247476
+      },
+      "interval_statistics": [
+        {
+          "requested_interval_s": [
+            0,
+            60
+          ],
+          "samples": 600,
+          "begin_s": 0.1,
+          "end_s": 60.0,
+          "XY_P95_mm": 41.532131237049434,
+          "XY_RMS_mm": 24.362864842487923,
+          "XY_max_mm": 61.990483140559704,
+          "XY_last_mm": 18.721645226849102,
+          "linear_error_magnitude_trend_mm_per_min": 12.838870773173118
+        },
+        {
+          "requested_interval_s": [
+            120,
+            180
+          ],
+          "samples": 600,
+          "begin_s": 120.1,
+          "end_s": 180.0,
+          "XY_P95_mm": 97.85655669872669,
+          "XY_RMS_mm": 45.56172717680196,
+          "XY_max_mm": 120.41382810956554,
+          "XY_last_mm": 7.840918313565094,
+          "linear_error_magnitude_trend_mm_per_min": 3.1809907449386423
+        },
+        {
+          "requested_interval_s": [
+            180,
+            240
+          ],
+          "samples": 600,
+          "begin_s": 180.1,
+          "end_s": 240.0,
+          "XY_P95_mm": 438.0070837226797,
+          "XY_RMS_mm": 228.49484520079082,
+          "XY_max_mm": 458.5688388889939,
+          "XY_last_mm": 70.42797739535045,
+          "linear_error_magnitude_trend_mm_per_min": 304.6358305465292
+        },
+        {
+          "requested_interval_s": [
+            240,
+            300
+          ],
+          "samples": 600,
+          "begin_s": 240.1,
+          "end_s": 300.0,
+          "XY_P95_mm": 551.1914941106885,
+          "XY_RMS_mm": 389.1667841684333,
+          "XY_max_mm": 610.8433923682895,
+          "XY_last_mm": 577.6604192776239,
+          "linear_error_magnitude_trend_mm_per_min": 177.02723062379076
+        },
+        {
+          "requested_interval_s": [
+            270,
+            330
+          ],
+          "samples": 600,
+          "begin_s": 270.1,
+          "end_s": 330.0,
+          "XY_P95_mm": 545.6941482703751,
+          "XY_RMS_mm": 369.99419301749396,
+          "XY_max_mm": 610.8433923682895,
+          "XY_last_mm": 444.80405798508644,
+          "linear_error_magnitude_trend_mm_per_min": 38.35819531543958
+        }
+      ],
+      "error_excursions_descriptive_only": [
+        {
+          "descriptive_threshold_mm": 100,
+          "samples_above": 1256,
+          "first_above_s": 166.6,
+          "longest_contiguous_sample_run": {
+            "samples": 864,
+            "first_s": 243.7,
+            "last_s": 330.0,
+            "observed_sample_span_s": 86.30000000000001
+          },
+          "first_crossing_existing_truth_estimate_command_sample": {
+            "t": 166.6,
+            "x": 0.7978,
+            "y": -0.1551,
+            "z": 0.0,
+            "yaw_deg": 1601.8248,
+            "ex": 0.701,
+            "ey": -0.182,
+            "ez": -0.074,
+            "eyaw_deg": 1599.5544,
+            "cmd_vx": 0.0,
+            "cmd_wz": 1200.0,
+            "blocked": 0.0,
+            "pitch": -4.4286,
+            "epitch": -4.5703,
+            "roll": 0.0,
+            "eroll": -0.0055,
+            "true_speed_mps": 0.0506,
+            "true_yaw_rate_rps": 0.2255,
+            "loc_valid": 1.0,
+            "error_mm": 100.46815415841976
+          },
+          "last_native_goal_change_before": {
+            "t_us": 166402000,
+            "mode": 1,
+            "state": 1,
+            "goal_mm": [
+              0,
+              0
+            ]
+          },
+          "next_native_goal_change_after": {
+            "t_us": 169901000,
+            "mode": 1,
+            "state": 1,
+            "goal_mm": [
+              4000,
+              899
+            ]
+          },
+          "successful_match_at_crossing": null,
+          "update_at_crossing": null,
+          "relocalization_at_crossing": null,
+          "absent_event_reason": "Old window score/update/build records have no timestamp, accepted winner/solve result or per-apply C event. Do not assign event index to time without a separate exact callback schedule proof.",
+          "acceptance_threshold": false
+        },
+        {
+          "descriptive_threshold_mm": 200,
+          "samples_above": 1064,
+          "first_above_s": 211.8,
+          "longest_contiguous_sample_run": {
+            "samples": 498,
+            "first_s": 280.3,
+            "last_s": 330.0,
+            "observed_sample_span_s": 49.69999999999999
+          },
+          "first_crossing_existing_truth_estimate_command_sample": {
+            "t": 211.8,
+            "x": 1.5755,
+            "y": -0.4153,
+            "z": 0.0,
+            "yaw_deg": 2159.8732,
+            "ex": 1.422,
+            "ey": -0.547,
+            "ez": -0.092,
+            "eyaw_deg": 2155.0342,
+            "cmd_vx": 500.0,
+            "cmd_wz": -300.0,
+            "blocked": 0.0,
+            "pitch": 2.8695,
+            "epitch": 2.8235,
+            "roll": 0.0,
+            "eroll": -0.0165,
+            "true_speed_mps": 0.4099,
+            "true_yaw_rate_rps": -0.2812,
+            "loc_valid": 1.0,
+            "error_mm": 202.25513590512355
+          },
+          "last_native_goal_change_before": {
+            "t_us": 203101000,
+            "mode": 1,
+            "state": 1,
+            "goal_mm": [
+              4000,
+              899
+            ]
+          },
+          "next_native_goal_change_after": {
+            "t_us": 219701000,
+            "mode": 1,
+            "state": 1,
+            "goal_mm": [
+              4000,
+              1930
+            ]
+          },
+          "successful_match_at_crossing": null,
+          "update_at_crossing": null,
+          "relocalization_at_crossing": null,
+          "absent_event_reason": "Old window score/update/build records have no timestamp, accepted winner/solve result or per-apply C event. Do not assign event index to time without a separate exact callback schedule proof.",
+          "acceptance_threshold": false
+        },
+        {
+          "descriptive_threshold_mm": 400,
+          "samples_above": 374,
+          "first_above_s": 218.3,
+          "longest_contiguous_sample_run": {
+            "samples": 146,
+            "first_s": 289.6,
+            "last_s": 304.1,
+            "observed_sample_span_s": 14.5
+          },
+          "first_crossing_existing_truth_estimate_command_sample": {
+            "t": 218.3,
+            "x": 3.8725,
+            "y": -0.0251,
+            "z": 0.0,
+            "yaw_deg": 2185.2229,
+            "ex": 3.851,
+            "ey": -0.429,
+            "ez": -0.095,
+            "eyaw_deg": 2183.6151,
+            "cmd_vx": 375.0,
+            "cmd_wz": 0.0,
+            "blocked": 0.0,
+            "pitch": -1.7056,
+            "epitch": -1.8896,
+            "roll": 0.0,
+            "eroll": -0.011,
+            "true_speed_mps": 0.3843,
+            "true_yaw_rate_rps": -0.0021,
+            "loc_valid": 1.0,
+            "error_mm": 404.471828438026
+          },
+          "last_native_goal_change_before": {
+            "t_us": 203101000,
+            "mode": 1,
+            "state": 1,
+            "goal_mm": [
+              4000,
+              899
+            ]
+          },
+          "next_native_goal_change_after": {
+            "t_us": 219701000,
+            "mode": 1,
+            "state": 1,
+            "goal_mm": [
+              4000,
+              1930
+            ]
+          },
+          "successful_match_at_crossing": null,
+          "update_at_crossing": null,
+          "relocalization_at_crossing": null,
+          "absent_event_reason": "Old window score/update/build records have no timestamp, accepted winner/solve result or per-apply C event. Do not assign event index to time without a separate exact callback schedule proof.",
+          "acceptance_threshold": false
+        }
+      ],
+      "reported_match_applied": 2536,
+      "original_matching_event_inventory": {
+        "build_lf": {
+          "count": 3300,
+          "all_recorded_keys": [
+            "LF_N",
+            "actual_center_cells",
+            "forward_shift",
+            "instance",
+            "margin",
+            "n_struct",
+            "op",
+            "prior",
+            "requested_vehicle_center_cells",
+            "storage_SN",
+            "window_end_exclusive_cells",
+            "window_origin_cells",
+            "world_scoring_core_corners_m",
+            "world_window_corners_m"
+          ],
+          "timestamp_fields_present": []
+        },
+        "score": {
+          "count": 3300,
+          "all_recorded_keys": [
+            "LF_N",
+            "candidate_rotation_center_vehicle_mm",
+            "candidates",
+            "effective_n_valid",
+            "instance",
+            "margin",
+            "op",
+            "points_input",
+            "prior",
+            "window_origin_cells"
+          ],
+          "timestamp_fields_present": []
+        },
+        "update": {
+          "count": 2741,
+          "all_recorded_keys": [
+            "instance",
+            "op",
+            "points",
+            "prior"
+          ],
+          "timestamp_fields_present": []
+        }
+      },
+      "largest_observed100ms_error_vector_steps": [
+        {
+          "t_s": 238.9,
+          "previous_t_s": 238.8,
+          "error_vector_step_mm": 66.61321190274492,
+          "resulting_error_mm": 84.62860036654277
+        },
+        {
+          "t_s": 260.0,
+          "previous_t_s": 259.9,
+          "error_vector_step_mm": 65.0538238691625,
+          "resulting_error_mm": 501.8455937835861
+        },
+        {
+          "t_s": 297.0,
+          "previous_t_s": 296.9,
+          "error_vector_step_mm": 65.0538238691625,
+          "resulting_error_mm": 514.2227630122959
+        },
+        {
+          "t_s": 171.2,
+          "previous_t_s": 171.1,
+          "error_vector_step_mm": 65.05382386916243,
+          "resulting_error_mm": 69.76453253623932
+        },
+        {
+          "t_s": 273.4,
+          "previous_t_s": 273.3,
+          "error_vector_step_mm": 63.18267167507226,
+          "resulting_error_mm": 279.8698626147518
+        }
+      ],
+      "old_matching_event_limits": [
+        "Window score records retain only effective_n_valid from the first returned candidate, total candidate count and geometry; no best-candidate score or applied winner/delta",
+        "Original window updates are callbacks, not proof of a successful firmware solve; only aggregate match_applied is available",
+        "No per-poll n_applied/degen/delta/status history, no C clock timestamp on score/update/build, no timed no-map relocalization/skip/reject reason",
+        "Exact successful-match/update/relocalization assignment at first drift samples cannot be reconstructed from these old records alone"
+      ],
+      "reported_n_lost": 0,
+      "loc_valid_csv_values": [
+        1.0
+      ],
+      "no_map_loss_free_or_continuous_valid_localization_proved": false,
+      "original_analysis_drift_acceptance": null,
+      "input_bindings": [
+        {
+          "path": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_long_patrol_20261026\\results\\patrol330s_best128_s1\\metrics.json",
+          "bytes": 2536,
+          "mtime_ns": 1793028916783188300
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_long_patrol_20261026\\results\\patrol330s_best128_s1\\long_patrol_analysis.json",
+          "bytes": 8789,
+          "mtime_ns": 1793028918100364000
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_long_patrol_20261026\\results\\patrol330s_best128_s1\\patrol_protocol_audit.json",
+          "bytes": 5595,
+          "mtime_ns": 1793028916783188300
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_long_patrol_20261026\\results\\patrol330s_best128_s1\\runtime.json",
+          "bytes": 172,
+          "mtime_ns": 1793028918043798500
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_long_patrol_20261026\\results\\patrol330s_best128_s1\\timeseries.csv",
+          "bytes": 490228,
+          "mtime_ns": 1793028916778642100
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_final128_long_patrol_20261026\\results\\patrol330s_best128_s1\\window_audit.json",
+          "bytes": 7592026,
+          "mtime_ns": 1793028917419330500
+        }
+      ],
+      "inputs_unchanged": true
+    }
+  ],
+  "observer_snapshot": {
+    "snapshot_begin": "2026-10-27T00:02:21.451519+08:00",
+    "snapshot_end": "2026-10-27T00:02:21.524522+08:00",
+    "automatically_continued_after_original_patrols": true,
+    "patrol_finished_binding": {
+      "path": "F:\\nav_integration_g2_20261023\\stage1b_observer_serial_prepared1\\original_patrols_finished.json",
+      "bytes": 684,
+      "mtime_ns": 1793028933691352500
+    },
+    "job": {
+      "controller_pid": 28624,
+      "controller_created_epoch": 1793026313.7202492,
+      "parent_pid": 7660,
+      "phase": "one_observed_case_running",
+      "updated_at": "2026-10-27T00:00:30.099023+08:00",
+      "planned": 16,
+      "completed": 8,
+      "one_worker": true,
+      "P95_50mm_hard_gate": false,
+      "current": "turn_loop_sn256_rolling_reference_zhi1500_s1",
+      "child_pid": 52984,
+      "child_created_epoch": 1793030430.0971668,
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "F:\\nav_integration_g2_20261023\\stage1b_observer_serial_prepared1\\profiles\\turn_loop_sn256_rolling_reference_zhi1500_s1\\observer_entry.py",
+        "--start",
+        "--out",
+        "F:\\nav_integration_g2_20261023\\stage1b_observer_serial_prepared1\\profiles\\turn_loop_sn256_rolling_reference_zhi1500_s1"
+      ],
+      "environment": {
+        "SLF_SN_LOG2": "8",
+        "SLF_LF_N": "256",
+        "SLF_WINDOW_MODE": "rolling",
+        "SLF_FIXED_CX": "41",
+        "SLF_FIXED_CY": "19",
+        "SLF_ZLO": "60",
+        "SLF_ZHI": "1500",
+        "SLF_NBR": "3x3",
+        "SLF_W18": "1",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "SLF_FORWARD_MM": "0"
+      },
+      "admission": {
+        "physical": 4057210880,
+        "commit": 7215153152
+      }
+    },
+    "job_snapshot_binding": {
+      "path": "F:\\nav_integration_g2_20261023\\stage1b_observer_serial_prepared1\\job.json",
+      "bytes": 1309,
+      "mtime_ns": 1793030430099023100
+    },
+    "summary_snapshot_binding": {
+      "path": "F:\\nav_integration_g2_20261023\\stage1b_observer_serial_prepared1\\summary.json",
+      "bytes": 41217,
+      "mtime_ns": 1793030427486086300
+    },
+    "actual_controller": {
+      "pid": 28624,
+      "exists": true,
+      "created_epoch": 1793026313.7202492,
+      "ppid": 7660,
+      "status": "running",
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "F:\\nav_integration_g2_20261023\\stage1b_observer_serial_prepared1\\controller.py",
+        "--start",
+        "--first-hit-reviewed",
+        "--out",
+        "F:\\nav_integration_g2_20261023\\stage1b_observer_serial_prepared1"
+      ],
+      "expected_identity_matches": true
+    },
+    "actual_child": {
+      "pid": 52984,
+      "exists": true,
+      "created_epoch": 1793030430.0971668,
+      "ppid": 28624,
+      "status": "running",
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "F:\\nav_integration_g2_20261023\\stage1b_observer_serial_prepared1\\profiles\\turn_loop_sn256_rolling_reference_zhi1500_s1\\observer_entry.py",
+        "--start",
+        "--out",
+        "F:\\nav_integration_g2_20261023\\stage1b_observer_serial_prepared1\\profiles\\turn_loop_sn256_rolling_reference_zhi1500_s1"
+      ],
+      "expected_identity_matches": true,
+      "parent_is_actual_controller": true,
+      "command_matches_job": true
+    },
+    "actual_Python_descendants": [
+      {
+        "pid": 52984,
+        "exists": true,
+        "created_epoch": 1793030430.0971668,
+        "ppid": 28624,
+        "status": "running",
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "F:\\nav_integration_g2_20261023\\stage1b_observer_serial_prepared1\\profiles\\turn_loop_sn256_rolling_reference_zhi1500_s1\\observer_entry.py",
+          "--start",
+          "--out",
+          "F:\\nav_integration_g2_20261023\\stage1b_observer_serial_prepared1\\profiles\\turn_loop_sn256_rolling_reference_zhi1500_s1"
+        ],
+        "expected_identity_matches": true
+      }
+    ],
+    "completed": 8,
+    "planned": 16,
+    "finite_completed_rows": [
+      {
+        "name": "goal_sn256_rolling_reference_zhi1500_s1",
+        "outcome": "arrived",
+        "simulated_end_s": 18.2,
+        "collisions": 0,
+        "terminal": {
+          "criteria": {
+            "position_m": 0.15,
+            "speed_mps": 0.02,
+            "yaw_rate_rps": 0.05,
+            "dwell_s": 0.5,
+            "observe_s": 2.0
+          },
+          "declared_s": 16.2,
+          "declared_error_m": 0.13402531241440405,
+          "final_error_m": 0.13401752932997746,
+          "max_error_m": 0.13402531241440405,
+          "max_drift_m": 7.825263133969167e-06,
+          "observation_complete": true,
+          "valid": true,
+          "outcome": "arrived"
+        },
+        "XY_RMS_m": 0.022,
+        "XY_max_m": 0.046,
+        "original_poll_samples": 18785,
+        "dispatch_callbacks": 182,
+        "update_callbacks": 182,
+        "extra_py_poll": 0,
+        "extra_py_get_commit": 0,
+        "DLL_rebuilt": false,
+        "no_map_loss_verdict": null,
+        "no_map_loss_proved": null
+      },
+      {
+        "name": "goal_sn128_forward_best_zhi1500_s1",
+        "outcome": "arrived",
+        "simulated_end_s": 18.2,
+        "collisions": 0,
+        "terminal": {
+          "criteria": {
+            "position_m": 0.15,
+            "speed_mps": 0.02,
+            "yaw_rate_rps": 0.05,
+            "dwell_s": 0.5,
+            "observe_s": 2.0
+          },
+          "declared_s": 16.2,
+          "declared_error_m": 0.1406377805567461,
+          "final_error_m": 0.1406300077171479,
+          "max_error_m": 0.1406377805567461,
+          "max_drift_m": 7.825247453379744e-06,
+          "observation_complete": true,
+          "valid": true,
+          "outcome": "arrived"
+        },
+        "XY_RMS_m": 0.022,
+        "XY_max_m": 0.038,
+        "original_poll_samples": 18785,
+        "dispatch_callbacks": 182,
+        "update_callbacks": 182,
+        "extra_py_poll": 0,
+        "extra_py_get_commit": 0,
+        "DLL_rebuilt": false,
+        "no_map_loss_verdict": null,
+        "no_map_loss_proved": null
+      },
+      {
+        "name": "goal_sn256_rolling_reference_zhi350_s1",
+        "outcome": "arrived",
+        "simulated_end_s": 18.1,
+        "collisions": 0,
+        "terminal": {
+          "criteria": {
+            "position_m": 0.15,
+            "speed_mps": 0.02,
+            "yaw_rate_rps": 0.05,
+            "dwell_s": 0.5,
+            "observe_s": 2.0
+          },
+          "declared_s": 16.1,
+          "declared_error_m": 0.14394017006037363,
+          "final_error_m": 0.14393241869604856,
+          "max_error_m": 0.14394017006037363,
+          "max_drift_m": 7.83238625836932e-06,
+          "observation_complete": true,
+          "valid": true,
+          "outcome": "arrived"
+        },
+        "XY_RMS_m": 0.02,
+        "XY_max_m": 0.059,
+        "original_poll_samples": 18682,
+        "dispatch_callbacks": 181,
+        "update_callbacks": 181,
+        "extra_py_poll": 0,
+        "extra_py_get_commit": 0,
+        "DLL_rebuilt": false,
+        "no_map_loss_verdict": null,
+        "no_map_loss_proved": null
+      },
+      {
+        "name": "goal_sn128_forward_best_zhi350_s1",
+        "outcome": "arrived",
+        "simulated_end_s": 18.3,
+        "collisions": 0,
+        "terminal": {
+          "criteria": {
+            "position_m": 0.15,
+            "speed_mps": 0.02,
+            "yaw_rate_rps": 0.05,
+            "dwell_s": 0.5,
+            "observe_s": 2.0
+          },
+          "declared_s": 16.3,
+          "declared_error_m": 0.14681350955941705,
+          "final_error_m": 0.14680565449475758,
+          "max_error_m": 0.14681350955941705,
+          "max_drift_m": 7.855419860735878e-06,
+          "observation_complete": true,
+          "valid": true,
+          "outcome": "arrived"
+        },
+        "XY_RMS_m": 0.014,
+        "XY_max_m": 0.042,
+        "original_poll_samples": 18888,
+        "dispatch_callbacks": 183,
+        "update_callbacks": 183,
+        "extra_py_poll": 0,
+        "extra_py_get_commit": 0,
+        "DLL_rebuilt": false,
+        "no_map_loss_verdict": null,
+        "no_map_loss_proved": null
+      },
+      {
+        "name": "goal_sn256_prior_fixed_zhi1500_s1",
+        "outcome": "arrived",
+        "simulated_end_s": 21.1,
+        "collisions": 0,
+        "terminal": {
+          "criteria": {
+            "position_m": 0.15,
+            "speed_mps": 0.02,
+            "yaw_rate_rps": 0.05,
+            "dwell_s": 0.5,
+            "observe_s": 2.0
+          },
+          "declared_s": 19.1,
+          "declared_error_m": 0.146369312949308,
+          "final_error_m": 0.14636183180114043,
+          "max_error_m": 0.146369312949308,
+          "max_drift_m": 7.502099692126865e-06,
+          "observation_complete": true,
+          "valid": true,
+          "outcome": "arrived"
+        },
+        "XY_RMS_m": 0.014,
+        "XY_max_m": 0.032,
+        "original_poll_samples": 23942,
+        "dispatch_callbacks": 229,
+        "update_callbacks": 192,
+        "extra_py_poll": 0,
+        "extra_py_get_commit": 0,
+        "DLL_rebuilt": false,
+        "no_map_loss_verdict": null,
+        "no_map_loss_proved": "Use original prior loc metrics; not generic no-loss acceptance"
+      },
+      {
+        "name": "goal_sn128_prior_fixed_zhi1500_s1",
+        "outcome": "arrived",
+        "simulated_end_s": 21.1,
+        "collisions": 0,
+        "terminal": {
+          "criteria": {
+            "position_m": 0.15,
+            "speed_mps": 0.02,
+            "yaw_rate_rps": 0.05,
+            "dwell_s": 0.5,
+            "observe_s": 2.0
+          },
+          "declared_s": 19.1,
+          "declared_error_m": 0.146369312949308,
+          "final_error_m": 0.14636183180114043,
+          "max_error_m": 0.146369312949308,
+          "max_drift_m": 7.502099692126865e-06,
+          "observation_complete": true,
+          "valid": true,
+          "outcome": "arrived"
+        },
+        "XY_RMS_m": 0.014,
+        "XY_max_m": 0.032,
+        "original_poll_samples": 23942,
+        "dispatch_callbacks": 229,
+        "update_callbacks": 192,
+        "extra_py_poll": 0,
+        "extra_py_get_commit": 0,
+        "DLL_rebuilt": false,
+        "no_map_loss_verdict": null,
+        "no_map_loss_proved": "Use original prior loc metrics; not generic no-loss acceptance"
+      },
+      {
+        "name": "goal_sn256_prior_fixed_zhi350_s1",
+        "outcome": "false_arrival",
+        "simulated_end_s": 20.2,
+        "collisions": 0,
+        "terminal": {
+          "criteria": {
+            "position_m": 0.15,
+            "speed_mps": 0.02,
+            "yaw_rate_rps": 0.05,
+            "dwell_s": 0.5,
+            "observe_s": 2.0
+          },
+          "declared_s": 18.2,
+          "declared_error_m": 0.15229962068356254,
+          "final_error_m": 0.15229199658037063,
+          "max_error_m": 0.15229962068356254,
+          "max_drift_m": 7.624180414237279e-06,
+          "observation_complete": true,
+          "valid": false,
+          "outcome": "false_arrival"
+        },
+        "XY_RMS_m": 0.021,
+        "XY_max_m": 0.049,
+        "original_poll_samples": 23024,
+        "dispatch_callbacks": 220,
+        "update_callbacks": 183,
+        "extra_py_poll": 0,
+        "extra_py_get_commit": 0,
+        "DLL_rebuilt": false,
+        "no_map_loss_verdict": null,
+        "no_map_loss_proved": "Use original prior loc metrics; not generic no-loss acceptance"
+      },
+      {
+        "name": "goal_sn128_prior_fixed_zhi350_s1",
+        "outcome": "false_arrival",
+        "simulated_end_s": 20.2,
+        "collisions": 0,
+        "terminal": {
+          "criteria": {
+            "position_m": 0.15,
+            "speed_mps": 0.02,
+            "yaw_rate_rps": 0.05,
+            "dwell_s": 0.5,
+            "observe_s": 2.0
+          },
+          "declared_s": 18.2,
+          "declared_error_m": 0.15229962068356254,
+          "final_error_m": 0.15229199658037063,
+          "max_error_m": 0.15229962068356254,
+          "max_drift_m": 7.624180414237279e-06,
+          "observation_complete": true,
+          "valid": false,
+          "outcome": "false_arrival"
+        },
+        "XY_RMS_m": 0.021,
+        "XY_max_m": 0.049,
+        "original_poll_samples": 23024,
+        "dispatch_callbacks": 220,
+        "update_callbacks": 183,
+        "extra_py_poll": 0,
+        "extra_py_get_commit": 0,
+        "DLL_rebuilt": false,
+        "no_map_loss_verdict": null,
+        "no_map_loss_proved": "Use original prior loc metrics; not generic no-loss acceptance"
+      }
+    ],
+    "all16_finished": false,
+    "moving_files_sampled_read_only": true,
+    "child_may_finish_between_snapshot_fields": true,
+    "no_automatic_model_or_deployment_acceptance": true
+  },
+  "independent_result_binding": {
+    "path": "F:\\nav_integration_g2_20261023\\final128_patrol_observer_readonly_review2\\result.json",
+    "bytes": 44877,
+    "mtime_ns": 1793030541528573800
+  },
+  "first_readonly_receipt_preserved": "F:/nav_integration_g2_20261023/final128_patrol_observer_readonly_review1/result.json",
+  "interval_definition": "Independent windows use begin<t<=end, e.g.240.1..300.0s; they need not equal the original half-open rolling window exactly.",
+  "review_only_reproduction": "D:/Anaconda/python.exe -X utf8 integration/g2/review_final128_patrol_and_observer.py --out <new directory>; observer live snapshot will naturally be newer."
+}

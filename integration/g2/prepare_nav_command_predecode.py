@@ -282,8 +282,16 @@ def prepare_bus_miter(a, result, data):
     assert json.loads((candidate/'NAV_command_predecode_preparation_review.json').read_text(encoding='utf8'))['phase'] == 'source_materialized_unvalidated'
     out.mkdir()
     old = inputs[NAV].read_text(encoding='utf8')
-    (out/'nav_reference.v').write_text(once(old, 'module nav_subsystem #(', 'module nav_command_reference #('), encoding='utf8', newline='\n')
-    (out/'nav_candidate.v').write_text(once(generated, 'module nav_subsystem #(', 'module nav_command_candidate #('), encoding='utf8', newline='\n')
+    # The register map declares module-local localparams. Both copies in one
+    # compiler invocation need those declarations; a shared include guard would
+    # otherwise suppress the second module's constants. Only simulation copies
+    # receive this preprocessor directive; the frozen hardware stays unchanged.
+    def comparison_module(text, name):
+        renamed = once(text, 'module nav_subsystem #(', f'module {name} #(')
+        return once(renamed, '`include "nav_regs_map.vh"',
+                    '`undef NAV_REGS_MAP_VH\n`include "nav_regs_map.vh"')
+    (out/'nav_reference.v').write_text(comparison_module(old, 'nav_command_reference'), encoding='utf8', newline='\n')
+    (out/'nav_candidate.v').write_text(comparison_module(generated, 'nav_command_candidate'), encoding='utf8', newline='\n')
     wrappers = WRAPPER.replace('@NAME@', 'nav_command_reference_bus').replace('@NAVMODULE@', 'nav_command_reference')
     wrappers += WRAPPER.replace('@NAME@', 'nav_command_candidate_bus').replace('@NAVMODULE@', 'nav_command_candidate')
     (out/'bus_wrappers.sv').write_text(wrappers, encoding='utf8', newline='\n')
@@ -301,7 +309,7 @@ def prepare_bus_miter(a, result, data):
     validation = dict(phase='finite_bus_miter_inputs_prepared_not_run',
         natural_PNR53_PNR54_completion=pair, cwd=str(out), root_authorization_before_tool_execution_required=True,
         simulation_started=False, no_force_or_RAM_init=True,
-        sources='Exact frozen source and candidate NAV modules renamed only; common frozen RTL and two real arbiters',
+        sources='Frozen old/new NAV renamed with module-local register-map include guards reset; common RTL and two real arbiters unchanged',
         commands_not_executed=commands, expected_log='TEST PASSED NAV_COMMAND_BUS',
         scope='Finite six-pulse plus bus/control cycle equality under idle network; unknown read words are reported, not treated as verified numeric memory payloads',
         full_RAW_FIFO_MBX_console_concurrent_sequences_still_required=True,

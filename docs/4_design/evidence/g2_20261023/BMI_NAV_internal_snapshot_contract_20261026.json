@@ -1,0 +1,360 @@
+{
+  "at": "2026-10-26T23:57:58.782380+08:00",
+  "phase": "read-only interface/coordinate plan; not equivalent or accepted",
+  "bindings": {
+    "top": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\g2_top.v",
+      "bytes": 11633,
+      "mtime_ns": 1793013325206198000
+    },
+    "core": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\control4500_core.v",
+      "bytes": 20992,
+      "mtime_ns": 1792936600560105400
+    },
+    "sensor": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\control\\bmi088.v",
+      "bytes": 14824,
+      "mtime_ns": 1792936600549269200
+    },
+    "fusion": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\control\\imu_fusion.v",
+      "bytes": 20521,
+      "mtime_ns": 1792936600772323300
+    },
+    "policy": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\control\\mem_policy.v",
+      "bytes": 6779,
+      "mtime_ns": 1793027988063922900
+    },
+    "nav": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\nav\\rtl\\top\\nav_subsystem.v",
+      "bytes": 34871,
+      "mtime_ns": 1793013805842989700
+    },
+    "config": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\configuration_source\\config\\regmap.yaml",
+      "bytes": 29461,
+      "mtime_ns": 1793012198627029000
+    },
+    "parser": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\nav\\imu_parse.c",
+      "bytes": 1324,
+      "mtime_ns": 1792741123634119100
+    },
+    "parser_h": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\nav\\imu_parse.h",
+      "bytes": 1339,
+      "mtime_ns": 1792741123635118100
+    },
+    "pose": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\nav\\pose.c",
+      "bytes": 13228,
+      "mtime_ns": 1792741123642838400
+    },
+    "app": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\app\\nav_app.c",
+      "bytes": 24123,
+      "mtime_ns": 1793024610381128600
+    },
+    "hal": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\drv\\hal_fpga.c",
+      "bytes": 17878,
+      "mtime_ns": 1793024610382126600
+    },
+    "math": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\nav\\fixmath.c",
+      "bytes": 2616,
+      "mtime_ns": 1793026054081831400
+    }
+  },
+  "references": {
+    "top_raw": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\g2_top.v",
+      "line": 196,
+      "text": ".imu_rx(imu_rxd), .imu_tx(),"
+    },
+    "top_only_odo": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\g2_top.v",
+      "line": 198,
+      "text": ".odo_valid(odo_valid), .odo_vx(odo_vx), .odo_vy(16'd0), .odo_wz(odo_wz),"
+    },
+    "nav_odo": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\nav\\rtl\\top\\nav_subsystem.v",
+      "line": 487,
+      "text": "odo_v <= {odo_vy, odo_vx}; odo_w <= {16'd0, odo_wz}; odo_ts <= time_us;"
+    },
+    "HAL_odo": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\drv\\hal_fpga.c",
+      "line": 130,
+      "text": "uint32_t cnt = nav_rd(NAV_SAFE_ODO_CNT);"
+    },
+    "P11_skip_WIT": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\app\\nav_app.c",
+      "line": 348,
+      "text": "!p11_protocol && !p11_source_pending && i < 64 && hal_imu_byte"
+    },
+    "WITgyro": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\nav\\imu_parse.c",
+      "line": 23,
+      "text": "if (p->buf[1] == 0x52)"
+    },
+    "WITatt": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\nav\\imu_parse.c",
+      "line": 31,
+      "text": "if (p->buf[1] != 0x53) return false;"
+    },
+    "WITaxes": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\nav\\imu_parse.h",
+      "line": 25,
+      "text": "机身系 x 前 y 左 z 上"
+    },
+    "accelrange": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\control\\bmi088.v",
+      "line": 148,
+      "text": "6'd7: config_item = {1'b0, 8'h41, 8'h00};"
+    },
+    "gyrorange": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\control\\bmi088.v",
+      "line": 152,
+      "text": "6'd9: config_item = {1'b1, 8'h0f, 8'h00};"
+    },
+    "rawpub": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\control\\bmi088.v",
+      "line": 272,
+      "text": "accel_x <= {accel_pending[39:32], accel_pending[47:40]};"
+    },
+    "fusedunit": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\control\\imu_fusion.v",
+      "line": 33,
+      "text": "Outputs are physical units in signed 24-bit F12"
+    },
+    "fusedaxes": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\control\\imu_fusion.v",
+      "line": 13,
+      "text": "x=right, y=forward, z=up"
+    },
+    "fusedaccept": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\control\\imu_fusion.v",
+      "line": 258,
+      "text": "5'd2: if (sample_valid) begin"
+    },
+    "fusedvalid": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\control\\imu_fusion.v",
+      "line": 392,
+      "text": "ang_vel_x <= avx;"
+    },
+    "core_odoW": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\control4500_core.v",
+      "line": 308,
+      "text": "wire signed [47:0] feedback_gyro=$signed(telemetry_wz)*48'sd1000;"
+    },
+    "originalgyroconversion": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\nav\\pose.c",
+      "line": 132,
+      "text": "p->gyro_rr = (int32_t)gx * 32 / 9;"
+    },
+    "originalatt": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\nav\\pose.c",
+      "line": 84,
+      "text": "void pose_imu_att(pose_est_t *p, angle_t yaw, angle_t pitch, angle_t roll, bool yaw_valid, uint32_t t_us)"
+    },
+    "yawfallback": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\nav\\pose.c",
+      "line": 63,
+      "text": "if (!p->imu_att_valid || (uint32_t)(t_us - p->imu_t_us) > 100000)"
+    },
+    "CORDIC": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\nav\\fixmath.c",
+      "line": 10,
+      "text": "angle_t fx_atan2(int32_t y, int32_t x)"
+    }
+  },
+  "confirmed_gap": {
+    "control_feedback": "real motor feedback_vx and fused telemetry_wz feed NAV SAFE_ODO; hal_odom still integrates horizontalpose/yaw",
+    "missing": "no g2_top core BMI or gravity ports feed NAV. P11command mode explicitly skips WIT decoder; NAV pitch/roll,gyrohistory,attitudejump timestamps stop updating",
+    "P11_TX": "outbound V2 telemetry is not internally fed to NAV; no assumption that RK echoes it",
+    "current_WIT": "0x52 gyro and0x53 Euler consumed;0x51 accelerometer checksum counted but ignored; this is not a three-type attitudeinput",
+    "deployment_blocker": true
+  },
+  "actual_units": {
+    "raw": "originalsigned16 axis values, little-endian hardware extraction kept; atomic six-axis publication only afterbothbursts succeed",
+    "accel": {
+      "register": "0x41=0",
+      "range_g": 3,
+      "nominal_LSB_per_g": 10920
+    },
+    "gyro": {
+      "register": "0x0f=0",
+      "range_dps": 2000,
+      "nominal_LSB_per_dps": 16.384,
+      "WIT_raw_scaling": "same signedraw scale32768/2000dps, but coordinate mapping andbias are not automaticallysame"
+    },
+    "official_sources": [
+      "https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi088-ds001.pdf",
+      "https://www.bosch-sensortec.com/en/products/motion-sensors/imus/bmi088"
+    ],
+    "fusion": "originalsigned24 F12 rad/s andDOWNgravity, startup200samplebias, latchedbias_suspect, individualaccelreject; noabsoluteheading"
+  },
+  "sensor_time": {
+    "raw": "same50MHz NAV time_us at accepted real BMI sample_valid publication; physical accel andgyro were acquired in sequential I2Cbursts, not simultaneouslysampled",
+    "fusion": "must export existingstate2 sampleaccept through realports andcapturetime there; validcompletiontime also exposed separately",
+    "no_false_pairing": "currentfusion laterstates readlive accel/gyro if rawupdateswhilebusy. Accepted TS anchors itsoriginalFSM event; do notclaim one six-axisrawsnapshot was fullylatched or change thatalgorithm silently",
+    "no_CDC": "selectedsource isactual50MHz; ifanotherclockcandidate isselected thiscontractmustbereviewed again",
+    "source_reset": "exportactualdevice_reset_n/startup; commonNAV reset clears snapshots, source-resetclearsgeneration; CPUHOLD alone doesnotclear them",
+    "stale": "sequence doesnotadvance onstoppedsource; FWmustreadrealnow andlivehealth andapply existingfreshness/stopcontracts; neveruseCPUdequeue asmeasurementtime"
+  },
+  "planned_CSR": [
+    {
+      "name": "BMI_RAW_SEQ",
+      "address": "0x6030",
+      "description": "raw publication generation",
+      "acc": "ro"
+    },
+    {
+      "name": "BMI_RAW_TS",
+      "address": "0x6034",
+      "description": "NAV time_us when real BMI sample_valid accepted",
+      "acc": "ro"
+    },
+    {
+      "name": "BMI_RAW_AX_AY",
+      "address": "0x6038",
+      "description": "two original signed16 raw words:AY high,AX low",
+      "acc": "ro"
+    },
+    {
+      "name": "BMI_RAW_AZ_GX",
+      "address": "0x603c",
+      "description": "GX high,AZ low",
+      "acc": "ro"
+    },
+    {
+      "name": "BMI_RAW_GY_GZ",
+      "address": "0x6040",
+      "description": "GZ high,GY low",
+      "acc": "ro"
+    },
+    {
+      "name": "BMI_RAW_STAT",
+      "address": "0x6044",
+      "description": "health flags captured with raw data",
+      "acc": "ro"
+    },
+    {
+      "name": "BMI_FUS_SEQ",
+      "address": "0x6048",
+      "description": "fusion publication generation",
+      "acc": "ro"
+    },
+    {
+      "name": "BMI_FUS_SAMPLE_TS",
+      "address": "0x604c",
+      "description": "original state2 sample-accept time, not completion time",
+      "acc": "ro"
+    },
+    {
+      "name": "BMI_FUS_PUBLISH_TS",
+      "address": "0x6050",
+      "description": "real fusion valid publication time",
+      "acc": "ro"
+    },
+    {
+      "name": "BMI_FUS_WX",
+      "address": "0x6054",
+      "description": "original signed24 F12 rad/s, sign-extended32",
+      "acc": "ro"
+    },
+    {
+      "name": "BMI_FUS_WY",
+      "address": "0x6058",
+      "description": "same",
+      "acc": "ro"
+    },
+    {
+      "name": "BMI_FUS_WZ",
+      "address": "0x605c",
+      "description": "same",
+      "acc": "ro"
+    },
+    {
+      "name": "BMI_FUS_GX",
+      "address": "0x6060",
+      "description": "original signed24 F12 projected DOWN gravity",
+      "acc": "ro"
+    },
+    {
+      "name": "BMI_FUS_GY",
+      "address": "0x6064",
+      "description": "same",
+      "acc": "ro"
+    },
+    {
+      "name": "BMI_FUS_GZ",
+      "address": "0x6068",
+      "description": "same",
+      "acc": "ro"
+    },
+    {
+      "name": "BMI_FUS_STAT",
+      "address": "0x606c",
+      "description": "captured health and accel-rejected flags",
+      "acc": "ro"
+    },
+    {
+      "name": "BMI_LIVE_STAT",
+      "address": "0x6070",
+      "description": "current source reset/ready/error/calibrating/bias flags; never infer health only from old snapshot",
+      "acc": "ro"
+    }
+  ],
+  "publication": {
+    "raw": "threepacked32bits+TS+STAT+SEQ atomic",
+    "fused": "six24bitwords signextended atCSR +acceptTS+publishTS+STAT+SEQ atomic",
+    "reads": "SEQfirst→allrequiredwords/TS/STAT→SEQlast; equalnonzero nonsaturatedgeneration only; otherwise boundedretry nextservice, no fabricatedfreshness",
+    "health": "LIVE_STAT independently exposes error/calibration/reset; previouslyhealthyfrozenpacket doesnotimplycurrenthealth",
+    "saturation": "FFFF_FFFF freezesbank andFWrejects; resetepochrejectedbygeneration/ownerlogic, noautoarm",
+    "same_edge": "previousfusionvalid plusnextstate2accept: publisholdsampleTS thennewacceptwins pendingflag; musttestthisactuallegalboundary"
+  },
+  "coordinate_and_algorithm_decision": {
+    "NAV": "imu_parse.h requiresbody xforward,yleft,zup; pose appliesRzRyRx. WITatt alreadyEuler,notgravity",
+    "control": "imu_fusion sourceclaims xright,yforward,zup andDOWNgravity; citesIMU_CALIBRATION.md butthatbenchfile wasnotfoundinthisfrozeninput/repo search",
+    "candidate_rotation": "IF sourceaxisdescription isphysicallyconfirmed, properrotation NAV=(controlY,-controlX,controlZ),det+1; must beexplicitandvalidatednot silentlyidentity",
+    "Euler": "forNAVDOWNgravity transformedandnormaldomain, conventionalRzRyRx implies pitch=atan2(gx,sqrt(gy²+gz²)),roll=atan2(-gy,-gz); sign/inverted/near±90ambiguity andexactrounding requireindependentfixtures",
+    "reuse": "existingfx_atan2/fx_isqrt canimplementconversion; rawgyro canthenfeedexistingpose_imu_gyro afterexplicitaxismap, preservingrawscale",
+    "difference": "BMIgravityfusion→Euler→oldposecomplementaryfilter is a newsourceconversion, not provenidenticaltoexternalWITEuler; fullheadingunavailable, keepyaw_validfalse andoriginalodo/fusedwzheadingfallback",
+    "boundary": "do notsubstitutearbitrarygyrotoattitude orrawaccelnormalization fororiginalfusion; no new estimator silentlyselected",
+    "required_before_implementation": [
+      "confirmmechanicalaxispermutationwithoriginalbenchposesornewboundedread-onlysensorcapture",
+      "choose/recordpitch-rollwrapnearupside-downandatanroundingcontract",
+      "reviewsourcefreshness+invalidresetbehaviorbeforeposeupdate",
+      "comparelevel/noseup/down/left-rightroll/rate/jump/zero/allquadrant syntheticvectors withindependentreferenceandactual50MHzsnapshotordering"
+    ]
+  },
+  "minimal_files": [
+    "control/imu_fusion.v: output existingstate2 accept-event only",
+    "control/mem_policy.v: exposeaccept andexistingfusiondata/status, noalgorithmrewrite",
+    "control4500_core.v: exportrealraw/fused/status/reset signals",
+    "g2_top.v: same-clockports toNAV",
+    "nav/rtl/top/nav_subsystem.v+newnav_bmi_snapshot.v",
+    "originalregmapgenerator input+generatedreadonlyCSRfiles",
+    "FWdriverboundedreader+poseingestionbranch; WITfallbackkept"
+  ],
+  "resource_and_budget": {
+    "module_string_source_bits": 497,
+    "note": "sourcebitcount isnotactualmappedFF/LUT orfinalminimalimplementation; existingtelemetrycopiesmaybeshareable butnotassumed",
+    "sourcehas_no_RAM_no_newclock": true,
+    "physicalallocation_unknown": true,
+    "FW": "current1924B sparebelongspriorquiesce/snapshot/sineFW; no newBMIreader/Euler/CORDICcallcost/link/stack/WCETiscompiled here",
+    "originalFW_not_recompiled": true
+  },
+  "source_sketch": {
+    "Python_string_bytes": 2215,
+    "materializer_available": false,
+    "remaining": "noactualportpatch/regmaporFWselection; fullsourcehandoffmustbeboundtonewbaseaftercurrentbuilds"
+  },
+  "RTL_generated": false,
+  "EDA_started": false,
+  "tests_started": false,
+  "deployment_ready": false
+}

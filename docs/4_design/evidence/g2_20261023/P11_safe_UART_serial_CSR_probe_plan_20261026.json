@@ -1,0 +1,100 @@
+{
+  "at": "2026-10-27T00:00:01.445064+08:00",
+  "source": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1",
+  "gates": {
+    "PNR54": {
+      "runtime": {
+        "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_place2_pnr54\\tool_runtime.json",
+        "bytes": 1357,
+        "mtime_ns": 1793027983111194400
+      },
+      "pid": 48212,
+      "original_created_epoch": 1793024323.6441314,
+      "tool_exit": 0,
+      "ended_at": "2026-10-26T23:19:43.110860+08:00",
+      "original_process_still_running": false,
+      "pid_reused_by_other_process": false,
+      "cancelled": false,
+      "total_seconds": 0,
+      "silent_seconds": 0,
+      "natural_completion_gate": true
+    },
+    "SYN44": {
+      "job": {
+        "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_syn44\\job.json",
+        "bytes": 2032,
+        "mtime_ns": 1793029388432796500
+      },
+      "pid": 51268,
+      "created_epoch": 1793028868.262156,
+      "phase": "synthesis_complete",
+      "tool_exit": 0,
+      "original_alive": false,
+      "natural_complete": true
+    }
+  },
+  "RTL_materialized": false,
+  "tools_started": false,
+  "FW_recompiled": false,
+  "frozen_strings": {
+    "TB_bytes": 7895,
+    "actual_generated_regfile_harness": true,
+    "original_UART_miter": true
+  },
+  "test_scope": "actualserial217clkbit/50MHz, actualgeneratednav_regfile, production256byte/32TS RAM+twoFWFTslots; noCPU/wholeNAV/physicalpinclaim",
+  "intended_cases": [
+    "disabledparserrawmiter",
+    "TXallcyclesmiter",
+    "CTRL2wdnotoldr",
+    "LOWforever/noREADY",
+    "LOWbetweenus ticks",
+    "2001HIGHqualification",
+    "FIRSTstarttimestamp",
+    "legacy/newCRC/range",
+    "noidleburstsinglepublication",
+    "leadingnoiseearlyTS",
+    "naturallyfullrawandTSFIFO",
+    "10serialphaseflushes",
+    "cfgqualificationrestart",
+    "stickREADYafterACTIVEstart",
+    "clockpause"
+  ],
+  "not_yet_covered": [
+    "arbitraryfour-readpublicationcuts/saturationformal",
+    "fullNAVbusACK/CPUHOLDexercise",
+    "allCRCsingle-bitmutations/everyrangevalue",
+    "allindependentDATA-TSfullpermutations",
+    "actualLUTFF/CDC/reset/STA",
+    "selectedFWCPUbusy250/350msandphysical500ms"
+  ],
+  "future_commands": [
+    [
+      "xvlog.bat",
+      "--sv",
+      "test/nav_cdc.v",
+      "test/nav_ram_sdp.v",
+      "test/nav_fifo_ob.v",
+      "test/nav_fifo.v",
+      "test/imu_uart_reference.v",
+      "nav/rtl/io/imu_uart.v",
+      "nav/rtl/io/p11_command_snapshot.v",
+      "nav/rtl/regs/nav_regfile.v",
+      "test/p11_csr_probe_harness.sv",
+      "test/p11_safe_uart_tb.sv"
+    ],
+    [
+      "xelab.bat",
+      "work.p11_safe_uart_tb",
+      "-s",
+      "p11_safe_uart"
+    ],
+    [
+      "xsim.bat",
+      "p11_safe_uart",
+      "-runall"
+    ]
+  ],
+  "execution_gate": "noautomatictool; rootadmissionafterallRTL/TBfrozen, eachtool2GiBphys/4GiBcommit, actualPID/create/log/PASS/noFatalmustbecollected",
+  "no_test_result_claimed": true,
+  "deployment_ready": false
+}
