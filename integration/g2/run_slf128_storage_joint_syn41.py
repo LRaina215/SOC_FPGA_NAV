@@ -28,6 +28,14 @@ CONTROL = BASE/'SLF128_storage_safeFW_SYN41_one_shot'
 GIB = 1024**3
 
 
+def configure(number):
+    global PREP, OUTPUT, CONTROL
+    assert number >= 41
+    PREP = BASE/f'SLF128_storage_safeFW_SYN{number}_prepared1'
+    OUTPUT = BASE/f'SLF128_storage_safeFW_syn{number}'
+    CONTROL = BASE/f'SLF128_storage_safeFW_SYN{number}_one_shot'
+
+
 def checked_review(path):
     review = load(path)
     assert review['passed'] and review['combined_RTL_contracts_passed']
@@ -109,7 +117,7 @@ def start():
     me.cpu_affinity(list(range(psutil.cpu_count())))
     state = dict(controller_pid=me.pid, controller_created_epoch=me.create_time(),
                  controller_parent_pid=me.ppid(), source=str(PREP), output=str(OUTPUT),
-                 automatic_PNR=False, programmed=False, build_label='SYN41',
+                 automatic_PNR=False, programmed=False, build_label=OUTPUT.name.rsplit('_', 1)[-1].upper(),
                  minimum_physical_bytes=2*GIB, minimum_commit_bytes=4*GIB,
                  original_runtime_memory_protection=True, SYN_max_runtime_minutes=40,
                  no_other_PNR_exit_dependency=True)
@@ -133,16 +141,16 @@ def start():
         cmd = [sys.executable, '-B', '-X', 'utf8',
                str(Path(__file__).with_name('retry_frozen_synthesis.py')),
                str(PREP), '--out', str(OUTPUT), '--start-now', '--tool-priority', 'normal']
-        with (CONTROL/'full_SYN41_stdout.log').open('w', encoding='utf8') as log:
+        with (CONTROL/'full_synthesis_stdout.log').open('w', encoding='utf8') as log:
             child = subprocess.Popen(cmd, stdout=log, stderr=subprocess.STDOUT,
                                      creationflags=subprocess.CREATE_NO_WINDOW)
-            status('running_unique_joint_SYN41', runner_pid=child.pid,
+            status('running_unique_joint_synthesis', runner_pid=child.pid,
                    runner_created_epoch=psutil.Process(child.pid).create_time(), command=cmd,
                    admission_physical_bytes=mem.avail_phys, admission_commit_bytes=mem.avail_page)
             code = child.wait()
         assert code == 0, ('Read actual failure; no automatic repeat', code)
         frozen()
-        status('SYN41_complete_actual_mapping_review_pending',
+        status('synthesis_complete_actual_mapping_review_pending',
                actual_mapping_acceptance=False, physical_resources_measured=False)
         return 0
     except Exception as exc:
@@ -154,8 +162,10 @@ if __name__ == '__main__':
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--prepare', type=Path, metavar='ROOT_REVIEW_JSON')
     p.add_argument('--start', action='store_true')
+    p.add_argument('--syn-number', type=int, default=41)
     a = p.parse_args()
     assert bool(a.prepare) != a.start
+    configure(a.syn_number)
     if a.prepare:
         print(json.dumps(prepare(a.prepare), ensure_ascii=False))
     else:

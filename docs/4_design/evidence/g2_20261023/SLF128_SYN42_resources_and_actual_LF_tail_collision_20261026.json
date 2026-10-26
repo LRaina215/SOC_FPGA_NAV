@@ -1,0 +1,83 @@
+{
+  "recorded_at": "2026-10-26T20:18:17.127201+08:00",
+  "source": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42",
+  "actual_SYN_complete": true,
+  "tool_exit": 0,
+  "controller_pid": 52532,
+  "controller_created_epoch": 1793015343.845035,
+  "tool_pid": 14108,
+  "tool_created_epoch": 1793015345.8492892,
+  "actual_resources": {
+    "source_BSRAM": 269,
+    "wide32_36": 11,
+    "LUT": 38923,
+    "FF": 29541,
+    "ALU": 9630,
+    "SSRAM": 1873
+  },
+  "predicted_physical_BSRAM": 280,
+  "physical_BSRAM_not_yet_measured": true,
+  "entry_numeric_thresholds_satisfied": true,
+  "mapped_storage_contracts_passed": false,
+  "original_prediction": {
+    "source": 270,
+    "wide": 12,
+    "physical": 282
+  },
+  "count_difference": "LF128 four source rows packed into3 native32bit leaves, not4; actual observable66bits/130columns is under local mapping review",
+  "synthesis_timing": {
+    "clocks": [
+      {
+        "name": "clk50",
+        "constraint_mhz": 50.0,
+        "estimated_fmax_mhz": 37.433,
+        "levels": 29,
+        "entity": "TOP"
+      },
+      {
+        "name": "rgmii_rxc",
+        "constraint_mhz": 50.0,
+        "estimated_fmax_mhz": 100.735,
+        "levels": 6,
+        "entity": "TOP"
+      }
+    ],
+    "first_path": {
+      "Slack": "-6.714",
+      "Data Arrival Time": "27.028",
+      "Data Required Time": "20.314",
+      "From": "u_control/model_thread/sensor_age_6_s1",
+      "To": "u_control/model_thread/policy/snapshot_word_14_s0",
+      "Launch Clk": "clk50[R]",
+      "Latch Clk": "clk50[R]"
+    },
+    "scope": "synthesis estimate only; actual PNR resource/timing acceptance must come from PNR reports"
+  },
+  "timing_not_passed": true,
+  "LF_tail_real_counterexample": {
+    "evidence": "F:\\nav_integration_g2_20261023\\SLF128_LF_actual_control_trace1\\result.json",
+    "source_actual_control_FFs": 44,
+    "source_actual_logic_nodes": 267,
+    "trace": "reset3 edges, start1, full16900 scan/write edges; drain16907 run0/v1=1/c1=c1_b=c1_c=129",
+    "actual_SDP_blocks": 3,
+    "simultaneous_read_write_word": 129,
+    "physical_chunks": [
+      258,
+      259
+    ],
+    "ignored_AD4_byte_write_mask_as_address": true,
+    "free_state_SAT_not_misrepresented": true,
+    "scope": "Actual mapped finite control trace and legal-operation contradiction, not a board failure or explanation of prior unrouted-net identities"
+  },
+  "next": "Preserve42; exact LF run-gated private prefetch + old/new128 numeric/cycle test + one C small mapping/physical address trace, then changed-source joint synthesis",
+  "PNR_started": false,
+  "programmed": false,
+  "deployment_accepted": false,
+  "model_snapshot": {
+    "controller_pid": 45668,
+    "completed": 44,
+    "planned": 72,
+    "current": "goal_prior128_s2",
+    "latest_job_overrides_snapshot": true
+  }
+}

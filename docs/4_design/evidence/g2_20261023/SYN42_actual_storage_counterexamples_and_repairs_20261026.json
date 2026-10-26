@@ -1,0 +1,177 @@
+{
+  "recorded_at": "2026-10-26T20:46+08:00",
+  "scope": "Actual SYN42 storage review found two demonstrated blockers; isolated source-preserving repairs are closed before root-owned SYN43. Not routing, STA or deployment acceptance.",
+  "actual_SYN42": {
+    "source_BSRAM": 269,
+    "wide32_or36": 11,
+    "split1_physical_prediction": 280,
+    "prediction_is_not_physical_measurement": true,
+    "LUT": 38923,
+    "FF": 29541,
+    "all269_RAM_geometry_INIT_accounted": true,
+    "CPU_bitplanes": 64,
+    "CPU_RAM_bytes": 131072,
+    "CPU_BIN_bytes": 53572
+  },
+  "demonstrated_failures": [
+    {
+      "kind": "LF final drain read/write physical chunk overlap",
+      "actual_scan_run_edges": 16900,
+      "event_edge": 16907,
+      "write_read_word": 129,
+      "chunks": [
+        258,
+        259
+      ],
+      "actual_SDPB_blocks": 3,
+      "run": 0,
+      "v1": 1,
+      "CEA": 1,
+      "CEB": 1,
+      "method": "Actual44FF Boolean INIT/transition scan, not unconstrained-state SAT"
+    },
+    {
+      "kind": "Actual packed weight public value differs",
+      "address": 16385,
+      "original_weight_and_source_RTL": "0176",
+      "actual_SYN42": "3976",
+      "official_unmodified_prim_sim_reproduced": true,
+      "sim_time_ns": 983352,
+      "warning": "xsim process exit0 despite Fatal; marker/log rejects this run"
+    }
+  ],
+  "repairs": [
+    {
+      "kind": "LF read enabled only on real run prefetch",
+      "source_change": "wire lb[c1] replaced with private no-reset synchronous if(!rst&&run) lb[c] prefetch; T1 writes and all public stages unchanged",
+      "old_new_checks": 211736,
+      "valid_writes_compared": 204568,
+      "full128_maps": 10,
+      "reset_restart_points": 5,
+      "original_model_frames": 5,
+      "candidates": 245,
+      "original_EVALs": 7,
+      "new_actual_C_read_equivalence_UNSAT": 6,
+      "new_actual_control_FFs": 36,
+      "new_actual_scan_edges": 16900,
+      "tail_write": 1,
+      "tail_read": 0,
+      "new_actual_chunk_conflicts": 0
+    },
+    {
+      "kind": "Packed-high common enable",
+      "source_changed_conditions": 15,
+      "all35_INIT_payloads_unchanged": true,
+      "all_40704_original_weights_unchanged": true,
+      "source_test_addresses": 65536,
+      "source_checks": 199552,
+      "source_valid_gold_reads": 42368,
+      "source_public_hold_checks": 131872,
+      "source_XZ_cases": 640,
+      "small_actual_ROM_count": 35,
+      "small_actual_static_queries_UNSAT": 51,
+      "official_macro_reads": 40708,
+      "official_macro_idle_holds": 81409,
+      "official_macro_checks": 122117
+    }
+  ],
+  "prepared": {
+    "source7": "Only LF versus6; historical copy-time metadata list retained",
+    "source8": "Only fixed4500_weight_rom versus7; final identical inputs and rebound JSON separately listed",
+    "FW_bytes": 53572,
+    "root_full_SYN43_started_after_source_gate": true
+  },
+  "remaining": {
+    "actual_new_joint43_RAM_and_INIT_and_CEB_recheck": true,
+    "actual_new_joint43_weight_numeric_and_LF_control_required": true,
+    "free_state_SAT_not_observed_collision": true,
+    "caller_endpoint_touch_slist_TXshadow_console_next_port_exclusion": "UNSAT with actual FF transitions; remaining source reachability binding continues",
+    "physical_routing_STA_CDC_reset_IO_board_not_accepted": true
+  },
+  "evidence": {
+    "original42LF": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_LF_actual_control_trace1\\result.json",
+      "bytes": 13099,
+      "mtime_ns": 1793016668732281100
+    },
+    "original42_weight_official_macro": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_actual_weights_official_primitive_probe1\\result.json",
+      "bytes": 3041,
+      "mtime_ns": 1793017674616078100
+    },
+    "original42_weight_official_log": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_actual_weights_official_primitive_probe1\\xsim.log",
+      "bytes": 1700,
+      "mtime_ns": 1793017674509723900
+    },
+    "original42_memory_inventory_and_CPU_INIT": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42_memory_review5\\result.json",
+      "bytes": 62117,
+      "mtime_ns": 1793018127353123500
+    },
+    "local_LF_trig_touch_mapping": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_local_memory_mapping_review2\\result.json",
+      "bytes": 3925,
+      "mtime_ns": 1793018237547593600
+    },
+    "LF_minimal_source": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_LF_run_read_candidate1\\preparation.json",
+      "bytes": 1778,
+      "mtime_ns": 1793016980286751200
+    },
+    "LF_old_new_and_five_original_frames": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_LF_run_read_validation1\\result.json",
+      "bytes": 19597,
+      "mtime_ns": 1793017216235093500
+    },
+    "LF_new_small_actual_C": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_LF_run_read_small_actual_review1\\result.json",
+      "bytes": 2791,
+      "mtime_ns": 1793017475495972700
+    },
+    "weight_common_en_source": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_weight_high_common_en_candidate1\\preparation.json",
+      "bytes": 2248,
+      "mtime_ns": 1793017920192865400
+    },
+    "weight_common_en_RTL_full_domain": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_weight_high_common_en_RTL_probe1\\result.json",
+      "bytes": 2170,
+      "mtime_ns": 1793017938423945500
+    },
+    "weight_common_en_actual_C": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_weight_high_common_en_small_actual_review1\\result.json",
+      "bytes": 1693,
+      "mtime_ns": 1793018472167063500
+    },
+    "weight_common_en_official_actual_macro": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_common_en_actual_weights_official_probe1\\result.json",
+      "bytes": 2743,
+      "mtime_ns": 1793018382490700900
+    },
+    "final_source8_binding": {
+      "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\weight_repair_binding_review.json",
+      "bytes": 11284,
+      "mtime_ns": 1793018572608591700
+    },
+    "actual_caller_endpoint_review": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_actual_memory_control_exclusion_review2\\result.json",
+      "bytes": 70363,
+      "mtime_ns": 1793018724599710800
+    }
+  },
+  "scripts": [
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_slf128_LF_actual_trace.py",
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_slf128_local_memory_mapping.py",
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_stage3_slf128_memories.py",
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prepare_slf128_lf_run_read.py",
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\validate_slf128_lf_run_read.py",
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prepare_stage3_slf128_LF_repair.py",
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_slf128_actual_packed_weights.py",
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\validate_slf128_actual_weight_map.py",
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prepare_slf128_weight_common_enable.py",
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\validate_slf128_weight_common_enable.py",
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prepare_stage3_slf128_weight_repair.py",
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_slf128_memory_control_exclusion.py"
+  ]
+}

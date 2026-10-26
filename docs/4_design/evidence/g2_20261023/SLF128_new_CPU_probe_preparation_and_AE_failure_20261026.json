@@ -1,0 +1,167 @@
+{
+  "reviewed_at": "2026-10-26T19:44:36.668964+08:00",
+  "scope": "Read-only preparation; no simulator/compiler/license retry or candidate modifications. Actual new CPU contract remains pending.",
+  "selected_source": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared5",
+  "new_ELF": {
+    "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared5\\firmware\\nav_fw.elf",
+    "bytes": 439900,
+    "mtime_ns": 1793013879214721600
+  },
+  "new_BIN": {
+    "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared5\\firmware\\nav_fw.bin",
+    "bytes": 53572,
+    "mtime_ns": 1793013879364223500
+  },
+  "old_nine_contract_fixture": "F:\\nav_integration_g2_20261023\\preview_full_G2_UART_CPU250_probe2_emptyIMU_modelsim\\tb_preview_full_uart_cpu.sv",
+  "old_9_checks_21_UART_writes_pass_is_only_old_image": true,
+  "reuse_conclusion": "Original9 boot/lock/timeout/rearm/hardESTOP checks and raw921600 UART driver are reusable after image/source binder adaptation. Current probe entry is not directly usable unchanged.",
+  "mandatory_entry_changes": [
+    {
+      "file": "integration/g2/probe_preview_full_uart_cpu.py",
+      "lines": "50-66",
+      "issue": "Old prepared_source_review.json passed/bindings/host_timeout_us/new_image_bytes/image_layout schema is absent from final stage3 source. Bind manifest63 + composition/firmware_binding_review + strict ELF stack/finalize evidence instead; no caller-supplied pass whitelist."
+    },
+    {
+      "file": "integration/g2/prepare_uart_loss_250.py",
+      "line": 50,
+      "issue": "Old _bss_start-BIN<4 assertion rejects this valid4-byte alignment gap. Derive exact BSS alignment from ELF section header; require _bss_start=align_up(last file-backed load end, sh_addralign), actual PT_LOAD/BIN byte identity and INIT zero gap. Do not merely allow a larger arbitrary gap."
+    },
+    {
+      "file": "integration/g2/probe_preview_full_uart_cpu.py",
+      "lines": "28-41 and117-121",
+      "issue": "Regenerate GUARD_ADDRESS from this ELF, size24 aligned; keep bool-byte flags at+20 after confirming current struct. Configure timeout250000/maxzero350000, retain actual50MHz/921600 hardware time and100ms boot observation; finite watchdog is not a PNR deadline."
+    },
+    {
+      "file": "CPU250_bounded_drain_UART_Pico_prepared1/run_once.py",
+      "lines": "63-103",
+      "issue": "Extended busy fixture hardcodes52824B, old source and drain_host_messages symbol, oldNVMPv2/40B header/4136 total. Rebind new53572B ELF/BIN; exact drain_host_messages.lto_priv.0 is STT_FUNC at0x8144. Generate v3/48B geometry0x0107 profile0x33580001 currentZHI andZLO-300. For4096 zero cost bytes total4144, update array bounds/END/ACK offsets; no partial map fixture substitution."
+    },
+    {
+      "file": "CPU250_bounded_drain_UART_Pico_prepared1/tb_preview_full_uart_cpu.sv",
+      "lines": "88-111",
+      "issue": "Rebind all observer PC/RA/arg symbols from actual new ELF below; retain runtime proof of actual drain return/backlog, <=4packet budget, actual frontier active at timeout, cancellation and new SAFE_CMD_W commit. A missing busy prerequisite must fail, not become idle pass."
+    }
+  ],
+  "actual_symbol_bindings": {
+    "GUARD_ADDRESS": {
+      "name": "g_host_link_guard",
+      "address": 54872,
+      "hex": "0xd658",
+      "size": 24,
+      "type": 1
+    },
+    "INTERRUPTED_ADDRESS": {
+      "name": "g_nav_search_interrupted",
+      "address": 54868,
+      "hex": "0xd654",
+      "size": 1,
+      "type": 1
+    },
+    "DRAIN_ENTRY": {
+      "name": "drain_host_messages.lto_priv.0",
+      "address": 33092,
+      "hex": "0x8144",
+      "size": 2076,
+      "type": 2
+    },
+    "FRONTIER_ENTRY": {
+      "name": "explore_frontier.constprop.0",
+      "address": 28336,
+      "hex": "0x6eb0",
+      "size": 1160,
+      "type": 2
+    },
+    "CHECKPOINT_ENTRY": {
+      "name": "nav_app_search_checkpoint",
+      "address": 28156,
+      "hex": "0x6dfc",
+      "size": 180,
+      "type": 2
+    },
+    "STEP_ENTRY": {
+      "name": "task_step_local.constprop.0",
+      "address": 29496,
+      "hex": "0x7338",
+      "size": 3596,
+      "type": 2
+    }
+  },
+  "ELF_alignment": {
+    "BIN_bytes": 53572,
+    "BSS_start": 53576,
+    "BSS_section_align": 8,
+    "exact_gap": 4,
+    "BSS_end": 123580,
+    "reserved_stack": 6144,
+    "remaining_after_reserve": 1348,
+    "strict_rule_exact_align_up_passes": true
+  },
+  "minimal_validation_sequence": [
+    "Prepare one independent copy of final63 RTL/new53572B image/all selected assets and regenerate ELF observers; no firmware instrumentation, CPU stub, time acceleration or force.",
+    "Reuse original9 idle contracts as the first phase, preserving initial motion reject, freshIDLE, timeout>=250ms, new zero numeric commit age<=350ms, latch/no-auto-recovery, fresh rearm and independent hardESTOP. Current sensor-idle fixture does not cover busy350ms or physical500ms.",
+    "Extend that same real-CPU run with bounded ordinary receive backlog/returns and one actual populated-prior/frontier busy-loss phase. Use NVMPv3 matching selectedZHI; retain STOP-and-WAIT stable sequence ACK reads, not publication-only success.",
+    "Add only missing new protocol integration checks: rawUART SLF_CONFIG query/set/readback, busy/prior refusal,350/1500 profile mismatch/earlyEND rejection; existing native component tests are not Pico execution.",
+    "Observe actual CPU/guard/mailbox/SAFE result and input invariance. Report finite scope and real zero age; no physical stop or wholeWCET claim."
+  ],
+  "license_blocker": {
+    "confirmed": true,
+    "attempt_directory": "F:\\nav_integration_g2_20261023\\CPU250_bounded_drain_UART_Pico_prepared1",
+    "log": {
+      "path": "F:\\nav_integration_g2_20261023\\CPU250_bounded_drain_UART_Pico_prepared1\\3_vsim.log",
+      "bytes": 735,
+      "mtime_ns": 1793000393722933600
+    },
+    "time": "2026-10-26 15:39:52..15:39:53 +08:00",
+    "vsim_exit": 12,
+    "actual_log_quotes": [
+      "License request for alteramtivlog feature failed",
+      "No such feature exists.",
+      "Unable to checkout any of these license features: alteramtivsim or alteramtivlog",
+      "Error loading design"
+    ],
+    "compile_vlog_exit": [
+      0,
+      0
+    ],
+    "design_loaded": false,
+    "CPU_executed": false,
+    "conclusion": "This request failed feature checkout before design load. It is not a CPU/firmware test failure. No assertion about why an earlier licensed run succeeded; license contents were not read. No identical retry is proposed."
+  },
+  "xsim_fallback_assessment": {
+    "prior_log": "F:\\nav_integration_g2_20261023\\preview_full_G2_UART_CPU_probe6\\2_xelab.log",
+    "prior_fact": "Static elaboration completed then XSIM43-3294 EXCEPTION_ACCESS_VIOLATION. Stack includes VlogCompiler::transform/Verific TraverseArray; it does not identify a specific RTL source cause.",
+    "new_input_differs_in_RTL_count": 20,
+    "changed_files": [
+      "nav/rtl/common/nav_ram_sdp.v",
+      "nav/rtl/common/nav_async_fifo.v",
+      "nav/rtl/lidar/xt_frame_rx.v",
+      "nav/rtl/map/trav_v3.v",
+      "nav/rtl/match/slf_lf.v",
+      "nav/rtl/match/slf_match.v",
+      "nav/rtl/plan/traj_eval.v",
+      "nav/rtl/net/host_mbx.v",
+      "nav/rtl/regs/nav_regfile.v",
+      "nav/rtl/top/nav_subsystem.v",
+      "nav/rtl/soc/nav_soc.v",
+      "nav/rtl/net/rgmii_mac100.v",
+      "control/mem_policy.v",
+      "control/policy_action_map.v",
+      "control/rl_observation_v5.v",
+      "control/rl_policy_tick_v5.v",
+      "command_lease_guard.v",
+      "g2_top.v",
+      "fc_v4_top.v",
+      "fixed4500_weight_rom.v"
+    ],
+    "not_an_identical_old_rerun": true,
+    "changed_ring_and_storage_does_not_prove_crash_fixed": true,
+    "allowed_copy_only_adaptation": "The existing three-file/six-declaration reordering only (OLED axis/current_value; core target constants/diagnostic declaration; g2 l_rx_rst/l_tx_rst). Each unchanged declaration and all remaining source bytes must be checked; no expression/width change or global relax.",
+    "decision": "Do not launch now. After SYN42 and root authorization, a fresh independent new-input xsim static elaboration attempt is evidence-based; if access violation repeats preserve it and stop without source mutation. No simulator-license bypass."
+  },
+  "clock_scope_note": "Old test drives core50MHz and idle rxc25MHz (#20ns). It is not radar100MHz validation. A future complete clock-domain case must drive the actual100MHz waveform or explicitly retain idle-RX scope.",
+  "source_CPU_RAM_wrapper_byte_equal_to_successful_fixture": true,
+  "simulation_started": false,
+  "EDA_started": false,
+  "programmed": false,
+  "deployment_accepted": false
+}

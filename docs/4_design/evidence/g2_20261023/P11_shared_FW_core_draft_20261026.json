@@ -1,0 +1,130 @@
+{
+  "scope": "Frozen isolated P11 software-core draft and integration contract; not selected production FW",
+  "candidate": "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_experiment_prepared1",
+  "contract": "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_experiment_prepared1\\contract.json",
+  "manifest": "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_experiment_prepared1\\manifest.json",
+  "source": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared6",
+  "original_FW_files_unchanged": 64,
+  "original_BIN_53572_unchanged": true,
+  "added_files": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_experiment_prepared1\\fw\\nav\\p11_command_guard.h",
+      "bytes": 2527,
+      "mtime_ns": 1793018656067139200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_experiment_prepared1\\fw\\nav\\p11_command_guard.c",
+      "bytes": 4839,
+      "mtime_ns": 1793018656067139200
+    }
+  ],
+  "new_component_only_patch": {
+    "path": "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_experiment_prepared1\\new_component_only.patch",
+    "bytes": 7805,
+    "mtime_ns": 1793018656082408900
+  },
+  "states": [
+    "OFF/WIT optional: original parser branch remains selectable",
+    "WAIT_ZERO: trusted fresh R0 IDLE + measured still500ms + drained/quiet source + new session authorized, zero only",
+    "ARMED: subsequent distinct timestamped complete CRC/range frame can propose velocity",
+    "LOCKED: R0 loss, P11 arrival age>=200ms, feedback age>=50ms or raw integrity fault; numeric zero and latched until another trusted new-session request plus fresh zero"
+  ],
+  "stop_contract": {
+    "R0_guard_us": 250000,
+    "P11_arrival_age_us": 200000,
+    "feedback_fresh_us": 50000,
+    "rearm_static_us": 500000,
+    "physical_stop_gate_us": 500000,
+    "physical_stop_verified": false,
+    "command_publish_max_age_us_gate": 350000,
+    "command_publish_max_age_us_verified": false,
+    "P11_does_not_refresh_R0_guard": true,
+    "no_auto_recover_on_packets": true,
+    "existing_SAFE_and_lease_sole_actuator_owner": true,
+    "IR_hard_EST0P_priority_unchanged": true
+  },
+  "raw_UART_contract": {
+    "physical_input": "A15 existing imu_rxd -> u_imu byte/FIRST FIFO",
+    "config_div": 217,
+    "idle_us": 500,
+    "byte_RAM_depth": 256,
+    "byte_total_capacity": 258,
+    "burst_timestamp_total_capacity": 34,
+    "selected_sender": "50Hz10-byte frames in separate bursts; >=500us idle between packets. Sender starts only after fresh management ACK and sends new zero first.",
+    "no_back_to_back_fresh_timestamp_claim": true,
+    "one_accepted_command_per_burst": true,
+    "arrival_stamp": "Actual FIRST start time; conservative packet-start age, never software dequeue time",
+    "per_loop_byte_budget": 32,
+    "per_search_checkpoint_byte_budget": 32,
+    "raw_queue_limit": 32,
+    "per_pair_elapsed_us_must_be_less_than": 100,
+    "guard": "Before and after each data/FIRST timestamp pair, verify monotone overflow baseline, count<=32 and elapsed<100us. Missing/zero stamp, misordering or backlog faults quarantine; all selected-mode old/WIT consumers disabled.",
+    "reason": "At most32 queued byte/FIRST records, plus at most2 pipeline entries, fit34 timestamp slots; a FIRST requires>=500us idle. Measured100us pair bound avoids an unchecked producer interval. This inference still needs actual-MMIO ordering and worst-case service validation.",
+    "drain": "In quarantine do not accept packets. Bounded drain of up to258 data and34 timestamp records, then require >=2ms with no new bytes; explicitly new trusted management request. A flood never becomes armed. Do not reset CPU/control/RAW RAM to fake an empty stream.",
+    "unresolved": "Current HAL has no explicit timestamp-valid status and reads DATA before TS. The proposed bounds/zero rejection and quiet flush require a real MMIO miter; this draft core API alone does not establish FIFO pairing."
+  },
+  "integration_patch_plan": [
+    {
+      "files": [
+        "fw/nav/proto.h",
+        "fw/nav/proto.c"
+      ],
+      "change": "Add the exact-length explicit trusted management request/reply without overloading MODE or0x83; validate action/session before any side effect. No velocity NV message exists today."
+    },
+    {
+      "files": [
+        "fw/nav/host_link_guard.c"
+      ],
+      "change": "Permit management only as an accepted fresh R0 message; it may renew R0 as a management packet. P11 parser calls never call host_link_guard_observe."
+    },
+    {
+      "files": [
+        "fw/app/nav_app.h",
+        "fw/app/nav_app.c"
+      ],
+      "change": "Own one p11 state object and raw protocol selection. Track existing odometry samples without a second FIFO pop. On authorization clear old goal/waypoints/target/path and require original MODE IDLE. Select WIT or P11 exclusively; keep WIT source code. Poll both guards before/after bounded work and at search checkpoints; publish one immediate zero through existing HAL on any lock edge."
+    },
+    {
+      "files": [
+        "fw/hal/hal.h",
+        "fw/drv/hal_fpga.c"
+      ],
+      "change": "Expose existing raw divisor/idle/count/overflow/TS reads. Add measured DATA/FIRST+TS pair helper and bounded quiet flush; maintain existing final host_link_guard_filter and SAFE commit ordering. Do not override a checked zero with a nonzero UART target in HAL."
+    },
+    {
+      "files": [
+        "fw/nav/nav_task.h",
+        "fw/nav/nav_task.c"
+      ],
+      "change": "Add an explicit manual proposal before the shared nonzero motion_check/support_check block, with common freshness/stop conditions. Keep the original10Hz planning publication and hardware125Hz policy; received50Hz targets are staged. IDLE/ESTOP/guard lock force zero. Return to NAV clears manual state and never resumes an old autonomous task."
+    },
+    {
+      "files": [
+        "selected RK bridge serial owner and client protocol definitions"
+      ],
+      "change": "One full-duplex process owns P11 port; read unchanged V2 and serialize10B writes with the specified20ms packet cadence. Ownership command/ACK uses CH9102. No second process opens the same TTY; reconnect requires R0 IDLE/new session/new P11 zero."
+    },
+    {
+      "files": [
+        "FW compile input list, linked stack proof and all11CPU INIT assets"
+      ],
+      "change": "Only after native parser/owner/MMIO tests and busy-source proof pass, add module to actual build list, compile once and repeat strict linked stack plus BIN/128KiB lane binding. No new total FW has been produced here."
+    }
+  ],
+  "required_validation": [
+    "All signed velocity ranges, 8/10-byte CRC/range/partial resync; bad traffic cannot renew age",
+    "Every owner transition at command/zero/deadline boundary; no old task or packet replay on release/rearm",
+    "R0 fresh/P11 missing; P11 fresh/R0 locked; both lost; feedback invalid; IR hard-stop precedence",
+    "Raw FIFO count/overflow/timestamp loss and queued stale packets through real DATA-pop/TS-pop MMIO semantics, with bursts at limits and uint32 time wrap",
+    "WIT optional branch and BMI088 control fusion remain unchanged; source switch flush cannot mix WIT bytes with speed bytes",
+    "Real RV stack/BSS/code size/service cycles and actual CPU busy/500ms stop before deployment"
+  ],
+  "app_proto_HAL_integration_done": false,
+  "compiled": false,
+  "functional_tested": false,
+  "new_ELF_BIN_INIT": false,
+  "RTL_changed": false,
+  "new_EDA_started": false,
+  "serial_opened": false,
+  "deployment_ready": false
+}

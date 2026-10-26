@@ -1,0 +1,96 @@
+{
+  "schema": "physical_signoff_entry_review_manifest_v1",
+  "date": "2026-10-26",
+  "scope": "Installed Gowin 1.9.12.04 official manuals, existing PNR35 reports and frozen SYN23 interface source; read only",
+  "reproduce": "D:/Anaconda/python.exe -X utf8 D:/Desktop/SOC FPGA/nav/integration/g2/review_physical_signoff_entry.py",
+  "full_result": "F:/nav_integration_g2_20261023/physical_signoff_entry_review_20261026/final_review.json",
+  "human_review": "F:/nav_integration_g2_20261023/physical_signoff_entry_review_20261026/review.md",
+  "manuals": [
+    {
+      "path": "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/doc/EN/SUG940-2.0.5E_Gowin Design Timing Constraints User Guide.pdf",
+      "printed_pages": {
+        "single_last_SDC": 8,
+        "recovery_removal": [47, 48],
+        "clock_minimum_pulse": [49, 50],
+        "active_constraints": 54,
+        "IO_delays": [65, 66, 67, 68],
+        "report_timing": [73, 74, 75, 76],
+        "fanout_congestion": [76, 77, 78],
+        "report_min_pulse_width": [78, 79],
+        "report_exceptions": [80, 81, 82]
+      },
+      "pdf_page_offset": 10
+    },
+    {
+      "path": "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/doc/EN/SUG1220-2.1E_Gowin Software Tcl Commands User Guide.pdf",
+      "run_command_printed_pages": [16, 17],
+      "run_command_supported_flows": ["syn", "pnr", "all"],
+      "STA_only_routed_database_entry_verified": false
+    },
+    {
+      "path": "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/doc/EN/SUG100-4.4.7E_Gowin Software User Guide.pdf",
+      "Timing_Analysis_Report_printed_page": 80,
+      "pdf_page": 92
+    }
+  ],
+  "supported_syntax": {
+    "recovery": "report_timing -recovery -max_paths N -max_common_paths 1",
+    "removal": "report_timing -removal -max_paths N -max_common_paths 1",
+    "clock_pulse": "report_min_pulse_width -nworst N -detail",
+    "optional_clock_pulse_objects": "get_regs only",
+    "reset_fanout": "report_high_fanout_nets -max_nets N -slr",
+    "congestion": "report_route_congestion -max_grids N",
+    "IO": "set_input_delay / set_output_delay -clock <existing_clock> <delay_ns> -min/-max [-clock_fall] [-rise/-fall] [-add_delay] <get_ports>",
+    "congestion_runtime_on_GW5AT_C_or_failed_route_verified": false
+  },
+  "report_output_contract": {
+    "independent_output_filename_flags_documented": false,
+    "repeated_user_same_analysis_append_or_replace_verified": false,
+    "different_default_analyses_coexist_in_PNR35": true,
+    "safe_next_natural_run": "Keep one global report command per analysis and one MPW command in the existing single SDC. After completion inspect actual Report Command and row/unique-endpoint coverage, then extract independent files from the generated TR.",
+    "no_new_report_only_SDC": true,
+    "query_PNR_or_query_SYN_run": false
+  },
+  "PNR35_actual": {
+    "report": "F:/nav_integration_g2_20261023/baseline_fusion32_CDC52_pnr35/impl/pnr/g2_top.tr",
+    "part": "GW5AT-LV138PG484AC1/I0",
+    "tool": "V1.9.12.04 (64-bit)",
+    "device_version": "C",
+    "recovery": {"reported_rows": 25, "worst_slack_ns": 4.518},
+    "removal": {"reported_rows": 25, "worst_slack_ns": 0.582},
+    "minimum_clock_pulse": {"reported_rows": 10, "worst_slack_ns": 2.843, "actual_ns": 3.743, "required_ns": 0.9},
+    "negative_reported_secondary_rows": 0,
+    "active_constraints": {"clock": 2, "hold_only_false_path": 26, "max_delay": 26},
+    "input_output_delay_commands": 0,
+    "full_reset_endpoint_corner_coverage_proved": false,
+    "asynchronous_reset_assertion_pulse_width_proved": false,
+    "IO_signoff_proved": false,
+    "recovery_clock_relation_caution": "Worst listed recovery crosses clk50 to rgmii_rxc under the configured 10ns relationship; it is not arbitrary asynchronous-phase signoff."
+  },
+  "IO_groups_reviewed": ["RGMII_RX_TX_and_MDIO", "asynchronous_UART", "sensors_and_user_inputs", "actuators_and_indicators"],
+  "specific_official_device_facts": {
+    "RTL8211F": {
+      "path": "D:/Desktop/SOC FPGA/小梅哥ACG750型国产高云GW5AT-138K FPGA开发板资料/器件手册/Ethernet/RTL8211F-CG.pdf",
+      "printed_pages": [18, 60, 61, 62, 63],
+      "100BASE_TX_nominal_clock_MHz": 25,
+      "actual_PHY_speed_delay_straps_MDIO_readback_PCB_skew_verified": false,
+      "warning": "PNR35 rgmii_rxc100 is a configured target, not measured link frequency or a verified external IO budget."
+    },
+    "board_schematic": {
+      "path": "D:/Desktop/SOC FPGA/小梅哥ACG750型国产高云GW5AT-138K FPGA开发板资料/硬件图纸/ACX750-GW5A138-CB-250928.pdf",
+      "PHY_pdf_page": 2,
+      "USB_UART_pdf_page": 8,
+      "USB_UART_component": "U19 CH9102F, VIO=VCC3P3",
+      "fitted_current_board_revision_verified": false
+    }
+  },
+  "existing_collector_limitation": {
+    "path": "integration/g2/collect_pnr_result.py",
+    "field": "reported_reset_pulse_checks_pass",
+    "finding": "Section presence and no negative printed rows can accept an empty section, and listed clock MPW is not asynchronous reset pulse-width proof.",
+    "production_collector_modified": false
+  },
+  "EDA_invocations": 0,
+  "current_frozen_source_or_SDC_modified": false,
+  "deployment_signoff_passed": false
+}

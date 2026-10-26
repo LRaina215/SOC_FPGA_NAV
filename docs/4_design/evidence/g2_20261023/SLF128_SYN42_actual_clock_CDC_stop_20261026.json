@@ -1,0 +1,1186 @@
+{
+  "at": "2026-10-26T20:20:21.569348+08:00",
+  "scope": "Completed SYN42 mapped clock/known26/FIFO-reset and IR/lease partitions only",
+  "passed": true,
+  "actual_review": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42_clock_CDC_stop_review4\\result.json",
+  "actual_review_input_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\impl\\gwsynthesis\\g2_top.vg",
+      "bytes": 21047120,
+      "mtime_ns": 1793000235173904800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42\\impl\\gwsynthesis\\g2_top.vg",
+      "bytes": 16906010,
+      "mtime_ns": 1793015847392885700
+    },
+    {
+      "path": "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\simlib\\gw5a\\prim_sim.v",
+      "bytes": 710345,
+      "mtime_ns": 1790043686000000000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42\\g2.sdc",
+      "bytes": 6571,
+      "mtime_ns": 1792999809900948200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42\\g2_top.v",
+      "bytes": 11633,
+      "mtime_ns": 1793013325206198000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42\\command_lease_guard.v",
+      "bytes": 5692,
+      "mtime_ns": 1792999809899851500
+    }
+  ],
+  "new_EDA_started": false,
+  "programmed": false,
+  "clock_pins_checked": 31936,
+  "constant_clock_pins": 188,
+  "actual_clock_roots_and_phases": [
+    {
+      "root": "clk50",
+      "inverted": false,
+      "pins": 31792
+    },
+    {
+      "root": "clk50",
+      "inverted": true,
+      "pins": 1
+    },
+    {
+      "root": "rgmii_rxc",
+      "inverted": false,
+      "pins": 138
+    },
+    {
+      "root": "rgmii_rxc",
+      "inverted": true,
+      "pins": 5
+    }
+  ],
+  "no_PLL_or_model25_bridges": true,
+  "original26": {
+    "passed": true,
+    "paths": 26,
+    "groups": {
+      "rx_write_gray": 12,
+      "core_read_gray": 12,
+      "rx_clock_monitor": 1,
+      "rx_sampling_select": 1
+    },
+    "first_Q_only_second_D": true,
+    "first_and_second_CE1": true,
+    "actual_endpoint_source": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42_clock_CDC_stop_review4\\actual_original26_and_CDC52.json",
+    "INIT_roles_checked": 78,
+    "INIT_checks": [
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_b_11_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_b[11]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r1_11_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r1[11]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r2_11_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r2[11]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_10_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g[10]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r1_10_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r1[10]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r2_10_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r2[10]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_9_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g[9]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r1_9_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r1[9]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r2_9_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r2[9]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_8_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g[8]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r1_8_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r1[8]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r2_8_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r2[8]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_7_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g[7]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r1_7_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r1[7]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r2_7_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r2[7]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_6_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g[6]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r1_6_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r1[6]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r2_6_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r2[6]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_5_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g[5]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r1_5_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r1[5]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r2_5_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r2[5]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_4_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g[4]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r1_4_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r1[4]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r2_4_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r2[4]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_3_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g[3]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r1_3_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r1[3]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r2_3_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r2[3]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_2_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g[2]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r1_2_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r1[2]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r2_2_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r2[2]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_1_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g[1]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r1_1_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r1[1]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r2_1_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r2[1]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_0_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g[0]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r1_0_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r1[0]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/wp_g_r2_0_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/wp_g_r2[0]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_b_11_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_b[11]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w1_11_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w1[11]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w2_11_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w2[11]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_10_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g[10]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w1_10_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w1[10]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w2_10_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w2[10]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_9_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g[9]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w1_9_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w1[9]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w2_9_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w2[9]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_8_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g[8]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w1_8_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w1[8]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w2_8_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w2[8]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_7_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g[7]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w1_7_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w1[7]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w2_7_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w2[7]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_6_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g[6]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w1_6_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w1[6]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w2_6_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w2[6]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_5_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g[5]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w1_5_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w1[5]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w2_5_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w2[5]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_4_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g[4]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w1_4_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w1[4]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w2_4_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w2[4]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_3_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g[3]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w1_3_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w1[3]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w2_3_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w2[3]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_2_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g[2]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w1_2_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w1[2]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w2_2_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w2[2]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_1_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g[1]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w1_1_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w1[1]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w2_1_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w2[1]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_0_s0",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g[0]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": null,
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w1_0_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w1[0]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_nav/u_netl/u_rxf/rp_g_w2_0_s1",
+        "actual_Q": [
+          "u_nav/u_netl/u_rxf/rp_g_w2[0]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_lmac/rdiv_5_s0",
+        "actual_Q": [
+          "u_lmac/rdiv[5]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_lmac/rsync_0_s0",
+        "actual_Q": [
+          "u_lmac/rsync[0]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_lmac/rsync_1_s0",
+        "actual_Q": [
+          "u_lmac/rsync[1]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "source",
+        "actual_name": "u_nav/u_rf/r_NETL_CTRL_4_s0",
+        "actual_Q": [
+          "l_rx_neg"
+        ],
+        "kind": "DFFSE",
+        "explicit_INIT": null,
+        "published_default": "1'b1",
+        "effective_INIT": "1'b1",
+        "reference_effective_INIT": "1'b1",
+        "passed": true
+      },
+      {
+        "role": "first",
+        "actual_name": "u_lmac/neg_s_0_s0",
+        "actual_Q": [
+          "u_lmac/neg_s[0]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      },
+      {
+        "role": "second",
+        "actual_name": "u_lmac/neg_s_1_s0",
+        "actual_Q": [
+          "u_lmac/neg_s[1]"
+        ],
+        "kind": "DFFCE",
+        "explicit_INIT": "1'b0",
+        "published_default": "1'b0",
+        "effective_INIT": "1'b0",
+        "reference_effective_INIT": "1'b0",
+        "passed": true
+      }
+    ],
+    "intended_reset_kind_changes": [
+      {
+        "old": "DFFRE",
+        "new": "DFFCE",
+        "roles": 75
+      }
+    ],
+    "SDC_fragment": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42_clock_CDC_stop_review4\\actual_SYN42_CDC52_fragment.sdc",
+    "commands": 52,
+    "sourceQ_to_firstD_only": true,
+    "stage1_to_stage2_remains_timed": true,
+    "PNR_Actived_status_physical_delays_setup_hold_MTBF_accepted": false
+  },
+  "reset_wrappers": {
+    "proof": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42_clock_CDC_stop_review4\\actual_reset_wrapper_roles.json",
+    "live_wrappers": 4,
+    "FFs": 8,
+    "kind": "DFFPE",
+    "core_assertion_source": "!key_rst_n",
+    "release": "two local-domain stages",
+    "pruned_host_RX_write_half_proof": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42_clock_CDC_stop_review4\\actual_pruned_reset_scopes.json"
+  },
+  "FIFO": {
+    "total_FFs": 445,
+    "kinds": {
+      "DFFCE": 405,
+      "DFFRE": 40
+    },
+    "by_scope": {
+      "u_nav/u_netl/u_rxf": 141,
+      "u_nav/u_netl/u_txf": 139,
+      "u_nav/u_neth/u_rxf": 42,
+      "u_nav/u_neth/u_txf": 123
+    },
+    "public_nav_fifo_ob_source_unchanged": true,
+    "proof": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42_clock_CDC_stop_review4\\actual_FIFO_state_reset_classes.json"
+  },
+  "stop": {
+    "IR_actual_FFs": 154,
+    "IR_next_and_output_checks": 192,
+    "lease_actual_FFs": 200,
+    "lease_next_and_output_checks": 248,
+    "all_binary_partition_checks_passed": true,
+    "original4500_stop_enable_feedback_source_contract": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42_clock_CDC_stop_review4\\source_stop_contract.json",
+    "whole4500_CPU_RK_runtime_or_four_state_equivalence_claimed": false
+  },
+  "synthesis_timing": {
+    "listed_paths": 25,
+    "first_path_summary": {
+      "Slack": "-6.714",
+      "Data Arrival Time": "27.028",
+      "Data Required Time": "20.314",
+      "From": "u_control/model_thread/sensor_age_6_s1",
+      "To": "u_control/model_thread/policy/snapshot_word_14_s0",
+      "Launch Clk": "clk50[R]",
+      "Latch Clk": "clk50[R]"
+    },
+    "report": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42_clock_CDC_stop_review4\\actual_synthesis_estimated_paths.json",
+    "estimated_not_routed": true,
+    "complete_negative_endpoint_coverage": false,
+    "timing_passed": false
+  },
+  "preserved_reader_failures": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42_clock_CDC_stop_review1",
+      "preserved": true,
+      "error": "{'u_hrr'}"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42_clock_CDC_stop_review2",
+      "preserved": true,
+      "error": "('absent reset wrapper still has live FIFO state', 'u_hrr', 'u_nav/u_neth/u_rxf')"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42_clock_CDC_stop_review3",
+      "preserved": true,
+      "notes": "Sampling source Q was promoted to its actual register-file public l_rx_neg port; the first reader assumed a local Q name. Controller metadata finalization also shadowed its state dictionary. Both are reviewer defects, not hardware counterexamples; all section artifacts remain."
+    }
+  ],
+  "independent_blocker": {
+    "path": "F:\\nav_integration_g2_20261023\\SLF128_LF_actual_control_trace1\\result.json",
+    "description": "Actual mapped LF terminal drain cycle has simultaneous read/write at a conflicting physical address. Clock audit passing does not clear this memory hazard."
+  },
+  "physical_unknown": [
+    "actual all52 Actived commands and endpoints after PNR",
+    "sourceQ-to-firstD physical data delay, first-to-second setup resolution/MTBF",
+    "reset recovery/removal/min pulse width and stopped-clock restart",
+    "whole4500 numerical/CPU/RK busy stop/physical stopping",
+    "routed0/setup0/hold0/IO and complete signoff"
+  ],
+  "PNR42_authorized_by_this_review": false,
+  "deployment_accepted": false
+}

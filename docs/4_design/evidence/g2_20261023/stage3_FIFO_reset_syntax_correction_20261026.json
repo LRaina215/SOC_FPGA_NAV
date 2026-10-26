@@ -1,0 +1,180 @@
+{
+  "recorded_at": "2026-10-26T19:50:58.099399+08:00",
+  "passed": true,
+  "scope": "Only repair actual C frontend EX3534; not whole G2 resource or timing acceptance",
+  "source": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared6",
+  "only_changed_RTL_from_prepared5": [
+    "nav/rtl/common/nav_async_fifo.v"
+  ],
+  "two_always_only": true,
+  "change": "Canonical outer if(reset)clear; else retains original reset?0:g2b. Same sensitivity/nonblocking assignments, with original four-state merge retained.",
+  "source4state_identity_cases": 16,
+  "RTL_result": {
+    "path": "F:\\nav_integration_g2_20261023\\stage3_FIFO_async_reset_syntax_RTL_probe1\\result.json",
+    "bytes": 6657,
+    "mtime_ns": 1793014853245719800
+  },
+  "RTL_profiles": [
+    {
+      "id": 0,
+      "DW": 10,
+      "AW": 11,
+      "edges": 34443,
+      "writes": 9760,
+      "reads": 9423,
+      "common_resets": 16,
+      "stopped_domains": 2,
+      "XZ_reset_events": 4,
+      "capacity": 2050
+    },
+    {
+      "id": 2,
+      "DW": 9,
+      "AW": 11,
+      "edges": 34880,
+      "writes": 9781,
+      "reads": 9460,
+      "common_resets": 16,
+      "stopped_domains": 2,
+      "XZ_reset_events": 4,
+      "capacity": 2050
+    },
+    {
+      "id": 1,
+      "DW": 10,
+      "AW": 12,
+      "edges": 46971,
+      "writes": 12601,
+      "reads": 12272,
+      "common_resets": 16,
+      "stopped_domains": 2,
+      "XZ_reset_events": 4,
+      "capacity": 4098
+    }
+  ],
+  "total_edges": 116294,
+  "total_writes": 32142,
+  "total_reads": 31155,
+  "actual_C_result": {
+    "path": "F:\\nav_integration_g2_20261023\\stage3_FIFO_async_reset_syntax_small_SYN_review3\\result.json",
+    "bytes": 5527,
+    "mtime_ns": 1793015132887312200
+  },
+  "actual_C_exit_code": 0,
+  "actual_C_EX3534_absent": true,
+  "actual_C_FF": 431,
+  "actual_C_async_CLEAR_FF": 373,
+  "actual_C_resetless_payload_FF": 58,
+  "actual_C_BSRAM": 6,
+  "actual_C_checked_converted_bits": 74,
+  "actual_C_checked_sync_bits": 148,
+  "actual_C_checked_occupancy_bits": 9,
+  "actual_C_RAM_scope": "All explicit RX11/TX11 primitive parameters equal available SYN40; RX12 three width4 SDPB leaves have no old actual comparison because full G2 pruned the unused host input.",
+  "metadata_repair": {
+    "path": "F:\\nav_integration_g2_20261023\\stage3_FIFO_manifest_binding_repair1\\result.json",
+    "bytes": 3024,
+    "mtime_ns": 1793015301378457700
+  },
+  "metadata_repair_scope": "Exactly one stale manifest row in four proof arrays, caused by recording it before the expected manifest update; 247 other inputs and all RTL/FW/assets unchanged, all old JSON preserved. Only corresponding proof references updated.",
+  "final_binding": {
+    "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared6\\firmware_binding_review.json",
+    "bytes": 47736,
+    "mtime_ns": 1793015301286499700
+  },
+  "complete_input_count": 248,
+  "all_old_original_process_identities_exited": [
+    {
+      "pid": 19812,
+      "created_epoch": 1793014843.8698056,
+      "role": "RTL controller",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 67076,
+      "created_epoch": 1793014844.0313504,
+      "role": "xvlog",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 54492,
+      "created_epoch": 1793014844.0384676,
+      "role": "conhost.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 57060,
+      "created_epoch": 1793014845.01886,
+      "role": "xvlog.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 60796,
+      "created_epoch": 1793014846.078606,
+      "role": "xelab",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 67300,
+      "created_epoch": 1793014846.085624,
+      "role": "conhost.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 54848,
+      "created_epoch": 1793014846.9728608,
+      "role": "xelab.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 44952,
+      "created_epoch": 1793014849.152118,
+      "role": "xsim",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 13424,
+      "created_epoch": 1793014849.1594055,
+      "role": "conhost.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 35116,
+      "created_epoch": 1793014850.0966928,
+      "role": "xsim.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 17324,
+      "created_epoch": 1793014903.854038,
+      "role": "small C SYN controller",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 44300,
+      "created_epoch": 1793014904.1468596,
+      "role": "gw_sh.exe",
+      "original_identity_exited": true
+    },
+    {
+      "pid": 13740,
+      "created_epoch": 1793014904.2484183,
+      "role": "conhost.exe",
+      "original_identity_exited": true
+    }
+  ],
+  "first_joint_failure_preserved": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn41",
+  "all_small_reader_failures_preserved": [
+    "F:\\nav_integration_g2_20261023\\stage3_FIFO_async_reset_syntax_small_SYN_prepared1\\result.json",
+    "F:\\nav_integration_g2_20261023\\stage3_FIFO_async_reset_syntax_small_SYN_review2\\result.json"
+  ],
+  "new_joint_SYN42_owned_by_root": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42",
+  "whole_G2_accepted": false,
+  "not_proven": [
+    "new full system primitive modes/CEB/OCE/AD, RAM/CPU INIT and resources",
+    "new actual clocks/reset loads/original26 CDC/52 effective constraints",
+    "physical reset pulse/recovery-removal/CDC/MTBF and IO",
+    "routed0/setup0/hold0 and board/real RK busy stop/physical stopping"
+  ],
+  "PNR_started_by_this_task": false,
+  "programmed": false
+}
