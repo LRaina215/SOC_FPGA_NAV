@@ -1,0 +1,71 @@
+{
+  "phase": "16_profiles_frozen_static_checks_passed_controller_not_started",
+  "directory": "F:/nav_integration_g2_20261023/stage1b_observer_serial_prepared1",
+  "preparation": "F:/nav_integration_g2_20261023/stage1b_observer_serial_prepared1/preparation.json",
+  "profiles_and_checks": "F:/nav_integration_g2_20261023/stage1b_observer_serial_prepared1/profile_validation.json",
+  "launch_request_prepared_not_executed": "F:/nav_integration_g2_20261023/stage1b_observer_serial_prepared1/launch_request.json",
+  "generators": ["D:/Desktop/SOC FPGA/nav/integration/g2/prepare_final128_public_observer_v2.py", "D:/Desktop/SOC FPGA/nav/integration/g2/prepare_stage1b_observed_serial.py"],
+  "selected_best_d_mm": 1500,
+  "matrix": {
+    "nomap128_forward1500": 4,
+    "prior128_fixed_d0": 4,
+    "nomap256_reference_rolling_d0": 4,
+    "prior256_reference_fixed_d0": 4,
+    "ZHI350": 8,
+    "ZHI1500": 8
+  },
+  "static_checks": {
+    "all16_argv_env_DLL_profile_gates_passed": true,
+    "one_pure_wrapper_check_passed": true,
+    "real_DLL_loaded": false,
+    "models_or_closed_loops_started": false,
+    "controller_launch_claim_exists": false,
+    "child_run_claims": 0,
+    "source_copy_files_bytes_equal": 98,
+    "legacy_prepared3_modified": false,
+    "v2_fix": "Applied forward is1500 only for no-prior SN128; SN256 reference accepts d0. Both128/256 supported with explicit reference_only flag."
+  },
+  "future_controller": {
+    "one_worker": true,
+    "start_requires": ["Root explicitly supplies --start --first-hit-reviewed", "Both original330s patrols naturally finished: original complete2/2, exit0, actual>=300s and no same-identity child alive", "2GiB physical/4GiB commit plus both53/54 remaining3.5GiB peak growth", "All frozen source/profile/DLL bindings unchanged", "Fresh outputs and no existing child run_claim"],
+    "automatic_retries": false,
+    "may_pause_or_kill_PNR": false,
+    "runtime_protection": "Only own observed child may be stopped after original sustained low memory guard; failure preserved, no retry",
+    "automatic_acceptance": false
+  },
+  "bounded_observation": {
+    "streaming": true,
+    "in_memory": "One current poll sample and <=256-candidate score array; no whole-run event list",
+    "source_duration_bounds_s": [92.1, 152.1],
+    "all16_maximum_poll_samples_by_original_source": 3907216,
+    "bound_meaning": "Derived from original1ms loop plus2s terminal observation/100ms sample margin; observation accounting only, not a new algorithm timeout",
+    "extra_py_poll": 0,
+    "extra_py_get_commit": 0,
+    "new_loss_threshold": false
+  },
+  "first_hit_actual_readback": {
+    "result": "F:/nav_integration_g2_20261023/stage1b_new_object_first_hit_probe1/result.json",
+    "natural_completed_poses": 11,
+    "PID": 50004,
+    "created_epoch": 1793024326.9187531,
+    "RSS_finish": 89239552,
+    "person_east_first_hits": 238,
+    "person_north_first_hits": 0,
+    "all_three_chair_first_hits": 0,
+    "all_four_room_walls_and_three_tables_have_hits": true,
+    "both_bands_zero_structure_poses": ["middle_south", "east_end_faces_person", "north_faces_person"],
+    "all11_ZHI350_selected_exterior_points": 0,
+    "meaning": "No new probe; warm gate is3 identical static frames, not a route/localization proof. Do not claim both people or chairs were visible."
+  },
+  "latest_user_override": {
+    "P95_50mm_hard_gate": false,
+    "actual_error_recorded": true,
+    "collision_localization_failure_long_drift_stop_requirements_waived": false,
+    "constant_nomap_loc_valid_is_no_loss_proof": false
+  },
+  "unknown_after_future_observation": ["Internal n_runs/all solver rejection reasons", "Every update callback equals C solve", "Full-rank XY/no-map no-loss acceptance", "A numeric sustained-drift rule not yet defined"],
+  "current72_330_stage1b_inputs_changed": false,
+  "DLL_rebuilt": false,
+  "new_EDA_started": false,
+  "no_SHA": true
+}

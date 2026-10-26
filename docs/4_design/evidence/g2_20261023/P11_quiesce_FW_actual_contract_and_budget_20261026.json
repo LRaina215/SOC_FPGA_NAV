@@ -1,0 +1,290 @@
+{
+  "at": "2026-10-26T22:32:18.784622+08:00",
+  "phase": "finite proposed-CSR C passed; original 128KiB link still blocked",
+  "source": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1",
+  "manifest": {
+    "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\quiesce_manifest.json",
+    "bytes": 13013,
+    "mtime_ns": 1793024610414499500
+  },
+  "changed_FW_files": [
+    "app\\nav_app.c",
+    "drv\\hal_fpga.c",
+    "hal\\hal.h"
+  ],
+  "source_parent": "F:\\nav_integration_g2_20261023\\P11_snapshot_shared_guard_FW_prepared4",
+  "actual_C": {
+    "result": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_C_probe1\\result.json",
+      "bytes": 13221,
+      "mtime_ns": 1793024708923382300
+    },
+    "output": "PASS P11_QUIESCE_SOFTWARE checks=352 one_ready_read_per_pending_call=1 pending_TTL200ms=1 R0_timeout250ms=1 warmHOLD_flush=1 old258B34TS_clear_IS_CSR_SUBSTITUTE_ONLY=1",
+    "checks": 352,
+    "controller_pid": 7800,
+    "controller_created_epoch": 1793024707.5162644,
+    "runtimes": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_C_probe1\\actual_C_runtime.json",
+        "bytes": 151,
+        "mtime_ns": 1793024708918229700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_C_probe1\\native_compile_runtime.json",
+        "bytes": 1346,
+        "mtime_ns": 1793024707699156500
+      }
+    ],
+    "exits": [
+      {
+        "pid": 37792,
+        "created_epoch": 1793024708.8263319,
+        "command": [
+          "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_C_probe1\\test.exe"
+        ],
+        "exit_code": 0,
+        "at": "2026-10-26T22:25:08.923382+08:00"
+      },
+      {
+        "pid": 53748,
+        "created_epoch": 1793024707.684492,
+        "command": [
+          "C:\\msys64\\mingw64\\bin\\gcc.exe",
+          "-std=c99",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-Wno-unused-function",
+          "-Wno-unused-variable",
+          "-IF:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\include",
+          "-IF:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav",
+          "-IF:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\hal",
+          "-IF:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\app",
+          "-IF:\\nav_integration_g2_20261023\\P11_quiesce_FW_C_probe1",
+          "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\tb_P11_quiesce_FW.c",
+          "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\p11_command_guard.c",
+          "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\p11_snapshot_service.c",
+          "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\host_link_guard.c",
+          "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\proto.c",
+          "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\imu_parse.c",
+          "-o",
+          "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_C_probe1\\test.exe"
+        ],
+        "exit_code": 0,
+        "at": "2026-10-26T22:25:08.820993+08:00"
+      }
+    ],
+    "actual_app_helper_prefix_and_original_finalHAL": true,
+    "core_four_files_byte_identical_to_snapshot_proof": true,
+    "tests": "BOOT/HOLD flush and OFF/R0 lock; pending200ms age and250ms R0; fresh zero/rearm; WIT half-state reset; bounded one READY read per pending call",
+    "hardware_FIFO_clear_and_READY_are_only_CSR_substitutes": true
+  },
+  "actual_link": {
+    "result": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_RV_link_probe1\\result.json",
+      "bytes": 36569,
+      "mtime_ns": 1793024732555829200
+    },
+    "tool": {
+      "pid": 50552,
+      "created_epoch": 1793024725.3169818,
+      "command": [
+        "D:\\tools\\xpack-riscv-none-elf-gcc-15.2.0-1\\bin\\riscv-none-elf-gcc.exe",
+        "-fstack-usage",
+        "-save-temps=obj",
+        "-flto",
+        "-march=rv32imc_zicsr",
+        "-mabi=ilp32",
+        "-Os",
+        "-g",
+        "-std=c99",
+        "-Wall",
+        "-Wno-unused-function",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-common",
+        "-nostartfiles",
+        "-specs=nano.specs",
+        "-DNAV_BASE=0x40000000u",
+        "-DGM_N=64",
+        "-DASTAR_MAXN=64",
+        "-DGM_DS=2",
+        "-Wl,--defsym=RAM_SIZE=131072",
+        "-Wl,--defsym=STACK_RESERVE=6144",
+        "-Wl,--gc-sections",
+        "-Wl,-Map=F:\\nav_integration_g2_20261023\\P11_quiesce_FW_RV_link_probe1\\firmware\\nav_fw.map",
+        "-T",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\bsp\\link.ld",
+        "-IF:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\include",
+        "-IF:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\hal",
+        "-IF:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav",
+        "-IF:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\app",
+        "-IF:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\bsp",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\astar.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\explore.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\fixmath.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\gmap.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\host_link_guard.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\imu_parse.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\lidar_cal.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\loc.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\local_frame.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\local_planner.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\motion_guard.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\nav_task.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\p11_command_guard.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\p11_snapshot_service.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\pose.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\pose_match.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\prior.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\proto.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\scratch.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\support_guard.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\target.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\traj_sw.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\xt_link.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\app\\nav_app.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\app\\main.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\drv\\hal_fpga.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\bsp\\console.c",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\bsp\\start.S",
+        "-o",
+        "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_RV_link_probe1\\firmware\\nav_fw.elf",
+        "-lgcc"
+      ],
+      "at": "2026-10-26T22:25:25.330320+08:00",
+      "log": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_RV_link_probe1\\RV_original_flags_LTO_link.log",
+      "exit_code": 1,
+      "ended": "2026-10-26T22:25:32.531529+08:00"
+    },
+    "controller_pid": 65464,
+    "controller_created_epoch": 1793024725.1247764,
+    "sections": {
+      ".text": {
+        "address": 0,
+        "bytes": 52164
+      },
+      ".rodata": {
+        "address": 52164,
+        "bytes": 2884
+      },
+      ".bss": {
+        "address": 55048,
+        "bytes": 70060
+      }
+    },
+    "bss_end": 125108,
+    "over_bytes": 180,
+    "RAM_bytes": 131072,
+    "stack_reserved_bytes": 6144,
+    "required_total_bytes": 131252,
+    "previous_over_bytes": 324,
+    "measured_saving_bytes": 144,
+    "top10_new_or_increased": [
+      {
+        "symbol": "p11_raw_work.lto_priv.0",
+        "baseline_bytes": 0,
+        "actual_bytes": 438,
+        "delta": 438
+      },
+      {
+        "symbol": "drain_host_messages.lto_priv.0",
+        "baseline_bytes": 2076,
+        "actual_bytes": 2498,
+        "delta": 422
+      },
+      {
+        "symbol": "p11_note_proposal",
+        "baseline_bytes": 0,
+        "actual_bytes": 120,
+        "delta": 120
+      },
+      {
+        "symbol": "p11_set_protocol.lto_priv.0",
+        "baseline_bytes": 0,
+        "actual_bytes": 106,
+        "delta": 106
+      },
+      {
+        "symbol": "p11_guard_poll.constprop.0",
+        "baseline_bytes": 0,
+        "actual_bytes": 98,
+        "delta": 98
+      },
+      {
+        "symbol": "nav_app_poll",
+        "baseline_bytes": 10928,
+        "actual_bytes": 11004,
+        "delta": 76
+      },
+      {
+        "symbol": "task_step_local.constprop.0",
+        "baseline_bytes": 3596,
+        "actual_bytes": 3648,
+        "delta": 52
+      },
+      {
+        "symbol": "hal_send_cmd",
+        "baseline_bytes": 104,
+        "actual_bytes": 150,
+        "delta": 46
+      },
+      {
+        "symbol": "proto_parse.constprop.0",
+        "baseline_bytes": 512,
+        "actual_bytes": 552,
+        "delta": 40
+      },
+      {
+        "symbol": "startup.main",
+        "baseline_bytes": 1398,
+        "actual_bytes": 1420,
+        "delta": 22
+      }
+    ],
+    "symbol_changes_from_previous": [
+      {
+        "symbol": "p11_set_protocol.lto_priv.0",
+        "previous_bytes": 122,
+        "actual_bytes": 106,
+        "delta": -16
+      },
+      {
+        "symbol": "p11_raw_work.lto_priv.0",
+        "previous_bytes": 560,
+        "actual_bytes": 438,
+        "delta": -122
+      }
+    ],
+    "ELF_exists": false,
+    "new_BIN_INIT": false,
+    "strict_same_ELF_stack_gate_passed": false,
+    "compiler_flags": "original rv32imc_zicsr/ilp32/-Os/-flto/GC sections; RAM131072 and stack6144 unchanged"
+  },
+  "hardware_plan2": {
+    "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_flush_plan2\\result.json",
+    "bytes": 8570,
+    "mtime_ns": 1793025138649510800
+  },
+  "hardware_plan_scope": "explicit RX-only flush, continuous real rxs HIGH2ms, automatic ACTIVE and sticky completion READY; not implemented or tested on RTL",
+  "inherited_counterexamples_preserved": [
+    "F:\\nav_integration_g2_20261023\\P11_snapshot_FW_C_probe1\\old_long_session_actual_counterexample.log",
+    "F:\\nav_integration_g2_20261023\\P11_snapshot_FW_RV_link_probe1\\result.json",
+    "F:\\nav_integration_g2_20261023\\P11_snapshot_FW_RV_link_probe2\\result.json",
+    "F:\\nav_integration_g2_20261023\\P11_snapshot_FW_RV_link_probe3\\result.json"
+  ],
+  "remaining": [
+    "180B original link overflow",
+    "strict same-ELF full stack gate and BIN/128KiB INIT only after legal link",
+    "actual parser/CSR/real FIRST timestamp and quiesce state RTL proof",
+    "full APP busy timing and every-sending-period snapshot service",
+    "real RK management,350ms zero submission and500ms physical stop"
+  ],
+  "no_more_micro_compile_trials_on_this_quiesce_route": true,
+  "selected_53572B_image_unchanged": true,
+  "PNR53_54_inputs_unchanged": true,
+  "RTL_generated_or_modified": false,
+  "EDA_started": false,
+  "deployment_ready": false
+}

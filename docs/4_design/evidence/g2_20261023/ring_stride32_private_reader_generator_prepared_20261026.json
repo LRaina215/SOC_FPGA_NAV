@@ -1,0 +1,117 @@
+{
+  "recorded_at": "2026-10-26T22:40:44.912337+08:00",
+  "phase": "generator_prepared_only",
+  "generator": {
+    "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prepare_ring_stride32_private_reader.py",
+    "bytes": 21795,
+    "mtime_ns": 1793025634389797000
+  },
+  "source": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43",
+  "source_files": 63,
+  "unmodified_RTL": 60,
+  "inherited_assets": 69,
+  "packed_weight_files": 35,
+  "all_assets": 104,
+  "firmware_BIN_bytes": 53572,
+  "expected_changed_RTL": [
+    "control/rl_observation_v5.v",
+    "control/rl_policy_tick_v5.v",
+    "control/mem_policy.v"
+  ],
+  "exact_source_change_scope": [
+    {
+      "file": "control/rl_observation_v5.v",
+      "source_bytes": 10328,
+      "generated_utf8_LF_bytes": 11117,
+      "old_lines": 210,
+      "new_lines": 231,
+      "removed_diff_lines": 17,
+      "added_diff_lines": 38
+    },
+    {
+      "file": "control/rl_policy_tick_v5.v",
+      "source_bytes": 7491,
+      "generated_utf8_LF_bytes": 8205,
+      "old_lines": 147,
+      "new_lines": 168,
+      "removed_diff_lines": 0,
+      "added_diff_lines": 21
+    },
+    {
+      "file": "control/mem_policy.v",
+      "source_bytes": 6625,
+      "generated_utf8_LF_bytes": 6779,
+      "old_lines": 108,
+      "new_lines": 111,
+      "removed_diff_lines": 0,
+      "added_diff_lines": 3
+    }
+  ],
+  "private_cursor": {
+    "segment_bits": 3,
+    "lane_bits": 5,
+    "slot_bits": 3,
+    "total_explicit_FF": 11,
+    "freeze": "original frame_freeze&&initialized; cursor=segment0,lane1,old live4",
+    "advance": "Exact original procedural LOAD capture priority, only indices0..166; LOAD167 holds",
+    "first_word": "state==SNAPSHOT speculative live4,lane0; original accepted capture/freeze unchanged",
+    "last_word": "word167 captured at LOAD166; cursor becomes invalid segment6; original LOAD167 writes held word167",
+    "clipping": "logical segment0 only; segment5 newest history remains raw even if physical slot equals current",
+    "RAM_relation": "newRAM[{slot,lane}]=oldRAM[slot*28+lane] for each slot0..5 and lane0..27, including arbitrary uninitialized content",
+    "no_hole_consumers": true,
+    "no_RAM_reset_or_INIT": true
+  },
+  "mapping_estimate_only": {
+    "old_logical_words": 168,
+    "new_physical_words": 192,
+    "valid_words_per_slot": 28,
+    "unused_words_per_slot": 4,
+    "old_actual_RAM16SDP4": 66,
+    "target_RAM16SDP4": 72,
+    "added_allocated_RAM_bits": 384,
+    "new_explicit_cursor_FF": 11,
+    "old_address_MULT12X12": 3,
+    "target_address_MULT12X12": 0,
+    "actual_new_mapping_unknown": true,
+    "no_physical_timing_or_routing_claim": true
+  },
+  "required_future_validation": [
+    "Known-reset four-state old/new paired observer+policy: rejectX on every accepted168word and public valid; no forced/initialized RAM",
+    "All six-slot wraps, first-history repeated slot IDs, current clipping vs raw newest-history, accepted word0 and lane27 boundaries",
+    "Fault/disable/stale sensor/deadline at SNAPSHOT and everyLOAD boundary; cursor must hold when original capture does not occur",
+    "Reset and explicit rearm during observation/division/LOAD/core; original STOP priority and publication edge",
+    "Original real4500/weights/core input_mem:168 words,425 traces,6 actions,frameID,publication cycles; no inference substitute",
+    "OBS_RING_STORAGE0 source branch and paired whole wrapper behavior retained",
+    "Actual new mapping:all RAM semantics/INIT/CPU,72 distributedRAM estimate,11cursor FF provenance,zero addressDSP target,clipping/CE and unique consumers",
+    "Only after source/mapping gates, root may select a new unconstrained-duration PNR; all setup/hold/CDC/reset/IO/STOP still required"
+  ],
+  "materialization_gate": "Both exact frozen PNR53/54 runtimes ended naturally, original tool PID exited, explicit token, unique new F child output; natural failure is also completion",
+  "future_metadata_scope": "Only3RTL plus relocated manifest/disabled run.tcl/new preparation receipt change; copied old receipts describe ancestor, never newcandidate passes",
+  "RTL_generated": false,
+  "simulation_started": false,
+  "SYN_started": false,
+  "PNR_started": false,
+  "automatic_SYN": false,
+  "automatic_PNR": false,
+  "deployment_accepted": false,
+  "plan_only_receipt": {
+    "path": "F:\\nav_integration_g2_20261023\\ring_stride32_private_reader_generator_prepared1.json",
+    "bytes": 22598,
+    "mtime_ns": 1793025644916824700
+  },
+  "completed_checks": [
+    "All63 source inputs read; the three planned transforms rendered only in Python memory",
+    "Paired policy/observer instances are unique to mem_policy; read-port consumers occur only in these3 files",
+    "Original observer producer/pointer sequential blocks and flat branch byte-identical in rendered strings",
+    "Both original policy sequential always blocks byte-identical in rendered string",
+    "All69 inherited plus35 packed weight assets inventoried; original53572B FW retained",
+    "No materialize mode, .v output, simulation, synthesis or PNR started"
+  ],
+  "next_materialize_command": "D:/Anaconda/python.exe -X utf8 integration/g2/prepare_ring_stride32_private_reader.py --materialize --authorization materialize-only-after-natural-PNR53-PNR54-completion --candidate F:/nav_integration_g2_20261023/SLF128_ring_stride32_private_reader_prepared1 --receipt F:/nav_integration_g2_20261023/ring_stride32_private_reader_materialized1.json",
+  "not_yet_validated": [
+    "New source RTL semantics/4-state accepted-public behavior",
+    "No hole access at accepted edges and cursor/data alignment across reset/fault/rearm",
+    "Actual72RAM/11FF/zeroDSP mapping target",
+    "Routing and complete physical timing; no claim this fixes other NAV/PID classes"
+  ]
+}

@@ -1,0 +1,311 @@
+{
+  "at": "2026-10-26T22:38:25.225627+08:00",
+  "phase": "finite direct-proposal C passed; one original LTO remains over budget",
+  "source": "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1",
+  "manifest": {
+    "path": "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\shared_proposal_manifest.json",
+    "bytes": 12513,
+    "mtime_ns": 1793025397064776700
+  },
+  "contract": {
+    "path": "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\shared_proposal_contract.json",
+    "bytes": 2412,
+    "mtime_ns": 1793025397022332900
+  },
+  "changed_files": [
+    "app\\nav_app.c",
+    "nav\\nav_task.c",
+    "nav\\nav_task.h"
+  ],
+  "actual_source_bindings_unchanged": true,
+  "byte_identical_to_parent": [
+    "nav/p11_command_guard.c",
+    "nav/p11_command_guard.h",
+    "nav/p11_snapshot_service.c",
+    "nav/p11_snapshot_service.h",
+    "drv/hal_fpga.c"
+  ],
+  "original_full_send_checked_body_identical": true,
+  "actual_C": {
+    "result": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_C_probe1\\result.json",
+      "bytes": 13106,
+      "mtime_ns": 1793025398649603400
+    },
+    "output": "PASS P11_QUIESCE_SOFTWARE checks=353 one_ready_read_per_pending_call=1 pending_TTL200ms=1 R0_timeout250ms=1 warmHOLD_flush=1 old258B34TS_clear_IS_CSR_SUBSTITUTE_ONLY=1\nPASS P11_SHARED_PROPOSAL checks=648 actual_branch_and_common_tail=1 motion_support_are_substitutes=1 no_postcheck_restore=1 independent_lock_edge_zero=1 no_command_cache=1",
+    "checks": 648,
+    "controller_pid": 50480,
+    "controller_created_epoch": 1793025397.0804434,
+    "runtime": [
+      {
+        "pid": 55936,
+        "created_epoch": 1793025398.532372,
+        "command": [
+          "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_C_probe1\\test.exe"
+        ]
+      },
+      {
+        "pid": 34904,
+        "created_epoch": 1793025397.2935443,
+        "command": [
+          "C:\\msys64\\mingw64\\bin\\gcc.exe",
+          "-std=c99",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-Wno-unused-function",
+          "-Wno-unused-variable",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\include",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\hal",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\app",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_C_probe1",
+          "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\tb_P11_shared_proposal_FW.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\p11_command_guard.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\p11_snapshot_service.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\host_link_guard.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\proto.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\imu_parse.c",
+          "-o",
+          "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_C_probe1\\test.exe"
+        ]
+      }
+    ],
+    "exits": [
+      {
+        "pid": 55936,
+        "created_epoch": 1793025398.532372,
+        "command": [
+          "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_C_probe1\\test.exe"
+        ],
+        "exit_code": 0,
+        "at": "2026-10-26T22:36:38.641251+08:00"
+      },
+      {
+        "pid": 34904,
+        "created_epoch": 1793025397.2935443,
+        "command": [
+          "C:\\msys64\\mingw64\\bin\\gcc.exe",
+          "-std=c99",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-Wno-unused-function",
+          "-Wno-unused-variable",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\include",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\hal",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\app",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_C_probe1",
+          "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\tb_P11_shared_proposal_FW.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\p11_command_guard.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\p11_snapshot_service.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\host_link_guard.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\proto.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\imu_parse.c",
+          "-o",
+          "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_C_probe1\\test.exe"
+        ],
+        "exit_code": 0,
+        "at": "2026-10-26T22:36:38.527674+08:00"
+      }
+    ],
+    "covered": [
+      "original quiesce C352-contract cases (353 counted with outer CHECK)",
+      "actual new manual branch before identical common send_checked body",
+      "motion hazard/support block/no-fresh-map reject without P11 restoring rejected motion",
+      "slow halves commands; hard ESTOP bypasses P11 provider",
+      "expiry during support invokes unchanged final HAL zero filter",
+      "raw service/provider/quarantine new lock edge publishes zero exactly once",
+      "OWNER_OFF leaves ordinary NAV tuple unmodified; next accepted snapshot is directly sampled without nav_task cache"
+    ],
+    "explicit_substitutes": [
+      "proposed CSR READY/flush",
+      "map/motion/support results and time advance"
+    ],
+    "not_complete_APP_Pico_busy_or_physical_stop": true
+  },
+  "actual_link": {
+    "result": {
+      "path": "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_RV_link_probe1\\result.json",
+      "bytes": 36879,
+      "mtime_ns": 1793025415575137400
+    },
+    "controller_pid": 47164,
+    "controller_created_epoch": 1793025408.397194,
+    "tool": {
+      "pid": 29812,
+      "created_epoch": 1793025408.5839696,
+      "command": [
+        "D:\\tools\\xpack-riscv-none-elf-gcc-15.2.0-1\\bin\\riscv-none-elf-gcc.exe",
+        "-fstack-usage",
+        "-save-temps=obj",
+        "-flto",
+        "-march=rv32imc_zicsr",
+        "-mabi=ilp32",
+        "-Os",
+        "-g",
+        "-std=c99",
+        "-Wall",
+        "-Wno-unused-function",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-common",
+        "-nostartfiles",
+        "-specs=nano.specs",
+        "-DNAV_BASE=0x40000000u",
+        "-DGM_N=64",
+        "-DASTAR_MAXN=64",
+        "-DGM_DS=2",
+        "-Wl,--defsym=RAM_SIZE=131072",
+        "-Wl,--defsym=STACK_RESERVE=6144",
+        "-Wl,--gc-sections",
+        "-Wl,-Map=F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_RV_link_probe1\\firmware\\nav_fw.map",
+        "-T",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\bsp\\link.ld",
+        "-IF:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\include",
+        "-IF:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\hal",
+        "-IF:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav",
+        "-IF:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\app",
+        "-IF:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\bsp",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\astar.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\explore.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\fixmath.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\gmap.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\host_link_guard.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\imu_parse.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\lidar_cal.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\loc.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\local_frame.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\local_planner.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\motion_guard.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\nav_task.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\p11_command_guard.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\p11_snapshot_service.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\pose.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\pose_match.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\prior.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\proto.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\scratch.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\support_guard.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\target.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\traj_sw.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\nav\\xt_link.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\app\\nav_app.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\app\\main.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\drv\\hal_fpga.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\bsp\\console.c",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_prepared1\\fw\\bsp\\start.S",
+        "-o",
+        "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_RV_link_probe1\\firmware\\nav_fw.elf",
+        "-lgcc"
+      ],
+      "at": "2026-10-26T22:36:48.597598+08:00",
+      "log": "F:\\nav_integration_g2_20261023\\P11_shared_proposal_FW_RV_link_probe1\\RV_original_flags_LTO_link.log",
+      "exit_code": 1,
+      "ended": "2026-10-26T22:36:55.549685+08:00"
+    },
+    "sections": {
+      ".text": {
+        "address": 0,
+        "bytes": 52208
+      },
+      ".rodata": {
+        "address": 52208,
+        "bytes": 2884
+      },
+      ".bss": {
+        "address": 55096,
+        "bytes": 70052
+      }
+    },
+    "bss_end": 125148,
+    "over_bytes": 220,
+    "RAM_bytes": 131072,
+    "stack_reserved_bytes": 6144,
+    "required_total_bytes": 131292,
+    "previous_over_bytes": 180,
+    "total_change_bytes": 40,
+    "text_change_bytes": 44,
+    "BSS_change_bytes": -8,
+    "actual_all_LTO_symbol_size_changes": [
+      {
+        "symbol": "align_reset.constprop.0",
+        "old_bytes": 74,
+        "new_bytes": 72,
+        "delta": -2
+      },
+      {
+        "symbol": "drain_host_messages.lto_priv.0",
+        "old_bytes": 2498,
+        "new_bytes": 2522,
+        "delta": 24
+      },
+      {
+        "symbol": "nav_app_poll",
+        "old_bytes": 11004,
+        "new_bytes": 11006,
+        "delta": 2
+      },
+      {
+        "symbol": "p11_note_proposal",
+        "old_bytes": 120,
+        "new_bytes": 0,
+        "delta": -120
+      },
+      {
+        "symbol": "p11_poll_stop",
+        "old_bytes": 0,
+        "new_bytes": 24,
+        "delta": 24
+      },
+      {
+        "symbol": "p11_raw_work.lto_priv.0",
+        "old_bytes": 438,
+        "new_bytes": 482,
+        "delta": 44
+      },
+      {
+        "symbol": "p11_zero_edge",
+        "old_bytes": 0,
+        "new_bytes": 24,
+        "delta": 24
+      },
+      {
+        "symbol": "task_step_local.constprop.0",
+        "old_bytes": 3648,
+        "new_bytes": 3696,
+        "delta": 48
+      }
+    ],
+    "source_intent_not_achieved": "removing8B duplicated state and old note_proposal did not lower total linked footprint; direct provider/control-flow and independent stop-edge helpers grew code",
+    "ELF_exists": false,
+    "new_BIN_INIT": false,
+    "strict_same_ELF_stack_passed": false,
+    "compiler": "unchanged original RV32IMC_Zicsr/ilp32/-Os/-flto/GC sections; no flag search, no stack or CPU reduction"
+  },
+  "hardware_plan": {
+    "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_flush_plan2\\result.json",
+    "selected": "explicit RX-only FLUSH -> actual continuously updated rxs HIGH2ms -> automatic ACTIVE and latched cleanup-complete READY; ACTIVE normal starts do not re-isolate",
+    "not_yet_implemented_or_RTL_tested": true,
+    "WIT_warning": "2ms HIGH qualifies a serial idle boundary, not a complete WIT packet; original WIT header/checksum resynchronization and a new valid packet are still required for usable attitude",
+    "TX_warning": "cfg_div is shared by TX; explicit source change requires TX idle/empty and exclusive control. Administrative RX flush must never reset TX",
+    "abandoned_READY_HELD_RESUME": false
+  },
+  "decision": "stop this route here; retain all prior over-budget cases and deliver220B gap for root architecture decision",
+  "actual_original_flags_link_attempts_this_structure": 1,
+  "further_compilation_started": false,
+  "selected_53572B_image_unchanged": true,
+  "PNR53_54_inputs_unchanged": true,
+  "RTL_generated_or_modified": false,
+  "EDA_started": false,
+  "remaining": [
+    "220B original RAM assertion",
+    "full strict same-ELF stack/linked indirect calls once legal ELF exists",
+    "actual hardware parser/quiesce/CSR/clock/reset proof",
+    "full APP/Pico scheduling, actual RK and350ms zero/500ms physical stop"
+  ],
+  "deployment_ready": false
+}

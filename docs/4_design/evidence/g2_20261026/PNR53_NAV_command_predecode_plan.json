@@ -1,0 +1,45 @@
+{
+  "scope": "Independent read-only plan; no RTL generated or tools launched",
+  "plan": "F:/nav_integration_g2_20261023/PNR53_NAV_command_predecode_plan2/plan.json",
+  "entry": "D:/Desktop/SOC FPGA/nav/integration/g2/plan_nav_command_predecode.py",
+  "actual_facts": {
+    "negative_setup_endpoints_total": 3565,
+    "a_q7_launch_negative_endpoints": 2546,
+    "worst_slack_ns": -9.962,
+    "worst_endpoint": "u_nav/u_xt/u_fb/g_bank[7].mem_g_bank[7].mem_0_0_s/CEB",
+    "logic_levels": 15,
+    "data_delay_ns": 29.880,
+    "route_fraction_percent": 79.017,
+    "actual_chain": "a_q[7] -> u_rf/n16388_s4 -> n12374_s3 MATCH700C -> n12374_s1 wd_q[0] -> u_match frame_can_start -> RAW accept -> support/map acceptance -> reverse ready -> XT read issue -> RAM CEB"
+  },
+  "proposal": {
+    "capture": "At exact existing B_IDLE final-RF-write branch, alongside a_q/wd_q/rf_wr; default pulses0 every clock",
+    "logical_pulse_bits": ["MATCH_EVAL", "MATCH_UPDATE", "MATCH_CLEAR", "LIDAR_POSE_COMMIT", "MAP_SWEEP", "MAP_CLEAR"],
+    "multi_bit_commands_remain_legal": true,
+    "payload_atomically_from": "same accepted aligned bus_addr and bus_wdata; original wd_q/config snapshot timing retained",
+    "ACK_or_stream_cycles_added": 0,
+    "extra_RAM": 0,
+    "physical_FF_change": null,
+    "minimum_primary_target": "MATCH command triple; cohesive plan also removes current POSE/MAP pulse address decodes from stream admission/clear consumers",
+    "keep": "raw_frame_accept-based support frame_start and original ownership/WAIT_POINTS protocol",
+    "never": "Do not add a later p_* register stage, combinational request lookahead, registered-ready latency or new busy-GO restrictions"
+  },
+  "old_pose_reuse": {
+    "principle_reusable": true,
+    "old_whole_source_or_endpoint_acceptance_reusable": false,
+    "old_finite_result": "541 bus transactions/83POSE pulses/3091 comparisons/2reset scenarios",
+    "reason": "Old2070-only generator edits live repo and assumes support.frame_start from POSE; current support starts on accepted RAW, with ownership/WAIT and different regfile. Cannot run old generator unchanged."
+  },
+  "timing_limit": {
+    "listed_first3_prefix_ns": 5.505,
+    "remaining_by_arithmetic_only_ns": 24.375,
+    "physical_timing_prediction": false,
+    "warning": "Predecode alone cannot be declared50MHz closure; remaining reverse-ready routing and new upstream predecode D timing must be measured"
+  },
+  "future_checks": ["All-state post-clock pulse equality, all address/data bits, separate4state/reset cases", "Same ACK/rdata and atomic selected-master payload under stalls/B_END/dual-master requests", "Console posted write and TXshadow E0 read/B_RF write unchanged", "Injection GO/DATA length/wrap/busy behavior unchanged", "RAW E0/command E1, SOF/ex_busy/final pb_we/WAIT/retain/clear/reset boundaries", "MAP clear/sweep combinations and stream RAM enables/addresses/data", "SAFE/IR/lease/stop priority and publication cycles", "Actual C FF/CE cones/RAMINIT/26CDC and full physical setup/hold"],
+  "latest_human_policy": "P95<=50mm no longer blocks this round; errors still recorded. Collision/localization failure/long drift/stop requirements remain.",
+  "RTL_generated": false,
+  "simulation_or_EDA_started": false,
+  "frozen_inputs_changed": false,
+  "no_SHA": true
+}

@@ -1,0 +1,461 @@
+{
+  "at": "2026-10-26T22:50:42.331047+08:00",
+  "phase": "future software numeric and original link/strict stack passed; ROM hardware unimplemented",
+  "source": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1",
+  "source_parent": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1",
+  "manifest": {
+    "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\FW_sin_MMIO_manifest.json",
+    "bytes": 12913,
+    "mtime_ns": 1793026054130746500
+  },
+  "changed_FW_files": [
+    "include\\nav_fw_sin_lookup.h",
+    "nav\\fixmath.c",
+    "nav\\traj_sw.c"
+  ],
+  "unchanged_parent_FW_file_count": 66,
+  "same_guard_protocol_quiesce_motion_support_HAL": true,
+  "hardware_plan": {
+    "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\hardware_ROM_plan.json",
+    "bytes": 9346,
+    "mtime_ns": 1793026054094100500
+  },
+  "address_contract": {
+    "base": "0x90000000",
+    "last": "0x90000FFF",
+    "slots": 1024,
+    "stride_bytes": 4,
+    "read": "aligned32 bit signed sign-extension of original int16 table[index]; one volatile lw per lookup",
+    "writes": "ignore and ACK zero; never assert a ROM write; no command/address CSR or shared mutable query index",
+    "decoder": "nav_soc exact mem_addr[31:12]==20h90000, before its old generic sel_per read logic",
+    "why_not_2byte_NAV_window": "actual PicoRV32 mem_la_addr word-aligns reg_op1, so downstream cannot distinguish adjacent halfword indices; no false 0x0800 halfword scheme",
+    "public_overlap": "documented CPU ranges0RAM/4NAV/8peripheral; selected repo/HW has no documented9 window. Old generic unmapped reads alias per_q status at low byte04/08/0c: this undocumented behavior changes inside the new exact ROM range",
+    "no_existing_matcher_or_host_bus_port_shared": true
+  },
+  "numeric": {
+    "result": {
+      "path": "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_C_probe1\\result.json",
+      "bytes": 13638,
+      "mtime_ns": 1793026055403404700
+    },
+    "output": "PASS FW_SIN_MMIO checks=641732 table_words=1024 angles=65536 rotations=4096 trajectory_scenarios=32 modeled_MMIO_reads=201058 hardware_timing_not_tested=1",
+    "checks": 641732,
+    "exact_original_words": 1024,
+    "all16bit_angles": 65536,
+    "rotation_cases": 4096,
+    "trajectory_scenarios": 32,
+    "modeled_MMIO_reads": 201058,
+    "reference": "preserved original FW table/source, compared to explicit CSR substitute returning the exact signed16 value; all1024 also matched existing sin_lut.hex",
+    "runtime": [
+      {
+        "pid": 67496,
+        "created_epoch": 1793026055.2640686,
+        "command": [
+          "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_C_probe1\\test.exe"
+        ],
+        "at": "2026-10-26T22:47:35.389947+08:00"
+      },
+      {
+        "pid": 15152,
+        "created_epoch": 1793026054.3192985,
+        "command": [
+          "C:\\msys64\\mingw64\\bin\\gcc.exe",
+          "-std=c99",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-DNAV_FW_SIN_CSR_MODEL",
+          "-IF:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\include",
+          "-IF:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\nav",
+          "-IF:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\hal",
+          "-IF:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\app",
+          "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\tb_FW_sin_MMIO.c",
+          "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\nav\\fixmath.c",
+          "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\nav\\traj_sw.c",
+          "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_C_probe1\\reference_fixmath.c",
+          "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_C_probe1\\reference_traj_sw.c",
+          "-o",
+          "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_C_probe1\\test.exe"
+        ],
+        "at": "2026-10-26T22:47:34.330760+08:00"
+      }
+    ],
+    "exits": [
+      {
+        "pid": 67496,
+        "created_epoch": 1793026055.2640686,
+        "command": [
+          "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_C_probe1\\test.exe"
+        ],
+        "at": "2026-10-26T22:47:35.389947+08:00",
+        "exit_code": 0,
+        "ended": "2026-10-26T22:47:35.397015+08:00"
+      },
+      {
+        "pid": 15152,
+        "created_epoch": 1793026054.3192985,
+        "command": [
+          "C:\\msys64\\mingw64\\bin\\gcc.exe",
+          "-std=c99",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-DNAV_FW_SIN_CSR_MODEL",
+          "-IF:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\include",
+          "-IF:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\nav",
+          "-IF:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\hal",
+          "-IF:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\app",
+          "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\tb_FW_sin_MMIO.c",
+          "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\nav\\fixmath.c",
+          "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\nav\\traj_sw.c",
+          "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_C_probe1\\reference_fixmath.c",
+          "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_C_probe1\\reference_traj_sw.c",
+          "-o",
+          "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_C_probe1\\test.exe"
+        ],
+        "at": "2026-10-26T22:47:34.330760+08:00",
+        "exit_code": 0,
+        "ended": "2026-10-26T22:47:35.259448+08:00"
+      }
+    ],
+    "no_actual_BSRAM_or_CPU_bus_delay_test": true
+  },
+  "actual_link": {
+    "result": {
+      "path": "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_RV_link_probe1\\result.json",
+      "bytes": 38457,
+      "mtime_ns": 1793026076212891100
+    },
+    "controller_pid": 45696,
+    "controller_created_epoch": 1793026067.4741712,
+    "tool": {
+      "pid": 34908,
+      "created_epoch": 1793026075.2214217,
+      "command": [
+        "D:/Anaconda/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_slf128_linked_stack.py",
+        "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_RV_link_probe1\\firmware",
+        "--soc",
+        "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared6\\nav\\rtl\\soc\\nav_soc.v",
+        "--output",
+        "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_RV_link_probe1\\strict_stack_review"
+      ],
+      "at": "2026-10-26T22:47:55.223746+08:00",
+      "log": "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_RV_link_probe1\\strict_linked_stack.log",
+      "exit_code": 0,
+      "ended": "2026-10-26T22:47:56.188830+08:00"
+    },
+    "sections": {
+      ".text": {
+        "address": 0,
+        "bytes": 52102
+      },
+      ".rodata": {
+        "address": 52104,
+        "bytes": 836
+      },
+      ".bss": {
+        "address": 52944,
+        "bytes": 70060
+      }
+    },
+    "bss_end": 123004,
+    "over_bytes": -1924,
+    "original_RAM_bytes": 131072,
+    "stack_reserved_bytes": 6144,
+    "remaining_after_stack_bytes": 1924,
+    "previous_over_bytes": 180,
+    "total_measured_improvement_bytes": 2104,
+    "previous_sections": {
+      ".text": {
+        "address": 0,
+        "bytes": 52164
+      },
+      ".rodata": {
+        "address": 52164,
+        "bytes": 2884
+      },
+      ".bss": {
+        "address": 55048,
+        "bytes": 70060
+      }
+    },
+    "rodata_reduction_bytes": 2048,
+    "text_reduction_bytes": 62,
+    "BSS_bytes_unchanged": 70060,
+    "old2048B_NAV_SIN_LUT_absent_from_real_symbols": true,
+    "clz256B_table_preserved": true,
+    "actual_disassembly": {
+      "fx_sin": "00001ea0 <fx_sin>:\n    1ea0:\t8119                \tsrli\ta0,a0,0x6\n    1ea2:\t900007b7          \tlui\ta5,0x90000\n    1ea6:\t050a                \tslli\ta0,a0,0x2\n    1ea8:\t953e                \tadd\ta0,a0,a5\n    1eaa:\t4108                \tlw\ta0,0(a0)\n    1eac:\t8082                \tret\n",
+      "fx_cos": "0000265a <fx_cos>:\n    265a:\t00655793          \tsrli\ta5,a0,0x6\n    265e:\t10078793          \taddi\ta5,a5,256 # 10100 <g_app+0x2cd8>\n    2662:\t3ff7f793          \tandi\ta5,a5,1023\n    2666:\t90000737          \tlui\ta4,0x90000\n    266a:\t078a                \tslli\ta5,a5,0x2\n    266c:\t97ba                \tadd\ta5,a5,a4\n    266e:\t4388                \tlw\ta0,0(a5)\n    2670:\t8082                \tret\n"
+    },
+    "source_traj_sw_not_linked": true,
+    "original_flags": "RV32IMC_Zicsr/ilp32/-Os/-flto/GC sections; no extra compiler flags, RAM/stack unchanged",
+    "ELF": {
+      "path": "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_RV_link_probe1\\firmware\\nav_fw.elf",
+      "bytes": 455708,
+      "mtime_ns": 1793026074904590400
+    },
+    "BIN_or_INIT_exported": false
+  },
+  "strict_same_ELF_stack": {
+    "result": {
+      "path": "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_RV_link_probe1\\strict_stack_review\\result.json",
+      "bytes": 6229,
+      "mtime_ns": 1793026076178968700
+    },
+    "passed": true,
+    "complete": true,
+    "actual_static_bound_bytes": 2544,
+    "maximum_static_gate_bytes": 3072,
+    "stack_reserved_bytes": 6144,
+    "actual_jr_count": 4,
+    "actual_jalr_count": 0,
+    "unresolved_indirect": [],
+    "input_files_changed": false,
+    "inputs": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_RV_link_probe1\\firmware\\nav_fw.elf",
+        "bytes": 455708,
+        "mtime_ns": 1793026074904590400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared6\\nav\\rtl\\soc\\nav_soc.v",
+        "bytes": 10034,
+        "mtime_ns": 1793013805847048800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_RV_link_probe1\\firmware\\nav_fw.elf.ltrans0.ltrans.su",
+        "bytes": 9577,
+        "mtime_ns": 1793026073947660300
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_RV_link_probe1\\firmware\\nav_fw.elf.ltrans1.ltrans.su",
+        "bytes": 1960,
+        "mtime_ns": 1793026074787344100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_RV_link_probe1\\firmware\\nav_fw.elf.ltrans0.ltrans.s",
+        "bytes": 2365515,
+        "mtime_ns": 1793026073947660300
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_RV_link_probe1\\firmware\\nav_fw.elf.ltrans1.ltrans.s",
+        "bytes": 1060134,
+        "mtime_ns": 1793026074787344100
+      }
+    ],
+    "method": "same linked ELF, all LTO/SU, resolved bounded jump tables and complete callgraph; no source stack estimate or whitelist"
+  },
+  "hardware_requirements": {
+    "dedicated_ROM": "one1024x16 BSRAM on original CPU50 clock, no sharing or modification of matcher/traj four existing trigROM ports/INIT",
+    "expected_extra_BSRAM": 1,
+    "expected_physical_total": 281,
+    "actual_resource_prediction_not_measured": true,
+    "limit": 300,
+    "E0": "accept exact0x90000000..0x90000FFF aligned32 read, select index mem_addr[11:2] and demand ROM read",
+    "E1": "capture signed extension of ROM Q into per_q and one-cycle per_ready; preserve pending/req mutual exclusion",
+    "read_hold": "ROM Q holds when no demand; no runtime writes; content INIT invariant under protocol reset",
+    "reset": "cpu_rst=rst|hold cancels pending/ACK only, not ROM content; no stale response after reset",
+    "unchanged": "CPU128KiB RAM, console posted bytes/ACK/debug, old per/nav arbitration and all current PNR input",
+    "actual_RTL_generated": false,
+    "EDA_started": false
+  },
+  "performance_scope": {
+    "source_inventory": [
+      {
+        "file": "fw\\drv\\hal_fpga.c",
+        "line": 30,
+        "text": "int32_t dx=lf_round_cell((int64_t)distance_mm*inv*fx_cos(yaw));"
+      },
+      {
+        "file": "fw\\drv\\hal_fpga.c",
+        "line": 31,
+        "text": "int32_t dy=lf_round_cell((int64_t)distance_mm*inv*fx_sin(yaw));"
+      },
+      {
+        "file": "fw\\include\\nav_sin_lut.h",
+        "line": 6,
+        "text": "static const int16_t NAV_SIN_LUT[1024] = {"
+      },
+      {
+        "file": "fw\\nav\\explore.c",
+        "line": 47,
+        "text": "int32_t ca = fx_cos(a), sa = fx_sin(a);"
+      },
+      {
+        "file": "fw\\nav\\explore.c",
+        "line": 84,
+        "text": "int32_t ca = fx_cos(a), sa = fx_sin(a);"
+      },
+      {
+        "file": "fw\\nav\\explore.c",
+        "line": 120,
+        "text": "*gx = pose->x + (int32_t)((int64_t)fx_cos(a) * dist_mm / Q14);"
+      },
+      {
+        "file": "fw\\nav\\explore.c",
+        "line": 121,
+        "text": "*gy = pose->y + (int32_t)((int64_t)fx_sin(a) * dist_mm / Q14);"
+      },
+      {
+        "file": "fw\\nav\\fixmath.c",
+        "line": 4,
+        "text": "int32_t fx_sin(angle_t a) { return NAV_SIN_LUT[a >> 6]; }"
+      },
+      {
+        "file": "fw\\nav\\fixmath.c",
+        "line": 5,
+        "text": "int32_t fx_cos(angle_t a) { return NAV_SIN_LUT[((a >> 6) + 256) & 1023]; }"
+      },
+      {
+        "file": "fw\\nav\\fixmath.c",
+        "line": 62,
+        "text": "fx_mat3_t rz = {{{fx_cos(yaw), -fx_sin(yaw), 0}, {fx_sin(yaw), fx_cos(yaw), 0}, {0, 0, Q14}}};"
+      },
+      {
+        "file": "fw\\nav\\fixmath.c",
+        "line": 63,
+        "text": "fx_mat3_t ry = {{{fx_cos(pitch), 0, fx_sin(pitch)}, {0, Q14, 0}, {-fx_sin(pitch), 0, fx_cos(pitch)}}};"
+      },
+      {
+        "file": "fw\\nav\\fixmath.c",
+        "line": 64,
+        "text": "fx_mat3_t rx = {{{Q14, 0, 0}, {0, fx_cos(roll), -fx_sin(roll)}, {0, fx_sin(roll), fx_cos(roll)}}};"
+      },
+      {
+        "file": "fw\\nav\\fixmath.h",
+        "line": 10,
+        "text": "int32_t fx_sin(angle_t a);"
+      },
+      {
+        "file": "fw\\nav\\fixmath.h",
+        "line": 11,
+        "text": "int32_t fx_cos(angle_t a);"
+      },
+      {
+        "file": "fw\\nav\\local_frame.c",
+        "line": 5,
+        "text": "return (fx_sin(a)*(64-b)+fx_sin((angle_t)(a+64))*b)/64;"
+      },
+      {
+        "file": "fw\\nav\\motion_guard.c",
+        "line": 35,
+        "text": "return (fx_sin(a) * (64-f) + fx_sin((angle_t)(a+64)) * f) / 64;"
+      },
+      {
+        "file": "fw\\nav\\nav_task.c",
+        "line": 568,
+        "text": "int32_t x=p->x+(int32_t)((int64_t)450*fx_cos(p->yaw)/Q14);"
+      },
+      {
+        "file": "fw\\nav\\nav_task.c",
+        "line": 569,
+        "text": "int32_t y=p->y+(int32_t)((int64_t)450*fx_sin(p->yaw)/Q14);"
+      },
+      {
+        "file": "fw\\nav\\pose.c",
+        "line": 68,
+        "text": "int64_t cp = p->decomp_pitch ? fx_cos(p->cur.pitch) : Q14, sp = p->decomp_pitch ? fx_sin(p->cur.pitch) : 0;"
+      },
+      {
+        "file": "fw\\nav\\pose.c",
+        "line": 70,
+        "text": "int64_t c = fx_cos(p->cur.yaw), s = fx_sin(p->cur.yaw);"
+      },
+      {
+        "file": "fw\\nav\\pose.c",
+        "line": 157,
+        "text": "int64_t c = fx_cos((angle_t)da), s = fx_sin((angle_t)da);"
+      },
+      {
+        "file": "fw\\nav\\pose.c",
+        "line": 231,
+        "text": "int32_t vh = p->decomp_pitch ? p->odo_vx * fx_cos(out->pitch) / Q14 : p->odo_vx;"
+      },
+      {
+        "file": "fw\\nav\\pose.c",
+        "line": 232,
+        "text": "out->x += (int32_t)(((int64_t)vh * fx_cos(mid) - (int64_t)p->odo_vy * fx_sin(mid)) * future / Q14 / 1000000);"
+      },
+      {
+        "file": "fw\\nav\\pose.c",
+        "line": 233,
+        "text": "out->y += (int32_t)(((int64_t)vh * fx_sin(mid) + (int64_t)p->odo_vy * fx_cos(mid)) * future / Q14 / 1000000);"
+      },
+      {
+        "file": "fw\\nav\\pose.c",
+        "line": 293,
+        "text": "int64_t c = fx_cos(at->yaw), s = fx_sin(at->yaw);"
+      },
+      {
+        "file": "fw\\nav\\pose_match.c",
+        "line": 160,
+        "text": "int64_t c = fx_cos((angle_t)st->dyaw), s = fx_sin((angle_t)st->dyaw);"
+      },
+      {
+        "file": "fw\\nav\\support_guard.c",
+        "line": 91,
+        "text": "static int32_t sn(angle_t a) {int f=a&63;return (fx_sin(a)*(64-f)+fx_sin((angle_t)(a+64))*f)/64;}"
+      },
+      {
+        "file": "fw\\nav\\traj_sw.c",
+        "line": 16,
+        "text": "int64_t sn = NAV_SIN_LUT[si], cs = NAV_SIN_LUT[(si + 256) & 1023];"
+      },
+      {
+        "file": "fw\\test\\hal_py.c",
+        "line": 98,
+        "text": "int64_t nx=(int64_t)distance_mm*s_mi.inv_res*fx_cos(yaw);"
+      },
+      {
+        "file": "fw\\test\\hal_py.c",
+        "line": 99,
+        "text": "int64_t ny=(int64_t)distance_mm*s_mi.inv_res*fx_sin(yaw);"
+      },
+      {
+        "file": "fw\\test\\test_main.c",
+        "line": 35,
+        "text": "CHECK(fx_cos(0) == 16384 && fx_sin(16384) == 16384, \"sin/cos\");"
+      }
+    ],
+    "known_counts": [
+      "fx_sin/cos one volatile load each",
+      "fx_rot_zyx twelve source lookups per call",
+      "local_frame rotate four lookups, preserve up to eight",
+      "support_check up to8*(steps+1), steps<=64, subject to earlier rejection",
+      "motion_check loop4*(horizon+1), horizon<=64, plus4 per relevant s0 unknown cell; this cell loop is not a constant260-read bound",
+      "traj_sw two per candidate-step but absent from this actual linked ELF; actual HAL trajectory path remains hardware"
+    ],
+    "risks": [
+      "Every former RAM table load becomes a volatile CPU-local I/O load; compiler may no longer merge identical sin/cos calls, increasing read count",
+      "Proposed E0-to-E1 ACK is not a measured fullCPU load latency. No NAV bus arbitration for this plan, but per_q/mem_ready integration must be proven",
+      "motion_guard/support_guard and local-frame conversions execute between search checkpoints; extra reads can lengthen time before a stop service",
+      "R0/P11 effective-time and350ms zero/500ms physical-stop gates remain required, including busy A*; numerical identity alone proves none of them"
+    ],
+    "actual_lookup_frequency_or_WCET_measured": false,
+    "stop_gates": "busyCPU zero<=350ms and physicalstop<=500ms remain unverified and unchanged; C numerical equality and static stack do not satisfy them"
+  },
+  "reproducible_commands": {
+    "prepare": "D:/Anaconda/python.exe -B -X utf8 integration/g2/prepare_FW_sin_MMIO_experiment.py --out <new-source>",
+    "numeric": "D:/Anaconda/python.exe -B -X utf8 integration/g2/validate_FW_sin_MMIO.py --source <new-source> --out <new-output>",
+    "original_RV_link": "D:/Anaconda/python.exe -B -X utf8 integration/g2/link_P11_integrated_FW_experiment.py --source <new-source> --out <new-output>",
+    "collect": "D:/Anaconda/python.exe -B -X utf8 integration/g2/collect_FW_sin_MMIO_review.py --out <new-review>"
+  },
+  "full_RV_link_attempts": 1,
+  "no_further_compile_or_BIN_export": true,
+  "selected_53572B_image_unchanged": true,
+  "PNR53_54_inputs_unchanged": true,
+  "remaining": [
+    "materialize and prove ROM/CPU bus handshake/reset/whole1024 read/hold",
+    "actual source/CPUINIT/trigROM/clock/stop and BSRAMmapping after final integration",
+    "actualPico busy scheduling350mszero/RK and500msphysicalstop",
+    "actual full PNR/setup/hold/CDC/reset/IO gates"
+  ],
+  "deployment_ready": false
+}
