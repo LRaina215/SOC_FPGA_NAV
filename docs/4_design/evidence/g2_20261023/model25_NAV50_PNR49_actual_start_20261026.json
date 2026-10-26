@@ -1,0 +1,105 @@
+{
+  "recorded_at": "2026-10-26T11:25:11.344532+08:00",
+  "actual_PNR_started_at": "2026-10-26T11:22:18.622198+08:00",
+  "output": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_pnr49",
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_syn34",
+  "current_log_tail": [
+    "add new file: \"F:/nav_integration_g2_20261023/baseline_fusion_model25_NAV50_pnr49/g2_top.vg\"",
+    "add new file: \"F:/nav_integration_g2_20261023/baseline_fusion_model25_NAV50_pnr49/g2.cst\"",
+    "add new file: \"F:/nav_integration_g2_20261023/baseline_fusion_model25_NAV50_pnr49/g2.sdc\"",
+    "NOTE (PJ2001) : Skip synthesis, because there is only one netlist file in this project",
+    "Reading netlist file: \"F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_pnr49\\g2_top.vg\"",
+    "Parsing netlist file \"F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_pnr49\\g2_top.vg\" completed",
+    "Processing netlist completed",
+    "Reading constraint file: \"F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_pnr49\\g2.cst\"",
+    "Physical Constraint parsed completed",
+    "Running placement......",
+    "[10%] Placement Phase 0 completed",
+    "[20%] Placement Phase 1 completed"
+  ],
+  "controller": {
+    "pid": 10168,
+    "created_epoch": 1792984938.302134,
+    "command": [
+      "D:\\Anaconda\\python.exe",
+      "-X",
+      "utf8",
+      "D:/Desktop/SOC FPGA/nav/integration/g2/run_model25_joint_pnr.py"
+    ]
+  },
+  "tool": {
+    "pid": 36628,
+    "created_epoch": 1792984938.6246543,
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "cwd": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_pnr49",
+    "priority": 32,
+    "affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  "admission": {
+    "physical_bytes": 3712573440,
+    "commit_bytes": 4949819392,
+    "required_physical_bytes": 2147483648,
+    "required_commit_bytes": 4294967296
+  },
+  "total_limit_s": 0,
+  "silent_limit_s": 0,
+  "cancelled": false,
+  "reused_SYN34": true,
+  "new_synthesis": false,
+  "actual_options_same_as_routed35": true,
+  "actual_device_cfg_same_as_routed35": true,
+  "real_clock_targets_mhz": {
+    "NAV_CPU_peripherals": 50,
+    "model_fusion_RL_action": 25,
+    "radar": 100
+  },
+  "single_SDC": true,
+  "original_hold_only": 26,
+  "original_max_delay": 26,
+  "new_timing_exceptions": 0,
+  "new_global_requests": 0,
+  "source_BSRAM": 314,
+  "source_wide": 18,
+  "predicted_physical_BSRAM": 332,
+  "actual_physical_BSRAM": null,
+  "region35_GUI_exit_dependency": false,
+  "full4500_simulation_exit_dependency": false,
+  "actual_base_review": "F:\\nav_integration_g2_20261023\\model25_SYN34_actual_review1\\actual_review4\\final_review.json",
+  "additional_payload_semantics_review": "F:\\nav_integration_g2_20261023\\model25_SYN34_actual_review1\\payload_semantics_review1\\final_review.json",
+  "payload_semantics_review_passed": true,
+  "whole_model_numerics_still_pending": true,
+  "actual_route_setup_hold_not_accepted": true,
+  "programmed": false,
+  "deployment_accepted": false,
+  "required_final_review": [
+    "actual unrouted and allRAM geometry/INIT/CPU128KiB",
+    "actual global role/three real clocks/related50-25 setup and hold",
+    "original26 constraints actually active and all5relatedchannel payload/control paths",
+    "complete setup/hold categories and reported endpoint coverage",
+    "async reset/preset and startup pulse widths/PLL/IO/stopping contracts"
+  ]
+}

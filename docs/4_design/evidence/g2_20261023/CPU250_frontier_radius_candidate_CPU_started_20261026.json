@@ -1,0 +1,332 @@
+{
+  "recorded_at": "2026-10-26T11:15:41.441498+08:00",
+  "scope": "Independent source-only fixed1000mm blacklist predicate;not hardware/deployment",
+  "source": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_candidate1",
+  "CPU_probe": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1",
+  "preparation": {
+    "recorded_at": "2026-10-26T11:13:17.020765+08:00",
+    "source": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_candidate2",
+    "out": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_candidate1",
+    "only_existing_FW_changed": "nav/explore.c",
+    "only_predicate_changed": "blacklist fixed1000mm",
+    "frontier_min_predicate_unchanged": true,
+    "new_arrays_or_coordinate_tables": 0,
+    "mathematical_basis": {
+      "safe_difference": "int64 differences of two int32 values are representable",
+      "fast_domain": "abs(dx)<=2^30 and abs(dy)<=2^30",
+      "domain_bound": "dx^2+dy^2<=2^61<INT64_MAX;floor sqrt<=floor(sqrt(2^61))<INT32_MAX",
+      "identity": "For integer R=1000 and nonnegative q:floor(sqrt(q))<R iff q<R^2",
+      "AABB_reject": "Any abs(dx)>=1000 or abs(dy)>=1000 implies q>=1000000",
+      "inner_arithmetic": "Remaining x,y are within[-999,999],so x*x+y*y<=1996002<INT32_MAX;32bit products/sum exact",
+      "fallback": "Literal original fx_dist(fx-bx,fy-by)<1000 for all values outside the fast domain",
+      "original_C_limits": "Original coordinate subtraction and signed64 sum can overflow;large uint32 sqrt cast to int32 is implementation-defined. No claim of portable-C all-input equivalence at those undefined corners;fallback retains original target expression.",
+      "global_compiler_wrap_flags_changed": false
+    },
+    "focused_proof": {
+      "passed": true,
+      "math_native": "RADIUS_NATIVE passed checked=17197 fast=13363 fallback=3834;extreme samples are compiler-specific observations,not portable UB proof",
+      "original_algorithm": "RADIUS_ALGORITHM passed cases=256 cancel_restart=8 checks=1048 scratch_bytes=20992",
+      "checkpoint_guard_and_FIFO_protocol_proof_reused_from": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_candidate2\\host_proofs_pending_payload_pose\\result.json",
+      "reused_source_byte_identity": {
+        "app/nav_app.c": true,
+        "nav/nav_task.c": true,
+        "nav/host_link_guard.c": true,
+        "drv/hal_fpga.c": true,
+        "nav/scratch.h": true,
+        "nav/nav_search_checkpoint.h": true
+      },
+      "source_candidate": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_candidate1",
+      "actual_CPU_timing_pending": true,
+      "portable_C_defined_fast_domain_proven": true,
+      "original_undefined_C_extremes_made_defined": false,
+      "outside_fast_domain_literal_original_expression": true
+    },
+    "no_original_FW_board_or_joint_build_mutations": true,
+    "full_FW": {
+      "image_bytes": 52796,
+      "layout": {
+        "linked_symbols": {
+          "RAM_SIZE": 131072,
+          "STACK_RESERVE": 6144,
+          "_bss_start": 52800,
+          "_bss_end": 122784,
+          "_stack_top": 131072
+        },
+        "load_file_bytes": 52796,
+        "load_memory_bytes": 122784,
+        "bss_section_alignment": 8,
+        "exact_alignment_padding_bytes": 4,
+        "bss_bytes": 69984,
+        "aligned_remaining_bytes": 2144
+      },
+      "stack": {
+        "complete": true,
+        "static_bound_bytes": 2576,
+        "direct_call_bound_bytes": 2576,
+        "path": [
+          "main",
+          "nav_app_poll",
+          "task_step_local.constprop.0",
+          "drive_to.constprop.0",
+          "candidate_check.constprop.0",
+          "support_check.constprop.0",
+          "cell",
+          "hal_map_support",
+          "hal_map_info"
+        ],
+        "resolved_switches": [
+          {
+            "function": "task_step_local.constprop.0",
+            "table": ".L1562",
+            "targets": [
+              ".L1561",
+              ".L1529",
+              ".L1526",
+              ".L1563",
+              ".L1561"
+            ]
+          },
+          {
+            "function": "xt_link_poll.constprop.0",
+            "table": ".L1869",
+            "targets": [
+              ".L1873",
+              ".L1872",
+              ".L1871",
+              ".L1870",
+              ".L1868"
+            ]
+          }
+        ],
+        "unresolved_indirect": [],
+        "nonstatic_frames": [],
+        "unresolved_sp_writes": [],
+        "irq_disabled": true,
+        "stack_reserved_bytes": 6144,
+        "largest_frames": [
+          [
+            "support_check.constprop.0",
+            992
+          ],
+          [
+            "drive_to.constprop.0",
+            624
+          ],
+          [
+            "nav_app_poll",
+            400
+          ],
+          [
+            "drain_host_messages",
+            384
+          ],
+          [
+            "nav_app_search_checkpoint",
+            288
+          ],
+          [
+            "motion_segment.constprop.0",
+            240
+          ],
+          [
+            "task_step_local.constprop.0",
+            240
+          ],
+          [
+            "xt_link_poll.constprop.0",
+            240
+          ]
+        ],
+        "scope": "linked image, no IRQ/recursion/heap; tail calls conservatively nested; board watermark still pending"
+      },
+      "full_fw_compile_passed": true,
+      "source_only_not_hardware_candidate": true,
+      "new_snapshot_arrays": false,
+      "scratch_bytes": 20992,
+      "legacy_reader_rejection_preserved": true,
+      "BSS_padding_verified_from_exact_ELF_section_alignment": true
+    }
+  },
+  "actual_CPU_job_snapshot": {
+    "phase": "running_xsim",
+    "physical_available": 4408553472,
+    "commit_available": 5264474112,
+    "simulator": "Vivado CPU-only; no ModelSim",
+    "controller": {
+      "pid": 43784,
+      "created_epoch": 1792984489.6416411,
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "F:/nav_integration_g2_20261023/CPU250_frontier_radius_CPU_probe1/run_xsim.py",
+        "--suite",
+        "frontier"
+      ],
+      "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+    },
+    "processes": [
+      {
+        "phase": "xvlog",
+        "pid": 4608,
+        "created_epoch": 1792984489.8404026,
+        "parent_pid": 43784,
+        "command": [
+          "cmd",
+          "/c",
+          "E:\\2026.1\\Vivado\\bin\\xvlog.bat",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\rtl\\nav_ram_sp.v",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\rtl\\nav_ram_sdp.v",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\rtl\\picorv32.v",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\rtl\\nav_soc.v"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xvlog",
+        "pid": 61908,
+        "created_epoch": 1792984490.8551805,
+        "parent_pid": 4608,
+        "command": [
+          "E:/2026.1/Vivado/bin/unwrapped/win64.o/xvlog.exe",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\rtl\\nav_ram_sp.v",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\rtl\\nav_ram_sdp.v",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\rtl\\picorv32.v",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\rtl\\nav_soc.v"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xvlog",
+        "pid": 58896,
+        "created_epoch": 1792984491.9185114,
+        "parent_pid": 43784,
+        "command": [
+          "cmd",
+          "/c",
+          "E:\\2026.1\\Vivado\\bin\\xvlog.bat",
+          "-sv",
+          "tb_cpu250_segments.sv"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xvlog",
+        "pid": 56332,
+        "created_epoch": 1792984492.8972237,
+        "parent_pid": 58896,
+        "command": [
+          "E:/2026.1/Vivado/bin/unwrapped/win64.o/xvlog.exe",
+          "-sv",
+          "tb_cpu250_segments.sv"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xelab",
+        "pid": 41260,
+        "created_epoch": 1792984493.9911394,
+        "parent_pid": 43784,
+        "command": [
+          "cmd",
+          "/c",
+          "E:\\2026.1\\Vivado\\bin\\xelab.bat",
+          "tb_cpu250_segments",
+          "-s",
+          "snapshot"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xelab",
+        "pid": 50552,
+        "created_epoch": 1792984495.0058837,
+        "parent_pid": 41260,
+        "command": [
+          "E:/2026.1/Vivado/bin/unwrapped/win64.o/xelab.exe",
+          "tb_cpu250_segments",
+          "-s",
+          "snapshot"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xsim",
+        "pid": 60084,
+        "created_epoch": 1792984497.095452,
+        "parent_pid": 43784,
+        "command": [
+          "cmd",
+          "/c",
+          "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+          "snapshot",
+          "-R"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xsim",
+        "pid": 25360,
+        "created_epoch": 1792984498.1193857,
+        "parent_pid": 60084,
+        "command": [
+          "E:/2026.1/Vivado/bin/unwrapped/win64.o/xsim.exe",
+          "snapshot",
+          "-R"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xsim",
+        "pid": 42840,
+        "created_epoch": 1792984498.683376,
+        "parent_pid": 25360,
+        "command": [
+          "xsim.dir/snapshot/xsimk.exe",
+          "-runall",
+          "-simmode",
+          "gui",
+          "-wdb",
+          "snapshot.wdb",
+          "-simrunnum",
+          "0",
+          "-socket",
+          "56686"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xsim",
+        "pid": 28788,
+        "created_epoch": 1792984498.7950113,
+        "parent_pid": 42840,
+        "command": [
+          "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+          "0x4"
+        ],
+        "cwd": "C:\\WINDOWS"
+      }
+    ],
+    "updated_epoch": 1792984527.7055693,
+    "current_pid": 60084,
+    "current_command": [
+      "cmd",
+      "/c",
+      "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+      "snapshot",
+      "-R"
+    ],
+    "last_returncode": 0
+  },
+  "CPU_uses_real_PicoRV32_128KiB_50MHz": true,
+  "CPU_MMIO_service": "synthetic timer/50ms no-op TARGET mailbox;actual SAFE_CMD_W writes observed",
+  "normal_timing_inputs_same_as_prior_checkpoint_probe": true,
+  "target_extreme_observations_requested": 1236,
+  "actual_CPU_result_not_yet_claimed": true,
+  "no_board_SYN_PNR_vsim_started": true,
+  "entries": [
+    "integration/g2/prepare_frontier_radius_candidate.py",
+    "integration/g2/probe_frontier_radius_cpu.py",
+    "integration/g2/README_frontier_radius_probe.md"
+  ]
+}

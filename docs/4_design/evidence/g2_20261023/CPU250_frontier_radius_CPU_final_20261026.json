@@ -1,0 +1,491 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T11:20:35.295596+08:00",
+  "source": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_candidate1",
+  "CPU_probe": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1",
+  "current_job": {
+    "phase": "complete",
+    "physical_available": 4408553472,
+    "commit_available": 5264474112,
+    "simulator": "Vivado CPU-only; no ModelSim",
+    "controller": {
+      "pid": 43784,
+      "created_epoch": 1792984489.6416411,
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "F:/nav_integration_g2_20261023/CPU250_frontier_radius_CPU_probe1/run_xsim.py",
+        "--suite",
+        "frontier"
+      ],
+      "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+    },
+    "processes": [
+      {
+        "phase": "xvlog",
+        "pid": 4608,
+        "created_epoch": 1792984489.8404026,
+        "parent_pid": 43784,
+        "command": [
+          "cmd",
+          "/c",
+          "E:\\2026.1\\Vivado\\bin\\xvlog.bat",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\rtl\\nav_ram_sp.v",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\rtl\\nav_ram_sdp.v",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\rtl\\picorv32.v",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\rtl\\nav_soc.v"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xvlog",
+        "pid": 61908,
+        "created_epoch": 1792984490.8551805,
+        "parent_pid": 4608,
+        "command": [
+          "E:/2026.1/Vivado/bin/unwrapped/win64.o/xvlog.exe",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\rtl\\nav_ram_sp.v",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\rtl\\nav_ram_sdp.v",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\rtl\\picorv32.v",
+          "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\rtl\\nav_soc.v"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xvlog",
+        "pid": 58896,
+        "created_epoch": 1792984491.9185114,
+        "parent_pid": 43784,
+        "command": [
+          "cmd",
+          "/c",
+          "E:\\2026.1\\Vivado\\bin\\xvlog.bat",
+          "-sv",
+          "tb_cpu250_segments.sv"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xvlog",
+        "pid": 56332,
+        "created_epoch": 1792984492.8972237,
+        "parent_pid": 58896,
+        "command": [
+          "E:/2026.1/Vivado/bin/unwrapped/win64.o/xvlog.exe",
+          "-sv",
+          "tb_cpu250_segments.sv"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xelab",
+        "pid": 41260,
+        "created_epoch": 1792984493.9911394,
+        "parent_pid": 43784,
+        "command": [
+          "cmd",
+          "/c",
+          "E:\\2026.1\\Vivado\\bin\\xelab.bat",
+          "tb_cpu250_segments",
+          "-s",
+          "snapshot"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xelab",
+        "pid": 50552,
+        "created_epoch": 1792984495.0058837,
+        "parent_pid": 41260,
+        "command": [
+          "E:/2026.1/Vivado/bin/unwrapped/win64.o/xelab.exe",
+          "tb_cpu250_segments",
+          "-s",
+          "snapshot"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xsim",
+        "pid": 60084,
+        "created_epoch": 1792984497.095452,
+        "parent_pid": 43784,
+        "command": [
+          "cmd",
+          "/c",
+          "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+          "snapshot",
+          "-R"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xsim",
+        "pid": 25360,
+        "created_epoch": 1792984498.1193857,
+        "parent_pid": 60084,
+        "command": [
+          "E:/2026.1/Vivado/bin/unwrapped/win64.o/xsim.exe",
+          "snapshot",
+          "-R"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xsim",
+        "pid": 42840,
+        "created_epoch": 1792984498.683376,
+        "parent_pid": 25360,
+        "command": [
+          "xsim.dir/snapshot/xsimk.exe",
+          "-runall",
+          "-simmode",
+          "gui",
+          "-wdb",
+          "snapshot.wdb",
+          "-simrunnum",
+          "0",
+          "-socket",
+          "56686"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier"
+      },
+      {
+        "phase": "xsim",
+        "pid": 28788,
+        "created_epoch": 1792984498.7950113,
+        "parent_pid": 42840,
+        "command": [
+          "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+          "0x4"
+        ],
+        "cwd": "C:\\WINDOWS"
+      }
+    ],
+    "updated_epoch": 1792984775.949398,
+    "current_pid": 60084,
+    "current_command": [
+      "cmd",
+      "/c",
+      "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+      "snapshot",
+      "-R"
+    ],
+    "last_returncode": 0,
+    "result": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_CPU_probe1\\frontier\\result.json"
+  },
+  "original_identities": [
+    {
+      "pid": 43784,
+      "created_epoch": 1792984489.6416411,
+      "original_identity_still_running": false
+    },
+    {
+      "pid": 4608,
+      "created_epoch": 1792984489.8404026,
+      "original_identity_still_running": false
+    },
+    {
+      "pid": 61908,
+      "created_epoch": 1792984490.8551805,
+      "original_identity_still_running": false
+    },
+    {
+      "pid": 58896,
+      "created_epoch": 1792984491.9185114,
+      "original_identity_still_running": false
+    },
+    {
+      "pid": 56332,
+      "created_epoch": 1792984492.8972237,
+      "original_identity_still_running": false
+    },
+    {
+      "pid": 41260,
+      "created_epoch": 1792984493.9911394,
+      "original_identity_still_running": false
+    },
+    {
+      "pid": 50552,
+      "created_epoch": 1792984495.0058837,
+      "original_identity_still_running": false
+    },
+    {
+      "pid": 60084,
+      "created_epoch": 1792984497.095452,
+      "original_identity_still_running": false
+    },
+    {
+      "pid": 25360,
+      "created_epoch": 1792984498.1193857,
+      "original_identity_still_running": false
+    },
+    {
+      "pid": 42840,
+      "created_epoch": 1792984498.683376,
+      "original_identity_still_running": false
+    },
+    {
+      "pid": 28788,
+      "created_epoch": 1792984498.7950113,
+      "original_identity_still_running": false
+    }
+  ],
+  "actual_CPU_result": {
+    "passed": true,
+    "scope": "Actual PicoRV32/128KiB/50MHz plus actual candidate guard/checkpoint/HAL with synthetic timer/mailbox register service; not full G2/UART or physical stop",
+    "rows": [
+      {
+        "kind": 0,
+        "result": 1,
+        "x": 4049,
+        "y": 3049,
+        "frontier": 2076,
+        "cycles": 10452869,
+        "max_gap": 134024,
+        "checks": 146,
+        "locked": 0,
+        "messages": 4,
+        "time_us": 209057.38,
+        "max_checkpoint_gap_us": 2680.48
+      },
+      {
+        "kind": 1,
+        "result": 1,
+        "x": 4049,
+        "y": 3049,
+        "frontier": 2076,
+        "cycles": 14386783,
+        "max_gap": 197768,
+        "checks": 146,
+        "locked": 0,
+        "messages": 5,
+        "time_us": 287735.66,
+        "max_checkpoint_gap_us": 3955.36
+      },
+      {
+        "kind": 2,
+        "result": 0,
+        "x": 99,
+        "y": 99,
+        "frontier": 0,
+        "cycles": 58418,
+        "max_gap": 8253,
+        "checks": 8,
+        "locked": 1,
+        "messages": 0,
+        "time_us": 1168.36,
+        "max_checkpoint_gap_us": 165.06
+      }
+    ],
+    "zero_commit": [
+      {
+        "age_us": 250166,
+        "now_us": 696849,
+        "last_rx_us": 446683
+      }
+    ],
+    "max_checkpoint_gap_us": 3955.36,
+    "kernel_observer_effect": true,
+    "whole_loop_WCET_proven": false,
+    "physical_stop500ms_proven": false,
+    "uses_actual_250ms_threshold": true,
+    "healthy_50ms_mailbox_heartbeat_preserved": true,
+    "radius_target_compiler_observations": {
+      "passed": true,
+      "checks": 1236,
+      "portable_C_undefined_extremes_proven": false,
+      "actual_private_helper_called_via_simulation_only_wrapper": true
+    }
+  },
+  "bindings": {
+    "RTL/nav_ram_sp.v": true,
+    "RTL/nav_ram_sdp.v": true,
+    "RTL/picorv32.v": true,
+    "RTL/nav_soc.v": true,
+    "FW/app/nav_app.c": true,
+    "FW/nav/host_link_guard.c": true,
+    "FW/nav/nav_task.c": true,
+    "FW/drv/hal_fpga.c": true,
+    "FW/nav/fixmath.c": true,
+    "FW/nav/scratch.h": true,
+    "FW/nav/nav_search_checkpoint.h": true,
+    "actual_private_helper_body_unchanged": true,
+    "timing_bench_unchanged_except_pretiming_target_observations": true,
+    "same_MMIO_timer_mailbox_and_50MHz_TB": true
+  },
+  "same_input_comparison": [
+    {
+      "kind": 0,
+      "prior_cycles": 10640444,
+      "new_cycles": 10452869,
+      "prior_time_us": 212808.88,
+      "new_time_us": 209057.38,
+      "reduction_us": 3751.5,
+      "reduction_percent": 1.76284936981953,
+      "prior_max_gap_us": 2707.92,
+      "new_max_gap_us": 2680.48,
+      "target_and_return_unchanged": true
+    },
+    {
+      "kind": 1,
+      "prior_cycles": 49542110,
+      "new_cycles": 14386783,
+      "prior_time_us": 990842.2,
+      "new_time_us": 287735.66,
+      "reduction_us": 703106.54,
+      "reduction_percent": 70.96049603054855,
+      "prior_max_gap_us": 15334.24,
+      "new_max_gap_us": 3955.36,
+      "target_and_return_unchanged": true
+    },
+    {
+      "kind": 2,
+      "prior_cycles": 58418,
+      "new_cycles": 58418,
+      "prior_time_us": 1168.36,
+      "new_time_us": 1168.36,
+      "reduction_us": 0.0,
+      "reduction_percent": 0.0,
+      "prior_max_gap_us": 165.06,
+      "new_max_gap_us": 165.06,
+      "target_and_return_unchanged": true
+    }
+  ],
+  "full_FW_review": {
+    "image_bytes": 52796,
+    "layout": {
+      "linked_symbols": {
+        "RAM_SIZE": 131072,
+        "STACK_RESERVE": 6144,
+        "_bss_start": 52800,
+        "_bss_end": 122784,
+        "_stack_top": 131072
+      },
+      "load_file_bytes": 52796,
+      "load_memory_bytes": 122784,
+      "bss_section_alignment": 8,
+      "exact_alignment_padding_bytes": 4,
+      "bss_bytes": 69984,
+      "aligned_remaining_bytes": 2144
+    },
+    "stack": {
+      "complete": true,
+      "static_bound_bytes": 2576,
+      "direct_call_bound_bytes": 2576,
+      "path": [
+        "main",
+        "nav_app_poll",
+        "task_step_local.constprop.0",
+        "drive_to.constprop.0",
+        "candidate_check.constprop.0",
+        "support_check.constprop.0",
+        "cell",
+        "hal_map_support",
+        "hal_map_info"
+      ],
+      "resolved_switches": [
+        {
+          "function": "task_step_local.constprop.0",
+          "table": ".L1562",
+          "targets": [
+            ".L1561",
+            ".L1529",
+            ".L1526",
+            ".L1563",
+            ".L1561"
+          ]
+        },
+        {
+          "function": "xt_link_poll.constprop.0",
+          "table": ".L1869",
+          "targets": [
+            ".L1873",
+            ".L1872",
+            ".L1871",
+            ".L1870",
+            ".L1868"
+          ]
+        }
+      ],
+      "unresolved_indirect": [],
+      "nonstatic_frames": [],
+      "unresolved_sp_writes": [],
+      "irq_disabled": true,
+      "stack_reserved_bytes": 6144,
+      "largest_frames": [
+        [
+          "support_check.constprop.0",
+          992
+        ],
+        [
+          "drive_to.constprop.0",
+          624
+        ],
+        [
+          "nav_app_poll",
+          400
+        ],
+        [
+          "drain_host_messages",
+          384
+        ],
+        [
+          "nav_app_search_checkpoint",
+          288
+        ],
+        [
+          "motion_segment.constprop.0",
+          240
+        ],
+        [
+          "task_step_local.constprop.0",
+          240
+        ],
+        [
+          "xt_link_poll.constprop.0",
+          240
+        ]
+      ],
+      "scope": "linked image, no IRQ/recursion/heap; tail calls conservatively nested; board watermark still pending"
+    },
+    "full_fw_compile_passed": true,
+    "source_only_not_hardware_candidate": true,
+    "new_snapshot_arrays": false,
+    "scratch_bytes": 20992,
+    "legacy_reader_rejection_preserved": true,
+    "BSS_padding_verified_from_exact_ELF_section_alignment": true
+  },
+  "native_math_and_algorithm_proof": {
+    "passed": true,
+    "math_native": "RADIUS_NATIVE passed checked=17197 fast=13363 fallback=3834;extreme samples are compiler-specific observations,not portable UB proof",
+    "original_algorithm": "RADIUS_ALGORITHM passed cases=256 cancel_restart=8 checks=1048 scratch_bytes=20992",
+    "checkpoint_guard_and_FIFO_protocol_proof_reused_from": "F:\\nav_integration_g2_20261023\\CPU250_frontier_checkpoint_candidate2\\host_proofs_pending_payload_pose\\result.json",
+    "reused_source_byte_identity": {
+      "app/nav_app.c": true,
+      "nav/nav_task.c": true,
+      "nav/host_link_guard.c": true,
+      "drv/hal_fpga.c": true,
+      "nav/scratch.h": true,
+      "nav/nav_search_checkpoint.h": true
+    },
+    "source_candidate": "F:\\nav_integration_g2_20261023\\CPU250_frontier_radius_candidate1",
+    "actual_CPU_timing_pending": true,
+    "portable_C_defined_fast_domain_proven": true,
+    "original_undefined_C_extremes_made_defined": false,
+    "outside_fast_domain_literal_original_expression": true
+  },
+  "scoping": {
+    "fixed1000mm_blacklist_only": true,
+    "frontier_min_scoring_tie_scan_checkpoint_stop_unchanged": true,
+    "no_coordinate_tables_added": true,
+    "whole_loop_WCET_proven": false,
+    "100ms_planner_budget_satisfied": false,
+    "500ms_physical_stop_proven": false,
+    "full_G2_UART_wire_RK_and_busy_navigation_not_measured": true,
+    "portable_C_undefined_extremes_proven": false,
+    "strict_safe_domain_math_plus_original_expression_fallback": true,
+    "no_deployment_source_or_hardware_inputs_changed": true
+  }
+}
