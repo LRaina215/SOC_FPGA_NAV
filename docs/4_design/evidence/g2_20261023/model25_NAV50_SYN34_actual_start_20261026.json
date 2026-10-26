@@ -1,0 +1,510 @@
+{
+  "recorded_at": "2026-10-26T10:53:36.908898+08:00",
+  "scope": "Actual exploratory full model25/NAV50 SYN34 launch, not PNR or deployment",
+  "prepared": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4",
+  "synthesis": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_syn34",
+  "controller": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_one_shot\\job.json",
+  "actual_synthesis_started_at": "2026-10-26T10:50:51.028395+08:00",
+  "identities": [
+    {
+      "pid": 37820,
+      "created_epoch": 1792983047.6590948,
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "D:/Desktop/SOC FPGA/nav/integration/g2/run_model25_joint_syn.py"
+      ],
+      "cwd": "D:\\Desktop\\SOC FPGA\\nav",
+      "priority": 32,
+      "logical_cpus": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ]
+    },
+    {
+      "pid": 29992,
+      "created_epoch": 1792983048.569637,
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\retry_frozen_synthesis.py",
+        "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4",
+        "--out",
+        "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_syn34",
+        "--start-now",
+        "--tool-priority",
+        "normal"
+      ],
+      "cwd": "D:\\Desktop\\SOC FPGA\\nav",
+      "priority": 32,
+      "logical_cpus": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ]
+    },
+    {
+      "pid": 30252,
+      "created_epoch": 1792983051.0243726,
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "cwd": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_syn34",
+      "priority": 32,
+      "logical_cpus": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ]
+    }
+  ],
+  "admission": {
+    "physical_bytes": 3307683840,
+    "commit_bytes": 4863561728,
+    "required_physical_bytes": 2147483648,
+    "required_commit_bytes": 4294967296
+  },
+  "source_review": {
+    "original_RTL": 63,
+    "changed_RTL": [
+      "control/imu_fusion.v",
+      "control/mem_policy.v",
+      "control4500_core.v",
+      "g2_top.v"
+    ],
+    "added_RTL": [
+      "control/mem_policy_related25.v",
+      "model25_pll/model25_pll.v",
+      "model25_related_mailbox.v"
+    ],
+    "identical_original_RTL": 59,
+    "identical_assets": 69,
+    "identical_headers": 31,
+    "original_FW_unchanged": true,
+    "bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\common\\nav_ram_sdp.v",
+        "bytes": 1679,
+        "mtime_ns": 1792981481716971500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\common\\nav_ram_banked.v",
+        "bytes": 986,
+        "mtime_ns": 1792981481718978900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\common\\nav_fifo_ob.v",
+        "bytes": 2005,
+        "mtime_ns": 1792981481718978900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\common\\nav_fifo.v",
+        "bytes": 1490,
+        "mtime_ns": 1792981481718978900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\common\\nav_async_fifo.v",
+        "bytes": 2817,
+        "mtime_ns": 1792981481720985900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\common\\nav_cdc.v",
+        "bytes": 1386,
+        "mtime_ns": 1792981481720985900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\common\\nav_skid.v",
+        "bytes": 1105,
+        "mtime_ns": 1792981481724809100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\common\\nav_timebase.v",
+        "bytes": 909,
+        "mtime_ns": 1792981481724809100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\lidar\\xt_frame_rx.v",
+        "bytes": 21682,
+        "mtime_ns": 1792981481726313100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\lidar\\pc_project.v",
+        "bytes": 4375,
+        "mtime_ns": 1792981481727571000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\lidar\\pc_transform.v",
+        "bytes": 3297,
+        "mtime_ns": 1792981481727571000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\lidar\\pc_filter.v",
+        "bytes": 5278,
+        "mtime_ns": 1792981481727571000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\map\\elev_map.v",
+        "bytes": 5531,
+        "mtime_ns": 1792981481727571000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\map\\trav_v3.v",
+        "bytes": 29698,
+        "mtime_ns": 1792981481730813900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\map\\map_subsys.v",
+        "bytes": 7248,
+        "mtime_ns": 1792981481731357200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\map\\support_coverage.v",
+        "bytes": 5664,
+        "mtime_ns": 1792981481732390600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\match\\slf_extract.v",
+        "bytes": 7361,
+        "mtime_ns": 1792981481732913600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\match\\slf_lf.v",
+        "bytes": 22807,
+        "mtime_ns": 1792981481733953500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\match\\slf_match.v",
+        "bytes": 25552,
+        "mtime_ns": 1792981481734470900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\plan\\traj_eval.v",
+        "bytes": 8380,
+        "mtime_ns": 1792981481735506400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\plan\\safety_guard.v",
+        "bytes": 4814,
+        "mtime_ns": 1792981481736035700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\net\\udp_rx.v",
+        "bytes": 9015,
+        "mtime_ns": 1792981481737134900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\net\\udp_tx.v",
+        "bytes": 8013,
+        "mtime_ns": 1792981481737662100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\net\\raw_cap.v",
+        "bytes": 4279,
+        "mtime_ns": 1792981481738702800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\net\\net_port.v",
+        "bytes": 9501,
+        "mtime_ns": 1792981481739227900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\net\\host_mbx.v",
+        "bytes": 10339,
+        "mtime_ns": 1792981481740268200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\io\\imu_uart.v",
+        "bytes": 4825,
+        "mtime_ns": 1792981481740788000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\io\\uart_bus_bridge.v",
+        "bytes": 4875,
+        "mtime_ns": 1792981481741825100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\io\\nav_bus_arb.v",
+        "bytes": 1686,
+        "mtime_ns": 1792981481743096400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\regs\\nav_regfile.v",
+        "bytes": 25589,
+        "mtime_ns": 1792981481744168200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\top\\nav_subsystem.v",
+        "bytes": 33080,
+        "mtime_ns": 1792981481744698800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\common\\nav_ram_sp.v",
+        "bytes": 549,
+        "mtime_ns": 1792981481745750000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\soc\\third_party\\picorv32.v",
+        "bytes": 94829,
+        "mtime_ns": 1792981481746814400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\soc\\nav_soc.v",
+        "bytes": 8852,
+        "mtime_ns": 1792981481747337400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav\\rtl\\net\\rgmii_mac100.v",
+        "bytes": 14201,
+        "mtime_ns": 1792981481747862100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\bmi088.v",
+        "bytes": 14824,
+        "mtime_ns": 1792981481747862100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\board_uart_tx.v",
+        "bytes": 986,
+        "mtime_ns": 1792981481749877300
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\fc_v4_round_sat.v",
+        "bytes": 842,
+        "mtime_ns": 1792981481749877300
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\imu_fusion.v",
+        "bytes": 20663,
+        "mtime_ns": 1792981481973344600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\imu_isqrt.v",
+        "bytes": 1997,
+        "mtime_ns": 1792981481751884800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\imu_recip.v",
+        "bytes": 2836,
+        "mtime_ns": 1792981481751884800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\ir_remote_control.v",
+        "bytes": 5317,
+        "mtime_ns": 1792981481751884800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\leg_ik_ff.v",
+        "bytes": 3328,
+        "mtime_ns": 1792981481753892100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\mem_policy.v",
+        "bytes": 6300,
+        "mtime_ns": 1792981481973344600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\model_wheel_response.v",
+        "bytes": 3889,
+        "mtime_ns": 1792981481753892100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\motor520_closed_loop.v",
+        "bytes": 13317,
+        "mtime_ns": 1792981481756399100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\motor520_hybrid_speed.v",
+        "bytes": 4818,
+        "mtime_ns": 1792981481756990900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\motor520_speed.v",
+        "bytes": 4866,
+        "mtime_ns": 1792981481757995800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\oled.v",
+        "bytes": 22421,
+        "mtime_ns": 1792981481758867100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\oled_driver.v",
+        "bytes": 18497,
+        "mtime_ns": 1792981481758867100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\oled_front.v",
+        "bytes": 22554,
+        "mtime_ns": 1792981481758867100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\policy_action_map.v",
+        "bytes": 2194,
+        "mtime_ns": 1792981481758867100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\rl_observation_v5.v",
+        "bytes": 7026,
+        "mtime_ns": 1792981481758867100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\rl_policy_tick_v5.v",
+        "bytes": 6461,
+        "mtime_ns": 1792981481762620800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\servo_driver.v",
+        "bytes": 3774,
+        "mtime_ns": 1792981481763507200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\uart_speed_rx.v",
+        "bytes": 5465,
+        "mtime_ns": 1792981481764035800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\uart_telemetry.v",
+        "bytes": 2738,
+        "mtime_ns": 1792981481765221600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control4500_core.v",
+        "bytes": 21538,
+        "mtime_ns": 1792981481974848000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\command_lease_guard.v",
+        "bytes": 4683,
+        "mtime_ns": 1792981481766260400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\nav_command_units.v",
+        "bytes": 2172,
+        "mtime_ns": 1792981481767300900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\g2_top.v",
+        "bytes": 11578,
+        "mtime_ns": 1792981481974848000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\fc_v4_top.v",
+        "bytes": 9630,
+        "mtime_ns": 1792981481768397500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\fixed4500_weight_rom.v",
+        "bytes": 8907,
+        "mtime_ns": 1792981481769605500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\mem_policy_related25.v",
+        "bytes": 8763,
+        "mtime_ns": 1792981481973344600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\model25_related_mailbox.v",
+        "bytes": 3895,
+        "mtime_ns": 1792981481974848000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\model25_pll\\model25_pll.v",
+        "bytes": 6178,
+        "mtime_ns": 1792981482021845100
+      }
+    ]
+  },
+  "SYN_runtime_minutes": 40,
+  "runtime_memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+  "production_simulation_exit_dependency": false,
+  "actual_synthesis_complete": false,
+  "actual_new_netlist_review_passed": false,
+  "automatic_PNR": false,
+  "PNR_active": false,
+  "programmed": false,
+  "first_launcher_rejection": {
+    "file": "F:\\nav_integration_g2_20261023\\model25_SYN34_launcher_stderr.log",
+    "reason": "Reused helper hardcoded63 and rejected66 before controller/output/tool creation",
+    "correction": "Independent manifest enumeration; duplicate names and exact63+3 relationship checked",
+    "RTL_or_implementation_input_changed": false,
+    "synthesis_repeated": false
+  },
+  "required_actual_review": [
+    "all RAM geometry/INIT including CPU128KiB and original FW",
+    "actual50/25/100MHz and C-version PLL parameters; generated object binds real driver",
+    "original26 CDC plus five atomic related-clock channels and actual payload timing",
+    "sticky async LOCK loss, startup synchronous clear, each-domain reset release",
+    "new global clock distribution and no staleCST aliases or unproved exceptions"
+  ],
+  "region35": {
+    "membership": "F:\\nav_integration_g2_20261023\\pnr35_region_members_prepared1\\artifacts\\manifest.json",
+    "actual_region_PNR_started": false,
+    "missing": "actual selected DSP/adjacentCFU GRID coordinates and capacity",
+    "GUI_diagnostic": "F:\\nav_integration_g2_20261023\\node_repl_kernel_assets_diagnostic_20261026\\diagnostic.json",
+    "kernel_assets_failure_destination_known": false,
+    "confirmed_TEMP_TMP_CWD_missing": false,
+    "guessed_region_or_runtime_repair": false
+  },
+  "functional_proofs": {
+    "full_production": "model25_full_production_probe2 retained; successor adds explicit unknown rejection",
+    "complete": false,
+    "busy_CPU": "CPU250_frontier_checkpoint_CPU_probe1 still running; first healthy sample only",
+    "idle_CPU250_zero_age_us": 251100,
+    "physical500ms_stop_verified": false
+  }
+}

@@ -1,0 +1,494 @@
+{
+  "recorded_at": "2026-10-26T10:54:08.016302+08:00",
+  "phase": "unique_probe3_running_numeric_not_accepted",
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4",
+  "frozen_prepared4_and_previous9_files_unchanged": true,
+  "previous_probe2": {
+    "path": "F:\\nav_integration_g2_20261023\\model25_full_production_probe2",
+    "old_fixture_and_logs_preserved": true,
+    "accepted_numeric_result": false,
+    "reason": "Explicit unknown rejection was missing; case equality alone could accept identical X bits.",
+    "authorized_identity_checked_stop": {
+      "authorized_by": "Parent /root explicit instruction 2026-10-26: stop only this owned probe2 simulation/controller after verifying PID and creation; preserve fixture and start unique probe3 with X rejection.",
+      "reason": "Fixture case equality could accept identical unknown output bits; no numeric proof accepted.",
+      "checked_at": "2026-10-26T10:52:30.849021+08:00",
+      "before_processes": [
+        {
+          "pid": 47240,
+          "parent_pid": 25504,
+          "created_epoch": 1792982695.9631057,
+          "name": "python.exe",
+          "command": [
+            "D:\\Anaconda\\python.exe",
+            "-X",
+            "utf8",
+            "D:/Desktop/SOC FPGA/nav/integration/g2/probe_model25_full_production.py",
+            "--out",
+            "F:/nav_integration_g2_20261023/model25_full_production_probe2",
+            "--wait-for-memory"
+          ],
+          "cwd": "D:\\Desktop\\SOC FPGA\\nav"
+        },
+        {
+          "pid": 38824,
+          "parent_pid": 47240,
+          "created_epoch": 1792982695.9692569,
+          "name": "conhost.exe",
+          "command": [
+            "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+            "0x4"
+          ],
+          "cwd": "C:\\WINDOWS"
+        },
+        {
+          "pid": 24472,
+          "parent_pid": 47240,
+          "created_epoch": 1792982708.597993,
+          "name": "cmd.exe",
+          "command": [
+            "cmd",
+            "/c",
+            "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+            "full_production_snap",
+            "-runall"
+          ],
+          "cwd": "F:\\nav_integration_g2_20261023\\model25_full_production_probe2"
+        },
+        {
+          "pid": 30312,
+          "parent_pid": 24472,
+          "created_epoch": 1792982708.6046903,
+          "name": "conhost.exe",
+          "command": [
+            "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+            "0x4"
+          ],
+          "cwd": "C:\\WINDOWS"
+        },
+        {
+          "pid": 55516,
+          "parent_pid": 24472,
+          "created_epoch": 1792982709.618153,
+          "name": "xsim.exe",
+          "command": [
+            "E:/2026.1/Vivado/bin/unwrapped/win64.o/xsim.exe",
+            "full_production_snap",
+            "-runall"
+          ],
+          "cwd": "F:\\nav_integration_g2_20261023\\model25_full_production_probe2"
+        },
+        {
+          "pid": 28824,
+          "parent_pid": 55516,
+          "created_epoch": 1792982710.175783,
+          "name": "xsimk.exe",
+          "command": [
+            "xsim.dir/full_production_snap/xsimk.exe",
+            "-runall",
+            "-simmode",
+            "gui",
+            "-wdb",
+            "full_production_snap.wdb",
+            "-simrunnum",
+            "0",
+            "-socket",
+            "58116"
+          ],
+          "cwd": "F:\\nav_integration_g2_20261023\\model25_full_production_probe2"
+        },
+        {
+          "pid": 24552,
+          "parent_pid": 28824,
+          "created_epoch": 1792982710.3266425,
+          "name": "conhost.exe",
+          "command": [
+            "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+            "0x4"
+          ],
+          "cwd": "C:\\WINDOWS"
+        }
+      ],
+      "frozen_hardware_modified": false,
+      "other_simulation_or_PNR_touched": false,
+      "stopped": [
+        {
+          "pid": 47240,
+          "created_epoch": 1792982695.9631057,
+          "status": "explicit_owned_replacement_stop"
+        },
+        {
+          "pid": 38824,
+          "created_epoch": 1792982695.9692569,
+          "status": "explicit_owned_replacement_stop"
+        },
+        {
+          "pid": 24552,
+          "created_epoch": 1792982710.3266425,
+          "status": "explicit_owned_replacement_stop"
+        },
+        {
+          "pid": 28824,
+          "created_epoch": 1792982710.175783,
+          "status": "explicit_owned_replacement_stop"
+        },
+        {
+          "pid": 55516,
+          "created_epoch": 1792982709.618153,
+          "status": "explicit_owned_replacement_stop"
+        },
+        {
+          "pid": 30312,
+          "created_epoch": 1792982708.6046903,
+          "status": "explicit_owned_replacement_stop"
+        },
+        {
+          "pid": 24472,
+          "created_epoch": 1792982708.597993,
+          "status": "explicit_owned_replacement_stop"
+        }
+      ],
+      "completed_at": "2026-10-26T10:52:30.898964+08:00",
+      "all_original_processes_exited": true
+    }
+  },
+  "output": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3",
+  "job": {
+    "controller_pid": 40420,
+    "controller_created_epoch": 1792983202.955645,
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4",
+    "output": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3",
+    "real4500": true,
+    "inference_substitute": false,
+    "force_internal_state": false,
+    "production_BIAS_SAMPLES": 200,
+    "source_sensor_hz": 100,
+    "model_clock_mhz": 25,
+    "reference_clock_mhz": 50,
+    "policy_hz": 125,
+    "period_us": 8000,
+    "testbench_watchdog_simulated_seconds": 5,
+    "new_SYN_PNR": false,
+    "programmed": false,
+    "physical_stop_or_deployment_accepted": false,
+    "phase": "running_xsim",
+    "updated_at": "2026-10-26T10:54:06.698879+08:00",
+    "input_and_observation_spec": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3\\input_and_observation_spec.json",
+    "tool_command": [
+      "cmd",
+      "/c",
+      "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+      "full_production_snap",
+      "-runall"
+    ],
+    "wrapper_pid": 59744,
+    "wrapper_created_epoch": 1792983215.6214323,
+    "tool_start_admission": {
+      "available_physical_bytes": 3402735616,
+      "available_commit_bytes": 4860067840,
+      "checked_at": "2026-10-26T10:53:35.617009+08:00"
+    },
+    "current_tool_processes": [
+      {
+        "pid": 59744,
+        "parent_pid": 40420,
+        "created_epoch": 1792983215.6214323,
+        "name": "cmd.exe",
+        "command": [
+          "cmd",
+          "/c",
+          "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+          "full_production_snap",
+          "-runall"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3",
+        "priority": 16384,
+        "rss": 8040448
+      },
+      {
+        "pid": 8672,
+        "parent_pid": 59744,
+        "created_epoch": 1792983215.6316392,
+        "name": "conhost.exe",
+        "command": [
+          "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+          "0x4"
+        ],
+        "cwd": "C:\\WINDOWS",
+        "priority": 16384,
+        "rss": 7970816
+      },
+      {
+        "pid": 2832,
+        "parent_pid": 59744,
+        "created_epoch": 1792983216.7878656,
+        "name": "xsim.exe",
+        "command": [
+          "E:/2026.1/Vivado/bin/unwrapped/win64.o/xsim.exe",
+          "full_production_snap",
+          "-runall"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3",
+        "priority": 16384,
+        "rss": 224436224
+      },
+      {
+        "pid": 52180,
+        "parent_pid": 2832,
+        "created_epoch": 1792983217.313412,
+        "name": "xsimk.exe",
+        "command": [
+          "xsim.dir/full_production_snap/xsimk.exe",
+          "-runall",
+          "-simmode",
+          "gui",
+          "-wdb",
+          "full_production_snap.wdb",
+          "-simrunnum",
+          "0",
+          "-socket",
+          "50947"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3",
+        "priority": 16384,
+        "rss": 22794240
+      },
+      {
+        "pid": 18528,
+        "parent_pid": 52180,
+        "created_epoch": 1792983217.4378676,
+        "name": "conhost.exe",
+        "command": [
+          "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+          "0x4"
+        ],
+        "cwd": "C:\\WINDOWS",
+        "priority": 16384,
+        "rss": 7872512
+      }
+    ]
+  },
+  "actual_identity_checked_processes": [
+    {
+      "pid": 40420,
+      "created_epoch": 1792983202.955645,
+      "name": "python.exe",
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "D:/Desktop/SOC FPGA/nav/integration/g2/probe_model25_full_production.py",
+        "--out",
+        "F:/nav_integration_g2_20261023/model25_full_production_probe3",
+        "--wait-for-memory"
+      ],
+      "cwd": "D:\\Desktop\\SOC FPGA\\nav"
+    },
+    {
+      "pid": 59744,
+      "created_epoch": 1792983215.6214323,
+      "name": "cmd.exe",
+      "command": [
+        "cmd",
+        "/c",
+        "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+        "full_production_snap",
+        "-runall"
+      ],
+      "cwd": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3"
+    },
+    {
+      "pid": 8672,
+      "created_epoch": 1792983215.6316392,
+      "name": "conhost.exe",
+      "command": [
+        "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+        "0x4"
+      ],
+      "cwd": "C:\\WINDOWS"
+    },
+    {
+      "pid": 2832,
+      "created_epoch": 1792983216.7878656,
+      "name": "xsim.exe",
+      "command": [
+        "E:/2026.1/Vivado/bin/unwrapped/win64.o/xsim.exe",
+        "full_production_snap",
+        "-runall"
+      ],
+      "cwd": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3"
+    },
+    {
+      "pid": 52180,
+      "created_epoch": 1792983217.313412,
+      "name": "xsimk.exe",
+      "command": [
+        "xsim.dir/full_production_snap/xsimk.exe",
+        "-runall",
+        "-simmode",
+        "gui",
+        "-wdb",
+        "full_production_snap.wdb",
+        "-simrunnum",
+        "0",
+        "-socket",
+        "50947"
+      ],
+      "cwd": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3"
+    },
+    {
+      "pid": 18528,
+      "created_epoch": 1792983217.4378676,
+      "name": "conhost.exe",
+      "command": [
+        "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+        "0x4"
+      ],
+      "cwd": "C:\\WINDOWS"
+    }
+  ],
+  "fixture_changes_only": [
+    "Reject unknown capture/write/trace/bridge-health controls",
+    "Reject unknown actual core frame IDs and addresses before indexing",
+    "Reject unknown actual168word inputs,425 layer results and336bit actuator bundles before equality comparison",
+    "Existing exact equality,8ms/125Hz cadence and latency bounds unchanged"
+  ],
+  "production": {
+    "BIAS_SAMPLES": 200,
+    "sensor_hz": 100,
+    "reference_mhz": 50,
+    "model_mhz": 25,
+    "policy_hz": 125,
+    "real4500": true,
+    "inference_substitute": false,
+    "force_internal_state": false
+  },
+  "xsim_static_compile_and_elaboration_completed": true,
+  "full_numeric_cadence_stop_result": null,
+  "production_result_or_physical_timing_acceptance": false,
+  "new_SYN_PNR_or_hardware_action_by_this_probe": false,
+  "input_and_observation_spec": {
+    "frozen_at": "2026-10-26T10:53:23.338892+08:00",
+    "source_bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\fc_v4_round_sat.v",
+        "bytes": 842,
+        "mtime_ns": 1792981481749877300
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\imu_fusion.v",
+        "bytes": 20663,
+        "mtime_ns": 1792981481973344600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\imu_isqrt.v",
+        "bytes": 1997,
+        "mtime_ns": 1792981481751884800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\imu_recip.v",
+        "bytes": 2836,
+        "mtime_ns": 1792981481751884800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\leg_ik_ff.v",
+        "bytes": 3328,
+        "mtime_ns": 1792981481753892100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\policy_action_map.v",
+        "bytes": 2194,
+        "mtime_ns": 1792981481758867100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\rl_observation_v5.v",
+        "bytes": 7026,
+        "mtime_ns": 1792981481758867100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\rl_policy_tick_v5.v",
+        "bytes": 6461,
+        "mtime_ns": 1792981481762620800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\fc_v4_top.v",
+        "bytes": 9630,
+        "mtime_ns": 1792981481768397500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\fixed4500_weight_rom.v",
+        "bytes": 8907,
+        "mtime_ns": 1792981481769605500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\mem_policy.v",
+        "bytes": 6300,
+        "mtime_ns": 1792981481973344600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\mem_policy_related25.v",
+        "bytes": 8763,
+        "mtime_ns": 1792981481973344600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\model25_related_mailbox.v",
+        "bytes": 3895,
+        "mtime_ns": 1792981481974848000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\model25_pll\\model25_pll.v",
+        "bytes": 6178,
+        "mtime_ns": 1792981482021845100
+      }
+    ],
+    "reference_module_names_only_changed": true,
+    "reference_source_bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\imu_fusion.v",
+        "bytes": 20521,
+        "mtime_ns": 1792936600772323300
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\mem_policy.v",
+        "bytes": 6039,
+        "mtime_ns": 1792936600552267600
+      }
+    ],
+    "fixture_binding": {
+      "path": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3\\tb_model25_full_production.sv",
+      "bytes": 16465,
+      "mtime_ns": 1792983203338892600
+    },
+    "source_asset_count": 69,
+    "assets_byte_identical": true,
+    "public_PLL_library": {
+      "path": "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\simlib\\gw5a\\prim_sim.v",
+      "bytes": 710345,
+      "mtime_ns": 1790043686000000000
+    },
+    "input_scenario": "100Hz stationary six-axis data at productionBIAS200; three physical command plateaus changed after completed publication, zero encoder deltas; then fault/rearm/pending reset/full recalibration/clock halt",
+    "comparison": "actual core frame IDs +168words; all425 layer-index/data results, six core actions and336bit actuator/publication bundle; compare only same explicitly tracked epoch/frame with exact captured-input equality; explicitly reject unknown bits before key/index/data comparisons and publication acceptance",
+    "unknown_value_rejection": true,
+    "observation": "read-only actual core ports and output bridges; no force, no inference substitute, no internal state initialization",
+    "normal_timing": "actual PLL25 model clock and original50; capture/publication intervals8000us and capture-to-publication<=8000us",
+    "scope_excludes": [
+      "full G2 CPU/A*/UART/RK/real IIC sensor",
+      "all motion/sensor phases/numerical domain equivalence",
+      "post-route clocks/CDC/IO/pulsewidth/physical stopping",
+      "50MHz reference-clock failure"
+    ]
+  },
+  "inference_counter_units_followup": "See model25_full_production_started_and_cycle_units_20261026.json: raw counter now25MHz; no50MHz conversion found in inspected decoder files, liveRK/image profile not verified; proposed image profile model_clock_hz=25000000, do not infer from UART.",
+  "current_entry_bindings": [
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\tb_model25_full_production.sv",
+      "bytes": 16465,
+      "mtime_ns": 1792983202493763900
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\probe_model25_full_production.py",
+      "bytes": 9995,
+      "mtime_ns": 1792983202506039500
+    }
+  ],
+  "next": "Read probe3 actualjob/result/log and identity without duplicating or editing frozen inputs. Finite5s simulated watchdog is stimulus only. Parent independently owns exploratorySYN34; this probe does not gate its launch or claim deployment readiness."
+}
