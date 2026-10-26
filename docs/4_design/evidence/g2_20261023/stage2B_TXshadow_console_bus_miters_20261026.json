@@ -1,0 +1,543 @@
+{
+  "recorded_at": "2026-10-26T18:26:45.313344+08:00",
+  "passed": true,
+  "profiles": [
+    {
+      "profile": "console",
+      "passed": true,
+      "candidate": "F:\\nav_integration_g2_20261023\\stage2B_console_posted_prepared1",
+      "changed_RTL": [
+        "nav/rtl/net/host_mbx.v",
+        "nav/rtl/soc/nav_soc.v"
+      ],
+      "actual_result": "F:\\nav_integration_g2_20261023\\stage2B_console_bus_probe1\\result.json",
+      "actual_xsim_log": "F:\\nav_integration_g2_20261023\\stage2B_console_bus_probe1\\xsim.log",
+      "counts": {
+        "checks": 19647,
+        "writes": 4120,
+        "reads": 1045,
+        "posted": 20,
+        "stopped": 8,
+        "resets": 8
+      },
+      "actual_PASS_line": "TEST PASSED CONSOLE BUS checks=19647 writes=4120 reads=1045 posted=20 stopped=8 resets=8",
+      "finish_lines": [
+        "$finish called at time : 395120 ns : File \"F:/nav_integration_g2_20261023/stage2B_console_bus_probe1/tb.sv\" Line 87"
+      ],
+      "tools": [
+        {
+          "tool": "xvlog",
+          "command": [
+            "cmd",
+            "/c",
+            "E:\\2026.1\\Vivado\\bin\\xvlog.bat",
+            "-sv",
+            "reference.v",
+            "candidate.v",
+            "nav_ram_sp.v",
+            "nav_ram_sdp.v",
+            "tb.sv"
+          ],
+          "wrapper_pid": 42556,
+          "wrapper_created_epoch": 1793010126.6367304,
+          "started_at": "2026-10-26T18:22:06.642449+08:00",
+          "admission_physical_bytes": 3358531584,
+          "admission_commit_bytes": 4680011776,
+          "processes": [
+            {
+              "pid": 60340,
+              "created_epoch": 1793010126.646314,
+              "name": "conhost.exe",
+              "command": [
+                "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+                "0x4"
+              ]
+            }
+          ],
+          "exit_code": 0,
+          "ended_at": "2026-10-26T18:22:08.668255+08:00"
+        },
+        {
+          "tool": "xelab",
+          "command": [
+            "cmd",
+            "/c",
+            "E:\\2026.1\\Vivado\\bin\\xelab.bat",
+            "-debug",
+            "off",
+            "-timescale",
+            "1ns/1ps",
+            "tb_stage2b_console_bus_miter",
+            "-s",
+            "consumer_miter"
+          ],
+          "wrapper_pid": 29244,
+          "wrapper_created_epoch": 1793010128.678348,
+          "started_at": "2026-10-26T18:22:08.683390+08:00",
+          "admission_physical_bytes": 3373867008,
+          "admission_commit_bytes": 4759326720,
+          "processes": [
+            {
+              "pid": 32484,
+              "created_epoch": 1793010128.6875334,
+              "name": "conhost.exe",
+              "command": [
+                "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+                "0x4"
+              ]
+            },
+            {
+              "pid": 62940,
+              "created_epoch": 1793010129.825361,
+              "name": "xelab.exe",
+              "command": [
+                "E:/2026.1/Vivado/bin/unwrapped/win64.o/xelab.exe",
+                "-debug",
+                "off",
+                "-timescale",
+                "1ns/1ps",
+                "tb_stage2b_console_bus_miter",
+                "-s",
+                "consumer_miter"
+              ]
+            }
+          ],
+          "exit_code": 0,
+          "ended_at": "2026-10-26T18:22:12.735177+08:00"
+        },
+        {
+          "tool": "xsim",
+          "command": [
+            "cmd",
+            "/c",
+            "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+            "consumer_miter",
+            "-runall"
+          ],
+          "wrapper_pid": 2188,
+          "wrapper_created_epoch": 1793010132.74642,
+          "started_at": "2026-10-26T18:22:12.750646+08:00",
+          "admission_physical_bytes": 3376349184,
+          "admission_commit_bytes": 4772007936,
+          "processes": [
+            {
+              "pid": 14196,
+              "created_epoch": 1793010132.7531893,
+              "name": "conhost.exe",
+              "command": [
+                "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+                "0x4"
+              ]
+            },
+            {
+              "pid": 25312,
+              "created_epoch": 1793010133.8736284,
+              "name": "xsim.exe",
+              "command": [
+                "E:/2026.1/Vivado/bin/unwrapped/win64.o/xsim.exe",
+                "consumer_miter",
+                "-runall"
+              ]
+            },
+            {
+              "pid": 35016,
+              "created_epoch": 1793010134.3895202,
+              "name": "xsimk.exe",
+              "command": [
+                "xsim.dir/consumer_miter/xsimk.exe",
+                "-runall",
+                "-simmode",
+                "gui",
+                "-wdb",
+                "consumer_miter.wdb",
+                "-simrunnum",
+                "0",
+                "-socket",
+                "62360"
+              ]
+            },
+            {
+              "pid": 44612,
+              "created_epoch": 1793010134.4966617,
+              "name": "conhost.exe",
+              "command": [
+                "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+                "0x4"
+              ]
+            }
+          ],
+          "exit_code": 0,
+          "ended_at": "2026-10-26T18:22:16.798701+08:00"
+        }
+      ],
+      "original_process_identities": [
+        {
+          "pid": 51848,
+          "original_created_epoch": 1793010126.3168883,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 42556,
+          "original_created_epoch": 1793010126.6367304,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 60340,
+          "original_created_epoch": 1793010126.646314,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 29244,
+          "original_created_epoch": 1793010128.678348,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 32484,
+          "original_created_epoch": 1793010128.6875334,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 62940,
+          "original_created_epoch": 1793010129.825361,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 2188,
+          "original_created_epoch": 1793010132.74642,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 14196,
+          "original_created_epoch": 1793010132.7531893,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 25312,
+          "original_created_epoch": 1793010133.8736284,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 35016,
+          "original_created_epoch": 1793010134.3895202,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 44612,
+          "original_created_epoch": 1793010134.4966617,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        }
+      ],
+      "warnings": [],
+      "frozen_hardware_and_fixture_unchanged": true,
+      "cut": "Only original PicoRV32 memory master is replaced by explicit test input ports in simulation copies. All actual nav_soc debug/ready/console/RAM/hold FSMs are retained. Inputs obey CPU reset and held-request handshakes; no force/internal-state initialization.",
+      "observed_physical_enable_exclusion_assertion": "No demanded read and accepted/posted write simultaneously, independent of AD[13:4]",
+      "actual_mapped_CEA_CEB_and_OCE_not_yet_verified": true
+    },
+    {
+      "profile": "txshadow",
+      "passed": true,
+      "candidate": "F:\\nav_integration_g2_20261023\\stage2B_TXshadow_RDEN_prepared2",
+      "changed_RTL": [
+        "nav/rtl/net/host_mbx.v",
+        "nav/rtl/top/nav_subsystem.v"
+      ],
+      "actual_result": "F:\\nav_integration_g2_20261023\\stage2B_TXshadow_bus_probe2\\result.json",
+      "actual_xsim_log": "F:\\nav_integration_g2_20261023\\stage2B_TXshadow_bus_probe2\\xsim.log",
+      "counts": {
+        "checks": 18597,
+        "reads": 1090,
+        "writes": 544,
+        "arbitration": 256
+      },
+      "actual_PASS_line": "TEST PASSED TXSHADOW BUS checks=18597 reads=1090 writes=544 arbitration=256",
+      "finish_lines": [
+        "$finish called at time : 372120 ns : File \"F:/nav_integration_g2_20261023/stage2B_TXshadow_bus_probe2/tb.sv\" Line 59"
+      ],
+      "tools": [
+        {
+          "tool": "xvlog",
+          "command": [
+            "cmd",
+            "/c",
+            "E:\\2026.1\\Vivado\\bin\\xvlog.bat",
+            "-sv",
+            "reference.v",
+            "candidate.v",
+            "nav_bus_arb.v",
+            "nav_regfile.v",
+            "host_mbx.v",
+            "nav_ram_sdp.v",
+            "nav_fifo.v",
+            "nav_fifo_ob.v",
+            "tb.sv"
+          ],
+          "wrapper_pid": 30324,
+          "wrapper_created_epoch": 1793010339.0253613,
+          "started_at": "2026-10-26T18:25:39.031006+08:00",
+          "admission_physical_bytes": 3051220992,
+          "admission_commit_bytes": 4508217344,
+          "processes": [
+            {
+              "pid": 39000,
+              "created_epoch": 1793010339.0341997,
+              "name": "conhost.exe",
+              "command": [
+                "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+                "0x4"
+              ]
+            }
+          ],
+          "exit_code": 0,
+          "ended_at": "2026-10-26T18:25:41.053508+08:00"
+        },
+        {
+          "tool": "xelab",
+          "command": [
+            "cmd",
+            "/c",
+            "E:\\2026.1\\Vivado\\bin\\xelab.bat",
+            "-debug",
+            "off",
+            "-timescale",
+            "1ns/1ps",
+            "tb_stage2b_TXshadow_bus_miter",
+            "-s",
+            "consumer_miter"
+          ],
+          "wrapper_pid": 55380,
+          "wrapper_created_epoch": 1793010341.0635076,
+          "started_at": "2026-10-26T18:25:41.067809+08:00",
+          "admission_physical_bytes": 2982301696,
+          "admission_commit_bytes": 4424380416,
+          "processes": [
+            {
+              "pid": 22244,
+              "created_epoch": 1793010341.070788,
+              "name": "conhost.exe",
+              "command": [
+                "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+                "0x4"
+              ]
+            },
+            {
+              "pid": 30572,
+              "created_epoch": 1793010342.1505888,
+              "name": "xelab.exe",
+              "command": [
+                "E:/2026.1/Vivado/bin/unwrapped/win64.o/xelab.exe",
+                "-debug",
+                "off",
+                "-timescale",
+                "1ns/1ps",
+                "tb_stage2b_TXshadow_bus_miter",
+                "-s",
+                "consumer_miter"
+              ]
+            }
+          ],
+          "exit_code": 0,
+          "ended_at": "2026-10-26T18:25:45.113322+08:00"
+        },
+        {
+          "tool": "xsim",
+          "command": [
+            "cmd",
+            "/c",
+            "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+            "consumer_miter",
+            "-runall"
+          ],
+          "wrapper_pid": 53268,
+          "wrapper_created_epoch": 1793010345.1234453,
+          "started_at": "2026-10-26T18:25:45.127508+08:00",
+          "admission_physical_bytes": 3031883776,
+          "admission_commit_bytes": 4478787584,
+          "processes": [
+            {
+              "pid": 32484,
+              "created_epoch": 1793010345.130657,
+              "name": "conhost.exe",
+              "command": [
+                "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+                "0x4"
+              ]
+            },
+            {
+              "pid": 8156,
+              "created_epoch": 1793010346.2803364,
+              "name": "xsim.exe",
+              "command": [
+                "E:/2026.1/Vivado/bin/unwrapped/win64.o/xsim.exe",
+                "consumer_miter",
+                "-runall"
+              ]
+            },
+            {
+              "pid": 57568,
+              "created_epoch": 1793010346.8661034,
+              "name": "xsimk.exe",
+              "command": [
+                "xsim.dir/consumer_miter/xsimk.exe",
+                "-runall",
+                "-simmode",
+                "gui",
+                "-wdb",
+                "consumer_miter.wdb",
+                "-simrunnum",
+                "0",
+                "-socket",
+                "55651"
+              ]
+            },
+            {
+              "pid": 25744,
+              "created_epoch": 1793010346.9830198,
+              "name": "conhost.exe",
+              "command": [
+                "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+                "0x4"
+              ]
+            }
+          ],
+          "exit_code": 0,
+          "ended_at": "2026-10-26T18:25:49.168481+08:00"
+        }
+      ],
+      "original_process_identities": [
+        {
+          "pid": 6508,
+          "original_created_epoch": 1793010338.7390423,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 30324,
+          "original_created_epoch": 1793010339.0253613,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 39000,
+          "original_created_epoch": 1793010339.0341997,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 55380,
+          "original_created_epoch": 1793010341.0635076,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 22244,
+          "original_created_epoch": 1793010341.070788,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 30572,
+          "original_created_epoch": 1793010342.1505888,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 53268,
+          "original_created_epoch": 1793010345.1234453,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 32484,
+          "original_created_epoch": 1793010345.130657,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 8156,
+          "original_created_epoch": 1793010346.2803364,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 57568,
+          "original_created_epoch": 1793010346.8661034,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 25744,
+          "original_created_epoch": 1793010346.9830198,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        }
+      ],
+      "warnings": [],
+      "frozen_hardware_and_fixture_unchanged": true,
+      "cut": "Actual two-master arbiter, complete regfile and complete host_mbx are used. Only the ordinary RF bus subflow is extracted; other read-window state branches are outside this cut, with the new read gate false. This is not whole-nav or UART physical throughput proof.",
+      "observed_physical_enable_exclusion_assertion": "No demanded read and accepted/posted write simultaneously, independent of AD[13:4]",
+      "actual_mapped_CEA_CEB_and_OCE_not_yet_verified": true
+    }
+  ],
+  "tools_sequential_one_at_a_time": true,
+  "all_original_tool_identities_exited": true,
+  "first_TX_probe_preserved": {
+    "path": "F:\\nav_integration_g2_20261023\\stage2B_TXshadow_bus_probe1",
+    "classification": "elaboration dependency missing nav_fifo; no functional simulation entered",
+    "error_lines": [
+      "ERROR: [VRFC 10-2063] Module <nav_fifo> not found while processing module instance <u_dq> [F:/nav_integration_g2_20261023/stage2B_TXshadow_bus_probe1/host_mbx.v:172]"
+    ]
+  },
+  "validation_dependency_correction": {
+    "prepared": true,
+    "recorded_at": "2026-10-26T18:23:21.060480+08:00",
+    "candidate": "F:\\nav_integration_g2_20261023\\stage2B_TXshadow_RDEN_prepared2",
+    "validation": "F:\\nav_integration_g2_20261023\\stage2B_TXshadow_validation_dependency2",
+    "prior_failure_preserved": true,
+    "added_dependency_files": [
+      "nav_fifo.v",
+      "nav_fifo_ob.v"
+    ],
+    "all_other_wrappers_TB_and_data_bytes_equal": true,
+    "unchanged_files": [
+      "candidate.v",
+      "host_mbx.v",
+      "nav_bus_arb.v",
+      "nav_ram_sdp.v",
+      "nav_regfile.v",
+      "reference.v",
+      "tb.sv"
+    ],
+    "entry_changed_only_compile_file_list": true,
+    "source_RTL_or_TB_expressions_modified": false,
+    "EDA_started": false
+  },
+  "TX_full_512_words_and_post_reset_readback": true,
+  "TX_extra_full_write_ignored_and_RO_Q_write_return_preserved": true,
+  "TX_runtime_reset_not_clock_stop_tested": true,
+  "console_full4096_byte_wrap_and1024_word_readback": true,
+  "console_posted_byte_preserved_across_runtime_reset_and_stopped_clock": true,
+  "console_ACK_and_independent_prewrite_data_scoreboard": true,
+  "small_Boolean_control_obligations": "F:\\nav_integration_g2_20261023\\stage2B_BSRAM_mode_collision_review1\\consumer_control_obligations2.json",
+  "injection_buffer_retained_distributed": true,
+  "combined_B_BSRAM333_is_prediction": true,
+  "no_Gowin_synthesis_or_PNR_started": true,
+  "no_programming": true,
+  "no_SHA": true,
+  "not_verified": [
+    "actual C primitive CEA/CEB/OCE and per-lane AD[13:4] exclusion",
+    "actual post-merge storage modes and INIT",
+    "whole G2/Pico firmware/UART physical throughput",
+    "setup/hold/reset recovery/removal/physical collision electrical behavior"
+  ]
+}

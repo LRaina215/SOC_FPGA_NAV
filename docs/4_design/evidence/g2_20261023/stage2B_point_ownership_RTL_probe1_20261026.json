@@ -1,0 +1,174 @@
+{
+  "passed": true,
+  "source_frozen": "F:\\nav_integration_g2_20261023\\stage2B_point_ownership_prepared2",
+  "probe": "F:\\nav_integration_g2_20261023\\stage2B_point_ownership_probe1",
+  "tool_result": "F:\\nav_integration_g2_20261023\\stage2B_point_ownership_probe1\\result.json",
+  "SLF": {
+    "cases": 10,
+    "checks": 589245,
+    "normal_miter_cycles": 226310,
+    "WAIT_cycles": 9777,
+    "PB_reads": 6656,
+    "PB_writes": 5056
+  },
+  "XT": {
+    "pixels": 3072,
+    "complete_passes": 3,
+    "accepted_starts": 3,
+    "normal_miter_cycles": 19028
+  },
+  "controller_pid": 68352,
+  "tool_identities_ended": [
+    {
+      "pid": 57948,
+      "created_epoch": 1793010063.4374552,
+      "name": "xvlog_wrapper",
+      "terminal_state": "ended"
+    },
+    {
+      "pid": 16732,
+      "created_epoch": 1793010063.4545877,
+      "name": "conhost.exe",
+      "command": [
+        "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+        "0x4"
+      ],
+      "terminal_state": "ended"
+    },
+    {
+      "pid": 67300,
+      "created_epoch": 1793010065.464439,
+      "name": "xelab_wrapper",
+      "terminal_state": "ended"
+    },
+    {
+      "pid": 26728,
+      "created_epoch": 1793010065.4709969,
+      "name": "conhost.exe",
+      "command": [
+        "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+        "0x4"
+      ],
+      "terminal_state": "ended"
+    },
+    {
+      "pid": 49640,
+      "created_epoch": 1793010066.5281968,
+      "name": "xelab.exe",
+      "command": [
+        "E:/2026.1/Vivado/bin/unwrapped/win64.o/xelab.exe",
+        "-debug",
+        "off",
+        "-timescale",
+        "1ns/1ps",
+        "tb_stage2b_point_ownership",
+        "-s",
+        "snapshot"
+      ],
+      "terminal_state": "ended"
+    },
+    {
+      "pid": 28364,
+      "created_epoch": 1793010073.553736,
+      "name": "xsim_wrapper",
+      "terminal_state": "ended"
+    },
+    {
+      "pid": 8608,
+      "created_epoch": 1793010073.5625243,
+      "name": "conhost.exe",
+      "command": [
+        "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+        "0x4"
+      ],
+      "terminal_state": "ended"
+    },
+    {
+      "pid": 26752,
+      "created_epoch": 1793010075.1220803,
+      "name": "xsim.exe",
+      "command": [
+        "E:/2026.1/Vivado/bin/unwrapped/win64.o/xsim.exe",
+        "snapshot",
+        "-runall"
+      ],
+      "terminal_state": "ended"
+    },
+    {
+      "pid": 24604,
+      "created_epoch": 1793010076.1849215,
+      "name": "xsimk.exe",
+      "command": [
+        "xsim.dir/snapshot/xsimk.exe",
+        "-runall",
+        "-simmode",
+        "gui",
+        "-wdb",
+        "snapshot.wdb",
+        "-simrunnum",
+        "0",
+        "-socket",
+        "62615"
+      ],
+      "terminal_state": "ended"
+    },
+    {
+      "pid": 50528,
+      "created_epoch": 1793010076.2932096,
+      "name": "conhost.exe",
+      "command": [
+        "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+        "0x4"
+      ],
+      "terminal_state": "ended"
+    }
+  ],
+  "simulation_finish_ns": "11785141",
+  "tool_exit_codes": {
+    "xvlog": 0,
+    "xelab": 0,
+    "xsim": 0
+  },
+  "admission_minimum_physical_bytes": 3209437184,
+  "admission_minimum_commit_bytes": 4580995072,
+  "frozen_bindings_unchanged": 149,
+  "RTL_inputs": 63,
+  "assets": 69,
+  "validation_inputs": 17,
+  "no_Fatal_or_ERROR": true,
+  "normal_bus_ACK_source_unchanged": true,
+  "normal_ready_assert_and_command_publish": "Normal ex_done-ready and completed-producer command/output cycles compared against original actual RTL;226310 SLF and19028 XT cycles. Intentional ready clearing at a new raw generation is outside old sticky-ready equivalence.",
+  "additional_RAM": 0,
+  "source_predicted_additional_control_bits": 7,
+  "physical_safety": false,
+  "synthesis_started": false,
+  "PNR_started": false,
+  "programmed": false,
+  "limitations": [
+    "Source/behavioral RTL only; actual primitive CEB/BLKSEL/AD/mode not proven",
+    "No integrated full-nav bus/Pico simulation or350ms/physical stop result",
+    "Only original single-frame stable configuration contract; no arbitrary multi-descriptor FIFO",
+    "No explicit integrated simultaneous raw-accept+EVAL bus test: source cmd gate blocks new raw acceptance on command pulse",
+    "Soft-clear remains original IDLE-only admission; no new busy-command abort/queue contract"
+  ],
+  "reproduction": [
+    "D:/Anaconda/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:/Desktop/SOC FPGA/nav/integration/g2/validate_stage2b_weight_point.py",
+    "--candidate",
+    "F:\\nav_integration_g2_20261023\\stage2B_point_ownership_prepared2",
+    "--out",
+    "<new independent output>",
+    "--run"
+  ],
+  "controller_terminal_state": "ended",
+  "compile_warning_lines": {
+    "0_xvlog_stdout.log": [],
+    "1_xelab_stdout.log": [
+      "WARNING: [VRFC 10-3645] port 'frm_sn' remains unconnected for this instance [F:/nav_integration_g2_20261023/stage2B_point_ownership_probe1/tb.sv:122]",
+      "WARNING: [VRFC 10-3645] port 'frm_sn' remains unconnected for this instance [F:/nav_integration_g2_20261023/stage2B_point_ownership_probe1/tb.sv:127]"
+    ]
+  }
+}
