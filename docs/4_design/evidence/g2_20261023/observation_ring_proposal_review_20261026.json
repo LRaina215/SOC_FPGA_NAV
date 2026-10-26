@@ -1,0 +1,109 @@
+{
+  "recorded_at": "2026-10-26T13:41:17.282359+08:00",
+  "scope": "Independent assessment of user-supplied structural storage proposal; not implementation or physical acceptance",
+  "source": "SYN37 frozen source and actual mapped leaves",
+  "sources": {
+    "architecture_review": "F:\\nav_integration_g2_20261023\\observation_ring_architecture_review1\\architecture_review.json",
+    "actual_array_FF_inventory": "F:\\nav_integration_g2_20261023\\observation_ring_architecture_review1\\actual_current_history_snapshot_FF_inventory.json",
+    "actual_OLED_IR_review": "F:\\nav_integration_g2_20261023\\display_IR_resource_control_review1\\interpretation.json",
+    "actual_buffers_and_data_LUTs": "F:\\nav_integration_g2_20261023\\model_observation_buffer_resource_review1\\result.json"
+  },
+  "actual_FF": {
+    "history_flat": 3332,
+    "current_flat": 560,
+    "snapshot": 4032,
+    "three_vectors_unique_total": 7924,
+    "words": 672,
+    "all_replacement_old_FF_upper_bound": 8596,
+    "net_FF_saving_proven": false
+  },
+  "actual_old_buffer_data_selection": {
+    "unique_direct_D_LUTs": 7252,
+    "history": 2688,
+    "current": 532,
+    "snapshot": 4032,
+    "net_savings_proven": false
+  },
+  "actual_input_mem": {
+    "explicit_distributed_RAM": true,
+    "FF": 0,
+    "RAM16SDP4": 132,
+    "read_port_duplicate_pairs": 66,
+    "allocated_bits": 8448,
+    "retain_existing_core_memory": true
+  },
+  "actual_hierarchy": {
+    "u_control": {
+      "FF": 19584,
+      "LUT": 23646,
+      "ALU": 2838,
+      "BSRAM": 48,
+      "SSRAM": 234
+    },
+    "u_nav": {
+      "FF": 17786,
+      "LUT": 23953,
+      "ALU": 6069,
+      "BSRAM": 202,
+      "SSRAM": 3077
+    },
+    "u_soc": {
+      "FF": 1073,
+      "LUT": 4155,
+      "ALU": 412,
+      "BSRAM": 64,
+      "SSRAM": 544
+    },
+    "NAV_and_CPU_are_disjoint_siblings": true
+  },
+  "peripherals": {
+    "OLED": {
+      "FF": 634,
+      "LUT": 1937,
+      "ALU": 57,
+      "BSRAM": 2,
+      "actual_outputs_only_two_IIC_OEN": true,
+      "control_feedback_found": false,
+      "disable_candidate_separate_from_ring": true
+    },
+    "IR": {
+      "FF": 154,
+      "LUT": 254,
+      "ALU": 55,
+      "pure_display": false,
+      "participates_in_sticky_emergency_stop_and_command_mask_and_enable": true,
+      "removal_not_accepted": true
+    }
+  },
+  "recommended_ring": {
+    "committed_raw_frames": 5,
+    "construction_slots": 1,
+    "current_clipped_is_latest_raw_view": true,
+    "first_history_five_pointers_same_first_frame": true,
+    "write_lanes_on_original_PREPARE_SAVE": true,
+    "COMMIT_pointer_and_valid_only": true,
+    "prefetch_first_from_already_committed_pointer": true,
+    "load_words": 168,
+    "original_load_START_publication_cycles_must_hold": true,
+    "reset_unknown_RAM_validity_mask_mandatory": true,
+    "existing_scheduler_no_capture_during_LOAD": true,
+    "general_independent_producer_requires_extra_ownership_protocol": true
+  },
+  "unproved_claims": [
+    "CLS80percent is a unique routing root cause",
+    "Different netlist routing variation proves randomness",
+    "Net8000FF and similarLUT savings",
+    "CLS72percent or6to9point reduction",
+    "Two placement successes guarantee all environments"
+  ],
+  "next": {
+    "independent_ring_source_preparation_started": true,
+    "baseline_default_preserved": true,
+    "no_new_ring_EDA_started": true,
+    "OLED_IR_not_changed_in_ring_candidate": true,
+    "SYN38_combination_prepared_only_not_started": true,
+    "PNR50_not_modified_or_interrupted": true,
+    "two_board_fallback_requires_second_board_rules_and_link_stop_contracts": true
+  },
+  "programmed": false
+}
