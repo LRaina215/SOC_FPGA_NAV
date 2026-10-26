@@ -1,0 +1,161 @@
+{
+  "recorded_at": "2026-10-27T00:24:03.133054+08:00",
+  "actual_SYN45_started": true,
+  "actual_runtime": {
+    "source": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_SYN45_prepared1",
+    "build": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_syn45",
+    "wait_pid": null,
+    "programmed": false,
+    "source_frozen_before_wait": true,
+    "automatic_pnr": false,
+    "settings_only_resume": false,
+    "modified_rtl_inputs": [],
+    "scope": "one bounded frozen-input SYN only; SYN completion is not G2/vehicle acceptance",
+    "execution_policy": {
+      "priority": 32,
+      "affinity": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "maximum_new_SYN_tree_RSS_MiB": 0,
+      "maximum_new_SYN_tree_private_commit_MiB": 0,
+      "minimum_runtime_physical_MiB": 0,
+      "minimum_runtime_commit_reserve_MiB": 0,
+      "applies_to": "this runner and newly created descendants only; no existing PNR process is modified"
+    },
+    "phase": "synthesizing",
+    "updated_at": "2026-10-27T00:23:41.857354+08:00",
+    "minimum_start_free_bytes": 2147483648,
+    "minimum_start_available_commit_bytes": 4294967296,
+    "max_runtime_minutes": 40,
+    "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+    "tool_pid": 60260,
+    "synthesis_started_at": "2026-10-27T00:19:09.395195+08:00",
+    "tool_created_epoch": 1793031549.3947003,
+    "actual_tool_priority": 32,
+    "actual_tool_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "elapsed_s": 272.4529999999795,
+    "free_bytes": 3175391232,
+    "available_commit_bytes": 6713196544,
+    "owned_tool_RSS_bytes": 528838656,
+    "peak_owned_tool_RSS_bytes": 722161664,
+    "owned_tool_private_bytes": 528658432,
+    "peak_owned_tool_private_bytes": 719421440
+  },
+  "actual_process": {
+    "pid": 60260,
+    "created_epoch": 1793031549.3947003,
+    "parent_pid": 51704,
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "cwd": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_syn45"
+  },
+  "source_preparation": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_SYN45_preparation1.json",
+  "modified_RTL_relative44": [
+    "control/mem_policy.v",
+    "control/policy_action_map.v",
+    "control/rl_policy_tick_v5.v",
+    "control4500_core.v",
+    "nav/rtl/top/nav_subsystem.v"
+  ],
+  "unchanged_original_RTL": 58,
+  "unchanged_assets": 104,
+  "unchanged_FW_BIN_bytes": 53572,
+  "original4500_all40704_weights_125Hz_and_CAPACITY_preserved": true,
+  "clocks_MHz": {
+    "core": 50,
+    "RX": 100
+  },
+  "no_new_clock_or_timing_exception": true,
+  "actual44_ring_78_resource_difference_explained": true,
+  "selected_repairs": [
+    "stride32 ring addressing",
+    "original-edge NAV command predecode",
+    "reachable unity model wheel target bypass",
+    "private same-publication action product capture"
+  ],
+  "source_proofs_passed": true,
+  "actual_SYN45_mapping_resource_and_physical_timing_pending": true,
+  "next_PNR_entry": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\run_measured_timing_place_pair.py",
+  "PNR55_PNR56_started": false,
+  "automatic_PNR": false,
+  "max_synthesis_minutes": 40,
+  "original_runtime_memory_guard": true,
+  "physical_run_total_limit_s": 0,
+  "physical_run_silent_limit_s": 0,
+  "programmed": false,
+  "deployment_accepted": false,
+  "bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_SYN45_preparation1.json",
+      "bytes": 27181,
+      "mtime_ns": 1793031533560257300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\NAV_predecode_source_relation_review2\\result.json",
+      "bytes": 36420,
+      "mtime_ns": 1793031143021134800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\PID_unity_actual_ModelSim_review1\\result.json",
+      "bytes": 5171,
+      "mtime_ns": 1793031113346458800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring44_action_preview_overlay2\\prepared_review.json",
+      "bytes": 6330,
+      "mtime_ns": 1793031441573694600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring44_action_preview_overlay2\\edge_relation_proof.json",
+      "bytes": 2786,
+      "mtime_ns": 1793031441571261000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SYN44_ring_actual_final1\\result.json",
+      "bytes": 7858,
+      "mtime_ns": 1793031696971993800
+    }
+  ]
+}

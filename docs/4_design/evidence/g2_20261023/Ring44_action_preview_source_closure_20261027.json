@@ -1,0 +1,133 @@
+{
+  "at": "2026-10-27T00:17:21.572692+08:00",
+  "passed": true,
+  "phase": "source_closed_independent_overlay_no_EDA",
+  "source": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1",
+  "overlay": "F:\\nav_integration_g2_20261023\\SLF128_ring44_action_preview_overlay2",
+  "modified_RTL": [
+    "control/policy_action_map.v",
+    "control/rl_policy_tick_v5.v",
+    "control/mem_policy.v"
+  ],
+  "source_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\control\\policy_action_map.v",
+      "bytes": 2194,
+      "mtime_ns": 1792936600556099200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\control\\rl_policy_tick_v5.v",
+      "bytes": 8205,
+      "mtime_ns": 1793027988063922900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_SYN44_prepared1\\control\\mem_policy.v",
+      "bytes": 6779,
+      "mtime_ns": 1793027988063922900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1\\control\\policy_action_map.v",
+      "bytes": 3026,
+      "mtime_ns": 1792956660349946500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1\\control\\rl_policy_tick_v5.v",
+      "bytes": 6550,
+      "mtime_ns": 1792956660349946500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1\\control\\mem_policy.v",
+      "bytes": 6138,
+      "mtime_ns": 1792956660349946500
+    }
+  ],
+  "overlay_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring44_action_preview_overlay2\\control\\policy_action_map.v",
+      "bytes": 3026,
+      "mtime_ns": 1793031436766888100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring44_action_preview_overlay2\\control\\rl_policy_tick_v5.v",
+      "bytes": 8294,
+      "mtime_ns": 1793031436767717800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring44_action_preview_overlay2\\control\\mem_policy.v",
+      "bytes": 6878,
+      "mtime_ns": 1793031436767717800
+    }
+  ],
+  "source_semantics": {
+    "old_source_review": {
+      "path": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1\\prepared_review.json",
+      "bytes": 2176,
+      "mtime_ns": 1792956660349946500
+    },
+    "old_arithmetic": {
+      "path": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1\\arithmetic_result.json",
+      "bytes": 697,
+      "mtime_ns": 1792956678655986300
+    },
+    "old_scheduler": {
+      "path": "F:\\nav_integration_g2_20261023\\action_preview_product_candidate1\\policy_result.json",
+      "bytes": 1463,
+      "mtime_ns": 1792956755612123800
+    },
+    "arithmetic_summary": "TEST PASSED frames=8770 clip_domain_values=8193 invalid_cycles=64 stops=64 resets=1 parameter_sets=2",
+    "scheduler_summary": "SNAPSHOT_FANOUT_PASS cycles=42000 publications=34 writes=10080 resets=5",
+    "old_proof_scope": "Actual original scheduler and candidate with an explicit inference test double; transport/rejection/stop/reset and output timing only, not full original4500 inference",
+    "actual_original_map_bytes_equal": true,
+    "new_map_exactly_equal_to_old_proved_candidate": true,
+    "complete_scheduler_after_read_cursor_always_byte_identical": true,
+    "both_sequential_scheduler_blocks_byte_identical": true,
+    "complete_mem_policy_inverse_patch_is_original": true,
+    "ring_params_ports_LOAD_word_and_cursor_all_unchanged": true
+  },
+  "edge_proof": {
+    "path": "F:\\nav_integration_g2_20261023\\SLF128_ring44_action_preview_overlay2\\edge_relation_proof.json",
+    "bytes": 2786,
+    "mtime_ns": 1793031441571261000
+  },
+  "new_source_bitvector_checks": 19,
+  "source_diff": "same proven action_map384privateproductbits; scheduler only previewoutputport+directcorebusassign; mem_policy only privatewire+twoportconnections",
+  "unchanged": [
+    "ringstride32observer/RAM/LOADcursor/peek/freeze/advance",
+    "allpublicschedulerstate/period400000/fault/deadline/retry/diagnostics",
+    "actualcore andall4500weights",
+    "allFFinputs/legpulseclamp/last_actions/publicreset-stop/hold-outputedge",
+    "CPUFW/assets/capacities/CST/SDC/clock/CDC/IR/OLED; overlay containsnoneofthosefiles"
+  ],
+  "original_numeric_reused": {
+    "arithmetic": "TEST PASSED frames=8770 clip_domain_values=8193 invalid_cycles=64 stops=64 resets=1 parameter_sets=2",
+    "actual_scheduler_with_explicit_stub": "SNAPSHOT_FANOUT_PASS cycles=42000 publications=34 writes=10080 resets=5",
+    "not_reexecuted": true,
+    "numeric_map_byte_identical": true,
+    "full4500_ring_existing_results_unchanged_but_not_rerun": true
+  },
+  "SYN28_only_reference": {
+    "binding": {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_action_preview_one_shot\\actual_preview_product_mapping.json",
+      "bytes": 107671,
+      "mtime_ns": 1792958272382286100
+    },
+    "private_product_source384bits": true,
+    "six_DSP_OREG_absorption_was_measured": true,
+    "not_current_mapping_or_timing": true
+  },
+  "required_new_actual_netlist_checks": [
+    "sixproducts originate from originalpolicy/core/action0..5, not registeredpolicy/actionsoneedge later",
+    "sixoriginalsigned64clip×gain products: DSPoutputregister CLK0=actual50MHz/CEconstant1/RESETconstant0, otherinput/pipelinelevelsBYPASS; ifmappedotherwise readactualstageandprove",
+    "no extraactuatorpublicationdelay; scheduleractions/valid boundaryandlatestff capturestilloriginal",
+    "allring78RAM/pointers/readcursor/stoplogic fromSYN44unchanged exceptexpectedcontextmapping; allotherRAMINIT/CPU/2trueclocks/original26CDC",
+    "actualresourcesandcompleteSYN/PNRnegativepaths; 22.610ns action→lh_us is SYNestimateonly, not proofthiscandidateclosesphysical50MHz",
+    "ifnewphysicalmapping alters numeric primitive mode,bindallactualA/B/C/D/CLK/CE/reset/OREG andprove rather thanassumingoldSYN28map"
+  ],
+  "source_level_limit": "completeSVfour-stateandphysicaltimingnotproved; old8770frame/42000cycletestsreusedonlywherecurrentbytesandsequentiallogicbound",
+  "automatic_SYN": false,
+  "automatic_PNR": false,
+  "RTL_simulation_started": false,
+  "firmware_recompiled": false,
+  "old_failed_netlist_or_oldglobal_constraints_imported": false,
+  "deployment_ready": false
+}

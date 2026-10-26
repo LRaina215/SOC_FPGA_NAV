@@ -1,0 +1,202 @@
+{
+  "schema": "SYN43_to_SYN44_actual_ring_review_v1",
+  "passed": true,
+  "completed_at": "2026-10-27T00:21:36.971993+08:00",
+  "actual_builds": {
+    "before": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43",
+    "after": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_syn44"
+  },
+  "source": {
+    "RTL": 63,
+    "changed_RTL": [
+      "control/mem_policy.v",
+      "control/rl_observation_v5.v",
+      "control/rl_policy_tick_v5.v"
+    ],
+    "other60_byte_identical": true,
+    "selected_candidate_all63_exact": true,
+    "all104_assets_exact": true,
+    "FW_BIN_bytes": 53572
+  },
+  "ring": {
+    "actual_RAM16SDP4": 78,
+    "all78_are_frame_mem": true,
+    "shape": "13 banks x6 four-bit leaves x16words=208x24=4992bit",
+    "expected72_was_not_actual": true,
+    "logical_words": 168,
+    "declared_words": 192,
+    "actual_allocated_words": 208,
+    "unused_source_padding_words": 24,
+    "extra_physical_words": 16,
+    "all40_unconsumed": true,
+    "bank12_WRE_unreachable_with_legal_work_lane": true,
+    "arbitrary_bank12_outputs_not_consumed": true,
+    "old_cells": 66,
+    "new_cells": 78,
+    "actual_added_bits": 768,
+    "INIT_explicit": false,
+    "all_uninitialized_values_parametric": true,
+    "actual_cursor_FFs": 11,
+    "cursor_FF_kinds": {
+      "DFFPE": 2,
+      "DFFCE": 9
+    },
+    "old_observer_MULT12X12": 3,
+    "new_observer_MULT12X12": 0,
+    "UNSAT_miters": 1006,
+    "ring_cursor_address_data_prefetch_checks": 610,
+    "core_input_RAM_write_boundary_checks": 396,
+    "source_real4500_core_unchanged": true,
+    "actual_core_module_body_exact": false,
+    "whole_actual_core_equivalence_proved": false
+  },
+  "memories": {
+    "nonring_leaf_count": 2076,
+    "every_nonring_name_kind_effective_parameter_INIT_equal": true,
+    "all_actual_before": {
+      "RAM16SDP4": 1809,
+      "SP": 64,
+      "SDPB": 56,
+      "pROM": 25,
+      "pROMX9": 21,
+      "SDPX9B": 103,
+      "RAM16SDP1": 64
+    },
+    "all_actual_after": {
+      "RAM16SDP4": 1821,
+      "SP": 64,
+      "SDPB": 56,
+      "pROM": 25,
+      "pROMX9": 21,
+      "SDPX9B": 103,
+      "RAM16SDP1": 64
+    },
+    "BSRAM": 269,
+    "CPU": {
+      "passed": true,
+      "bytes": 131072,
+      "bitplanes": 64,
+      "BIN_bytes": 53572,
+      "BIN_zero_padding_ram_w_four_byte_lanes_exact": true
+    },
+    "universal_nonring_data_control_port_equivalence_proved": false
+  },
+  "clocks_CDC_stop": {
+    "actual_clockpin_count": 31899,
+    "constant_clockpin_count": 183,
+    "clock_roots": [
+      {
+        "root": "clk50",
+        "inverted": false,
+        "pins": 31755
+      },
+      {
+        "root": "clk50",
+        "inverted": true,
+        "pins": 1
+      },
+      {
+        "root": "rgmii_rxc",
+        "inverted": false,
+        "pins": 138
+      },
+      {
+        "root": "rgmii_rxc",
+        "inverted": true,
+        "pins": 5
+      }
+    ],
+    "all_clockpins_individually_traced": true,
+    "PLL_or_5_related_bridges_present": false,
+    "actual_original26_source_first_second_and_parameters": true,
+    "all26_first_Q_single_second_D_load": true,
+    "generated52_commands_are_candidate_only": true,
+    "FIFO_FFs_reset_classified": 445,
+    "IR_FFs": 154,
+    "IR_nextstate_output_checks": 192,
+    "lease_FFs": 200,
+    "lease_nextstate_output_checks": 248
+  },
+  "actual_proof_scope": "Actual binary mapped ring partition under legal pointer/caller/reset invariants, plus original real4500 source binding and 396 actual input RAM write-boundary miters; source arbitraryRAM induction and real4500 RTL pass remain separately bound. Complete mapped core equivalence is not proved.",
+  "source_numeric_evidence": {
+    "actual_RTL_50MHz_real4500": "F:/nav_integration_g2_20261023/ring_stride32_real4500_probe2/result.json",
+    "independent_arbitraryRAM_induction": "F:/nav_integration_g2_20261023/ring_stride32_reader_induction_review1/result.json"
+  },
+  "detailed_evidence": {
+    "ring_result": "F:\\nav_integration_g2_20261023\\SYN44_ring_actual_review5\\result.json",
+    "actual_ring": "F:\\nav_integration_g2_20261023\\SYN44_ring_actual_review5\\actual_ring.json",
+    "all1006_checks": "F:\\nav_integration_g2_20261023\\SYN44_ring_actual_review5\\actual_ring_checks.json",
+    "all78_RAM_and11_FF_ports_params": "F:\\nav_integration_g2_20261023\\SYN44_ring_actual_review5\\actual_ring_primitives.json",
+    "memory_CPU": "F:\\nav_integration_g2_20261023\\SYN44_ring_actual_review5\\all_memories_CPU.json",
+    "every_actual_memory": "F:\\nav_integration_g2_20261023\\SYN44_ring_actual_review5\\all_actual_memories.json",
+    "clock_CDC_stop": "F:\\nav_integration_g2_20261023\\SYN44_clock_CDC_stop_review1\\result.json",
+    "scope_correction": "F:\\nav_integration_g2_20261023\\SYN44_ring_actual_review5\\scope_metadata_correction.json"
+  },
+  "reproducible_commands": [
+    "D:/Anaconda/python.exe -B -X utf8 D:/Desktop/SOC FPGA/nav/integration/g2/review_ring_stride32_syn44.py --out <new-empty-F-review-dir>",
+    "D:/Anaconda/python.exe -B -X utf8 D:/Desktop/SOC FPGA/nav/integration/g2/review_ring_stride32_syn44_clock_stop.py --out <different-new-empty-F-review-dir>"
+  ],
+  "clarification": "The reused clock reviewer writes some extracted filenames with historical SYN40/SYN42 labels; its result input_bindings and wrapper OLD/NEW point to actual SYN43/SYN44.",
+  "remaining_unknown": [
+    "Complete mapped-core combinational/sequential equivalence beyond the 396 input-RAM write-boundary checks",
+    "Universal data/control-port equivalence of all nonring memories",
+    "Routed timing, all52 Actived status, maxdelay physical budgets and MTBF",
+    "Physical reset recovery/removal/min pulsewidth and stopped-clock restart",
+    "Whole-G2 CPU busy-stop and board/vehicle stopping acceptance"
+  ],
+  "physical_exploration": {
+    "audited_ring_memory_clock_CDC_stop_gates_pass": true,
+    "automatic_PNR": false,
+    "deployment_accepted": false,
+    "root_selected_followup": "SYN45 measured timing candidate; this review does not authorize running or accepting a physical build"
+  },
+  "no_EDA_started": true,
+  "no_frozen_input_changed": true,
+  "inputs": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43\\impl\\gwsynthesis\\g2_top.vg",
+      "bytes": 16881549,
+      "mtime_ns": 1793019134777639400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_syn44\\impl\\gwsynthesis\\g2_top.vg",
+      "bytes": 16900907,
+      "mtime_ns": 1793029376309591100
+    },
+    {
+      "path": "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\simlib\\gw5a\\prim_sim.v",
+      "bytes": 710345,
+      "mtime_ns": 1790043686000000000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43\\impl\\gwsynthesis\\g2_top.vg",
+      "bytes": 16881549,
+      "mtime_ns": 1793019134777639400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_syn44\\impl\\gwsynthesis\\g2_top.vg",
+      "bytes": 16900907,
+      "mtime_ns": 1793029376309591100
+    },
+    {
+      "path": "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\simlib\\gw5a\\prim_sim.v",
+      "bytes": 710345,
+      "mtime_ns": 1790043686000000000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_syn44\\g2.sdc",
+      "bytes": 6571,
+      "mtime_ns": 1792999809900948200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_syn44\\g2_top.v",
+      "bytes": 11633,
+      "mtime_ns": 1793013325206198000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_syn44\\command_lease_guard.v",
+      "bytes": 5692,
+      "mtime_ns": 1792999809899851500
+    }
+  ]
+}

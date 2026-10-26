@@ -1,0 +1,324 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-27T00:12:23.019129+08:00",
+  "source": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43",
+  "candidate": "F:\\nav_integration_g2_20261023\\SLF128_NAV_predecode_prepared1",
+  "method": "Exact frozen source reconstruction plus all-input one-step transition relation and 4-state scalar equality; not an RTL-frontend whole-G2 formal run",
+  "source_unchanged_except_one_NAV_patch": true,
+  "all62_other_RTL_byte_identical": true,
+  "consumer_replacements": [
+    {
+      "old_expression": "p_MATCH_CMD & wd_q[0]",
+      "new_pulse": "match_eval_predecoded_q",
+      "line": 408,
+      "text": ".cmd_eval(p_MATCH_CMD & wd_q[0]), .cmd_update(p_MATCH_CMD & wd_q[1]), .cmd_clear(p_MATCH_CMD & wd_q[2]),"
+    },
+    {
+      "old_expression": "p_MATCH_CMD & wd_q[0]",
+      "new_pulse": "match_eval_predecoded_q",
+      "line": 422,
+      "text": "if (p_MATCH_CMD & wd_q[0]) mt_eval_st <= 1'b0;"
+    },
+    {
+      "old_expression": "p_MATCH_CMD & wd_q[1]",
+      "new_pulse": "match_update_predecoded_q",
+      "line": 408,
+      "text": ".cmd_eval(p_MATCH_CMD & wd_q[0]), .cmd_update(p_MATCH_CMD & wd_q[1]), .cmd_clear(p_MATCH_CMD & wd_q[2]),"
+    },
+    {
+      "old_expression": "p_MATCH_CMD & wd_q[2]",
+      "new_pulse": "match_clear_predecoded_q",
+      "line": 408,
+      "text": ".cmd_eval(p_MATCH_CMD & wd_q[0]), .cmd_update(p_MATCH_CMD & wd_q[1]), .cmd_clear(p_MATCH_CMD & wd_q[2]),"
+    },
+    {
+      "old_expression": "p_LIDAR_POSE_COMMIT",
+      "new_pulse": "pose_commit_predecoded_q",
+      "line": 209,
+      "text": ".cfg_raw_inv(r_LIDAR_VALID_CFG[31:16]), .cfg_wait_pose(r_LIDAR_CTRL[3]), .pose_commit(p_LIDAR_POSE_COMMIT),"
+    },
+    {
+      "old_expression": "p_MAP_CMD & wd_q[0]",
+      "new_pulse": "map_sweep_predecoded_q",
+      "line": 333,
+      "text": ".cmd_sweep(p_MAP_CMD & wd_q[0]), .cmd_clear(p_MAP_CMD & wd_q[1]),"
+    },
+    {
+      "old_expression": "p_MAP_CMD & wd_q[1]",
+      "new_pulse": "map_clear_predecoded_q",
+      "line": 333,
+      "text": ".cmd_sweep(p_MAP_CMD & wd_q[0]), .cmd_clear(p_MAP_CMD & wd_q[1]),"
+    },
+    {
+      "old_expression": "p_MAP_CMD & wd_q[1]",
+      "new_pulse": "map_clear_predecoded_q",
+      "line": 352,
+      "text": ".clk(clk),.rst(rst),.clear((p_MAP_CMD & wd_q[1])|support_time_wrap),.age_epoch(support_epoch),"
+    }
+  ],
+  "source_spine_checks": {
+    "original_only2_rf_wr_assignments": true,
+    "single_same_edge_a_q_wd_q_capture": true,
+    "original_window_if_else_priority": [
+      "if (in_cm)",
+      "else if (in_res)",
+      "else if (in_cand)",
+      "else if (in_mres)",
+      "else if (in_mcand)",
+      "else if (in_lrtx)",
+      "else if (in_lrrx)",
+      "else if (!bus_we && {bus_addr[15:2], 2'b00} == RA_MBX_RX_DATA)",
+      "if (bus_we) rf_wr <= 1'b1; else rf_rd <= 1'b1;"
+    ],
+    "old_ref_regfile_inputs": "rf_wr/a_q/wd_q",
+    "new_pulse_assignment_sites_per_bit": 2,
+    "original_B_RF_ACK_and_B_END_bubble_unchanged": true,
+    "all_RAW_ownership_frame_and_stop_code_unchanged": true
+  },
+  "binary_transition_proof": {
+    "all_16bit_addresses_all32bit_data_and_all_old_bus_registers": true,
+    "all4bit_BS_states": true,
+    "queries": [
+      {
+        "label": "match_eval_predecoded_q: one-step original pulse expression == registered proposed pulse",
+        "result": "UNSAT",
+        "assumptions": []
+      },
+      {
+        "label": "match_update_predecoded_q: one-step original pulse expression == registered proposed pulse",
+        "result": "UNSAT",
+        "assumptions": []
+      },
+      {
+        "label": "match_clear_predecoded_q: one-step original pulse expression == registered proposed pulse",
+        "result": "UNSAT",
+        "assumptions": []
+      },
+      {
+        "label": "pose_commit_predecoded_q: one-step original pulse expression == registered proposed pulse",
+        "result": "UNSAT",
+        "assumptions": []
+      },
+      {
+        "label": "map_sweep_predecoded_q: one-step original pulse expression == registered proposed pulse",
+        "result": "UNSAT",
+        "assumptions": []
+      },
+      {
+        "label": "map_clear_predecoded_q: one-step original pulse expression == registered proposed pulse",
+        "result": "UNSAT",
+        "assumptions": []
+      },
+      {
+        "label": "any special window suppresses every six-command pulse",
+        "result": "UNSAT",
+        "assumptions": []
+      },
+      {
+        "label": "read/reset/nonIDLE/no-request suppress every pulse",
+        "result": "UNSAT",
+        "assumptions": []
+      }
+    ],
+    "window_priority": [
+      "COSTMAP",
+      "TRAJ_RES",
+      "TRAJ_CAND",
+      "MATCH_RES",
+      "MATCH_CAND",
+      "LRAW_TX",
+      "LRAW_RX",
+      "MBX_RX_DATA read",
+      "ordinary RF"
+    ],
+    "register_addresses": {
+      "RA_MATCH_CMD": 28684,
+      "RA_LIDAR_POSE_COMMIT": 8304,
+      "RA_MAP_CMD": 12292,
+      "RA_MBX_RX_DATA": 4612
+    },
+    "actual_window_ranges": [
+      {
+        "name": "COSTMAP",
+        "base": 32768,
+        "size": 16384
+      },
+      {
+        "name": "TRAJ_RES",
+        "base": 17408,
+        "size": 1024
+      },
+      {
+        "name": "TRAJ_CAND",
+        "base": 16640,
+        "size": 512
+      },
+      {
+        "name": "MATCH_RES",
+        "base": 51200,
+        "size": 2048
+      },
+      {
+        "name": "MATCH_CAND",
+        "base": 49152,
+        "size": 2048
+      },
+      {
+        "name": "LRAW_TX",
+        "base": 53248,
+        "size": 128
+      },
+      {
+        "name": "LRAW_RX",
+        "base": 53504,
+        "size": 128
+      }
+    ],
+    "no_memory_latency_or_arbitration_stability_assumption_needed_for_local_pulse_identity": true
+  },
+  "four_state_relation_proof": {
+    "queries": [
+      {
+        "label": "four-state generic data-gated pulse, including all no-write oldX/Z cases",
+        "result": "UNSAT",
+        "assumptions": [
+          "comparison_of_current_aligned_address >= 0",
+          "comparison_of_current_aligned_address <= 2",
+          "arbitrary_comparison_if_no_write >= 0",
+          "arbitrary_comparison_if_no_write <= 2",
+          "current_payload_bit >= 0",
+          "current_payload_bit <= 3",
+          "arbitrary_payload_if_no_write >= 0",
+          "arbitrary_payload_if_no_write <= 3"
+        ]
+      },
+      {
+        "label": "four-state POSE pulse, including all no-write oldX/Z cases",
+        "result": "UNSAT",
+        "assumptions": [
+          "comparison_of_current_aligned_address >= 0",
+          "comparison_of_current_aligned_address <= 2",
+          "arbitrary_comparison_if_no_write >= 0",
+          "arbitrary_comparison_if_no_write <= 2",
+          "current_payload_bit >= 0",
+          "current_payload_bit <= 3",
+          "arbitrary_payload_if_no_write >= 0",
+          "arbitrary_payload_if_no_write <= 3"
+        ]
+      }
+    ],
+    "table": {
+      "exhaustive_scalar_case_count": 288,
+      "all_equal": true,
+      "equality_result_domain": "0/1/X only; the exact same Verilog vector== expression and accepted aligned operands appear before/after capture",
+      "payload_and_old_payload_domain": "0/1/X/Z",
+      "bad_procedural_if_comparison_example": {
+        "accepted": true,
+        "comparison": "X",
+        "payload": "1",
+        "original_and_actual_candidate": "X",
+        "incorrect_if_eq_then_set_else_clear": "0"
+      }
+    },
+    "unknown_request_reset_state_and_window_scope": "The unchanged procedural if/case spine selects the same branch, including normal Verilog only-known1-if and exact-case behavior; acceptance is then0/1, not a 4-state combinational authorization gate.",
+    "initial_state_scope": "Pulse relation holds after the first shared positive edge from arbitrary old bus/pulse values. Arbitrary pre-first-edge combinational outputs are not claimed equivalent; mapped cold-start INIT/reset remains an actual-netlist gate."
+  },
+  "solver": "Z3 5.3.1",
+  "finite_existing_probe": {
+    "source": {
+      "path": "F:\\nav_integration_g2_20261023\\NAV_command_predecode_bus_probe2\\result.json",
+      "bytes": 19282,
+      "mtime_ns": 1793030291511202600
+    },
+    "clock_comparisons": 1449,
+    "transactions": 192,
+    "resets": 2,
+    "arbitration_overlap_samples": 127,
+    "XZ_cases": 3,
+    "unknown_read_words": 0,
+    "all6_command_bits_exercised_by_actual_TB": true,
+    "renamed_old_new_sources_only_and_local_include_guard_reset_verified": true,
+    "actual_RX_idle": true,
+    "new_simulation_started": false
+  },
+  "compositional_trace_argument": [
+    "After each shared edge the6 registers equal the untouched rf_wr/latched-address/data expressions, for accepting and nonaccepting actions. No prior extra-register relation is required.",
+    "Between shared edges both expressions depend only on their registered state. Unselected/master/live payload changes cannot alter already accepted commands.",
+    "Every old shared state and every child module/consumer is unchanged except substituting these equal wires. From an equal initialized shared-state/memory boundary AND aligned six-pulse relation, identical external inputs give equal subsequent next states/outputs by induction. This is not a claim from arbitrary inconsistent added-register initial values.",
+    "E0 acceptance does not execute consumers early; E1 consumers and ACK see old pulse/address/data; E2 B_END and arbiter hold are original. A held req may be reaccepted later exactly as before, not a new exactly-once promise.",
+    "This substitution argument is independent of arbitrary RAW/FIFO/MBX ready/results at the unchanged boundaries. It preserves existing operational assumptions; it does not newly certify their original safety."
+  ],
+  "sufficient_source_functional_evidence_for_next_joint_SYN": true,
+  "reason": "Six local same-edge pulse substitutions are source-bound equal independently of idle-network stimulus; existing finite actual NAV+arb miter supports integration. Mapping/physical gates remain pending.",
+  "functional_trace_base_condition": "Original known-startup/reset contract must establish the common initialized boundary and pulse relation before transactions. Probe2 holds common reset for5 clocks. New actual FF INIT/clear must be checked against original rf_wr0; local one-step pulse identity alone does not establish every old consumer state after an inconsistent unreset start.",
+  "root_new_combined_source_gate_required": true,
+  "remaining_before_physical_or_deployment_acceptance": [
+    "New actual mapped6 FF/copies/INIT/clock/clear and D/CE cones equal the accepted pulse expressions; no residual old address decode in the targeted consuming CE cones",
+    "Actual mapped no additional bus/point/command clocks and original all RAM/INIT/CPU/26CDC/IR/SAFE/lease preservation",
+    "Existing finite miter holds RX idle: no direct exercised RAW/SOF+command/last point drain, variable MBX_RX wait or continuous console/injection traffic in that TB",
+    "Whole-G2 frontend formal/physical reset/IO/CDC/stop not proved by this local handwritten transition partition",
+    "Physical setup/hold for new bus→pulse FF and unchanged reverse-ready suffix; prefix removal alone cannot promise50MHz"
+  ],
+  "no_new_RAW_FIFO_MBX_TB_needed_before_exploratory_SYN": true,
+  "no_RTL_file_written": true,
+  "existing_preparer_or_runner_modified": false,
+  "EDA_started": false,
+  "simulator_started": false,
+  "deployment_accepted": false,
+  "no_SHA": true,
+  "full_actual_result_binding": {
+    "path": "F:\\nav_integration_g2_20261023\\NAV_predecode_source_relation_review2\\result.json",
+    "bytes": 36420,
+    "mtime_ns": 1793031143021134800
+  },
+  "selected_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43\\nav\\rtl\\regs\\nav_regfile.v",
+      "bytes": 26353,
+      "mtime_ns": 1793012198642578800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43\\nav\\rtl\\top\\nav_subsystem.v",
+      "bytes": 34871,
+      "mtime_ns": 1793013805842989700
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_NAV_predecode_prepared1\\nav\\rtl\\regs\\nav_regfile.v",
+      "bytes": 26353,
+      "mtime_ns": 1793012198642578800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_NAV_predecode_prepared1\\nav\\rtl\\top\\nav_subsystem.v",
+      "bytes": 35808,
+      "mtime_ns": 1793027988857269600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43\\nav\\rtl\\regs\\nav_regs_map.vh",
+      "bytes": 32791,
+      "mtime_ns": 1793012198642578800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43\\nav\\rtl\\regs\\nav_regfile.v",
+      "bytes": 26353,
+      "mtime_ns": 1793012198642578800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43\\nav\\rtl\\regs\\nav_subsystem_rf.vh",
+      "bytes": 15148,
+      "mtime_ns": 1793012198642578800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\NAV_command_predecode_bus_probe2\\xsim.log",
+      "bytes": 1579,
+      "mtime_ns": 1793030290500676300
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prove_NAV_predecode_source_relation.py",
+      "bytes": 15716,
+      "mtime_ns": 1793031133614011000
+    }
+  ],
+  "first_receipt_retained": "F:/nav_integration_g2_20261023/NAV_predecode_source_relation_review1/result.json",
+  "second_receipt_reason": "Made shared initialized-state plus pulse-relation base condition explicit; symbolic query results/source inputs unchanged",
+  "reproduce": "D:/Anaconda/python.exe -X utf8 integration/g2/prove_NAV_predecode_source_relation.py --out <new directory>"
+}

@@ -1,0 +1,186 @@
+{
+  "at": "2026-10-27T00:11:53.345461+08:00",
+  "passed": true,
+  "phase": "finite_ModelSim_PID_unity_passed",
+  "first_failure": {
+    "path": "F:\\nav_integration_g2_20261023\\PID_unity_actual_control_probe1",
+    "tool": "xelab",
+    "exit": 3221225477,
+    "actual": "static elaboration then EXCEPTION_ACCESS_VIOLATION, no functional simulation",
+    "fixture_warning": "VRFC10-9277 unsized3000000000=>signed32 -1294967296; fixedonly#3s",
+    "original_preserved": {
+      "path": "F:\\nav_integration_g2_20261023\\PID_unity_actual_control_probe1\\result.json",
+      "bytes": 6816,
+      "mtime_ns": 1793030364447192700
+    }
+  },
+  "actual_AE_result": {
+    "path": "F:\\nav_integration_g2_20261023\\PID_unity_actual_control_probe2_modelsim\\result.json",
+    "bytes": 6018,
+    "mtime_ns": 1793031054525762800
+  },
+  "tool_runtime": {
+    "command": [
+      "E:\\modelsim_ae\\win32aloem\\vsim.exe",
+      "-c",
+      "-l",
+      "transcript.log",
+      "-do",
+      "run.do"
+    ],
+    "pid": 56144,
+    "created_epoch": 1793030595.449878,
+    "started_at": "2026-10-27T00:03:15.536015+08:00",
+    "children": [
+      {
+        "pid": 40572,
+        "created_epoch": 1793030595.5608656,
+        "name": "conhost.exe",
+        "command": [
+          "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+          "0x4"
+        ]
+      },
+      {
+        "pid": 39536,
+        "created_epoch": 1793030595.5968187,
+        "name": "vish.exe",
+        "command": [
+          "E:\\modelsim_ae\\win32aloem\\vish.exe",
+          "-vsim",
+          "-vsimpid",
+          "408",
+          "-c",
+          "-l",
+          "transcript.log",
+          "-do",
+          "run.do"
+        ]
+      },
+      {
+        "pid": 39172,
+        "created_epoch": 1793030595.9189694,
+        "name": "vlm.exe",
+        "command": [
+          "E:/modelsim_ae/win32aloem\\vlm.exe",
+          "-4623749",
+          "76824686"
+        ]
+      },
+      {
+        "pid": 23416,
+        "created_epoch": 1793030597.0243537,
+        "name": "vsimk.exe",
+        "command": [
+          "E:\\modelsim_ae\\win32aloem\\vsimk.exe",
+          "-port",
+          "::1:50559",
+          "-stdoutfilename",
+          "C:/Users/Li/AppData/Local/Temp/VSOUT500f3m",
+          "-c",
+          "-l",
+          "transcript.log",
+          "-do",
+          "run.do"
+        ]
+      }
+    ],
+    "observed_at": "2026-10-27T00:10:52.524350+08:00",
+    "tool_exit": 0,
+    "ended_at": "2026-10-27T00:10:54.525762+08:00"
+  },
+  "all_original_processes_exited": [
+    {
+      "pid": 29928,
+      "created_epoch": 1793030593.8455439,
+      "original_alive": false
+    },
+    {
+      "pid": 56144,
+      "created_epoch": 1793030595.449878,
+      "original_alive": false
+    },
+    {
+      "pid": 40572,
+      "created_epoch": 1793030595.5608656,
+      "original_alive": false
+    },
+    {
+      "pid": 39536,
+      "created_epoch": 1793030595.5968187,
+      "original_alive": false
+    },
+    {
+      "pid": 39172,
+      "created_epoch": 1793030595.9189694,
+      "original_alive": false
+    },
+    {
+      "pid": 23416,
+      "created_epoch": 1793030597.0243537,
+      "original_alive": false
+    }
+  ],
+  "source_equal": {
+    "policy_action_map.v": true,
+    "motor520_closed_loop.v": true,
+    "target_select_pair.sv": true
+  },
+  "only_TB_watchdog_changed": true,
+  "seven_math_miters_reused_UNSAT": [
+    {
+      "name": "signed24_clip_range",
+      "result": "unsat"
+    },
+    {
+      "name": "all24_action_scale_range_-600",
+      "result": "unsat"
+    },
+    {
+      "name": "reset_valid_hold_range_induction_-600",
+      "result": "unsat"
+    },
+    {
+      "name": "all24_action_scale_range_600",
+      "result": "unsat"
+    },
+    {
+      "name": "reset_valid_hold_range_induction_600",
+      "result": "unsat"
+    },
+    {
+      "name": "unity_amplifier_identity",
+      "result": "unsat"
+    },
+    {
+      "name": "all_IR_select_unity_targets",
+      "result": "unsat"
+    }
+  ],
+  "coverage": {
+    "checked_cycles": 99999993,
+    "stop_phases": 8,
+    "disable_phases": 8,
+    "reset_phases": 8,
+    "actions": 44,
+    "fault1": 5,
+    "fault2": 5,
+    "fault3": 5,
+    "forward": 67387501,
+    "reverse": 5092510
+  },
+  "PASS": "TEST PASSED PID_UNITY checked_cycles=99999993 stop_phases=8 disable_phases=8 reset_phases=8 actions=44 fault1=5 fault2=5 fault3=5 forward=67387501 reverse=5092510",
+  "error": null,
+  "noFatal": true,
+  "actual_production_contract": "50MHz clock/100Hz feedback,400000clock publication, original PID8states/10M timeout/stall100/wrong10/PWM2500; real signed24mapper and old/new2xL/R PID/PWM",
+  "coverage_meaning": "IRstop/enable/reset eachactual8PIDphases, everyclocktargets/duty/reference/error/fault/control_valid/6pins, explicitknown-stateXrejection afterrealreset",
+  "limits": [
+    "finitecomponent boundary, not full4500inference/fusion/IRdecoder/wholeG2",
+    "nonunity original expression retainedbutnotsequentiallytested here",
+    "noactualmapping/physicalrouting/STA benefitproved",
+    "noRK/board/physicalstopping proof"
+  ],
+  "license_content_read_copied_or_system_environment_modified": false,
+  "SYN_PNR_FW_or_board_actions": false,
+  "deployment_ready": false
+}
