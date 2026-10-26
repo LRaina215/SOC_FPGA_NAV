@@ -1,0 +1,708 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T08:12:21.282482+08:00",
+  "runs": [
+    {
+      "label": "PNR45",
+      "passed": true,
+      "recorded_at": "2026-10-26T08:12:21.243504+08:00",
+      "started_at": "2026-10-26T08:10:48.115812+08:00",
+      "output": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_bias_native_pnr45",
+      "controller": {
+        "pid": 54296,
+        "created_epoch": 1792973446.312804,
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:/Desktop/SOC FPGA/nav/integration/g2/run_native_width_pair_pnr.py",
+          "--profile",
+          "DSP_bias"
+        ]
+      },
+      "tool": {
+        "pid": 8356,
+        "created_epoch": 1792973448.117288,
+        "parent": 54296,
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "run.tcl"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_bias_native_pnr45",
+        "priority": "NORMAL",
+        "affinity": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "admission": {
+        "physical": 4959416320,
+        "commit": 7226597376
+      },
+      "checks": {
+        "source_VG_bytes_unchanged": true,
+        "CST_same_as35": true,
+        "SDC_same_as44": true,
+        "actual_command_only_removed_width_split": true,
+        "device_same_as35": true,
+        "total_and_silent_limits_zero": true,
+        "not_cancelled": true
+      },
+      "source_BSRAM314": true,
+      "predicted_physical_BSRAM314_not_measured": true,
+      "predicted_removed_split_overhead18": true,
+      "wide_leaf_inventory": [
+        {
+          "path": "g2_top/u_control/model_thread/ik/rom_lh_rom_lh_0_0_s",
+          "module_type": "leg_ik_ff",
+          "primitive": "pROMX9",
+          "parameters": {
+            "BIT_WIDTH": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\""
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_map/u_tv/lb1_lb1_0_0_s",
+          "module_type": "trav_v3",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_map/u_tv/lb1_lb1_0_1_s",
+          "module_type": "trav_v3",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_map/u_tv/lb3_lb3_0_0_s",
+          "module_type": "trav_v3",
+          "primitive": "SDPB",
+          "parameters": {
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_map/u_tv/lb3_lb3_0_1_s",
+          "module_type": "trav_v3",
+          "primitive": "SDPB",
+          "parameters": {
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_map/u_tv/vc_vc_0_0_s",
+          "module_type": "trav_v3",
+          "primitive": "SDPB",
+          "parameters": {
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_pb/\\g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_0_s",
+          "module_type": "nav_ram_sdp_18",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_pb/\\g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s",
+          "module_type": "nav_ram_sdp_18",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_pb/\\g_banked.g_bank[2].mem_g_banked.g_bank[2].mem_0_0_s",
+          "module_type": "nav_ram_sdp_18",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_pb/\\g_banked.g_bank[3].mem_g_banked.g_bank[3].mem_0_0_s",
+          "module_type": "nav_ram_sdp_18",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_pb/\\g_banked.g_bank[4].mem_g_banked.g_bank[4].mem_0_0_s",
+          "module_type": "nav_ram_sdp_18",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_pb/\\g_banked.g_bank[5].mem_g_banked.g_bank[5].mem_0_0_s",
+          "module_type": "nav_ram_sdp_18",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_pb/\\g_banked.g_bank[6].mem_g_banked.g_bank[6].mem_0_0_s",
+          "module_type": "nav_ram_sdp_18",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_pb/\\g_banked.g_bank[7].mem_g_banked.g_bank[7].mem_0_0_s",
+          "module_type": "nav_ram_sdp_18",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_lf/lb1_lb1_0_0_s",
+          "module_type": "slf_lf",
+          "primitive": "SDPB",
+          "parameters": {
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_lf/lb1_lb1_0_1_s",
+          "module_type": "slf_lf",
+          "primitive": "SDPB",
+          "parameters": {
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_lf/lb3_lb3_0_0_s",
+          "module_type": "slf_lf",
+          "primitive": "SDPB",
+          "parameters": {
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_lf/lb3_lb3_0_1_s",
+          "module_type": "slf_lf",
+          "primitive": "SDPB",
+          "parameters": {
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        }
+      ],
+      "wide_by_type": {
+        "pROMX9": 1,
+        "SDPX9B": 10,
+        "SDPB": 7
+      },
+      "wide_by_top": {
+        "u_control": 1,
+        "u_nav": 17
+      },
+      "prior_other_netlist_native314_failed502_split332_failed411_preserved": true,
+      "comparative_routing_or_timing_benefit_not_claimed": true,
+      "reference": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_round_bias_pnr44",
+      "bindings": [
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_bias_native_pnr45\\g2_top.vg",
+          "bytes": 24438183,
+          "mtime_ns": 1792973448085587800
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_bias_native_pnr45\\g2.cst",
+          "bytes": 5495,
+          "mtime_ns": 1792973448085587800
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_bias_native_pnr45\\g2.sdc",
+          "bytes": 6661,
+          "mtime_ns": 1792973448085587800
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_bias_native_pnr45\\run.tcl",
+          "bytes": 807,
+          "mtime_ns": 1792973448085587800
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_bias_native_pnr45\\impl\\pnr\\cmd.do",
+          "bytes": 618,
+          "mtime_ns": 1792973449299684600
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_bias_native_pnr45\\impl\\pnr\\device.cfg",
+          "bytes": 565,
+          "mtime_ns": 1792973449299684600
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_bias_native_pnr45\\preflight.json",
+          "bytes": 128486,
+          "mtime_ns": 1792973448107012900
+        }
+      ]
+    },
+    {
+      "label": "PNR46",
+      "passed": true,
+      "recorded_at": "2026-10-26T08:12:21.282482+08:00",
+      "started_at": "2026-10-26T08:10:48.428704+08:00",
+      "output": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46",
+      "controller": {
+        "pid": 14300,
+        "created_epoch": 1792973446.9547412,
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:/Desktop/SOC FPGA/nav/integration/g2/run_native_width_pair_pnr.py",
+          "--profile",
+          "routed_anchor"
+        ]
+      },
+      "tool": {
+        "pid": 63244,
+        "created_epoch": 1792973448.4317,
+        "parent": 14300,
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "run.tcl"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46",
+        "priority": "NORMAL",
+        "affinity": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      },
+      "admission": {
+        "physical": 4874649600,
+        "commit": 7135055872
+      },
+      "checks": {
+        "source_VG_bytes_unchanged": true,
+        "CST_same_as35": true,
+        "SDC_same_as44": true,
+        "actual_command_only_removed_width_split": true,
+        "device_same_as35": true,
+        "total_and_silent_limits_zero": true,
+        "not_cancelled": true
+      },
+      "source_BSRAM314": true,
+      "predicted_physical_BSRAM314_not_measured": true,
+      "predicted_removed_split_overhead18": true,
+      "wide_leaf_inventory": [
+        {
+          "path": "g2_top/u_control/model_thread/ik/rom_lh_rom_lh_0_0_s",
+          "module_type": "leg_ik_ff",
+          "primitive": "pROMX9",
+          "parameters": {
+            "BIT_WIDTH": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\""
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_map/u_tv/lb1_lb1_0_0_s",
+          "module_type": "trav_v3",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_map/u_tv/lb1_lb1_0_1_s",
+          "module_type": "trav_v3",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_map/u_tv/lb3_lb3_0_0_s",
+          "module_type": "trav_v3",
+          "primitive": "SDPB",
+          "parameters": {
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_map/u_tv/lb3_lb3_0_1_s",
+          "module_type": "trav_v3",
+          "primitive": "SDPB",
+          "parameters": {
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_map/u_tv/vc_vc_0_0_s",
+          "module_type": "trav_v3",
+          "primitive": "SDPB",
+          "parameters": {
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_pb/\\g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_0_s",
+          "module_type": "nav_ram_sdp_18",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_pb/\\g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s",
+          "module_type": "nav_ram_sdp_18",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_pb/\\g_banked.g_bank[2].mem_g_banked.g_bank[2].mem_0_0_s",
+          "module_type": "nav_ram_sdp_18",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_pb/\\g_banked.g_bank[3].mem_g_banked.g_bank[3].mem_0_0_s",
+          "module_type": "nav_ram_sdp_18",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_pb/\\g_banked.g_bank[4].mem_g_banked.g_bank[4].mem_0_0_s",
+          "module_type": "nav_ram_sdp_18",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_pb/\\g_banked.g_bank[5].mem_g_banked.g_bank[5].mem_0_0_s",
+          "module_type": "nav_ram_sdp_18",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_pb/\\g_banked.g_bank[6].mem_g_banked.g_bank[6].mem_0_0_s",
+          "module_type": "nav_ram_sdp_18",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_pb/\\g_banked.g_bank[7].mem_g_banked.g_bank[7].mem_0_0_s",
+          "module_type": "nav_ram_sdp_18",
+          "primitive": "SDPX9B",
+          "parameters": {
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_lf/lb1_lb1_0_0_s",
+          "module_type": "slf_lf",
+          "primitive": "SDPB",
+          "parameters": {
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_lf/lb1_lb1_0_1_s",
+          "module_type": "slf_lf",
+          "primitive": "SDPB",
+          "parameters": {
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_lf/lb3_lb3_0_0_s",
+          "module_type": "slf_lf",
+          "primitive": "SDPB",
+          "parameters": {
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        {
+          "path": "g2_top/u_nav/u_match/u_lf/lb3_lb3_0_1_s",
+          "module_type": "slf_lf",
+          "primitive": "SDPB",
+          "parameters": {
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "READ_MODE": "1'b0",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        }
+      ],
+      "wide_by_type": {
+        "pROMX9": 1,
+        "SDPX9B": 10,
+        "SDPB": 7
+      },
+      "wide_by_top": {
+        "u_control": 1,
+        "u_nav": 17
+      },
+      "prior_other_netlist_native314_failed502_split332_failed411_preserved": true,
+      "comparative_routing_or_timing_benefit_not_claimed": true,
+      "reference": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35",
+      "bindings": [
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46\\g2_top.vg",
+          "bytes": 24442439,
+          "mtime_ns": 1792973448399185300
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46\\g2.cst",
+          "bytes": 5495,
+          "mtime_ns": 1792973448401194000
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46\\g2.sdc",
+          "bytes": 6661,
+          "mtime_ns": 1792973448401194000
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46\\run.tcl",
+          "bytes": 801,
+          "mtime_ns": 1792973448401194000
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46\\impl\\pnr\\cmd.do",
+          "bytes": 610,
+          "mtime_ns": 1792973449489184500
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46\\impl\\pnr\\device.cfg",
+          "bytes": 565,
+          "mtime_ns": 1792973449489184500
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46\\preflight.json",
+          "bytes": 128218,
+          "mtime_ns": 1792973448420690900
+        }
+      ]
+    }
+  ],
+  "no_new_synthesis": true,
+  "no_production_or_serial_or_board_actions": true
+}
