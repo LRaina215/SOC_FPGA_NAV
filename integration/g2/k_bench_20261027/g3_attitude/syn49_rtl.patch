@@ -1,0 +1,62 @@
+--- a/control4500_core.v (K_timing_syn48)
++++ b/control4500_core.v (K_timing_syn49)
+@@ -51,7 +51,11 @@
+     input wire M2_ENCA,M2_ENCB, // Left wheel: D15/F14, P11 pins16/18
+     output wire M1_PWM,M1_DIR1,M1_DIR2, // Right: D17/B20/B17
+     output wire M2_PWM,M2_DIR1,M2_DIR2, // Left: C17/B18/A20
+-    output wire SERVO1,SERVO2,SERVO3,SERVO4 // LH C18 / LK C19 / RH E19 / RK D19
++    output wire SERVO1,SERVO2,SERVO3,SERVO4, // LH C18 / LK C19 / RH E19 / RK D19
++    // BMI088 fusion publication for the navigation attitude input (control body axes)
++    output wire attitude_valid,
++    output wire signed [23:0] attitude_gx,attitude_gy,attitude_gz,
++    output wire signed [23:0] attitude_wx,attitude_wy,attitude_wz
+ );
+     reg [7:0] startup=0;
+     always @(posedge clk) begin
+@@ -125,6 +129,9 @@
+     wire [143:0] model_executed_actions;
+     wire debug_fusion_valid;
+     wire signed [23:0] debug_wx,debug_wy,debug_wz,debug_gx,debug_gy,debug_gz;
++    assign attitude_valid=debug_fusion_valid;
++    assign attitude_gx=debug_gx;assign attitude_gy=debug_gy;assign attitude_gz=debug_gz;
++    assign attitude_wx=debug_wx;assign attitude_wy=debug_wy;assign attitude_wz=debug_wz;
+     // 以后可以将这里的常量替换为寄存器、角度计算结果或模型输出。
+     wire [15:0] servo_lh_command_us=MODEL_ENABLE ? model_lh_us : SERVO_LH_US;
+     wire [15:0] servo_lk_command_us=MODEL_ENABLE ? model_lk_us : SERVO_LK_US;
+--- a/g2_top.v (K_timing_syn48)
++++ b/g2_top.v (K_timing_syn49)
+@@ -172,6 +172,8 @@
+         else if(ch_valid)begin nav_forward_q12<=vx_product/1000;nav_yaw_q12<=wz_product/1000;end
+     end
+ `endif
++    wire att_valid, att_txd;
++    wire signed [23:0] att_gx,att_gy,att_gz,att_wx,att_wy,att_wz;
+     control4500_core u_control(
+         .clk(clk),.reset_n(~rst),.nav_forward_q12(nav_forward_q12),.nav_yaw_q12(nav_yaw_q12),
+         .feedback_valid(odo_valid),.feedback_vx_mmps(odo_vx),.feedback_wz_mradps(odo_wz),
+@@ -180,7 +182,15 @@
+         .M1_ENCA(M1_ENCA),.M1_ENCB(M1_ENCB),.M2_ENCA(M2_ENCA),.M2_ENCB(M2_ENCB),
+         .M1_PWM(M1_PWM),.M1_DIR1(M1_DIR1),.M1_DIR2(M1_DIR2),
+         .M2_PWM(M2_PWM),.M2_DIR1(M2_DIR1),.M2_DIR2(M2_DIR2),
+-        .SERVO1(SERVO1),.SERVO2(SERVO2),.SERVO3(SERVO3),.SERVO4(SERVO4));
++        .SERVO1(SERVO1),.SERVO2(SERVO2),.SERVO3(SERVO3),.SERVO4(SERVO4),
++        .attitude_valid(att_valid),.attitude_gx(att_gx),.attitude_gy(att_gy),.attitude_gz(att_gz),
++        .attitude_wx(att_wx),.attitude_wy(att_wy),.attitude_wz(att_wz));
++    // The car has no separate navigation IMU: the BMI088 fusion result feeds the
++    // nav IMU UART receiver internally; the A15 input pin is no longer used.
++    bmi_att_uart #(.DIV(434)) u_att_uart(
++        .clk(clk),.rst(rst),.valid(att_valid),
++        .gx(att_gx),.gy(att_gy),.gz(att_gz),.wx(att_wx),.wy(att_wy),.wz(att_wz),
++        .txd(att_txd),.seq(),.dropped());
+     nav_subsystem #(.SLF_LOG2N(SLF_LOG2N), .CLK_HZ(CLK_HZ), .SIN_INIT("sin_lut.hex"),.SUPPORT_COVERAGE_ENABLE(`G2_COVERAGE)) u_nav (
+         .clk(clk), .rst(rst),
+         .bus_req(s_req), .bus_we(s_we), .bus_addr(s_addr), .bus_wdata(s_wdata), .bus_ack(s_ack), .bus_rdata(s_rdata),
+@@ -193,7 +203,7 @@
+         .h_rx_last(h_rx_last), .h_rx_error(h_rx_err),
+         .h_tx_clk(h_tx_clk), .h_tx_rst(h_tx_rst), .h_tx_valid(h_tx_valid), .h_tx_data(h_tx_data),
+         .h_tx_last(h_tx_last), .h_tx_ready(h_tx_ready),
+-        .imu_rx(imu_rxd), .imu_tx(),
++        .imu_rx(att_txd), .imu_tx(),
+         .ch_vx(ch_vx), .ch_vy(), .ch_wz(ch_wz), .ch_mode(), .ch_stop(ch_stop), .ch_wdog(ch_wdog), .ch_valid(ch_valid), .ch_seq(ch_seq),
+         .odo_valid(odo_valid), .odo_vx(odo_vx), .odo_vy(16'd0), .odo_wz(odo_wz),
+         .ext_stop(4'd0)

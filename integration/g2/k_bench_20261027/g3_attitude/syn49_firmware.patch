@@ -1,0 +1,282 @@
+--- a/fw/nav/imu_parse.c
++++ b/fw/nav/imu_parse.c
+@@ -1,4 +1,5 @@
+ #include "imu_parse.h"
++#include "fixmath.h"
+ 
+ void imu_parser_init(imu_parser_t *p, imu_proto_t proto)
+ {
+@@ -9,6 +10,31 @@
+ /* 度 ×32768/180 -> angle（65536/360）：angle = raw * 65536/360 * 180/32768 = raw（量纲恰好一致） */
+ static angle_t wit_angle(uint8_t lo, uint8_t hi) { return (angle_t)(int16_t)(lo | (hi << 8)); }
+ 
++/* 控制机身系 (X 右, Y 前, Z 上) -> 导航机身系 (X 前, Y 左, Z 上)：nav = (ctrl_y, -ctrl_x, ctrl_z)。
++ * 只按两套坐标定义推导，BMI088 实际安装方向须装车用手倾斜核对，错了改这三行即可。 */
++#ifndef IMU_BMI_NAV_X
++#define IMU_BMI_NAV_X(cx, cy, cz) (cy)
++#define IMU_BMI_NAV_Y(cx, cy, cz) (-(cx))
++#define IMU_BMI_NAV_Z(cx, cy, cz) (cz)
++#endif
++
++static int16_t le16(const uint8_t *b) { return (int16_t)(b[0] | (b[1] << 8)); }
++
++static int16_t sat16(int32_t v) { return (int16_t)(v > 32767 ? 32767 : v < -32768 ? -32768 : v); }
++
++/* 重力单位向量（导航机身系，指向下方；水平时 (0,0,-1)）-> 与 WIT 角度帧同约定的俯仰/横滚：
++ * 姿态 R = Rz(yaw)·Ry(pitch)·Rx(roll)，机身系重力 = (sin p, -sin r cos p, -cos r cos p)，pitch>0 为低头。 */
++static void bmi_attitude(imu_parser_t *p, int32_t cx, int32_t cy, int32_t cz)
++{
++    int32_t x = IMU_BMI_NAV_X(cx, cy, cz), y = IMU_BMI_NAV_Y(cx, cy, cz), z = IMU_BMI_NAV_Z(cx, cy, cz);
++    p->pitch = fx_atan2(x, (int32_t)fx_isqrt((uint64_t)((int64_t)y * y + (int64_t)z * z)));
++    p->roll = fx_atan2(-y, -z);
++    p->yaw = 0;
++}
++
++/* Q9 rad/s -> WIT 原始单位（×2000/32768 °/s）：raw = q9 / 512 × (180/π) × 32768/2000 ≈ q9 × 1877/1024 */
++static int16_t bmi_gyro_raw(int32_t q9) { return sat16((int32_t)(((int64_t)q9 * 1877) / 1024)); }
++
+ bool imu_parser_feed(imu_parser_t *p, uint8_t b, bool first, uint32_t t_us)
+ {
+     if (first) p->t_burst = t_us;
+@@ -20,6 +46,23 @@
+     for (int i = 0; i < 10; i++) sum = (uint8_t)(sum + p->buf[i]);
+     if (sum != p->buf[10]) { p->n_bad++; return false; }
+     p->n_ok++;
++    if (p->proto == IMU_PROTO_BMI_INTERNAL) {
++        int32_t a = le16(p->buf + 2), c = le16(p->buf + 4), e = le16(p->buf + 6);
++        if (p->buf[1] == 0x5C) {                  /* 角速度帧（控制机身系 Q9 rad/s） */
++            p->gx = bmi_gyro_raw(IMU_BMI_NAV_X(a, c, e));
++            p->gy = bmi_gyro_raw(IMU_BMI_NAV_Y(a, c, e));
++            p->gz = bmi_gyro_raw(IMU_BMI_NAV_Z(a, c, e));
++            p->gyro_t_us = p->t_burst;
++            p->gyro_new = true;
++            return false;
++        }
++        if (p->buf[1] != 0x5B) return false;      /* 重力帧（控制机身系 Q12） */
++        bmi_attitude(p, a, c, e);
++        p->bmi_seq = (uint16_t)le16(p->buf + 8);
++        p->att_t_us = p->t_burst;
++        p->att_new = true;
++        return true;
++    }
+     if (p->buf[1] == 0x52) {                      /* 角速度帧 */
+         p->gx = (int16_t)(p->buf[2] | (p->buf[3] << 8));
+         p->gy = (int16_t)(p->buf[4] | (p->buf[5] << 8));
+--- a/fw/nav/imu_parse.h
++++ b/fw/nav/imu_parse.h
+@@ -10,7 +10,10 @@
+ 
+ #include "nav_types.h"
+ 
+-typedef enum { IMU_PROTO_WIT55 = 0 } imu_proto_t;
++/* IMU_PROTO_BMI_INTERNAL：整车镜像里控制侧 BMI088 融合结果经片内串口送来（g2_top 的 bmi_att_uart）：
++ * 0x55 0x5B 重力单位向量（控制机身系 Q12）+ 融合序号，0x55 0x5C 角速度（控制机身系 Q9 rad/s）。
++ * 控制机身系 X 右、Y 前、Z 上；导航机身系 X 前、Y 左、Z 上；换算见 imu_parse.c 的 IMU_BMI_* 宏（须装车核对）。 */
++typedef enum { IMU_PROTO_WIT55 = 0, IMU_PROTO_BMI_INTERNAL = 1 } imu_proto_t;
+ 
+ typedef struct {
+     imu_proto_t proto;
+@@ -25,6 +28,7 @@
+     int16_t  gx, gy, gz;        /* 原始角速度（×2000/32768 °/s），机身系 x 前 y 左 z 上 */
+     uint32_t gyro_t_us;
+     uint32_t n_ok, n_bad;
++    uint16_t bmi_seq;           /* BMI 内部协议：最近一帧重力帧的融合序号 */
+ } imu_parser_t;
+ 
+ void imu_parser_init(imu_parser_t *p, imu_proto_t proto);
+--- a/fw/app/nav_app.c
++++ b/fw/app/nav_app.c
+@@ -12,28 +12,38 @@
+ 
+ static void app_match_update(int32_t dx,int32_t dy,int32_t da,int32_t cx,int32_t cy)
+ {
+-    hal_match_lf_forward(g_app.lf_forward_mm,g_app.nt.pose.cur.yaw);
++    if (g_app.lf_fixed) hal_match_lf_center_mm(g_app.lf_fixed_x_mm, g_app.lf_fixed_y_mm);
++    else hal_match_lf_forward(g_app.lf_forward_mm,g_app.nt.pose.cur.yaw);
+     hal_match_update(dx,dy,da,cx,cy);
+ }
+ bool nav_app_have_prior(void) { return g_app.prx.state == PRIOR_READY; }
+ 
+-bool nav_app_set_slf_window(int32_t forward_mm,int32_t zhi_mm)
++/* fixed=true 时窗口中心固定在里程计系 (x_mm, y_mm)，forward_mm 不用 */
++bool nav_app_set_slf_window_mode(bool fixed,int32_t forward_mm,int32_t x_mm,int32_t y_mm,int32_t zhi_mm)
+ {
+     if (forward_mm<0 || forward_mm>3000 || zhi_mm<APP_ZLO_ODOM || zhi_mm>1500 ||
++        x_mm<-10000 || x_mm>10000 || y_mm<-10000 || y_mm>10000 ||
+         g_app.nt.mode!=NAV_MODE_IDLE || g_app.pm_pend || g_app.pm_run ||
+         nav_app_have_prior() || g_app.prx.state==PRIOR_RECV) return false;
+-    if(g_app.lf_forward_mm!=forward_mm || g_app.match_zhi!=zhi_mm)
++    if(g_app.lf_forward_mm!=forward_mm || g_app.match_zhi!=zhi_mm || g_app.lf_fixed!=fixed ||
++       (fixed && (g_app.lf_fixed_x_mm!=x_mm || g_app.lf_fixed_y_mm!=y_mm)))
+         hal_prior_enable(false,0,0); // clear accumulated old-height/window SLF, EM unchanged
+     g_app.lf_forward_mm=forward_mm;g_app.match_zhi=zhi_mm;
++    g_app.lf_fixed=fixed;g_app.lf_fixed_x_mm=x_mm;g_app.lf_fixed_y_mm=y_mm;
+     hal_match_zband(APP_ZLO_ODOM,zhi_mm);return true;
+ }
++bool nav_app_set_slf_window(int32_t forward_mm,int32_t zhi_mm)
++{
++    return nav_app_set_slf_window_mode(false,forward_mm,0,0,zhi_mm);
++}
+ void nav_app_init(void)
+ {
+     nav_task_init(&g_app.nt);
+     host_link_guard_init(&g_host_link_guard,hal_time_us());
+     g_app.nt.async_gmap=true;
+     support_reset(0); /* 默认不声明启动盲区已知；实验须显式给出平地前提。 */
+-    imu_parser_init(&g_app.imu, IMU_PROTO_WIT55);
++    imu_parser_init(&g_app.imu, (imu_proto_t)APP_IMU_PROTO);
++    if (APP_IMU_BAUD_DIV > 0) hal_imu_config(APP_IMU_BAUD_DIV);
+     uint32_t now = hal_time_us();
+     g_app.t_plan = now;
+     g_app.t_status = now;
+@@ -129,12 +139,14 @@
+         uint32_t result=0; // query0/applied1/busy2/range3/prior4
+         if(m->u.slf.set) {
+             int32_t d=m->u.slf.forward_mm,z=m->u.slf.zhi_mm;
++            bool fixed=m->u.slf.fixed!=0;
+             if(d<0||d>3000||z<APP_ZLO_ODOM||z>1500) result=3;
+             else if(nav_app_have_prior()||g_app.prx.state==PRIOR_RECV) result=4;
+-            else result=nav_app_set_slf_window(d,z)?1:2;
++            else result=nav_app_set_slf_window_mode(fixed,d,m->u.slf.fixed_x_mm,m->u.slf.fixed_y_mm,z)?1:2;
+         }
+         uint8_t reply[20];
+-        int n=proto_build_slf_ack(reply,result,g_app.lf_forward_mm,g_app.match_zhi,0x534C0107u);
++        /* 固定窗口时 d 字段回报 -1；profile 低字节 08 表示支持固定窗口 */
++        int n=proto_build_slf_ack(reply,result,g_app.lf_fixed?-1:g_app.lf_forward_mm,g_app.match_zhi,0x534C0108u);
+         hal_host_send(reply,n);break;
+     }
+     case MSG_MAP_BEGIN:
+--- a/fw/app/nav_app.h
++++ b/fw/app/nav_app.h
+@@ -20,6 +20,14 @@
+ #define APP_ZLO_PRIOR  (-300)
+ #define APP_ZHI        350
+ #define APP_LF_FORWARD_MM 1500
++/* 姿态来源：0 = 外接 WIT 串口 IMU（仿真缺省），1 = 整车镜像片内 BMI088 融合（板级构建传 -DAPP_IMU_PROTO=1）。
++ * APP_IMU_BAUD_DIV > 0 时启动即写 IMU.BAUD_DIV，须与 g2_top 中 bmi_att_uart 的 DIV 相同。 */
++#ifndef APP_IMU_PROTO
++#define APP_IMU_PROTO 0
++#endif
++#ifndef APP_IMU_BAUD_DIV
++#define APP_IMU_BAUD_DIV 0
++#endif
+ 
+ typedef struct {
+     nav_task_t   nt;
+@@ -27,6 +35,9 @@
+     uint32_t     t_plan, t_status;
+     uint32_t     n_frames, n_msgs, n_skip;
+     int32_t      lf_forward_mm,match_zhi; // runtime parameters; geometry is fixed128
++    /* 无图 SLF 窗口固定在里程计系一点（封闭小场地：窗口罩住整个场地，场地中心相对出发位姿已知） */
++    bool         lf_fixed;
++    int32_t      lf_fixed_x_mm, lf_fixed_y_mm;
+     bool         use_imu_yaw;           /* IMU 航向可信时置 1（磁干扰大时用里程计航向） */
+     pm_cfg_t     pm_cfg;
+     pm_stat_t    pm;
+@@ -65,6 +76,7 @@
+ extern nav_app_t g_app;
+ 
+ bool nav_app_set_slf_window(int32_t forward_mm,int32_t zhi_mm);
++bool nav_app_set_slf_window_mode(bool fixed,int32_t forward_mm,int32_t x_mm,int32_t y_mm,int32_t zhi_mm);
+ void nav_app_init(void);
+ void nav_app_poll(void);
+ 
+--- a/fw/drv/hal_fpga.c
++++ b/fw/drv/hal_fpga.c
+@@ -23,6 +23,12 @@
+     const int64_t den=16384LL*65536LL;
+     return (int32_t)(n<0 ? -((-n+den/2)/den) : (n+den/2)/den);
+ }
++void hal_match_lf_center_mm(int32_t x_mm, int32_t y_mm)
++{
++    uint32_t inv=nav_rd(NAV_MAP_INV_RES)&65535u;
++    nav_wr(NAV_MATCH_LF_CX,(uint32_t)(int32_t)(((int64_t)x_mm*inv)>>16));
++    nav_wr(NAV_MATCH_LF_CY,(uint32_t)(int32_t)(((int64_t)y_mm*inv)>>16));
++}
+ void hal_match_lf_forward(int32_t distance_mm, angle_t yaw)
+ {
+     uint32_t inv=nav_rd(NAV_MAP_INV_RES)&65535u;
+@@ -375,6 +381,11 @@
+     nav_wr(NAV_LIDAR_POSE_COMMIT, 1);
+ }
+ 
++void hal_imu_config(uint32_t baud_div)
++{
++    nav_wr(NAV_IMU_BAUD_DIV, baud_div & 0xFFFFu);
++}
++
+ bool hal_imu_byte(uint8_t *b, bool *first, uint32_t *t_us)
+ {
+     uint32_t v = nav_rd(NAV_IMU_RX_DATA);           /* 读取即弹出 */
+--- a/fw/hal/hal.h
++++ b/fw/hal/hal.h
+@@ -92,6 +92,8 @@
+ bool hal_match_start(int32_t cx_mm, int32_t cy_mm, const hal_match_cand_t *c, int k);
+ bool hal_match_result(hal_match_res_t *res, int k);
+ void hal_match_lf_forward(int32_t distance_mm, angle_t yaw);
++/* 无图 SLF 窗口中心固定在里程计系 (x_mm, y_mm) */
++void hal_match_lf_center_mm(int32_t x_mm, int32_t y_mm);
+ void hal_match_update(int32_t dx, int32_t dy, int32_t dyaw, int32_t cx_mm, int32_t cy_mm);
+ /* 读高程图某点（里程计系 mm）所在栅格的地面高度：[zmin, zmax] 区间中点（格内高差 > 40 mm 视为非地面）。
+  * 栅格有效返回 true。上板实现走 MAP.ELEV_ADDR/ELEV_CMD/ELEV_Q0/Q1 */
+@@ -126,6 +128,8 @@
+ /* ---- IMU 原始字节 ---- */
+ /* 取一个字节；first 表示突发首字节，t_us 为其到达时间（仅 first 时有效）。无数据返回 false */
+ bool hal_imu_byte(uint8_t *b, bool *first, uint32_t *t_us);
++/* IMU 串口波特率分频（核心时钟 / 波特率） */
++void hal_imu_config(uint32_t baud_div);
+ 
+ /* ---- 主机报文（RK3588 / PC，网口或串口注入，见 proto.h）---- */
+ /* 取一个报文，返回长度（0 表示没有）；t_us 为到达时间 */
+--- a/fw/test/hal_py.c
++++ b/fw/test/hal_py.c
+@@ -92,6 +92,10 @@
+ void hal_lidar_stage(int stage) { s_stage = stage; ctl(6, stage, 0, 0); }
+ // This callback is present only in newly compiled isolated test DLLs.
+ // Existing stage1/model processes and their DLLs remain untouched.
++void hal_match_lf_center_mm(int32_t x_mm, int32_t y_mm)
++{
++    ctl(7,(int32_t)(((int64_t)x_mm*s_mi.inv_res)>>16),(int32_t)(((int64_t)y_mm*s_mi.inv_res)>>16),0);
++}
+ void hal_match_lf_forward(int32_t distance_mm, angle_t yaw)
+ {
+     const int64_t den=16384LL*65536LL;
+@@ -440,6 +444,7 @@
+     s_mdone = false;
+     return true;
+ }
++void hal_imu_config(uint32_t baud_div) { (void)baud_div; }
+ bool hal_imu_byte(uint8_t *b, bool *first, uint32_t *t)
+ {
+     if (s_ih == s_it) return false;
+--- a/fw/nav/proto.c
++++ b/fw/nav/proto.c
+@@ -41,8 +41,15 @@
+         m->u.pose.flags = rd16(p + 12); m->u.pose.range_mm = rd16(p + 14); m->u.pose.range_cdeg = rd16(p + 16);
+         return true;
+     case MSG_SLF_CONFIG:
+-        if(n!=12 || (uint32_t)rd32(p)>1u) return false;
+-        m->u.slf.set=(uint32_t)rd32(p);m->u.slf.forward_mm=rd32(p+4);m->u.slf.zhi_mm=rd32(p+8);return true;
++        /* 12 字节：set, forward_mm, zhi_mm；24 字节再加 fixed(0/1), fixed_x_mm, fixed_y_mm（里程计系） */
++        if((n!=12 && n!=24) || (uint32_t)rd32(p)>1u) return false;
++        m->u.slf.set=(uint32_t)rd32(p);m->u.slf.forward_mm=rd32(p+4);m->u.slf.zhi_mm=rd32(p+8);
++        m->u.slf.fixed=0;m->u.slf.fixed_x_mm=0;m->u.slf.fixed_y_mm=0;
++        if(n==24) {
++            if((uint32_t)rd32(p+12)>1u) return false;
++            m->u.slf.fixed=(uint32_t)rd32(p+12);m->u.slf.fixed_x_mm=rd32(p+16);m->u.slf.fixed_y_mm=rd32(p+20);
++        }
++        return true;
+     case MSG_MAP_BEGIN:
+         if (n < 4) return false;
+         m->u.map_begin.total = (uint32_t)rd32(p);
+--- a/fw/nav/proto.h
++++ b/fw/nav/proto.h
+@@ -52,7 +52,7 @@
+         struct { uint8_t found, cls; uint16_t conf; int32_t x, y, z; uint16_t latency_ms, track_id; } target;
+         struct { uint8_t mode; } mode;
+         struct { int32_t x, y, yaw_cdeg; uint16_t flags, range_mm, range_cdeg; } pose;
+-        struct { uint32_t set; int32_t forward_mm,zhi_mm; } slf;
++        struct { uint32_t set; int32_t forward_mm,zhi_mm; uint32_t fixed; int32_t fixed_x_mm,fixed_y_mm; } slf;
+         struct { uint32_t total; } map_begin;
+         struct { uint32_t offset; uint16_t n; const uint8_t *data; } map_data;   /* data 指向报文缓冲 */
+     } u;

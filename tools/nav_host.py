@@ -14,6 +14,7 @@
   python tools/nav_host.py --link uart:COM5 mode search                         探索（有图：未看过的区域；无图：边界探索）
   python tools/nav_host.py --link udp:192.168.2.100 listen                      打印状态
   python tools/nav_host.py --link udp:192.168.2.100 target 1500 200 45          目标（机身系 mm，采图到发送的延时 ms）
+  python tools/nav_host.py --link uart:/dev/ttyACM0 slf fixed 2050 950 350       无图 SLF 窗口固定在场地中心（里程计系 mm）
 """
 import argparse
 import math
@@ -70,6 +71,14 @@ def map_end():
     return hdr(0x42)
 
 
+def slf_config(set_=False, forward_mm=0, zhi_mm=350, fixed=None):
+    """MSG_SLF_CONFIG：set=False 只查询；fixed=(x_mm, y_mm) 时无图窗口固定在里程计系该点（需固件 profile 0x534C0108）"""
+    b = hdr(0x44) + struct.pack("<Iii", 1 if set_ else 0, forward_mm, zhi_mm)
+    if fixed is not None:
+        b += struct.pack("<Iii", 1, int(fixed[0]), int(fixed[1]))
+    return b
+
+
 def map_clear():
     return hdr(0x43)
 
@@ -99,6 +108,10 @@ def parse(b):
     if t == 0x82 and len(b) >= 12:
         nxt, st = struct.unpack("<IB", b[4:9])
         return dict(type="map_ack", next=nxt, state=MAP_STATES.get(st, st), state_code=st)
+    if t == 0x84 and len(b) >= 20:
+        res, d, zhi, profile = struct.unpack("<IiiI", b[4:20])
+        return dict(type="slf_ack", result={0: "查询", 1: "已设置", 2: "忙", 3: "越界", 4: "有图中"}.get(res, res),
+                    window="固定" if d == -1 else f"前移 {d} mm", zhi_mm=zhi, profile=f"0x{profile:08X}")
     return None
 
 
@@ -238,6 +251,28 @@ def main():
         ln.send(mode(MODES[v[0]]))
     elif c == "target":
         ln.send(target(int(v[0]), int(v[1]), int(v[2]) if len(v) > 2 else 0))
+    elif c == "slf":
+        # slf                      查询
+        # slf forward D ZHI        无图窗口沿航向前移 D mm，结构点高度上限 ZHI mm
+        # slf fixed X Y ZHI        无图窗口固定在里程计系 (X, Y) mm（封闭小场地：填场地中心相对出发位姿的坐标）
+        if not v:
+            msg = slf_config(False)
+        elif v[0] == "forward":
+            msg = slf_config(True, int(v[1]), int(v[2]))
+        elif v[0] == "fixed":
+            msg = slf_config(True, 0, int(v[3]), fixed=(int(v[1]), int(v[2])))
+        else:
+            print(__doc__)
+            return 1
+        ln.send(msg)
+        for _ in range(20):
+            r = ln.recv(0.3)
+            d = parse(r) if r else None
+            if d and d["type"] == "slf_ack":
+                print(d)
+                return 0
+        print("未收到 SLF 应答")
+        return 1
     elif c == "listen":
         while True:
             r = ln.recv(1.0)
