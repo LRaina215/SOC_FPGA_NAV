@@ -1,0 +1,736 @@
+{
+  "recorded_at": "2026-10-26T17:51:43.967164+08:00",
+  "stage1a_completed": true,
+  "ended_at": "2026-10-26T17:49:13.981073+08:00",
+  "controller_pid": 45752,
+  "same_controller_running": false,
+  "directory": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1a_window_ablation_20261026",
+  "job": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1a_window_ablation_20261026\\job.json",
+  "summary": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1a_window_ablation_20261026\\summary.json",
+  "manifest": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1a_window_ablation_20261026\\manifest.json",
+  "minimal_default_consistency": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1a_window_ablation_20261026\\minimal_consistency.json",
+  "coordinate_contract": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1a_window_ablation_20261026\\coordinate_contract.json",
+  "window_and_prefix_analysis": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1a_window_ablation_20261026\\window_coverage_and_prefix_comparison.json",
+  "analysis_entry": "integration/g2/analyze_stage1a_window_coverage.py",
+  "baseline_reused_not_rerun": true,
+  "new_case_count": 4,
+  "acceptance_gate": "vs same-seed rolling256: no added collision/false-arrival and valid XY RMSE/P95/endpoint worsening<=10mm; max diagnostic only",
+  "max_used_as_gate": false,
+  "fixed128_all_hard_gates_passed": false,
+  "stage1b_started": false,
+  "stage1d_fallback_authorized": true,
+  "production_RTL_model_DLL_unchanged": true,
+  "execution_scope": "N1c navigation C DLL + fixed-point perception + virtual lidar + velocity kinematics; RL/SAFE not in loop; fixed40ms matcher simulation latency; not RTL/board/WCET",
+  "rows": [
+    {
+      "case": "goal",
+      "profile": "storage256_lf128_rolling",
+      "outcome": "false_arrival",
+      "true_goal_error_mm": 164.0,
+      "XY_valid_mm": {
+        "samples": 183,
+        "RMSE_mm": 50.99465256440065,
+        "P95_mm": 65.50933203615591,
+        "endpoint_mm": 61.44371408044949,
+        "max_mm": 105.0352321842531
+      },
+      "delta_vs_rolling256_XY_valid_mm": {
+        "RMSE_mm": 37.762595944042154,
+        "P95_mm": 46.13077738148887,
+        "endpoint_mm": 42.139828461227395,
+        "max_mm": 49.96346083086358
+      },
+      "relative_RMSE_P95_endpoint_gate": false,
+      "no_added_collision_false_arrival": false,
+      "audit_summary": {
+        "update_calls": 125,
+        "update_points_total": 91880,
+        "build_calls": 183,
+        "score_calls": 183,
+        "first_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            0,
+            0
+          ],
+          "actual_center_cells": [
+            0,
+            0
+          ],
+          "window_origin_cells": [
+            -64,
+            -64
+          ],
+          "window_end_exclusive_cells": [
+            64,
+            64
+          ],
+          "LF_N": 128,
+          "storage_SN": 256,
+          "world_window_corners_m": [
+            [
+              -2.749316552250191,
+              -4.149316552250191
+            ],
+            [
+              3.649316552250191,
+              -4.149316552250191
+            ],
+            [
+              3.649316552250191,
+              2.249316552250191
+            ],
+            [
+              -2.749316552250191,
+              2.249316552250191
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              -2.349401983218917,
+              -3.7494019832189167
+            ],
+            [
+              3.249401983218917,
+              -3.7494019832189167
+            ],
+            [
+              3.249401983218917,
+              1.849401983218917
+            ],
+            [
+              -2.349401983218917,
+              1.849401983218917
+            ]
+          ],
+          "n_struct": 0,
+          "prior": false,
+          "margin": 8
+        },
+        "last_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            79,
+            35
+          ],
+          "actual_center_cells": [
+            79,
+            35
+          ],
+          "window_origin_cells": [
+            15,
+            -29
+          ],
+          "window_end_exclusive_cells": [
+            143,
+            99
+          ],
+          "LF_N": 128,
+          "storage_SN": 256,
+          "world_window_corners_m": [
+            [
+              1.1998398169336384,
+              -2.3996903127383677
+            ],
+            [
+              7.59847292143402,
+              -2.3996903127383677
+            ],
+            [
+              7.59847292143402,
+              3.9989427917620137
+            ],
+            [
+              1.1998398169336384,
+              3.9989427917620137
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              1.5997543859649122,
+              -1.9997757437070938
+            ],
+            [
+              7.198558352402746,
+              -1.9997757437070938
+            ],
+            [
+              7.198558352402746,
+              3.5990282227307393
+            ],
+            [
+              1.5997543859649122,
+              3.5990282227307393
+            ]
+          ],
+          "n_struct": 911,
+          "prior": false,
+          "margin": 8
+        },
+        "effective_n_valid_min": 0,
+        "effective_n_valid_max": 948,
+        "UPDATE_not_skipped": true,
+        "prior_false": true,
+        "MARGIN": 8,
+        "candidate_rotation_center_is_vehicle": true
+      }
+    },
+    {
+      "case": "goal",
+      "profile": "storage128_lf128_fixed_field",
+      "outcome": "false_arrival",
+      "true_goal_error_mm": 156.0,
+      "XY_valid_mm": {
+        "samples": 181,
+        "RMSE_mm": 14.342813473741561,
+        "P95_mm": 24.850150904974456,
+        "endpoint_mm": 24.850150904974456,
+        "max_mm": 43.04149160984108
+      },
+      "delta_vs_rolling256_XY_valid_mm": {
+        "RMSE_mm": 1.1107568533830605,
+        "P95_mm": 5.471596250307417,
+        "endpoint_mm": 5.546265285752362,
+        "max_mm": -12.03027974354844
+      },
+      "relative_RMSE_P95_endpoint_gate": true,
+      "no_added_collision_false_arrival": false,
+      "audit_summary": {
+        "update_calls": 124,
+        "update_points_total": 91884,
+        "build_calls": 181,
+        "score_calls": 181,
+        "first_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            0,
+            0
+          ],
+          "actual_center_cells": [
+            41,
+            19
+          ],
+          "window_origin_cells": [
+            -23,
+            -45
+          ],
+          "window_end_exclusive_cells": [
+            105,
+            83
+          ],
+          "LF_N": 128,
+          "storage_SN": 128,
+          "world_window_corners_m": [
+            [
+              -0.6997543859649122,
+              -3.1995194508009153
+            ],
+            [
+              5.69887871853547,
+              -3.1995194508009153
+            ],
+            [
+              5.69887871853547,
+              3.1991136536994658
+            ],
+            [
+              -0.6997543859649122,
+              3.1991136536994658
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              -0.2998398169336384,
+              -2.7996048817696417
+            ],
+            [
+              5.2989641495041955,
+              -2.7996048817696417
+            ],
+            [
+              5.2989641495041955,
+              2.7991990846681922
+            ],
+            [
+              -0.2998398169336384,
+              2.7991990846681922
+            ]
+          ],
+          "n_struct": 0,
+          "prior": false,
+          "margin": 8
+        },
+        "last_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            79,
+            35
+          ],
+          "actual_center_cells": [
+            41,
+            19
+          ],
+          "window_origin_cells": [
+            -23,
+            -45
+          ],
+          "window_end_exclusive_cells": [
+            105,
+            83
+          ],
+          "LF_N": 128,
+          "storage_SN": 128,
+          "world_window_corners_m": [
+            [
+              -0.6997543859649122,
+              -3.1995194508009153
+            ],
+            [
+              5.69887871853547,
+              -3.1995194508009153
+            ],
+            [
+              5.69887871853547,
+              3.1991136536994658
+            ],
+            [
+              -0.6997543859649122,
+              3.1991136536994658
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              -0.2998398169336384,
+              -2.7996048817696417
+            ],
+            [
+              5.2989641495041955,
+              -2.7996048817696417
+            ],
+            [
+              5.2989641495041955,
+              2.7991990846681922
+            ],
+            [
+              -0.2998398169336384,
+              2.7991990846681922
+            ]
+          ],
+          "n_struct": 451,
+          "prior": false,
+          "margin": 8
+        },
+        "effective_n_valid_min": 0,
+        "effective_n_valid_max": 1018,
+        "UPDATE_not_skipped": true,
+        "prior_false": true,
+        "MARGIN": 8,
+        "candidate_rotation_center_is_vehicle": true
+      }
+    },
+    {
+      "case": "turn_loop",
+      "profile": "storage256_lf128_rolling",
+      "outcome": "arrived",
+      "true_goal_error_mm": 146.0,
+      "XY_valid_mm": {
+        "samples": 369,
+        "RMSE_mm": 46.02514924629394,
+        "P95_mm": 69.76186016430226,
+        "endpoint_mm": 16.953170794868928,
+        "max_mm": 98.07349285102444
+      },
+      "delta_vs_rolling256_XY_valid_mm": {
+        "RMSE_mm": 25.122423308921494,
+        "P95_mm": 27.28904532939876,
+        "endpoint_mm": -25.519644040034574,
+        "max_mm": 48.175496899283225
+      },
+      "relative_RMSE_P95_endpoint_gate": false,
+      "no_added_collision_false_arrival": true,
+      "audit_summary": {
+        "update_calls": 275,
+        "update_points_total": 178985,
+        "build_calls": 369,
+        "score_calls": 369,
+        "first_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            0,
+            0
+          ],
+          "actual_center_cells": [
+            0,
+            0
+          ],
+          "window_origin_cells": [
+            -64,
+            -64
+          ],
+          "window_end_exclusive_cells": [
+            64,
+            64
+          ],
+          "LF_N": 128,
+          "storage_SN": 256,
+          "world_window_corners_m": [
+            [
+              -2.749316552250191,
+              -4.149316552250191
+            ],
+            [
+              3.649316552250191,
+              -4.149316552250191
+            ],
+            [
+              3.649316552250191,
+              2.249316552250191
+            ],
+            [
+              -2.749316552250191,
+              2.249316552250191
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              -2.349401983218917,
+              -3.7494019832189167
+            ],
+            [
+              3.249401983218917,
+              -3.7494019832189167
+            ],
+            [
+              3.249401983218917,
+              1.849401983218917
+            ],
+            [
+              -2.349401983218917,
+              1.849401983218917
+            ]
+          ],
+          "n_struct": 0,
+          "prior": false,
+          "margin": 8
+        },
+        "last_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            0,
+            2
+          ],
+          "actual_center_cells": [
+            0,
+            2
+          ],
+          "window_origin_cells": [
+            -64,
+            -62
+          ],
+          "window_end_exclusive_cells": [
+            64,
+            66
+          ],
+          "LF_N": 128,
+          "storage_SN": 256,
+          "world_window_corners_m": [
+            [
+              -2.749316552250191,
+              -4.0493379099923725
+            ],
+            [
+              3.649316552250191,
+              -4.0493379099923725
+            ],
+            [
+              3.649316552250191,
+              2.3492951945080094
+            ],
+            [
+              -2.749316552250191,
+              2.3492951945080094
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              -2.349401983218917,
+              -3.649423340961098
+            ],
+            [
+              3.249401983218917,
+              -3.649423340961098
+            ],
+            [
+              3.249401983218917,
+              1.9493806254767356
+            ],
+            [
+              -2.349401983218917,
+              1.9493806254767356
+            ]
+          ],
+          "n_struct": 517,
+          "prior": false,
+          "margin": 8
+        },
+        "effective_n_valid_min": 0,
+        "effective_n_valid_max": 1010,
+        "UPDATE_not_skipped": true,
+        "prior_false": true,
+        "MARGIN": 8,
+        "candidate_rotation_center_is_vehicle": true
+      }
+    },
+    {
+      "case": "turn_loop",
+      "profile": "storage128_lf128_fixed_field",
+      "outcome": "false_arrival",
+      "true_goal_error_mm": 161.0,
+      "XY_valid_mm": {
+        "samples": 371,
+        "RMSE_mm": 60.303290063253066,
+        "P95_mm": 105.74308488028896,
+        "endpoint_mm": 105.74308488028896,
+        "max_mm": 116.18076432869603
+      },
+      "delta_vs_rolling256_XY_valid_mm": {
+        "RMSE_mm": 39.40056412588062,
+        "P95_mm": 63.27027004538546,
+        "endpoint_mm": 63.27027004538546,
+        "max_mm": 66.2827683769548
+      },
+      "relative_RMSE_P95_endpoint_gate": false,
+      "no_added_collision_false_arrival": true,
+      "audit_summary": {
+        "update_calls": 268,
+        "update_points_total": 179096,
+        "build_calls": 371,
+        "score_calls": 371,
+        "first_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            0,
+            0
+          ],
+          "actual_center_cells": [
+            41,
+            19
+          ],
+          "window_origin_cells": [
+            -23,
+            -45
+          ],
+          "window_end_exclusive_cells": [
+            105,
+            83
+          ],
+          "LF_N": 128,
+          "storage_SN": 128,
+          "world_window_corners_m": [
+            [
+              -0.6997543859649122,
+              -3.1995194508009153
+            ],
+            [
+              5.69887871853547,
+              -3.1995194508009153
+            ],
+            [
+              5.69887871853547,
+              3.1991136536994658
+            ],
+            [
+              -0.6997543859649122,
+              3.1991136536994658
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              -0.2998398169336384,
+              -2.7996048817696417
+            ],
+            [
+              5.2989641495041955,
+              -2.7996048817696417
+            ],
+            [
+              5.2989641495041955,
+              2.7991990846681922
+            ],
+            [
+              -0.2998398169336384,
+              2.7991990846681922
+            ]
+          ],
+          "n_struct": 0,
+          "prior": false,
+          "margin": 8
+        },
+        "last_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            0,
+            2
+          ],
+          "actual_center_cells": [
+            41,
+            19
+          ],
+          "window_origin_cells": [
+            -23,
+            -45
+          ],
+          "window_end_exclusive_cells": [
+            105,
+            83
+          ],
+          "LF_N": 128,
+          "storage_SN": 128,
+          "world_window_corners_m": [
+            [
+              -0.6997543859649122,
+              -3.1995194508009153
+            ],
+            [
+              5.69887871853547,
+              -3.1995194508009153
+            ],
+            [
+              5.69887871853547,
+              3.1991136536994658
+            ],
+            [
+              -0.6997543859649122,
+              3.1991136536994658
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              -0.2998398169336384,
+              -2.7996048817696417
+            ],
+            [
+              5.2989641495041955,
+              -2.7996048817696417
+            ],
+            [
+              5.2989641495041955,
+              2.7991990846681922
+            ],
+            [
+              -0.2998398169336384,
+              2.7991990846681922
+            ]
+          ],
+          "n_struct": 778,
+          "prior": false,
+          "margin": 8
+        },
+        "effective_n_valid_min": 0,
+        "effective_n_valid_max": 1021,
+        "UPDATE_not_skipped": true,
+        "prior_false": true,
+        "MARGIN": 8,
+        "candidate_rotation_center_is_vehicle": true
+      }
+    }
+  ],
+  "interpretation": "View coverage causes a substantial early and overall degradation under rolling128 LF even with256 storage. Fixed128 restores goal error metrics but adds false-arrival; it worsens turn_loop. Therefore full coverage is not a sufficient explanation or solution for the complete task. Later storage/tag/history and map-update interactions remain unproven.",
+  "first_goal_ablation_vs_rolling128_prefix": {
+    "match_log": {
+      "rows_left": 183,
+      "rows_right": 183,
+      "exactly_equal_prefix_rows": 74,
+      "first_different_zero_based_row": 74,
+      "first_different_left": [
+        1,
+        -13,
+        3,
+        0,
+        8,
+        796,
+        2250,
+        1192,
+        0,
+        0,
+        0,
+        72
+      ],
+      "first_different_right": [
+        1,
+        -13,
+        3,
+        0,
+        8,
+        796,
+        2383,
+        1150,
+        0,
+        0,
+        0,
+        72
+      ],
+      "tlog_first_different_time_s": null
+    },
+    "tlog": {
+      "rows_left": 183,
+      "rows_right": 183,
+      "exactly_equal_prefix_rows": 76,
+      "first_different_zero_based_row": 76,
+      "first_different_left": [
+        7.7,
+        2.4435718501036368,
+        -0.5139783522710805,
+        0.0,
+        3.235041331978457,
+        2.49,
+        -0.516,
+        -0.001,
+        3.5815429687499996,
+        375.0,
+        0.0,
+        0.0,
+        -1.4995484469818319,
+        -1.3897705078125,
+        0.0,
+        -0.15380859375,
+        0.4201892054772875,
+        -5.781105094637716e-08,
+        1.0
+      ],
+      "first_different_right": [
+        7.7,
+        2.4435718501036368,
+        -0.5139783522710805,
+        0.0,
+        3.235041331978457,
+        2.49,
+        -0.516,
+        -0.001,
+        3.5870361328125004,
+        375.0,
+        0.0,
+        0.0,
+        -1.4995484469818319,
+        -1.3897705078125,
+        0.0,
+        -0.15380859375,
+        0.4201892054772875,
+        -5.781105094637716e-08,
+        1.0
+      ],
+      "tlog_first_different_time_s": 7.7
+    },
+    "caveat": "match_log has commit order but no individual timestamps; no row-to-time alignment is assumed"
+  },
+  "raw_audit_confirms_UPDATE_and_Margin8_not_prior": true,
+  "no_new_EDA": true
+}

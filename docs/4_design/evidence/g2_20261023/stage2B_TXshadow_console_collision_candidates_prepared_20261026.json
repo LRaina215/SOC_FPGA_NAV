@@ -1,0 +1,293 @@
+{
+  "recorded_at": "2026-10-26T18:17:23.523527+08:00",
+  "scope": "Frozen minimal consumer collision-avoidance candidates plus small Boolean obligations; no RTL run",
+  "candidates": [
+    {
+      "candidate": "F:\\nav_integration_g2_20261023\\stage2B_TXshadow_RDEN_prepared2",
+      "changed_RTL": [
+        "nav/rtl/net/host_mbx.v",
+        "nav/rtl/top/nav_subsystem.v"
+      ],
+      "contract": {
+        "profile": "txshadow",
+        "source": "F:\\nav_integration_g2_20261023\\stage2B_bitmap_mailbox_slist_trig_console_bias_prepared1",
+        "candidate": "F:\\nav_integration_g2_20261023\\stage2B_TXshadow_RDEN_prepared2",
+        "changed_RTL": [
+          "nav/rtl/net/host_mbx.v",
+          "nav/rtl/top/nav_subsystem.v"
+        ],
+        "unchanged_other61_RTL": true,
+        "original_Firmware_assets_parameters_clocks_weights_125Hz_capacity_unchanged": true,
+        "architecture": "Same50MHz clock. No derived/half-cycle clock, byte/word capacity or INIT change. No unsupported Read-before-Write mode selected.",
+        "observable_timing": "TXB_Q E0 demand/E1 original ACK, including data returned by writes to the read-only Q address",
+        "write_commit_change": "None",
+        "conflict_granularity": "Exclusion by no simultaneous physical read/write enables; does not rely on logical-address inequality. Future mapping must check actual14bit AD[13:4] and all split lanes.",
+        "input_contract": "CPU/debug/nav request and addresses held until ACK; CPU master respects reset/HOLD. Console pending->no next CPU write requires precise req/per_ready/sel_per reachable-state proof, including reset transition; not yet proved.",
+        "injection_retained_distributed": true,
+        "injection_GO_length_ACK_or_capacity_changed": false,
+        "combined_B_route_BSRAM_prediction": 333,
+        "prediction_not_actual_measurement": true,
+        "consumer_bus_miter": {
+          "files": [
+            "reference.v",
+            "candidate.v",
+            "nav_bus_arb.v",
+            "nav_regfile.v",
+            "host_mbx.v",
+            "nav_ram_sdp.v",
+            "tb.sv"
+          ],
+          "top": "tb_stage2b_TXshadow_bus_miter",
+          "cut": "Actual two-master arbiter, complete regfile and complete host_mbx are used. Only the ordinary RF bus subflow is extracted; other read-window state branches are outside this cut, with the new read gate false. This is not whole-nav or UART physical throughput proof.",
+          "pending_proofs": [
+            "RF branch cut/bus-ack/data miter and demanded read timing",
+            "Actual full SYN after merge: top read decode plus no enabled write/read on all physical shadow leaves",
+            "Other bus-window/IRQ/reset full-consumer regressions"
+          ]
+        },
+        "RTL_not_compiled": true,
+        "RTL_not_simulated": true,
+        "actual_mapping_not_verified": true,
+        "physical_collision_contract_closed": false,
+        "all_tools_started": false,
+        "programmed": false
+      },
+      "validation": {
+        "files": [
+          "reference.v",
+          "candidate.v",
+          "nav_bus_arb.v",
+          "nav_regfile.v",
+          "host_mbx.v",
+          "nav_ram_sdp.v",
+          "tb.sv"
+        ],
+        "top": "tb_stage2b_TXshadow_bus_miter",
+        "cut": "Actual two-master arbiter, complete regfile and complete host_mbx are used. Only the ordinary RF bus subflow is extracted; other read-window state branches are outside this cut, with the new read gate false. This is not whole-nav or UART physical throughput proof.",
+        "pending_proofs": [
+          "RF branch cut/bus-ack/data miter and demanded read timing",
+          "Actual full SYN after merge: top read decode plus no enabled write/read on all physical shadow leaves",
+          "Other bus-window/IRQ/reset full-consumer regressions"
+        ],
+        "candidate": "F:\\nav_integration_g2_20261023\\stage2B_TXshadow_RDEN_prepared2",
+        "RTL_simulator": "xvlog/xelab/xsim only after explicit root coordination",
+        "minimum_physical_bytes": 2147483648,
+        "minimum_commit_bytes": 4294967296,
+        "automatic_run": false,
+        "commands": [
+          [
+            "xvlog",
+            [
+              "-sv",
+              "reference.v",
+              "candidate.v",
+              "nav_bus_arb.v",
+              "nav_regfile.v",
+              "host_mbx.v",
+              "nav_ram_sdp.v",
+              "tb.sv"
+            ]
+          ],
+          [
+            "xelab",
+            [
+              "-debug",
+              "off",
+              "-timescale",
+              "1ns/1ps",
+              "tb_stage2b_TXshadow_bus_miter",
+              "-s",
+              "consumer_miter"
+            ]
+          ],
+          [
+            "xsim",
+            [
+              "consumer_miter",
+              "-runall"
+            ]
+          ]
+        ]
+      },
+      "review": "F:\\nav_integration_g2_20261023\\stage2B_TXshadow_RDEN_prepared2\\prepared_source_review.json"
+    },
+    {
+      "candidate": "F:\\nav_integration_g2_20261023\\stage2B_console_posted_prepared1",
+      "changed_RTL": [
+        "nav/rtl/net/host_mbx.v",
+        "nav/rtl/soc/nav_soc.v"
+      ],
+      "contract": {
+        "profile": "console",
+        "source": "F:\\nav_integration_g2_20261023\\stage2B_bitmap_mailbox_slist_trig_console_bias_prepared1",
+        "candidate": "F:\\nav_integration_g2_20261023\\stage2B_console_posted_prepared1",
+        "changed_RTL": [
+          "nav/rtl/net/host_mbx.v",
+          "nav/rtl/soc/nav_soc.v"
+        ],
+        "unchanged_other61_RTL": true,
+        "original_Firmware_assets_parameters_clocks_weights_125Hz_capacity_unchanged": true,
+        "architecture": "Same50MHz clock. No derived/half-cycle clock, byte/word capacity or INIT change. No unsupported Read-before-Write mode selected.",
+        "observable_timing": "Console debug E0 address/E1 demand/E2 original ACK; original CPU per_ready/con_wp unchanged",
+        "write_commit_change": "CPU log byte accepted at demanded-read E1 is queued21bits and committed at next available edgeE2, including rst/HOLD or clock resume; con_post_valid has only INIT0 and no protocol reset.",
+        "conflict_granularity": "Exclusion by no simultaneous physical read/write enables; does not rely on logical-address inequality. Future mapping must check actual14bit AD[13:4] and all split lanes.",
+        "input_contract": "CPU/debug/nav request and addresses held until ACK; CPU master respects reset/HOLD. Console pending->no next CPU write requires precise req/per_ready/sel_per reachable-state proof, including reset transition; not yet proved.",
+        "injection_retained_distributed": true,
+        "injection_GO_length_ACK_or_capacity_changed": false,
+        "combined_B_route_BSRAM_prediction": 333,
+        "prediction_not_actual_measurement": true,
+        "consumer_bus_miter": {
+          "files": [
+            "reference.v",
+            "candidate.v",
+            "nav_ram_sp.v",
+            "nav_ram_sdp.v",
+            "tb.sv"
+          ],
+          "top": "tb_stage2b_console_bus_miter",
+          "cut": "Only original PicoRV32 memory master is replaced by explicit test input ports in simulation copies. All actual nav_soc debug/ready/console/RAM/hold FSMs are retained. Inputs obey CPU reset and held-request handshakes; no force/internal-state initialization.",
+          "pending_proofs": [
+            "Complete actual CPU-boundary/debug bus miter, including reset/stopped clock",
+            "Reachable assertion: posted_valid implies no new CPU console request at its commit edge",
+            "Actual physical per-lane no CEA/CEB conflict, INIT and unchanged read/ACK edge"
+          ]
+        },
+        "RTL_not_compiled": true,
+        "RTL_not_simulated": true,
+        "actual_mapping_not_verified": true,
+        "physical_collision_contract_closed": false,
+        "all_tools_started": false,
+        "programmed": false
+      },
+      "validation": {
+        "files": [
+          "reference.v",
+          "candidate.v",
+          "nav_ram_sp.v",
+          "nav_ram_sdp.v",
+          "tb.sv"
+        ],
+        "top": "tb_stage2b_console_bus_miter",
+        "cut": "Only original PicoRV32 memory master is replaced by explicit test input ports in simulation copies. All actual nav_soc debug/ready/console/RAM/hold FSMs are retained. Inputs obey CPU reset and held-request handshakes; no force/internal-state initialization.",
+        "pending_proofs": [
+          "Complete actual CPU-boundary/debug bus miter, including reset/stopped clock",
+          "Reachable assertion: posted_valid implies no new CPU console request at its commit edge",
+          "Actual physical per-lane no CEA/CEB conflict, INIT and unchanged read/ACK edge"
+        ],
+        "candidate": "F:\\nav_integration_g2_20261023\\stage2B_console_posted_prepared1",
+        "RTL_simulator": "xvlog/xelab/xsim only after explicit root coordination",
+        "minimum_physical_bytes": 2147483648,
+        "minimum_commit_bytes": 4294967296,
+        "automatic_run": false,
+        "commands": [
+          [
+            "xvlog",
+            [
+              "-sv",
+              "reference.v",
+              "candidate.v",
+              "nav_ram_sp.v",
+              "nav_ram_sdp.v",
+              "tb.sv"
+            ]
+          ],
+          [
+            "xelab",
+            [
+              "-debug",
+              "off",
+              "-timescale",
+              "1ns/1ps",
+              "tb_stage2b_console_bus_miter",
+              "-s",
+              "consumer_miter"
+            ]
+          ],
+          [
+            "xsim",
+            [
+              "consumer_miter",
+              "-runall"
+            ]
+          ]
+        ]
+      },
+      "review": "F:\\nav_integration_g2_20261023\\stage2B_console_posted_prepared1\\prepared_source_review.json"
+    }
+  ],
+  "Boolean_control_obligations": {
+    "recorded_at": "2026-10-26T18:16:45.895882+08:00",
+    "passed": true,
+    "checks": [
+      {
+        "name": "deferred_console_write_cannot_have_cpu_rst",
+        "result": "UNSAT",
+        "method": "Boolean next-state miter under recorded source cut relations"
+      },
+      {
+        "name": "exact_per_ready_excludes_any_next_CPU_request",
+        "result": "UNSAT",
+        "method": "Boolean next-state miter under recorded source cut relations"
+      },
+      {
+        "name": "deferred_commit_cannot_overlap_next_demanded_read",
+        "result": "UNSAT",
+        "method": "Boolean next-state miter under recorded source cut relations"
+      },
+      {
+        "name": "no_read_write_CE_overlap_under_reachable_pending_relation",
+        "result": "UNSAT",
+        "method": "Boolean next-state miter under recorded source cut relations"
+      },
+      {
+        "name": "stopped_clock_retains_pending_even_if_reset_changes",
+        "result": "UNSAT",
+        "method": "Boolean next-state miter under recorded source cut relations"
+      },
+      {
+        "name": "running_pending_commit_not_cancelled_by_runtime_reset",
+        "result": "UNSAT",
+        "method": "Boolean next-state miter under recorded source cut relations"
+      },
+      {
+        "name": "TXshadow_physical_CE_exclusion_for_all_addresses",
+        "result": "UNSAT",
+        "method": "Boolean next-state miter under recorded source cut relations"
+      }
+    ],
+    "console_pending_bits": 21,
+    "source_cut_relations": [
+      "Console d_st1 console read is reached only by a previous non-reset d_st0 read accept, which leaves hold unchanged.",
+      "PicoRV32 with resetn low at that preceding clock clears mem_valid; this is actual unchanged vendor CPU behavior, not an arbitrary master assumption.",
+      "Deferred write implies !cpu_rst and req&&sel_per; actual per_ready becomes1, so next req is0 regardless of new mem_valid/address.",
+      "Current d_st1 advances to3, so next demanded read is false; rst only further disables the read.",
+      "TX rf_wr pulse is created by B_IDLE and consumed in B_RF; demand read requires B_IDLE."
+    ],
+    "limitations": [
+      "Source cut relations were checked by anchored syntax and manual reachable-state argument; not a complete automated whole-RTL induction.",
+      "Bus ACK/data/committed-word miters have not run.",
+      "Physical CEA/CEB/INIT/mode and original52 timing constraints require the one combined actual SYN/PNR review."
+    ],
+    "source_modified": false,
+    "RTL_simulator_started": false,
+    "Gowin_started": false,
+    "programmed": false
+  },
+  "selected_TXshadow_version": 2,
+  "preserved_TXshadow_v1": "F:\\nav_integration_g2_20261023\\stage2B_TXshadow_RDEN_prepared1",
+  "TXshadow_v1_limit": "Static review found RO-Q writes also receive B_RF data. Version1 used !bus_we and could leave that returned data stale; no simulator ran. Version2 refreshes on every accepted Q-address transaction, including writes, and adds the RO-write miter case.",
+  "injection_kept_distributed_without_protocol_or_capacity_change": true,
+  "combined_B_route_BSRAM_budget": 333,
+  "budget_is_prediction": true,
+  "console_posted_state_bits": 21,
+  "no_runtime_reset_cancels_accepted_console_byte": true,
+  "clock_pause_preserves_pending_by_stuttering_FF_state": true,
+  "full_bus_RTL_miters_pending": true,
+  "actual_mapped_CE_granule_INIT_modes_pending": true,
+  "no_RTL_simulator_started": true,
+  "no_Gowin_SYN_PNR_started": true,
+  "no_old_frozen_input_modified": true,
+  "no_production_source_modified": true,
+  "programmed": false,
+  "no_SHA_used": true
+}

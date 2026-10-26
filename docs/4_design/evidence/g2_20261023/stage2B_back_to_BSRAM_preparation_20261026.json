@@ -1,0 +1,197 @@
+{
+  "recorded_at": "2026-10-26T17:44:17.621886+08:00",
+  "phase": "frozen_prepared_only",
+  "candidate": "F:\\nav_integration_g2_20261023\\stage2B_bitmap_mailbox_slist_trig_console_bias_prepared1",
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40",
+  "preparation": "F:\\nav_integration_g2_20261023\\stage2B_bitmap_mailbox_slist_trig_console_bias_prepared1\\preparation.json",
+  "contracts": {
+    "phase": "prepared_not_validated",
+    "rows": [
+      {
+        "name": "bitmap",
+        "scope": "u_nav/u_map/u_tv/u_bm",
+        "geometry": "16384x1",
+        "source_blocks": 1,
+        "extra_wide": 0,
+        "physical": 1,
+        "consumer": "trav_v3.v sm/bm request and phased return/window pipeline; all procedural code unchanged",
+        "port": "1W+1R independently enabled every clock",
+        "initial": "INIT_VAL0; fixture also covers nonzero1",
+        "common_RAM_contract": "One posedge enabled read: q(next)=mem(pre-edge)[raddr] when re, otherwise q holds; write updates mem at the edge. we&&re&&same address returns old data. q starts0; memory INIT_VAL or full INIT_FILE preserved. No reset port is added.",
+        "source_prediction_not_measurement": true,
+        "mapped_read_first_hold_INIT_and_ports_verified": false
+      },
+      {
+        "name": "mailboxes",
+        "scope": [
+          "u_nav/u_mbx/u_injb",
+          "u_nav/u_mbx/u_txs"
+        ],
+        "geometry": "two512x32",
+        "source_blocks": 2,
+        "extra_wide": 2,
+        "physical": 4,
+        "consumer": "injection iv1/iv2 and byte lanes; shadow bus address/data/ACK; no RX queue, timestamp, TX sequence or arbitration edits",
+        "port": "Each separate1W+1R; can read and write the same clock/address",
+        "initial": "INIT_VAL0; fixtures cover32-bit nonzero; u_txb is not selected and u_rxb alreadyBSRAM",
+        "common_RAM_contract": "One posedge enabled read: q(next)=mem(pre-edge)[raddr] when re, otherwise q holds; write updates mem at the edge. we&&re&&same address returns old data. q starts0; memory INIT_VAL or full INIT_FILE preserved. No reset port is added.",
+        "source_prediction_not_measurement": true,
+        "mapped_read_first_hold_INIT_and_ports_verified": false
+      },
+      {
+        "name": "slot_list",
+        "scope": "u_nav/u_match/u_slist",
+        "geometry": "1024x16, SLF256 retained",
+        "source_blocks": 1,
+        "extra_wide": 0,
+        "physical": 1,
+        "consumer": "UPD writes slot IDs; clear-list read states and touch clearing retain their exact wait states",
+        "port": "1W+1R",
+        "initial": "INIT_VAL0",
+        "common_RAM_contract": "One posedge enabled read: q(next)=mem(pre-edge)[raddr] when re, otherwise q holds; write updates mem at the edge. we&&re&&same address returns old data. q starts0; memory INIT_VAL or full INIT_FILE preserved. No reset port is added.",
+        "source_prediction_not_measurement": true,
+        "mapped_read_first_hold_INIT_and_ports_verified": false
+      },
+      {
+        "name": "trig",
+        "scope": [
+          "u_nav/u_match/u_sin",
+          "u_nav/u_match/u_cos",
+          "u_nav/u_tr/u_sin",
+          "u_nav/u_tr/u_cos"
+        ],
+        "geometry": "four1024x16 tables",
+        "source_blocks": 4,
+        "extra_wide": 0,
+        "physical": 4,
+        "consumer": "SLF and trajectory retain two simultaneous independent addresses/enables each; no sharing of lookup ports",
+        "port": "Four independent enabled read ports; actual we tied0",
+        "initial": "Exact existing sin_lut.hex, q initially0; no quantization",
+        "common_RAM_contract": "One posedge enabled read: q(next)=mem(pre-edge)[raddr] when re, otherwise q holds; write updates mem at the edge. we&&re&&same address returns old data. q starts0; memory INIT_VAL or full INIT_FILE preserved. No reset port is added.",
+        "source_prediction_not_measurement": true,
+        "mapped_read_first_hold_INIT_and_ports_verified": false
+      },
+      {
+        "name": "console",
+        "scope": "u_soc/g_con[0..3].u_con",
+        "geometry": "four1024x8 lanes,4096 bytes total",
+        "source_blocks": 4,
+        "extra_wide": 0,
+        "physical": 4,
+        "consumer": "Only con_wp low2 matching lane writes; four same-word reads form32bit con_q. d_st address-register/read/capture/ACK states unchanged",
+        "port": "Four independent byte writes (actual mutually exclusive), four common-word reads; preserve debug read/write collisions",
+        "initial": "INIT_VAL0; con_wp reset/wrap unchanged",
+        "common_RAM_contract": "One posedge enabled read: q(next)=mem(pre-edge)[raddr] when re, otherwise q holds; write updates mem at the edge. we&&re&&same address returns old data. q starts0; memory INIT_VAL or full INIT_FILE preserved. No reset port is added.",
+        "source_prediction_not_measurement": true,
+        "mapped_read_first_hold_INIT_and_ports_verified": false
+      },
+      {
+        "name": "bias",
+        "scope": "u_control/model_thread/policy/core/bias_mem",
+        "geometry": "425x26 signed ->32bit",
+        "source_blocks": 1,
+        "extra_wide": 1,
+        "physical": 2,
+        "consumer": "BIAS_REQ updates bias_q, BIAS_CAPTURE consumes next edge; FSM, weights, cycle count and125Hz period unchanged",
+        "port": "One enabled ROM read; no writes; collisions N/A",
+        "initial": "Exact BIASES_FILE425 words; original bias_q initialX/no reset unchanged; addresses425..511 remain outside declared array, not newly zero-padded",
+        "common_RAM_contract": "Exact original signed read/hold statements, init file and declared depth; only attributes differ.",
+        "source_prediction_not_measurement": true,
+        "mapped_read_first_hold_INIT_and_ports_verified": false
+      }
+    ],
+    "SLF_LOG2N": 8,
+    "column_scratch_selected": false,
+    "standalone_prediction": {
+      "SYN40_source": 314,
+      "source_add": 13,
+      "predicted_source": 327,
+      "original_wide": 18,
+      "wide_add": 3,
+      "predicted_wide": 21,
+      "predicted_physical": 348,
+      "standalone_admitted": false
+    },
+    "combined_B_route_prediction": {
+      "base": 332,
+      "weight9": -5,
+      "point_planes": -8,
+      "bitmap_mailbox_slist_trig": 10,
+      "console_bias": 6,
+      "total": 335,
+      "hard_limit": 336,
+      "target_max": 335,
+      "requires_parent_weight_and_point_candidate": true,
+      "actual_resource_report_pending": true
+    },
+    "common_scope": "No inferred6144logic saving or CLS saving is claimed; those are current storage accounting. New physical placement/timing remains unknown.",
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40",
+    "candidate": "F:\\nav_integration_g2_20261023\\stage2B_bitmap_mailbox_slist_trig_console_bias_prepared1",
+    "deployment_accepted": false
+  },
+  "source_diff": [
+    {
+      "path": "fc_v4_top.v",
+      "old_bytes": 9630,
+      "new_bytes": 9415
+    },
+    {
+      "path": "nav/rtl/common/nav_ram_sdp.v",
+      "old_bytes": 1679,
+      "new_bytes": 2126
+    },
+    {
+      "path": "nav/rtl/map/trav_v3.v",
+      "old_bytes": 29698,
+      "new_bytes": 29130
+    },
+    {
+      "path": "nav/rtl/match/slf_match.v",
+      "old_bytes": 25552,
+      "new_bytes": 25085
+    },
+    {
+      "path": "nav/rtl/net/host_mbx.v",
+      "old_bytes": 10339,
+      "new_bytes": 10377
+    },
+    {
+      "path": "nav/rtl/plan/traj_eval.v",
+      "old_bytes": 8380,
+      "new_bytes": 8212
+    },
+    {
+      "path": "nav/rtl/soc/nav_soc.v",
+      "old_bytes": 8852,
+      "new_bytes": 8871
+    }
+  ],
+  "all_other_inputs_byte_identical": true,
+  "source_inputs_metadata_unchanged": true,
+  "complete_hardware_inputs": 63,
+  "copied_files": 284,
+  "source_prediction": "327 source BSRAM +21 wide extra =348 alone; after independent parent weight9(-5 source)/point planes(-8 wide),322+13=335 combined prediction.",
+  "current_actual_physical_resources": "Unchanged baseline PNR52:332BSRAM,82945Logic,51359CLS,1026unrouted; no candidate physical resource measurement.",
+  "validation_entry": "F:\\nav_integration_g2_20261023\\stage2B_bitmap_mailbox_slist_trig_console_bias_prepared1\\validation\\entry.json",
+  "validation_bindings": "F:\\nav_integration_g2_20261023\\stage2B_bitmap_mailbox_slist_trig_console_bias_prepared1\\validation\\input_bindings.json",
+  "cases": "12 independently driven RAM ports plus one bias read wrapper: bitmap,2mailboxes,slist,4console lanes,4trig ports; sparse boundary/random bias enables, not repeated exhaustive numeric425-value testing.",
+  "reused_old_preparers": [
+    "prepare_small_block_stores.py (only contract/old mapping reference)",
+    "prepare_trig_block_rom.py (exact initialized SDP body approach)",
+    "prepare_bias_block_rom.py (actual reused pure transform)"
+  ],
+  "static_identity_confirmed": [
+    "Selected small RAM procedural initial/write/read/hold body exact except storage attributes.",
+    "All consumer procedural code including ACK/FSM unchanged after removing explicit storage-selection arguments.",
+    "Bias original file, depth,signed width,read statement,state machine and lack of initial bias_q reset unchanged."
+  ],
+  "pending": [
+    "Root-coordinated RTL contract execution; no xvlog/xelab/xsim/ModelSim has run for this candidate.",
+    "Actual vendor/native geometry, every INIT bit and mapped read-first/hold/port behavior after the one stage3 joint SYN.",
+    "Consumer/inference integration at full combined boundaries; local attribute or sparse RTL checks alone are not full control acceptance."
+  ],
+  "no_Gowin_started": true,
+  "no_simulator_started": true,
+  "production_source_or_plan_modified": false,
+  "deployment_accepted": false
+}

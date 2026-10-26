@@ -1,0 +1,167 @@
+{
+  "recorded_at": "2026-10-26T18:10:41.879300+08:00",
+  "taskbook": "docs/1_plan/g2_small_field_task_20261026.md",
+  "stage1a": {
+    "completed": 4,
+    "ended_at": "2026-10-26T17:49:13.981073+08:00",
+    "fixed128_accepted": false,
+    "stage1b_started": false,
+    "fixed_goal_error_increase_mm": {
+      "RMSE": 1.111,
+      "P95": 5.472,
+      "endpoint": 5.546
+    },
+    "fixed_goal_false_arrival_mm": 156.44,
+    "fixed_loop_error_increase_mm": {
+      "RMSE": 39.401,
+      "P95": 63.27,
+      "endpoint": 63.27
+    },
+    "coverage_ablation_RMSE_increase_goal_loop_mm": [
+      37.763,
+      25.122
+    ],
+    "evidence": "docs/4_design/evidence/g2_20261023/nav3x5_stage1a_window_ablation_final_20261026.json"
+  },
+  "stage1d": {
+    "directory": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1d_forward_windows_20261026",
+    "job": {
+      "controller_pid": 49924,
+      "controller_created_epoch": 1793008333.5931907,
+      "one_worker": true,
+      "priority": "BELOW_NORMAL",
+      "logical_CPUs": [
+        18,
+        19
+      ],
+      "minimum_start_physical_bytes": 2684354560,
+      "minimum_start_commit_bytes": 4831838208,
+      "planned": 6,
+      "completed": 6,
+      "automatic_stage1b": false,
+      "automatic_EDA": false,
+      "stage1a_completed_and_fixed_hard_gate_failed": true,
+      "phase": "all_stage1d_cases_complete",
+      "updated_at": "2026-10-26T18:08:47.398451+08:00",
+      "next": "turn_loop_storage128_lf128_forward2400mm_s1",
+      "free_bytes": 4008681472,
+      "available_commit_bytes": 4901556224,
+      "current": "turn_loop_storage128_lf128_forward2400mm_s1",
+      "child_pid": 2736,
+      "child_created_epoch": 1793009101.8924465,
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1d_forward_windows_20261026\\execution_tree\\sim\\closed_loop\\stage1d_case.py",
+        "--scene",
+        "field3x5_v1",
+        "--seed",
+        "1",
+        "--no-build",
+        "--firmware-dll",
+        "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1d_forward_windows_20261026\\nav_fw.dll",
+        "--no-plots",
+        "--start",
+        "0.45,-0.95,0",
+        "--time",
+        "150",
+        "--out",
+        "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1d_forward_windows_20261026\\results\\turn_loop_storage128_lf128_forward2400mm_s1",
+        "--waypoints",
+        "4.45,-0.05,4.45,0.98,0.45,0.0,0.45,-0.95",
+        "--laps",
+        "1"
+      ],
+      "environment": {
+        "SLF_SN_LOG2": "7",
+        "SLF_LF_N": "128",
+        "SLF_WINDOW_MODE": "forward",
+        "SLF_FORWARD_MM": "2400",
+        "SLF_FIXED_CX": "41",
+        "SLF_FIXED_CY": "19",
+        "SLF_ZLO": "60",
+        "SLF_NBR": "3x3",
+        "SLF_W18": "1",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      },
+      "admission_physical_bytes": 4008681472,
+      "admission_commit_bytes": 4901556224,
+      "last": "turn_loop_storage128_lf128_forward2400mm_s1"
+    },
+    "original_stage1a_unmodified": true,
+    "root_read_source_and_entry_deltas": true,
+    "no_truth_yaw_used": true,
+    "EM_center_and_candidate_rotation_pivot_unchanged": true,
+    "first_three_goal_candidates_all_precision_failed": true,
+    "first_three_goal_error_increase_mm": [
+      {
+        "forward_mm": 1500,
+        "RMSE": 5.027,
+        "P95": 14.746,
+        "endpoint": 5.686
+      },
+      {
+        "forward_mm": 2000,
+        "RMSE": 8.877,
+        "P95": 18.372,
+        "endpoint": 14.447
+      },
+      {
+        "forward_mm": 2400,
+        "RMSE": 10.864,
+        "P95": 26.399,
+        "endpoint": 13.826
+      }
+    ],
+    "ended_naturally": true,
+    "final_summary": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1d_forward_windows_20261026\\summary.json",
+    "production_SLF128_accepted": false
+  },
+  "stage1c": {
+    "preparation_requested": true,
+    "started": false,
+    "scene": "new outside-wall version preserving original interior",
+    "pilot_cases": "goal and turn_loop seed1 x256/128fixed xprior/no-map xZHI1500/350 =16",
+    "requires_root_heightband_and_prior_ROI_effect_review": true
+  },
+  "stage2B": {
+    "weight_result": "F:\\nav_integration_g2_20261023\\stage2B_weight9_contract_probe1\\result.json",
+    "point_result": "F:\\nav_integration_g2_20261023\\stage2B_pointplanes_contract_probe1\\result.json",
+    "seven_group_initial_probe": "F:\\nav_integration_g2_20261023\\stage2B_back_to_BSRAM_contract_probe1\\result.json",
+    "seven_group_corrected_probe": "F:\\nav_integration_g2_20261023\\stage2B_back_to_BSRAM_contract_probe2\\result.json",
+    "source_RTL_contracts_passed": true,
+    "physical_primitive_legality_and_consumers_closed": false,
+    "original_probe1_failed_at_zero_time_monitor": true,
+    "hardware_unchanged_by_TB_fix": true,
+    "collision_risks": "docs/4_design/evidence/g2_20261023/stage2B_BSRAM_mode_collision_risks_20261026.json",
+    "point_bitmap_slist_risks": "docs/4_design/evidence/g2_20261023/stage2B_point_bitmap_slist_collision_static_20261026.json",
+    "root_read_official_UG300_extracted_section3_3_and_RBW_note": true,
+    "unsupported_cross_port_same_physical_AD13_4_read_write": true,
+    "TX_shadow_effective_read_gate_in_preparation": true,
+    "console_pending_byte_write_in_preparation": true,
+    "point_ownership_and_write_drain_in_preparation": true,
+    "bitmap_slist_source_WE_RE_mutually_exclusive": true,
+    "actual_CEB_BLKSEL_disable_must_be_checked_after_joint_SYN": true,
+    "u_injb_kept_distributed_to_avoid_new_GO_length_busy_protocol": true,
+    "revised_B_physical_budget": 333,
+    "revised_budget_not_actual_resource_result": true,
+    "source_safety_gates_required_before_unique_joint_SYN": true
+  },
+  "source_ancestry": {
+    "SYN40_already_includes_fusion_norm_pipeline": true,
+    "no_duplicate_fusion_norm_candidate_in_later_timing_stage": true
+  },
+  "runtime_policy": {
+    "no_joint_SYN_or_PNR": true,
+    "one_joint_SYN_only_after_selected_profile_and_source_contracts": true,
+    "user_requested_continuous_work_no_timer_prerequisite": true,
+    "do_not_ask_automation_setting_again": true
+  },
+  "user_present_explicit_consent_required_before_SRAM": true,
+  "programmed": false,
+  "deployment_accepted": false
+}

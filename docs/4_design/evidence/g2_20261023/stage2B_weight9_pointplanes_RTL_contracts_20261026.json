@@ -1,0 +1,638 @@
+{
+  "recorded_at": "2026-10-26T17:47:48.510894+08:00",
+  "passed": true,
+  "scope": "Stage2B packedweight9 then pointplanes finite RTL contracts",
+  "profiles": [
+    {
+      "profile": "weight9",
+      "passed": true,
+      "candidate": "F:\\nav_integration_g2_20261023\\baseline_fusion50_weight9_prepared1",
+      "actual_result": "F:\\nav_integration_g2_20261023\\stage2B_weight9_contract_probe1\\result.json",
+      "actual_xsim_log": "F:\\nav_integration_g2_20261023\\stage2B_weight9_contract_probe1\\xsim.log",
+      "markers": [
+        "WEIGHT9 SCAN reads=40960 holds=3151",
+        "TEST PASSED: 3 frames,1275 neurons,cycle-exact actions;WEIGHT9 all40960 enabled reads and holds; real4500 no substitute",
+        "$finish called at time : 5022520 ns : File \"F:/nav_integration_g2_20261023/stage2B_weight9_contract_probe1/tb.sv\" Line 67"
+      ],
+      "checks": {
+        "legal_ROM_word_reads": 40960,
+        "held_address_changes": 3151,
+        "real4500_frames": 3,
+        "real4500_neuron_values": 1275,
+        "trained_weights_preserved": 40704,
+        "zero_padded_words_preserved": 256,
+        "explicit_unknown_rejection": true,
+        "cycle_exact_status_actions": true,
+        "inference_substitute": false,
+        "scheduler_125Hz_not_exercised_in_this_core_fixture": true
+      },
+      "tools": [
+        {
+          "tool": "xvlog",
+          "command": [
+            "cmd",
+            "/c",
+            "E:\\2026.1\\Vivado\\bin\\xvlog.bat",
+            "-sv",
+            "weight_reference.v",
+            "weight_candidate.v",
+            "fc_reference.v",
+            "fc_candidate.v",
+            "fc_v4_round_sat.v",
+            "tb.sv"
+          ],
+          "wrapper_pid": 42340,
+          "wrapper_created_epoch": 1793007926.7591815,
+          "started_at": "2026-10-26T17:45:26.764082+08:00",
+          "ended_at": "2026-10-26T17:45:28.782704+08:00",
+          "exit_code": 0,
+          "admission_physical_bytes": 4307066880,
+          "admission_commit_bytes": 5005004800,
+          "observed_processes": [
+            {
+              "pid": 15068,
+              "created_epoch": 1793007926.7670503,
+              "name": "conhost.exe",
+              "command": [
+                "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+                "0x4"
+              ]
+            }
+          ]
+        },
+        {
+          "tool": "xelab",
+          "command": [
+            "cmd",
+            "/c",
+            "E:\\2026.1\\Vivado\\bin\\xelab.bat",
+            "-debug",
+            "off",
+            "-timescale",
+            "1ns/1ps",
+            "tb_storage_equivalence",
+            "-s",
+            "snapshot"
+          ],
+          "wrapper_pid": 30616,
+          "wrapper_created_epoch": 1793007928.7850368,
+          "started_at": "2026-10-26T17:45:28.788764+08:00",
+          "ended_at": "2026-10-26T17:45:34.854863+08:00",
+          "exit_code": 0,
+          "admission_physical_bytes": 4286484480,
+          "admission_commit_bytes": 4983611392,
+          "observed_processes": [
+            {
+              "pid": 67380,
+              "created_epoch": 1793007928.792061,
+              "name": "conhost.exe",
+              "command": [
+                "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+                "0x4"
+              ]
+            },
+            {
+              "pid": 41704,
+              "created_epoch": 1793007929.9053552,
+              "name": "xelab.exe",
+              "command": [
+                "E:/2026.1/Vivado/bin/unwrapped/win64.o/xelab.exe",
+                "-debug",
+                "off",
+                "-timescale",
+                "1ns/1ps",
+                "tb_storage_equivalence",
+                "-s",
+                "snapshot"
+              ]
+            },
+            {
+              "pid": 44992,
+              "created_epoch": 1793007932.7367296,
+              "name": "cmd.exe",
+              "command": [
+                "C:\\WINDOWS\\system32\\cmd.exe",
+                "/c",
+                "chdir",
+                "/d",
+                "F:\\nav_integration_g2_20261023\\stage2B_weight9_contract_probe1",
+                "&&",
+                "E:\\2026.1\\Vivado\\data\\..\\tps\\mingw\\6.2.0\\win64.o\\nt\\bin\\gcc.exe",
+                "-Wa,-W",
+                "-O",
+                "-Wl,--stack,104857600",
+                "-o",
+                "xsim.dir/snapshot/xsimk.exe",
+                "xsim.dir/snapshot/obj/xsim_0.win64.obj",
+                "xsim.dir/snapshot/obj/xsim_1.win64.obj",
+                "-LE:\\2026.1\\Vivado\\lib\\win64.o",
+                "-lxv_simulator_kernel"
+              ]
+            },
+            {
+              "pid": 50892,
+              "created_epoch": 1793007932.7493904,
+              "name": "gcc.exe",
+              "command": [
+                "E:\\2026.1\\Vivado\\data\\..\\tps\\mingw\\6.2.0\\win64.o\\nt\\bin\\gcc.exe",
+                "-Wa,-W",
+                "-O",
+                "-Wl,--stack,104857600",
+                "-o",
+                "xsim.dir/snapshot/xsimk.exe",
+                "xsim.dir/snapshot/obj/xsim_0.win64.obj",
+                "xsim.dir/snapshot/obj/xsim_1.win64.obj",
+                "-LE:\\2026.1\\Vivado\\lib\\win64.o",
+                "-lxv_simulator_kernel"
+              ]
+            },
+            {
+              "pid": 23248,
+              "created_epoch": 1793007932.7758043,
+              "name": "collect2.exe",
+              "command": [
+                "E:/2026.1/Vivado/tps/mingw/6.2.0/win64.o/nt/bin/../libexec/gcc/x86_64-w64-mingw32/6.2.0/collect2.exe",
+                "-plugin",
+                "E:/2026.1/Vivado/tps/mingw/6.2.0/win64.o/nt/bin/../libexec/gcc/x86_64-w64-mingw32/6.2.0/liblto_plugin-0.dll",
+                "-plugin-opt=E:/2026.1/Vivado/tps/mingw/6.2.0/win64.o/nt/bin/../libexec/gcc/x86_64-w64-mingw32/6.2.0/lto-wrapper.exe",
+                "-plugin-opt=-fresolution=C:\\Users\\Li\\AppData\\Local\\Temp\\ccEvdgQ2.res",
+                "-plugin-opt=-pass-through=-lmingw32",
+                "-plugin-opt=-pass-through=-lgcc",
+                "-plugin-opt=-pass-through=-lgcc_eh",
+                "-plugin-opt=-pass-through=-lmoldname",
+                "-plugin-opt=-pass-through=-lmingwex",
+                "-plugin-opt=-pass-through=-lmsvcrt",
+                "-plugin-opt=-pass-through=-ladvapi32",
+                "-plugin-opt=-pass-through=-lshell32",
+                "-plugin-opt=-pass-through=-luser32",
+                "-plugin-opt=-pass-through=-lkernel32",
+                "-plugin-opt=-pass-through=-liconv",
+                "-plugin-opt=-pass-through=-lmingw32",
+                "-plugin-opt=-pass-through=-lgcc",
+                "-plugin-opt=-pass-through=-lgcc_eh",
+                "-plugin-opt=-pass-through=-lmoldname",
+                "-plugin-opt=-pass-through=-lmingwex",
+                "-plugin-opt=-pass-through=-lmsvcrt",
+                "--sysroot=C:/mingw620/x86_64-620-win32-sjlj-rt_v5-rev1/mingw64",
+                "-m",
+                "i386pep",
+                "-Bdynamic",
+                "-o",
+                "xsim.dir/snapshot/xsimk.exe",
+                "E:/2026.1/Vivado/tps/mingw/6.2.0/win64.o/nt/bin/../lib/gcc/x86_64-w64-mingw32/6.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o",
+                "E:/2026.1/Vivado/tps/mingw/6.2.0/win64.o/nt/bin/../lib/gcc/x86_64-w64-mingw32/6.2.0/crtbegin.o",
+                "-LE:\\2026.1\\Vivado\\lib\\win64.o",
+                "-LE:/2026.1/Vivado/tps/mingw/6.2.0/win64.o/nt/bin/../lib/gcc/x86_64-w64-mingw32/6.2.0",
+                "-LE:/2026.1/Vivado/tps/mingw/6.2.0/win64.o/nt/bin/../lib/gcc",
+                "-LE:/2026.1/Vivado/tps/mingw/6.2.0/win64.o/nt/bin/../lib/gcc/x86_64-w64-mingw32/6.2.0/../../../../x86_64-w64-mingw32/lib/../lib",
+                "-LE:/2026.1/Vivado/tps/mingw/6.2.0/win64.o/nt/bin/../lib/gcc/x86_64-w64-mingw32/6.2.0/../../../../lib",
+                "-LE:/2026.1/Vivado/tps/mingw/6.2.0/win64.o/nt/bin/../lib/gcc/x86_64-w64-mingw32/6.2.0/../../../../x86_64-w64-mingw32/lib",
+                "-LE:/2026.1/Vivado/tps/mingw/6.2.0/win64.o/nt/bin/../lib/gcc/x86_64-w64-mingw32/6.2.0/../../..",
+                "--stack",
+                "104857600",
+                "xsim.dir/snapshot/obj/xsim_0.win64.obj",
+                "xsim.dir/snapshot/obj/xsim_1.win64.obj",
+                "-lxv_simulator_kernel",
+                "-lmingw32",
+                "-lgcc",
+                "-lgcc_eh",
+                "-lmoldname",
+                "-lmingwex",
+                "-lmsvcrt",
+                "-ladvapi32",
+                "-lshell32",
+                "-luser32",
+                "-lkernel32",
+                "-liconv",
+                "-lmingw32",
+                "-lgcc",
+                "-lgcc_eh",
+                "-lmoldname",
+                "-lmingwex",
+                "-lmsvcrt",
+                "E:/2026.1/Vivado/tps/mingw/6.2.0/win64.o/nt/bin/../lib/gcc/x86_64-w64-mingw32/6.2.0/crtend.o"
+              ]
+            }
+          ]
+        },
+        {
+          "tool": "xsim",
+          "command": [
+            "cmd",
+            "/c",
+            "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+            "snapshot",
+            "-runall"
+          ],
+          "wrapper_pid": 4476,
+          "wrapper_created_epoch": 1793007934.857438,
+          "started_at": "2026-10-26T17:45:34.862794+08:00",
+          "ended_at": "2026-10-26T17:45:40.923984+08:00",
+          "exit_code": 0,
+          "admission_physical_bytes": 4303650816,
+          "admission_commit_bytes": 5002870784,
+          "observed_processes": [
+            {
+              "pid": 53580,
+              "created_epoch": 1793007934.86602,
+              "name": "conhost.exe",
+              "command": [
+                "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+                "0x4"
+              ]
+            },
+            {
+              "pid": 66524,
+              "created_epoch": 1793007935.9449203,
+              "name": "xsim.exe",
+              "command": [
+                "E:/2026.1/Vivado/bin/unwrapped/win64.o/xsim.exe",
+                "snapshot",
+                "-runall"
+              ]
+            },
+            {
+              "pid": 53036,
+              "created_epoch": 1793007937.1763756,
+              "name": "xsimk.exe",
+              "command": [
+                "xsim.dir/snapshot/xsimk.exe",
+                "-runall",
+                "-simmode",
+                "gui",
+                "-wdb",
+                "snapshot.wdb",
+                "-simrunnum",
+                "0",
+                "-socket",
+                "56024"
+              ]
+            },
+            {
+              "pid": 68884,
+              "created_epoch": 1793007937.305354,
+              "name": "conhost.exe",
+              "command": [
+                "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+                "0x4"
+              ]
+            }
+          ]
+        }
+      ],
+      "original_process_identities": [
+        {
+          "pid": 21800,
+          "original_created_epoch": 1793007926.439318,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 42340,
+          "original_created_epoch": 1793007926.7591815,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 15068,
+          "original_created_epoch": 1793007926.7670503,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 30616,
+          "original_created_epoch": 1793007928.7850368,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 67380,
+          "original_created_epoch": 1793007928.792061,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 41704,
+          "original_created_epoch": 1793007929.9053552,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 44992,
+          "original_created_epoch": 1793007932.7367296,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 50892,
+          "original_created_epoch": 1793007932.7493904,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 23248,
+          "original_created_epoch": 1793007932.7758043,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 4476,
+          "original_created_epoch": 1793007934.857438,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 53580,
+          "original_created_epoch": 1793007934.86602,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 66524,
+          "original_created_epoch": 1793007935.9449203,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 53036,
+          "original_created_epoch": 1793007937.1763756,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 68884,
+          "original_created_epoch": 1793007937.305354,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        }
+      ],
+      "frozen_source_and_fixture_metadata_unchanged": true,
+      "warnings": [],
+      "scope": "Finite actual RTL and reference comparisons only; no new vendor netlist, fullG2, physical timing or board acceptance"
+    },
+    {
+      "profile": "pointplanes",
+      "passed": true,
+      "candidate": "F:\\nav_integration_g2_20261023\\baseline_fusion50_pointplanes_prepared1",
+      "actual_result": "F:\\nav_integration_g2_20261023\\stage2B_pointplanes_contract_probe1\\result.json",
+      "actual_xsim_log": "F:\\nav_integration_g2_20261023\\stage2B_pointplanes_contract_probe1\\xsim.log",
+      "markers": [
+        "POINT PASS IV=000000000 checks=28682 reads=20469 writes=8145 collisions=4098 holds=8213",
+        "POINT PASS IV=123456789 checks=28682 reads=20469 writes=8145 collisions=4098 holds=8213",
+        "TEST PASSED: POINT PLANES all4096addresses, productionzero and nonzeroINIT, readfirst/hold",
+        "$finish called at time : 573641 ns : File \"F:/nav_integration_g2_20261023/stage2B_pointplanes_contract_probe1/tb.sv\" Line 45"
+      ],
+      "checks": [
+        {
+          "INIT_VAL": "36h000000000",
+          "cycles": 28682,
+          "reads": 20469,
+          "writes": 8145,
+          "same_address_read_write_collisions": 4098,
+          "read_enable_holds": 8213,
+          "all4096_addresses_covered": true,
+          "independent_scoreboard_read_first": true,
+          "explicit_unknown_rejection": true
+        },
+        {
+          "INIT_VAL": "36h123456789",
+          "cycles": 28682,
+          "reads": 20469,
+          "writes": 8145,
+          "same_address_read_write_collisions": 4098,
+          "read_enable_holds": 8213,
+          "all4096_addresses_covered": true,
+          "independent_scoreboard_read_first": true,
+          "explicit_unknown_rejection": true
+        }
+      ],
+      "tools": [
+        {
+          "tool": "xvlog",
+          "command": [
+            "cmd",
+            "/c",
+            "E:\\2026.1\\Vivado\\bin\\xvlog.bat",
+            "-sv",
+            "reference.v",
+            "candidate.v",
+            "tb.sv"
+          ],
+          "wrapper_pid": 53536,
+          "wrapper_created_epoch": 1793007984.4229004,
+          "started_at": "2026-10-26T17:46:24.427731+08:00",
+          "ended_at": "2026-10-26T17:46:26.447936+08:00",
+          "exit_code": 0,
+          "admission_physical_bytes": 4265820160,
+          "admission_commit_bytes": 4891557888,
+          "observed_processes": [
+            {
+              "pid": 57636,
+              "created_epoch": 1793007984.4302697,
+              "name": "conhost.exe",
+              "command": [
+                "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+                "0x4"
+              ]
+            }
+          ]
+        },
+        {
+          "tool": "xelab",
+          "command": [
+            "cmd",
+            "/c",
+            "E:\\2026.1\\Vivado\\bin\\xelab.bat",
+            "-debug",
+            "off",
+            "-timescale",
+            "1ns/1ps",
+            "tb_stage2b_pointplanes",
+            "-s",
+            "snapshot"
+          ],
+          "wrapper_pid": 5988,
+          "wrapper_created_epoch": 1793007986.4504023,
+          "started_at": "2026-10-26T17:46:26.455006+08:00",
+          "ended_at": "2026-10-26T17:46:30.497575+08:00",
+          "exit_code": 0,
+          "admission_physical_bytes": 4268466176,
+          "admission_commit_bytes": 4965830656,
+          "observed_processes": [
+            {
+              "pid": 23988,
+              "created_epoch": 1793007986.4583204,
+              "name": "conhost.exe",
+              "command": [
+                "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+                "0x4"
+              ]
+            },
+            {
+              "pid": 44320,
+              "created_epoch": 1793007987.468586,
+              "name": "xelab.exe",
+              "command": [
+                "E:/2026.1/Vivado/bin/unwrapped/win64.o/xelab.exe",
+                "-debug",
+                "off",
+                "-timescale",
+                "1ns/1ps",
+                "tb_stage2b_pointplanes",
+                "-s",
+                "snapshot"
+              ]
+            }
+          ]
+        },
+        {
+          "tool": "xsim",
+          "command": [
+            "cmd",
+            "/c",
+            "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+            "snapshot",
+            "-runall"
+          ],
+          "wrapper_pid": 28288,
+          "wrapper_created_epoch": 1793007990.5001783,
+          "started_at": "2026-10-26T17:46:30.505183+08:00",
+          "ended_at": "2026-10-26T17:46:34.542666+08:00",
+          "exit_code": 0,
+          "admission_physical_bytes": 4291952640,
+          "admission_commit_bytes": 5047869440,
+          "observed_processes": [
+            {
+              "pid": 3768,
+              "created_epoch": 1793007990.5075288,
+              "name": "conhost.exe",
+              "command": [
+                "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+                "0x4"
+              ]
+            },
+            {
+              "pid": 61020,
+              "created_epoch": 1793007991.57922,
+              "name": "xsim.exe",
+              "command": [
+                "E:/2026.1/Vivado/bin/unwrapped/win64.o/xsim.exe",
+                "snapshot",
+                "-runall"
+              ]
+            },
+            {
+              "pid": 27336,
+              "created_epoch": 1793007992.055685,
+              "name": "xsimk.exe",
+              "command": [
+                "xsim.dir/snapshot/xsimk.exe",
+                "-runall",
+                "-simmode",
+                "gui",
+                "-wdb",
+                "snapshot.wdb",
+                "-simrunnum",
+                "0",
+                "-socket",
+                "51854"
+              ]
+            },
+            {
+              "pid": 548,
+              "created_epoch": 1793007992.1694424,
+              "name": "conhost.exe",
+              "command": [
+                "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+                "0x4"
+              ]
+            }
+          ]
+        }
+      ],
+      "original_process_identities": [
+        {
+          "pid": 55840,
+          "original_created_epoch": 1793007984.1739984,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 53536,
+          "original_created_epoch": 1793007984.4229004,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 57636,
+          "original_created_epoch": 1793007984.4302697,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 5988,
+          "original_created_epoch": 1793007986.4504023,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 23988,
+          "original_created_epoch": 1793007986.4583204,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 44320,
+          "original_created_epoch": 1793007987.468586,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 28288,
+          "original_created_epoch": 1793007990.5001783,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 3768,
+          "original_created_epoch": 1793007990.5075288,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 61020,
+          "original_created_epoch": 1793007991.57922,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 27336,
+          "original_created_epoch": 1793007992.055685,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        },
+        {
+          "pid": 548,
+          "original_created_epoch": 1793007992.1694424,
+          "current_created_epoch": null,
+          "original_identity_exited": true
+        }
+      ],
+      "frozen_source_and_fixture_metadata_unchanged": true,
+      "warnings": [],
+      "scope": "Finite actual RTL and reference comparisons only; no new vendor netlist, fullG2, physical timing or board acceptance"
+    }
+  ],
+  "simulations_sequential_one_at_a_time": true,
+  "minimum_admission_physical_bytes": 2147483648,
+  "minimum_admission_commit_bytes": 4294967296,
+  "no_frozen_RTL_TB_or_assets_modified": true,
+  "no_retry": true,
+  "no_Gowin_synthesis_or_PNR_started": true,
+  "no_new_firmware_build": true,
+  "programmed": false,
+  "component_contracts_only": true,
+  "new_combined_resource_mapping_and_physical_acceptance_pending": true,
+  "physical_BSRAM319_is_prediction": true,
+  "no_SHA_used": true
+}

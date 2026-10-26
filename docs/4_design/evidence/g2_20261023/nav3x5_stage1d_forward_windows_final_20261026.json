@@ -1,0 +1,1244 @@
+{
+  "recorded_at": "2026-10-26T18:12:47.188553+08:00",
+  "stage1d_completed": true,
+  "ended_at": "2026-10-26T18:08:47.398451+08:00",
+  "same_controller_running": false,
+  "job": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1d_forward_windows_20261026\\job.json",
+  "manifest": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1d_forward_windows_20261026\\manifest.json",
+  "summary": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1d_forward_windows_20261026\\summary.json",
+  "window_and_prefix_analysis": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1d_forward_windows_20261026\\window_coverage_and_prefix_comparison.json",
+  "original_C_Q14_table_contract": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1d_forward_windows_20261026\\actual_heading_table_contract.json",
+  "geometry_contract": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1d_forward_windows_20261026\\forward_geometry_contract.json",
+  "minimal_default_consistency": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1d_forward_windows_20261026\\minimal_consistency.json",
+  "profile_groups": [
+    {
+      "offset_mm": 1500,
+      "case_n": 2,
+      "arrivals_k": 1,
+      "false_arrivals_k": 1,
+      "both_comparison_gates_passed": false
+    },
+    {
+      "offset_mm": 2000,
+      "case_n": 2,
+      "arrivals_k": 1,
+      "false_arrivals_k": 1,
+      "both_comparison_gates_passed": false
+    },
+    {
+      "offset_mm": 2400,
+      "case_n": 2,
+      "arrivals_k": 1,
+      "false_arrivals_k": 1,
+      "both_comparison_gates_passed": false
+    }
+  ],
+  "rows": [
+    {
+      "case": "goal",
+      "profile": "storage128_lf128_forward1500mm",
+      "outcome": "arrived",
+      "true_goal_error_mm": 132.0,
+      "XY_valid_mm": {
+        "samples": 183,
+        "RMSE_mm": 18.25888660052174,
+        "P95_mm": 34.124982870679275,
+        "endpoint_mm": 24.989997999199833,
+        "max_mm": 44.99422185125563
+      },
+      "delta_vs_rolling256_XY_valid_mm": {
+        "RMSE_mm": 5.026829980163241,
+        "P95_mm": 14.746428216012237,
+        "endpoint_mm": 5.6861123799777396,
+        "max_mm": -10.077549502133891
+      },
+      "relative_RMSE_P95_endpoint_gate": false,
+      "no_added_collision_false_arrival": true,
+      "candidate_arrived": true,
+      "audit": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1d_forward_windows_20261026\\results\\goal_storage128_lf128_forward1500mm_s1\\window_audit.json",
+      "audit_summary": {
+        "update_calls": 124,
+        "update_points_total": 90922,
+        "build_calls": 183,
+        "score_calls": 183,
+        "first_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            0,
+            0
+          ],
+          "actual_center_cells": [
+            30,
+            0
+          ],
+          "window_origin_cells": [
+            -34,
+            -64
+          ],
+          "window_end_exclusive_cells": [
+            94,
+            64
+          ],
+          "LF_N": 128,
+          "storage_SN": 128,
+          "world_window_corners_m": [
+            [
+              -1.249636918382914,
+              -4.149316552250191
+            ],
+            [
+              5.1489961861174685,
+              -4.149316552250191
+            ],
+            [
+              5.1489961861174685,
+              2.249316552250191
+            ],
+            [
+              -1.249636918382914,
+              2.249316552250191
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              -0.8497223493516399,
+              -3.7494019832189167
+            ],
+            [
+              4.749081617086194,
+              -3.7494019832189167
+            ],
+            [
+              4.749081617086194,
+              1.849401983218917
+            ],
+            [
+              -0.8497223493516399,
+              1.849401983218917
+            ]
+          ],
+          "n_struct": 0,
+          "prior": false,
+          "margin": 8,
+          "forward_shift": {
+            "yaw_angle": 3,
+            "yaw_table_index": 0,
+            "sin_q14": 0,
+            "cos_q14": 16384,
+            "requested_distance_mm": 1500,
+            "offset_cells": [
+              30,
+              0
+            ],
+            "actual_offset_odometry_mm": [
+              1499.6796338672768,
+              0.0
+            ],
+            "quantization": "symmetric nearest cell; ties away from zero",
+            "public_heading_source": "frozen DLL py_get_state()[3] latest estimated odometry yaw at LF rebuild",
+            "public_pose_mm": [
+              0,
+              0
+            ]
+          }
+        },
+        "last_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            80,
+            35
+          ],
+          "actual_center_cells": [
+            81,
+            65
+          ],
+          "window_origin_cells": [
+            17,
+            1
+          ],
+          "window_end_exclusive_cells": [
+            145,
+            129
+          ],
+          "LF_N": 128,
+          "storage_SN": 128,
+          "world_window_corners_m": [
+            [
+              1.299818459191457,
+              -0.9000106788710908
+            ],
+            [
+              7.6984515636918385,
+              -0.9000106788710908
+            ],
+            [
+              7.6984515636918385,
+              5.49862242562929
+            ],
+            [
+              1.299818459191457,
+              5.49862242562929
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              1.6997330282227308,
+              -0.5000961098398169
+            ],
+            [
+              7.298536994660564,
+              -0.5000961098398169
+            ],
+            [
+              7.298536994660564,
+              5.098707856598017
+            ],
+            [
+              1.6997330282227308,
+              5.098707856598017
+            ]
+          ],
+          "n_struct": 514,
+          "prior": false,
+          "margin": 8,
+          "forward_shift": {
+            "yaw_angle": 15927,
+            "yaw_table_index": 248,
+            "sin_q14": 16364,
+            "cos_q14": 804,
+            "requested_distance_mm": 1500,
+            "offset_cells": [
+              1,
+              30
+            ],
+            "actual_offset_odometry_mm": [
+              49.98932112890923,
+              1499.6796338672768
+            ],
+            "quantization": "symmetric nearest cell; ties away from zero",
+            "public_heading_source": "frozen DLL py_get_state()[3] latest estimated odometry yaw at LF rebuild",
+            "public_pose_mm": [
+              4003,
+              1777
+            ]
+          }
+        },
+        "effective_n_valid_min": 0,
+        "effective_n_valid_max": 1023,
+        "UPDATE_not_skipped": true,
+        "prior_false": true,
+        "MARGIN": 8,
+        "candidate_rotation_center_is_vehicle": true
+      }
+    },
+    {
+      "case": "goal",
+      "profile": "storage128_lf128_forward2000mm",
+      "outcome": "arrived",
+      "true_goal_error_mm": 137.0,
+      "XY_valid_mm": {
+        "samples": 180,
+        "RMSE_mm": 22.109172304724698,
+        "P95_mm": 37.750594224005134,
+        "endpoint_mm": 33.7511481286198,
+        "max_mm": 43.993181289831874
+      },
+      "delta_vs_rolling256_XY_valid_mm": {
+        "RMSE_mm": 8.877115684366197,
+        "P95_mm": 18.372039569338096,
+        "endpoint_mm": 14.44726250939771,
+        "max_mm": -11.078590063557648
+      },
+      "relative_RMSE_P95_endpoint_gate": false,
+      "no_added_collision_false_arrival": true,
+      "candidate_arrived": true,
+      "audit": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1d_forward_windows_20261026\\results\\goal_storage128_lf128_forward2000mm_s1\\window_audit.json",
+      "audit_summary": {
+        "update_calls": 123,
+        "update_points_total": 89504,
+        "build_calls": 180,
+        "score_calls": 180,
+        "first_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            0,
+            0
+          ],
+          "actual_center_cells": [
+            40,
+            0
+          ],
+          "window_origin_cells": [
+            -24,
+            -64
+          ],
+          "window_end_exclusive_cells": [
+            104,
+            64
+          ],
+          "LF_N": 128,
+          "storage_SN": 128,
+          "world_window_corners_m": [
+            [
+              -0.7497437070938215,
+              -4.149316552250191
+            ],
+            [
+              5.64888939740656,
+              -4.149316552250191
+            ],
+            [
+              5.64888939740656,
+              2.249316552250191
+            ],
+            [
+              -0.7497437070938215,
+              2.249316552250191
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              -0.34982913806254773,
+              -3.7494019832189167
+            ],
+            [
+              5.248974828375286,
+              -3.7494019832189167
+            ],
+            [
+              5.248974828375286,
+              1.849401983218917
+            ],
+            [
+              -0.34982913806254773,
+              1.849401983218917
+            ]
+          ],
+          "n_struct": 0,
+          "prior": false,
+          "margin": 8,
+          "forward_shift": {
+            "yaw_angle": 3,
+            "yaw_table_index": 0,
+            "sin_q14": 0,
+            "cos_q14": 16384,
+            "requested_distance_mm": 2000,
+            "offset_cells": [
+              40,
+              0
+            ],
+            "actual_offset_odometry_mm": [
+              1999.572845156369,
+              0.0
+            ],
+            "quantization": "symmetric nearest cell; ties away from zero",
+            "public_heading_source": "frozen DLL py_get_state()[3] latest estimated odometry yaw at LF rebuild",
+            "public_pose_mm": [
+              0,
+              0
+            ]
+          }
+        },
+        "last_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            80,
+            35
+          ],
+          "actual_center_cells": [
+            74,
+            75
+          ],
+          "window_origin_cells": [
+            10,
+            11
+          ],
+          "window_end_exclusive_cells": [
+            138,
+            139
+          ],
+          "LF_N": 128,
+          "storage_SN": 128,
+          "world_window_corners_m": [
+            [
+              0.9498932112890923,
+              -0.4001174675819984
+            ],
+            [
+              7.348526315789473,
+              -0.4001174675819984
+            ],
+            [
+              7.348526315789473,
+              5.998515636918383
+            ],
+            [
+              0.9498932112890923,
+              5.998515636918383
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              1.349807780320366,
+              -0.00020289855072452845
+            ],
+            [
+              6.9486117467582,
+              -0.00020289855072452845
+            ],
+            [
+              6.9486117467582,
+              5.598601067887109
+            ],
+            [
+              1.349807780320366,
+              5.598601067887109
+            ]
+          ],
+          "n_struct": 460,
+          "prior": false,
+          "margin": 8,
+          "forward_shift": {
+            "yaw_angle": 17956,
+            "yaw_table_index": 280,
+            "sin_q14": 16207,
+            "cos_q14": -2404,
+            "requested_distance_mm": 2000,
+            "offset_cells": [
+              -6,
+              40
+            ],
+            "actual_offset_odometry_mm": [
+              -299.9359267734554,
+              1999.572845156369
+            ],
+            "quantization": "symmetric nearest cell; ties away from zero",
+            "public_heading_source": "frozen DLL py_get_state()[3] latest estimated odometry yaw at LF rebuild",
+            "public_pose_mm": [
+              4024,
+              1769
+            ]
+          }
+        },
+        "effective_n_valid_min": 0,
+        "effective_n_valid_max": 997,
+        "UPDATE_not_skipped": true,
+        "prior_false": true,
+        "MARGIN": 8,
+        "candidate_rotation_center_is_vehicle": true
+      }
+    },
+    {
+      "case": "goal",
+      "profile": "storage128_lf128_forward2400mm",
+      "outcome": "arrived",
+      "true_goal_error_mm": 135.0,
+      "XY_valid_mm": {
+        "samples": 182,
+        "RMSE_mm": 24.096135297257376,
+        "P95_mm": 45.77799984038344,
+        "endpoint_mm": 33.12959402105567,
+        "max_mm": 57.55432216610684
+      },
+      "delta_vs_rolling256_XY_valid_mm": {
+        "RMSE_mm": 10.864078676898876,
+        "P95_mm": 26.3994451857164,
+        "endpoint_mm": 13.825708401833573,
+        "max_mm": 2.482550812717321
+      },
+      "relative_RMSE_P95_endpoint_gate": false,
+      "no_added_collision_false_arrival": true,
+      "candidate_arrived": true,
+      "audit": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1d_forward_windows_20261026\\results\\goal_storage128_lf128_forward2400mm_s1\\window_audit.json",
+      "audit_summary": {
+        "update_calls": 123,
+        "update_points_total": 91207,
+        "build_calls": 182,
+        "score_calls": 182,
+        "first_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            0,
+            0
+          ],
+          "actual_center_cells": [
+            48,
+            0
+          ],
+          "window_origin_cells": [
+            -16,
+            -64
+          ],
+          "window_end_exclusive_cells": [
+            112,
+            64
+          ],
+          "LF_N": 128,
+          "storage_SN": 128,
+          "world_window_corners_m": [
+            [
+              -0.34982913806254773,
+              -4.149316552250191
+            ],
+            [
+              6.048803966437834,
+              -4.149316552250191
+            ],
+            [
+              6.048803966437834,
+              2.249316552250191
+            ],
+            [
+              -0.34982913806254773,
+              2.249316552250191
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              0.05008543096872614,
+              -3.7494019832189167
+            ],
+            [
+              5.64888939740656,
+              -3.7494019832189167
+            ],
+            [
+              5.64888939740656,
+              1.849401983218917
+            ],
+            [
+              0.05008543096872614,
+              1.849401983218917
+            ]
+          ],
+          "n_struct": 0,
+          "prior": false,
+          "margin": 8,
+          "forward_shift": {
+            "yaw_angle": 3,
+            "yaw_table_index": 0,
+            "sin_q14": 0,
+            "cos_q14": 16384,
+            "requested_distance_mm": 2400,
+            "offset_cells": [
+              48,
+              0
+            ],
+            "actual_offset_odometry_mm": [
+              2399.487414187643,
+              0.0
+            ],
+            "quantization": "symmetric nearest cell; ties away from zero",
+            "public_heading_source": "frozen DLL py_get_state()[3] latest estimated odometry yaw at LF rebuild",
+            "public_pose_mm": [
+              0,
+              0
+            ]
+          }
+        },
+        "last_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            80,
+            35
+          ],
+          "actual_center_cells": [
+            82,
+            83
+          ],
+          "window_origin_cells": [
+            18,
+            19
+          ],
+          "window_end_exclusive_cells": [
+            146,
+            147
+          ],
+          "LF_N": 128,
+          "storage_SN": 128,
+          "world_window_corners_m": [
+            [
+              1.349807780320366,
+              -0.00020289855072452845
+            ],
+            [
+              7.748440884820748,
+              -0.00020289855072452845
+            ],
+            [
+              7.748440884820748,
+              6.398430205949657
+            ],
+            [
+              1.349807780320366,
+              6.398430205949657
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              1.7497223493516398,
+              0.39971167048054923
+            ],
+            [
+              7.348526315789473,
+              0.39971167048054923
+            ],
+            [
+              7.348526315789473,
+              5.998515636918383
+            ],
+            [
+              1.7497223493516398,
+              5.998515636918383
+            ]
+          ],
+          "n_struct": 447,
+          "prior": false,
+          "margin": 8,
+          "forward_shift": {
+            "yaw_angle": 16016,
+            "yaw_table_index": 250,
+            "sin_q14": 16373,
+            "cos_q14": 603,
+            "requested_distance_mm": 2400,
+            "offset_cells": [
+              2,
+              48
+            ],
+            "actual_offset_odometry_mm": [
+              99.97864225781846,
+              2399.487414187643
+            ],
+            "quantization": "symmetric nearest cell; ties away from zero",
+            "public_heading_source": "frozen DLL py_get_state()[3] latest estimated odometry yaw at LF rebuild",
+            "public_pose_mm": [
+              4004,
+              1774
+            ]
+          }
+        },
+        "effective_n_valid_min": 0,
+        "effective_n_valid_max": 1000,
+        "UPDATE_not_skipped": true,
+        "prior_false": true,
+        "MARGIN": 8,
+        "candidate_rotation_center_is_vehicle": true
+      }
+    },
+    {
+      "case": "turn_loop",
+      "profile": "storage128_lf128_forward1500mm",
+      "outcome": "false_arrival",
+      "true_goal_error_mm": 156.0,
+      "XY_valid_mm": {
+        "samples": 369,
+        "RMSE_mm": 25.08998493768862,
+        "P95_mm": 43.77588816738399,
+        "endpoint_mm": 31.926478039395448,
+        "max_mm": 57.05436004373345
+      },
+      "delta_vs_rolling256_XY_valid_mm": {
+        "RMSE_mm": 4.187259000316171,
+        "P95_mm": 1.303073332480487,
+        "endpoint_mm": -10.546336795508054,
+        "max_mm": 7.156364091992238
+      },
+      "relative_RMSE_P95_endpoint_gate": true,
+      "no_added_collision_false_arrival": true,
+      "candidate_arrived": false,
+      "audit": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1d_forward_windows_20261026\\results\\turn_loop_storage128_lf128_forward1500mm_s1\\window_audit.json",
+      "audit_summary": {
+        "update_calls": 276,
+        "update_points_total": 176173,
+        "build_calls": 369,
+        "score_calls": 369,
+        "first_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            0,
+            0
+          ],
+          "actual_center_cells": [
+            30,
+            0
+          ],
+          "window_origin_cells": [
+            -34,
+            -64
+          ],
+          "window_end_exclusive_cells": [
+            94,
+            64
+          ],
+          "LF_N": 128,
+          "storage_SN": 128,
+          "world_window_corners_m": [
+            [
+              -1.249636918382914,
+              -4.149316552250191
+            ],
+            [
+              5.1489961861174685,
+              -4.149316552250191
+            ],
+            [
+              5.1489961861174685,
+              2.249316552250191
+            ],
+            [
+              -1.249636918382914,
+              2.249316552250191
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              -0.8497223493516399,
+              -3.7494019832189167
+            ],
+            [
+              4.749081617086194,
+              -3.7494019832189167
+            ],
+            [
+              4.749081617086194,
+              1.849401983218917
+            ],
+            [
+              -0.8497223493516399,
+              1.849401983218917
+            ]
+          ],
+          "n_struct": 0,
+          "prior": false,
+          "margin": 8,
+          "forward_shift": {
+            "yaw_angle": 3,
+            "yaw_table_index": 0,
+            "sin_q14": 0,
+            "cos_q14": 16384,
+            "requested_distance_mm": 1500,
+            "offset_cells": [
+              30,
+              0
+            ],
+            "actual_offset_odometry_mm": [
+              1499.6796338672768,
+              0.0
+            ],
+            "quantization": "symmetric nearest cell; ties away from zero",
+            "public_heading_source": "frozen DLL py_get_state()[3] latest estimated odometry yaw at LF rebuild",
+            "public_pose_mm": [
+              0,
+              0
+            ]
+          }
+        },
+        "last_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            0,
+            2
+          ],
+          "actual_center_cells": [
+            0,
+            -28
+          ],
+          "window_origin_cells": [
+            -64,
+            -92
+          ],
+          "window_end_exclusive_cells": [
+            64,
+            36
+          ],
+          "LF_N": 128,
+          "storage_SN": 128,
+          "world_window_corners_m": [
+            [
+              -2.749316552250191,
+              -5.549017543859649
+            ],
+            [
+              3.649316552250191,
+              -5.549017543859649
+            ],
+            [
+              3.649316552250191,
+              0.8496155606407323
+            ],
+            [
+              -2.749316552250191,
+              0.8496155606407323
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              -2.349401983218917,
+              -5.149102974828375
+            ],
+            [
+              3.249401983218917,
+              -5.149102974828375
+            ],
+            [
+              3.249401983218917,
+              0.44970099160945853
+            ],
+            [
+              -2.349401983218917,
+              0.44970099160945853
+            ]
+          ],
+          "n_struct": 329,
+          "prior": false,
+          "margin": 8,
+          "forward_shift": {
+            "yaw_angle": 49134,
+            "yaw_table_index": 767,
+            "sin_q14": -16384,
+            "cos_q14": -101,
+            "requested_distance_mm": 1500,
+            "offset_cells": [
+              0,
+              -30
+            ],
+            "actual_offset_odometry_mm": [
+              0.0,
+              -1499.6796338672768
+            ],
+            "quantization": "symmetric nearest cell; ties away from zero",
+            "public_heading_source": "frozen DLL py_get_state()[3] latest estimated odometry yaw at LF rebuild",
+            "public_pose_mm": [
+              13,
+              127
+            ]
+          }
+        },
+        "effective_n_valid_min": 0,
+        "effective_n_valid_max": 1020,
+        "UPDATE_not_skipped": true,
+        "prior_false": true,
+        "MARGIN": 8,
+        "candidate_rotation_center_is_vehicle": true
+      }
+    },
+    {
+      "case": "turn_loop",
+      "profile": "storage128_lf128_forward2000mm",
+      "outcome": "false_arrival",
+      "true_goal_error_mm": 212.0,
+      "XY_valid_mm": {
+        "samples": 368,
+        "RMSE_mm": 43.188221773997626,
+        "P95_mm": 85.95673330228414,
+        "endpoint_mm": 85.95673330228414,
+        "max_mm": 86.04585986553916
+      },
+      "delta_vs_rolling256_XY_valid_mm": {
+        "RMSE_mm": 22.285495836625177,
+        "P95_mm": 43.48391846738063,
+        "endpoint_mm": 43.48391846738063,
+        "max_mm": 36.14786391379794
+      },
+      "relative_RMSE_P95_endpoint_gate": false,
+      "no_added_collision_false_arrival": true,
+      "candidate_arrived": false,
+      "audit": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1d_forward_windows_20261026\\results\\turn_loop_storage128_lf128_forward2000mm_s1\\window_audit.json",
+      "audit_summary": {
+        "update_calls": 278,
+        "update_points_total": 177795,
+        "build_calls": 368,
+        "score_calls": 368,
+        "first_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            0,
+            0
+          ],
+          "actual_center_cells": [
+            40,
+            0
+          ],
+          "window_origin_cells": [
+            -24,
+            -64
+          ],
+          "window_end_exclusive_cells": [
+            104,
+            64
+          ],
+          "LF_N": 128,
+          "storage_SN": 128,
+          "world_window_corners_m": [
+            [
+              -0.7497437070938215,
+              -4.149316552250191
+            ],
+            [
+              5.64888939740656,
+              -4.149316552250191
+            ],
+            [
+              5.64888939740656,
+              2.249316552250191
+            ],
+            [
+              -0.7497437070938215,
+              2.249316552250191
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              -0.34982913806254773,
+              -3.7494019832189167
+            ],
+            [
+              5.248974828375286,
+              -3.7494019832189167
+            ],
+            [
+              5.248974828375286,
+              1.849401983218917
+            ],
+            [
+              -0.34982913806254773,
+              1.849401983218917
+            ]
+          ],
+          "n_struct": 0,
+          "prior": false,
+          "margin": 8,
+          "forward_shift": {
+            "yaw_angle": 3,
+            "yaw_table_index": 0,
+            "sin_q14": 0,
+            "cos_q14": 16384,
+            "requested_distance_mm": 2000,
+            "offset_cells": [
+              40,
+              0
+            ],
+            "actual_offset_odometry_mm": [
+              1999.572845156369,
+              0.0
+            ],
+            "quantization": "symmetric nearest cell; ties away from zero",
+            "public_heading_source": "frozen DLL py_get_state()[3] latest estimated odometry yaw at LF rebuild",
+            "public_pose_mm": [
+              0,
+              0
+            ]
+          }
+        },
+        "last_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            0,
+            2
+          ],
+          "actual_center_cells": [
+            -2,
+            -38
+          ],
+          "window_origin_cells": [
+            -66,
+            -102
+          ],
+          "window_end_exclusive_cells": [
+            62,
+            26
+          ],
+          "LF_N": 128,
+          "storage_SN": 128,
+          "world_window_corners_m": [
+            [
+              -2.849295194508009,
+              -6.048910755148742
+            ],
+            [
+              3.5493379099923725,
+              -6.048910755148742
+            ],
+            [
+              3.5493379099923725,
+              0.3497223493516399
+            ],
+            [
+              -2.849295194508009,
+              0.3497223493516399
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              -2.4493806254767354,
+              -5.6489961861174685
+            ],
+            [
+              3.1494233409610985,
+              -5.6489961861174685
+            ],
+            [
+              3.1494233409610985,
+              -0.05019221967963383
+            ],
+            [
+              -2.4493806254767354,
+              -0.05019221967963383
+            ]
+          ],
+          "n_struct": 274,
+          "prior": false,
+          "margin": 8,
+          "forward_shift": {
+            "yaw_angle": 48738,
+            "yaw_table_index": 761,
+            "sin_q14": -16369,
+            "cos_q14": -704,
+            "requested_distance_mm": 2000,
+            "offset_cells": [
+              -2,
+              -40
+            ],
+            "actual_offset_odometry_mm": [
+              -99.97864225781846,
+              -1999.572845156369
+            ],
+            "quantization": "symmetric nearest cell; ties away from zero",
+            "public_heading_source": "frozen DLL py_get_state()[3] latest estimated odometry yaw at LF rebuild",
+            "public_pose_mm": [
+              16,
+              134
+            ]
+          }
+        },
+        "effective_n_valid_min": 0,
+        "effective_n_valid_max": 1023,
+        "UPDATE_not_skipped": true,
+        "prior_false": true,
+        "MARGIN": 8,
+        "candidate_rotation_center_is_vehicle": true
+      }
+    },
+    {
+      "case": "turn_loop",
+      "profile": "storage128_lf128_forward2400mm",
+      "outcome": "false_arrival",
+      "true_goal_error_mm": 244.0,
+      "XY_valid_mm": {
+        "samples": 364,
+        "RMSE_mm": 61.42511186910343,
+        "P95_mm": 147.18644638688707,
+        "endpoint_mm": 147.18644638688707,
+        "max_mm": 147.26686660617176
+      },
+      "delta_vs_rolling256_XY_valid_mm": {
+        "RMSE_mm": 40.52238593173098,
+        "P95_mm": 104.71363155198357,
+        "endpoint_mm": 104.71363155198357,
+        "max_mm": 97.36887065443054
+      },
+      "relative_RMSE_P95_endpoint_gate": false,
+      "no_added_collision_false_arrival": true,
+      "candidate_arrived": false,
+      "audit": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1d_forward_windows_20261026\\results\\turn_loop_storage128_lf128_forward2400mm_s1\\window_audit.json",
+      "audit_summary": {
+        "update_calls": 275,
+        "update_points_total": 178466,
+        "build_calls": 364,
+        "score_calls": 364,
+        "first_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            0,
+            0
+          ],
+          "actual_center_cells": [
+            48,
+            0
+          ],
+          "window_origin_cells": [
+            -16,
+            -64
+          ],
+          "window_end_exclusive_cells": [
+            112,
+            64
+          ],
+          "LF_N": 128,
+          "storage_SN": 128,
+          "world_window_corners_m": [
+            [
+              -0.34982913806254773,
+              -4.149316552250191
+            ],
+            [
+              6.048803966437834,
+              -4.149316552250191
+            ],
+            [
+              6.048803966437834,
+              2.249316552250191
+            ],
+            [
+              -0.34982913806254773,
+              2.249316552250191
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              0.05008543096872614,
+              -3.7494019832189167
+            ],
+            [
+              5.64888939740656,
+              -3.7494019832189167
+            ],
+            [
+              5.64888939740656,
+              1.849401983218917
+            ],
+            [
+              0.05008543096872614,
+              1.849401983218917
+            ]
+          ],
+          "n_struct": 0,
+          "prior": false,
+          "margin": 8,
+          "forward_shift": {
+            "yaw_angle": 3,
+            "yaw_table_index": 0,
+            "sin_q14": 0,
+            "cos_q14": 16384,
+            "requested_distance_mm": 2400,
+            "offset_cells": [
+              48,
+              0
+            ],
+            "actual_offset_odometry_mm": [
+              2399.487414187643,
+              0.0
+            ],
+            "quantization": "symmetric nearest cell; ties away from zero",
+            "public_heading_source": "frozen DLL py_get_state()[3] latest estimated odometry yaw at LF rebuild",
+            "public_pose_mm": [
+              0,
+              0
+            ]
+          }
+        },
+        "last_build": {
+          "op": "build_lf",
+          "instance": 0,
+          "requested_vehicle_center_cells": [
+            0,
+            2
+          ],
+          "actual_center_cells": [
+            -1,
+            -46
+          ],
+          "window_origin_cells": [
+            -65,
+            -110
+          ],
+          "window_end_exclusive_cells": [
+            63,
+            18
+          ],
+          "LF_N": 128,
+          "storage_SN": 128,
+          "world_window_corners_m": [
+            [
+              -2.7993058733790996,
+              -6.448825324180015
+            ],
+            [
+              3.5993272311212814,
+              -6.448825324180015
+            ],
+            [
+              3.5993272311212814,
+              -0.05019221967963383
+            ],
+            [
+              -2.7993058733790996,
+              -0.05019221967963383
+            ]
+          ],
+          "world_scoring_core_corners_m": [
+            [
+              -2.3993913043478257,
+              -6.048910755148742
+            ],
+            [
+              3.1994126620900074,
+              -6.048910755148742
+            ],
+            [
+              3.1994126620900074,
+              -0.4501067887109077
+            ],
+            [
+              -2.3993913043478257,
+              -0.4501067887109077
+            ]
+          ],
+          "n_struct": 295,
+          "prior": false,
+          "margin": 8,
+          "forward_shift": {
+            "yaw_angle": 48856,
+            "yaw_table_index": 763,
+            "sin_q14": -16376,
+            "cos_q14": -503,
+            "requested_distance_mm": 2400,
+            "offset_cells": [
+              -1,
+              -48
+            ],
+            "actual_offset_odometry_mm": [
+              -49.98932112890923,
+              -2399.487414187643
+            ],
+            "quantization": "symmetric nearest cell; ties away from zero",
+            "public_heading_source": "frozen DLL py_get_state()[3] latest estimated odometry yaw at LF rebuild",
+            "public_pose_mm": [
+              13,
+              135
+            ]
+          }
+        },
+        "effective_n_valid_min": 0,
+        "effective_n_valid_max": 1022,
+        "UPDATE_not_skipped": true,
+        "prior_false": true,
+        "MARGIN": 8,
+        "candidate_rotation_center_is_vehicle": true
+      }
+    }
+  ],
+  "raw_public_yaw_LF_center_additions_checked": 1646,
+  "all_actual_LF_centers_equal_original_EM_centers_plus_recorded_shift": true,
+  "gate": "No added collision/false-arrival and valid XY RMSE/P95/endpoint worsenings<=10mm vs same-seed rolling256; max diagnostic only",
+  "single_seed_only": 1,
+  "prior": false,
+  "collision_runs": 0,
+  "stage1b_or_EDA_started": false,
+  "production_128_approved": false,
+  "all_128_designs_impossible": false,
+  "decision": "Existing height-band1500 fixed/forward128 candidates do not qualify. Keep256 pending environmental ZHI1500vs350 stage1c; do not skip1c or declare finalA/B from these cells alone.",
+  "execution_scope": "N1c navigation C DLL + fixed-point perception + virtual lidar + velocity kinematics; RL/SAFE not in loop; fixed40ms matcher simulation latency; not RTL/board/WCET",
+  "production_model_RTL_DLL_unchanged": true
+}

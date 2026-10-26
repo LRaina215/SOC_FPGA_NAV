@@ -1,0 +1,192 @@
+{
+  "recorded_at": "2026-10-26T17:40:39.896546+08:00",
+  "scope": "Stage2B independent source candidates and finite RTL validation preparation only",
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40",
+  "user_task_attachment": "C:/Users/Li/.codex/attachments/6cf4062e-ad4f-45c4-8bcc-f3604a02b399/已粘贴的文本.txt",
+  "candidates": [
+    {
+      "profile": "weight9",
+      "prepared_directory": "F:\\nav_integration_g2_20261023\\baseline_fusion50_weight9_prepared1",
+      "changed_RTL": [
+        "fixed4500_weight_rom.v"
+      ],
+      "other62_RTL_byte_identical": true,
+      "original69_assets_byte_identical": true,
+      "new_initialization_assets": [
+        "src/mem/weight9_high0_0.mem",
+        "src/mem/weight9_high0_1.mem",
+        "src/mem/weight9_high0_2.mem",
+        "src/mem/weight9_high0_3.mem",
+        "src/mem/weight9_high0_4.mem",
+        "src/mem/weight9_high1_0.mem",
+        "src/mem/weight9_high1_1.mem",
+        "src/mem/weight9_high1_2.mem",
+        "src/mem/weight9_high1_3.mem",
+        "src/mem/weight9_high1_4.mem",
+        "src/mem/weight9_high2_0.mem",
+        "src/mem/weight9_high2_1.mem",
+        "src/mem/weight9_high2_2.mem",
+        "src/mem/weight9_high2_3.mem",
+        "src/mem/weight9_high2_4.mem",
+        "src/mem/weight9_low00.mem",
+        "src/mem/weight9_low01.mem",
+        "src/mem/weight9_low02.mem",
+        "src/mem/weight9_low03.mem",
+        "src/mem/weight9_low04.mem",
+        "src/mem/weight9_low05.mem",
+        "src/mem/weight9_low06.mem",
+        "src/mem/weight9_low07.mem",
+        "src/mem/weight9_low08.mem",
+        "src/mem/weight9_low09.mem",
+        "src/mem/weight9_low10.mem",
+        "src/mem/weight9_low11.mem",
+        "src/mem/weight9_low12.mem",
+        "src/mem/weight9_low13.mem",
+        "src/mem/weight9_low14.mem",
+        "src/mem/weight9_low15.mem",
+        "src/mem/weight9_low16.mem",
+        "src/mem/weight9_low17.mem",
+        "src/mem/weight9_low18.mem",
+        "src/mem/weight9_low19.mem"
+      ],
+      "headers31_byte_identical": true,
+      "firmware_all_byte_identical": true,
+      "contract": {
+        "source": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40",
+        "prepared": "F:\\nav_integration_g2_20261023\\baseline_fusion50_weight9_prepared1",
+        "preparation_only": true,
+        "no_new_RTL_test_started": true,
+        "synthesis_started": false,
+        "PNR_started": false,
+        "programmed": false,
+        "automatic_PNR": false,
+        "production_RTL_modified": false,
+        "control_4500_weights_training_math_125Hz_unchanged": true,
+        "clocks": "Original clk50 50MHz and rgmii_rxc 100MHz; no clock/reset/CDC change",
+        "no_SHA_used": true,
+        "port": "clk,en,addr[15:0] -> signed value[15:0]; no write port",
+        "read": "On rising clk with en=1, addressed word and all selector metadata are captured together; external value available after that same edge, exactly one enabled synchronous read.",
+        "hold": "en=0 holds selectors, sign exception, all bank q and external value; input addr may change.",
+        "initialization": "All 40704 trained 16bit words plus 256 old zero-pad words are exactly reconstructed from35 new files. Original output/selector registers are uninitialized before the first enabled read, and the candidate does not add a defined startup output.",
+        "read_first": "Not applicable: read-only ROM, no write or read/write collision.",
+        "legal_address_domain": [
+          0,
+          40959
+        ],
+        "production_weight_address_domain": [
+          0,
+          40703
+        ],
+        "out_of_range": "Addresses40960..65535 are outside the old40bank ROM domain; no new defined-value guarantee is introduced. Validation scans every legal word, not arbitrary X states outside that contract.",
+        "consumer": "Unchanged fc_v4_top: en=(state==MAC_REQ); MAC_REQ->MAC_WAIT->MAC_ACC schedule unchanged. Layer bases and extents reach40703, not a new precision/quantization profile.",
+        "old_proofs": [
+          "F:\\nav_integration_g2_20261023\\weight9_equivalence\\result.json",
+          "F:\\nav_integration_g2_20261023\\weight9_netlist_functional\\result.json",
+          "F:\\nav_integration_g2_20261023\\weight9_synthesis\\result.json",
+          "F:\\nav_integration_g2_20261023\\weight9_synthesis_packed_v2\\result.json"
+        ],
+        "reuse": "Exact old packed ROM RTL and35 initialization assets are byte-bound to weight9_equivalence. Old40960word/45056vendor-read/3745hold and3frame1275neuron results are historical isolated evidence, not a new SYN40 test or physical timing result.",
+        "expected_physical_bsram_delta": -5,
+        "physical_delta_is_prediction": true,
+        "pending": [
+          "New frozen RTL word/hold and real4500 comparison",
+          "Combined actual RAM INIT/decode/select/clock mapping",
+          "Combined resource and actual two-place-option routing/setup/hold acceptance"
+        ]
+      },
+      "prepared_source_review": "F:\\nav_integration_g2_20261023\\baseline_fusion50_weight9_prepared1\\prepared_source_review.json",
+      "validation_request": "F:\\nav_integration_g2_20261023\\baseline_fusion50_weight9_prepared1\\validation\\validation_request.json",
+      "frozen_binding_file_count": 231,
+      "frozen_validation_file_count": 93,
+      "numeric_reconstruction": {
+        "layout": "low9_and_three_high_byte_lanes_per_four_words",
+        "original_words": 40704,
+        "padded_words": 40960,
+        "decoded_all_words_equal": true,
+        "bit14_exception_addresses": [
+          675,
+          3055,
+          11735
+        ],
+        "expected_native_bsram": 35,
+        "quantization": false,
+        "weights_changed": false,
+        "additional_read_cycles": 0,
+        "scope": "numeric reconstruction and physical-mode budget only; RTL and synthesis/PNR still required"
+      }
+    },
+    {
+      "profile": "pointplanes",
+      "prepared_directory": "F:\\nav_integration_g2_20261023\\baseline_fusion50_pointplanes_prepared1",
+      "changed_RTL": [
+        "nav/rtl/common/nav_ram_sdp.v"
+      ],
+      "other62_RTL_byte_identical": true,
+      "original69_assets_byte_identical": true,
+      "new_initialization_assets": [],
+      "headers31_byte_identical": true,
+      "firmware_all_byte_identical": true,
+      "contract": {
+        "source": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40",
+        "prepared": "F:\\nav_integration_g2_20261023\\baseline_fusion50_pointplanes_prepared1",
+        "preparation_only": true,
+        "no_new_RTL_test_started": true,
+        "synthesis_started": false,
+        "PNR_started": false,
+        "programmed": false,
+        "automatic_PNR": false,
+        "production_RTL_modified": false,
+        "control_4500_weights_training_math_125Hz_unchanged": true,
+        "clocks": "Original clk50 50MHz and rgmii_rxc 100MHz; no clock/reset/CDC change",
+        "no_SHA_used": true,
+        "geometry": {
+          "words": 4096,
+          "bits_per_word": 36,
+          "total_bits": 147456
+        },
+        "port": "Single clk; independent we/waddr12/wdata36 and re/raddr12; registered rdata36. No reset port.",
+        "read": "At rising clk with re=1, sample old mem[raddr]; one clock read latency. Selected-bank state changes on the same edge, with no added consumer wait state.",
+        "hold": "re=0 holds selected bank and every per-bank read q, hence public rdata even while writes occur or addresses change.",
+        "read_first": "RTL uses nonblocking writes and a separate enabled read process, so same-address simultaneous read/write returns pre-write data, then the next enabled read sees the new word.",
+        "initialization": "INIT_FILE empty branch only. Every memory bit comes from INIT_VAL (low18/high18); each qr and selector initialize0 exactly as old source. Production INIT_VAL=0; nonzero36bit initialization is also in the prepared test.",
+        "storage": "Old8x512x36 banks -> four groups of1024x(low18,high18), eight1024x18 leaves; full address/data capacity unchanged.",
+        "caller": "slf_extract writes monotonically to pb_waddr=n_pts[11:0] while n_pts<4096; slf_match reads j[11:0] via S_T0/S_T0W/S_T1. No explicit top-level no-overlap gate exists: mt_frame_en does not include !mt_busy, so this review does not assume read/write exclusion.",
+        "collision_scope": "Same-clock read-first is exercised in the prepared RTL test, including all4096 exact collisions. Old vendor-model evidence supports the old branch, but stage3 must independently inspect actual SDP modes; electrical collision behavior is not proven by source alone.",
+        "old_proofs": [
+          "F:\\nav_integration_g2_20261023\\slf_point_planes_probe1\\result.json"
+        ],
+        "reuse": "Exact old point-plane BRANCH reused; old source active banked body differs from SYN40 only by syn_maxfan attribute. Old RTL+vendor28682checks/4098collisions/nonzeroINIT and physical16->8 were isolated in a different joint context. Fallback row/ROM branches are not imported.",
+        "expected_physical_bsram_delta": -8,
+        "physical_delta_is_prediction": true,
+        "pending": [
+          "New frozen RTL all-address/read-first/hold/INIT comparison",
+          "Combined actual8narrow leaves and zeroINIT; no remaining point wide split",
+          "All nonpoint RAM and entire joint resource/clocks/route/timing acceptance"
+        ]
+      },
+      "prepared_source_review": "F:\\nav_integration_g2_20261023\\baseline_fusion50_pointplanes_prepared1\\prepared_source_review.json",
+      "validation_request": "F:\\nav_integration_g2_20261023\\baseline_fusion50_pointplanes_prepared1\\validation\\validation_request.json",
+      "frozen_binding_file_count": 196,
+      "frozen_validation_file_count": 4,
+      "numeric_reconstruction": null
+    }
+  ],
+  "expected_joint_physical_budget": {
+    "PNR52_baseline": 332,
+    "packed_weight9_delta": -5,
+    "pointplanes_delta": -8,
+    "both_predicted": 319,
+    "not_measured_in_current_joint_context": true
+  },
+  "source_capacity_bits_preserved": true,
+  "original_4500_all_weights_training_125Hz_preserved": true,
+  "no_new_RTL_or_vendor_test_run": true,
+  "no_Gowin_SYN_PNR_started": true,
+  "no_firmware_rebuild": true,
+  "no_board_action": true,
+  "old_frozen_inputs_modified": false,
+  "production_RTL_modified": false,
+  "stage3_combined_synthesis_only": true,
+  "automatic_PNR": false,
+  "no_SHA_used": true
+}

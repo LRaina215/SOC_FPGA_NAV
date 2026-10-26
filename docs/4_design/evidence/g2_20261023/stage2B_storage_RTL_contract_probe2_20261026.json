@@ -1,0 +1,133 @@
+{
+  "recorded_at": "2026-10-26T17:52:47.501671+08:00",
+  "phase": "probe2_RTL_contracts_passed",
+  "passed": true,
+  "original_failed_probe": "F:\\nav_integration_g2_20261023\\stage2B_back_to_BSRAM_contract_probe1",
+  "probe1_preserved": true,
+  "probe1_failure": "Time0 iteration0 negedge before continuous RAM outputs settled; not a demonstrated hardware failure.",
+  "original_hardware_candidate": "F:\\nav_integration_g2_20261023\\stage2B_bitmap_mailbox_slist_trig_console_bias_prepared1",
+  "new_fixture_inputs": "F:\\nav_integration_g2_20261023\\stage2B_back_to_BSRAM_contract_inputs2",
+  "probe2": "F:\\nav_integration_g2_20261023\\stage2B_back_to_BSRAM_contract_probe2",
+  "result": "F:\\nav_integration_g2_20261023\\stage2B_back_to_BSRAM_contract_probe2\\result.json",
+  "exact_TB_change": {
+    "old": "  always@(negedge clk)begin\n    checks++;",
+    "new": "  // Ignore only the initialization X-to-0 clock event at time0.\n  // The first real falling edge still checks q=0 before any enabled read.\n  always@(negedge clk)if($time>0)begin\n    checks++;"
+  },
+  "first_real_negedge_initial_zero_check_retained": true,
+  "all_four_old_new_RTL_wrappers_byte_identical": true,
+  "all63_original_hardware_source_and_protected_evidence_metadata_unchanged": true,
+  "all6_non_TB_validation_files_unchanged": true,
+  "simulated_finish_ns": 6280,
+  "reported_RAM_cases": [
+    {
+      "id": 1,
+      "checks": 296,
+      "collisions": 37,
+      "holds": 153
+    },
+    {
+      "id": 2,
+      "checks": 296,
+      "collisions": 45,
+      "holds": 146
+    },
+    {
+      "id": 11,
+      "checks": 299,
+      "collisions": 0,
+      "holds": 159
+    },
+    {
+      "id": 10,
+      "checks": 299,
+      "collisions": 0,
+      "holds": 135
+    },
+    {
+      "id": 9,
+      "checks": 299,
+      "collisions": 0,
+      "holds": 152
+    },
+    {
+      "id": 8,
+      "checks": 299,
+      "collisions": 0,
+      "holds": 142
+    },
+    {
+      "id": 7,
+      "checks": 299,
+      "collisions": 41,
+      "holds": 149
+    },
+    {
+      "id": 6,
+      "checks": 299,
+      "collisions": 35,
+      "holds": 153
+    },
+    {
+      "id": 5,
+      "checks": 299,
+      "collisions": 42,
+      "holds": 154
+    },
+    {
+      "id": 4,
+      "checks": 299,
+      "collisions": 45,
+      "holds": 144
+    },
+    {
+      "id": 3,
+      "checks": 299,
+      "collisions": 47,
+      "holds": 147
+    },
+    {
+      "id": 0,
+      "checks": 311,
+      "collisions": 57,
+      "holds": 144
+    }
+  ],
+  "sums_at_each_case_completion": {
+    "checks": 3594,
+    "collisions": 349,
+    "holds": 1778
+  },
+  "bias_case_done_required_by_success_marker": true,
+  "tool_exits": [
+    {
+      "tool": "xvlog",
+      "exit_code": 0
+    },
+    {
+      "tool": "xvlog",
+      "exit_code": 0
+    },
+    {
+      "tool": "xelab",
+      "exit_code": 0
+    },
+    {
+      "tool": "xsim",
+      "exit_code": 0
+    }
+  ],
+  "actual_xsim_PID": 39272,
+  "actual_xsimk_PID": 26320,
+  "minimum_admission_physical_bytes": 4208996352,
+  "minimum_admission_commit_bytes": 5036548096,
+  "execution_entry": "D:/Desktop/SOC FPGA/nav/integration/g2/validate_stage2b_back_to_bsram.py --candidate F:\\nav_integration_g2_20261023\\stage2B_back_to_BSRAM_contract_inputs2 --out F:\\nav_integration_g2_20261023\\stage2B_back_to_BSRAM_contract_probe2 --run",
+  "reproduction_preparer": "D:/Desktop/SOC FPGA/nav/integration/g2/prepare_stage2b_contract_observation2.py --out NEW_INPUT_DIRECTORY",
+  "no_Gowin_SYN_or_PNR": true,
+  "no_hardware_source_edits": true,
+  "mapped_vendor_primitives_verified": false,
+  "full_consumer_or_CPU_handshake_verified": false,
+  "full4500_verified": false,
+  "actual_resources_measured": false,
+  "deployment_accepted": false,
+  "scope": "Finite current RTL read/hold/read-first/INIT and independently driven port checks; no mapped primitive, complete consumer, CPU, timing or resource acceptance."
+}

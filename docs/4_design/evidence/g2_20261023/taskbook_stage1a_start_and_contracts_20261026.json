@@ -1,0 +1,253 @@
+{
+  "recorded_at": "2026-10-26T17:41:54.460880+08:00",
+  "user_taskbook": "D:\\Desktop\\SOC FPGA\\nav\\docs\\1_plan\\g2_small_field_task_20261026.md",
+  "copied_user_text_byte_identical": true,
+  "hard_contract": {
+    "user_present_and_explicit_consent_required_before_SRAM": true,
+    "old_autonomous_programming_authorization_superseded": true,
+    "user_present_currently_confirmed": false,
+    "current_programming_consent": false,
+    "SRAM_only": true,
+    "Flash_allowed": false,
+    "one_board_single_chip": true,
+    "no_SFP_no_DDR": true,
+    "target_mhz": {
+      "clk50": 50,
+      "rgmii_rxc": 100
+    },
+    "actual_unrouted_required": 0,
+    "two_place_options_must_route": true,
+    "setup_hold_violations_required": 0,
+    "original52_constraints_must_be_active": true,
+    "reset_recovery_removal_pulse_positive": true,
+    "BSRAM_max": 336,
+    "physical_BSRAM_capacity": 340,
+    "arrival_mm": 150,
+    "weights_training_policy125Hz_preserved": true,
+    "IR_hard_ESTOP_preserved": true,
+    "CPU_KiB": 128,
+    "no_quantization_no_point_truncation": true,
+    "no_new_joint_EDA_until_large_storage_candidate": true,
+    "one_joint_synthesis_after_A_B_decision_and_contracts": true
+  },
+  "previous_pilot": {
+    "completed": 16,
+    "production_SLF128_accepted": false,
+    "final_evidence": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\nav3x5_N1c_SLF128_256_stage1_final_20261026.json",
+    "not_repeated": true
+  },
+  "stage1a": {
+    "directory": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1a_window_ablation_20261026",
+    "job": {
+      "controller_pid": 45752,
+      "controller_created_epoch": 1793007542.8131745,
+      "one_worker": true,
+      "priority": "BELOW_NORMAL",
+      "logical_CPUs": [
+        18,
+        19
+      ],
+      "minimum_start_physical_bytes": 2684354560,
+      "minimum_start_commit_bytes": 4831838208,
+      "planned": 4,
+      "completed": 1,
+      "automatic_stage1b": false,
+      "automatic_EDA": false,
+      "phase": "running_case",
+      "updated_at": "2026-10-26T17:40:38.110252+08:00",
+      "next": "goal_storage128_lf128_fixed_field_s1",
+      "free_bytes": 4563267584,
+      "available_commit_bytes": 5188997120,
+      "current": "goal_storage128_lf128_fixed_field_s1",
+      "child_pid": 62728,
+      "child_created_epoch": 1793007638.1040356,
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1a_window_ablation_20261026\\execution_tree\\sim\\closed_loop\\stage1a_case.py",
+        "--scene",
+        "field3x5_v1",
+        "--seed",
+        "1",
+        "--no-build",
+        "--firmware-dll",
+        "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1a_window_ablation_20261026\\nav_fw.dll",
+        "--no-plots",
+        "--start",
+        "0.45,-0.95,0",
+        "--time",
+        "90",
+        "--out",
+        "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1a_window_ablation_20261026\\results\\goal_storage128_lf128_fixed_field_s1",
+        "--goal",
+        "4.45,0.95"
+      ],
+      "environment": {
+        "SLF_SN_LOG2": "7",
+        "SLF_LF_N": "128",
+        "SLF_WINDOW_MODE": "fixed_field",
+        "SLF_FIXED_CX": "41",
+        "SLF_FIXED_CY": "19",
+        "SLF_ZLO": "60",
+        "SLF_NBR": "3x3",
+        "SLF_W18": "1",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      },
+      "admission_physical_bytes": 4563267584,
+      "admission_commit_bytes": 5188997120,
+      "last": "goal_storage256_lf128_rolling_s1"
+    },
+    "minimal_consistency": {
+      "passed": true,
+      "results": [
+        {
+          "command": [
+            "D:\\Anaconda\\python.exe",
+            "-X",
+            "utf8",
+            "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1a_window_ablation_20261026\\execution_tree\\sim\\closed_loop\\stage1a_consistency.py"
+          ],
+          "environment": {
+            "SLF_SN_LOG2": "8",
+            "SLF_LF_N": "256",
+            "SLF_WINDOW_MODE": "rolling",
+            "SLF_FIXED_CX": "41",
+            "SLF_FIXED_CY": "19"
+          },
+          "exit": 0,
+          "stdout": "{\"passed\": true, \"SLF_SN\": 256, \"LF_N\": 256, \"window_mode\": \"rolling\", \"checks\": 68, \"frames\": 4, \"candidates\": 27, \"arithmetic_storage_and_score_equal_at_same_configuration\": true, \"prior_false\": true}\n"
+        },
+        {
+          "command": [
+            "D:\\Anaconda\\python.exe",
+            "-X",
+            "utf8",
+            "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1a_window_ablation_20261026\\execution_tree\\sim\\closed_loop\\stage1a_consistency.py"
+          ],
+          "environment": {
+            "SLF_SN_LOG2": "7",
+            "SLF_LF_N": "128",
+            "SLF_WINDOW_MODE": "rolling",
+            "SLF_FIXED_CX": "41",
+            "SLF_FIXED_CY": "19"
+          },
+          "exit": 0,
+          "stdout": "{\"passed\": true, \"SLF_SN\": 128, \"LF_N\": 128, \"window_mode\": \"rolling\", \"checks\": 68, \"frames\": 4, \"candidates\": 27, \"arithmetic_storage_and_score_equal_at_same_configuration\": true, \"prior_false\": true}\n"
+        },
+        {
+          "command": [
+            "D:\\Anaconda\\python.exe",
+            "-X",
+            "utf8",
+            "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1a_window_ablation_20261026\\execution_tree\\sim\\closed_loop\\stage1a_consistency.py"
+          ],
+          "environment": {
+            "SLF_SN_LOG2": "7",
+            "SLF_LF_N": "128",
+            "SLF_WINDOW_MODE": "fixed_field",
+            "SLF_FIXED_CX": "41",
+            "SLF_FIXED_CY": "19"
+          },
+          "exit": 0,
+          "stdout": "{\"passed\": true, \"SLF_SN\": 128, \"LF_N\": 128, \"window_mode\": \"fixed_field\", \"checks\": 68, \"frames\": 4, \"candidates\": 27, \"arithmetic_storage_and_score_equal_at_same_configuration\": true, \"prior_false\": true}\n"
+        }
+      ]
+    },
+    "coordinate_contract": {
+      "provisional_start_world_m_deg": [
+        0.45,
+        -0.95,
+        0.0
+      ],
+      "field_center_world_m": [
+        2.5,
+        0.0
+      ],
+      "field_center_odometry_m": [
+        2.05,
+        0.95
+      ],
+      "field_center_odometry_mm": [
+        2050,
+        950
+      ],
+      "inverse_resolution": 1311,
+      "actual_fixed_center_cells": [
+        41,
+        19
+      ],
+      "fixed_window_origin_cells": [
+        -23,
+        -45
+      ],
+      "cell_conversion": "(int_mm * 1311) >> 16; original StructMap.cell semantics",
+      "rotation_pivot": "original vehicle cx_mm/cy_mm; NOT fixed field center"
+    },
+    "source_delta": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_stage1a_window_ablation_20261026\\source_delta.patch",
+    "independent_root_read_source_delta": true,
+    "root_review_notes": [
+      "LF_N separated from storage SN/SN_LOG2; slot and tag index remain original256 in coverage ablation.",
+      "Fixed field center only replaces build_lf center; score uses stored LF origin; candidate rotation center remains vehicle position.",
+      "point_cost uses actual LF array shape for clipping and no-prior MARGIN remains8.",
+      "Baseline case outputs reused; no DLL rebuild or production model/RTL edits.",
+      "New task criterion is paired valid-period RMSE/P95/endpoint increase<=10mm; max reported but not a new gate."
+    ]
+  },
+  "parallel_storage_preparation": {
+    "packed_weight9_and_pointplanes": "/root/control25_domain_review",
+    "bitmap_mailboxes_slist_trig_console_bias": "/root/control25_domain_review/lease_deadline_math_review",
+    "stage": "preparation_only_freeze_before_RTL_test",
+    "synthesis_started": false,
+    "PNR_started": false,
+    "column_scratch_excluded": true
+  },
+  "report_metric_scope": {
+    "SYN40_baseline": {
+      "LUT": 45967,
+      "FF": 29642,
+      "source_BSRAM": 314
+    },
+    "PNR52_baseline": {
+      "LUT": 45825,
+      "FF": 31120,
+      "physical_BSRAM": 332,
+      "CLS": 51359
+    },
+    "CLS_actual_PRIMARY_LW_not_joint_synthesis_measurements": true
+  },
+  "provisional_geometry": {
+    "field_world_origin": [
+      0,
+      -1.5
+    ],
+    "size_m": [
+      5,
+      3
+    ],
+    "start": [
+      0.45,
+      -0.95,
+      0
+    ],
+    "platform_m": 0.084,
+    "lidar_height_m": 0.155,
+    "upper_elevation_deg": 9.3,
+    "wall_height_m": 0.5,
+    "upper_ray_overwall_distance_flat_m": 2.1067894300753465,
+    "upper_ray_overwall_distance_platform_m": 1.5938320036222184,
+    "ZHI_candidate_mm": 350,
+    "source": "User geometry; analytical straight-ray estimate, not measured lidar/electrical/vehicle capability"
+  },
+  "automation": {
+    "id": "fpga",
+    "status": "PAUSED",
+    "prompt_updated": true,
+    "optional_resume_question_pending": true
+  },
+  "deployment_accepted": false,
+  "programmed": false
+}
