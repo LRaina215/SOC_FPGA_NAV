@@ -22,6 +22,7 @@ def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--module',type=Path,required=True)
     ap.add_argument('--out',type=Path,required=True)
+    ap.add_argument('--run-prefetch',action='store_true',help='Require the repaired read-active=!reset&&run array port and direct c prefetch address')
     a=ap.parse_args();a.out.mkdir(parents=True,exist_ok=False)
     result=dict(passed=False,scope='Finite actual-mapped Boolean control trace; no RAM data, RTL simulator, or hardware test',automatic_PNR=False)
     try:
@@ -37,6 +38,18 @@ def main():
         logic=Logic(cells,lambda c:tree.params[c['name']],directions,qs,opaque)
         rows={n:c for n,c in cells.items() if c['kind']=='SDPB' and n.startswith('lb1_lb1_')}
         assert len(rows)==3
+        read_gate_proofs=[]
+        if a.run_prefetch:
+            want=z3.And(z3.Not(logic.expr('r2')),logic.expr('run'))
+            def bus(n,h,l=0):return[f'{n}[{i}]'for i in range(h,l-1,-1)]
+            cur=['q_occ']+bus('sm_q',13,11)+['VCC']+bus('sm_q',10,8)+['VCC']+bus('sm_q',17,8)
+            dout=[bus('l2',12)+bus('l1',18),bus('DO',31,25)+bus('l3',18)+bus('l2',18,13),bus('DO_0',31,12)+bus('l4',18,10)+bus('DO_0',2)]
+            din=[bus('l1',12)+cur,bus('l3',6)+bus('l2',18)+bus('l1',18,13),['GND']*20+bus('l3',18,7)]
+            for i,(n,c)in enumerate(sorted(rows.items())):
+                s=z3.Solver();s.add(logic.expr(c['ports']['CEB'][0])!=want);ans=s.check();assert ans==z3.unsat,('Actual repaired LF array read gate differs',n,str(ans))
+                assert c['ports']['ADB']==['GND']+bus('c',7)+['GND']*5
+                assert c['ports']['DO']==dout[i]and c['ports']['DI']==din[i],('Repaired LF observable66-bit data packing changed',n)
+                read_gate_proofs.append(dict(primitive=n,CEB=c['ports']['CEB'],BLKSELB=c['ports']['BLKSELB'],read_active_equals_not_reset_and_run='UNSAT',all66_observable_data_lanes_bound=True))
         expressions={}
         for n,c in rows.items():
             p=tree.params[n]
@@ -50,7 +63,7 @@ def main():
                 for i,net in enumerate(c['ports'][pin][:9]):expressions[n+':'+pin+':'+str(13-i)]=logic.expr(net)
         for name in ('run','v1','lf_busy','lf_done'):
             expressions[name]=logic.expr(name)
-        for name in ('c','c1','c1_b','c1_c','r'):
+        for name in (('c','c1','r')if a.run_prefetch else('c','c1','c1_b','c1_c','r')):
             width=9 if name in ('c','c1','r') else 8
             for i in range(width):expressions[f'{name}[{i}]']=logic.expr(f'{name}[{i}]')
         def var_names(expr):return {str(v) for v in z3.z3util.get_vars(expr)}
@@ -101,21 +114,24 @@ def main():
             # Three asserted reset edges, three released edges, one start edge.
             values.update({'external:r2':edge<3,'external:lf_start':edge==6})
             out=evaluate(values)
-            obs=dict(edge=edge,reset=values['external:r2'],start=values['external:lf_start'],run=out[ei['run']],v1=out[ei['v1']],busy=out[ei['lf_busy']],done=out[ei['lf_done']],c=word(out,'c',9),r=word(out,'r',9),c1=word(out,'c1',9),c1_b=word(out,'c1_b',8),c1_c=word(out,'c1_c',8))
+            obs=dict(edge=edge,reset=values['external:r2'],start=values['external:lf_start'],run=out[ei['run']],v1=out[ei['v1']],busy=out[ei['lf_busy']],done=out[ei['lf_done']],c=word(out,'c',9),r=word(out,'r',9),c1=word(out,'c1',9))
+            if not a.run_prefetch:obs.update(c1_b=word(out,'c1_b',8),c1_c=word(out,'c1_c',8))
+            row_ports=[]
             if obs['run']:run_cycles+=1
             for n,c in rows.items():
                 we=out[ei[n+':CEA']];re_=out[ei[n+':CEB']]
                 wa=sum(int(out[ei[n+':ADA:'+str(i)]])<<(i-5) for i in range(5,14))
                 ra=sum(int(out[ei[n+':ADB:'+str(i)]])<<(i-5) for i in range(5,14))
                 writes[n]+=we;reads[n]+=re_
+                row_ports.append(dict(primitive=n,write=we,read=re_,write_word=wa,read_word=ra))
                 if we and re_ and wa==ra:
                     collisions.append(dict(**obs,primitive=n,write_word=wa,read_word=ra,physical_chunks=[2*wa,2*wa+1]))
-            if edge>16895:tail.append(obs)
+            if edge>16895:tail.append(dict(**obs,row_ports=row_ports))
             values.update({f'actual_FF:{q}':out[i] for q,i in ti.items()})
             if edge>10 and obs['done']:break
         assert run_cycles==130*130,('Not a complete actual128 LF scan',run_cycles)
         assert all(n==130*130 for n in writes.values()),('Incomplete actual row writes',writes)
-        result.update(passed=not collisions,trace_complete=True,actual_module=meta(a.module),library=meta(LIBRARY),actual_cells=len(cells),closed_control_FFs=len(done),evaluated_Boolean_nodes=len(nodes),input_sequence='r2=1 for3 edges, release3 edges, lf_start=1 for1 edge, otherwise0',edges=edge+1,scan_run_cycles=run_cycles,row_write_edges=writes,row_read_edges=reads,collision_events=collisions,last_control_edges=tail,physical_address_semantics='32-bit port covers18-bit chunks {2*AD[13:5],2*AD[13:5]+1}; AD[4:1] are write byte masks',RAM_data_modeled=False,meaning='A listed collision is an actual-control reachable array-port event; memory output usefulness is not an exception to the device collision restriction')
+        result.update(passed=not collisions,trace_complete=True,actual_module=meta(a.module),library=meta(LIBRARY),actual_cells=len(cells),closed_control_FFs=len(done),evaluated_Boolean_nodes=len(nodes),input_sequence='r2=1 for3 edges, release3 edges, lf_start=1 for1 edge, otherwise0',edges=edge+1,scan_run_cycles=run_cycles,row_write_edges=writes,row_read_edges=reads,collision_events=collisions,last_control_edges=tail,run_prefetch_required=a.run_prefetch,run_prefetch_actual_array_gates=read_gate_proofs,physical_address_semantics='32-bit port covers18-bit chunks {2*AD[13:5],2*AD[13:5]+1}; AD[4:1] are write byte masks',RAM_data_modeled=False,meaning='A listed collision is an actual-control reachable array-port event; memory output usefulness is not an exception to the device collision restriction')
     except Exception as e:result.update(error=f'{type(e).__name__}: {e}')
     (a.out/'result.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
     print(json.dumps({k:v for k,v in result.items() if k!='last_control_edges'},ensure_ascii=False))

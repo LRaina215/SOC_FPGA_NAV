@@ -52,7 +52,7 @@ def literal(s):
 class Tree:
     def __init__(self, path):
         self.path=path;self.modules=dict(MODULE.findall(path.read_text(encoding='utf8')))
-        self.params={};self.kinds={};self.boundary={}
+        self.params={};self.kinds={};self.boundary={};self.module_kinds={}
         self.walk('g2_top','',{})
 
     @lru_cache(None)
@@ -90,6 +90,7 @@ class Tree:
             full=(hierarchy+'/'+n).strip('/');ports={pin.lstrip('\\'):expand(e) for pin,e in PORT.findall(p)}
             if child in self.modules:
                 self.boundary[full]=ports
+                self.module_kinds[full]=child
                 cd,_,_=self.definition(child);mapped={}
                 for pin,nets in ports.items():
                     if pin in cd and cd[pin][1] is not None:

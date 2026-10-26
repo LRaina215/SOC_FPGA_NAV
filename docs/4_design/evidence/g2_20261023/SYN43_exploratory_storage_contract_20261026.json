@@ -1,0 +1,234 @@
+{
+  "passed": true,
+  "complete": true,
+  "scope": "Exploratory PNR storage entry under the selected normal source-operation contract",
+  "exploratory_PNR_permitted": true,
+  "exploratory_PNR_entry_passed": true,
+  "automatic_PNR": false,
+  "deployment_accepted": false,
+  "deployment_storage_safety_accepted": false,
+  "whole_G2_or_all_input_reachability_proved": false,
+  "current43_demonstrated_unresolved_public_numeric_or_reachable_collision_counterexamples": [],
+  "prior42_real_counterexamples_superseded_by_actual43_proofs": [
+    "LF final drain read/write physical chunk overlap: repaired read gating and complete actual43 scan/drain verified",
+    "Packed high-bank stale public weight: common high enable and official actual43 primitive all-weight/idle checks verified"
+  ],
+  "actual43_confirmed": {
+    "source_BSRAM": 269,
+    "wide_leaves": 11,
+    "split1_physical_prediction": 280,
+    "physical_prediction_not_measured": true,
+    "unchanged_non_LF_non_weight_leaves_all_geometry_INIT": 231,
+    "CPU": {
+      "passed": true,
+      "bitplanes": 64,
+      "bytes": 131072,
+      "BIN_bytes": 53572,
+      "selected_BIN_and_all_lanes_word_exact": true
+    },
+    "array_read_gate_bindings": 32,
+    "resources": {
+      "name": "g2_top",
+      "Register": "26",
+      "Alu": "25",
+      "Lut": "3",
+      "T_Register": "29482(26)",
+      "T_Alu": "9630(25)",
+      "T_Lut": "38853(3)",
+      "T_MULTALU27X18": "77(0)",
+      "T_MULT12X12": "26(0)",
+      "T_MULT27X36": "37(0)",
+      "T_MULTADDALU12X12": "1(0)",
+      "T_Bsram": "269(0)",
+      "T_Ssram": "1873(0)"
+    },
+    "LF_scan_edges": 16937,
+    "LF_conflicting_physical_chunks": 0,
+    "weight_accepted_reads": 40708,
+    "weight_idle_checks": 81409,
+    "touch_trig_consumer_latency_and_capture_preserved": true
+  },
+  "source_operation_contracts": [
+    {
+      "group": "point planes",
+      "actual43": "All eight plane geometry, INIT and actual WE/RE/address inventory retained by memory proof; caller remapping is a separate conditional obligation",
+      "inherited": "Original ownership/RAW backpressure/WAIT_POINTS last-write drain RTL contract, with actual42 complete pending/owner/RAW binding:31 UNSAT",
+      "assumptions": "Ordered SOF and mode/config stable for each accepted pass. No arbitrary mid-frame debug CSR mode changes",
+      "selected_FW": "Only two stage writes; primary tick requires !pm_pend&&!pm_run&&hal_lidar_waiting. finish_fusion guarded by fuse_held and replays retained frame after matcher processing",
+      "universal_actual43_reachability_proved": false
+    },
+    {
+      "group": "bitmap",
+      "inherited": "A/B write, C/D read, original sixteen-cycle flush/drain source contract",
+      "actual43": "Array enable/address inventory and true CEB/BLKSEL gating verified",
+      "missing": "Complete actual43 caller temporal phase invariant is not claimed. Arbitrary free-state SAT and failed induction overapproximation are retained, without a reachable trace"
+    },
+    {
+      "group": "slist/touch",
+      "inherited": "Original mutually exclusive state phases; actual42 endpoint next-state exclusions are UNSAT",
+      "actual43": "slist/touch storage geometry, INIT and real read gates retained; touch READ_MODE1 OCE equals original !reset&&S_U1 consumer capture",
+      "missing": "Full actual43 state-transition identity of all callers is not claimed"
+    },
+    {
+      "group": "TX shadow/console",
+      "inherited": "Original demand-read/post-commit source contracts; actual42 endpoint next-state exclusions UNSAT",
+      "actual43": "All leaf geometry/INIT and true CEB/BLKSEL read gates retained; nav_soc local module text identical",
+      "missing": "TX caller aliases/remapping require final actual43 binding; no proven new reachable collision"
+    },
+    {
+      "group": "structure map and other inherited banks",
+      "inherited": "Original accepted map/clear/prior/online operation ordering and existing model regressions",
+      "actual43": "All unaffected geometry and every INIT exact; no new storage-port implementation in this step",
+      "missing": "This report is not a universal all-input proof for existing shared-port callers"
+    }
+  ],
+  "selected_FW_stage_call_sites": [
+    {
+      "line": 110,
+      "text": "hal_lidar_stage(HAL_LIDAR_FUSE_ONLY);"
+    },
+    {
+      "line": 310,
+      "text": "hal_lidar_stage(matching ? HAL_LIDAR_MATCH_ONLY : HAL_LIDAR_NORMAL);"
+    }
+  ],
+  "free_state_SAT_interpretation": "32 arbitrary-FF same-chunk SAT cases are not 32 reachable collisions. Source lifecycle assumptions and actual endpoint mapping remain explicitly scoped; only the two concrete42 failures were treated as actual counterexamples",
+  "remaining_deployment_checks": [
+    "Actual physical RAM split/INIT, all clocks setup/hold, effective exceptions, IO/reset pulse and CDC payload timing after PNR",
+    "Bind remaining actual43 caller transitions to the stated normal operating contract, including PB/RAW handshake cuts and bitmap lifecycle; restrict debug/config writes to legal pass boundaries",
+    "Same selected firmware/physical image end-to-end RK/P11 feedback, re-arm, independent ESTOP and physical stop verification",
+    "No claim that two successful place options establish absolute routing robustness"
+  ],
+  "proof_paths": {
+    "actual43_memories": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43_memory_review1\\result.json",
+    "actual43_LF_trace": "F:\\nav_integration_g2_20261023\\SLF128_joint43_LF_actual_trace1\\result.json",
+    "actual43_LF_trig_touch": "F:\\nav_integration_g2_20261023\\SLF128_joint43_local_memory_mapping_review2\\result.json",
+    "actual43_weights": "F:\\nav_integration_g2_20261023\\SLF128_joint43_actual_weights_official_probe1\\result.json",
+    "actual42_endpoint_control": "F:\\nav_integration_g2_20261023\\SLF128_actual_memory_control_exclusion_review2\\result.json",
+    "actual42_PB_owner": "F:\\nav_integration_g2_20261023\\SYN42_PB_owner_actual_binding4\\result.json"
+  },
+  "inherited_source_proof_metadata": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_common_en_actual_weights_official_probe1\\result.json",
+      "bytes": 2743,
+      "mtime_ns": 1793018382490700900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_LF_run_read_small_actual_review1\\result.json",
+      "bytes": 2791,
+      "mtime_ns": 1793017475495972700
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_LF_run_read_validation1\\result.json",
+      "bytes": 19597,
+      "mtime_ns": 1793017216235093500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_weight_high_common_en_RTL_probe1\\result.json",
+      "bytes": 2170,
+      "mtime_ns": 1793017938423945500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_weight_high_common_en_small_actual_review1\\result.json",
+      "bytes": 1693,
+      "mtime_ns": 1793018472167063500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\firmware\\stack_analysis.json",
+      "bytes": 5250,
+      "mtime_ns": 1793013879218592900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\firmware\\strict_linked_stack_review.json",
+      "bytes": 5307,
+      "mtime_ns": 1793013879218592900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\manifest.json",
+      "bytes": 10846,
+      "mtime_ns": 1793018572455595500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\source_contracts.json",
+      "bytes": 29496,
+      "mtime_ns": 1793013806024463200
+    }
+  ],
+  "all_input_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43_memory_review1\\result.json",
+      "bytes": 71246,
+      "mtime_ns": 1793019295331261300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_joint43_LF_actual_trace1\\result.json",
+      "bytes": 33699,
+      "mtime_ns": 1793019381542140100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_joint43_local_memory_mapping_review2\\result.json",
+      "bytes": 4557,
+      "mtime_ns": 1793019524200893900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_joint43_actual_weights_official_probe1\\result.json",
+      "bytes": 2744,
+      "mtime_ns": 1793019396096257800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_actual_memory_control_exclusion_review2\\result.json",
+      "bytes": 70363,
+      "mtime_ns": 1793018724599710800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SYN42_PB_owner_actual_binding4\\result.json",
+      "bytes": 2152,
+      "mtime_ns": 1793019556689913700
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43\\impl\\gwsynthesis\\g2_top.vg",
+      "bytes": 16881549,
+      "mtime_ns": 1793019134777639400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\manifest.json",
+      "bytes": 10846,
+      "mtime_ns": 1793018572455595500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\composition_review.json",
+      "bytes": 65250,
+      "mtime_ns": 1793018572473663300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\source_contracts.json",
+      "bytes": 29496,
+      "mtime_ns": 1793013806024463200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\weight_repair_binding_review.json",
+      "bytes": 11284,
+      "mtime_ns": 1793018572608591700
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\firmware_binding_review.json",
+      "bytes": 50495,
+      "mtime_ns": 1793018572506654700
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\firmware\\nav_fw.bin",
+      "bytes": 53572,
+      "mtime_ns": 1793013879364223500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\fw\\app\\nav_app.c",
+      "bytes": 20316,
+      "mtime_ns": 1793012198642578800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\fw\\drv\\hal_fpga.c",
+      "bytes": 17062,
+      "mtime_ns": 1793012198642578800
+    }
+  ]
+}

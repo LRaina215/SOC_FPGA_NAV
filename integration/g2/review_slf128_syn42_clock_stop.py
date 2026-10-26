@@ -1,4 +1,4 @@
-"""Actual completed SYN42 clocks, original26, FIFO resets and stop boundaries.
+"""Actual completed SLF128 synthesis clocks, original26 and stop boundaries.
 
 Read-only.  Names are found through actual Q/D connectivity and logical signal
 roles, not old generated suffixes.  Physical recovery/removal, MTBF and routed
@@ -46,16 +46,13 @@ def run():
    j=load(NEW/'job.json')
    if j['phase']=='synthesis_complete':assert j['tool_exit']==0;break
    assert not j['phase'].startswith(('failed','cancel')),j
-   phase('waiting_completed_SYN42',actual_phase=j['phase']);time.sleep(13)
-  # Root coordinated one full graph at a time. The prior storage worker has
-  # completed even though its first budget comparison failed; do not wait for
-  # its pass, and do not terminate or modify that process/build.
+   phase('waiting_completed_synthesis',actual_build=str(NEW),actual_phase=j['phase']);time.sleep(13)
+  # Root starts this only after the current storage reader has released its
+  # graph. No historical PID is a synchronization dependency for a new build.
   while True:
-   try:prior_alive=abs(psutil.Process(31672).create_time()-1793015879.9548883)<.01
-   except psutil.NoSuchProcess:prior_alive=False
    mem=memory_status()
-   if not prior_alive and mem.avail_phys>=2*GIB and mem.avail_page>=4*GIB:break
-   phase('waiting_actual_review_memory',prior_storage_identity_alive=prior_alive,physical=mem.avail_phys,commit=mem.avail_page);time.sleep(13)
+   if mem.avail_phys>=2*GIB and mem.avail_page>=4*GIB:break
+   phase('waiting_actual_review_memory',physical=mem.avail_phys,commit=mem.avail_page);time.sleep(13)
   section('source_stop_contract',source_contract)
   watched=[OLD/'impl/gwsynthesis/g2_top.vg',NEW/'impl/gwsynthesis/g2_top.vg',LIB,NEW/'g2.sdc',NEW/'g2_top.v',NEW/'command_lease_guard.v']
   bindings=[metadata(p)for p in watched];phase('parse_actual40_and42',admission_physical_bytes=mem.avail_phys,admission_commit_bytes=mem.avail_page)
@@ -158,13 +155,22 @@ def run():
       oldc=old_candidates[0];oldpin=next((p for p in('CLEAR','PRESET','RESET','SET')if p in oldc['ports']),None)
       diff=dict(role=role,old_name=oldc['name'],new_name=c['name'],old_kind=oldc['kind'],new_kind=c['kind'],old_reset_pin=oldpin,new_reset_pin=row[role+'_reset']['pin'])
       if diff['old_kind']!=diff['new_kind']or diff['old_reset_pin']!=diff['new_reset_pin']:changed.append(diff)
-   sdc=['# Actual SYN42 objects: sourceQ -> firstD only. Stage1->stage2 remains timed.']
+   sdc=[f'# Actual {NEW.name} objects: sourceQ -> firstD only. Stage1->stage2 remains timed.']
    for row in rows:
     a=row['source']['name']+'/Q';b=row['first']['name']+'/D';row['source_pin']=a;row['first_pin']=b
     sdc += [f'set_false_path -from [get_pins {{{a}}}] -to [get_pins {{{b}}}] -hold',f'set_max_delay -from [get_pins {{{a}}}] -to [get_pins {{{b}}}] {row["budget_ns"]:.3f}']
    assert len(rows)==26 and sum(x.startswith('set_')for x in sdc)==52
    (OUT/'actual_SYN42_CDC52_fragment.sdc').write_text('\n'.join(sdc)+'\n',encoding='utf8')
    (OUT/'candidate_PNR_single_file.sdc').write_text('create_clock -name clk50 -period 20 [get_ports {clk50}]\ncreate_clock -name rgmii_rxc -period 10 [get_ports {rgmii_rxc}]\n\n'+'\n'.join(sdc)+'\nreport_timing -setup -max_paths 5000 -max_common_paths 1\n',encoding='utf8')
+   # Supply the standard reference schema used to compare the final physical
+   # source/first/second endpoints. All names come from this reviewed VG.
+   radar=dict(passed=True,netlist=str(NEW/'impl/gwsynthesis/g2_top.vg'),errors=[],
+    scope='Actual reviewed26 connectivity only; physical timing and MTBF remain pending',
+    paths=[dict(group=r['group'],source_register=r['source']['name'],
+      first_register=r['first']['name'],second_register=r['second']['name'],
+      source_clock=one(r['source'],'CLK'),target_clock=one(r['first'],'CLK'),
+      route_max_delay_ns=r['budget_ns'],passed=True)for r in rows])
+   save(OUT/'actual_cdc_reference_audit.json',radar)
    return dict(passed=True,actual_paths=26,CE1_and_first_Q_single_second_D_load=True,new_actual_names_not_copied_old_suffixes=True,rows=rows,intended_reset_type_changes_from_SYN40=changed,candidate_commands=52,physical_delays_effective_status_hold_setup_and_MTBF_proven=False)
   cdc=section('actual_original26_and_CDC52',original26)
   def fifo_resets():
@@ -235,4 +241,4 @@ def run():
  except Exception as e:
   result=dict(state,passed=False,phase='failed_preserved',error=str(e),traceback=traceback.format_exc(),sections=sections);save(OUT/'result.json',result);save(OUT/'job.json',result);print(result['traceback']);return 1
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--run',action='store_true');p.add_argument('--out',type=Path,default=OUT);a=p.parse_args();assert a.run;OUT=a.out;raise SystemExit(run())
+ p=argparse.ArgumentParser();p.add_argument('--run',action='store_true');p.add_argument('--out',type=Path,default=OUT);p.add_argument('--build',type=Path,default=NEW);a=p.parse_args();assert a.run;OUT=a.out;NEW=a.build;raise SystemExit(run())

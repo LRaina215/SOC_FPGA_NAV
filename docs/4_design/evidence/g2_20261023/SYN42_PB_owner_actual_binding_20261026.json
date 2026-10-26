@@ -1,0 +1,53 @@
+{
+  "passed": true,
+  "scope": "Local actual ports and one-step transition facts; not an unrestricted reachable-state safety proof",
+  "SYN_started": false,
+  "RTL_started": false,
+  "PNR_started": false,
+  "recorded_at": "2026-10-26T20:59:16.689913+08:00",
+  "actual_build": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn42",
+  "expanded_modules": [
+    "nav_subsystem",
+    "slf_match",
+    "slf_extract",
+    "xt_frame_rx",
+    "nav_ram_sdp_18",
+    "nav_fifo_ob_2",
+    "pc_project"
+  ],
+  "local_native_cells": 12201,
+  "omitted_custom_modules": 23,
+  "physical_PB_planes": 8,
+  "width": 18,
+  "READ_MODE": 0,
+  "all_CEA_CEB_BLKSEL_and_address_bindings_proved": true,
+  "complete_owner_pending_RAW_next_state_bindings_proved": true,
+  "RAW_admission_blocks_new_nonFUSE_producer_during_ownership": true,
+  "early_command_WAIT_and_last_write_drain_proved": true,
+  "Boolean_queries": 32,
+  "UNSAT_queries": 31,
+  "free_state_collision_query": "sat",
+  "arbitrary_SOF_collision_is_not_a_real_caller_trace": true,
+  "unconditional_full_reachability_collision_safety_proved": false,
+  "conditional_real_caller_contract": [
+    "Only actual accepted non-FUSE RAW pass can introduce extraction SOF. Project/transform emits one ordered SOF per accepted pass; no fabricated independent SOF.",
+    "Original single-frame stable mode/config contract holds from accepted RAW start through its point/EOF pipeline drain. FUSE_ONLY bypass admits only a non-writing pass and cannot be switched into writing midway.",
+    "Same-edge RAW acceptance reserves pending; command sees producer pending/ex_busy/pb_we/SOF and remains in WAIT_POINTS until the last PB write has drained.",
+    "Reset/soft-clear/disable/HOLD release follows the frozen source transitions; no arbitrary reset of only part of the producer/consumer is assumed."
+  ],
+  "prior_targeted_RTL_proof": "F:\\nav_integration_g2_20261023\\stage2B_point_ownership_probe1\\result.json",
+  "new_RTL_or_EDA_run": false,
+  "details": "F:\\nav_integration_g2_20261023\\SYN42_PB_owner_actual_binding4\\actual_ports_FFs_queries_and_source.json",
+  "full_G2_or_board_collision_acceptance": false,
+  "result": "F:\\nav_integration_g2_20261023\\SYN42_PB_owner_actual_binding4\\result.json",
+  "preserved_attempts": [
+    "F:\\nav_integration_g2_20261023\\SYN42_PB_owner_actual_binding1\\result.json",
+    "F:\\nav_integration_g2_20261023\\SYN42_PB_owner_actual_binding2\\result.json",
+    "F:\\nav_integration_g2_20261023\\SYN42_PB_owner_actual_binding3\\result.json"
+  ],
+  "attempt_corrections": [
+    "Module-header whitespace parser normalization",
+    "Closed actual FWFT/project ready relation removed a false independent-cut rd_act SAT",
+    "Correct source path match/slf_extract.v"
+  ]
+}

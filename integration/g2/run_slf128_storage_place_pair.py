@@ -100,6 +100,11 @@ def prepare(root_path, place):
     save(out/'manifest.json', dict(source=str(source), source_manifest=load(source/'manifest.json'),
                                   place_option=place, frozen_netlist=True, reused_completed_synthesis=True,
                                   max_runtime_minutes=0, max_no_progress_minutes=0,
+                                  requires_independent_full_physical_signoff=True,
+                                  pending_deployment_items=root.get('pending_deployment_items', [
+                                      'P11-39 command/owner/arrival-age implementation and validation',
+                                      'actual busy CPU host-loss/350ms zero submission',
+                                      'external IO/reset pulse/CDC/physical stop signoff']),
                                   programmed=False, deployment_accepted=False))
     return proof
 

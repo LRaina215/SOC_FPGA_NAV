@@ -2,8 +2,9 @@
 
 All external signals, opaque memory data and FFs outside the selected caller
 are independently unconstrained each edge.  Actual internal FF transitions
-come from published Gowin primitives.  A k-induction PASS is a temporal proof;
-a SAT induction trial is only an insufficient invariant, not a real collision.
+come from published Gowin primitives.  UNSAT proves mutual exclusion at the
+registered array request endpoints for every old state.  SAT here is only an
+arbitrary-state overlap, not a reachable collision or a failed source contract.
 """
 import argparse
 import json
@@ -61,40 +62,6 @@ def main():
                         source_temporal_contract_binding_pending=answer!=z3.unsat,elapsed_s=time.monotonic()-t)
             if answer==z3.unknown:report['reason']=solver.reason_unknown()
             reports.append(report);save()
-            continue
-            needed=set(vars(collision));tracked={};transitions={}
-            while True:
-                pending={v[len('actual_FF:'):]for v in needed if v.startswith('actual_FF:')and internal(v[len('actual_FF:'):])}-set(tracked)
-                if not pending:break
-                for q in sorted(pending):
-                    tracked[q]=qs[q];transitions[q]=logic.next_state(qcells[q]);needed.update(vars(transitions[q]))
-            allvars={}
-            for e in [collision,*transitions.values()]:allvars.update(vars(e))
-            memo={}
-            def at(e,k):
-                key=(e.get_id(),k)
-                if key not in memo:memo[key]=z3.substitute(e,*[(v,z3.Bool(f's{k}:'+n))for n,v in allvars.items()])
-                return memo[key]
-            def transition(k):return [at(qs[q],k+1)==at(e,k)for q,e in transitions.items()]
-            init=[]
-            for q in tracked:
-                c=qcells[q];p=dict(defaults[c['kind']]);p.update(tree.params[c['name']]);init.append(at(qs[q],0)==bool(literal(p['INIT'])))
-            report=dict(group=label,owner_scope=owner,actual_leaves=len(leaves),actual_ports=ports,tracked_actual_FFs=len(tracked),external_or_cut_Boolean_inputs_per_edge=len(allvars)-len(tracked),universal_port_exclusion_proved=False,trials=[])
-            reports.append(report);save()
-            for depth in(1,2,4,8,12,20,24):
-                s=z3.Solver();s.set(timeout=10000)
-                for k in range(depth):s.add(*transition(k),z3.Not(at(collision,k)))
-                s.add(at(collision,depth));ans=s.check();trial=dict(k=depth,induction=str(ans));report['trials'].append(trial)
-                if ans==z3.unknown:trial['reason']=s.reason_unknown()
-                if ans==z3.unsat:
-                    base=z3.Solver();base.set(timeout=10000);base.add(*init)
-                    for k in range(depth):base.add(*transition(k))
-                    base.add(z3.Or(*[at(collision,k)for k in range(depth)]));b=base.check();trial['INIT_base']=str(b)
-                    if b==z3.unsat:
-                        report.update(universal_port_exclusion_proved=True,method='Actual Boolean transition k-induction plus exact actual INIT base',proved_k=depth);break
-                    if b==z3.unknown:trial['base_reason']=base.reason_unknown()
-                save()
-            report['elapsed_s']=time.monotonic()-t;save()
         result.update(complete=True,all_groups_proved=all(r['universal_port_exclusion_proved']for r in reports),physical_timing_or_board_accepted=False)
     except Exception as e:result.update(error=f'{type(e).__name__}: {e}',traceback=traceback.format_exc())
     save();print(json.dumps({k:v for k,v in result.items()if k!='groups'},ensure_ascii=False));return 0 if result['complete']else 1

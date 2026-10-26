@@ -1,0 +1,52 @@
+{
+  "scope": "只读审阅已冻结N1c接口与完成结果；未运行模型、射线、DLL或EDA，未修改正在运行输入",
+  "result": "F:/nav_integration_g2_20261023/SLF128_localization_observability_contract_review1/result.json",
+  "entry": "D:/Desktop/SOC FPGA/nav/integration/g2/review_final128_localization_contract.py",
+  "reproduce": "D:/Anaconda/python.exe -B -X utf8 D:/Desktop/SOC FPGA/nav/integration/g2/review_final128_localization_contract.py --out <new-output-directory>",
+  "snapshot": {
+    "completed_cases_read": 63,
+    "no_map_cases": 47,
+    "no_map_runner_loc_valid_all_one": true,
+    "no_map_n_lost_all_zero": true,
+    "no_map_loss_free_proved": null,
+    "forward_cases_with_existing_callback_audit": 35,
+    "real_HAL_scoring_start_records": 6191,
+    "scoring_starts_effective_n_valid_below60": 1516,
+    "meaning": "打分启动计数与点不足计数，不是C solver调用/失败计数",
+    "no_map_latest_applied_but_all_zero_delta_commit_samples": 170,
+    "no_map_final_n_applied_range": [78, 268],
+    "longest_repeat_counter_after_first_increment_commit_samples": 88,
+    "repeat_gap_exact_seconds": null,
+    "note": "只按commit序号观察；真实solver时间戳和精确运动对齐未记录，不将88样本称作8.8秒失联"
+  },
+  "DLL": {
+    "bytes": 166869,
+    "actual_PE_exports": 40,
+    "loaded_or_rebuilt": false,
+    "public_fields_reusable": ["n_applied", "last applied/delta/n_valid/cost", "degen_x/y/yaw", "estimated pose", "prior loc state/quality/counters"],
+    "not_public": ["pm.n_runs", "n_in_best", "at_edge", "pose timestamp", "pm_run/pm_pend", "skip reasons"]
+  },
+  "minimal_followup": {
+    "current72_and_original330_inputs_unchanged": true,
+    "future_independent_observer": "在新的独立entry封装现有py_set_time/原py_poll、match_eval、match_update、原有frame/commit调用；日志使用原模拟微秒时间和序号，保留原始调用/返回和固定40ms HAL延迟，不重建DLL。",
+    "log": ["打分启动/完成/接受修正时间", "n_applied每次变化", "实际点数与候选数", "高度/窗口/core/gate", "退化轴与delta", "真值/估计误差和实际速度"],
+    "do_not": ["新增消费性py_get_commit调用", "给正在运行入口打补丁", "把prior两秒阈值套入no-map", "用零delta或无计数变化单独判丢失"],
+    "remaining_contract": "先明确no-map可用性/新鲜度/退化及持续漂移的数值门槛；现数据仅支持有限误差、碰撞和匹配活动陈述，不能判通用无丢失。"
+  },
+  "stage1b": {
+    "planned": 16,
+    "started_at_audit": false,
+    "selected_distance_bound_at_audit": false,
+    "DLL_bytes_equal_N1c": true,
+    "new_human_prisms": 2,
+    "new_human_actual_visibility_measured": false,
+    "old7_pose_exterior_hits": 2050,
+    "old1500_selected_exterior": 2014,
+    "old350_selected_exterior": 0,
+    "limits": "旧场景7姿态不能证明新人物/每面room墙可见；其中一个原姿态外部命中就是0。500mm内围板与真实M60方向/角落裁剪/俯角产生遮挡，1.7m高柱体仍可有1.5m以下侧面回波。",
+    "point_band": "无图online相对足底[60,ZHI]；prior下限-300。先验survey还有zcap，结构/all_pts均裁剪到内场XY ROI，live外点仍可能经prior近邻门被筛掉。",
+    "minimum_before_launch": ["真实72格选择完成后绑定best距离并冻结新manifest", "独立有限可见性诊断按新对象标识计first-hit，原7姿态加面向两人物的合法朝向；不要用摆放矩形替代可见性", "同深度同姿态比较350/1500，分开记录raw/vertical/高度/PB4096/抽样1024/core/near有效点", "检查真实C op5/cold MAP_CLEAR、prior上下限与fresh ROI缓存", "定位损失指标仍未知时不要把pilot判成无丢失通过"]
+  },
+  "no_SHA": true,
+  "new_jobs_started": false
+}
