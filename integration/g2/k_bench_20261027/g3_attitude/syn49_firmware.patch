@@ -148,10 +148,12 @@
      case MSG_MAP_BEGIN:
 --- a/fw/app/nav_app.h
 +++ b/fw/app/nav_app.h
-@@ -20,6 +20,14 @@
+@@ -19,7 +19,15 @@
+ #define APP_ZLO_ODOM   60
  #define APP_ZLO_PRIOR  (-300)
  #define APP_ZHI        350
- #define APP_LF_FORWARD_MM 1500
+-#define APP_LF_FORWARD_MM 1500
++#define APP_LF_FORWARD_MM 1000   /* 330 s 巡检：1.5 m 发散到 445 mm，1.0 m 三个种子最大 118–193 mm */
 +/* 姿态来源：0 = 外接 WIT 串口 IMU（仿真缺省），1 = 整车镜像片内 BMI088 融合（板级构建传 -DAPP_IMU_PROTO=1）。
 + * APP_IMU_BAUD_DIV > 0 时启动即写 IMU.BAUD_DIV，须与 g2_top 中 bmi_att_uart 的 DIV 相同。 */
 +#ifndef APP_IMU_PROTO
