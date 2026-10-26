@@ -1,0 +1,599 @@
+{
+  "recorded_at": "2026-10-26T12:56:47.944220+08:00",
+  "scope": "One source-level smallreference matching known SYN34 lease consumption/constant/sign/feedback contexts; failure to reproduce mapping preserved, then separately authorized unique wholeG2 SYN37 preparation. No PNR or deployment acceptance.",
+  "context_output": "F:\\nav_integration_g2_20261023\\lease_consumption_context_candidate1",
+  "context_controller_job": "F:\\nav_integration_g2_20261023\\lease_consumption_context_candidate1\\job.json",
+  "context_inputs": {
+    "SYN34": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_syn34",
+    "original_source": {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_syn34\\command_lease_guard.v",
+      "bytes": 4683,
+      "mtime_ns": 1792981481766260400
+    },
+    "actual_default_CLK_HZ": 50000000,
+    "owner_select": 1,
+    "source_id": 1,
+    "session_select": 1,
+    "packet_session": 1,
+    "consumed_guard_outputs": [
+      "out_forward_q12[23:0]",
+      "out_yaw_q12[23:0]"
+    ],
+    "all_other_guard_outputs_unconnected": true,
+    "command_inputs": "actual bits0..18 and23:20 independent signed bits; original command19..22 alias23",
+    "feedback_expression": "left_speed_valid && right_speed_valid && feedback_gate_bit; matching actual shared odo_valid cone",
+    "external_logic_not_replayed": "Actual producer UART/command-unit, sensor encoder and consumer modules are not instantiated. This run tests known constant/sign/output-use contexts, not complete wholeG2 optimization context.",
+    "source_bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_syn34\\g2_top.v",
+        "bytes": 11578,
+        "mtime_ns": 1792981481974848000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_syn34\\impl\\gwsynthesis\\g2_top.vg",
+        "bytes": 24879074,
+        "mtime_ns": 1792983486443030400
+      }
+    ]
+  },
+  "actual_small_SYN_runtime": {
+    "PID": 17632,
+    "created_epoch": 1792990302.685306,
+    "started_at": "2026-10-26T12:51:42.685011+08:00",
+    "admission": {
+      "physical_bytes": 2376876032,
+      "available_commit_bytes": 3421532160
+    },
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "selected_inputs": [
+      "guard.v",
+      "top.v",
+      "clock.sdc"
+    ],
+    "maximum_minutes": 40,
+    "physical_bytes": 2612498432,
+    "available_commit_bytes": 3679989760,
+    "consecutive_low_memory_samples": 0,
+    "elapsed_seconds": 4.077999999979511,
+    "processes": [
+      {
+        "PID": 17632,
+        "created_epoch": 1792990302.685306,
+        "name": "gw_sh.exe",
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "run.tcl"
+        ]
+      },
+      {
+        "PID": 39616,
+        "created_epoch": 1792990302.7859745,
+        "name": "conhost.exe",
+        "command": [
+          "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+          "0x4"
+        ]
+      }
+    ],
+    "exit_code": 0,
+    "completed_at": "2026-10-26T12:51:48.763328+08:00"
+  },
+  "actual_small_guard_FFs": 200,
+  "actual_small_resources": {
+    "g2_top": {
+      "name": "g2_top",
+      "Register": "94",
+      "Lut": "1",
+      "T_Register": "294(94)",
+      "T_Alu": "66(0)",
+      "T_Lut": "668(1)"
+    },
+    "g2_top/u_command_lease": {
+      "name": "u_command_lease",
+      "Register": "200",
+      "Alu": "66",
+      "Lut": "667",
+      "T_Register": "200(200)",
+      "T_Alu": "66(66)",
+      "T_Lut": "667(667)"
+    }
+  },
+  "actual_small_age_prefix": {
+    "root": "n982_9",
+    "leaves": [
+      "age_ms[0]",
+      "age_ms[10]",
+      "age_ms[11]",
+      "age_ms[12]",
+      "age_ms[13]",
+      "age_ms[14]",
+      "age_ms[15]",
+      "age_ms[16]",
+      "age_ms[17]",
+      "age_ms[18]",
+      "age_ms[19]",
+      "age_ms[1]",
+      "age_ms[20]",
+      "age_ms[21]",
+      "age_ms[22]",
+      "age_ms[23]",
+      "age_ms[24]",
+      "age_ms[25]",
+      "age_ms[26]",
+      "age_ms[27]",
+      "age_ms[2]",
+      "age_ms[3]",
+      "age_ms[4]",
+      "age_ms[5]",
+      "age_ms[6]",
+      "age_ms[7]",
+      "age_ms[8]",
+      "age_ms[9]"
+    ],
+    "levels": 4,
+    "actual_primitives": [
+      {
+        "name": "n983_s4",
+        "kind": "LUT3",
+        "ports": {
+          "F": [
+            "n983_9"
+          ],
+          "I0": [
+            "age_ms[24]"
+          ],
+          "I1": [
+            "age_ms[25]"
+          ],
+          "I2": [
+            "age_ms[26]"
+          ]
+        },
+        "params": {
+          "INIT": "8'h80"
+        }
+      },
+      {
+        "name": "n1006_s4",
+        "kind": "LUT4",
+        "ports": {
+          "F": [
+            "n1006_9"
+          ],
+          "I0": [
+            "age_ms[0]"
+          ],
+          "I1": [
+            "age_ms[1]"
+          ],
+          "I2": [
+            "age_ms[2]"
+          ],
+          "I3": [
+            "age_ms[3]"
+          ]
+        },
+        "params": {
+          "INIT": "16'h8000"
+        }
+      },
+      {
+        "name": "n1002_s5",
+        "kind": "LUT4",
+        "ports": {
+          "F": [
+            "n1002_10"
+          ],
+          "I0": [
+            "age_ms[4]"
+          ],
+          "I1": [
+            "age_ms[5]"
+          ],
+          "I2": [
+            "age_ms[6]"
+          ],
+          "I3": [
+            "age_ms[7]"
+          ]
+        },
+        "params": {
+          "INIT": "16'h8000"
+        }
+      },
+      {
+        "name": "n998_s4",
+        "kind": "LUT4",
+        "ports": {
+          "F": [
+            "n998_9"
+          ],
+          "I0": [
+            "age_ms[8]"
+          ],
+          "I1": [
+            "age_ms[9]"
+          ],
+          "I2": [
+            "age_ms[10]"
+          ],
+          "I3": [
+            "age_ms[11]"
+          ]
+        },
+        "params": {
+          "INIT": "16'h8000"
+        }
+      },
+      {
+        "name": "n997_s4",
+        "kind": "LUT4",
+        "ports": {
+          "F": [
+            "n997_9"
+          ],
+          "I0": [
+            "age_ms[12]"
+          ],
+          "I1": [
+            "n1006_9"
+          ],
+          "I2": [
+            "n1002_10"
+          ],
+          "I3": [
+            "n998_9"
+          ]
+        },
+        "params": {
+          "INIT": "16'h8000"
+        }
+      },
+      {
+        "name": "n993_s4",
+        "kind": "LUT4",
+        "ports": {
+          "F": [
+            "n993_9"
+          ],
+          "I0": [
+            "age_ms[13]"
+          ],
+          "I1": [
+            "age_ms[14]"
+          ],
+          "I2": [
+            "age_ms[15]"
+          ],
+          "I3": [
+            "age_ms[16]"
+          ]
+        },
+        "params": {
+          "INIT": "16'h8000"
+        }
+      },
+      {
+        "name": "n987_s4",
+        "kind": "LUT3",
+        "ports": {
+          "F": [
+            "n987_9"
+          ],
+          "I0": [
+            "age_ms[20]"
+          ],
+          "I1": [
+            "age_ms[21]"
+          ],
+          "I2": [
+            "age_ms[22]"
+          ]
+        },
+        "params": {
+          "INIT": "8'h80"
+        }
+      },
+      {
+        "name": "n986_s5",
+        "kind": "LUT4",
+        "ports": {
+          "F": [
+            "n986_10"
+          ],
+          "I0": [
+            "age_ms[18]"
+          ],
+          "I1": [
+            "age_ms[19]"
+          ],
+          "I2": [
+            "age_ms[23]"
+          ],
+          "I3": [
+            "n987_9"
+          ]
+        },
+        "params": {
+          "INIT": "16'h8000"
+        }
+      },
+      {
+        "name": "n986_s6",
+        "kind": "LUT4",
+        "ports": {
+          "F": [
+            "n986_12"
+          ],
+          "I0": [
+            "n997_9"
+          ],
+          "I1": [
+            "age_ms[17]"
+          ],
+          "I2": [
+            "n993_9"
+          ],
+          "I3": [
+            "n986_10"
+          ]
+        },
+        "params": {
+          "INIT": "16'h8000"
+        }
+      },
+      {
+        "name": "n982_s4",
+        "kind": "LUT3",
+        "ports": {
+          "F": [
+            "n982_9"
+          ],
+          "I0": [
+            "age_ms[27]"
+          ],
+          "I1": [
+            "n983_9"
+          ],
+          "I2": [
+            "n986_12"
+          ]
+        },
+        "params": {
+          "INIT": "8'h80"
+        }
+      }
+    ]
+  },
+  "actual_small_first_estimated_path": {
+    "Slack": "7.671",
+    "Data Arrival Time": "12.643",
+    "Data Required Time": "20.314",
+    "From": "u_command_lease/age_ms_3_s1",
+    "To": "u_command_lease/out_yaw_q12_2_s1",
+    "Launch Clk": "clk[R]",
+    "Latch Clk": "clk[R]"
+  },
+  "actual_wholeG2_SYN34": {
+    "guard_FFs": 200,
+    "resources": {
+      "name": "u_command_lease",
+      "Register": "200",
+      "Alu": "66",
+      "Lut": "599",
+      "T_Register": "200(200)",
+      "T_Alu": "66(66)",
+      "T_Lut": "599(599)"
+    },
+    "pure_AND_levels": 12,
+    "all32_age_bits": [
+      "age_ms[0]",
+      "age_ms[10]",
+      "age_ms[11]",
+      "age_ms[12]",
+      "age_ms[13]",
+      "age_ms[14]",
+      "age_ms[15]",
+      "age_ms[16]",
+      "age_ms[17]",
+      "age_ms[18]",
+      "age_ms[19]",
+      "age_ms[1]",
+      "age_ms[20]",
+      "age_ms[21]",
+      "age_ms[22]",
+      "age_ms[23]",
+      "age_ms[24]",
+      "age_ms[25]",
+      "age_ms[26]",
+      "age_ms[27]",
+      "age_ms[28]",
+      "age_ms[29]",
+      "age_ms[2]",
+      "age_ms[30]",
+      "age_ms[31]",
+      "age_ms[3]",
+      "age_ms[4]",
+      "age_ms[5]",
+      "age_ms[6]",
+      "age_ms[7]",
+      "age_ms[8]",
+      "age_ms[9]"
+    ],
+    "root": "age_ms_31_13",
+    "first_estimated_path": {
+      "Slack": "-1.004",
+      "Data Arrival Time": "21.318",
+      "Data Required Time": "20.314",
+      "From": "u_command_lease/age_ms_0_s3",
+      "To": "u_command_lease/out_forward_q12_2_s1",
+      "Launch Clk": "clk50[R]",
+      "Latch Clk": "clk50[R]"
+    }
+  },
+  "context_reproduced": false,
+  "why_stopped": "200FF andALU66 match, but smallLUT667 differs from wholeG2 lease599 and strongest ageprefix4levels/28bits differs from wholeG2 12levels/32bits. No bounded-tree secondSYN or parameter sweep was launched.",
+  "actual_context_facts": {
+    "source_guard_call": "g2_top.v160-167: CLK_HZ50000000, owner/source1, sessions1; source_fault=ch_wdog,estop=ch_stop,feedback_valid=odo_valid; only48forward/yaw output bits connected",
+    "source_fault_stop_actual_FFs": "led_d_174[3]/[2] driven byu_nav/u_sg/out_wdog_s0 DFFSE andout_stop_s0 DFFRE; LED labels do not add new semantics",
+    "feedback_valid_actual": "u_control/odo_valid_s0 LUT3 INIT80: left_speed_valid & right_speed_valid & n1798_9",
+    "speed_valid_sources": "wheel_left/right.sample_valid FFs",
+    "feedback_gate_actual": "n1798_9=u_control/model_thread/n1798_s3 LUT4 INIT0004 = status_data50_0[14] & !n1874_5 & !clocked_fault & !lock_fault_async, i.e.modelready",
+    "actual_guard_feedback_cross_boundary": "n2383_s6 LUT4 INIT4000 merges !slow_now andthree feedback terms; n1042_s4 LUT4 INIT1555 also expands same feedbackAND",
+    "command_sign_context": "Actual command bits0..18 and23 are20 independent FFQ; bits19..22 alias23, notbit18. Source nav_command_units v2 sign-magnitude conversion makes high19..23 equal.",
+    "actual_output_consumer": "Every forward/yaw bit is consumed bycommand_{forward,yaw}_q12_{i}_s2 LUT2 INIT4(nav_bit & !ir_emergency_stop) andtelemetry snapshot; bit23 also feeds32bit signextension",
+    "exact_guard_FF_inventory": {
+      "divider": 16,
+      "owner": 1,
+      "last_seq": 16,
+      "still_ms": 10,
+      "slow_feedback": 1,
+      "stop_confirmed": 1,
+      "have_seq": 1,
+      "have_lease": 1,
+      "target_v": 20,
+      "target_w": 20,
+      "out_forward": 24,
+      "out_yaw": 24,
+      "age_ms": 32,
+      "feedback_age": 32,
+      "expired": 1
+    }
+  },
+  "not_reproduced_context": [
+    "Producer unit-conversion pipeline common stop/watchdogkill correlation, original producerFF names andfanout are not instantiated.",
+    "Actual controlready/clockfault andencoder-valid/measurement producers, including allshared related feedback consumers, are not instantiated.",
+    "Downstream IR zero masking, telemetry snapshot/signextension fanout andotherwholeG2 consumers are not instantiated.",
+    "Global multi-module timing/resource optimization andsharing affected leaseLUT599 vs667 despite same200FF. Which specific context creates12levels remains unproven."
+  ],
+  "bounded_tree_interpretation": "Earlier smallpair proves exact semantic equivalence andactual explicit3level mapping; it neither accepts nor rejects removal of wholeG2 12level chain or globaltiming gain. The smallreference cannot proxy that decision.",
+  "separately_authorized_SYN37": {
+    "controller_pid": 30592,
+    "controller_created_epoch": 1792990559.7091672,
+    "build_label": "SYN37",
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_bounded_MAX_prepared1",
+    "output": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_bounded_MAX_syn37",
+    "automatic_PNR": false,
+    "programmed": false,
+    "SYN36_exit_dependency": false,
+    "production_probe3_exit_dependency": false,
+    "global_tool_mutex": false,
+    "minimum_physical_bytes": 2147483648,
+    "minimum_commit_bytes": 4294967296,
+    "SYN_max_minutes": 40,
+    "original_runtime_memory_protection": true,
+    "phase": "waiting_for_actual_memory_admission",
+    "updated_at": "2026-10-26T12:56:39.083743+08:00",
+    "free_bytes": 2804809728,
+    "available_commit_bytes": 3890659328
+  },
+  "prepared_SYN37_review": {
+    "prepared": true,
+    "recorded_at": "2026-10-26T12:55:31.675972+08:00",
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4",
+    "out": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_bounded_MAX_prepared1",
+    "only_changed_RTL": [
+      "command_lease_guard.v"
+    ],
+    "unchanged_selected_RTL": 65,
+    "selected_RTL": 66,
+    "unselected_modgen_template_byte_identical": true,
+    "identical_assets": 69,
+    "identical_headers": 31,
+    "original_firmware_and_all_weights_byte_identical": true,
+    "clock_CST_SDC_capacities_unchanged": true,
+    "selected_run_Tcl_paths_bound_to_new_candidate": true,
+    "original_counting_saturation_ramp_output_cycles_and_priority_unchanged": true,
+    "production_timeout_ms": 200,
+    "age_unsigned_bits": 32,
+    "timeout_integer_bits": 32,
+    "arithmetic_domain": "Exact already proved explicit11LUT NAND32 tree, normal200ms; all32bit age and timeout known bit patterns; timeout0 retains original arithmetic/XZ behavior.",
+    "full_state_math_proof_pending": false,
+    "targeted_cycle_comparison_pending": false,
+    "exact_math_proof": "F:\\nav_integration_g2_20261023\\lease_deadline_bounded_tree_candidate1\\math_proof.json",
+    "exact_finite_cycle_proof": "F:\\nav_integration_g2_20261023\\lease_deadline_bounded_tree_candidate1\\focused_cycle_result.json",
+    "local_mapping_topology_proof": "F:\\nav_integration_g2_20261023\\lease_deadline_bounded_tree_candidate1\\actual_tree_topology.json",
+    "local_consumption_context": "F:\\nav_integration_g2_20261023\\lease_consumption_context_candidate1\\result.json",
+    "local_reference_did_not_reproduce_fullG2_prefix": true,
+    "new_mapping_or_timing_benefit_verified": false,
+    "fullG2_explicit_tree_mapping_not_verified": true,
+    "new_SYN_PNR_started": false,
+    "programmed": false,
+    "deployment_accepted": false,
+    "bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_bounded_MAX_prepared1\\command_lease_guard.v",
+        "bytes": 5692,
+        "mtime_ns": 1792990531384677200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_bounded_MAX_prepared1\\manifest.json",
+        "bytes": 9018,
+        "mtime_ns": 1792990531388683900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_bounded_MAX_prepared1\\g2.sdc",
+        "bytes": 6762,
+        "mtime_ns": 1792981482047268800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_bounded_MAX_prepared1\\g2.cst",
+        "bytes": 5495,
+        "mtime_ns": 1792981482046224100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_bounded_MAX_prepared1\\run.tcl",
+        "bytes": 9241,
+        "mtime_ns": 1792990531386680600
+      }
+    ]
+  },
+  "joint_threshold_unchanged_2GiB_phys_4GiB_commit": true,
+  "SYN_max_minutes": 40,
+  "original_runtime_memory_protection": true,
+  "no_SYN36_or_production_exit_dependency": true,
+  "automatic_PNR": false,
+  "next_actual_acceptance_checks": [
+    "11actual LUTs fedby32actual ageFFQs at<=3levels andactuallyused instop/ramp decision",
+    "Actual200guardFF kind/INIT/clock andallnext-state/publicoutputs equivalent atmatchedexternalinputboundaries",
+    "Allactual RAM geometry/INIT/CPU128KiB unchanged, threeclocks/PLL andoriginal26 radarCDC",
+    "Allnew estimated negativepaths andoriginal21.318ns leasearrival comparison; no benefitclaim merelyfrompreserved tree"
+  ],
+  "programmed": false,
+  "production_probe3_modified": false,
+  "bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\lease_consumption_context_candidate1\\reference\\guard.v",
+      "bytes": 4683,
+      "mtime_ns": 1792990302682479100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\lease_consumption_context_candidate1\\reference\\top.v",
+      "bytes": 1092,
+      "mtime_ns": 1792990302682479100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\lease_consumption_context_candidate1\\reference\\impl\\gwsynthesis\\g2_top.vg",
+      "bytes": 185178,
+      "mtime_ns": 1792990307887551300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\lease_consumption_context_candidate1\\result.json",
+      "bytes": 420258,
+      "mtime_ns": 1792990309640529400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_bounded_MAX_prepared1\\command_lease_guard.v",
+      "bytes": 5692,
+      "mtime_ns": 1792990531384677200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_bounded_MAX_prepared1\\run.tcl",
+      "bytes": 9241,
+      "mtime_ns": 1792990531386680600
+    }
+  ]
+}
