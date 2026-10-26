@@ -1,0 +1,391 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-26T10:28:44.793522+08:00",
+  "prepared_candidate": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4",
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23",
+  "actual_source_preparation": {
+    "prepared": true,
+    "recorded_at": "2026-10-26T10:24:42.117554+08:00",
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23",
+    "out": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4",
+    "description": "ActualPLL25MHz model/fusion/observation/4500/action domain; original50MHz NAV and every peripheral/PID/PWM/encoder/feedback",
+    "changed_original_RTL": [
+      "control/imu_fusion.v",
+      "control/mem_policy.v",
+      "control4500_core.v",
+      "g2_top.v"
+    ],
+    "added_RTL": [
+      "control/mem_policy_related25.v",
+      "model25_related_mailbox.v",
+      "model25_pll/model25_pll.v"
+    ],
+    "unchanged_original_RTL": 59,
+    "identical_assets": 69,
+    "identical_original_headers": 31,
+    "weights_algorithm_all_original_capacities_unchanged": true,
+    "FW_not_recompiled": true,
+    "clocks": {
+      "original50_every_peripheral_and_NAV": true,
+      "new25_model_domain": true,
+      "PLL": {
+        "generator": "installedGowinModGen",
+        "input_mhz": 50,
+        "VCO_mhz": 800,
+        "output_mhz": 25,
+        "device_C": true,
+        "actual_physical_global_allocation_verified": false
+      },
+      "new_physical_global_route_not_verified": true
+    },
+    "related_cross_domain_channels": [
+      {
+        "name": "BMI",
+        "width": 128,
+        "direction": "50to25",
+        "type": "event incl original50MHz sample interval"
+      },
+      {
+        "name": "configuration",
+        "width": 140,
+        "direction": "50to25",
+        "type": "latest atomic command72+encoder64+four status"
+      },
+      {
+        "name": "action",
+        "width": 336,
+        "direction": "25to50",
+        "type": "one destination-cycle event"
+      },
+      {
+        "name": "fusion",
+        "width": 145,
+        "direction": "25to50",
+        "type": "one destination-cycle event"
+      },
+      {
+        "name": "status",
+        "width": 15,
+        "direction": "25to50",
+        "type": "latest atomic"
+      }
+    ],
+    "feedback_valid_still_original50MHz_single_cycle": true,
+    "model_PERIOD_CLKS": 200000,
+    "model_period_ms": 8,
+    "model_sensor_timeout_clks": 1250000,
+    "model_sensor_timeout_ms": 50,
+    "unchanged_physical_timing": [
+      "BMI100kHzIIC/10ms poll/startup and retry",
+      "encoder10ms/1320CPR conversion",
+      "PID100Hz/PWM20kHz/2500tick gain units",
+      "servo20ms/50MHz pulse resolution",
+      "UART217cycles/230400nominal/100HzV2",
+      "IR/OLED original timing",
+      "NAV CPU50MHz and lease/watchdogs"
+    ],
+    "reset": "shared asynchronous assertion and each-clock two-edge release for transport; sticky50MHz PLL/heartbeat fault; model failure gates motor enable while servo50MHz holds last committed pose",
+    "new_SYN_PNR_started": false,
+    "full_model_numeric_physical_time_equivalence_passed": false,
+    "full125Hz_end_to_end_verified": false,
+    "full_stop_or_deployment_accepted": false,
+    "required_next": [
+      "finite channel/reset/stop/clock-ratio tests",
+      "full original4500 sensor-to-actuator numeric comparison at physical125Hz",
+      "domain clock stall and reset sequencing including pending handoffs",
+      "actual3clock netlist/global allocation/5bundleddata payload timing and reset audit",
+      "all target clock and related-boundary setup/hold/no new false-path exceptions",
+      "RK UARTHZ interpretation and real hardware IO/stop signoff"
+    ],
+    "bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\imu_fusion.v",
+        "bytes": 20663,
+        "mtime_ns": 1792981481973344600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\mem_policy.v",
+        "bytes": 6300,
+        "mtime_ns": 1792981481973344600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control4500_core.v",
+        "bytes": 21538,
+        "mtime_ns": 1792981481974848000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\g2_top.v",
+        "bytes": 11578,
+        "mtime_ns": 1792981481974848000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\mem_policy_related25.v",
+        "bytes": 8763,
+        "mtime_ns": 1792981481973344600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\model25_related_mailbox.v",
+        "bytes": 3895,
+        "mtime_ns": 1792981481974848000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\model25_pll\\model25_pll.v",
+        "bytes": 6178,
+        "mtime_ns": 1792981482021845100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\manifest.json",
+        "bytes": 8531,
+        "mtime_ns": 1792981482048829300
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\g2.sdc",
+        "bytes": 6762,
+        "mtime_ns": 1792981482047268800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\g2.cst",
+        "bytes": 5495,
+        "mtime_ns": 1792981482046224100
+      }
+    ]
+  },
+  "finite_proofs": {
+    "model25_short_lock_counterexample2": {
+      "recorded_at": "2026-10-26T10:24:09.114820+08:00",
+      "fixture_completed": true,
+      "safety_contract_pass": false,
+      "summary": "MODEL25_SHORT_LOCK_COUNTEREXAMPLE pulse_ns=2 safety_contract_pass=0 auto_recovered=1",
+      "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared3",
+      "binding": [
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared3\\model25_related_mailbox.v",
+          "bytes": 3369,
+          "mtime_ns": 1792981206856487900
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\model25_short_lock_counterexample2\\tb_model25_short_lock.sv",
+          "bytes": 1281,
+          "mtime_ns": 1792981441490121500
+        }
+      ],
+      "physical_PLL_fault_pulse_minimum_not_verified": true
+    },
+    "model25_short_lock_fixed1": {
+      "recorded_at": "2026-10-26T10:24:49.822900+08:00",
+      "fixture_completed": true,
+      "safety_contract_pass": true,
+      "summary": "MODEL25_SHORT_LOCK_FIXED_PASS pulse_ns=2 fault_sticky_until_physical_reset=1",
+      "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4",
+      "binding": [
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\model25_related_mailbox.v",
+          "bytes": 3895,
+          "mtime_ns": 1792981481974848000
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\model25_short_lock_fixed1\\tb_model25_short_lock.sv",
+          "bytes": 1281,
+          "mtime_ns": 1792981482266861900
+        }
+      ],
+      "physical_PLL_fault_pulse_minimum_not_verified": true
+    },
+    "model25_transport_probe2": {
+      "passed": true,
+      "recorded_at": "2026-10-26T10:25:06.984878+08:00",
+      "summary": "MODEL25_TRANSPORT_PASS forward=1000 reverse=1000 latest_checks=1251 resets=4 faults=3",
+      "scope": "Finite related50/25MHz mailbox/latest/guard test, no full4500 or wholeG2 acceptance",
+      "real_PLL_or_physical25MHz_test": false,
+      "binding": [
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\model25_related_mailbox.v",
+          "bytes": 3895,
+          "mtime_ns": 1792981481974848000
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\model25_transport_probe2\\tb_model25_transport.sv",
+          "bytes": 4668,
+          "mtime_ns": 1792981498746438100
+        }
+      ]
+    },
+    "model25_real_elaboration_probe4": {
+      "passed": true,
+      "recorded_at": "2026-10-26T10:25:14.362998+08:00",
+      "real_model25_chain_elaborated_without_inference_substitute": true,
+      "public_PLL_finite_summary": "MODEL25_PUBLIC_PLL_PASS periods=1000 memoryless25MHz=40ns",
+      "original_vendor_model": {
+        "path": "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\simlib\\gw5a\\prim_sim.v",
+        "bytes": 710345,
+        "mtime_ns": 1790043686000000000
+      },
+      "hardware_inputs": [
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\fc_v4_round_sat.v",
+          "bytes": 842,
+          "mtime_ns": 1792981481749877300
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\imu_fusion.v",
+          "bytes": 20663,
+          "mtime_ns": 1792981481973344600
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\imu_isqrt.v",
+          "bytes": 1997,
+          "mtime_ns": 1792981481751884800
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\imu_recip.v",
+          "bytes": 2836,
+          "mtime_ns": 1792981481751884800
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\leg_ik_ff.v",
+          "bytes": 3328,
+          "mtime_ns": 1792981481753892100
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\policy_action_map.v",
+          "bytes": 2194,
+          "mtime_ns": 1792981481758867100
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\rl_observation_v5.v",
+          "bytes": 7026,
+          "mtime_ns": 1792981481758867100
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\rl_policy_tick_v5.v",
+          "bytes": 6461,
+          "mtime_ns": 1792981481762620800
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\fc_v4_top.v",
+          "bytes": 9630,
+          "mtime_ns": 1792981481768397500
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\fixed4500_weight_rom.v",
+          "bytes": 8907,
+          "mtime_ns": 1792981481769605500
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\mem_policy.v",
+          "bytes": 6300,
+          "mtime_ns": 1792981481973344600
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\mem_policy_related25.v",
+          "bytes": 8763,
+          "mtime_ns": 1792981481973344600
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\model25_related_mailbox.v",
+          "bytes": 3895,
+          "mtime_ns": 1792981481974848000
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\model25_pll\\model25_pll.v",
+          "bytes": 6178,
+          "mtime_ns": 1792981482021845100
+        }
+      ],
+      "full4500_numeric_or_8ms_WCET_passed": false,
+      "physical_clock_global_resources_setup_hold_passed": false,
+      "new_SYN_PNR_started": false
+    },
+    "model25_fusion_numeric_probe1": {
+      "passed": true,
+      "recorded_at": "2026-10-26T10:27:07.761879+08:00",
+      "summary": "MODEL25_FUSION_NUMERIC_PASS samples=64 exact147bit_outputs=54 reset_sequences=2 source50_intervals=1",
+      "scope": "Real fusion arithmetic50 vs25 with source50 interval transported atomically; two reduced-bias synthetic sequences, not full4500 or production100Hz timing",
+      "input_bindings": [
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\imu_fusion.v",
+          "bytes": 20521,
+          "mtime_ns": 1792936600772323300
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\imu_fusion.v",
+          "bytes": 20663,
+          "mtime_ns": 1792981481973344600
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\imu_isqrt.v",
+          "bytes": 1997,
+          "mtime_ns": 1792981481751884800
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\control\\imu_recip.v",
+          "bytes": 2836,
+          "mtime_ns": 1792981481751884800
+        },
+        {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\model25_related_mailbox.v",
+          "bytes": 3895,
+          "mtime_ns": 1792981481974848000
+        }
+      ],
+      "TB": {
+        "path": "F:\\nav_integration_g2_20261023\\model25_fusion_numeric_probe1\\tb_model25_fusion.sv",
+        "bytes": 3254,
+        "mtime_ns": 1792981618390762500
+      },
+      "full_model_inference_or_physical_setup_hold_passed": false
+    }
+  },
+  "candidate_name": "model_fusion25_peripherals_NAV50_not_whole_control25",
+  "input_hold_ack_rule": "Each event holding word and request toggle are registered together on source clock. Two destination request stages precede the single destination capture/ack. Source cannot overwrite until two returned ack stages match. Latest channels send again whenever current atomic source word differs after ack; intermediate continuous command states may coalesce.",
+  "no_async_FIFO_or_clock_group_exception": true,
+  "all_new_related_clock_and_payload_paths_require_actual_setup_hold": true,
+  "no_full_4500_numeric_or_8ms_end_to_end_acceptance": true,
+  "all_model_weights_and_capacity_assets_byte_identical": true,
+  "original50MHz_paths_remaining": [
+    "BMI/I2C sensor and IR/OLED",
+    "encoder and conversion/PID/PWM",
+    "servo pulse generators",
+    "UART telemetry and disabled speed RX",
+    "NAV/CPU/command lease and odo feedback",
+    "model output amplification if configured"
+  ],
+  "stop_and_reset": {
+    "original_estop_priority": "IR/compile-time emergency_stop remains50MHz command_emergency_stop -> control_run -> wheel_control_enable and model external_fault; untouched original priority. NAV communication controlled stop remains zero command and does not disable balancing inference.",
+    "new_model_health_fault": "While50MHz survives, missing25MHz heartbeat/PLL loss/transport overflow latches domain_fault, forces wrapper active low and prevents new command commits. 50MHz PID disables wheels. Servo generator stays50MHz and holds last committed pose, not a stuck25MHz output.",
+    "short_lock_fix": "An independent asynchronously preset fault FF catches seen_lock&&!pll_lock. It clears only on a50MHz edge while original physical reset_n is low; generic transport resets do not clear it.",
+    "actual_reset_source": "g2_top.nav_rst_sync(~key_rst_n | ~pll_lock_NAV) -> rst; frozen NAV_USE_PLL not defined, hence NAV pll_lock=1. control device_reset_n=(~rst)&&startup[all8bits]. CPU HOLD and ordinary NAV MMIO protocol reset do not drive this net.",
+    "clock50_halt": "Not covered. Supervisor itself and all original50MHz peripheral/PWM registers may stop and hold outputs. PhysicalPLL lock-loss response/independent hardware emergency guarantee not proved.",
+    "asynchronous_fault_FF_mapping_minimum_preset_pulse": "Not proved by logical2ns simulation; must inspect actual primitive mapping and pulse/recovery/removal limits."
+  },
+  "prototype_history": [
+    {
+      "prepared": "prepared1",
+      "scope": "source inspection found stop-output zero/last-pose and rejected single-pulse details; corrected before hardware build"
+    },
+    {
+      "prepared": "prepared2",
+      "scope": "Vivado rejected own wrapper ready_raw late declaration; log preserved",
+      "log": "F:\\nav_integration_g2_20261023\\model25_real_elaboration_probe1\\0_xvlog.log"
+    },
+    {
+      "prepared": "prepared3",
+      "scope": "short2ns LOCK-loss auto-recovery counterexample reproduced; never accepted",
+      "proof": "F:\\nav_integration_g2_20261023\\model25_short_lock_counterexample2\\result.json"
+    }
+  ],
+  "first_helper_usage_rejection_preserved": "F:\\nav_integration_g2_20261023\\model25_real_elaboration_probe2\\1_xelab.log",
+  "required_next": [
+    "Root independent source/transport/reset review",
+    "Full source25/50 numeric and physical125Hz comparison including complete4500 inference and cadence/8ms deadline",
+    "Actual output-wrapper fault/stop/last-servo-pose combined check and clock-halt boundary sequences",
+    "Peripheral source comparison already byte-preserved; still inspect actual clocks afterSYN",
+    "Actual three-clock netlist and all originalRAM/CPU INIT/weights and 26radarCDC plus five new bundled-data channels",
+    "PRIMARY/LW8/8 full; actual addedPLL/globalclock allocation and related-boundary setup/hold/skew; no blind old control Cst names",
+    "Independent50MHz-loss/physicalstop/IO/MTBF/recovery/removal and SRAM admission gates"
+  ],
+  "new_SYN_PNR_started": false,
+  "automatic_pnr": false,
+  "programmed": false,
+  "deployment_accepted": false
+}
