@@ -1,0 +1,230 @@
+{
+  "recorded_at": "2026-10-26T22:03:34.949566+08:00",
+  "phase": "reader_prepared_and_existing35_report_checked",
+  "read_only": true,
+  "EDA_started": false,
+  "frozen_build_or_controller_changed": false,
+  "entry": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_pnr_timing_coverage.py",
+  "entry_metadata": {
+    "bytes": 15569,
+    "mtime_ns": 1793023414435141500
+  },
+  "usage": "python integration/g2/review_pnr_timing_coverage.py <completed_build> --out <new_review_directory>",
+  "validation": {
+    "report": {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35\\impl\\pnr\\g2_top.tr",
+      "bytes": 547343,
+      "mtime_ns": 1792952617350824300
+    },
+    "result": "F:\\nav_integration_g2_20261023\\PNR35_timing_coverage_reader_check1\\result.json",
+    "table_parse_errors": [],
+    "global_violations": {
+      "setup": 3781,
+      "hold": 0,
+      "recovery": null,
+      "removal": null
+    },
+    "per_clock": {
+      "clk50": {
+        "frequency": {
+          "constraint_MHz": 50.0,
+          "actual_Fmax_MHz": 33.197,
+          "levels": 19,
+          "entity": "TOP"
+        },
+        "analyses": {
+          "setup": {
+            "TNS_ns": -9110.266,
+            "violated_endpoints": 3781,
+            "worst_listed_same_clock_slack_ns": -10.124,
+            "listed_same_clock_rows": 25,
+            "actual_domain_WNS_available_in_summary": false
+          },
+          "hold": {
+            "TNS_ns": 0.0,
+            "violated_endpoints": 0,
+            "worst_listed_same_clock_slack_ns": 0.164,
+            "listed_same_clock_rows": 25,
+            "actual_domain_WNS_available_in_summary": false
+          },
+          "recovery": {
+            "TNS_ns": null,
+            "violated_endpoints": null,
+            "worst_listed_same_clock_slack_ns": 5.342,
+            "listed_same_clock_rows": 23,
+            "actual_domain_WNS_available_in_summary": false
+          },
+          "removal": {
+            "TNS_ns": null,
+            "violated_endpoints": null,
+            "worst_listed_same_clock_slack_ns": 0.582,
+            "listed_same_clock_rows": 25,
+            "actual_domain_WNS_available_in_summary": false
+          }
+        }
+      },
+      "rgmii_rxc": {
+        "frequency": {
+          "constraint_MHz": 100.0,
+          "actual_Fmax_MHz": 104.748,
+          "levels": 9,
+          "entity": "TOP"
+        },
+        "analyses": {
+          "setup": {
+            "TNS_ns": 0.0,
+            "violated_endpoints": 0,
+            "worst_listed_same_clock_slack_ns": null,
+            "listed_same_clock_rows": 0,
+            "actual_domain_WNS_available_in_summary": false
+          },
+          "hold": {
+            "TNS_ns": 0.0,
+            "violated_endpoints": 0,
+            "worst_listed_same_clock_slack_ns": null,
+            "listed_same_clock_rows": 0,
+            "actual_domain_WNS_available_in_summary": false
+          },
+          "recovery": {
+            "TNS_ns": null,
+            "violated_endpoints": null,
+            "worst_listed_same_clock_slack_ns": null,
+            "listed_same_clock_rows": 0,
+            "actual_domain_WNS_available_in_summary": false
+          },
+          "removal": {
+            "TNS_ns": null,
+            "violated_endpoints": null,
+            "worst_listed_same_clock_slack_ns": null,
+            "listed_same_clock_rows": 0,
+            "actual_domain_WNS_available_in_summary": false
+          }
+        }
+      }
+    },
+    "path_coverage": {
+      "setup": {
+        "listed_rows": 25,
+        "listed_unique_endpoints": 25,
+        "listed_negative_rows": 25,
+        "listed_unique_negative_endpoints": 25,
+        "worst_listed_slack_ns": -10.124,
+        "summary_violated_endpoints": 3781,
+        "unlisted_failed_endpoints_if_same_grouping": 3756,
+        "status": "partial_failed_endpoint_coverage",
+        "endpoint_key": "Printed To Clock including edge plus printed To Node",
+        "interpretation": "Count match does not enumerate alternate paths or prove unconstrained endpoints covered"
+      },
+      "hold": {
+        "listed_rows": 25,
+        "listed_unique_endpoints": 25,
+        "listed_negative_rows": 0,
+        "listed_unique_negative_endpoints": 0,
+        "worst_listed_slack_ns": 0.164,
+        "summary_violated_endpoints": 0,
+        "unlisted_failed_endpoints_if_same_grouping": 0,
+        "status": "failed_endpoint_count_matches_vendor_summary_under_printed_key",
+        "endpoint_key": "Printed To Clock including edge plus printed To Node",
+        "interpretation": "Count match does not enumerate alternate paths or prove unconstrained endpoints covered"
+      },
+      "recovery": {
+        "listed_rows": 25,
+        "listed_unique_endpoints": 25,
+        "listed_negative_rows": 0,
+        "listed_unique_negative_endpoints": 0,
+        "worst_listed_slack_ns": 4.518,
+        "summary_violated_endpoints": null,
+        "unlisted_failed_endpoints_if_same_grouping": null,
+        "status": "global_violated_endpoint_count_not_reported",
+        "endpoint_key": "Printed To Clock including edge plus printed To Node",
+        "interpretation": "Count match does not enumerate alternate paths or prove unconstrained endpoints covered"
+      },
+      "removal": {
+        "listed_rows": 25,
+        "listed_unique_endpoints": 25,
+        "listed_negative_rows": 0,
+        "listed_unique_negative_endpoints": 0,
+        "worst_listed_slack_ns": 0.582,
+        "summary_violated_endpoints": null,
+        "unlisted_failed_endpoints_if_same_grouping": null,
+        "status": "global_violated_endpoint_count_not_reported",
+        "endpoint_key": "Printed To Clock including edge plus printed To Node",
+        "interpretation": "Count match does not enumerate alternate paths or prove unconstrained endpoints covered"
+      }
+    },
+    "detailed_path_coverage": {
+      "setup": {
+        "listed_rows": 25,
+        "listed_unique_endpoints": 25,
+        "listed_negative_rows": 25,
+        "listed_unique_negative_endpoints": 25,
+        "worst_listed_slack_ns": -10.124,
+        "summary_violated_endpoints": null,
+        "unlisted_failed_endpoints_if_same_grouping": null,
+        "status": "global_violated_endpoint_count_not_reported",
+        "endpoint_key": "Printed To Clock including edge plus printed To Node",
+        "interpretation": "Count match does not enumerate alternate paths or prove unconstrained endpoints covered"
+      },
+      "hold": {
+        "listed_rows": 25,
+        "listed_unique_endpoints": 18,
+        "listed_negative_rows": 0,
+        "listed_unique_negative_endpoints": 0,
+        "worst_listed_slack_ns": 0.164,
+        "summary_violated_endpoints": null,
+        "unlisted_failed_endpoints_if_same_grouping": null,
+        "status": "global_violated_endpoint_count_not_reported",
+        "endpoint_key": "Printed To Clock including edge plus printed To Node",
+        "interpretation": "Count match does not enumerate alternate paths or prove unconstrained endpoints covered"
+      },
+      "recovery": {
+        "listed_rows": 25,
+        "listed_unique_endpoints": 25,
+        "listed_negative_rows": 0,
+        "listed_unique_negative_endpoints": 0,
+        "worst_listed_slack_ns": 4.518,
+        "summary_violated_endpoints": null,
+        "unlisted_failed_endpoints_if_same_grouping": null,
+        "status": "global_violated_endpoint_count_not_reported",
+        "endpoint_key": "Printed To Clock including edge plus printed To Node",
+        "interpretation": "Count match does not enumerate alternate paths or prove unconstrained endpoints covered"
+      },
+      "removal": {
+        "listed_rows": 25,
+        "listed_unique_endpoints": 25,
+        "listed_negative_rows": 0,
+        "listed_unique_negative_endpoints": 0,
+        "worst_listed_slack_ns": 0.582,
+        "summary_violated_endpoints": null,
+        "unlisted_failed_endpoints_if_same_grouping": null,
+        "status": "global_violated_endpoint_count_not_reported",
+        "endpoint_key": "Printed To Clock including edge plus printed To Node",
+        "interpretation": "Count match does not enumerate alternate paths or prove unconstrained endpoints covered"
+      }
+    },
+    "effective52": {
+      "verified": true,
+      "required_count": 52,
+      "Actived_count": 52
+    },
+    "clock_MPW": {
+      "printed_rows": 10,
+      "printed_negative_rows": 0,
+      "worst_printed_slack_ns": 2.843
+    },
+    "external_reset_assertion_pulse_verified": false,
+    "congestion_rows": 10,
+    "high_fanout_rows": 10
+  },
+  "current53_snapshot": "F:\\nav_integration_g2_20261023\\PNR53_timing_coverage_inflight_snapshot1\\result.json",
+  "current53_snapshot_scope": "NoTR at the read snapshot; all four analysis global counts and effective52 remain unknown. This is not a finalPNR result.",
+  "limitations": [
+    "Recovery/removal printed positive prefixes do not invent global zero counts",
+    "Actual per-clock WNS absent from summary is left unknown; worst printed same-clock slack is separate",
+    "Reported max_paths5000 is only a command; count real rows and unique negative endpoints",
+    "ClockMPW does not measure external asynchronous reset assertion pulse width",
+    "Detail To objects and table To pins are not blindly unioned",
+    "PhysicalVO, actualRAM/resources/clock/CDC connections remain root separate audit"
+  ],
+  "deployment_accepted": false
+}

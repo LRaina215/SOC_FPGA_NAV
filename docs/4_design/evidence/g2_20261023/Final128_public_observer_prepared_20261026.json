@@ -1,0 +1,48 @@
+{
+  "phase": "prepared_and_pure_wrapper_checks_passed_profile_pending",
+  "generator": "D:/Desktop/SOC FPGA/nav/integration/g2/prepare_final128_public_observer.py",
+  "final_directory": "F:/nav_integration_g2_20261023/final128_public_observer_prepared3",
+  "result": "F:/nav_integration_g2_20261023/final128_public_observer_prepared3/result.json",
+  "entry": "F:/nav_integration_g2_20261023/final128_public_observer_prepared3/observer_entry.py",
+  "pure_check": "F:/nav_integration_g2_20261023/final128_public_observer_prepared3/pure_wrapper_check/result.json",
+  "bindings": {"total": 87, "Python_sources": 32, "frozen_FW_C_H": 50, "DLL_bound_but_not_loaded": true, "selected_distance_bound_manifest_present": false},
+  "pure_wrapper_checks": {
+    "passed": true,
+    "original_py_poll_calls": 3,
+    "post_original_poll_match_samples": 3,
+    "original_py_set_time_calls": 2,
+    "extra_py_poll": 0,
+    "extra_py_get_commit": 0,
+    "original_return_and_score_object_identity_preserved": true,
+    "direct_d_handle_calls_observed": true,
+    "ctypes_argtypes_restype_forwarded": true,
+    "update_arguments_and_return_preserved": true,
+    "synthetic_zero_delta_degenerate_counter_change_logged": true,
+    "synthetic_error_curve_mm": 5,
+    "meaning": "Python stand-ins only; no real DLL, model, solver or closed loop was executed"
+  },
+  "records": {
+    "poll_match.csv": "Read-only py_get_match after every returned original poll; actual uint32 C time and clock sequence",
+    "events.jsonl": "Every original py_set_time; all scoring dispatches and245-candidate n_valid/cost/n_in/n_pts arrays; update callbacks; n_applied counter transitions with degen/delta",
+    "error_curve.csv": "Original timestamped timeseries truth/estimated XY and computed error; runner loc_valid retained as an original label, not a lock verdict",
+    "observation_summary.json": "Counts and explicit event/solver/observability limits"
+  },
+  "can_confirm_after_future_run": ["Time at original public-interface boundaries", "Actual scoring dispatch count/results", "HAL update callback completion", "Accepted solve counter changes and sampled valid/degen/corrections", "Original finite truth-error curve"],
+  "cannot_confirm": ["Internal n_runs or every failed solver invocation", "Every stale/skip reason or internal n_in_best/at_edge", "That every update callback performed C solve", "Times finer than original1ms simulated clock", "Full-rank XY observability or no-map localization never lost"],
+  "future_profile_gate": {
+    "root_approved": false,
+    "selected_d": null,
+    "selected_ZHI": null,
+    "start_enabled": false,
+    "next_action": "After root selects profile, create a new freeze with --prepare --profile <approved-profile.json> --out <new-directory>; do not edit prepared3",
+    "profile_fields": ["root_approved", "source_entry", "argv", "environment", "selected_forward_mm", "selected_ZHI", "original_output"],
+    "checks": ["All source/DLL/profile metadata unchanged", "Original --no-build and exact bound --firmware-dll", "SN/LF128", "Selected d/ZHI match environment; prior retains d0/fixed LF", "stage1b real best-distance bound_manifest exists and matches selected d", "Fresh independent original_output and no duplicate run_claim"]
+  },
+  "preserved_history": "prepared1 pure fixture referenced FW.state on its fake DLL handle; corrected fake only. prepared2 checks pass; prepared3 adds FW/scene/best-distance/actual DLL binding gates. No real model was run in any version.",
+  "current72_or330_inputs_modified": false,
+  "geometry_wait_controller_modified": false,
+  "DLL_rebuilt": false,
+  "new_closed_loop_started": false,
+  "new_loss_threshold_defined": false,
+  "no_SHA": true
+}

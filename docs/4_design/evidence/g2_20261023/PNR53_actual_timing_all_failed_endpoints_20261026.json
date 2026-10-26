@@ -1,0 +1,2417 @@
+{
+  "recorded_at": "2026-10-26T22:16:17.175977+08:00",
+  "phase": "PNR53_completed_actual_TR_read_only_review",
+  "read_only": true,
+  "VO_loaded": false,
+  "EDA_started": false,
+  "coverage": {
+    "runtime_final": true,
+    "actual_report_parse_complete": true,
+    "clock_summary": [
+      {
+        "name": "clk50",
+        "type": "Base",
+        "period_ns": 20.0,
+        "frequency_MHz": 50.0,
+        "rise_ns": 0.0,
+        "fall_ns": 10.0
+      },
+      {
+        "name": "rgmii_rxc",
+        "type": "Base",
+        "period_ns": 10.0,
+        "frequency_MHz": 100.0,
+        "rise_ns": 0.0,
+        "fall_ns": 5.0
+      }
+    ],
+    "global_violations": {
+      "setup": 3565,
+      "hold": 0,
+      "recovery": null,
+      "removal": null
+    },
+    "per_clock": {
+      "clk50": {
+        "frequency": {
+          "constraint_MHz": 50.0,
+          "actual_Fmax_MHz": 32.297,
+          "levels": 21,
+          "entity": "TOP"
+        },
+        "analyses": {
+          "setup": {
+            "TNS_ns": -12446.382,
+            "violated_endpoints": 3565,
+            "worst_listed_same_clock_slack_ns": -10.963,
+            "listed_same_clock_rows": 4911,
+            "actual_domain_WNS_available_in_summary": false
+          },
+          "hold": {
+            "TNS_ns": 0.0,
+            "violated_endpoints": 0,
+            "worst_listed_same_clock_slack_ns": 0.164,
+            "listed_same_clock_rows": 4983,
+            "actual_domain_WNS_available_in_summary": false
+          },
+          "recovery": {
+            "TNS_ns": null,
+            "violated_endpoints": null,
+            "worst_listed_same_clock_slack_ns": 5.791,
+            "listed_same_clock_rows": 4937,
+            "actual_domain_WNS_available_in_summary": false
+          },
+          "removal": {
+            "TNS_ns": null,
+            "violated_endpoints": null,
+            "worst_listed_same_clock_slack_ns": 0.352,
+            "listed_same_clock_rows": 4937,
+            "actual_domain_WNS_available_in_summary": false
+          }
+        }
+      },
+      "rgmii_rxc": {
+        "frequency": {
+          "constraint_MHz": 100.0,
+          "actual_Fmax_MHz": 115.388,
+          "levels": 5,
+          "entity": "TOP"
+        },
+        "analyses": {
+          "setup": {
+            "TNS_ns": 0.0,
+            "violated_endpoints": 0,
+            "worst_listed_same_clock_slack_ns": 0.667,
+            "listed_same_clock_rows": 89,
+            "actual_domain_WNS_available_in_summary": false
+          },
+          "hold": {
+            "TNS_ns": 0.0,
+            "violated_endpoints": 0,
+            "worst_listed_same_clock_slack_ns": 0.248,
+            "listed_same_clock_rows": 17,
+            "actual_domain_WNS_available_in_summary": false
+          },
+          "recovery": {
+            "TNS_ns": null,
+            "violated_endpoints": null,
+            "worst_listed_same_clock_slack_ns": 6.099,
+            "listed_same_clock_rows": 59,
+            "actual_domain_WNS_available_in_summary": false
+          },
+          "removal": {
+            "TNS_ns": null,
+            "violated_endpoints": null,
+            "worst_listed_same_clock_slack_ns": 0.363,
+            "listed_same_clock_rows": 59,
+            "actual_domain_WNS_available_in_summary": false
+          }
+        }
+      }
+    },
+    "path_coverage": {
+      "setup": {
+        "listed_rows": 5000,
+        "listed_unique_endpoints": 5000,
+        "listed_negative_rows": 3565,
+        "listed_unique_negative_endpoints": 3565,
+        "worst_listed_slack_ns": -10.963,
+        "summary_violated_endpoints": 3565,
+        "unlisted_failed_endpoints_if_same_grouping": 0,
+        "status": "failed_endpoint_count_matches_vendor_summary_under_printed_key",
+        "endpoint_key": "Printed To Clock including edge plus printed To Node",
+        "interpretation": "Count match does not enumerate alternate paths or prove unconstrained endpoints covered"
+      },
+      "hold": {
+        "listed_rows": 5000,
+        "listed_unique_endpoints": 5000,
+        "listed_negative_rows": 0,
+        "listed_unique_negative_endpoints": 0,
+        "worst_listed_slack_ns": 0.164,
+        "summary_violated_endpoints": 0,
+        "unlisted_failed_endpoints_if_same_grouping": 0,
+        "status": "failed_endpoint_count_matches_vendor_summary_under_printed_key",
+        "endpoint_key": "Printed To Clock including edge plus printed To Node",
+        "interpretation": "Count match does not enumerate alternate paths or prove unconstrained endpoints covered"
+      },
+      "recovery": {
+        "listed_rows": 5000,
+        "listed_unique_endpoints": 5000,
+        "listed_negative_rows": 0,
+        "listed_unique_negative_endpoints": 0,
+        "worst_listed_slack_ns": 5.668,
+        "summary_violated_endpoints": null,
+        "unlisted_failed_endpoints_if_same_grouping": null,
+        "status": "global_violated_endpoint_count_not_reported",
+        "endpoint_key": "Printed To Clock including edge plus printed To Node",
+        "interpretation": "Count match does not enumerate alternate paths or prove unconstrained endpoints covered"
+      },
+      "removal": {
+        "listed_rows": 5000,
+        "listed_unique_endpoints": 5000,
+        "listed_negative_rows": 0,
+        "listed_unique_negative_endpoints": 0,
+        "worst_listed_slack_ns": 0.352,
+        "summary_violated_endpoints": null,
+        "unlisted_failed_endpoints_if_same_grouping": null,
+        "status": "global_violated_endpoint_count_not_reported",
+        "endpoint_key": "Printed To Clock including edge plus printed To Node",
+        "interpretation": "Count match does not enumerate alternate paths or prove unconstrained endpoints covered"
+      }
+    },
+    "detailed_path_coverage": {
+      "setup": {
+        "listed_rows": 5000,
+        "listed_unique_endpoints": 3545,
+        "listed_negative_rows": 3565,
+        "listed_unique_negative_endpoints": 2621,
+        "worst_listed_slack_ns": -10.963,
+        "summary_violated_endpoints": null,
+        "unlisted_failed_endpoints_if_same_grouping": null,
+        "status": "global_violated_endpoint_count_not_reported",
+        "endpoint_key": "Printed To Clock including edge plus printed To Node",
+        "interpretation": "Count match does not enumerate alternate paths or prove unconstrained endpoints covered"
+      },
+      "hold": {
+        "listed_rows": 5000,
+        "listed_unique_endpoints": 4073,
+        "listed_negative_rows": 0,
+        "listed_unique_negative_endpoints": 0,
+        "worst_listed_slack_ns": 0.164,
+        "summary_violated_endpoints": null,
+        "unlisted_failed_endpoints_if_same_grouping": null,
+        "status": "global_violated_endpoint_count_not_reported",
+        "endpoint_key": "Printed To Clock including edge plus printed To Node",
+        "interpretation": "Count match does not enumerate alternate paths or prove unconstrained endpoints covered"
+      },
+      "recovery": {
+        "listed_rows": 5000,
+        "listed_unique_endpoints": 5000,
+        "listed_negative_rows": 0,
+        "listed_unique_negative_endpoints": 0,
+        "worst_listed_slack_ns": 5.668,
+        "summary_violated_endpoints": null,
+        "unlisted_failed_endpoints_if_same_grouping": null,
+        "status": "global_violated_endpoint_count_not_reported",
+        "endpoint_key": "Printed To Clock including edge plus printed To Node",
+        "interpretation": "Count match does not enumerate alternate paths or prove unconstrained endpoints covered"
+      },
+      "removal": {
+        "listed_rows": 5000,
+        "listed_unique_endpoints": 5000,
+        "listed_negative_rows": 0,
+        "listed_unique_negative_endpoints": 0,
+        "worst_listed_slack_ns": 0.352,
+        "summary_violated_endpoints": null,
+        "unlisted_failed_endpoints_if_same_grouping": null,
+        "status": "global_violated_endpoint_count_not_reported",
+        "endpoint_key": "Printed To Clock including edge plus printed To Node",
+        "interpretation": "Count match does not enumerate alternate paths or prove unconstrained endpoints covered"
+      }
+    },
+    "report_commands": [
+      {
+        "line": 88,
+        "text": "report_timing -setup -max_paths 5000 -max_common_paths 1"
+      },
+      {
+        "line": 5093,
+        "text": "report_timing -hold -max_paths 5000 -max_common_paths 1"
+      },
+      {
+        "line": 10098,
+        "text": "report_timing -recovery -max_paths 5000 -max_common_paths 1"
+      },
+      {
+        "line": 15103,
+        "text": "report_timing -removal -max_paths 5000 -max_common_paths 1"
+      },
+      {
+        "line": 20108,
+        "text": "report_min_pulse_width -nworst 5000 -detail"
+      },
+      {
+        "line": 25114,
+        "text": "report_timing -setup -max_paths 5000 -max_common_paths 1"
+      },
+      {
+        "line": 367462,
+        "text": "report_timing -hold -max_paths 5000 -max_common_paths 1"
+      },
+      {
+        "line": 586084,
+        "text": "report_timing -recovery -max_paths 5000 -max_common_paths 1"
+      },
+      {
+        "line": 811618,
+        "text": "report_timing -removal -max_paths 5000 -max_common_paths 1"
+      },
+      {
+        "line": 1040936,
+        "text": "report_min_pulse_width -nworst 5000 -detail"
+      },
+      {
+        "line": 1175939,
+        "text": "report_high_fanout_nets -max_nets 100 -slr"
+      },
+      {
+        "line": 1176044,
+        "text": "report_route_congestion -max_grids 100"
+      },
+      {
+        "line": 1176150,
+        "text": "report_exceptions -setup -max_paths 5 -max_common_paths 1"
+      },
+      {
+        "line": 1177322,
+        "text": "report_exceptions -hold -max_paths 5 -max_common_paths 1"
+      },
+      {
+        "line": 1177326,
+        "text": "report_exceptions -recovery -max_paths 5 -max_common_paths 1"
+      },
+      {
+        "line": 1177406,
+        "text": "report_exceptions -removal -max_paths 5 -max_common_paths 1"
+      }
+    ],
+    "violated_endpoints_outside_same_clock_summary": {
+      "setup": 0,
+      "hold": 0,
+      "recovery": null,
+      "removal": null
+    },
+    "external_reset_assertion_pulse": {
+      "verified": false,
+      "status": "not_measured_by_clock_MPW",
+      "reason": "High/low clock pulse rows do not measure external key/reset pulse duration or asynchronous reset assertion and release at every destination"
+    },
+    "same_clock_summary_excludes_cross_clock_paths": true
+  },
+  "effective52": {
+    "verified": true,
+    "required_count": 52,
+    "Actived_count": 52,
+    "unexpected_SDC_exception_commands": [],
+    "expected_missing_from_SDC": []
+  },
+  "clock_MPW": {
+    "table_present": true,
+    "commands": [
+      "report_min_pulse_width -nworst 5000 -detail",
+      "report_min_pulse_width -nworst 5000 -detail"
+    ],
+    "printed_rows": 5000,
+    "printed_negative_rows": 0,
+    "worst_printed_slack_ns": 2.2,
+    "all_clock_endpoints_covered": false
+  },
+  "routing_report_presence": {
+    "congestion_title_present": true,
+    "congestion_rows": 100,
+    "high_fanout_title_present": true,
+    "high_fanout_rows": 100,
+    "commands": [
+      "report_high_fanout_nets -max_nets 100 -slr",
+      "report_route_congestion -max_grids 100"
+    ],
+    "failed_net_identities_or_complete_congestion_coverage_proved": false
+  },
+  "failed_endpoint_classification": {
+    "recorded_at": "2026-10-26T22:14:23.508955+08:00",
+    "complete": true,
+    "read_only": true,
+    "VO_loaded": false,
+    "EDA_started": false,
+    "actual_negative_setup_paths": 3565,
+    "actual_unique_negative_setup_endpoints": 3565,
+    "matches_global_summary": true,
+    "classification_method": "Longest explicit printed endpoint hierarchy prefix; no inferred semantic aliases",
+    "counts_by_actual_top": {
+      "u_control": 957,
+      "u_nav": 2576,
+      "u_soc": 32
+    },
+    "classes": [
+      {
+        "category": "control_ring_prefetch_word",
+        "negative_unique_endpoints": 24,
+        "worst_slack_ns": -10.963,
+        "worst_path_number": 1,
+        "worst_table_row": {
+          "number": 1,
+          "slack_text": "-10.963",
+          "from_node": "u_control/model_thread/policy/load_index_1_s5/Q",
+          "to_node": "u_control/model_thread/policy/snapshot_word_3_s0/D",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "-0.044",
+          "data_delay_ns": "30.949",
+          "slack_ns": -10.963,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 10.231,
+            "percent": 33.057
+          },
+          "route": {
+            "delay_ns": 20.374,
+            "percent": 65.83
+          },
+          "tC2Q": {
+            "delay_ns": 0.344,
+            "percent": 1.112
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 25.99,
+            "delay_ns": 6.714,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 2,
+            "location": "R63C148[0][A]",
+            "node": "u_control/model_thread/observation/g_ring.read_address_0_s91/I1"
+          },
+          {
+            "arrival_ns": 15.497,
+            "delay_ns": 6.328,
+            "type": "tNET",
+            "transition": "FF",
+            "fanout": 24,
+            "location": "DSP_R55[0][B]",
+            "node": "u_control/model_thread/observation/n22100_s/A[0]"
+          },
+          {
+            "arrival_ns": 27.957,
+            "delay_ns": 1.205,
+            "type": "tNET",
+            "transition": "FF",
+            "fanout": 4,
+            "location": "R54C139",
+            "node": "u_control/model_thread/observation/g_ring.frame_mem_g_ring.frame_mem_2_0_s/RAD[1]"
+          },
+          {
+            "arrival_ns": 8.882,
+            "delay_ns": 0.893,
+            "type": "tNET",
+            "transition": "FF",
+            "fanout": 1,
+            "location": "R56C139[3][A]",
+            "node": "u_control/model_thread/observation/g_ring.segment_0_s1/I0"
+          },
+          {
+            "arrival_ns": 6.582,
+            "delay_ns": 0.654,
+            "type": "tNET",
+            "transition": "FF",
+            "fanout": 1,
+            "location": "R68C149[1][A]",
+            "node": "u_control/model_thread/observation/g_ring.segment_0_s4/I1"
+          }
+        ],
+        "representative_reported_logic_level": 21
+      },
+      {
+        "category": "NAV_lidar_frame_RX",
+        "negative_unique_endpoints": 221,
+        "worst_slack_ns": -9.962,
+        "worst_path_number": 24,
+        "worst_table_row": {
+          "number": 24,
+          "slack_text": "-9.962",
+          "from_node": "u_nav/a_q_7_s0/Q",
+          "to_node": "u_nav/u_xt/u_fb/g_bank[7].mem_g_bank[7].mem_0_0_s/CEB",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "-0.000",
+          "data_delay_ns": "29.880",
+          "slack_ns": -9.962,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 5.925,
+            "percent": 19.831
+          },
+          "route": {
+            "delay_ns": 23.61,
+            "percent": 79.017
+          },
+          "tC2Q": {
+            "delay_ns": 0.344,
+            "percent": 1.152
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 7.216,
+            "delay_ns": 2.925,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R8C53[0][A]",
+            "node": "u_nav/u_rf/n16388_s4/I2"
+          },
+          {
+            "arrival_ns": 16.102,
+            "delay_ns": 2.475,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R42C23[3][B]",
+            "node": "u_nav/g_support.u_support/n5303_s3/I1"
+          },
+          {
+            "arrival_ns": 24.424,
+            "delay_ns": 2.289,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R13C25[1][B]",
+            "node": "u_nav/u_pp/x_ready_s/I0"
+          },
+          {
+            "arrival_ns": 12.08,
+            "delay_ns": 2.285,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R60C68[3][A]",
+            "node": "u_nav/u_match/n5682_s14/I0"
+          },
+          {
+            "arrival_ns": 27.059,
+            "delay_ns": 2.178,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R51C20[1][A]",
+            "node": "u_nav/u_xt/u_ob/rd_issue_s0/I0"
+          }
+        ],
+        "representative_reported_logic_level": 15
+      },
+      {
+        "category": "NAV_elevation_map",
+        "negative_unique_endpoints": 569,
+        "worst_slack_ns": -8.413,
+        "worst_path_number": 54,
+        "worst_table_row": {
+          "number": 54,
+          "slack_text": "-8.413",
+          "from_node": "u_nav/a_q_7_s0/Q",
+          "to_node": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s/CEB",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "-0.009",
+          "data_delay_ns": "28.340",
+          "slack_ns": -8.413,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 4.725,
+            "percent": 16.673
+          },
+          "route": {
+            "delay_ns": 23.271,
+            "percent": 82.113
+          },
+          "tC2Q": {
+            "delay_ns": 0.344,
+            "percent": 1.215
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 32.286,
+            "delay_ns": 4.905,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "BSRAM_R28[12][A]",
+            "node": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s/CEB"
+          },
+          {
+            "arrival_ns": 24.076,
+            "delay_ns": 3.15,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R69C45[3][A]",
+            "node": "u_nav/u_map/u_em/ram_re_s0/I0"
+          },
+          {
+            "arrival_ns": 7.216,
+            "delay_ns": 2.925,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R8C53[0][A]",
+            "node": "u_nav/u_rf/n16388_s4/I2"
+          },
+          {
+            "arrival_ns": 16.102,
+            "delay_ns": 2.475,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R42C23[3][B]",
+            "node": "u_nav/g_support.u_support/n5303_s3/I1"
+          },
+          {
+            "arrival_ns": 12.08,
+            "delay_ns": 2.285,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R60C68[3][A]",
+            "node": "u_nav/u_match/n5682_s14/I0"
+          }
+        ],
+        "representative_reported_logic_level": 13
+      },
+      {
+        "category": "NAV_match_extract",
+        "negative_unique_endpoints": 366,
+        "worst_slack_ns": -8.211,
+        "worst_path_number": 65,
+        "worst_table_row": {
+          "number": 65,
+          "slack_text": "-8.211",
+          "from_node": "u_nav/a_q_7_s0/Q",
+          "to_node": "u_nav/u_match/u_ex/z1_1_s0/CE",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "-0.013",
+          "data_delay_ns": "27.944",
+          "slack_ns": -8.211,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 4.866,
+            "percent": 17.412
+          },
+          "route": {
+            "delay_ns": 22.734,
+            "percent": 81.356
+          },
+          "tC2Q": {
+            "delay_ns": 0.344,
+            "percent": 1.232
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 31.89,
+            "delay_ns": 4.094,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R44C73[1][B]",
+            "node": "u_nav/u_match/u_ex/z1_1_s0/CE"
+          },
+          {
+            "arrival_ns": 7.216,
+            "delay_ns": 2.925,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R8C53[0][A]",
+            "node": "u_nav/u_rf/n16388_s4/I2"
+          },
+          {
+            "arrival_ns": 26.348,
+            "delay_ns": 2.572,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R16C83[1][B]",
+            "node": "u_nav/u_match/u_ex/n512_s1/I3"
+          },
+          {
+            "arrival_ns": 16.102,
+            "delay_ns": 2.475,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R42C23[3][B]",
+            "node": "u_nav/g_support.u_support/n5303_s3/I1"
+          },
+          {
+            "arrival_ns": 12.08,
+            "delay_ns": 2.285,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R60C68[3][A]",
+            "node": "u_nav/u_match/n5682_s14/I0"
+          }
+        ],
+        "representative_reported_logic_level": 13
+      },
+      {
+        "category": "NAV_match_other",
+        "negative_unique_endpoints": 67,
+        "worst_slack_ns": -7.274,
+        "worst_path_number": 133,
+        "worst_table_row": {
+          "number": 133,
+          "slack_text": "-7.274",
+          "from_node": "u_nav/a_q_7_s0/Q",
+          "to_node": "u_nav/u_match/nsnap_10_s0/CE",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "0.013",
+          "data_delay_ns": "26.981",
+          "slack_ns": -7.274,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 6.163,
+            "percent": 22.841
+          },
+          "route": {
+            "delay_ns": 20.474,
+            "percent": 75.883
+          },
+          "tC2Q": {
+            "delay_ns": 0.344,
+            "percent": 1.276
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 7.216,
+            "delay_ns": 2.925,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R8C53[0][A]",
+            "node": "u_nav/u_rf/n16388_s4/I2"
+          },
+          {
+            "arrival_ns": 16.102,
+            "delay_ns": 2.475,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R42C23[3][B]",
+            "node": "u_nav/g_support.u_support/n5303_s3/I1"
+          },
+          {
+            "arrival_ns": 12.08,
+            "delay_ns": 2.285,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R60C68[3][A]",
+            "node": "u_nav/u_match/n5682_s14/I0"
+          },
+          {
+            "arrival_ns": 20.354,
+            "delay_ns": 2.125,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R58C36[3][B]",
+            "node": "u_nav/u_pf/pt_ready_s0/I2"
+          },
+          {
+            "arrival_ns": 30.927,
+            "delay_ns": 2.115,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R56C97[3][A]",
+            "node": "u_nav/u_match/nsnap_10_s0/CE"
+          }
+        ],
+        "representative_reported_logic_level": 16
+      },
+      {
+        "category": "control_right_PID",
+        "negative_unique_endpoints": 362,
+        "worst_slack_ns": -7.211,
+        "worst_path_number": 146,
+        "worst_table_row": {
+          "number": 146,
+          "slack_text": "-7.211",
+          "from_node": "u_control/remote_thread/gowin_replicate_reg_ir_emergency_stop_2/Q",
+          "to_node": "u_control/wheel_control/right_control/ramped_target_mmps_0_s0/CE",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "0.044",
+          "data_delay_ns": "26.887",
+          "slack_ns": -7.211,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 8.661,
+            "percent": 32.213
+          },
+          "route": {
+            "delay_ns": 17.882,
+            "percent": 66.506
+          },
+          "tC2Q": {
+            "delay_ns": 0.344,
+            "percent": 1.28
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 14.008,
+            "delay_ns": 5.186,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R9C164[1][A]",
+            "node": "u_control/wheel_control/right_control/n1321_s8/I1"
+          },
+          {
+            "arrival_ns": 30.2,
+            "delay_ns": 3.103,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R8C164[0][B]",
+            "node": "u_control/wheel_control/right_control/ramped_target_mmps_0_s2/I3"
+          },
+          {
+            "arrival_ns": 7.33,
+            "delay_ns": 3.078,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R59C127[3][B]",
+            "node": "u_control/telemetry_thread/n1726_s9/I0"
+          },
+          {
+            "arrival_ns": 23.289,
+            "delay_ns": 1.794,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R11C168[1][B]",
+            "node": "u_control/wheel_control/right_control/ramped_target_mmps_31_s51/I1"
+          },
+          {
+            "arrival_ns": 21.235,
+            "delay_ns": 0.815,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R6C165[1][B]",
+            "node": "u_control/wheel_control/right_control/next_reference_4_s0/I2"
+          }
+        ],
+        "representative_reported_logic_level": 20
+      },
+      {
+        "category": "control_left_PID",
+        "negative_unique_endpoints": 381,
+        "worst_slack_ns": -6.221,
+        "worst_path_number": 298,
+        "worst_table_row": {
+          "number": 298,
+          "slack_text": "-6.221",
+          "from_node": "u_control/remote_thread/gowin_replicate_reg_ir_emergency_stop_2/Q",
+          "to_node": "u_control/wheel_control/left_control/gowin_replicate_reg_state[2]_2/CE",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "0.037",
+          "data_delay_ns": "25.904",
+          "slack_ns": -6.221,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 8.625,
+            "percent": 33.298
+          },
+          "route": {
+            "delay_ns": 16.934,
+            "percent": 65.373
+          },
+          "tC2Q": {
+            "delay_ns": 0.344,
+            "percent": 1.329
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 15.983,
+            "delay_ns": 3.968,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R7C149[1][B]",
+            "node": "u_control/wheel_control/left_control/next_reference_6_s5/I2"
+          },
+          {
+            "arrival_ns": 7.33,
+            "delay_ns": 3.078,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R59C127[3][B]",
+            "node": "u_control/telemetry_thread/n1726_s9/I0"
+          },
+          {
+            "arrival_ns": 11.503,
+            "delay_ns": 2.682,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R27C127[0][A]",
+            "node": "u_control/wheel_control/left_control/n1321_s9/I1"
+          },
+          {
+            "arrival_ns": 28.344,
+            "delay_ns": 1.654,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R24C151[2][A]",
+            "node": "u_control/wheel_control/left_control/state_0_s4/I0"
+          },
+          {
+            "arrival_ns": 29.811,
+            "delay_ns": 0.946,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R21C155[1][A]",
+            "node": "u_control/wheel_control/left_control/gowin_replicate_reg_state[2]_2/CE"
+          }
+        ],
+        "representative_reported_logic_level": 20
+      },
+      {
+        "category": "NAV_point_top_counters",
+        "negative_unique_endpoints": 69,
+        "worst_slack_ns": -6.057,
+        "worst_path_number": 338,
+        "worst_table_row": {
+          "number": 338,
+          "slack_text": "-6.057",
+          "from_node": "u_nav/a_q_7_s0/Q",
+          "to_node": "u_nav/pt_cnt_28_s0/CE",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "0.065",
+          "data_delay_ns": "25.712",
+          "slack_ns": -6.057,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 3.908,
+            "percent": 15.2
+          },
+          "route": {
+            "delay_ns": 21.459,
+            "percent": 83.461
+          },
+          "tC2Q": {
+            "delay_ns": 0.344,
+            "percent": 1.339
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 29.658,
+            "delay_ns": 3.789,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R30C95[0][A]",
+            "node": "u_nav/pt_cnt_28_s0/CE"
+          },
+          {
+            "arrival_ns": 25.459,
+            "delay_ns": 3.324,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R26C67[3][A]",
+            "node": "u_nav/n6514_s0/I1"
+          },
+          {
+            "arrival_ns": 7.216,
+            "delay_ns": 2.925,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R8C53[0][A]",
+            "node": "u_nav/u_rf/n16388_s4/I2"
+          },
+          {
+            "arrival_ns": 16.102,
+            "delay_ns": 2.475,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R42C23[3][B]",
+            "node": "u_nav/g_support.u_support/n5303_s3/I1"
+          },
+          {
+            "arrival_ns": 12.08,
+            "delay_ns": 2.285,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R60C68[3][A]",
+            "node": "u_nav/u_match/n5682_s14/I0"
+          }
+        ],
+        "representative_reported_logic_level": 11
+      },
+      {
+        "category": "NAV_map_other",
+        "negative_unique_endpoints": 99,
+        "worst_slack_ns": -6.008,
+        "worst_path_number": 351,
+        "worst_table_row": {
+          "number": 351,
+          "slack_text": "-6.008",
+          "from_node": "u_nav/a_q_7_s0/Q",
+          "to_node": "u_nav/u_map/sw_cy_10_s0/CE",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "0.103",
+          "data_delay_ns": "25.625",
+          "slack_ns": -6.008,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 4.483,
+            "percent": 17.495
+          },
+          "route": {
+            "delay_ns": 20.798,
+            "percent": 81.162
+          },
+          "tC2Q": {
+            "delay_ns": 0.344,
+            "percent": 1.343
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 25.484,
+            "delay_ns": 3.724,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R40C41[2][B]",
+            "node": "u_nav/u_map/n1159_s1/I2"
+          },
+          {
+            "arrival_ns": 29.572,
+            "delay_ns": 3.07,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R65C27[2][A]",
+            "node": "u_nav/u_map/sw_cy_10_s0/CE"
+          },
+          {
+            "arrival_ns": 7.216,
+            "delay_ns": 2.925,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R8C53[0][A]",
+            "node": "u_nav/u_rf/n16388_s4/I2"
+          },
+          {
+            "arrival_ns": 16.102,
+            "delay_ns": 2.475,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R42C23[3][B]",
+            "node": "u_nav/g_support.u_support/n5303_s3/I1"
+          },
+          {
+            "arrival_ns": 12.08,
+            "delay_ns": 2.285,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R60C68[3][A]",
+            "node": "u_nav/u_match/n5682_s14/I0"
+          }
+        ],
+        "representative_reported_logic_level": 12
+      },
+      {
+        "category": "control_fusion",
+        "negative_unique_endpoints": 107,
+        "worst_slack_ns": -5.936,
+        "worst_path_number": 387,
+        "worst_table_row": {
+          "number": 387,
+          "slack_text": "-5.936",
+          "from_node": "u_control/sensor/gyro_y_3_s0/Q",
+          "to_node": "u_control/model_thread/fusion/mult_3469_s1/CE[0]",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "-0.056",
+          "data_delay_ns": "25.610",
+          "slack_ns": -5.936,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 10.169,
+            "percent": 39.706
+          },
+          "route": {
+            "delay_ns": 15.111,
+            "percent": 59.002
+          },
+          "tC2Q": {
+            "delay_ns": 0.331,
+            "percent": 1.291
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 29.511,
+            "delay_ns": 8.058,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "DSP_R55[23]",
+            "node": "u_control/model_thread/fusion/mult_3469_s1/CE[0]"
+          },
+          {
+            "arrival_ns": 6.773,
+            "delay_ns": 2.541,
+            "type": "tNET",
+            "transition": "FF",
+            "fanout": 1,
+            "location": "R35C155[0][A]",
+            "node": "u_control/model_thread/fusion/n1178_s2/I0"
+          },
+          {
+            "arrival_ns": 16.196,
+            "delay_ns": 0.835,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 2,
+            "location": "R41C164[1][A]",
+            "node": "u_control/model_thread/fusion/n5805_s0/I1"
+          },
+          {
+            "arrival_ns": 14.244,
+            "delay_ns": 0.583,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 2,
+            "location": "R41C157[1][A]",
+            "node": "u_control/model_thread/fusion/n5814_s/I1"
+          },
+          {
+            "arrival_ns": 12.536,
+            "delay_ns": 0.38,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R35C157[0][B]",
+            "node": "u_control/model_thread/fusion/n1168_s1/I1"
+          }
+        ],
+        "representative_reported_logic_level": 24
+      },
+      {
+        "category": "NAV_point_project",
+        "negative_unique_endpoints": 217,
+        "worst_slack_ns": -5.664,
+        "worst_path_number": 494,
+        "worst_table_row": {
+          "number": 494,
+          "slack_text": "-5.664",
+          "from_node": "u_nav/a_q_7_s0/Q",
+          "to_node": "u_nav/u_pp/n311_s/CE[0]",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "0.095",
+          "data_delay_ns": "25.187",
+          "slack_ns": -5.664,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 4.483,
+            "percent": 17.799
+          },
+          "route": {
+            "delay_ns": 20.36,
+            "percent": 80.834
+          },
+          "tC2Q": {
+            "delay_ns": 0.344,
+            "percent": 1.367
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 29.134,
+            "delay_ns": 3.948,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "DSP_R19[3]",
+            "node": "u_nav/u_pp/n311_s/CE[0]"
+          },
+          {
+            "arrival_ns": 7.216,
+            "delay_ns": 2.925,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R8C53[0][A]",
+            "node": "u_nav/u_rf/n16388_s4/I2"
+          },
+          {
+            "arrival_ns": 16.102,
+            "delay_ns": 2.475,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R42C23[3][B]",
+            "node": "u_nav/g_support.u_support/n5303_s3/I1"
+          },
+          {
+            "arrival_ns": 12.08,
+            "delay_ns": 2.285,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R60C68[3][A]",
+            "node": "u_nav/u_match/n5682_s14/I0"
+          },
+          {
+            "arrival_ns": 20.354,
+            "delay_ns": 2.125,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R58C36[3][B]",
+            "node": "u_nav/u_pf/pt_ready_s0/I2"
+          }
+        ],
+        "representative_reported_logic_level": 12
+      },
+      {
+        "category": "NAV_point_transform",
+        "negative_unique_endpoints": 548,
+        "worst_slack_ns": -5.168,
+        "worst_path_number": 781,
+        "worst_table_row": {
+          "number": 781,
+          "slack_text": "-5.168",
+          "from_node": "u_nav/a_q_7_s0/Q",
+          "to_node": "u_nav/u_pt/gowin_replicate_reg_pt_sof_1/CE",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "0.024",
+          "data_delay_ns": "24.864",
+          "slack_ns": -5.168,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 3.908,
+            "percent": 15.719
+          },
+          "route": {
+            "delay_ns": 20.611,
+            "percent": 82.897
+          },
+          "tC2Q": {
+            "delay_ns": 0.344,
+            "percent": 1.385
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 28.81,
+            "delay_ns": 4.071,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R49C62[3][A]",
+            "node": "u_nav/u_pt/gowin_replicate_reg_pt_sof_1/CE"
+          },
+          {
+            "arrival_ns": 7.216,
+            "delay_ns": 2.925,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R8C53[0][A]",
+            "node": "u_nav/u_rf/n16388_s4/I2"
+          },
+          {
+            "arrival_ns": 16.102,
+            "delay_ns": 2.475,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R42C23[3][B]",
+            "node": "u_nav/g_support.u_support/n5303_s3/I1"
+          },
+          {
+            "arrival_ns": 12.08,
+            "delay_ns": 2.285,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R60C68[3][A]",
+            "node": "u_nav/u_match/n5682_s14/I0"
+          },
+          {
+            "arrival_ns": 24.328,
+            "delay_ns": 2.194,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R29C29[3][B]",
+            "node": "u_nav/u_pt/n5285_s1/I1"
+          }
+        ],
+        "representative_reported_logic_level": 11
+      },
+      {
+        "category": "NAV_MMIO_readback",
+        "negative_unique_endpoints": 25,
+        "worst_slack_ns": -3.522,
+        "worst_path_number": 1593,
+        "worst_table_row": {
+          "number": 1593,
+          "slack_text": "-3.522",
+          "from_node": "u_nav/a_q_15_s0/Q",
+          "to_node": "u_nav/bus_rdata_0_s0/D",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "-0.012",
+          "data_delay_ns": "23.476",
+          "slack_ns": -3.522,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 4.846,
+            "percent": 20.644
+          },
+          "route": {
+            "delay_ns": 18.286,
+            "percent": 77.89
+          },
+          "tC2Q": {
+            "delay_ns": 0.344,
+            "percent": 1.466
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 9.747,
+            "delay_ns": 5.453,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R8C43[3][A]",
+            "node": "u_nav/n7472_s11/I2"
+          },
+          {
+            "arrival_ns": 16.881,
+            "delay_ns": 4.016,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R29C40[3][B]",
+            "node": "u_nav/n11098_s123/I3"
+          },
+          {
+            "arrival_ns": 21.352,
+            "delay_ns": 2.599,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R18C60[1][B]",
+            "node": "u_nav/n11098_s59/I1"
+          },
+          {
+            "arrival_ns": 12.354,
+            "delay_ns": 2.114,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R8C56[1][A]",
+            "node": "u_nav/u_rf/n18212_s2/I1"
+          },
+          {
+            "arrival_ns": 25.757,
+            "delay_ns": 1.058,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R20C70[3][A]",
+            "node": "u_nav/n11098_s145/I0"
+          }
+        ],
+        "representative_reported_logic_level": 11
+      },
+      {
+        "category": "control_observation_arithmetic",
+        "negative_unique_endpoints": 37,
+        "worst_slack_ns": -3.352,
+        "worst_path_number": 1738,
+        "worst_table_row": {
+          "number": 1738,
+          "slack_text": "-3.352",
+          "from_node": "u_control/model_thread/observation/gowin_replicate_reg_lane[0]_15/Q",
+          "to_node": "u_control/model_thread/observation/dividend_63_s0/D",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "0.013",
+          "data_delay_ns": "23.282",
+          "slack_ns": -3.352,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 9.675,
+            "percent": 41.556
+          },
+          "route": {
+            "delay_ns": 13.263,
+            "percent": 56.965
+          },
+          "tC2Q": {
+            "delay_ns": 0.344,
+            "percent": 1.479
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 7.617,
+            "delay_ns": 3.331,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R68C130[3][B]",
+            "node": "u_control/model_thread/observation/n5094_s73/I2"
+          },
+          {
+            "arrival_ns": 9.271,
+            "delay_ns": 1.172,
+            "type": "tNET",
+            "transition": "FF",
+            "fanout": 1,
+            "location": "R52C135[3][B]",
+            "node": "u_control/model_thread/observation/n5351_s2/I1"
+          },
+          {
+            "arrival_ns": 11.538,
+            "delay_ns": 1.167,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R52C126[0][A]",
+            "node": "u_control/model_thread/observation/n5338_s5/I1"
+          },
+          {
+            "arrival_ns": 24.961,
+            "delay_ns": 1.071,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 2,
+            "location": "R57C131[0][B]",
+            "node": "u_control/model_thread/observation/n5426_s/I1"
+          },
+          {
+            "arrival_ns": 20.899,
+            "delay_ns": 0.979,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R45C129[1][B]",
+            "node": "u_control/model_thread/observation/n5319_s11/I0"
+          }
+        ],
+        "representative_reported_logic_level": 23
+      },
+      {
+        "category": "NAV_support",
+        "negative_unique_endpoints": 17,
+        "worst_slack_ns": -3.239,
+        "worst_path_number": 1826,
+        "worst_table_row": {
+          "number": 1826,
+          "slack_text": "-3.239",
+          "from_node": "u_nav/a_q_7_s0/Q",
+          "to_node": "u_nav/g_support.u_support/u_ram/g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_0_s/CEB",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "0.105",
+          "data_delay_ns": "23.052",
+          "slack_ns": -3.239,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 4.817,
+            "percent": 20.897
+          },
+          "route": {
+            "delay_ns": 17.891,
+            "percent": 77.61
+          },
+          "tC2Q": {
+            "delay_ns": 0.344,
+            "percent": 1.493
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 7.216,
+            "delay_ns": 2.925,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R8C53[0][A]",
+            "node": "u_nav/u_rf/n16388_s4/I2"
+          },
+          {
+            "arrival_ns": 16.102,
+            "delay_ns": 2.475,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R42C23[3][B]",
+            "node": "u_nav/g_support.u_support/n5303_s3/I1"
+          },
+          {
+            "arrival_ns": 12.08,
+            "delay_ns": 2.285,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R60C68[3][A]",
+            "node": "u_nav/u_match/n5682_s14/I0"
+          },
+          {
+            "arrival_ns": 20.405,
+            "delay_ns": 2.177,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R58C36[1][B]",
+            "node": "u_nav/u_map/u_em/acc_s0/I1"
+          },
+          {
+            "arrival_ns": 22.87,
+            "delay_ns": 1.944,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R33C12[1][B]",
+            "node": "u_nav/g_support.u_support/acc_s0/I2"
+          }
+        ],
+        "representative_reported_logic_level": 13
+      },
+      {
+        "category": "NAV_point_filter",
+        "negative_unique_endpoints": 378,
+        "worst_slack_ns": -3.032,
+        "worst_path_number": 1979,
+        "worst_table_row": {
+          "number": 1979,
+          "slack_text": "-3.032",
+          "from_node": "u_nav/a_q_7_s0/Q",
+          "to_node": "u_nav/u_pf/gowin_replicate_reg_sof2_3/CE",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "-0.039",
+          "data_delay_ns": "22.791",
+          "slack_ns": -3.032,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 3.493,
+            "percent": 15.327
+          },
+          "route": {
+            "delay_ns": 18.954,
+            "percent": 83.163
+          },
+          "tC2Q": {
+            "delay_ns": 0.344,
+            "percent": 1.51
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 26.738,
+            "delay_ns": 4.464,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R74C48[0][B]",
+            "node": "u_nav/u_pf/gowin_replicate_reg_sof2_3/CE"
+          },
+          {
+            "arrival_ns": 7.216,
+            "delay_ns": 2.925,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R8C53[0][A]",
+            "node": "u_nav/u_rf/n16388_s4/I2"
+          },
+          {
+            "arrival_ns": 16.102,
+            "delay_ns": 2.475,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R42C23[3][B]",
+            "node": "u_nav/g_support.u_support/n5303_s3/I1"
+          },
+          {
+            "arrival_ns": 12.08,
+            "delay_ns": 2.285,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R60C68[3][A]",
+            "node": "u_nav/u_match/n5682_s14/I0"
+          },
+          {
+            "arrival_ns": 20.354,
+            "delay_ns": 2.125,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R58C36[3][B]",
+            "node": "u_nav/u_pf/pt_ready_s0/I2"
+          }
+        ],
+        "representative_reported_logic_level": 10
+      },
+      {
+        "category": "control_action_map",
+        "negative_unique_endpoints": 21,
+        "worst_slack_ns": -2.558,
+        "worst_path_number": 2366,
+        "worst_table_row": {
+          "number": 2366,
+          "slack_text": "-2.558",
+          "from_node": "u_control/model_thread/policy/actions_39_s1/Q",
+          "to_node": "u_control/model_thread/actuator_map/lk_us_6_s0/D",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "-0.040",
+          "data_delay_ns": "22.541",
+          "slack_ns": -2.558,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 12.248,
+            "percent": 54.334
+          },
+          "route": {
+            "delay_ns": 9.95,
+            "percent": 44.139
+          },
+          "tC2Q": {
+            "delay_ns": 0.344,
+            "percent": 1.527
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 9.431,
+            "delay_ns": 1.479,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 89,
+            "location": "DSP_R91[45]",
+            "node": "u_control/model_thread/actuator_map/n1760_s/A[8]"
+          },
+          {
+            "arrival_ns": 12.939,
+            "delay_ns": 1.464,
+            "type": "tNET",
+            "transition": "FF",
+            "fanout": 1,
+            "location": "R83C128[0][B]",
+            "node": "u_control/model_thread/actuator_map/n2188_s2/I2"
+          },
+          {
+            "arrival_ns": 7.431,
+            "delay_ns": 1.072,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R72C135[0][B]",
+            "node": "u_control/model_thread/actuator_map/n1722_s3/I1"
+          },
+          {
+            "arrival_ns": 25.891,
+            "delay_ns": 1.039,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R72C128[2][B]",
+            "node": "u_control/model_thread/actuator_map/n2315_s1/I1"
+          },
+          {
+            "arrival_ns": 5.186,
+            "delay_ns": 0.971,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R75C140[2][B]",
+            "node": "u_control/model_thread/actuator_map/n1714_s9/I1"
+          }
+        ],
+        "representative_reported_logic_level": 24
+      },
+      {
+        "category": "NAV_CPU",
+        "negative_unique_endpoints": 32,
+        "worst_slack_ns": -1.159,
+        "worst_path_number": 3130,
+        "worst_table_row": {
+          "number": 3130,
+          "slack_text": "-1.159",
+          "from_node": "u_soc/g_lane[2].u_ram/mem_ADREG_G[14]_s/Q",
+          "to_node": "u_soc/u_cpu/mem_rdata_q_9_s1/CE",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "-0.051",
+          "data_delay_ns": "20.931",
+          "slack_ns": -1.159,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 4.304,
+            "percent": 20.564
+          },
+          "route": {
+            "delay_ns": 16.282,
+            "percent": 77.791
+          },
+          "tC2Q": {
+            "delay_ns": 0.344,
+            "percent": 1.645
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 7.941,
+            "delay_ns": 3.776,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R84C100[1][A]",
+            "node": "u_soc/g_lane[2].u_ram/mem_DOL_0G[0]_s0/I2"
+          },
+          {
+            "arrival_ns": 11.888,
+            "delay_ns": 3.437,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R103C150[1][B]",
+            "node": "u_soc/mem_rdata_16_s0/I1"
+          },
+          {
+            "arrival_ns": 17.184,
+            "delay_ns": 1.787,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R97C159[2][B]",
+            "node": "u_soc/u_cpu/n4054_s4/I3"
+          },
+          {
+            "arrival_ns": 19.198,
+            "delay_ns": 1.494,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R99C147[3][B]",
+            "node": "u_soc/u_cpu/n3977_s1/I1"
+          },
+          {
+            "arrival_ns": 23.317,
+            "delay_ns": 1.351,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R97C170[1][B]",
+            "node": "u_soc/u_cpu/mem_rdata_q_11_s7/I2"
+          }
+        ],
+        "representative_reported_logic_level": 11
+      },
+      {
+        "category": "control_ring_storage",
+        "negative_unique_endpoints": 25,
+        "worst_slack_ns": -0.729,
+        "worst_path_number": 3265,
+        "worst_table_row": {
+          "number": 3265,
+          "slack_text": "-0.729",
+          "from_node": "u_control/model_thread/observation/numerators[26]_13_s0/Q",
+          "to_node": "u_control/model_thread/observation/g_ring.frame_mem_g_ring.frame_mem_0_2_s/DI[0]",
+          "from_clock": "clk50:[R]",
+          "to_clock": "clk50:[R]",
+          "relation_ns": "20.000",
+          "clock_skew_ns": "0.078",
+          "data_delay_ns": "20.651",
+          "slack_ns": -0.729,
+          "printed_negative_slack": true
+        },
+        "representative_vendor_cell_route_statistics": {
+          "cell": {
+            "delay_ns": 9.214,
+            "percent": 44.617
+          },
+          "route": {
+            "delay_ns": 11.093,
+            "percent": 53.716
+          },
+          "tC2Q": {
+            "delay_ns": 0.344,
+            "percent": 1.667
+          }
+        },
+        "representative_largest_route_segments": [
+          {
+            "arrival_ns": 8.227,
+            "delay_ns": 3.982,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R36C128[0][B]",
+            "node": "u_control/model_thread/observation/n5050_s73/I0"
+          },
+          {
+            "arrival_ns": 24.552,
+            "delay_ns": 2.574,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R68C150",
+            "node": "u_control/model_thread/observation/g_ring.frame_mem_g_ring.frame_mem_0_2_s/DI[0]"
+          },
+          {
+            "arrival_ns": 21.457,
+            "delay_ns": 1.293,
+            "type": "tNET",
+            "transition": "FF",
+            "fanout": 1,
+            "location": "R65C134[0][A]",
+            "node": "u_control/model_thread/observation/n22025_s1/I0"
+          },
+          {
+            "arrival_ns": 10.395,
+            "delay_ns": 0.532,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R45C128[1][B]",
+            "node": "u_control/model_thread/observation/n5305_s1/I1"
+          },
+          {
+            "arrival_ns": 19.877,
+            "delay_ns": 0.46,
+            "type": "tNET",
+            "transition": "RR",
+            "fanout": 1,
+            "location": "R47C131[3][B]",
+            "node": "u_control/model_thread/observation/n22010_s2/I1"
+          }
+        ],
+        "representative_reported_logic_level": 21
+      }
+    ],
+    "physical_timing_failure_is_not_control_only": true,
+    "NAV_50MHz_setup_clean": false,
+    "worst_path": {
+      "summary": {
+        "Slack": "-10.963",
+        "Data Arrival Time": "34.789",
+        "Data Required Time": "23.826",
+        "From": "u_control/model_thread/policy/load_index_1_s5",
+        "To": "u_control/model_thread/policy/snapshot_word_3_s0",
+        "Launch Clk": "clk50:[R]",
+        "Latch Clk": "clk50:[R]"
+      },
+      "reported_logic_level": 21,
+      "vendor_data_statistics": {
+        "cell": {
+          "delay_ns": 10.231,
+          "percent": 33.057
+        },
+        "route": {
+          "delay_ns": 20.374,
+          "percent": 65.83
+        },
+        "tC2Q": {
+          "delay_ns": 0.344,
+          "percent": 1.112
+        }
+      },
+      "actual_data_rows": [
+        {
+          "arrival_ns": 4.184,
+          "delay_ns": 0.344,
+          "type": "tC2Q",
+          "transition": "RR",
+          "fanout": 7,
+          "location": "R71C155[0][A]",
+          "node": "u_control/model_thread/policy/load_index_1_s5/Q"
+        },
+        {
+          "arrival_ns": 4.535,
+          "delay_ns": 0.351,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R71C154[2][B]",
+          "node": "u_control/model_thread/policy/observation_read_index_4_s1/I3"
+        },
+        {
+          "arrival_ns": 5.046,
+          "delay_ns": 0.511,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 5,
+          "location": "R71C154[2][B]",
+          "node": "u_control/model_thread/policy/observation_read_index_4_s1/F"
+        },
+        {
+          "arrival_ns": 5.377,
+          "delay_ns": 0.331,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R70C154[1][A]",
+          "node": "u_control/model_thread/policy/n3057_s4/I0"
+        },
+        {
+          "arrival_ns": 5.637,
+          "delay_ns": 0.26,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 2,
+          "location": "R70C154[1][A]",
+          "node": "u_control/model_thread/policy/n3057_s4/F"
+        },
+        {
+          "arrival_ns": 5.641,
+          "delay_ns": 0.005,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R70C154[3][A]",
+          "node": "u_control/model_thread/policy/observation_read_index_6_s0/I3"
+        },
+        {
+          "arrival_ns": 5.928,
+          "delay_ns": 0.287,
+          "type": "tINS",
+          "transition": "RF",
+          "fanout": 8,
+          "location": "R70C154[3][A]",
+          "node": "u_control/model_thread/policy/observation_read_index_6_s0/F"
+        },
+        {
+          "arrival_ns": 6.582,
+          "delay_ns": 0.654,
+          "type": "tNET",
+          "transition": "FF",
+          "fanout": 1,
+          "location": "R68C149[1][A]",
+          "node": "u_control/model_thread/observation/g_ring.segment_0_s4/I1"
+        },
+        {
+          "arrival_ns": 7.103,
+          "delay_ns": 0.521,
+          "type": "tINS",
+          "transition": "FR",
+          "fanout": 1,
+          "location": "R68C149[1][A]",
+          "node": "u_control/model_thread/observation/g_ring.segment_0_s4/F"
+        },
+        {
+          "arrival_ns": 7.702,
+          "delay_ns": 0.6,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R66C145[3][B]",
+          "node": "u_control/model_thread/observation/g_ring.segment_0_s2/I3"
+        },
+        {
+          "arrival_ns": 7.989,
+          "delay_ns": 0.287,
+          "type": "tINS",
+          "transition": "RF",
+          "fanout": 8,
+          "location": "R66C145[3][B]",
+          "node": "u_control/model_thread/observation/g_ring.segment_0_s2/F"
+        },
+        {
+          "arrival_ns": 8.882,
+          "delay_ns": 0.893,
+          "type": "tNET",
+          "transition": "FF",
+          "fanout": 1,
+          "location": "R56C139[3][A]",
+          "node": "u_control/model_thread/observation/g_ring.segment_0_s1/I0"
+        },
+        {
+          "arrival_ns": 9.169,
+          "delay_ns": 0.287,
+          "type": "tINS",
+          "transition": "FF",
+          "fanout": 1,
+          "location": "R56C139[3][A]",
+          "node": "u_control/model_thread/observation/g_ring.segment_0_s1/F"
+        },
+        {
+          "arrival_ns": 15.497,
+          "delay_ns": 6.328,
+          "type": "tNET",
+          "transition": "FF",
+          "fanout": 24,
+          "location": "DSP_R55[0][B]",
+          "node": "u_control/model_thread/observation/n22100_s/A[0]"
+        },
+        {
+          "arrival_ns": 19.276,
+          "delay_ns": 3.779,
+          "type": "tINS",
+          "transition": "FR",
+          "fanout": 1,
+          "location": "DSP_R55[0][B]",
+          "node": "u_control/model_thread/observation/n22100_s/DOUT[0]"
+        },
+        {
+          "arrival_ns": 25.99,
+          "delay_ns": 6.714,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 2,
+          "location": "R63C148[0][A]",
+          "node": "u_control/model_thread/observation/g_ring.read_address_0_s91/I1"
+        },
+        {
+          "arrival_ns": 26.481,
+          "delay_ns": 0.49,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R63C148[0][A]",
+          "node": "u_control/model_thread/observation/g_ring.read_address_0_s91/COUT"
+        },
+        {
+          "arrival_ns": 26.481,
+          "delay_ns": 0.0,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 2,
+          "location": "R63C148[0][B]",
+          "node": "u_control/model_thread/observation/g_ring.read_address_1_s1/CIN"
+        },
+        {
+          "arrival_ns": 26.752,
+          "delay_ns": 0.271,
+          "type": "tINS",
+          "transition": "RF",
+          "fanout": 66,
+          "location": "R63C148[0][B]",
+          "node": "u_control/model_thread/observation/g_ring.read_address_1_s1/SUM"
+        },
+        {
+          "arrival_ns": 27.957,
+          "delay_ns": 1.205,
+          "type": "tNET",
+          "transition": "FF",
+          "fanout": 4,
+          "location": "R54C139",
+          "node": "u_control/model_thread/observation/g_ring.frame_mem_g_ring.frame_mem_2_0_s/RAD[1]"
+        },
+        {
+          "arrival_ns": 28.468,
+          "delay_ns": 0.511,
+          "type": "tINS",
+          "transition": "FR",
+          "fanout": 1,
+          "location": "R54C139",
+          "node": "u_control/model_thread/observation/g_ring.frame_mem_g_ring.frame_mem_2_0_s/DO[3]"
+        },
+        {
+          "arrival_ns": 28.658,
+          "delay_ns": 0.19,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R54C141[0][A]",
+          "node": "u_control/model_thread/observation/observation_read_data_3_s8/I0"
+        },
+        {
+          "arrival_ns": 29.168,
+          "delay_ns": 0.511,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R54C141[0][A]",
+          "node": "u_control/model_thread/observation/observation_read_data_3_s8/F"
+        },
+        {
+          "arrival_ns": 29.324,
+          "delay_ns": 0.155,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R54C141[0][B]",
+          "node": "u_control/model_thread/observation/observation_read_data_3_s6/I2"
+        },
+        {
+          "arrival_ns": 29.584,
+          "delay_ns": 0.26,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R54C141[0][B]",
+          "node": "u_control/model_thread/observation/observation_read_data_3_s6/F"
+        },
+        {
+          "arrival_ns": 30.196,
+          "delay_ns": 0.612,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R59C141[3][B]",
+          "node": "u_control/model_thread/observation/observation_read_data_3_s3/I1"
+        },
+        {
+          "arrival_ns": 30.606,
+          "delay_ns": 0.411,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R59C141[3][B]",
+          "node": "u_control/model_thread/observation/observation_read_data_3_s3/F"
+        },
+        {
+          "arrival_ns": 30.949,
+          "delay_ns": 0.343,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R60C142[1][A]",
+          "node": "u_control/model_thread/observation/observation_read_data_3_s0/I2"
+        },
+        {
+          "arrival_ns": 31.209,
+          "delay_ns": 0.26,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 2,
+          "location": "R60C142[1][A]",
+          "node": "u_control/model_thread/observation/observation_read_data_3_s0/F"
+        },
+        {
+          "arrival_ns": 31.809,
+          "delay_ns": 0.6,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R66C143[3][A]",
+          "node": "u_control/model_thread/observation/observation_read_data_14_s25/I1"
+        },
+        {
+          "arrival_ns": 32.096,
+          "delay_ns": 0.287,
+          "type": "tINS",
+          "transition": "RF",
+          "fanout": 1,
+          "location": "R66C143[3][A]",
+          "node": "u_control/model_thread/observation/observation_read_data_14_s25/F"
+        },
+        {
+          "arrival_ns": 32.417,
+          "delay_ns": 0.322,
+          "type": "tNET",
+          "transition": "FF",
+          "fanout": 1,
+          "location": "R67C144[1][A]",
+          "node": "u_control/model_thread/observation/observation_read_data_14_s20/I2"
+        },
+        {
+          "arrival_ns": 32.677,
+          "delay_ns": 0.26,
+          "type": "tINS",
+          "transition": "FR",
+          "fanout": 1,
+          "location": "R67C144[1][A]",
+          "node": "u_control/model_thread/observation/observation_read_data_14_s20/F"
+        },
+        {
+          "arrival_ns": 32.867,
+          "delay_ns": 0.19,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R68C144[0][B]",
+          "node": "u_control/model_thread/observation/observation_read_data_14_s10/I0"
+        },
+        {
+          "arrival_ns": 33.127,
+          "delay_ns": 0.26,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R68C144[0][B]",
+          "node": "u_control/model_thread/observation/observation_read_data_14_s10/F"
+        },
+        {
+          "arrival_ns": 33.263,
+          "delay_ns": 0.136,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R68C144[2][A]",
+          "node": "u_control/model_thread/observation/observation_read_data_14_s3/I1"
+        },
+        {
+          "arrival_ns": 33.523,
+          "delay_ns": 0.26,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 3,
+          "location": "R68C144[2][A]",
+          "node": "u_control/model_thread/observation/observation_read_data_14_s3/F"
+        },
+        {
+          "arrival_ns": 33.718,
+          "delay_ns": 0.195,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R69C144[2][B]",
+          "node": "u_control/model_thread/observation/observation_read_data_14_s0/I0"
+        },
+        {
+          "arrival_ns": 33.978,
+          "delay_ns": 0.26,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 15,
+          "location": "R69C144[2][B]",
+          "node": "u_control/model_thread/observation/observation_read_data_14_s0/F"
+        },
+        {
+          "arrival_ns": 34.529,
+          "delay_ns": 0.551,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R68C142[1][B]",
+          "node": "u_control/model_thread/observation/observation_read_data_3_s9/I1"
+        },
+        {
+          "arrival_ns": 34.789,
+          "delay_ns": 0.26,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R68C142[1][B]",
+          "node": "u_control/model_thread/observation/observation_read_data_3_s9/F"
+        },
+        {
+          "arrival_ns": 34.789,
+          "delay_ns": 0.0,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R68C142[1][B]",
+          "node": "u_control/model_thread/policy/snapshot_word_3_s0/D"
+        }
+      ],
+      "largest_data_route_segments": [
+        {
+          "arrival_ns": 25.99,
+          "delay_ns": 6.714,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 2,
+          "location": "R63C148[0][A]",
+          "node": "u_control/model_thread/observation/g_ring.read_address_0_s91/I1"
+        },
+        {
+          "arrival_ns": 15.497,
+          "delay_ns": 6.328,
+          "type": "tNET",
+          "transition": "FF",
+          "fanout": 24,
+          "location": "DSP_R55[0][B]",
+          "node": "u_control/model_thread/observation/n22100_s/A[0]"
+        },
+        {
+          "arrival_ns": 27.957,
+          "delay_ns": 1.205,
+          "type": "tNET",
+          "transition": "FF",
+          "fanout": 4,
+          "location": "R54C139",
+          "node": "u_control/model_thread/observation/g_ring.frame_mem_g_ring.frame_mem_2_0_s/RAD[1]"
+        },
+        {
+          "arrival_ns": 8.882,
+          "delay_ns": 0.893,
+          "type": "tNET",
+          "transition": "FF",
+          "fanout": 1,
+          "location": "R56C139[3][A]",
+          "node": "u_control/model_thread/observation/g_ring.segment_0_s1/I0"
+        },
+        {
+          "arrival_ns": 6.582,
+          "delay_ns": 0.654,
+          "type": "tNET",
+          "transition": "FF",
+          "fanout": 1,
+          "location": "R68C149[1][A]",
+          "node": "u_control/model_thread/observation/g_ring.segment_0_s4/I1"
+        }
+      ],
+      "data_gate_and_route_sums": {
+        "cell_ns": 10.233,
+        "route_ns": 20.375,
+        "C2Q_ns": 0.344
+      }
+    },
+    "worst_ring_path_stage_interpretation": [
+      "load_index -> policy read_index=load_index+1 (3actualLUTs)",
+      "read_index -> segment bound decode (3actualLUTs)",
+      "segment -> n22100_s.A has6.328ns route; same-named SYN43 primitive computes segment*28 with all regsBYPASS",
+      "DSP n22100_s intrinsic3.779ns; DOUT -> first read_addressALU has6.714ns route",
+      "Address ALU carry/SUM -> distributed RAM RAD -> DO",
+      "Four RAMbank-output-selection LUTs -> six current clip/output-selection LUTs -> snapshot_word"
+    ],
+    "implications": [
+      "H2 health/freeze decoupling alone does not remove this load_index/segment path",
+      "Timer/fusion-only changes cannot establish NAV50 closure: actual covered negative endpoints exist in NAV and CPU",
+      "Large two-way DSP travel is evidenced for this path; it does not uniquely explain all3565 endpoint failures or route congestion",
+      "No RTL candidate is generated before both layouts finish; use actual53/54 paths to choose one tested boundary/address hypothesis"
+    ],
+    "fraction_scope": "Cell/route fractions are exact vendor statistics for each class worst representative, not a class-wide mean",
+    "input_bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\PNR53_actual_timing_coverage_review1\\result.json",
+        "bytes": 1580807,
+        "mtime_ns": 1793023819272719000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\PNR53_actual_timing_coverage_review1\\printed_path_rows.json",
+        "bytes": 18836416,
+        "mtime_ns": 1793023819207210900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_place1_pnr53\\impl\\pnr\\g2_top.tr",
+        "bytes": 82329746,
+        "mtime_ns": 1793023682110143600
+      }
+    ],
+    "remaining": "Physical source/VO preservation, all clock/26 pins and memory/INIT audits are separate; zero hold and printed positive recovery/MPW do not establish reset/CDC/IO or deployment acceptance",
+    "deployment_accepted": false
+  },
+  "zero_failed_endpoint_categories_within_complete3565_set": [
+    "control_inference",
+    "control_policy_other",
+    "control_IK",
+    "NAV_traversability",
+    "control_other",
+    "NAV_other",
+    "SOC_other",
+    "other_top"
+  ],
+  "zero_category_scope": "Only the literal To-node hierarchy in the complete reported negative endpoint set; no separate IO/functional signoff",
+  "complete_raw_evidence": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\PNR53_actual_timing_coverage_review1\\result.json",
+      "bytes": 1580807,
+      "mtime_ns": 1793023819272719000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\PNR53_all_failed_endpoints_classification1\\result.json",
+      "bytes": 61842,
+      "mtime_ns": 1793024063512959300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\PNR53_actual_timing_coverage_review1\\printed_path_rows.json",
+      "bytes": 18836416,
+      "mtime_ns": 1793023819207210900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\PNR53_all_failed_endpoints_classification1\\representative_path_details.json",
+      "bytes": 197771,
+      "mtime_ns": 1793024063521036100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\PNR53_all_failed_endpoints_classification1\\all_failed_endpoint_classes.json",
+      "bytes": 1528373,
+      "mtime_ns": 1793024063577525100
+    }
+  ],
+  "actual_report_binding": {
+    "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_place1_pnr53\\impl\\pnr\\g2_top.tr",
+    "bytes": 82329746,
+    "mtime_ns": 1793023682110143600
+  },
+  "current_PNR_inputs_changed": false,
+  "deployment_accepted": false,
+  "reset_scope": "5000 recovery and5000 removal rows positive but global summary counts absent;5000clockMPW rows positive do not prove external reset assertion pulse width"
+}

@@ -1,0 +1,217 @@
+{
+  "review_complete": true,
+  "mode": "read_only_no_execution",
+  "RTL_generated": false,
+  "simulation_started": false,
+  "current_PNR_inputs_changed": false,
+  "implementation_or_deployment_accepted": false,
+  "plan_is_directionally_sound": true,
+  "overall": "A bounded read-only snapshot adapter is reasonable. Retained long-session time ordering needs correction, and FW ownership/zero/filter integration plus source-switch drain remain future obligations. The sampled checkpoint timing alone does not justify predicting frequent normal50Hz locks.",
+  "findings": [
+    {
+      "id": "F1",
+      "classification": "Confirmed retained-guard counterexample, conditional on reusing this comparison in the new snapshot guard",
+      "severity": "availability_correctness",
+      "title": "Authorization-relative signed time order expires after half a32bit timer interval",
+      "references": [
+        {
+          "file": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\P11_shared_FW_candidate\\p11_command_guard.c",
+          "line": 81,
+          "text": "(int32_t)(g->burst_us-g->authorized_us)<0"
+        },
+        {
+          "file": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\P11_shared_FW_candidate\\p11_command_guard.c",
+          "line": 99,
+          "text": "if(g->have_arrival&&(int32_t)(g->burst_us-g->arrival_us)<=0)"
+        }
+      ],
+      "trace": [
+        "Authorize at0x10000000; remain ARMED with fresh feedback/R0 and valid frames every20000us",
+        "At start_us0x90000000, start_us-authorized_us=0x80000000 interpreted signed negative, despite a fresh packet",
+        "All later fresh frames are rejected; accepted-arrival lease expires within200000us and locks"
+      ],
+      "boundary_us": 2147483648,
+      "boundary_time": "35min47.483648sec since authorization; no full timer wrap is required",
+      "scope": "The new C_SERVICE only reads CSR and does not yet implement authorization checks; this is not a demonstrated unsafe command in the unmaterialized parser",
+      "minimal_direction": "Use authorization-relative order only while WAIT_ZERO, whose existing200ms deadline makes the modular interval unambiguous; once armed, compare current fresh arrival against the last accepted arrival. Keep owner/session reset and fresh zero requirements. Do not weaken current age limits."
+    },
+    {
+      "id": "F2",
+      "classification": "Confirmed mailbox protocol tradeoff; global normal-workload failure rate is unverified",
+      "severity": "availability_contract",
+      "title": "Strict consecutive SEQ imposes a new per-frame CPU service deadline",
+      "references": [
+        {
+          "file": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prepare_P11_parser_offload.py",
+          "line": 137,
+          "text": "if(b==0xffffffffu||(uint32_t)(b-previous)!=1u)return P11_SNAPSHOT_LOST;"
+        }
+      ],
+      "trace": [
+        "CPU has consumed sequence10",
+        "Valid idle-separated50Hz packets11 and12 complete while service has a40ms gap",
+        "Four coherent reads obtain12; CRC/range/actual timestamp may all be fresh, but delta2 returns LOST and the planned FW locks"
+      ],
+      "measured_frontier_checkpoint_gap_us": 3955.36,
+      "proposed_sender_period_us": 20000,
+      "measured_scope": "Existing finite frontier/Pico/guard/checkpoint sample only; not fullAPP or new snapshot service scheduling",
+      "judgment": "3955.36us is below20000us, so these measured checkpoints do not themselves predict skipped normal50Hz frames. Entire-APP worst service gap and actual hook remain unproved.",
+      "required_decision": "If velocity is latest-value semantics, consider monotonic skipped sequence as a diagnostic with unchanged freshness/zero/session filters. If every frame must be consumed, retain strictness and prove the service deadline or provide a bounded mailbox queue; do not call overwrite a transport corruption without this contract."
+    },
+    {
+      "id": "F3",
+      "classification": "Confirmed receiver/policy boundary; safe under the stated timestamp and zero checks",
+      "severity": "required_validation",
+      "title": "CTRL flush does not cancel an already started UART character",
+      "references": [
+        {
+          "file": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prepare_P11_parser_offload.py",
+          "line": 55,
+          "text": "if(rst||flush||!enable)begin"
+        },
+        {
+          "file": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\nav\\rtl\\io\\imu_uart.v",
+          "line": 59,
+          "text": "t_start <= time_us;"
+        },
+        {
+          "file": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\nav\\rtl\\io\\imu_uart.v",
+          "line": 60,
+          "text": "first_pend <= (idle >= cfg_idle_us);"
+        },
+        {
+          "file": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prepare_P11_parser_offload.py",
+          "line": 213,
+          "text": "'sample authorization time AFTER enable ACK; previous_seq0; WAIT_ZERO'"
+        }
+      ],
+      "trace": [
+        "FIRST character starts before authorization while imu_uart.busy_r=1",
+        "FW disables/flushes parser, changes baud, reenables, then captures authorization time",
+        "Old in-flight FIRST may later reach the parser and seed sequence1; its t_start remains pre-authorization",
+        "Post-authorization TS validation must reject that snapshot even if CRC completes later; SEQ1 alone is not a new-session proof"
+      ],
+      "additional": "Flush and FIRST on the same edge discard the character by reset priority; the parser may ignore the rest of that burst until another>=500us idle. This is conservative loss, not an unsafe replay.",
+      "minimal_direction": "Retain the actual start timestamp, WAIT_ZERO and accepted-sequence consumption on coherent but rejected snapshots. Add precise partial-character/flush/FIRST schedules to the future test; no need to reset the whole UART or existing raw queues to fake safety."
+    },
+    {
+      "id": "F4",
+      "classification": "Unimplemented source-switch cleanup obligation, not an actual PNR/source defect",
+      "severity": "integration_gap",
+      "title": "A P11 tap does not drain the old raw DATA/TS FIFOs before WIT return",
+      "references": [
+        {
+          "file": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\nav\\rtl\\io\\imu_uart.v",
+          "line": 75,
+          "text": "push <= 1'b1; push_d <= {first_pend, sh};"
+        }
+      ],
+      "fact": "Original receiver continues pushing the raw DATA and FIRST timestamp queues; the offload tap neither pops nor backpressures them.",
+      "condition": "If the future P11 branch stops raw draining, these queues can fill/overflow while hardware snapshot operation remains healthy.",
+      "gap": "Plan2 says retained queues and baud switch, but does not specify the bounded paired drain/quiet/WIT decoder-reset protocol already required by the earlier owner plan.",
+      "minimal_direction": "Define a bounded count/overflow-aware DATA-FIRST/TS drain and quiet boundary before returning to WIT, and handle a physically in-flight character. Preserve original FIFO interfaces and keep movement zero throughout source switch."
+    },
+    {
+      "id": "F5",
+      "classification": "Planned safety route is correct but future FW call sites are absent",
+      "severity": "integration_gate",
+      "title": "R0/feedback/SAFE/lease protection cannot be inferred from a four-read adapter alone",
+      "references": [
+        {
+          "file": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\fw\\drv\\hal_fpga.c",
+          "line": 106,
+          "text": "host_link_guard_filter(&g_host_link_guard,hal_time_us(),&guarded);"
+        },
+        {
+          "file": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\fw\\nav\\nav_task.c",
+          "line": 706,
+          "text": "nt->motion_result = motion_check(nt->map, &nt->mi, p, &nt->lp_cfg, &nt->cmd);"
+        },
+        {
+          "file": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\fw\\nav\\nav_task.c",
+          "line": 712,
+          "text": "int ground=checked?SUPPORT_PASS:support_check(p,&nt->lp_cfg,&nt->mi,&nt->cmd);"
+        },
+        {
+          "file": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\g2_top.v",
+          "line": 160,
+          "text": "command_lease_guard #(.CLK_HZ(CLK_HZ)) u_command_lease("
+        }
+      ],
+      "fact": "Proposed RTL produces only CSR command/TS/SEQ. No P11 net feeds SAFE, command_lease_guard or control UART targets. The selected image and selected firmware are untouched.",
+      "gap": "C_SERVICE returns a snapshot and has no R0/feedback/freshness/WAIT_ZERO/LOST zero handling; these belong in the unimplemented caller.",
+      "required": "Preserve guard polling even on NONE/UNSTABLE/LOST; consume coherent rejected sequence without renewing motion; stage proposals before common motion/support; retain final host_link_guard_filter, P11 zero filter, SAFE commit and original lease. Existing IDLE/ESTOP priority and the manual movement-enabled state must be explicit."
+    }
+  ],
+  "checked_without_found_counterexample": [
+    {
+      "item": "Four-read atomicity",
+      "conclusion": "Under same-clock atomic CMD/TS/SEQ writes, no-IRQ single CTRL writer and saturating sequence, equal a/b proves no publication between the twoSEQ samples. No wrap ABA; mismatch yields no renewal. Actual HAL must issue four volatile MMIO reads.",
+      "excluded": "External/debug concurrent CTRL flush can reset SEQ and permit ABA, but the plan explicitly does not promise safety for that writer; this is not an in-contract defect."
+    },
+    {
+      "item": "Burst first-only",
+      "conclusion": "Already present in the retained raw guard, rather than a new offload regression. A normal10byte/230400 frame takesabout434us;20ms spacing leaves plenty of>=500us idle. Continuous no-idle traffic intentionally expires rather than gaining a fabricated fresh timestamp.",
+      "unverified": "Actual RK serialized write cadence/USB fragmentation and source-switch first-character behavior are not measured by the frontier checkpoint sample."
+    },
+    {
+      "item": "Timer wrap",
+      "conclusion": "Unsigned now-stamp age checks remain valid for these bounded200/250ms intervals across normal32bit wrap. snapshotSEQ provides validity, so timestamp0 is not intrinsically ambiguous here; retaining its conservative rejection loses at most that arrival if previousSEQ is still consumed.",
+      "must_keep": "Do not carry an unbounded signed authorization-time comparison into a long ARMED session."
+    },
+    {
+      "item": "SEQ saturation",
+      "conclusion": "Code updates CMD/TS when changing FFFFFFFE to FFFFFFFF, then freezes all three. The adapter rejects FFFFFFFF. This is fail-closed and avoids sequence wrap ABA; it does not silently keep renewing a stale command."
+    }
+  ],
+  "next_validation_order": [
+    "First specify/fix the long-session time rule, source-switch drain and strict-sequence availability semantics in the plan; keep currentPNR53/54 inputs frozen",
+    "After explicit root admission, test the materialized byte parser and old raw/WIT receiver with CTRL at every partial-character/FIRST/CRC boundary and FIFO-full/overflow conditions",
+    "Exercise publication at each of the fourMMIO cuts; include coherent rejected nonzero WAIT_ZERO, sequence jumps, saturation and reset under the stated exclusive writer",
+    "Use long-time virtual timestamps near2^31 since auth and32bit wrap without running35minutes of simulation",
+    "Bind actual FW proposal/final publication hooks and prove R0 dead with continuous P11, stale feedback, IDLE/ESTOP, LOST/UNSTABLE plus busy checkpoints all retain zero/latched rearm",
+    "Measure actual whole-APP service gaps and CPU publication with the selected sender cadence before deciding whether strict consecutive SEQ is deployable; retain350ms submission and500ms physical stop gates"
+  ],
+  "all_input_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_parser_offload_plan2\\result.json",
+      "bytes": 9545,
+      "mtime_ns": 1793022310292506300
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prepare_P11_parser_offload.py",
+      "bytes": 22767,
+      "mtime_ns": 1793022309248882300
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\P11_shared_FW_candidate\\p11_command_guard.c",
+      "bytes": 4974,
+      "mtime_ns": 1793019855145308200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\nav\\rtl\\io\\imu_uart.v",
+      "bytes": 4825,
+      "mtime_ns": 1792936600543632700
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\CPU250_frontier_radius_CPU_final_20261026.json",
+      "bytes": 15033,
+      "mtime_ns": 1792984835301614100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\fw\\drv\\hal_fpga.c",
+      "bytes": 17062,
+      "mtime_ns": 1793012198642578800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\fw\\nav\\nav_task.c",
+      "bytes": 39135,
+      "mtime_ns": 1792982630687788600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\g2_top.v",
+      "bytes": 11633,
+      "mtime_ns": 1793013325206198000
+    }
+  ]
+}

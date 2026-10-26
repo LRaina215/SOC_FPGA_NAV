@@ -1,0 +1,169 @@
+{
+  "recorded_at": "2026-10-26T22:19:30.560283+08:00",
+  "actual_finished_runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-26T21:10:31.269828+08:00",
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 63352,
+    "elapsed_s": 3456.594000000041,
+    "no_observable_progress_s": 2.01500000001397,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        2138,
+        1793023682250761300
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        1704,
+        1793023682250761300
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        1710300,
+        1793020685941615800
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        9509922,
+        1793020686706629300
+      ],
+      [
+        "impl\\pnr\\g2_top.pr",
+        202789160,
+        1793023532218256700
+      ],
+      [
+        "impl\\pnr\\g2_top.tr",
+        82329746,
+        1793023682110143600
+      ],
+      [
+        "impl\\pnr\\g2_top.rpt.txt",
+        92325,
+        1793023579324630500
+      ],
+      [
+        "impl\\pnr\\g2_top.vo",
+        30773537,
+        1793023583532833500
+      ]
+    ],
+    "tool_exit": 0,
+    "ended_at": "2026-10-26T22:08:07.856222+08:00"
+  },
+  "original_tool_and_controller_exited": true,
+  "routing_completed": true,
+  "explicit_unrouted_count_in_vendor_report": null,
+  "successful_tool_PNR_completion_not_fabricated_literal_zero": true,
+  "resources": {
+    "BSRAM": 280,
+    "source_BSRAM": 269,
+    "wide_split_pairs": 11,
+    "LUT": 38712,
+    "ALU": 9930,
+    "Logic": 59880,
+    "FF": 30714,
+    "CLS": 41742,
+    "CLS_capacity": 69120,
+    "SSRAM": 1873,
+    "DSP": 165,
+    "PRIMARY_used": 6,
+    "PRIMARY_capacity": 8,
+    "LW_used": 6,
+    "LW_capacity": 8
+  },
+  "all_memory_geometry_INIT_CPU_review": "F:\\nav_integration_g2_20261023\\PNR53_actual_memory_data_replica_completion1\\result.json",
+  "memory_original_rejection_preserved": "F:\\nav_integration_g2_20261023\\PNR53_actual_memory_INIT_review1\\result.json",
+  "bus_data_replica_FFs_exactly_proved": 32,
+  "CPU_RAM_bytes": 131072,
+  "FW_BIN_bytes": 53572,
+  "setup_violations": 3565,
+  "hold_violations": 0,
+  "clock_fmax": [
+    {
+      "name": "clk50",
+      "constraint_mhz": 50.0,
+      "actual_fmax_mhz": 32.297,
+      "levels": 21,
+      "entity": "TOP"
+    },
+    {
+      "name": "rgmii_rxc",
+      "constraint_mhz": 100.0,
+      "actual_fmax_mhz": 115.388,
+      "levels": 5,
+      "entity": "TOP"
+    }
+  ],
+  "per_clock_violations": {
+    "clk50": {
+      "setup": {
+        "tns_ns": -12446.382,
+        "violated_endpoints": 3565
+      },
+      "hold": {
+        "tns_ns": 0.0,
+        "violated_endpoints": 0
+      }
+    },
+    "rgmii_rxc": {
+      "setup": {
+        "tns_ns": 0.0,
+        "violated_endpoints": 0
+      },
+      "hold": {
+        "tns_ns": 0.0,
+        "violated_endpoints": 0
+      }
+    }
+  },
+  "detailed_timing_review": "F:\\nav_integration_g2_20261023\\PNR53_actual_timing_coverage_review1\\result.json",
+  "all3565_negative_endpoint_classification": "F:\\nav_integration_g2_20261023\\PNR53_all_failed_endpoints_classification1\\result.json",
+  "endpoint_classes": {
+    "NAV": 2576,
+    "control": 957,
+    "CPU": 32
+  },
+  "known52_reported_active": true,
+  "source_and_physical26_endpoints_matched": true,
+  "top_path": {
+    "source": "u_control/model_thread/policy/load_index_1_s5/Q",
+    "target": "u_control/model_thread/policy/snapshot_word_3_s0/D",
+    "slack_ns": -10.963,
+    "data_ns": 30.949,
+    "route_ns": 20.374,
+    "cell_ns": 10.231,
+    "C2Q_ns": 0.344,
+    "DSP_two_long_nets_ns": 13.042
+  },
+  "complete_all_clock_pins_IR_lease_preservation_review_pending": true,
+  "CDC_payload_resolution_MTBF_external_reset_IO_and_physical_stop_pending": true,
+  "recovery_removal_clock_MPW_positive_reported_rows_not_external_reset_signoff": true,
+  "PNR54": {
+    "output": "F:\\nav_integration_g2_20261023\\SLF128_storage_place2_pnr54",
+    "controller_pid": 36664,
+    "phase": "starting_PNR_without_deadline",
+    "same_frozen_VG_only_place_option2": true,
+    "deadline_s": 0,
+    "silent_s": 0
+  },
+  "final_P11_FW_budget": {
+    "latest_over_bytes": 324,
+    "selected": false,
+    "ELF_export_and_stack_passed": false,
+    "evidence": "F:\\nav_integration_g2_20261023\\P11_snapshot_FW_actual_review1\\result.json"
+  },
+  "user_accuracy_amendment": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\SLF128_accuracy_gate_user_amendment_20261026.json",
+  "programmed": false,
+  "deployment_accepted": false
+}

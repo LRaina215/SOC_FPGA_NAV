@@ -1,0 +1,62 @@
+{
+  "prepared": true,
+  "review_executed": false,
+  "full_graph_parsed": false,
+  "source": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43",
+  "physical": "F:\\nav_integration_g2_20261023\\SLF128_storage_place1_pnr53",
+  "out": "F:\\nav_integration_g2_20261023\\PNR53_physical_clock_CDC_stop_review1",
+  "source_VG": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43\\impl\\gwsynthesis\\g2_top.vg",
+  "physical_VO": "F:\\nav_integration_g2_20261023\\SLF128_storage_place1_pnr53\\impl\\pnr\\g2_top.vo",
+  "natural_runtime_required": "F:\\nav_integration_g2_20261023\\SLF128_storage_place1_pnr53\\tool_runtime.json",
+  "reference": "F:\\nav_integration_g2_20261023\\SLF128_storage_place1_pnr53\\cdc_reference_audit.json",
+  "starts_EDA": false,
+  "writes_frozen_inputs": false,
+  "modifies_legacy_script_or_bindings": false,
+  "no_old_BSRAM_or_split_count_assumption": true,
+  "reused_function": "review_model50_ring_pnr52_final.selected_preservation",
+  "binding_method": "FunctionType with a copied globals dictionary and explicit SOURCE/PHYSICAL; original function globals untouched",
+  "checks": [
+    "Actual command_lease_guard/safety_guard hierarchy discovered from supplied source, plus IR remote boundary",
+    "All selected primitive effective parameters/INIT and pins; only already-proved buffer, exact registered-copy, ADD commutation normalizations",
+    "Original26 source/first/second primitive connection and firstQ sole actual secondD fanout",
+    "Every nonconstant physical primitive clock pin root/inversion, only clk50 and rgmii_rxc, noPLL",
+    "Additional check: every original nonconstant source clock-pin key still exists and has the same canonical root/inversion",
+    "New physical clock pins inventoried explicitly; wide RAM split behavior remains the separate memory-only audit"
+  ],
+  "memory_review_separate": "integration/g2/review_slf128_pair_physical_memories.py",
+  "timing_coverage_separate": "integration/g2/review_pnr_timing_coverage.py",
+  "limitations": [
+    "No CDC payload route-delay/second-stage resolution-time/MTBF acceptance",
+    "No external reset assertion pulse/recovery-removal/reset release physical acceptance",
+    "No source-synchronous external IO budget or vehicle-stop acceptance",
+    "No ring/LF/weights actual physical functional reproof in this selected partition"
+  ],
+  "implementation_files": [
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_slf128_pair_physical_clock_stop.py",
+      "bytes": 12097,
+      "mtime_ns": 1793023642194136400
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_model50_ring_pnr52_final.py",
+      "bytes": 10668,
+      "mtime_ns": 1793003915981013600
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\related_clock_physical_review_common.py",
+      "bytes": 8706,
+      "mtime_ns": 1792999540053526200
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_model25_ring_system_pnr51_final.py",
+      "bytes": 17933,
+      "mtime_ns": 1792998466628874600
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_lease_tree_pnr50_final.py",
+      "bytes": 19799,
+      "mtime_ns": 1792994660054112000
+    }
+  ],
+  "deployment_accepted": false
+}
