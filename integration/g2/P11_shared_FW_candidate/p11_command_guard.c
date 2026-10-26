@@ -1,10 +1,16 @@
 #include "p11_command_guard.h"
 #include <string.h>
 
+#if defined(__GNUC__)
+__attribute__((optimize("no-optimize-crc")))
+#endif
 static uint16_t crc_byte(uint16_t old, uint8_t value)
 {
     uint16_t c=(uint16_t)(old^((uint16_t)value<<8));
-    for(unsigned i=0;i<8;i++)c=(uint16_t)((c&0x8000u)?(c<<1)^0x1021u:c<<1);
+    for(unsigned i=0;i<8;i++){
+        uint32_t shifted=(uint32_t)c<<1;
+        c=(uint16_t)((c&0x8000u)?shifted^0x1021u:shifted);
+    }
     return c;
 }
 static bool lock_zero(p11_command_guard_t *g)

@@ -1,0 +1,223 @@
+{
+  "at": "2026-10-26T21:45:10.289505+08:00",
+  "phase": "plan_only_no_RTL_written",
+  "source_contract": {
+    "inputs": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\nav\\rtl\\io\\imu_uart.v",
+        "bytes": 4825,
+        "mtime_ns": 1792936600543632700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\nav\\rtl\\top\\nav_subsystem.v",
+        "bytes": 34871,
+        "mtime_ns": 1793013805842989700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\control\\uart_speed_rx.v",
+        "bytes": 5465,
+        "mtime_ns": 1792936600558101500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\configuration_source\\config\\regmap.yaml",
+        "bytes": 29461,
+        "mtime_ns": 1793012198627029000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\control4500_core.v",
+        "bytes": 20992,
+        "mtime_ns": 1792936600560105400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\g2_top.v",
+        "bytes": 11633,
+        "mtime_ns": 1793013325206198000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\g2.cst",
+        "bytes": 5495,
+        "mtime_ns": 1792936600768716500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\fw\\include\\nav_regs_map.h",
+        "bytes": 27137,
+        "mtime_ns": 1793012198642578800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\run.tcl",
+        "bytes": 8324,
+        "mtime_ns": 1793018622806643600
+      },
+      {
+        "path": "D:\\Desktop\\SOC FPGA\\nav\\tools\\gen_config.py",
+        "bytes": 12246,
+        "mtime_ns": 1790847261077592200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\nav\\rtl\\soc\\nav_soc.v",
+        "bytes": 10034,
+        "mtime_ns": 1793013805847048800
+      }
+    ],
+    "source": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1",
+    "checks_passed": true,
+    "source_anchors": [
+      {
+        "text": "t_start <= time_us;",
+        "line": 59
+      },
+      {
+        "text": "first_pend <= (idle >= cfg_idle_us);",
+        "line": 60
+      },
+      {
+        "text": "push <= 1'b1; push_d <= {first_pend, sh};",
+        "line": 75
+      },
+      {
+        "text": "if (first_pend) begin tpush <= 1'b1; tpush_d <= t_start; irq <= 1'b1; end",
+        "line": 76
+      },
+      {
+        "text": ".s_valid(push), .s_data(push_d), .s_ready(rf_ready)",
+        "line": 86
+      }
+    ],
+    "t_start": "updated for EACH attempted character start (synchronized falling start); push only after valid stop",
+    "tpush_d": "updated ONLY for valid stop with first_pend: original idle-burst FIRST character t_start",
+    "tap": "push/push_d/tpush_d at pre-FIFO registered producer, independent of rf_ready; parser observes all on next clk",
+    "fixed_500us_idle": true,
+    "byte_timestamp_not_CPU_dequeue": true,
+    "new_CSRs": [
+      {
+        "name": "IMU_P11_CTRL",
+        "address": 24608,
+        "access": "rwe"
+      },
+      {
+        "name": "IMU_P11_CMD",
+        "address": 24612,
+        "access": "ro"
+      },
+      {
+        "name": "IMU_P11_TS",
+        "address": 24616,
+        "access": "ro"
+      },
+      {
+        "name": "IMU_P11_SEQ",
+        "address": 24620,
+        "access": "ro"
+      }
+    ]
+  },
+  "implementation_generator": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prepare_P11_parser_offload.py",
+  "normal_commands": "A5 5A 10 04 signed16 forward/yaw LE CRC16LE; legacy length02 yaw0; original CRC/ranges",
+  "arrival_semantics": {
+    "source": "existing FIRST idle-burst first character synchronized start time",
+    "noise": "if noise precedes A5 in same burst, TS precedes actual frame; conservative earlier expiry",
+    "continuous": "only first valid packet per idle-separated burst; no>=500us idle means no further seq/time renewal and FW expires",
+    "parser_timeout": "original500000 clk50 clocks=10ms interbyte incomplete-frame discard, not movement TTL",
+    "t_start_per_character": true,
+    "tpush_d_per_burst": true,
+    "zero_timestamp": "FW rejects0 conservatively including exact32-bit time wrap"
+  },
+  "atomic_snapshot": {
+    "registers": "CMD32,TS32,SEQ32 update in one clk50 always block only on valid CRC+range",
+    "read_order": [
+      "SEQ a",
+      "CMD",
+      "TS",
+      "SEQ b"
+    ],
+    "bounded_MMIO_reads": 4,
+    "retries": 0,
+    "stable": "accept only a==b and1<=b<FFFFFFFF andb==previous+1; use capturedTS, never read time",
+    "mismatch": "no proposal renewal; deadline/feedback/R0 polls still execute; retry only on next bounded service call",
+    "gaps": "sequence gap or saturation => FW LOCKED/zero, explicit trusted rearm only",
+    "consumed_sequence": "advance previous on every coherent NEW snapshot, even when WAIT_ZERO rejects its nonzero command; never renew accepted command timestamp on rejection",
+    "saturation": "SEQ saturates FFFFFFFF and freezes CMD/TS too; no wrap ABA",
+    "exclusivity": "Only same no-IRQ FW owner writes CTRL; arbitrary simultaneous debug writes are outside this owner contract"
+  },
+  "owner_switch": {
+    "management": "existing trusted NV45 only, IDLE/actual still500ms/no pending matcher; state OFF/WAIT_ZERO/ARMED/LOCKED in FW",
+    "sequence": [
+      "zero via original common HAL",
+      "writeCTRL0 =>disable+flush; raw/WIT queues retained",
+      "configure actual baud217/idle500 for P11 or868 for WIT",
+      "writeCTRL1 =>flush+enable/wait newFIRST",
+      "sample authorization time AFTER enable ACK; previous_seq0; WAIT_ZERO",
+      "require post-authorization TS, consecutive new sequence, fresh actual feedback and newzero before ARMED"
+    ],
+    "new_snapshot_before_authorization": "rejected by timestamp/sessionbaseline; does not auto-arm",
+    "reset": "common NAV reset resets parser snapshot AND CPU/owner; CPUbootslocked; independent CTRL change flushes only parser and FWmust be managing/locked",
+    "R0_timeout_us": 250000,
+    "P11_timeout_us": 200000,
+    "feedback_timeout_us": 50000,
+    "original_command_age350ms_and_physical500ms_not_relaxed": true,
+    "hardware_owner_remains_NAV": true,
+    "actuator_route": "FW proposal before motion/support→R0/P11 final zero filters→SAFE→existing lease→4500",
+    "no_P11_to_control_UART_or_postlease_mux": true
+  },
+  "WIT_and_raw": {
+    "old_FIFO_and_TS_read_semantics_unchanged": true,
+    "parser_tap_never_reads_FIFO": true,
+    "parser_ready_not_connected_to_RF_ready": true,
+    "full_FIFO_does_not_block_parser": true,
+    "parser_disable_in_WIT": true,
+    "legacy_WIT_parser_and_rawdebug_kept": true,
+    "BMI088_and_control_fusion_unchanged": true,
+    "telemetry_A16_V2_unchanged": true
+  },
+  "planned_files": {
+    "RTL_modified": [
+      "nav/rtl/io/imu_uart.v",
+      "nav/rtl/top/nav_subsystem.v"
+    ],
+    "RTL_new": [
+      "nav/rtl/io/p11_command_snapshot.v"
+    ],
+    "config": "configuration_source/config/regmap.yaml",
+    "generated": [
+      "nav/rtl/regs/nav_regfile.v",
+      "nav/rtl/regs/nav_regs_map.vh",
+      "nav/rtl/regs/nav_subsystem_rf.vh",
+      "fw/include/nav_regs_map.h",
+      "configuration_source/model/nav_regs_map.py",
+      "configuration_source/docs/2_interface/regmap.md"
+    ],
+    "FW_experiment_only": [
+      "experimental_fw/p11_snapshot_service.c",
+      "experimental_fw/p11_snapshot_service.h"
+    ],
+    "selected_FW_not_integrated_by_generator": true
+  },
+  "source_budget": {
+    "new_parser_state_bits": 111,
+    "snapshot_bits": 96,
+    "enable_control_bits": 1,
+    "total_new_source_register_bits": 208,
+    "new_RAM_target": 0,
+    "new_DSP_target": 0,
+    "new_clock_domains": 0,
+    "new_UART_bit_receiver": false,
+    "new_hardware_snapshot_copy": false,
+    "actual_LUT_FF_DSP_and_routing_unknown": true,
+    "FW": "softwareraw_work898B includes parser/service; replace with4MMIOread adapter and retained FWowner/guards; saving>=716B and final margin NOT proven until same originalLTO link",
+    "previous_full_C_link_over_bytes": 716
+  },
+  "validation_plan": [
+    "Freeze newRTL/TB and exact generated constants after current53/54 natural completion and root admission",
+    "Small byte-stream original uart_speed_rx CRC/range/legacy output comparison, full signed16range and80singlebitCRC cases",
+    "Bit receiver end-to-end FIRST/t_start timing: leadingnoise, back-to-backbytes, idle499/500/501us, noidlecontinuous, badstop/glitch, reset/CTRL atpartial/CRCedge",
+    "Arbitrarily fill/stop both rawFIFOs and prove parserSEQ/CMD/TSindependent; WIT/rawbehavior miter unchanged",
+    "Publish under every cut of fourMMIOreads; equal-seq generation consistency, mismatch/gap/MAXfreeze/flushreset rejects",
+    "Same actualCguard finite contract but snapshotservice source; R0dead with continuing validP11 stream remainszero/locked",
+    "RealC small mapping only after admission: modes/FF/reset/noBSRAM/noDSP/50MHz estimate and exact original flags fullFWLTO/stack/BSS",
+    "Re-run selected completeCPU busy/350mspublication and actualphysical500msstop beforedeployment"
+  ],
+  "no_EDA_started": true,
+  "RTL_materialized": false,
+  "automatic_SYN_PNR": false,
+  "deployment_ready": false
+}

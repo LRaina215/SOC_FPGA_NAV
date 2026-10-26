@@ -17,14 +17,14 @@ def prepare(out):
  inputs=[metadata(p)for p in sorted((SOURCE/'fw').rglob('*'))if p.is_file()]
  out.mkdir();shutil.copytree(SOURCE/'fw',out/'fw')
  added=[]
- for name in('p11_command_guard.h','p11_command_guard.c'):
+ for name in('p11_command_guard.h','p11_command_guard.c','p11_raw_service.h','p11_raw_service.c'):
   dst=out/'fw/nav'/name;assert not dst.exists();shutil.copyfile(TEMPLATE/name,dst);added.append(metadata(dst))
  assert inputs==[metadata(Path(x['path']))for x in inputs]
  unchanged=[]
  for p in sorted((SOURCE/'fw').rglob('*')):
   if p.is_file():
    dst=out/'fw'/p.relative_to(SOURCE/'fw');assert p.read_bytes()==dst.read_bytes();unchanged.append(str(p.relative_to(SOURCE/'fw')))
- patch=''.join(''.join(difflib.unified_diff([],p.read_text().splitlines(True),fromfile='/dev/null',tofile='fw/nav/'+p.name))for p in sorted((out/'fw/nav').glob('p11_command_guard.*')))
+ patch=''.join(''.join(difflib.unified_diff([],p.read_text().splitlines(True),fromfile='/dev/null',tofile='fw/nav/'+p.name))for p in sorted((out/'fw/nav').glob('p11_*')))
  (out/'new_component_only.patch').write_text(patch,encoding='utf8')
  contract=dict(at=datetime.now().astimezone().isoformat(),stage='isolated core draft; integration pending',source=str(SOURCE),production_BIN_53572_unchanged=True,
   original_FW_files_unchanged=len(unchanged),original_FW_inputs=inputs,added_files=added,applied_to_original=False,selected_by_production=False,compiled=False,tested=False,new_ELF_BIN_INIT=False,RTL_changed=False,new_EDA=False,serial_opened=False,
@@ -38,11 +38,11 @@ def prepare(out):
   raw_UART_contract=dict(physical_input='A15 existing imu_rxd -> u_imu byte/FIRST FIFO',config_div=217,idle_us=500,byte_RAM_depth=256,byte_total_capacity=258,burst_timestamp_total_capacity=34,
    selected_sender='50Hz10-byte frames in separate bursts; >=500us idle between packets. Sender starts only after fresh management ACK and sends new zero first.',
    no_back_to_back_fresh_timestamp_claim=True,one_accepted_command_per_burst=True,arrival_stamp='Actual FIRST start time; conservative packet-start age, never software dequeue time',
-   per_loop_byte_budget=32,per_search_checkpoint_byte_budget=32,raw_queue_limit=32,per_pair_elapsed_us_must_be_less_than=100,
-   guard='Before and after each data/FIRST timestamp pair, verify monotone overflow baseline, count<=32 and elapsed<100us. Missing/zero stamp, misordering or backlog faults quarantine; all selected-mode old/WIT consumers disabled.',
-   reason='At most32 queued byte/FIRST records, plus at most2 pipeline entries, fit34 timestamp slots; a FIRST requires>=500us idle. Measured100us pair bound avoids an unchecked producer interval. This inference still needs actual-MMIO ordering and worst-case service validation.',
+   per_loop_byte_budget=32,per_search_checkpoint_byte_budget=32,raw_queue_limit=30,
+   guard='Before and after each DATA/FIRST -> TS pop pair, verify the actual total count<=30 and byte-overflow baseline. No TS-valid/TS-overflow register is invented. Missing/zero stamp or backlog faults quarantine; all selected-mode old/WIT consumers disabled.',
+   reason='Actual level=used+held already includes pending reads. TS RAM is full at used32 even if total capacity34 is not used. With paired software pops there is at most one popped-FIRST awaiting TS; a first TS-drop would require at least32 retained timestamps and therefore at least31 outstanding DATA records before its new corresponding byte. The post-pair count<=30 rejects that pair. This first-drop invariant still needs source-bound proof and actual-MMIO ordering tests.',
    drain='In quarantine do not accept packets. Bounded drain of up to258 data and34 timestamp records, then require >=2ms with no new bytes; explicitly new trusted management request. A flood never becomes armed. Do not reset CPU/control/RAW RAM to fake an empty stream.',
-   unresolved='Current HAL has no explicit timestamp-valid status and reads DATA before TS. The proposed bounds/zero rejection and quiet flush require a real MMIO miter; this draft core API alone does not establish FIFO pairing.'),
+   unresolved='Current HAL has no explicit timestamp-valid status and reads DATA before TS. The proposed bounds/zero rejection and quiet flush require a real MMIO miter; this draft core API alone does not establish FIFO pairing. No100us service-time claim or new stopping deadline is made.'),
   integration_patch_plan=[
    dict(files=['fw/nav/proto.h','fw/nav/proto.c'],change='Add the exact-length explicit trusted management request/reply without overloading MODE or0x83; validate action/session before any side effect. No velocity NV message exists today.'),
    dict(files=['fw/nav/host_link_guard.c'],change='Permit management only as an accepted fresh R0 message; it may renew R0 as a management packet. P11 parser calls never call host_link_guard_observe.'),
@@ -57,4 +57,4 @@ def prepare(out):
  print(json.dumps(dict(output=str(out),stage=contract['stage'],original_files=len(unchanged),added_files=len(added),compiled=False),ensure_ascii=False))
 
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--out',type=Path,default=BASE/'P11_shared_guard_FW_experiment_prepared1');a=p.parse_args();prepare(a.out)
+ p=argparse.ArgumentParser();p.add_argument('--out',type=Path,default=BASE/'P11_shared_guard_FW_experiment_prepared2');a=p.parse_args();prepare(a.out)

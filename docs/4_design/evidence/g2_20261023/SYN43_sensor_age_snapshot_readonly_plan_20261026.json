@@ -1,0 +1,288 @@
+{
+  "complete": true,
+  "readonly": true,
+  "RTL_changed": false,
+  "EDA_started": false,
+  "physical_timing_accepted": false,
+  "confirmed": {
+    "synthesis_arrival_ns": 27.028,
+    "reported_logic_level": 29,
+    "listed_combinational_primitives": 28,
+    "chain_is_not_29_LUTs": true,
+    "actual_domains": "This selected source is the 50MHz control/NAV base, not model25",
+    "source_sensor_timeout_cycles": 2500000,
+    "source_period_cycles": 400000,
+    "identical_to_SYN40_reported_path": true,
+    "meaning": "The same control read path predates the SLF128 storage migration; neither timing closure nor physical cause follows from this synthesis estimate"
+  },
+  "path_stages": [
+    {
+      "stage": "launch_clock_and_Q",
+      "from_ns": 0,
+      "to_ns": 0.715,
+      "increment_ns": 0.715,
+      "actual_structure": "source sensor_age[6] DFFCE"
+    },
+    {
+      "stage": "32bit_age_threshold",
+      "from_ns": 0.715,
+      "to_ns": 5.743,
+      "increment_ns": 5.028,
+      "actual_structure": "six LUTs model_status_flags_3_s7/s6/s5/s2/s0/s"
+    },
+    {
+      "stage": "health_ready_qualification",
+      "from_ns": 5.743,
+      "to_ns": 7.399,
+      "increment_ns": 1.656,
+      "actual_structure": "n414_s2 and model_ready_s"
+    },
+    {
+      "stage": "freeze_transaction_qualification",
+      "from_ns": 7.399,
+      "to_ns": 8.281,
+      "increment_ns": 0.882,
+      "actual_structure": "observation/n22350_s1"
+    },
+    {
+      "stage": "live_frozen_and_segment_slot_select",
+      "from_ns": 8.281,
+      "to_ns": 12.678,
+      "increment_ns": 4.397,
+      "actual_structure": "five read_slot LUTs"
+    },
+    {
+      "stage": "slot_times28",
+      "from_ns": 12.678,
+      "to_ns": 14.893,
+      "increment_ns": 2.215,
+      "actual_structure": "MULT12X12 n22165_s, all registers BYPASS"
+    },
+    {
+      "stage": "lane_offset_addition",
+      "from_ns": 14.893,
+      "to_ns": 17.046,
+      "increment_ns": 2.153,
+      "actual_structure": "two ALU cells in read_address[2] cone"
+    },
+    {
+      "stage": "distributed_RAM_read",
+      "from_ns": 17.046,
+      "to_ns": 17.874,
+      "increment_ns": 0.828,
+      "actual_structure": "RAM16SDP4 asynchronous RAD->DO"
+    },
+    {
+      "stage": "RAM_bank_output_selection",
+      "from_ns": 17.874,
+      "to_ns": 21.314,
+      "increment_ns": 3.44,
+      "actual_structure": "four observation_read_data_0 LUTs"
+    },
+    {
+      "stage": "current_clip_and_public_word_select",
+      "from_ns": 21.314,
+      "to_ns": 26.657,
+      "increment_ns": 5.343,
+      "actual_structure": "six observation_read_data_14 LUTs"
+    },
+    {
+      "stage": "capture_D_net",
+      "from_ns": 26.657,
+      "to_ns": 27.028,
+      "increment_ns": 0.371,
+      "actual_structure": "snapshot_word[14] data pin"
+    }
+  ],
+  "source_references": [
+    {
+      "file": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\control\\mem_policy.v",
+      "lines": "40-61",
+      "purpose": "32bit saturating age, sensor_ok, stop_latched and ready"
+    },
+    {
+      "file": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\control\\rl_policy_tick_v5.v",
+      "lines": "61-65,99-127",
+      "purpose": "Qualified freeze, current read index, capture/abort priority and old-word LOAD"
+    },
+    {
+      "file": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\control\\rl_observation_v5.v",
+      "lines": "59-65,153-200",
+      "purpose": "Current-only clip, six-slot RAM, live/frozen pointer selection and simultaneous pointer freeze"
+    }
+  ],
+  "unnecessary_cross_boundary_dependency": {
+    "confirmed_source_relation": "frame_freeze = SNAPSHOT && frame_valid && run_ok && !deadline_missed; each rN selects liveN versus frozenN with frame_freeze",
+    "consequence": "The eligibility check controls a RAM read address and subsequent clipping before the same eligibility also permits snapshot_word capture",
+    "judgment": "This is a concrete avoidable source dependency under the paired observer/policy consumer contract, not a proven false timing path or permission for an STA exception",
+    "unchanged_needed": "Keep immediate health/stop qualification on capture/LOAD/core reset/action outputs and keep the qualified pointer-freeze event"
+  },
+  "original_edge_semantics": [
+    {
+      "edge": "E_capture",
+      "before": "Policy capture was asserted on the preceding edge; observer IDLE samples current sensors, commands and executed actions",
+      "after": "Original numerators/divider work are frozen; sensor_age concurrently uses old sample_valid for reset/increment"
+    },
+    {
+      "edge": "E_commit",
+      "before": "Observer has completed all28 raw words in work_slot",
+      "after": "live pointers and valid/initialized update together; policy on this same edge still sees old frame_valid/live values"
+    },
+    {
+      "edge": "E_freeze",
+      "before": "Policy SNAPSHOT sees frame_valid=1 and current run_ok=1 without deadline; read index0 uses old live4, raw RAM value is clipped",
+      "after": "snapshot_word captures word0 and frozen0..4 capture the same old live pointers; load_index becomes0, state becomesLOAD"
+    },
+    {
+      "edge": "E_LOAD_j for j0..166",
+      "before": "Core consumes old snapshot_word as wordj; read indexj+1 uses frozen pointers",
+      "after": "snapshot_word captures wordj+1; index advances"
+    },
+    {
+      "edge": "E_LOAD_167",
+      "before": "Core consumes old word167; computed read index168 is invalid",
+      "after": "snapshot_word is held; START follows on the original edge"
+    },
+    {
+      "edge": "threshold crossing",
+      "before": "age=T-1, sample_valid=0; current sensor_ok is still fresh",
+      "after": "age becomesT and combinational freshness immediately falls; next stop/policy edge must see stale, without a one-clock delay"
+    },
+    {
+      "edge": "new sample at stale age",
+      "before": "sample_valid=1 with age=T; old policy/stop logic still evaluates old stale state",
+      "after": "age becomes0 and freshness becomes true; sticky stop/fault recovery priorities are unchanged"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H1_exact_redundant_freshness_register",
+      "status": "proposed_only",
+      "priority": 2,
+      "transformation": "Retain the full32bit sensor_age counter and add a redundant stale FF whose next value equals the predicate on the counter next-state, rather than registering current sensor_ok",
+      "exact_invariant": "stale(t) == (sensor_age(t)>=T). next_age = sample_valid ?0 : age<T ?uint32(age+1) : age; next_stale=(next_age>=T)",
+      "production_simplification": "For positive T=2500000, reset age=T/stale=1; sample_valid gives age0/stale0; otherwise stale_next=stale||(age==T-1). T0 and generic signed/width corners need explicit original-expression fallback",
+      "preserved_sampling": "Both new FFs describe the same post-edge age; stop_latched and policy consume the old stale value on the current edge exactly as before. Naive stale<=age>=T or sensor_ok<=old_sensor_ok is one edge late and rejected",
+      "intended_check": "Existing actual chain six-stage age comparison no longer lies between a counter FF and the snapshot read address; its new cone terminates at redundant stale FF. Other immediate health inputs remain combinational",
+      "validation": [
+        "One-step32bit invariant for all age values under the stale/age relation; reset, T0/T1/power boundaries and production T",
+        "Cycle/four-state comparison at T-2/T-1/T with sample_valid coincident with capture/commit/freeze, sensor error and enable/stop transitions",
+        "Only after source proof, actual mapping must show preserved32bit age and exact FF boundary; actual PNR decides timing benefit"
+      ]
+    },
+    {
+      "id": "H2_speculative_read_selector_separate_from_commit",
+      "status": "proposed_only",
+      "priority": 1,
+      "transformation": "Provide a narrow read-live selector from policy state==SNAPSHOT, independent of health/deadline qualification. Use it only for live/frozen read-address selection. Retain original fully qualified frame_freeze for frozen-pointer writes and original snapshot_word/LOAD enables",
+      "exact_valid_relation": "Whenever the original policy actually captures its first word, qualified frame_freeze=1 and state==SNAPSHOT=1, so old/new read pointers and word0 are identical. In LOAD, both selectors choose frozen pointers. Other differences are speculative unread data, never a captured public word",
+      "preserved_sampling": "E_freeze still captures old live pointers and word0 simultaneously; E_LOAD0 still writes old word0; no extra pipeline clock, no delayed abort, no changed reset or recovery. Uninitialized speculative data may beX while capture is disabled; valid accepted output must still rejectX",
+      "intended_check": "The current sensor_age/health chain is absent from RAM RAD and clip data cones; health remains on commit/capture/core reset. State decode and ring read/clip path still need actual mapping and physical timing",
+      "scope": "Paired mem_policy observer/policy contract only. Do not replace a generic observer interface behavior for arbitrary external frame_read_index/frame_freeze callers without a separate contract",
+      "validation": [
+        "Boolean/transition miter: every original accepted snapshot_word or core write sees the same word and ID; pointer writes and fault priority unchanged",
+        "Actual full4500 ring comparison including first history replication, all168 inputs, all425 trace neurons and6 actions; reset at E_commit/E_freeze/LOAD and stale/deadline on the same edges",
+        "Actual mapping source-cone audit before one bounded new synthesis candidate; no false-path/multicycle constraint, no current PNR input changes"
+      ]
+    }
+  ],
+  "recommended_order": [
+    "Let current PNR53/54 finish naturally and use their full routed setup/hold paths to determine whether this synthesis cone remains critical",
+    "If the same read path is critical, try H2 alone first because it preserves all original registers and eliminates control eligibility from speculative data selection",
+    "H1 is a separate single-factor fallback or follow-up for timer/stop/ready paths; do not stack both before measuring actual mapping",
+    "Do not add a generic extra read pipeline stage or sample sensor_ok one cycle late; either changes the original load/stop contract"
+  ],
+  "evidence": {
+    "report43": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43\\impl\\gwsynthesis\\g2_top_syn.rpt.html",
+      "bytes": 307031,
+      "mtime_ns": 1793019142054304100
+    },
+    "report40": {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\impl\\gwsynthesis\\g2_top_syn.rpt.html",
+      "bytes": 307512,
+      "mtime_ns": 1793000240632958300
+    },
+    "VG43": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43\\impl\\gwsynthesis\\g2_top.vg",
+      "bytes": 16881549,
+      "mtime_ns": 1793019134777639400
+    },
+    "source_identity": [
+      {
+        "path": "control/mem_policy.v",
+        "actual43": {
+          "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\control\\mem_policy.v",
+          "bytes": 6625,
+          "mtime_ns": 1792999744574020100
+        },
+        "SYN40": {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\control\\mem_policy.v",
+          "bytes": 6625,
+          "mtime_ns": 1792999744574020100
+        },
+        "byte_identical": true
+      },
+      {
+        "path": "control/rl_observation_v5.v",
+        "actual43": {
+          "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\control\\rl_observation_v5.v",
+          "bytes": 10328,
+          "mtime_ns": 1792999744568655700
+        },
+        "SYN40": {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\control\\rl_observation_v5.v",
+          "bytes": 10328,
+          "mtime_ns": 1792999744568655700
+        },
+        "byte_identical": true
+      },
+      {
+        "path": "control/rl_policy_tick_v5.v",
+        "actual43": {
+          "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\control\\rl_policy_tick_v5.v",
+          "bytes": 7491,
+          "mtime_ns": 1792999744571731800
+        },
+        "SYN40": {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\control\\rl_policy_tick_v5.v",
+          "bytes": 7491,
+          "mtime_ns": 1792999744571731800
+        },
+        "byte_identical": true
+      },
+      {
+        "path": "control4500_core.v",
+        "actual43": {
+          "path": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared8\\control4500_core.v",
+          "bytes": 20992,
+          "mtime_ns": 1792936600560105400
+        },
+        "SYN40": {
+          "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\control4500_core.v",
+          "bytes": 20992,
+          "mtime_ns": 1792936600560105400
+        },
+        "byte_identical": true
+      }
+    ],
+    "actual_local_modules": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\SYN43_sensor_age_snapshot_path_readonly1\\mem_policy.v",
+        "bytes": 69542,
+        "mtime_ns": 1793021461820406200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\SYN43_sensor_age_snapshot_path_readonly1\\rl_observation_v5.v",
+        "bytes": 709920,
+        "mtime_ns": 1793021461768788900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\SYN43_sensor_age_snapshot_path_readonly1\\rl_policy_tick_v5.v",
+        "bytes": 130115,
+        "mtime_ns": 1793021461806299600
+      }
+    ]
+  },
+  "detail_path": "F:\\nav_integration_g2_20261023\\SYN43_sensor_age_snapshot_path_readonly1\\actual_first_path_cells.json"
+}

@@ -1,0 +1,328 @@
+{
+  "at": "2026-10-26T21:30:49.456357+08:00",
+  "stage": "isolated P11 FW experiment; not selected",
+  "original_selected_image": {
+    "binary_bytes": 53572,
+    "BSS_bytes": 70004,
+    "stack_reserved_bytes": 6144,
+    "RAM_remaining_after_reserve_bytes": 1348,
+    "source": "F:\\nav_integration_g2_20261023\\stage3_SLF128_storage_RTL_prepared6"
+  },
+  "actual_full_links": [
+    {
+      "directory": "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_link_probe1",
+      "source": "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2",
+      "runtime": {
+        "pid": 69084,
+        "created_epoch": 1793020832.353979,
+        "command": [
+          "D:\\tools\\xpack-riscv-none-elf-gcc-15.2.0-1\\bin\\riscv-none-elf-gcc.exe",
+          "-fstack-usage",
+          "-save-temps=obj",
+          "-flto",
+          "-march=rv32imc_zicsr",
+          "-mabi=ilp32",
+          "-Os",
+          "-g",
+          "-std=c99",
+          "-Wall",
+          "-Wno-unused-function",
+          "-ffunction-sections",
+          "-fdata-sections",
+          "-fno-common",
+          "-nostartfiles",
+          "-specs=nano.specs",
+          "-DNAV_BASE=0x40000000u",
+          "-DGM_N=64",
+          "-DASTAR_MAXN=64",
+          "-DGM_DS=2",
+          "-Wl,--defsym=RAM_SIZE=131072",
+          "-Wl,--defsym=STACK_RESERVE=6144",
+          "-Wl,--gc-sections",
+          "-Wl,-Map=F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_link_probe1\\firmware\\nav_fw.map",
+          "-T",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\bsp\\link.ld",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\include",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\hal",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\app",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\bsp",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\astar.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\explore.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\fixmath.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\gmap.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\host_link_guard.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\imu_parse.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\lidar_cal.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\loc.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\local_frame.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\local_planner.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\motion_guard.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\nav_task.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\p11_command_guard.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\p11_raw_service.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\pose.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\pose_match.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\prior.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\proto.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\scratch.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\support_guard.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\target.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\traj_sw.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\nav\\xt_link.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\app\\nav_app.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\app\\main.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\drv\\hal_fpga.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\bsp\\console.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared2\\fw\\bsp\\start.S",
+          "-o",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_link_probe1\\firmware\\nav_fw.elf",
+          "-lgcc"
+        ],
+        "at": "2026-10-26T21:20:32.367073+08:00",
+        "log": "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_link_probe1\\RV_original_flags_LTO_link.log"
+      },
+      "link_exit_code": 1,
+      "phase": "link_failed_preserved",
+      "actual_sections": {
+        ".text": {
+          "address": 0,
+          "bytes": 52744
+        },
+        ".rodata": {
+          "address": 52744,
+          "bytes": 2884
+        },
+        ".bss": {
+          "address": 55632,
+          "bytes": 70108
+        }
+      },
+      "bss_end": 125740,
+      "stack_reserved_bytes": 6144,
+      "CPU_RAM_bytes": 131072,
+      "bytes_over_reserved_RAM": 812,
+      "actual_linked_ELF_exists": false,
+      "actual_new_p11_named_sections": {
+        "crc_byte": 36,
+        "lock_zero.constprop.0": 48,
+        "p11_guard_stationary.constprop.0": 56,
+        "p11_guard_poll.constprop.0": 82,
+        "p11_note_proposal": 120,
+        "p11_set_protocol.lto_priv.0": 78,
+        "p11_raw_work.lto_priv.0": 898
+      },
+      "source_inputs_unchanged": true
+    },
+    {
+      "directory": "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_link_probe2",
+      "source": "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3",
+      "runtime": {
+        "pid": 24788,
+        "created_epoch": 1793021181.4671268,
+        "command": [
+          "D:\\tools\\xpack-riscv-none-elf-gcc-15.2.0-1\\bin\\riscv-none-elf-gcc.exe",
+          "-fstack-usage",
+          "-save-temps=obj",
+          "-flto",
+          "-march=rv32imc_zicsr",
+          "-mabi=ilp32",
+          "-Os",
+          "-g",
+          "-std=c99",
+          "-Wall",
+          "-Wno-unused-function",
+          "-ffunction-sections",
+          "-fdata-sections",
+          "-fno-common",
+          "-nostartfiles",
+          "-specs=nano.specs",
+          "-DNAV_BASE=0x40000000u",
+          "-DGM_N=64",
+          "-DASTAR_MAXN=64",
+          "-DGM_DS=2",
+          "-Wl,--defsym=RAM_SIZE=131072",
+          "-Wl,--defsym=STACK_RESERVE=6144",
+          "-Wl,--gc-sections",
+          "-Wl,-Map=F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_link_probe2\\firmware\\nav_fw.map",
+          "-T",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\bsp\\link.ld",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\include",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\hal",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\app",
+          "-IF:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\bsp",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\astar.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\explore.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\fixmath.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\gmap.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\host_link_guard.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\imu_parse.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\lidar_cal.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\loc.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\local_frame.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\local_planner.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\motion_guard.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\nav_task.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\p11_command_guard.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\p11_raw_service.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\pose.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\pose_match.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\prior.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\proto.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\scratch.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\support_guard.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\target.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\traj_sw.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\nav\\xt_link.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\app\\nav_app.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\app\\main.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\drv\\hal_fpga.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\bsp\\console.c",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_experiment_prepared3\\fw\\bsp\\start.S",
+          "-o",
+          "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_link_probe2\\firmware\\nav_fw.elf",
+          "-lgcc"
+        ],
+        "at": "2026-10-26T21:26:21.471102+08:00",
+        "log": "F:\\nav_integration_g2_20261023\\P11_shared_guard_FW_integrated_link_probe2\\RV_original_flags_LTO_link.log"
+      },
+      "link_exit_code": 1,
+      "phase": "link_failed_preserved",
+      "actual_sections": {
+        ".text": {
+          "address": 0,
+          "bytes": 52672
+        },
+        ".rodata": {
+          "address": 52672,
+          "bytes": 2884
+        },
+        ".bss": {
+          "address": 55560,
+          "bytes": 70084
+        }
+      },
+      "bss_end": 125644,
+      "stack_reserved_bytes": 6144,
+      "CPU_RAM_bytes": 131072,
+      "bytes_over_reserved_RAM": 716,
+      "actual_linked_ELF_exists": false,
+      "actual_new_p11_named_sections": {
+        "crc_byte": 36,
+        "p11_guard_stationary.constprop.0": 56,
+        "p11_guard_poll.constprop.0": 106,
+        "p11_note_proposal": 120,
+        "p11_set_protocol.lto_priv.0": 78,
+        "p11_raw_work.lto_priv.0": 878
+      },
+      "source_inputs_unchanged": true
+    }
+  ],
+  "latest_component": {
+    "result": "F:\\nav_integration_g2_20261023\\P11_shared_FW_C_component_probe6\\result.json",
+    "passed": true,
+    "output": "PASS P11_COMPONENT checks=920520 frames=262652 full_signed_range_cases=131072 sizeof_guard=52 sizeof_epoch=8",
+    "scope": "actual guard/raw-service C + queue MMIO test double; not actual RTL bus or physical stop"
+  },
+  "first_real_component_counterexample": {
+    "directory": "F:\\nav_integration_g2_20261023\\P11_shared_FW_C_component_probe3",
+    "reason": "lock edge found inside byte helper was lost by a second poll; retained and fixed in prepared4"
+  },
+  "GCC_CRC": {
+    "global_options_unchanged": true,
+    "new_function_only_attribute": "optimize(\"no-optimize-crc\")",
+    "before_object_text_plus_rodata": 2444,
+    "after_object_text_plus_rodata": 1976,
+    "removed_table_bytes": 512,
+    "latest_rodata_bytes": 0,
+    "limitation": "isolated RV32IM object is not the full RV32IMC LTO budget"
+  },
+  "raw_source_contract": {
+    "result": "F:\\nav_integration_g2_20261023\\P11_raw_FIFO_source_contract_review1\\result.json",
+    "actual_fields": [
+      "6004 DATA valid/FIRST",
+      "6008 byte count",
+      "600C TS or zero",
+      "601C byte overflow"
+    ],
+    "queue_highwater": 30,
+    "byte_quota": 32,
+    "TS_FIFO_depth": 32,
+    "TS_total_capacity_including_held": 34,
+    "no_TS_valid_or_overflow_CSR": true,
+    "proof": "conditional first-TS-drop with post-pair byte count <=30 UNSAT",
+    "assumptions": [
+      "pristine epoch",
+      "sole raw FIFO consumer",
+      "one TS read per FIRST",
+      "byte overflow quarantine",
+      "before/after count checks",
+      "no concurrent R0 debug pops"
+    ],
+    "remaining": [
+      "actual MMIO service ordering and quiet flush",
+      "stop-clock/restart source switching",
+      "actual bounded service time"
+    ]
+  },
+  "control_contract": {
+    "management_request": "NV45 action/session; existing R0 trusted management path only",
+    "latest_draft_reply": "NV85 result/session/state only,16 total bytes",
+    "owner_states": [
+      "OFF",
+      "WAIT_ZERO",
+      "ARMED",
+      "LOCKED"
+    ],
+    "NAV_remains_only_hardware_actuator_owner": true,
+    "P11_never_renews_R0": true,
+    "command_age_us": 200000,
+    "R0_age_us": 250000,
+    "feedback_age_us": 50000,
+    "require_feedback_still_us": 500000,
+    "explicit_distinct_session_and_zero_rearm": true,
+    "final_filter": "zero-only after same common motion/support checks and R0 guard; no post-lease nonzero mux",
+    "original_CONTROL_V2_type_body_unchanged": true,
+    "WIT_optional_runtime_branch_retained": true
+  },
+  "narrow_optimization_result": "Removed only new debug counters and ACK diagnostics: actual headroom improves96B, still716B over. Further C fit has not been proved; no safety/old-function cuts authorized by this evidence.",
+  "next_decision": "Root review: keep current image; compare a small parser/atomic mailbox offload against further justified C refactor. No RTL backup implemented here.",
+  "backup": {
+    "status": "source-based design option only; no RTL/tool result",
+    "reuse": "existing uart_speed_rx CRC/range/legacy-byte state machine; tap existing imu_uart pre-FIFO accepted byte/FIRST/start timestamp rather than create another bit receiver",
+    "minimal_RTL_files": [
+      "nav/rtl/io/imu_uart.v: expose accepted byte, FIRST, actual t_start for parser tap; WIT FIFOs unchanged",
+      "new parser module factored from control/uart_speed_rx.v byte state machine; no Q12 multiply/divide path",
+      "nav/rtl/top/nav_subsystem.v + register definition/generated RF: atomic command snapshot/sequence/timestamp CSRs"
+    ],
+    "CSR_draft": [
+      "packed signed16 forward_mmps/yaw_mradps",
+      "actual FIRST start timestamp32",
+      "monotonic valid-command sequence32/status",
+      "explicit snapshot latch so FW reads one generation"
+    ],
+    "needed_new_safety": [
+      "one accepted command per FIRST burst",
+      "CRC/range errors do not update sequence/time",
+      "authorization snapshots sequence and requires newer post-authorization zero",
+      "missed sequence or ambiguous snapshot conservatively locks",
+      "P11 source mode explicit; WIT remains selectable",
+      "firmware R0/feedback/P11 TTL/common motion/support/final zero filters remain"
+    ],
+    "source_register_bits_before_mapping": "existing parser state/pending/CRC/frame-age about109; live payload/timestamp/sequence/snapshot about192 additional bits if all duplicated; exact implementation and synthesis not done",
+    "BSRAM_requested": 0,
+    "new_clock_domains": 0,
+    "actual_FF_LUT_DSP_unknown": true,
+    "possible_FW_saving": "target removes most898B raw_work parser/service and queue-integrity software; actual replacement link must measure, not assume fit"
+  },
+  "deployment_ready": false,
+  "new_BIN_INIT": false,
+  "selected_53572_or_SYN43_inputs_changed": false,
+  "not_yet_verified": [
+    "full app/proto/MMIO integrated native fixture",
+    "full integrated linked stack (link blocked)",
+    "actual RK command/UI/ownership path",
+    "busy planner350ms command and500ms physical stop"
+  ]
+}
