@@ -1,0 +1,321 @@
+{
+  "recorded_at": "2026-10-26T10:39:46.653155+08:00",
+  "scope": "Finite real CPU/RAM RTL measurements of current instrumented functions, not full-app WCET or deployed firmware",
+  "preparer": "integration/g2/prepare_cpu250_segment_probe.py",
+  "sequence": {
+    "phase": "complete",
+    "controller_pid": 59876,
+    "controller_created_epoch": 1792980871.360251,
+    "command": [
+      "D:\\Anaconda\\python.exe",
+      "-X",
+      "utf8",
+      "F:/nav_integration_g2_20261023/CPU250_nonpreemptible_segments_prepared1/run_astar_then_frontier.py"
+    ],
+    "started_epoch": 1792980871.5524545,
+    "suites": [
+      {
+        "suite": "astar",
+        "returncode": 0,
+        "result": "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\astar\\result.json"
+      },
+      {
+        "suite": "frontier",
+        "returncode": 0,
+        "result": "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\frontier\\result.json"
+      }
+    ],
+    "modelsim_started": false,
+    "updated_epoch": 1792981932.673861,
+    "current_pid": 51584,
+    "current_command": [
+      "D:\\Anaconda\\python.exe",
+      "-X",
+      "utf8",
+      "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\run_xsim.py",
+      "--suite",
+      "frontier"
+    ],
+    "current_created_epoch": 1792981666.5020936
+  },
+  "summaries": {
+    "astar": {
+      "scope": "Finite CPU/RAM RTL segment scenarios with diagnostic instrumentation; not whole-loop WCET or physical stop proof",
+      "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_emptyIMU_prepared3",
+      "actual_call_count": 167,
+      "actual_phase_row_count": 207,
+      "max_call": {
+        "kind": 2,
+        "mode": 0,
+        "chunk": 0,
+        "cycles": 2316203,
+        "time_us_at50MHz": 46324.06
+      },
+      "phase_maxima": {
+        "empty_rdcycle_bracket": {
+          "kind": 99,
+          "mode": 99,
+          "chunk": 0,
+          "phase": 0,
+          "cycles": 4,
+          "time_us_at50MHz": 0.08
+        },
+        "astar_cost_snapshot": {
+          "kind": 0,
+          "mode": 0,
+          "chunk": 0,
+          "phase": 1,
+          "cycles": 127016,
+          "time_us_at50MHz": 2540.32
+        },
+        "astar_distance_transform": {
+          "kind": 3,
+          "mode": 0,
+          "chunk": 0,
+          "phase": 2,
+          "cycles": 1468292,
+          "time_us_at50MHz": 29365.84
+        },
+        "astar_coordinate_and_g_parent_heap_initialization": {
+          "kind": 0,
+          "mode": 0,
+          "chunk": 0,
+          "phase": 3,
+          "cycles": 205206,
+          "time_us_at50MHz": 4104.12
+        },
+        "astar_up_to128_heap_pops": {
+          "kind": 2,
+          "mode": 0,
+          "chunk": 6,
+          "phase": 4,
+          "cycles": 646860,
+          "time_us_at50MHz": 12937.2
+        },
+        "astar_backtrace_and_atomic_path_publication": {
+          "kind": 2,
+          "mode": 0,
+          "chunk": 29,
+          "phase": 5,
+          "cycles": 142710,
+          "time_us_at50MHz": 2854.2
+        }
+      },
+      "call_rows": [],
+      "instrumentation_included": true,
+      "service_fixture": {
+        "service_cycles": 0,
+        "watchdog_cycles": 200000000,
+        "inputs": "64x64 empty, unknown, alternating-gap walls, checker obstacles, disconnected endpoints; actual coarse/fine configs; complete_only and128 heap pops; no scheduler gaps",
+        "build": {
+          "compiled": true,
+          "binary_bytes": 4200,
+          "command": [
+            "D:\\tools\\xpack-riscv-none-elf-gcc-15.2.0-1\\bin\\riscv-none-elf-gcc.exe",
+            "-march=rv32imc_zicsr",
+            "-mabi=ilp32",
+            "-Os",
+            "-flto",
+            "-std=c99",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-fno-common",
+            "-nostartfiles",
+            "-specs=nano.specs",
+            "-DNAV_BASE=0x40000000u",
+            "-DGM_N=64",
+            "-DASTAR_MAXN=64",
+            "-DGM_DS=2",
+            "-Wl,--gc-sections",
+            "-Wl,--defsym=RAM_SIZE=131072",
+            "-Wl,--defsym=STACK_RESERVE=6144",
+            "-T",
+            "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\bsp\\link.ld",
+            "-IF:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw",
+            "-IF:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\include",
+            "-IF:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\hal",
+            "-IF:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\nav",
+            "-IF:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\app",
+            "-IF:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\bsp",
+            "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\astar\\bench.c",
+            "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\nav\\astar.c",
+            "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\nav\\scratch.c",
+            "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\bsp\\start.S",
+            "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\bsp\\console.c",
+            "-o",
+            "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\astar\\bench.elf",
+            "-lgcc"
+          ],
+          "size": "   text\t   data\t    bss\t    dec\t    hex\tfilename\n   4198\t      0\t  26392\t  30590\t   777e\tF:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\astar\\bench.elf\n",
+          "simulator_started": false,
+          "measurement_available": false
+        }
+      },
+      "result_path": "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\astar\\result.json",
+      "result_bytes": 56658,
+      "result_mtime_ns": 1792981666475939100,
+      "log_tail": [
+        "SEG kind=4 mode=1 chunk=0 phase=5 cycles=384",
+        "FINAL kind=4 mode=1 result=-1 points=1 expanded=1 dropped=0 busy=0",
+        "SEGMENT_PROBE_FINISHED",
+        "$finish called at time : 1964372330 ns : File \"F:/nav_integration_g2_20261023/CPU250_nonpreemptible_segments_prepared1/astar/tb_cpu250_segments.sv\" Line 38",
+        "run: Time (s): cpu = 00:00:01 ; elapsed = 00:13:02 . Memory (MB): peak = 231.074 ; gain = 0.000",
+        "exit",
+        "INFO: xsimkernel Simulation Memory Usage: 220892 KB (Peak: 220892 KB), Simulation CPU Usage: 766671 ms",
+        "INFO: [Common 17-206] Exiting xsim at Mon Oct 26 10:27:46 2026..."
+      ]
+    },
+    "frontier": {
+      "scope": "Finite CPU/RAM RTL segment scenarios with diagnostic instrumentation; not whole-loop WCET or physical stop proof",
+      "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_emptyIMU_prepared3",
+      "actual_call_count": 6,
+      "actual_phase_row_count": 12,
+      "max_call": {
+        "kind": 0,
+        "mode": 1,
+        "chunk": 0,
+        "cycles": 10403444,
+        "time_us_at50MHz": 208068.88
+      },
+      "phase_maxima": {
+        "frontier_distance_queue_initialization": {
+          "kind": 0,
+          "mode": 0,
+          "chunk": 0,
+          "phase": 7,
+          "cycles": 163920,
+          "time_us_at50MHz": 3278.4
+        },
+        "frontier_entire_BFS_and_scoring": {
+          "kind": 0,
+          "mode": 1,
+          "chunk": 0,
+          "phase": 8,
+          "cycles": 10238369,
+          "time_us_at50MHz": 204767.38
+        }
+      },
+      "call_rows": [
+        {
+          "kind": 0,
+          "mode": 0,
+          "chunk": 0,
+          "cycles": 3198117,
+          "time_us_at50MHz": 63962.34
+        },
+        {
+          "kind": 1,
+          "mode": 0,
+          "chunk": 0,
+          "cycles": 1442959,
+          "time_us_at50MHz": 28859.18
+        },
+        {
+          "kind": 2,
+          "mode": 0,
+          "chunk": 0,
+          "cycles": 2791749,
+          "time_us_at50MHz": 55834.98
+        },
+        {
+          "kind": 0,
+          "mode": 1,
+          "chunk": 0,
+          "cycles": 10403444,
+          "time_us_at50MHz": 208068.88
+        },
+        {
+          "kind": 1,
+          "mode": 1,
+          "chunk": 0,
+          "cycles": 2638940,
+          "time_us_at50MHz": 52778.8
+        },
+        {
+          "kind": 2,
+          "mode": 1,
+          "chunk": 0,
+          "cycles": 9114097,
+          "time_us_at50MHz": 182281.94
+        }
+      ],
+      "instrumentation_included": true,
+      "service_fixture": {
+        "service_cycles": 0,
+        "watchdog_cycles": 100000000,
+        "inputs": "64x64 all-known,32x32 known island in unknown, alternating-gap walls; seen_mode false/true; actual default config and full queue",
+        "build": {
+          "compiled": true,
+          "binary_bytes": 3416,
+          "command": [
+            "D:\\tools\\xpack-riscv-none-elf-gcc-15.2.0-1\\bin\\riscv-none-elf-gcc.exe",
+            "-march=rv32imc_zicsr",
+            "-mabi=ilp32",
+            "-Os",
+            "-flto",
+            "-std=c99",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-fno-common",
+            "-nostartfiles",
+            "-specs=nano.specs",
+            "-DNAV_BASE=0x40000000u",
+            "-DGM_N=64",
+            "-DASTAR_MAXN=64",
+            "-DGM_DS=2",
+            "-Wl,--gc-sections",
+            "-Wl,--defsym=RAM_SIZE=131072",
+            "-Wl,--defsym=STACK_RESERVE=6144",
+            "-T",
+            "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\bsp\\link.ld",
+            "-IF:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw",
+            "-IF:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\include",
+            "-IF:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\hal",
+            "-IF:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\nav",
+            "-IF:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\app",
+            "-IF:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\bsp",
+            "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\frontier\\bench.c",
+            "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\nav\\explore.c",
+            "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\nav\\scratch.c",
+            "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\nav\\astar.c",
+            "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\nav\\gmap.c",
+            "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\nav\\fixmath.c",
+            "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\bsp\\start.S",
+            "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\fw\\bsp\\console.c",
+            "-o",
+            "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\frontier\\bench.elf",
+            "-lgcc"
+          ],
+          "size": "   text\t   data\t    bss\t    dec\t    hex\tfilename\n   3416\t      0\t  42608\t  46024\t   b3c8\tF:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\frontier\\bench.elf\n",
+          "simulator_started": false,
+          "measurement_available": false
+        }
+      },
+      "result_path": "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\frontier\\result.json",
+      "result_bytes": 6397,
+      "result_mtime_ns": 1792981932652395900,
+      "log_tail": [
+        "SEG kind=2 mode=1 chunk=0 phase=8 cycles=8949022",
+        "FRONTIER kind=2 mode=1 result=1 gx=3149 gy=4049 n=1825",
+        "SEGMENT_PROBE_FINISHED",
+        "$finish called at time : 665060530 ns : File \"F:/nav_integration_g2_20261023/CPU250_nonpreemptible_segments_prepared1/frontier/tb_cpu250_segments.sv\" Line 38",
+        "run: Time (s): cpu = 00:00:00 ; elapsed = 00:04:15 . Memory (MB): peak = 230.328 ; gain = 0.000",
+        "exit",
+        "INFO: xsimkernel Simulation Memory Usage: 104772 KB (Peak: 104772 KB), Simulation CPU Usage: 249812 ms",
+        "INFO: [Common 17-206] Exiting xsim at Mon Oct 26 10:32:12 2026..."
+      ]
+    }
+  },
+  "350ms_zero_age_whole_application_proven": false,
+  "500ms_physical_stop_proven": false,
+  "source_assumptions": [
+    "50MHz real PicoRV32/nav_soc/128KiB original RTL",
+    "Current source functions plus rdcycle instrumentation and diagnostic entrypoints; LTO/link context and probe instrumentation may change instruction timing vs whole app.",
+    "10 A-star map/config cases and6 frontier cases; no claim of exhaustive input space.",
+    "Frontier208.06888ms is 64x64 all-known grid with seen_mode=true and left-half seen; BFS+scoring204.76738ms. Operating3x5m alone does not establish that this array input is impossible; application reachability is being separately audited."
+  ],
+  "interpretation": "Frontier call exceeds100ms busy-work allowance for250ms threshold plus350ms zero publication budget. This is evidence of risk and a finite function-level counterexample to a100ms no-yield assumption, not an observed whole-app350ms failure.",
+  "next": "Independently prepare bounded cooperative search checkpoints or stateful slicing with exact scoring/goal equivalence, coherent snapshots, bounded heartbeat service and cancellation; do not alter deployed FW, shrink maps, skip nodes or relax stop limits.",
+  "new_joint_SYN_PNR": false,
+  "programmed": false
+}
