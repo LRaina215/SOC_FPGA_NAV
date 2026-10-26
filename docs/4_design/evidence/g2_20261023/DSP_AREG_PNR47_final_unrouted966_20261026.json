@@ -1,0 +1,2900 @@
+{
+  "passed": true,
+  "scope": "Actual failedPNR47 resource/storage/INIT/DSP preservation/26 physical connections, not timing acceptance",
+  "recorded_at": "2026-10-26T09:33:55.694491+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_AREG_pnr47",
+  "baseline": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35",
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-26T09:00:51.581461+08:00",
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 17712,
+    "elapsed_s": 1789.8120000000345,
+    "no_observable_progress_s": 0.0,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        1686,
+        1792978239385852200
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        1218,
+        1792978239385852200
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2394160,
+        1792976819916049500
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        13869258,
+        1792976820388474000
+      ],
+      [
+        "impl\\pnr\\g2_top.rpt.txt",
+        93260,
+        1792978235121414900
+      ],
+      [
+        "impl\\pnr\\g2_top.vo",
+        44731243,
+        1792978239377564400
+      ]
+    ],
+    "tool_exit": 1,
+    "ended_at": "2026-10-26T09:30:41.395573+08:00"
+  },
+  "unrouted": 966,
+  "actual_resources": {
+    "Logic": 89876,
+    "Register": 40146,
+    "CLS": 55648,
+    "BSRAM": 332,
+    "DSP": 163.5,
+    "LUT": 53131,
+    "ALU": 9965,
+    "ROM16": 3650,
+    "RAM16": 3855
+  },
+  "resource_delta_vs_routed35": {
+    "Logic": 259,
+    "Register": 54,
+    "CLS": 131,
+    "BSRAM": 0,
+    "DSP": 0.0,
+    "LUT": 214,
+    "ALU": 45,
+    "ROM16": 0,
+    "RAM16": 0
+  },
+  "physical_RAM332_all_geometry_and_explicit_INIT_identical_to_routed_anchor": true,
+  "physical_18_split_pairs_retained": true,
+  "CPU64_and_128KiB_INIT_preserved": true,
+  "actual_clocks": {
+    "clk50_d": "clk50",
+    "u_lmac/n13_6": "rgmii_rxc",
+    "u_lmac/n630_6": "clk50",
+    "rgmii_rxc_d": "rgmii_rxc"
+  },
+  "actual26_CDC_endpoints_and_clocks_match_routed35": true,
+  "actual6_DSP_AREG_parameters_input_clock_control_ports_same_as_proven_SYN33": true,
+  "DSP_rows": [
+    {
+      "name": "u_control/model_thread/actuator_map/dsp_input_lh",
+      "parameters_identical": true,
+      "input_control_and_clock_ports_identical": true,
+      "parameter_differences": {},
+      "input_differences": {},
+      "all_effective_parameters": {
+        "AREG_CLK": "\"CLK0\"",
+        "AREG_CE": "\"CE0\"",
+        "AREG_RESET": "\"RESET0\"",
+        "BREG_CLK": "\"BYPASS\"",
+        "BREG_CE": "\"CE0\"",
+        "BREG_RESET": "\"RESET0\"",
+        "DREG_CLK": "\"BYPASS\"",
+        "DREG_CE": "\"CE0\"",
+        "DREG_RESET": "\"RESET0\"",
+        "C_IREG_CLK": "\"BYPASS\"",
+        "C_IREG_CE": "\"CE0\"",
+        "C_IREG_RESET": "\"RESET0\"",
+        "PSEL_IREG_CLK": "\"BYPASS\"",
+        "PSEL_IREG_CE": "\"CE0\"",
+        "PSEL_IREG_RESET": "\"RESET0\"",
+        "PADDSUB_IREG_CLK": "\"BYPASS\"",
+        "PADDSUB_IREG_CE": "\"CE0\"",
+        "PADDSUB_IREG_RESET": "\"RESET0\"",
+        "ADDSUB0_IREG_CLK": "\"BYPASS\"",
+        "ADDSUB0_IREG_CE": "\"CE0\"",
+        "ADDSUB0_IREG_RESET": "\"RESET0\"",
+        "ADDSUB1_IREG_CLK": "\"BYPASS\"",
+        "ADDSUB1_IREG_CE": "\"CE0\"",
+        "ADDSUB1_IREG_RESET": "\"RESET0\"",
+        "CSEL_IREG_CLK": "\"BYPASS\"",
+        "CSEL_IREG_CE": "\"CE0\"",
+        "CSEL_IREG_RESET": "\"RESET0\"",
+        "CASISEL_IREG_CLK": "\"BYPASS\"",
+        "CASISEL_IREG_CE": "\"CE0\"",
+        "CASISEL_IREG_RESET": "\"RESET0\"",
+        "ACCSEL_IREG_CLK": "\"BYPASS\"",
+        "ACCSEL_IREG_CE": "\"CE0\"",
+        "ACCSEL_IREG_RESET": "\"RESET0\"",
+        "PREG_CLK": "\"BYPASS\"",
+        "PREG_CE": "\"CE0\"",
+        "PREG_RESET": "\"RESET0\"",
+        "ADDSUB0_PREG_CLK": "\"BYPASS\"",
+        "ADDSUB0_PREG_CE": "\"CE0\"",
+        "ADDSUB0_PREG_RESET": "\"RESET0\"",
+        "ADDSUB1_PREG_CLK": "\"BYPASS\"",
+        "ADDSUB1_PREG_CE": "\"CE0\"",
+        "ADDSUB1_PREG_RESET": "\"RESET0\"",
+        "CSEL_PREG_CLK": "\"BYPASS\"",
+        "CSEL_PREG_CE": "\"CE0\"",
+        "CSEL_PREG_RESET": "\"RESET0\"",
+        "CASISEL_PREG_CLK": "\"BYPASS\"",
+        "CASISEL_PREG_CE": "\"CE0\"",
+        "CASISEL_PREG_RESET": "\"RESET0\"",
+        "ACCSEL_PREG_CLK": "\"BYPASS\"",
+        "ACCSEL_PREG_CE": "\"CE0\"",
+        "ACCSEL_PREG_RESET": "\"RESET0\"",
+        "C_PREG_CLK": "\"BYPASS\"",
+        "C_PREG_CE": "\"CE0\"",
+        "C_PREG_RESET": "\"RESET0\"",
+        "FB_PREG_EN": "\"FALSE\"",
+        "SOA_PREG_EN": "\"FALSE\"",
+        "OREG_CLK": "\"BYPASS\"",
+        "OREG_CE": "\"CE0\"",
+        "OREG_RESET": "\"RESET0\"",
+        "MULT_RESET_MODE": "\"SYNC\"",
+        "PRE_LOAD": "48'h000000000000",
+        "DYN_P_SEL": "\"FALSE\"",
+        "P_SEL": "1'b0",
+        "DYN_P_ADDSUB": "\"FALSE\"",
+        "P_ADDSUB": "1'b0",
+        "DYN_A_SEL": "\"FALSE\"",
+        "A_SEL": "1'b0",
+        "DYN_ADD_SUB_0": "\"FALSE\"",
+        "ADD_SUB_0": "1'b0",
+        "DYN_ADD_SUB_1": "\"FALSE\"",
+        "ADD_SUB_1": "1'b0",
+        "DYN_C_SEL": "\"FALSE\"",
+        "C_SEL": "1'b0",
+        "DYN_CASI_SEL": "\"FALSE\"",
+        "CASI_SEL": "1'b0",
+        "DYN_ACC_SEL": "\"FALSE\"",
+        "ACC_SEL": "1'b0",
+        "MULT12X12_EN": "\"FALSE\""
+      },
+      "actual": {
+        "name": "u_control/model_thread/actuator_map/dsp_input_lh",
+        "kind": "MULTALU27X18",
+        "ports": {
+          "DOUT": "{\\u_control/model_thread/actuator_map/product48_lh [47], \\u_control/model_thread/actuator_map/DOUT [46:44], \\u_control/model_thread/actuator_map/product48_lh [43:0]}",
+          "CASO": "{\\u_control/model_thread/actuator_map/CASO [47:0]}",
+          "SOA": "{\\u_control/model_thread/actuator_map/SOA [26:0]}",
+          "ASEL": "GND",
+          "PADDSUB": "GND",
+          "ACCSEL": "GND",
+          "CASISEL": "GND",
+          "PSEL": "GND",
+          "CSEL": "GND",
+          "A": "{\\u_control/model_thread/action_preview [23], \\u_control/model_thread/action_preview [23], \\u_control/model_thread/action_preview [23], \\u_control/model_thread/action_preview [23], \\u_control/model_thread/action_preview [23], \\u_control/model_thread/action_preview [23], \\u_control/model_thread/action_preview [23], \\u_control/model_thread/action_preview [23], \\u_control/model_thread/action_preview [23], \\u_control/model_thread/actuator_map/clipped_lh [17:16], \\u_control/model_thread/action_preview [23], \\u_control/model_thread/action_preview [23], \\u_control/model_thread/action_preview [23], \\u_control/model_thread/actuator_map/clipped_lh [12:0]}",
+          "B": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, VCC, GND, GND, VCC, VCC}",
+          "C": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "D": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "SIA": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "CASI": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "ADDSUB": "{GND, GND}",
+          "CLK": "{GND, clk50_d}",
+          "CE": "{VCC, VCC}",
+          "RESET": "{GND, GND}"
+        },
+        "parameters": {
+          "ADDSUB0_IREG_CLK": "\"BYPASS\"",
+          "ADDSUB0_IREG_CE": "\"CE0\"",
+          "ADDSUB0_IREG_RESET": "\"RESET0\"",
+          "ADDSUB1_IREG_CLK": "\"BYPASS\"",
+          "ADDSUB1_IREG_CE": "\"CE0\"",
+          "ADDSUB1_IREG_RESET": "\"RESET0\"",
+          "ADDSUB0_PREG_CLK": "\"BYPASS\"",
+          "ADDSUB0_PREG_CE": "\"CE0\"",
+          "ADDSUB0_PREG_RESET": "\"RESET0\"",
+          "ADDSUB1_PREG_CLK": "\"BYPASS\"",
+          "ADDSUB1_PREG_CE": "\"CE0\"",
+          "ADDSUB1_PREG_RESET": "\"RESET0\"",
+          "OREG_CLK": "\"BYPASS\"",
+          "OREG_CE": "\"CE0\"",
+          "OREG_RESET": "\"RESET0\"",
+          "MULT_RESET_MODE": "\"SYNC\"",
+          "PRE_LOAD": "48'h000000000000",
+          "AREG_CLK": "\"CLK0\"",
+          "AREG_CE": "\"CE0\"",
+          "AREG_RESET": "\"RESET0\"",
+          "BREG_CLK": "\"BYPASS\"",
+          "BREG_CE": "\"CE0\"",
+          "BREG_RESET": "\"RESET0\"",
+          "DREG_CLK": "\"BYPASS\"",
+          "DREG_CE": "\"CE0\"",
+          "DREG_RESET": "\"RESET0\"",
+          "PADDSUB_IREG_CLK": "\"BYPASS\"",
+          "PADDSUB_IREG_CE": "\"CE0\"",
+          "PADDSUB_IREG_RESET": "\"RESET0\"",
+          "PREG_CLK": "\"BYPASS\"",
+          "PREG_CE": "\"CE0\"",
+          "PREG_RESET": "\"RESET0\"",
+          "PSEL_IREG_CLK": "\"BYPASS\"",
+          "PSEL_IREG_CE": "\"CE0\"",
+          "PSEL_IREG_RESET": "\"RESET0\"",
+          "DYN_P_SEL": "\"FALSE\"",
+          "P_SEL": "1'b0",
+          "DYN_A_SEL": "\"FALSE\"",
+          "A_SEL": "1'b0",
+          "DYN_C_SEL": "\"FALSE\"",
+          "C_SEL": "1'b0",
+          "DYN_CASI_SEL": "\"FALSE\"",
+          "CASI_SEL": "1'b0",
+          "DYN_ACC_SEL": "\"FALSE\"",
+          "ACC_SEL": "1'b0",
+          "DYN_P_ADDSUB": "\"FALSE\"",
+          "P_ADDSUB": "1'b0",
+          "C_IREG_CLK": "\"BYPASS\"",
+          "C_IREG_CE": "\"CE0\"",
+          "C_IREG_RESET": "\"RESET0\"",
+          "C_PREG_CLK": "\"BYPASS\"",
+          "C_PREG_CE": "\"CE0\"",
+          "C_PREG_RESET": "\"RESET0\"",
+          "CSEL_IREG_CLK": "\"BYPASS\"",
+          "CSEL_IREG_CE": "\"CE0\"",
+          "CSEL_IREG_RESET": "\"RESET0\"",
+          "CSEL_PREG_CLK": "\"BYPASS\"",
+          "CSEL_PREG_CE": "\"CE0\"",
+          "CSEL_PREG_RESET": "\"RESET0\"",
+          "CASISEL_IREG_CLK": "\"BYPASS\"",
+          "CASISEL_IREG_CE": "\"CE0\"",
+          "CASISEL_IREG_RESET": "\"RESET0\"",
+          "CASISEL_PREG_CLK": "\"BYPASS\"",
+          "CASISEL_PREG_CE": "\"CE0\"",
+          "CASISEL_PREG_RESET": "\"RESET0\"",
+          "ACCSEL_IREG_CLK": "\"BYPASS\"",
+          "ACCSEL_IREG_CE": "\"CE0\"",
+          "ACCSEL_IREG_RESET": "\"RESET0\"",
+          "ACCSEL_PREG_CLK": "\"BYPASS\"",
+          "ACCSEL_PREG_CE": "\"CE0\"",
+          "ACCSEL_PREG_RESET": "\"RESET0\"",
+          "FB_PREG_EN": "\"FALSE\"",
+          "SOA_PREG_EN": "\"FALSE\"",
+          "DYN_ADD_SUB_0": "\"FALSE\"",
+          "ADD_SUB_0": "1'b0",
+          "DYN_ADD_SUB_1": "\"FALSE\"",
+          "ADD_SUB_1": "1'b0",
+          "MULT12X12_EN": "\"FALSE\""
+        }
+      }
+    },
+    {
+      "name": "u_control/model_thread/actuator_map/dsp_input_lk",
+      "parameters_identical": true,
+      "input_control_and_clock_ports_identical": true,
+      "parameter_differences": {},
+      "input_differences": {},
+      "all_effective_parameters": {
+        "AREG_CLK": "\"CLK0\"",
+        "AREG_CE": "\"CE0\"",
+        "AREG_RESET": "\"RESET0\"",
+        "BREG_CLK": "\"BYPASS\"",
+        "BREG_CE": "\"CE0\"",
+        "BREG_RESET": "\"RESET0\"",
+        "DREG_CLK": "\"BYPASS\"",
+        "DREG_CE": "\"CE0\"",
+        "DREG_RESET": "\"RESET0\"",
+        "C_IREG_CLK": "\"BYPASS\"",
+        "C_IREG_CE": "\"CE0\"",
+        "C_IREG_RESET": "\"RESET0\"",
+        "PSEL_IREG_CLK": "\"BYPASS\"",
+        "PSEL_IREG_CE": "\"CE0\"",
+        "PSEL_IREG_RESET": "\"RESET0\"",
+        "PADDSUB_IREG_CLK": "\"BYPASS\"",
+        "PADDSUB_IREG_CE": "\"CE0\"",
+        "PADDSUB_IREG_RESET": "\"RESET0\"",
+        "ADDSUB0_IREG_CLK": "\"BYPASS\"",
+        "ADDSUB0_IREG_CE": "\"CE0\"",
+        "ADDSUB0_IREG_RESET": "\"RESET0\"",
+        "ADDSUB1_IREG_CLK": "\"BYPASS\"",
+        "ADDSUB1_IREG_CE": "\"CE0\"",
+        "ADDSUB1_IREG_RESET": "\"RESET0\"",
+        "CSEL_IREG_CLK": "\"BYPASS\"",
+        "CSEL_IREG_CE": "\"CE0\"",
+        "CSEL_IREG_RESET": "\"RESET0\"",
+        "CASISEL_IREG_CLK": "\"BYPASS\"",
+        "CASISEL_IREG_CE": "\"CE0\"",
+        "CASISEL_IREG_RESET": "\"RESET0\"",
+        "ACCSEL_IREG_CLK": "\"BYPASS\"",
+        "ACCSEL_IREG_CE": "\"CE0\"",
+        "ACCSEL_IREG_RESET": "\"RESET0\"",
+        "PREG_CLK": "\"BYPASS\"",
+        "PREG_CE": "\"CE0\"",
+        "PREG_RESET": "\"RESET0\"",
+        "ADDSUB0_PREG_CLK": "\"BYPASS\"",
+        "ADDSUB0_PREG_CE": "\"CE0\"",
+        "ADDSUB0_PREG_RESET": "\"RESET0\"",
+        "ADDSUB1_PREG_CLK": "\"BYPASS\"",
+        "ADDSUB1_PREG_CE": "\"CE0\"",
+        "ADDSUB1_PREG_RESET": "\"RESET0\"",
+        "CSEL_PREG_CLK": "\"BYPASS\"",
+        "CSEL_PREG_CE": "\"CE0\"",
+        "CSEL_PREG_RESET": "\"RESET0\"",
+        "CASISEL_PREG_CLK": "\"BYPASS\"",
+        "CASISEL_PREG_CE": "\"CE0\"",
+        "CASISEL_PREG_RESET": "\"RESET0\"",
+        "ACCSEL_PREG_CLK": "\"BYPASS\"",
+        "ACCSEL_PREG_CE": "\"CE0\"",
+        "ACCSEL_PREG_RESET": "\"RESET0\"",
+        "C_PREG_CLK": "\"BYPASS\"",
+        "C_PREG_CE": "\"CE0\"",
+        "C_PREG_RESET": "\"RESET0\"",
+        "FB_PREG_EN": "\"FALSE\"",
+        "SOA_PREG_EN": "\"FALSE\"",
+        "OREG_CLK": "\"BYPASS\"",
+        "OREG_CE": "\"CE0\"",
+        "OREG_RESET": "\"RESET0\"",
+        "MULT_RESET_MODE": "\"SYNC\"",
+        "PRE_LOAD": "48'h000000000000",
+        "DYN_P_SEL": "\"FALSE\"",
+        "P_SEL": "1'b0",
+        "DYN_P_ADDSUB": "\"FALSE\"",
+        "P_ADDSUB": "1'b0",
+        "DYN_A_SEL": "\"FALSE\"",
+        "A_SEL": "1'b0",
+        "DYN_ADD_SUB_0": "\"FALSE\"",
+        "ADD_SUB_0": "1'b0",
+        "DYN_ADD_SUB_1": "\"FALSE\"",
+        "ADD_SUB_1": "1'b0",
+        "DYN_C_SEL": "\"FALSE\"",
+        "C_SEL": "1'b0",
+        "DYN_CASI_SEL": "\"FALSE\"",
+        "CASI_SEL": "1'b0",
+        "DYN_ACC_SEL": "\"FALSE\"",
+        "ACC_SEL": "1'b0",
+        "MULT12X12_EN": "\"FALSE\""
+      },
+      "actual": {
+        "name": "u_control/model_thread/actuator_map/dsp_input_lk",
+        "kind": "MULTALU27X18",
+        "ports": {
+          "DOUT": "{\\u_control/model_thread/actuator_map/product48_lk [47], \\u_control/model_thread/actuator_map/DOUT_0 [46:44], \\u_control/model_thread/actuator_map/product48_lk [43:0]}",
+          "CASO": "{\\u_control/model_thread/actuator_map/CASO_0 [47:0]}",
+          "SOA": "{\\u_control/model_thread/actuator_map/SOA_0 [26:0]}",
+          "ASEL": "GND",
+          "PADDSUB": "GND",
+          "ACCSEL": "GND",
+          "CASISEL": "GND",
+          "PSEL": "GND",
+          "CSEL": "GND",
+          "A": "{\\u_control/model_thread/action_preview [47], \\u_control/model_thread/action_preview [47], \\u_control/model_thread/action_preview [47], \\u_control/model_thread/action_preview [47], \\u_control/model_thread/action_preview [47], \\u_control/model_thread/action_preview [47], \\u_control/model_thread/action_preview [47], \\u_control/model_thread/action_preview [47], \\u_control/model_thread/action_preview [47], \\u_control/model_thread/actuator_map/clipped_lk [17:16], \\u_control/model_thread/action_preview [47], \\u_control/model_thread/action_preview [47], \\u_control/model_thread/action_preview [47], \\u_control/model_thread/actuator_map/clipped_lk [12:0]}",
+          "B": "{VCC, VCC, VCC, VCC, VCC, VCC, VCC, VCC, VCC, VCC, VCC, VCC, VCC, GND, VCC, VCC, GND, VCC}",
+          "C": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "D": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "SIA": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "CASI": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "ADDSUB": "{GND, GND}",
+          "CLK": "{GND, clk50_d}",
+          "CE": "{VCC, VCC}",
+          "RESET": "{GND, GND}"
+        },
+        "parameters": {
+          "ADDSUB0_IREG_CLK": "\"BYPASS\"",
+          "ADDSUB0_IREG_CE": "\"CE0\"",
+          "ADDSUB0_IREG_RESET": "\"RESET0\"",
+          "ADDSUB1_IREG_CLK": "\"BYPASS\"",
+          "ADDSUB1_IREG_CE": "\"CE0\"",
+          "ADDSUB1_IREG_RESET": "\"RESET0\"",
+          "ADDSUB0_PREG_CLK": "\"BYPASS\"",
+          "ADDSUB0_PREG_CE": "\"CE0\"",
+          "ADDSUB0_PREG_RESET": "\"RESET0\"",
+          "ADDSUB1_PREG_CLK": "\"BYPASS\"",
+          "ADDSUB1_PREG_CE": "\"CE0\"",
+          "ADDSUB1_PREG_RESET": "\"RESET0\"",
+          "OREG_CLK": "\"BYPASS\"",
+          "OREG_CE": "\"CE0\"",
+          "OREG_RESET": "\"RESET0\"",
+          "MULT_RESET_MODE": "\"SYNC\"",
+          "PRE_LOAD": "48'h000000000000",
+          "AREG_CLK": "\"CLK0\"",
+          "AREG_CE": "\"CE0\"",
+          "AREG_RESET": "\"RESET0\"",
+          "BREG_CLK": "\"BYPASS\"",
+          "BREG_CE": "\"CE0\"",
+          "BREG_RESET": "\"RESET0\"",
+          "DREG_CLK": "\"BYPASS\"",
+          "DREG_CE": "\"CE0\"",
+          "DREG_RESET": "\"RESET0\"",
+          "PADDSUB_IREG_CLK": "\"BYPASS\"",
+          "PADDSUB_IREG_CE": "\"CE0\"",
+          "PADDSUB_IREG_RESET": "\"RESET0\"",
+          "PREG_CLK": "\"BYPASS\"",
+          "PREG_CE": "\"CE0\"",
+          "PREG_RESET": "\"RESET0\"",
+          "PSEL_IREG_CLK": "\"BYPASS\"",
+          "PSEL_IREG_CE": "\"CE0\"",
+          "PSEL_IREG_RESET": "\"RESET0\"",
+          "DYN_P_SEL": "\"FALSE\"",
+          "P_SEL": "1'b0",
+          "DYN_A_SEL": "\"FALSE\"",
+          "A_SEL": "1'b0",
+          "DYN_C_SEL": "\"FALSE\"",
+          "C_SEL": "1'b0",
+          "DYN_CASI_SEL": "\"FALSE\"",
+          "CASI_SEL": "1'b0",
+          "DYN_ACC_SEL": "\"FALSE\"",
+          "ACC_SEL": "1'b0",
+          "DYN_P_ADDSUB": "\"FALSE\"",
+          "P_ADDSUB": "1'b0",
+          "C_IREG_CLK": "\"BYPASS\"",
+          "C_IREG_CE": "\"CE0\"",
+          "C_IREG_RESET": "\"RESET0\"",
+          "C_PREG_CLK": "\"BYPASS\"",
+          "C_PREG_CE": "\"CE0\"",
+          "C_PREG_RESET": "\"RESET0\"",
+          "CSEL_IREG_CLK": "\"BYPASS\"",
+          "CSEL_IREG_CE": "\"CE0\"",
+          "CSEL_IREG_RESET": "\"RESET0\"",
+          "CSEL_PREG_CLK": "\"BYPASS\"",
+          "CSEL_PREG_CE": "\"CE0\"",
+          "CSEL_PREG_RESET": "\"RESET0\"",
+          "CASISEL_IREG_CLK": "\"BYPASS\"",
+          "CASISEL_IREG_CE": "\"CE0\"",
+          "CASISEL_IREG_RESET": "\"RESET0\"",
+          "CASISEL_PREG_CLK": "\"BYPASS\"",
+          "CASISEL_PREG_CE": "\"CE0\"",
+          "CASISEL_PREG_RESET": "\"RESET0\"",
+          "ACCSEL_IREG_CLK": "\"BYPASS\"",
+          "ACCSEL_IREG_CE": "\"CE0\"",
+          "ACCSEL_IREG_RESET": "\"RESET0\"",
+          "ACCSEL_PREG_CLK": "\"BYPASS\"",
+          "ACCSEL_PREG_CE": "\"CE0\"",
+          "ACCSEL_PREG_RESET": "\"RESET0\"",
+          "FB_PREG_EN": "\"FALSE\"",
+          "SOA_PREG_EN": "\"FALSE\"",
+          "DYN_ADD_SUB_0": "\"FALSE\"",
+          "ADD_SUB_0": "1'b0",
+          "DYN_ADD_SUB_1": "\"FALSE\"",
+          "ADD_SUB_1": "1'b0",
+          "MULT12X12_EN": "\"FALSE\""
+        }
+      }
+    },
+    {
+      "name": "u_control/model_thread/actuator_map/dsp_input_lw",
+      "parameters_identical": true,
+      "input_control_and_clock_ports_identical": true,
+      "parameter_differences": {},
+      "input_differences": {},
+      "all_effective_parameters": {
+        "AREG_CLK": "\"CLK0\"",
+        "AREG_CE": "\"CE0\"",
+        "AREG_RESET": "\"RESET0\"",
+        "BREG_CLK": "\"BYPASS\"",
+        "BREG_CE": "\"CE0\"",
+        "BREG_RESET": "\"RESET0\"",
+        "DREG_CLK": "\"BYPASS\"",
+        "DREG_CE": "\"CE0\"",
+        "DREG_RESET": "\"RESET0\"",
+        "C_IREG_CLK": "\"BYPASS\"",
+        "C_IREG_CE": "\"CE0\"",
+        "C_IREG_RESET": "\"RESET0\"",
+        "PSEL_IREG_CLK": "\"BYPASS\"",
+        "PSEL_IREG_CE": "\"CE0\"",
+        "PSEL_IREG_RESET": "\"RESET0\"",
+        "PADDSUB_IREG_CLK": "\"BYPASS\"",
+        "PADDSUB_IREG_CE": "\"CE0\"",
+        "PADDSUB_IREG_RESET": "\"RESET0\"",
+        "ADDSUB0_IREG_CLK": "\"BYPASS\"",
+        "ADDSUB0_IREG_CE": "\"CE0\"",
+        "ADDSUB0_IREG_RESET": "\"RESET0\"",
+        "ADDSUB1_IREG_CLK": "\"BYPASS\"",
+        "ADDSUB1_IREG_CE": "\"CE0\"",
+        "ADDSUB1_IREG_RESET": "\"RESET0\"",
+        "CSEL_IREG_CLK": "\"BYPASS\"",
+        "CSEL_IREG_CE": "\"CE0\"",
+        "CSEL_IREG_RESET": "\"RESET0\"",
+        "CASISEL_IREG_CLK": "\"BYPASS\"",
+        "CASISEL_IREG_CE": "\"CE0\"",
+        "CASISEL_IREG_RESET": "\"RESET0\"",
+        "ACCSEL_IREG_CLK": "\"BYPASS\"",
+        "ACCSEL_IREG_CE": "\"CE0\"",
+        "ACCSEL_IREG_RESET": "\"RESET0\"",
+        "PREG_CLK": "\"BYPASS\"",
+        "PREG_CE": "\"CE0\"",
+        "PREG_RESET": "\"RESET0\"",
+        "ADDSUB0_PREG_CLK": "\"BYPASS\"",
+        "ADDSUB0_PREG_CE": "\"CE0\"",
+        "ADDSUB0_PREG_RESET": "\"RESET0\"",
+        "ADDSUB1_PREG_CLK": "\"BYPASS\"",
+        "ADDSUB1_PREG_CE": "\"CE0\"",
+        "ADDSUB1_PREG_RESET": "\"RESET0\"",
+        "CSEL_PREG_CLK": "\"BYPASS\"",
+        "CSEL_PREG_CE": "\"CE0\"",
+        "CSEL_PREG_RESET": "\"RESET0\"",
+        "CASISEL_PREG_CLK": "\"BYPASS\"",
+        "CASISEL_PREG_CE": "\"CE0\"",
+        "CASISEL_PREG_RESET": "\"RESET0\"",
+        "ACCSEL_PREG_CLK": "\"BYPASS\"",
+        "ACCSEL_PREG_CE": "\"CE0\"",
+        "ACCSEL_PREG_RESET": "\"RESET0\"",
+        "C_PREG_CLK": "\"BYPASS\"",
+        "C_PREG_CE": "\"CE0\"",
+        "C_PREG_RESET": "\"RESET0\"",
+        "FB_PREG_EN": "\"FALSE\"",
+        "SOA_PREG_EN": "\"FALSE\"",
+        "OREG_CLK": "\"BYPASS\"",
+        "OREG_CE": "\"CE0\"",
+        "OREG_RESET": "\"RESET0\"",
+        "MULT_RESET_MODE": "\"SYNC\"",
+        "PRE_LOAD": "48'h000000000000",
+        "DYN_P_SEL": "\"FALSE\"",
+        "P_SEL": "1'b0",
+        "DYN_P_ADDSUB": "\"FALSE\"",
+        "P_ADDSUB": "1'b0",
+        "DYN_A_SEL": "\"FALSE\"",
+        "A_SEL": "1'b0",
+        "DYN_ADD_SUB_0": "\"FALSE\"",
+        "ADD_SUB_0": "1'b0",
+        "DYN_ADD_SUB_1": "\"FALSE\"",
+        "ADD_SUB_1": "1'b0",
+        "DYN_C_SEL": "\"FALSE\"",
+        "C_SEL": "1'b0",
+        "DYN_CASI_SEL": "\"FALSE\"",
+        "CASI_SEL": "1'b0",
+        "DYN_ACC_SEL": "\"FALSE\"",
+        "ACC_SEL": "1'b0",
+        "MULT12X12_EN": "\"FALSE\""
+      },
+      "actual": {
+        "name": "u_control/model_thread/actuator_map/dsp_input_lw",
+        "kind": "MULTALU27X18",
+        "ports": {
+          "DOUT": "{\\u_control/model_thread/actuator_map/product48_lw [47], \\u_control/model_thread/actuator_map/DOUT_1 [46:44], \\u_control/model_thread/actuator_map/product48_lw [43:0]}",
+          "CASO": "{\\u_control/model_thread/actuator_map/CASO_1 [47:0]}",
+          "SOA": "{\\u_control/model_thread/actuator_map/SOA_1 [26:0]}",
+          "ASEL": "GND",
+          "PADDSUB": "GND",
+          "ACCSEL": "GND",
+          "CASISEL": "GND",
+          "PSEL": "GND",
+          "CSEL": "GND",
+          "A": "{\\u_control/model_thread/action_preview [71], \\u_control/model_thread/action_preview [71], \\u_control/model_thread/action_preview [71], \\u_control/model_thread/action_preview [71], \\u_control/model_thread/action_preview [71], \\u_control/model_thread/action_preview [71], \\u_control/model_thread/action_preview [71], \\u_control/model_thread/action_preview [71], \\u_control/model_thread/action_preview [71], \\u_control/model_thread/actuator_map/clipped_lw [17:16], \\u_control/model_thread/action_preview [71], \\u_control/model_thread/action_preview [71], \\u_control/model_thread/action_preview [71], \\u_control/model_thread/actuator_map/clipped_lw [12:0]}",
+          "B": "{VCC, VCC, VCC, VCC, VCC, VCC, VCC, VCC, GND, VCC, VCC, GND, VCC, GND, VCC, GND, GND, GND}",
+          "C": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "D": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "SIA": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "CASI": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "ADDSUB": "{GND, GND}",
+          "CLK": "{GND, clk50_d}",
+          "CE": "{VCC, VCC}",
+          "RESET": "{GND, GND}"
+        },
+        "parameters": {
+          "ADDSUB0_IREG_CLK": "\"BYPASS\"",
+          "ADDSUB0_IREG_CE": "\"CE0\"",
+          "ADDSUB0_IREG_RESET": "\"RESET0\"",
+          "ADDSUB1_IREG_CLK": "\"BYPASS\"",
+          "ADDSUB1_IREG_CE": "\"CE0\"",
+          "ADDSUB1_IREG_RESET": "\"RESET0\"",
+          "ADDSUB0_PREG_CLK": "\"BYPASS\"",
+          "ADDSUB0_PREG_CE": "\"CE0\"",
+          "ADDSUB0_PREG_RESET": "\"RESET0\"",
+          "ADDSUB1_PREG_CLK": "\"BYPASS\"",
+          "ADDSUB1_PREG_CE": "\"CE0\"",
+          "ADDSUB1_PREG_RESET": "\"RESET0\"",
+          "OREG_CLK": "\"BYPASS\"",
+          "OREG_CE": "\"CE0\"",
+          "OREG_RESET": "\"RESET0\"",
+          "MULT_RESET_MODE": "\"SYNC\"",
+          "PRE_LOAD": "48'h000000000000",
+          "AREG_CLK": "\"CLK0\"",
+          "AREG_CE": "\"CE0\"",
+          "AREG_RESET": "\"RESET0\"",
+          "BREG_CLK": "\"BYPASS\"",
+          "BREG_CE": "\"CE0\"",
+          "BREG_RESET": "\"RESET0\"",
+          "DREG_CLK": "\"BYPASS\"",
+          "DREG_CE": "\"CE0\"",
+          "DREG_RESET": "\"RESET0\"",
+          "PADDSUB_IREG_CLK": "\"BYPASS\"",
+          "PADDSUB_IREG_CE": "\"CE0\"",
+          "PADDSUB_IREG_RESET": "\"RESET0\"",
+          "PREG_CLK": "\"BYPASS\"",
+          "PREG_CE": "\"CE0\"",
+          "PREG_RESET": "\"RESET0\"",
+          "PSEL_IREG_CLK": "\"BYPASS\"",
+          "PSEL_IREG_CE": "\"CE0\"",
+          "PSEL_IREG_RESET": "\"RESET0\"",
+          "DYN_P_SEL": "\"FALSE\"",
+          "P_SEL": "1'b0",
+          "DYN_A_SEL": "\"FALSE\"",
+          "A_SEL": "1'b0",
+          "DYN_C_SEL": "\"FALSE\"",
+          "C_SEL": "1'b0",
+          "DYN_CASI_SEL": "\"FALSE\"",
+          "CASI_SEL": "1'b0",
+          "DYN_ACC_SEL": "\"FALSE\"",
+          "ACC_SEL": "1'b0",
+          "DYN_P_ADDSUB": "\"FALSE\"",
+          "P_ADDSUB": "1'b0",
+          "C_IREG_CLK": "\"BYPASS\"",
+          "C_IREG_CE": "\"CE0\"",
+          "C_IREG_RESET": "\"RESET0\"",
+          "C_PREG_CLK": "\"BYPASS\"",
+          "C_PREG_CE": "\"CE0\"",
+          "C_PREG_RESET": "\"RESET0\"",
+          "CSEL_IREG_CLK": "\"BYPASS\"",
+          "CSEL_IREG_CE": "\"CE0\"",
+          "CSEL_IREG_RESET": "\"RESET0\"",
+          "CSEL_PREG_CLK": "\"BYPASS\"",
+          "CSEL_PREG_CE": "\"CE0\"",
+          "CSEL_PREG_RESET": "\"RESET0\"",
+          "CASISEL_IREG_CLK": "\"BYPASS\"",
+          "CASISEL_IREG_CE": "\"CE0\"",
+          "CASISEL_IREG_RESET": "\"RESET0\"",
+          "CASISEL_PREG_CLK": "\"BYPASS\"",
+          "CASISEL_PREG_CE": "\"CE0\"",
+          "CASISEL_PREG_RESET": "\"RESET0\"",
+          "ACCSEL_IREG_CLK": "\"BYPASS\"",
+          "ACCSEL_IREG_CE": "\"CE0\"",
+          "ACCSEL_IREG_RESET": "\"RESET0\"",
+          "ACCSEL_PREG_CLK": "\"BYPASS\"",
+          "ACCSEL_PREG_CE": "\"CE0\"",
+          "ACCSEL_PREG_RESET": "\"RESET0\"",
+          "FB_PREG_EN": "\"FALSE\"",
+          "SOA_PREG_EN": "\"FALSE\"",
+          "DYN_ADD_SUB_0": "\"FALSE\"",
+          "ADD_SUB_0": "1'b0",
+          "DYN_ADD_SUB_1": "\"FALSE\"",
+          "ADD_SUB_1": "1'b0",
+          "MULT12X12_EN": "\"FALSE\""
+        }
+      }
+    },
+    {
+      "name": "u_control/model_thread/actuator_map/dsp_input_rh",
+      "parameters_identical": true,
+      "input_control_and_clock_ports_identical": true,
+      "parameter_differences": {},
+      "input_differences": {},
+      "all_effective_parameters": {
+        "AREG_CLK": "\"CLK0\"",
+        "AREG_CE": "\"CE0\"",
+        "AREG_RESET": "\"RESET0\"",
+        "BREG_CLK": "\"BYPASS\"",
+        "BREG_CE": "\"CE0\"",
+        "BREG_RESET": "\"RESET0\"",
+        "DREG_CLK": "\"BYPASS\"",
+        "DREG_CE": "\"CE0\"",
+        "DREG_RESET": "\"RESET0\"",
+        "C_IREG_CLK": "\"BYPASS\"",
+        "C_IREG_CE": "\"CE0\"",
+        "C_IREG_RESET": "\"RESET0\"",
+        "PSEL_IREG_CLK": "\"BYPASS\"",
+        "PSEL_IREG_CE": "\"CE0\"",
+        "PSEL_IREG_RESET": "\"RESET0\"",
+        "PADDSUB_IREG_CLK": "\"BYPASS\"",
+        "PADDSUB_IREG_CE": "\"CE0\"",
+        "PADDSUB_IREG_RESET": "\"RESET0\"",
+        "ADDSUB0_IREG_CLK": "\"BYPASS\"",
+        "ADDSUB0_IREG_CE": "\"CE0\"",
+        "ADDSUB0_IREG_RESET": "\"RESET0\"",
+        "ADDSUB1_IREG_CLK": "\"BYPASS\"",
+        "ADDSUB1_IREG_CE": "\"CE0\"",
+        "ADDSUB1_IREG_RESET": "\"RESET0\"",
+        "CSEL_IREG_CLK": "\"BYPASS\"",
+        "CSEL_IREG_CE": "\"CE0\"",
+        "CSEL_IREG_RESET": "\"RESET0\"",
+        "CASISEL_IREG_CLK": "\"BYPASS\"",
+        "CASISEL_IREG_CE": "\"CE0\"",
+        "CASISEL_IREG_RESET": "\"RESET0\"",
+        "ACCSEL_IREG_CLK": "\"BYPASS\"",
+        "ACCSEL_IREG_CE": "\"CE0\"",
+        "ACCSEL_IREG_RESET": "\"RESET0\"",
+        "PREG_CLK": "\"BYPASS\"",
+        "PREG_CE": "\"CE0\"",
+        "PREG_RESET": "\"RESET0\"",
+        "ADDSUB0_PREG_CLK": "\"BYPASS\"",
+        "ADDSUB0_PREG_CE": "\"CE0\"",
+        "ADDSUB0_PREG_RESET": "\"RESET0\"",
+        "ADDSUB1_PREG_CLK": "\"BYPASS\"",
+        "ADDSUB1_PREG_CE": "\"CE0\"",
+        "ADDSUB1_PREG_RESET": "\"RESET0\"",
+        "CSEL_PREG_CLK": "\"BYPASS\"",
+        "CSEL_PREG_CE": "\"CE0\"",
+        "CSEL_PREG_RESET": "\"RESET0\"",
+        "CASISEL_PREG_CLK": "\"BYPASS\"",
+        "CASISEL_PREG_CE": "\"CE0\"",
+        "CASISEL_PREG_RESET": "\"RESET0\"",
+        "ACCSEL_PREG_CLK": "\"BYPASS\"",
+        "ACCSEL_PREG_CE": "\"CE0\"",
+        "ACCSEL_PREG_RESET": "\"RESET0\"",
+        "C_PREG_CLK": "\"BYPASS\"",
+        "C_PREG_CE": "\"CE0\"",
+        "C_PREG_RESET": "\"RESET0\"",
+        "FB_PREG_EN": "\"FALSE\"",
+        "SOA_PREG_EN": "\"FALSE\"",
+        "OREG_CLK": "\"BYPASS\"",
+        "OREG_CE": "\"CE0\"",
+        "OREG_RESET": "\"RESET0\"",
+        "MULT_RESET_MODE": "\"SYNC\"",
+        "PRE_LOAD": "48'h000000000000",
+        "DYN_P_SEL": "\"FALSE\"",
+        "P_SEL": "1'b0",
+        "DYN_P_ADDSUB": "\"FALSE\"",
+        "P_ADDSUB": "1'b0",
+        "DYN_A_SEL": "\"FALSE\"",
+        "A_SEL": "1'b0",
+        "DYN_ADD_SUB_0": "\"FALSE\"",
+        "ADD_SUB_0": "1'b0",
+        "DYN_ADD_SUB_1": "\"FALSE\"",
+        "ADD_SUB_1": "1'b0",
+        "DYN_C_SEL": "\"FALSE\"",
+        "C_SEL": "1'b0",
+        "DYN_CASI_SEL": "\"FALSE\"",
+        "CASI_SEL": "1'b0",
+        "DYN_ACC_SEL": "\"FALSE\"",
+        "ACC_SEL": "1'b0",
+        "MULT12X12_EN": "\"FALSE\""
+      },
+      "actual": {
+        "name": "u_control/model_thread/actuator_map/dsp_input_rh",
+        "kind": "MULTALU27X18",
+        "ports": {
+          "DOUT": "{\\u_control/model_thread/actuator_map/product48_rh [47], \\u_control/model_thread/actuator_map/DOUT_2 [46:44], \\u_control/model_thread/actuator_map/product48_rh [43:0]}",
+          "CASO": "{\\u_control/model_thread/actuator_map/CASO_2 [47:0]}",
+          "SOA": "{\\u_control/model_thread/actuator_map/SOA_2 [26:0]}",
+          "ASEL": "GND",
+          "PADDSUB": "GND",
+          "ACCSEL": "GND",
+          "CASISEL": "GND",
+          "PSEL": "GND",
+          "CSEL": "GND",
+          "A": "{\\u_control/model_thread/action_preview [95], \\u_control/model_thread/action_preview [95], \\u_control/model_thread/action_preview [95], \\u_control/model_thread/action_preview [95], \\u_control/model_thread/action_preview [95], \\u_control/model_thread/action_preview [95], \\u_control/model_thread/action_preview [95], \\u_control/model_thread/action_preview [95], \\u_control/model_thread/action_preview [95], \\u_control/model_thread/actuator_map/clipped_rh [17:16], \\u_control/model_thread/action_preview [95], \\u_control/model_thread/action_preview [95], \\u_control/model_thread/action_preview [95], \\u_control/model_thread/actuator_map/clipped_rh [12:0]}",
+          "B": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, VCC, GND, GND, VCC, VCC}",
+          "C": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "D": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "SIA": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "CASI": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "ADDSUB": "{GND, GND}",
+          "CLK": "{GND, clk50_d}",
+          "CE": "{VCC, VCC}",
+          "RESET": "{GND, GND}"
+        },
+        "parameters": {
+          "ADDSUB0_IREG_CLK": "\"BYPASS\"",
+          "ADDSUB0_IREG_CE": "\"CE0\"",
+          "ADDSUB0_IREG_RESET": "\"RESET0\"",
+          "ADDSUB1_IREG_CLK": "\"BYPASS\"",
+          "ADDSUB1_IREG_CE": "\"CE0\"",
+          "ADDSUB1_IREG_RESET": "\"RESET0\"",
+          "ADDSUB0_PREG_CLK": "\"BYPASS\"",
+          "ADDSUB0_PREG_CE": "\"CE0\"",
+          "ADDSUB0_PREG_RESET": "\"RESET0\"",
+          "ADDSUB1_PREG_CLK": "\"BYPASS\"",
+          "ADDSUB1_PREG_CE": "\"CE0\"",
+          "ADDSUB1_PREG_RESET": "\"RESET0\"",
+          "OREG_CLK": "\"BYPASS\"",
+          "OREG_CE": "\"CE0\"",
+          "OREG_RESET": "\"RESET0\"",
+          "MULT_RESET_MODE": "\"SYNC\"",
+          "PRE_LOAD": "48'h000000000000",
+          "AREG_CLK": "\"CLK0\"",
+          "AREG_CE": "\"CE0\"",
+          "AREG_RESET": "\"RESET0\"",
+          "BREG_CLK": "\"BYPASS\"",
+          "BREG_CE": "\"CE0\"",
+          "BREG_RESET": "\"RESET0\"",
+          "DREG_CLK": "\"BYPASS\"",
+          "DREG_CE": "\"CE0\"",
+          "DREG_RESET": "\"RESET0\"",
+          "PADDSUB_IREG_CLK": "\"BYPASS\"",
+          "PADDSUB_IREG_CE": "\"CE0\"",
+          "PADDSUB_IREG_RESET": "\"RESET0\"",
+          "PREG_CLK": "\"BYPASS\"",
+          "PREG_CE": "\"CE0\"",
+          "PREG_RESET": "\"RESET0\"",
+          "PSEL_IREG_CLK": "\"BYPASS\"",
+          "PSEL_IREG_CE": "\"CE0\"",
+          "PSEL_IREG_RESET": "\"RESET0\"",
+          "DYN_P_SEL": "\"FALSE\"",
+          "P_SEL": "1'b0",
+          "DYN_A_SEL": "\"FALSE\"",
+          "A_SEL": "1'b0",
+          "DYN_C_SEL": "\"FALSE\"",
+          "C_SEL": "1'b0",
+          "DYN_CASI_SEL": "\"FALSE\"",
+          "CASI_SEL": "1'b0",
+          "DYN_ACC_SEL": "\"FALSE\"",
+          "ACC_SEL": "1'b0",
+          "DYN_P_ADDSUB": "\"FALSE\"",
+          "P_ADDSUB": "1'b0",
+          "C_IREG_CLK": "\"BYPASS\"",
+          "C_IREG_CE": "\"CE0\"",
+          "C_IREG_RESET": "\"RESET0\"",
+          "C_PREG_CLK": "\"BYPASS\"",
+          "C_PREG_CE": "\"CE0\"",
+          "C_PREG_RESET": "\"RESET0\"",
+          "CSEL_IREG_CLK": "\"BYPASS\"",
+          "CSEL_IREG_CE": "\"CE0\"",
+          "CSEL_IREG_RESET": "\"RESET0\"",
+          "CSEL_PREG_CLK": "\"BYPASS\"",
+          "CSEL_PREG_CE": "\"CE0\"",
+          "CSEL_PREG_RESET": "\"RESET0\"",
+          "CASISEL_IREG_CLK": "\"BYPASS\"",
+          "CASISEL_IREG_CE": "\"CE0\"",
+          "CASISEL_IREG_RESET": "\"RESET0\"",
+          "CASISEL_PREG_CLK": "\"BYPASS\"",
+          "CASISEL_PREG_CE": "\"CE0\"",
+          "CASISEL_PREG_RESET": "\"RESET0\"",
+          "ACCSEL_IREG_CLK": "\"BYPASS\"",
+          "ACCSEL_IREG_CE": "\"CE0\"",
+          "ACCSEL_IREG_RESET": "\"RESET0\"",
+          "ACCSEL_PREG_CLK": "\"BYPASS\"",
+          "ACCSEL_PREG_CE": "\"CE0\"",
+          "ACCSEL_PREG_RESET": "\"RESET0\"",
+          "FB_PREG_EN": "\"FALSE\"",
+          "SOA_PREG_EN": "\"FALSE\"",
+          "DYN_ADD_SUB_0": "\"FALSE\"",
+          "ADD_SUB_0": "1'b0",
+          "DYN_ADD_SUB_1": "\"FALSE\"",
+          "ADD_SUB_1": "1'b0",
+          "MULT12X12_EN": "\"FALSE\""
+        }
+      }
+    },
+    {
+      "name": "u_control/model_thread/actuator_map/dsp_input_rk",
+      "parameters_identical": true,
+      "input_control_and_clock_ports_identical": true,
+      "parameter_differences": {},
+      "input_differences": {},
+      "all_effective_parameters": {
+        "AREG_CLK": "\"CLK0\"",
+        "AREG_CE": "\"CE0\"",
+        "AREG_RESET": "\"RESET0\"",
+        "BREG_CLK": "\"BYPASS\"",
+        "BREG_CE": "\"CE0\"",
+        "BREG_RESET": "\"RESET0\"",
+        "DREG_CLK": "\"BYPASS\"",
+        "DREG_CE": "\"CE0\"",
+        "DREG_RESET": "\"RESET0\"",
+        "C_IREG_CLK": "\"BYPASS\"",
+        "C_IREG_CE": "\"CE0\"",
+        "C_IREG_RESET": "\"RESET0\"",
+        "PSEL_IREG_CLK": "\"BYPASS\"",
+        "PSEL_IREG_CE": "\"CE0\"",
+        "PSEL_IREG_RESET": "\"RESET0\"",
+        "PADDSUB_IREG_CLK": "\"BYPASS\"",
+        "PADDSUB_IREG_CE": "\"CE0\"",
+        "PADDSUB_IREG_RESET": "\"RESET0\"",
+        "ADDSUB0_IREG_CLK": "\"BYPASS\"",
+        "ADDSUB0_IREG_CE": "\"CE0\"",
+        "ADDSUB0_IREG_RESET": "\"RESET0\"",
+        "ADDSUB1_IREG_CLK": "\"BYPASS\"",
+        "ADDSUB1_IREG_CE": "\"CE0\"",
+        "ADDSUB1_IREG_RESET": "\"RESET0\"",
+        "CSEL_IREG_CLK": "\"BYPASS\"",
+        "CSEL_IREG_CE": "\"CE0\"",
+        "CSEL_IREG_RESET": "\"RESET0\"",
+        "CASISEL_IREG_CLK": "\"BYPASS\"",
+        "CASISEL_IREG_CE": "\"CE0\"",
+        "CASISEL_IREG_RESET": "\"RESET0\"",
+        "ACCSEL_IREG_CLK": "\"BYPASS\"",
+        "ACCSEL_IREG_CE": "\"CE0\"",
+        "ACCSEL_IREG_RESET": "\"RESET0\"",
+        "PREG_CLK": "\"BYPASS\"",
+        "PREG_CE": "\"CE0\"",
+        "PREG_RESET": "\"RESET0\"",
+        "ADDSUB0_PREG_CLK": "\"BYPASS\"",
+        "ADDSUB0_PREG_CE": "\"CE0\"",
+        "ADDSUB0_PREG_RESET": "\"RESET0\"",
+        "ADDSUB1_PREG_CLK": "\"BYPASS\"",
+        "ADDSUB1_PREG_CE": "\"CE0\"",
+        "ADDSUB1_PREG_RESET": "\"RESET0\"",
+        "CSEL_PREG_CLK": "\"BYPASS\"",
+        "CSEL_PREG_CE": "\"CE0\"",
+        "CSEL_PREG_RESET": "\"RESET0\"",
+        "CASISEL_PREG_CLK": "\"BYPASS\"",
+        "CASISEL_PREG_CE": "\"CE0\"",
+        "CASISEL_PREG_RESET": "\"RESET0\"",
+        "ACCSEL_PREG_CLK": "\"BYPASS\"",
+        "ACCSEL_PREG_CE": "\"CE0\"",
+        "ACCSEL_PREG_RESET": "\"RESET0\"",
+        "C_PREG_CLK": "\"BYPASS\"",
+        "C_PREG_CE": "\"CE0\"",
+        "C_PREG_RESET": "\"RESET0\"",
+        "FB_PREG_EN": "\"FALSE\"",
+        "SOA_PREG_EN": "\"FALSE\"",
+        "OREG_CLK": "\"BYPASS\"",
+        "OREG_CE": "\"CE0\"",
+        "OREG_RESET": "\"RESET0\"",
+        "MULT_RESET_MODE": "\"SYNC\"",
+        "PRE_LOAD": "48'h000000000000",
+        "DYN_P_SEL": "\"FALSE\"",
+        "P_SEL": "1'b0",
+        "DYN_P_ADDSUB": "\"FALSE\"",
+        "P_ADDSUB": "1'b0",
+        "DYN_A_SEL": "\"FALSE\"",
+        "A_SEL": "1'b0",
+        "DYN_ADD_SUB_0": "\"FALSE\"",
+        "ADD_SUB_0": "1'b0",
+        "DYN_ADD_SUB_1": "\"FALSE\"",
+        "ADD_SUB_1": "1'b0",
+        "DYN_C_SEL": "\"FALSE\"",
+        "C_SEL": "1'b0",
+        "DYN_CASI_SEL": "\"FALSE\"",
+        "CASI_SEL": "1'b0",
+        "DYN_ACC_SEL": "\"FALSE\"",
+        "ACC_SEL": "1'b0",
+        "MULT12X12_EN": "\"FALSE\""
+      },
+      "actual": {
+        "name": "u_control/model_thread/actuator_map/dsp_input_rk",
+        "kind": "MULTALU27X18",
+        "ports": {
+          "DOUT": "{\\u_control/model_thread/actuator_map/product48_rk [47], \\u_control/model_thread/actuator_map/DOUT_3 [46:44], \\u_control/model_thread/actuator_map/product48_rk [43:0]}",
+          "CASO": "{\\u_control/model_thread/actuator_map/CASO_3 [47:0]}",
+          "SOA": "{\\u_control/model_thread/actuator_map/SOA_3 [26:0]}",
+          "ASEL": "GND",
+          "PADDSUB": "GND",
+          "ACCSEL": "GND",
+          "CASISEL": "GND",
+          "PSEL": "GND",
+          "CSEL": "GND",
+          "A": "{\\u_control/model_thread/action_preview [119], \\u_control/model_thread/action_preview [119], \\u_control/model_thread/action_preview [119], \\u_control/model_thread/action_preview [119], \\u_control/model_thread/action_preview [119], \\u_control/model_thread/action_preview [119], \\u_control/model_thread/action_preview [119], \\u_control/model_thread/action_preview [119], \\u_control/model_thread/action_preview [119], \\u_control/model_thread/actuator_map/clipped_rk [17:16], \\u_control/model_thread/action_preview [119], \\u_control/model_thread/action_preview [119], \\u_control/model_thread/action_preview [119], \\u_control/model_thread/actuator_map/clipped_rk [12:0]}",
+          "B": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, VCC, GND, GND, VCC, VCC}",
+          "C": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "D": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "SIA": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "CASI": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "ADDSUB": "{GND, GND}",
+          "CLK": "{GND, clk50_d}",
+          "CE": "{VCC, VCC}",
+          "RESET": "{GND, GND}"
+        },
+        "parameters": {
+          "ADDSUB0_IREG_CLK": "\"BYPASS\"",
+          "ADDSUB0_IREG_CE": "\"CE0\"",
+          "ADDSUB0_IREG_RESET": "\"RESET0\"",
+          "ADDSUB1_IREG_CLK": "\"BYPASS\"",
+          "ADDSUB1_IREG_CE": "\"CE0\"",
+          "ADDSUB1_IREG_RESET": "\"RESET0\"",
+          "ADDSUB0_PREG_CLK": "\"BYPASS\"",
+          "ADDSUB0_PREG_CE": "\"CE0\"",
+          "ADDSUB0_PREG_RESET": "\"RESET0\"",
+          "ADDSUB1_PREG_CLK": "\"BYPASS\"",
+          "ADDSUB1_PREG_CE": "\"CE0\"",
+          "ADDSUB1_PREG_RESET": "\"RESET0\"",
+          "OREG_CLK": "\"BYPASS\"",
+          "OREG_CE": "\"CE0\"",
+          "OREG_RESET": "\"RESET0\"",
+          "MULT_RESET_MODE": "\"SYNC\"",
+          "PRE_LOAD": "48'h000000000000",
+          "AREG_CLK": "\"CLK0\"",
+          "AREG_CE": "\"CE0\"",
+          "AREG_RESET": "\"RESET0\"",
+          "BREG_CLK": "\"BYPASS\"",
+          "BREG_CE": "\"CE0\"",
+          "BREG_RESET": "\"RESET0\"",
+          "DREG_CLK": "\"BYPASS\"",
+          "DREG_CE": "\"CE0\"",
+          "DREG_RESET": "\"RESET0\"",
+          "PADDSUB_IREG_CLK": "\"BYPASS\"",
+          "PADDSUB_IREG_CE": "\"CE0\"",
+          "PADDSUB_IREG_RESET": "\"RESET0\"",
+          "PREG_CLK": "\"BYPASS\"",
+          "PREG_CE": "\"CE0\"",
+          "PREG_RESET": "\"RESET0\"",
+          "PSEL_IREG_CLK": "\"BYPASS\"",
+          "PSEL_IREG_CE": "\"CE0\"",
+          "PSEL_IREG_RESET": "\"RESET0\"",
+          "DYN_P_SEL": "\"FALSE\"",
+          "P_SEL": "1'b0",
+          "DYN_A_SEL": "\"FALSE\"",
+          "A_SEL": "1'b0",
+          "DYN_C_SEL": "\"FALSE\"",
+          "C_SEL": "1'b0",
+          "DYN_CASI_SEL": "\"FALSE\"",
+          "CASI_SEL": "1'b0",
+          "DYN_ACC_SEL": "\"FALSE\"",
+          "ACC_SEL": "1'b0",
+          "DYN_P_ADDSUB": "\"FALSE\"",
+          "P_ADDSUB": "1'b0",
+          "C_IREG_CLK": "\"BYPASS\"",
+          "C_IREG_CE": "\"CE0\"",
+          "C_IREG_RESET": "\"RESET0\"",
+          "C_PREG_CLK": "\"BYPASS\"",
+          "C_PREG_CE": "\"CE0\"",
+          "C_PREG_RESET": "\"RESET0\"",
+          "CSEL_IREG_CLK": "\"BYPASS\"",
+          "CSEL_IREG_CE": "\"CE0\"",
+          "CSEL_IREG_RESET": "\"RESET0\"",
+          "CSEL_PREG_CLK": "\"BYPASS\"",
+          "CSEL_PREG_CE": "\"CE0\"",
+          "CSEL_PREG_RESET": "\"RESET0\"",
+          "CASISEL_IREG_CLK": "\"BYPASS\"",
+          "CASISEL_IREG_CE": "\"CE0\"",
+          "CASISEL_IREG_RESET": "\"RESET0\"",
+          "CASISEL_PREG_CLK": "\"BYPASS\"",
+          "CASISEL_PREG_CE": "\"CE0\"",
+          "CASISEL_PREG_RESET": "\"RESET0\"",
+          "ACCSEL_IREG_CLK": "\"BYPASS\"",
+          "ACCSEL_IREG_CE": "\"CE0\"",
+          "ACCSEL_IREG_RESET": "\"RESET0\"",
+          "ACCSEL_PREG_CLK": "\"BYPASS\"",
+          "ACCSEL_PREG_CE": "\"CE0\"",
+          "ACCSEL_PREG_RESET": "\"RESET0\"",
+          "FB_PREG_EN": "\"FALSE\"",
+          "SOA_PREG_EN": "\"FALSE\"",
+          "DYN_ADD_SUB_0": "\"FALSE\"",
+          "ADD_SUB_0": "1'b0",
+          "DYN_ADD_SUB_1": "\"FALSE\"",
+          "ADD_SUB_1": "1'b0",
+          "MULT12X12_EN": "\"FALSE\""
+        }
+      }
+    },
+    {
+      "name": "u_control/model_thread/actuator_map/dsp_input_rw",
+      "parameters_identical": true,
+      "input_control_and_clock_ports_identical": true,
+      "parameter_differences": {},
+      "input_differences": {},
+      "all_effective_parameters": {
+        "AREG_CLK": "\"CLK0\"",
+        "AREG_CE": "\"CE0\"",
+        "AREG_RESET": "\"RESET0\"",
+        "BREG_CLK": "\"BYPASS\"",
+        "BREG_CE": "\"CE0\"",
+        "BREG_RESET": "\"RESET0\"",
+        "DREG_CLK": "\"BYPASS\"",
+        "DREG_CE": "\"CE0\"",
+        "DREG_RESET": "\"RESET0\"",
+        "C_IREG_CLK": "\"BYPASS\"",
+        "C_IREG_CE": "\"CE0\"",
+        "C_IREG_RESET": "\"RESET0\"",
+        "PSEL_IREG_CLK": "\"BYPASS\"",
+        "PSEL_IREG_CE": "\"CE0\"",
+        "PSEL_IREG_RESET": "\"RESET0\"",
+        "PADDSUB_IREG_CLK": "\"BYPASS\"",
+        "PADDSUB_IREG_CE": "\"CE0\"",
+        "PADDSUB_IREG_RESET": "\"RESET0\"",
+        "ADDSUB0_IREG_CLK": "\"BYPASS\"",
+        "ADDSUB0_IREG_CE": "\"CE0\"",
+        "ADDSUB0_IREG_RESET": "\"RESET0\"",
+        "ADDSUB1_IREG_CLK": "\"BYPASS\"",
+        "ADDSUB1_IREG_CE": "\"CE0\"",
+        "ADDSUB1_IREG_RESET": "\"RESET0\"",
+        "CSEL_IREG_CLK": "\"BYPASS\"",
+        "CSEL_IREG_CE": "\"CE0\"",
+        "CSEL_IREG_RESET": "\"RESET0\"",
+        "CASISEL_IREG_CLK": "\"BYPASS\"",
+        "CASISEL_IREG_CE": "\"CE0\"",
+        "CASISEL_IREG_RESET": "\"RESET0\"",
+        "ACCSEL_IREG_CLK": "\"BYPASS\"",
+        "ACCSEL_IREG_CE": "\"CE0\"",
+        "ACCSEL_IREG_RESET": "\"RESET0\"",
+        "PREG_CLK": "\"BYPASS\"",
+        "PREG_CE": "\"CE0\"",
+        "PREG_RESET": "\"RESET0\"",
+        "ADDSUB0_PREG_CLK": "\"BYPASS\"",
+        "ADDSUB0_PREG_CE": "\"CE0\"",
+        "ADDSUB0_PREG_RESET": "\"RESET0\"",
+        "ADDSUB1_PREG_CLK": "\"BYPASS\"",
+        "ADDSUB1_PREG_CE": "\"CE0\"",
+        "ADDSUB1_PREG_RESET": "\"RESET0\"",
+        "CSEL_PREG_CLK": "\"BYPASS\"",
+        "CSEL_PREG_CE": "\"CE0\"",
+        "CSEL_PREG_RESET": "\"RESET0\"",
+        "CASISEL_PREG_CLK": "\"BYPASS\"",
+        "CASISEL_PREG_CE": "\"CE0\"",
+        "CASISEL_PREG_RESET": "\"RESET0\"",
+        "ACCSEL_PREG_CLK": "\"BYPASS\"",
+        "ACCSEL_PREG_CE": "\"CE0\"",
+        "ACCSEL_PREG_RESET": "\"RESET0\"",
+        "C_PREG_CLK": "\"BYPASS\"",
+        "C_PREG_CE": "\"CE0\"",
+        "C_PREG_RESET": "\"RESET0\"",
+        "FB_PREG_EN": "\"FALSE\"",
+        "SOA_PREG_EN": "\"FALSE\"",
+        "OREG_CLK": "\"BYPASS\"",
+        "OREG_CE": "\"CE0\"",
+        "OREG_RESET": "\"RESET0\"",
+        "MULT_RESET_MODE": "\"SYNC\"",
+        "PRE_LOAD": "48'h000000000000",
+        "DYN_P_SEL": "\"FALSE\"",
+        "P_SEL": "1'b0",
+        "DYN_P_ADDSUB": "\"FALSE\"",
+        "P_ADDSUB": "1'b0",
+        "DYN_A_SEL": "\"FALSE\"",
+        "A_SEL": "1'b0",
+        "DYN_ADD_SUB_0": "\"FALSE\"",
+        "ADD_SUB_0": "1'b0",
+        "DYN_ADD_SUB_1": "\"FALSE\"",
+        "ADD_SUB_1": "1'b0",
+        "DYN_C_SEL": "\"FALSE\"",
+        "C_SEL": "1'b0",
+        "DYN_CASI_SEL": "\"FALSE\"",
+        "CASI_SEL": "1'b0",
+        "DYN_ACC_SEL": "\"FALSE\"",
+        "ACC_SEL": "1'b0",
+        "MULT12X12_EN": "\"FALSE\""
+      },
+      "actual": {
+        "name": "u_control/model_thread/actuator_map/dsp_input_rw",
+        "kind": "MULTALU27X18",
+        "ports": {
+          "DOUT": "{\\u_control/model_thread/actuator_map/product48_rw [47], \\u_control/model_thread/actuator_map/DOUT_4 [46:44], \\u_control/model_thread/actuator_map/product48_rw [43:0]}",
+          "CASO": "{\\u_control/model_thread/actuator_map/CASO_4 [47:0]}",
+          "SOA": "{\\u_control/model_thread/actuator_map/SOA_4 [26:0]}",
+          "ASEL": "GND",
+          "PADDSUB": "GND",
+          "ACCSEL": "GND",
+          "CASISEL": "GND",
+          "PSEL": "GND",
+          "CSEL": "GND",
+          "A": "{\\u_control/model_thread/action_preview [143], \\u_control/model_thread/action_preview [143], \\u_control/model_thread/action_preview [143], \\u_control/model_thread/action_preview [143], \\u_control/model_thread/action_preview [143], \\u_control/model_thread/action_preview [143], \\u_control/model_thread/action_preview [143], \\u_control/model_thread/action_preview [143], \\u_control/model_thread/action_preview [143], \\u_control/model_thread/actuator_map/clipped_rw [17:16], \\u_control/model_thread/action_preview [143], \\u_control/model_thread/action_preview [143], \\u_control/model_thread/action_preview [143], \\u_control/model_thread/actuator_map/clipped_rw [12:0]}",
+          "B": "{GND, GND, GND, GND, GND, GND, GND, GND, VCC, GND, GND, VCC, GND, VCC, VCC, GND, GND, GND}",
+          "C": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "D": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "SIA": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "CASI": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+          "ADDSUB": "{GND, GND}",
+          "CLK": "{GND, clk50_d}",
+          "CE": "{VCC, VCC}",
+          "RESET": "{GND, GND}"
+        },
+        "parameters": {
+          "ADDSUB0_IREG_CLK": "\"BYPASS\"",
+          "ADDSUB0_IREG_CE": "\"CE0\"",
+          "ADDSUB0_IREG_RESET": "\"RESET0\"",
+          "ADDSUB1_IREG_CLK": "\"BYPASS\"",
+          "ADDSUB1_IREG_CE": "\"CE0\"",
+          "ADDSUB1_IREG_RESET": "\"RESET0\"",
+          "ADDSUB0_PREG_CLK": "\"BYPASS\"",
+          "ADDSUB0_PREG_CE": "\"CE0\"",
+          "ADDSUB0_PREG_RESET": "\"RESET0\"",
+          "ADDSUB1_PREG_CLK": "\"BYPASS\"",
+          "ADDSUB1_PREG_CE": "\"CE0\"",
+          "ADDSUB1_PREG_RESET": "\"RESET0\"",
+          "OREG_CLK": "\"BYPASS\"",
+          "OREG_CE": "\"CE0\"",
+          "OREG_RESET": "\"RESET0\"",
+          "MULT_RESET_MODE": "\"SYNC\"",
+          "PRE_LOAD": "48'h000000000000",
+          "AREG_CLK": "\"CLK0\"",
+          "AREG_CE": "\"CE0\"",
+          "AREG_RESET": "\"RESET0\"",
+          "BREG_CLK": "\"BYPASS\"",
+          "BREG_CE": "\"CE0\"",
+          "BREG_RESET": "\"RESET0\"",
+          "DREG_CLK": "\"BYPASS\"",
+          "DREG_CE": "\"CE0\"",
+          "DREG_RESET": "\"RESET0\"",
+          "PADDSUB_IREG_CLK": "\"BYPASS\"",
+          "PADDSUB_IREG_CE": "\"CE0\"",
+          "PADDSUB_IREG_RESET": "\"RESET0\"",
+          "PREG_CLK": "\"BYPASS\"",
+          "PREG_CE": "\"CE0\"",
+          "PREG_RESET": "\"RESET0\"",
+          "PSEL_IREG_CLK": "\"BYPASS\"",
+          "PSEL_IREG_CE": "\"CE0\"",
+          "PSEL_IREG_RESET": "\"RESET0\"",
+          "DYN_P_SEL": "\"FALSE\"",
+          "P_SEL": "1'b0",
+          "DYN_A_SEL": "\"FALSE\"",
+          "A_SEL": "1'b0",
+          "DYN_C_SEL": "\"FALSE\"",
+          "C_SEL": "1'b0",
+          "DYN_CASI_SEL": "\"FALSE\"",
+          "CASI_SEL": "1'b0",
+          "DYN_ACC_SEL": "\"FALSE\"",
+          "ACC_SEL": "1'b0",
+          "DYN_P_ADDSUB": "\"FALSE\"",
+          "P_ADDSUB": "1'b0",
+          "C_IREG_CLK": "\"BYPASS\"",
+          "C_IREG_CE": "\"CE0\"",
+          "C_IREG_RESET": "\"RESET0\"",
+          "C_PREG_CLK": "\"BYPASS\"",
+          "C_PREG_CE": "\"CE0\"",
+          "C_PREG_RESET": "\"RESET0\"",
+          "CSEL_IREG_CLK": "\"BYPASS\"",
+          "CSEL_IREG_CE": "\"CE0\"",
+          "CSEL_IREG_RESET": "\"RESET0\"",
+          "CSEL_PREG_CLK": "\"BYPASS\"",
+          "CSEL_PREG_CE": "\"CE0\"",
+          "CSEL_PREG_RESET": "\"RESET0\"",
+          "CASISEL_IREG_CLK": "\"BYPASS\"",
+          "CASISEL_IREG_CE": "\"CE0\"",
+          "CASISEL_IREG_RESET": "\"RESET0\"",
+          "CASISEL_PREG_CLK": "\"BYPASS\"",
+          "CASISEL_PREG_CE": "\"CE0\"",
+          "CASISEL_PREG_RESET": "\"RESET0\"",
+          "ACCSEL_IREG_CLK": "\"BYPASS\"",
+          "ACCSEL_IREG_CE": "\"CE0\"",
+          "ACCSEL_IREG_RESET": "\"RESET0\"",
+          "ACCSEL_PREG_CLK": "\"BYPASS\"",
+          "ACCSEL_PREG_CE": "\"CE0\"",
+          "ACCSEL_PREG_RESET": "\"RESET0\"",
+          "FB_PREG_EN": "\"FALSE\"",
+          "SOA_PREG_EN": "\"FALSE\"",
+          "DYN_ADD_SUB_0": "\"FALSE\"",
+          "ADD_SUB_0": "1'b0",
+          "DYN_ADD_SUB_1": "\"FALSE\"",
+          "ADD_SUB_1": "1'b0",
+          "MULT12X12_EN": "\"FALSE\""
+        }
+      }
+    }
+  ],
+  "global_assignment": {
+    "before": [
+      {
+        "net": "clk50_d",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PTR2 PTR3 PBR0 PBR1 PBR2 PBR3"
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "resource": "PRIMARY",
+        "location": "PBR1"
+      },
+      {
+        "net": "u_control/sensor/n53_4",
+        "resource": "PRIMARY",
+        "location": "PTR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_21",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_22",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_23",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_24",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n26292_4",
+        "resource": "PRIMARY",
+        "location": "PTR2 PBR1 PBR2"
+      },
+      {
+        "net": "r2",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/n2371_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n15679_10",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n331_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_0_9",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25518_4",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n24910_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/g_support.u_support/a1_13_6",
+        "resource": "LW",
+        "location": "-"
+      }
+    ],
+    "after": [
+      {
+        "net": "clk50_d",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PTR2 PTR3 PBR0 PBR1 PBR2 PBR3"
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "resource": "PRIMARY",
+        "location": "PBR1"
+      },
+      {
+        "net": "u_control/sensor/n53_4",
+        "resource": "PRIMARY",
+        "location": "PTR2"
+      },
+      {
+        "net": "u_control/model_thread/policy/n6631_7",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n6631_8",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n6631_9",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n6631_10",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n26292_4",
+        "resource": "PRIMARY",
+        "location": "PTR1 PTR2 PBR1 PBR2"
+      },
+      {
+        "net": "r2",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/n2371_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n331_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_0_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/policy/core/n1466_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/telemetry_thread/snapshot_959_10",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25518_4",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n24910_7",
+        "resource": "LW",
+        "location": "-"
+      }
+    ]
+  },
+  "selected_control_loads": {
+    "clk50_d": {
+      "net": "clk50_d",
+      "loads": 1,
+      "pins": {
+        "I": 1
+      },
+      "load_primitives": {
+        "INV": 1
+      },
+      "drivers": [
+        {
+          "name": "clk50_ibuf",
+          "kind": "IBUF",
+          "ports": {
+            "I": "clk50",
+            "O": "clk50_d"
+          },
+          "parameters": {},
+          "output_pin": "O"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "r2": {
+      "net": "r2",
+      "loads": 6563,
+      "pins": {
+        "I0": 266,
+        "I1": 36,
+        "I2": 88,
+        "RESET": 5317,
+        "I": 1,
+        "I3": 24,
+        "PRESET": 10,
+        "CLEAR": 497,
+        "SET": 324
+      },
+      "load_primitives": {
+        "LUT4": 176,
+        "LUT2": 94,
+        "LUT3": 144,
+        "DFFRE": 5315,
+        "INV": 1,
+        "DFFPE": 10,
+        "DFFCE": 497,
+        "MULTALU27X18": 2,
+        "DFFSE": 324
+      },
+      "drivers": [
+        {
+          "name": "u_rs/r2_s1",
+          "kind": "DFFPE",
+          "ports": {
+            "D": "\\u_rs/r1 ",
+            "CLK": "clk50_d",
+            "CE": "VCC",
+            "PRESET": "n8_6",
+            "Q": "r2"
+          },
+          "parameters": {
+            "INIT": "1'b1"
+          },
+          "output_pin": "Q"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "rgmii_rxc_d": {
+      "net": "rgmii_rxc_d",
+      "loads": 1,
+      "pins": {
+        "I": 1
+      },
+      "load_primitives": {
+        "INV": 1
+      },
+      "drivers": [
+        {
+          "name": "rgmii_rxc_ibuf",
+          "kind": "IBUF",
+          "ports": {
+            "I": "rgmii_rxc",
+            "O": "rgmii_rxc_d"
+          },
+          "parameters": {},
+          "output_pin": "O"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/fusion/bias_divider/count_6_161": {
+      "net": "u_control/model_thread/fusion/bias_divider/count_6_161",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/fusion/divider/count_6_140": {
+      "net": "u_control/model_thread/fusion/divider/count_6_140",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/fusion/norm_square_x_63_8": {
+      "net": "u_control/model_thread/fusion/norm_square_x_63_8",
+      "loads": 192,
+      "pins": {
+        "CE": 192
+      },
+      "load_primitives": {
+        "DFFRE": 192
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/fusion/norm_square_x_63_s3",
+          "kind": "LUT4",
+          "ports": {
+            "I0": "\\u_control/n2371_7 ",
+            "I1": "\\u_control/model_thread/fusion/st [1]",
+            "I2": "\\u_control/model_thread/fusion/st [4]",
+            "I3": "\\u_control/model_thread/fusion/n8703_165 ",
+            "F": "\\u_control/model_thread/fusion/norm_square_x_63_8 "
+          },
+          "parameters": {
+            "INIT": "16'h0001"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/observation/n12472_10": {
+      "net": "u_control/model_thread/observation/n12472_10",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/observation/n15677_18": {
+      "net": "u_control/model_thread/observation/n15677_18",
+      "loads": 208,
+      "pins": {
+        "D": 9,
+        "CE": 199
+      },
+      "load_primitives": {
+        "DFFCE": 208
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/observation/count_6_s4",
+          "kind": "LUT4",
+          "ports": {
+            "I0": "\\u_control/model_thread/observation/n5008_90 ",
+            "I1": "\\u_control/model_thread/observation/state [2]",
+            "I2": "\\u_control/model_thread/observation/gowin_reg_state[1]_2 ",
+            "I3": "\\u_control/model_thread/observation/state [0]",
+            "F": "\\u_control/model_thread/observation/n15677_18 "
+          },
+          "parameters": {
+            "INIT": "16'h0130"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/observation/n15679_10": {
+      "net": "u_control/model_thread/observation/n15679_10",
+      "loads": 4001,
+      "pins": {
+        "CE": 4000,
+        "D": 1
+      },
+      "load_primitives": {
+        "DFFCE": 4001
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/observation/n15680_s4",
+          "kind": "LUT3",
+          "ports": {
+            "I0": "\\u_control/model_thread/observation/state [0]",
+            "I1": "\\u_control/model_thread/observation/state [1]",
+            "I2": "\\u_control/model_thread/observation/state [2]",
+            "F": "\\u_control/model_thread/observation/n15679_10 "
+          },
+          "parameters": {
+            "INIT": "8'h10"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/observation/n331_7": {
+      "net": "u_control/model_thread/observation/n331_7",
+      "loads": 4365,
+      "pins": {
+        "I0": 3,
+        "CLEAR": 4359,
+        "PRESET": 1,
+        "RESET": 2
+      },
+      "load_primitives": {
+        "LUT2": 1,
+        "LUT4": 2,
+        "DFFCE": 4359,
+        "DFFPE": 1,
+        "MULTALU27X18": 2
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/observation/n331_s2",
+          "kind": "LUT4",
+          "ports": {
+            "I0": "\\u_control/model_status_flags_1 [6]",
+            "I1": "r2",
+            "I2": "\\u_control/n6_4 ",
+            "I3": "\\u_control/n6_5 ",
+            "F": "\\u_control/model_thread/observation/n331_7 "
+          },
+          "parameters": {
+            "INIT": "16'hEFFF"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/core/bias_address[0]": {
+      "net": "u_control/model_thread/policy/core/bias_address[0]",
+      "loads": 702,
+      "pins": {
+        "AD": 702
+      },
+      "load_primitives": {
+        "ROM16": 702
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/policy/core/bias_address_0_s0",
+          "kind": "ALU",
+          "ports": {
+            "I0": "\\u_control/model_thread/policy/core/weight_base [6]",
+            "I1": "\\u_control/model_thread/policy/core/neuron [0]",
+            "I3": "VCC",
+            "CIN": "GND",
+            "COUT": "\\u_control/model_thread/policy/core/bias_address_0_3 ",
+            "SUM": "\\u_control/model_thread/policy/core/bias_address [0]"
+          },
+          "parameters": {
+            "ALU_MODE": "0"
+          },
+          "output_pin": "SUM"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/core/bias_address[1]": {
+      "net": "u_control/model_thread/policy/core/bias_address[1]",
+      "loads": 702,
+      "pins": {
+        "AD": 702
+      },
+      "load_primitives": {
+        "ROM16": 702
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/policy/core/bias_address_1_s0",
+          "kind": "ALU",
+          "ports": {
+            "I0": "\\u_control/model_thread/policy/core/weight_base [6]",
+            "I1": "\\u_control/model_thread/policy/core/neuron [1]",
+            "I3": "VCC",
+            "CIN": "\\u_control/model_thread/policy/core/bias_address_0_3 ",
+            "COUT": "\\u_control/model_thread/policy/core/bias_address_1_3 ",
+            "SUM": "\\u_control/model_thread/policy/core/bias_address [1]"
+          },
+          "parameters": {
+            "ALU_MODE": "0"
+          },
+          "output_pin": "SUM"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/core/bias_address[2]": {
+      "net": "u_control/model_thread/policy/core/bias_address[2]",
+      "loads": 702,
+      "pins": {
+        "AD": 702
+      },
+      "load_primitives": {
+        "ROM16": 702
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/policy/core/bias_address_2_s0",
+          "kind": "ALU",
+          "ports": {
+            "I0": "GND",
+            "I1": "\\u_control/model_thread/policy/core/neuron [2]",
+            "I3": "VCC",
+            "CIN": "\\u_control/model_thread/policy/core/bias_address_1_3 ",
+            "COUT": "\\u_control/model_thread/policy/core/bias_address_2_3 ",
+            "SUM": "\\u_control/model_thread/policy/core/bias_address [2]"
+          },
+          "parameters": {
+            "ALU_MODE": "0"
+          },
+          "output_pin": "SUM"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/core/bias_address[3]": {
+      "net": "u_control/model_thread/policy/core/bias_address[3]",
+      "loads": 702,
+      "pins": {
+        "AD": 702
+      },
+      "load_primitives": {
+        "ROM16": 702
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/policy/core/bias_address_3_s0",
+          "kind": "ALU",
+          "ports": {
+            "I0": "GND",
+            "I1": "\\u_control/model_thread/policy/core/neuron [3]",
+            "I3": "VCC",
+            "CIN": "\\u_control/model_thread/policy/core/bias_address_2_3 ",
+            "COUT": "\\u_control/model_thread/policy/core/bias_address_3_3 ",
+            "SUM": "\\u_control/model_thread/policy/core/bias_address [3]"
+          },
+          "parameters": {
+            "ALU_MODE": "0"
+          },
+          "output_pin": "SUM"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/core/bias_address[4]": {
+      "net": "u_control/model_thread/policy/core/bias_address[4]",
+      "loads": 338,
+      "pins": {
+        "I2": 312,
+        "I3": 26
+      },
+      "load_primitives": {
+        "LUT3": 312,
+        "LUT4": 26
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/policy/core/bias_address_4_s0",
+          "kind": "ALU",
+          "ports": {
+            "I0": "GND",
+            "I1": "\\u_control/model_thread/policy/core/neuron [4]",
+            "I3": "VCC",
+            "CIN": "\\u_control/model_thread/policy/core/bias_address_3_3 ",
+            "COUT": "\\u_control/model_thread/policy/core/bias_address_4_3 ",
+            "SUM": "\\u_control/model_thread/policy/core/bias_address [4]"
+          },
+          "parameters": {
+            "ALU_MODE": "0"
+          },
+          "output_pin": "SUM"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/core/bias_address[5]": {
+      "net": "u_control/model_thread/policy/core/bias_address[5]",
+      "loads": 208,
+      "pins": {
+        "I0": 26,
+        "I2": 26,
+        "S0": 156
+      },
+      "load_primitives": {
+        "LUT4": 26,
+        "LUT3": 26,
+        "MUX2_LUT5": 156
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/policy/core/bias_address_5_s0",
+          "kind": "ALU",
+          "ports": {
+            "I0": "\\u_control/model_thread/policy/core/n_inputs [5]",
+            "I1": "\\u_control/model_thread/policy/core/neuron [5]",
+            "I3": "VCC",
+            "CIN": "\\u_control/model_thread/policy/core/bias_address_4_3 ",
+            "COUT": "\\u_control/model_thread/policy/core/bias_address_5_3 ",
+            "SUM": "\\u_control/model_thread/policy/core/bias_address [5]"
+          },
+          "parameters": {
+            "ALU_MODE": "0"
+          },
+          "output_pin": "SUM"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/core/n1466_7": {
+      "net": "u_control/model_thread/policy/core/n1466_7",
+      "loads": 580,
+      "pins": {
+        "CLEAR": 577,
+        "PRESET": 2,
+        "RESET": 1
+      },
+      "load_primitives": {
+        "DFFCE": 577,
+        "DFFPE": 2,
+        "MULT12X12": 1
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/policy/core/n1466_s2",
+          "kind": "LUT3",
+          "ports": {
+            "I0": "\\u_control/n2371_7 ",
+            "I1": "\\u_control/model_thread/gowin_reg_fusion_seen_4 ",
+            "I2": "\\u_control/model_ready_5 ",
+            "F": "\\u_control/model_thread/policy/core/n1466_7 "
+          },
+          "parameters": {
+            "INIT": "8'hBF"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/core/n4000_10": {
+      "net": "u_control/model_thread/policy/core/n4000_10",
+      "loads": 400,
+      "pins": {
+        "I2": 238,
+        "I0": 26,
+        "I3": 104,
+        "CE": 32
+      },
+      "load_primitives": {
+        "LUT4": 114,
+        "LUT3": 254,
+        "DFFCE": 32
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/policy/core/n4000_s6",
+          "kind": "LUT3",
+          "ports": {
+            "I0": "\\u_control/model_thread/policy/core/n3942_12 ",
+            "I1": "\\u_control/model_thread/policy/core/n3942_71 ",
+            "I2": "\\u_control/model_thread/policy/core/n3942_73 ",
+            "F": "\\u_control/model_thread/policy/core/n4000_10 "
+          },
+          "parameters": {
+            "INIT": "8'h80"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/n14311_21": {
+      "net": "u_control/model_thread/policy/n14311_21",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/n14311_22": {
+      "net": "u_control/model_thread/policy/n14311_22",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/n14311_23": {
+      "net": "u_control/model_thread/policy/n14311_23",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/n14311_24": {
+      "net": "u_control/model_thread/policy/n14311_24",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/n1700_10": {
+      "net": "u_control/model_thread/policy/n1700_10",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/n1700_11": {
+      "net": "u_control/model_thread/policy/n1700_11",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/n1700_12": {
+      "net": "u_control/model_thread/policy/n1700_12",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/n1700_13": {
+      "net": "u_control/model_thread/policy/n1700_13",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/n6631_10": {
+      "net": "u_control/model_thread/policy/n6631_10",
+      "loads": 1000,
+      "pins": {
+        "I3": 1000
+      },
+      "load_primitives": {
+        "LUT4": 1000
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/policy/core/n6631_s7",
+          "kind": "LUT3",
+          "ports": {
+            "I0": "\\u_control/model_thread/policy/state [0]",
+            "I1": "\\u_control/model_thread/policy/state [2]",
+            "I2": "\\u_control/model_thread/policy/state [1]",
+            "F": "\\u_control/model_thread/policy/n6631_10 "
+          },
+          "parameters": {
+            "INIT": "8'h10"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/n6631_7": {
+      "net": "u_control/model_thread/policy/n6631_7",
+      "loads": 1000,
+      "pins": {
+        "I0": 993,
+        "I1": 1,
+        "I2": 5,
+        "I3": 1
+      },
+      "load_primitives": {
+        "LUT4": 998,
+        "LUT3": 2
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/policy/core/n6631_s4",
+          "kind": "LUT3",
+          "ports": {
+            "I0": "\\u_control/model_thread/policy/state [0]",
+            "I1": "\\u_control/model_thread/policy/state [2]",
+            "I2": "\\u_control/model_thread/policy/state [1]",
+            "F": "\\u_control/model_thread/policy/n6631_7 "
+          },
+          "parameters": {
+            "INIT": "8'h10"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/n6631_8": {
+      "net": "u_control/model_thread/policy/n6631_8",
+      "loads": 1000,
+      "pins": {
+        "I0": 1000
+      },
+      "load_primitives": {
+        "LUT4": 1000
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/policy/core/n6631_s5",
+          "kind": "LUT3",
+          "ports": {
+            "I0": "\\u_control/model_thread/policy/state [0]",
+            "I1": "\\u_control/model_thread/policy/state [2]",
+            "I2": "\\u_control/model_thread/policy/state [1]",
+            "F": "\\u_control/model_thread/policy/n6631_8 "
+          },
+          "parameters": {
+            "INIT": "8'h10"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/n6631_9": {
+      "net": "u_control/model_thread/policy/n6631_9",
+      "loads": 1000,
+      "pins": {
+        "I3": 329,
+        "I0": 671
+      },
+      "load_primitives": {
+        "LUT4": 1000
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/policy/core/n6631_s6",
+          "kind": "LUT3",
+          "ports": {
+            "I0": "\\u_control/model_thread/policy/state [0]",
+            "I1": "\\u_control/model_thread/policy/state [2]",
+            "I2": "\\u_control/model_thread/policy/state [1]",
+            "F": "\\u_control/model_thread/policy/n6631_9 "
+          },
+          "parameters": {
+            "INIT": "8'h10"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/n6632_10": {
+      "net": "u_control/model_thread/policy/n6632_10",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/n6632_7": {
+      "net": "u_control/model_thread/policy/n6632_7",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/n6632_8": {
+      "net": "u_control/model_thread/policy/n6632_8",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/n6632_9": {
+      "net": "u_control/model_thread/policy/n6632_9",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/snapshot_0_7": {
+      "net": "u_control/model_thread/policy/snapshot_0_7",
+      "loads": 4032,
+      "pins": {
+        "CE": 4032
+      },
+      "load_primitives": {
+        "DFFCE": 4032
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/policy/snapshot_4031_s4",
+          "kind": "LUT4",
+          "ports": {
+            "I0": "\\u_control/model_status_flags_1 [6]",
+            "I1": "\\u_control/model_thread/gowin_reg_fusion_seen_3 ",
+            "I2": "\\u_control/model_thread/n414_4 ",
+            "I3": "\\u_control/model_thread/policy/snapshot_4031_9 ",
+            "F": "\\u_control/model_thread/policy/snapshot_0_7 "
+          },
+          "parameters": {
+            "INIT": "16'h4000"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/model_thread/policy/snapshot_0_9": {
+      "net": "u_control/model_thread/policy/snapshot_0_9",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_control/n21455_10": {
+      "net": "u_control/n21455_10",
+      "loads": 551,
+      "pins": {
+        "I1": 1,
+        "CE": 438,
+        "RESET": 112
+      },
+      "load_primitives": {
+        "LUT2": 1,
+        "DFFRE": 550
+      },
+      "drivers": [
+        {
+          "name": "u_control/model_thread/observation/n30054_s1",
+          "kind": "LUT4",
+          "ports": {
+            "I0": "r2",
+            "I1": "\\u_control/model_status_flags_1 [6]",
+            "I2": "\\u_control/n6_3 ",
+            "I3": "\\u_control/model_thread/observation/n23665_13 ",
+            "F": "\\u_control/n21455_10 "
+          },
+          "parameters": {
+            "INIT": "16'h1000"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/n2371_7": {
+      "net": "u_control/n2371_7",
+      "loads": 9188,
+      "pins": {
+        "CLEAR": 7573,
+        "PRESET": 101,
+        "RESET": 1405,
+        "I0": 9,
+        "SET": 83,
+        "I2": 10,
+        "I1": 6,
+        "D": 1
+      },
+      "load_primitives": {
+        "DFFCE": 7574,
+        "DFFPE": 101,
+        "MULTALU27X18": 17,
+        "LUT4": 19,
+        "DFFRE": 1377,
+        "DFFSE": 83,
+        "LUT3": 6,
+        "MULT27X36": 8,
+        "MULT12X12": 2,
+        "SDPB": 1
+      },
+      "drivers": [
+        {
+          "name": "u_control/n2371_s2",
+          "kind": "LUT3",
+          "ports": {
+            "I0": "r2",
+            "I1": "\\u_control/n6_4 ",
+            "I2": "\\u_control/n6_5 ",
+            "F": "\\u_control/n2371_7 "
+          },
+          "parameters": {
+            "INIT": "8'hBF"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/sensor/n53_4": {
+      "net": "u_control/sensor/n53_4",
+      "loads": 388,
+      "pins": {
+        "I2": 1,
+        "SET": 13,
+        "RESET": 372,
+        "I0": 2
+      },
+      "load_primitives": {
+        "LUT3": 3,
+        "DFFSE": 13,
+        "DFFRE": 372
+      },
+      "drivers": [
+        {
+          "name": "u_control/sensor/u_read1/n53_s1",
+          "kind": "LUT3",
+          "ports": {
+            "I0": "\\u_control/sensor/gowin_reg_state[0]_1 ",
+            "I1": "\\u_control/sensor/state [1]",
+            "I2": "\\u_control/n2371_7 ",
+            "F": "\\u_control/sensor/n53_4 "
+          },
+          "parameters": {
+            "INIT": "8'hF8"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/telemetry_thread/n1297_4": {
+      "net": "u_control/telemetry_thread/n1297_4",
+      "loads": 962,
+      "pins": {
+        "I2": 818,
+        "I3": 84,
+        "I0": 32,
+        "I1": 28
+      },
+      "load_primitives": {
+        "LUT3": 828,
+        "LUT4": 84,
+        "LUT2": 50
+      },
+      "drivers": [
+        {
+          "name": "u_control/telemetry_thread/n1297_s1",
+          "kind": "LUT4",
+          "ports": {
+            "I0": "\\u_control/telemetry_thread/n1297_5 ",
+            "I1": "\\u_control/telemetry_thread/n1297_6 ",
+            "I2": "\\u_control/telemetry_thread/index [6]",
+            "I3": "\\u_control/telemetry_thread/n179_4 ",
+            "F": "\\u_control/telemetry_thread/n1297_4 "
+          },
+          "parameters": {
+            "INIT": "16'h3500"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/telemetry_thread/snapshot_959_10": {
+      "net": "u_control/telemetry_thread/snapshot_959_10",
+      "loads": 960,
+      "pins": {
+        "CE": 960
+      },
+      "load_primitives": {
+        "DFFCE": 960
+      },
+      "drivers": [
+        {
+          "name": "u_control/telemetry_thread/snapshot_959_s4",
+          "kind": "LUT4",
+          "ports": {
+            "I0": "\\u_control/telemetry_thread/active ",
+            "I1": "\\u_control/telemetry_thread/busy ",
+            "I2": "\\u_control/telemetry_thread/n6520_14 ",
+            "I3": "\\u_control/telemetry_thread/n1297_4 ",
+            "F": "\\u_control/telemetry_thread/snapshot_959_10 "
+          },
+          "parameters": {
+            "INIT": "16'hFF10"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_control/wheel_control/n88_3": {
+      "net": "u_control/wheel_control/n88_3",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_control/wheel_control/n88_3_97": {
+      "net": "u_control/wheel_control/n88_3_97",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/g_support.u_support/a1_13_6": {
+      "net": "u_nav/g_support.u_support/a1_13_6",
+      "loads": 109,
+      "pins": {
+        "I3": 3,
+        "CE": 106
+      },
+      "load_primitives": {
+        "LUT4": 3,
+        "DFFRE": 105,
+        "DFFSE": 1
+      },
+      "drivers": [
+        {
+          "name": "u_nav/g_support.u_support/a1_13_s2",
+          "kind": "LUT2",
+          "ports": {
+            "I0": "\\u_nav/n40_3 ",
+            "I1": "\\u_nav/n1866_6 ",
+            "F": "\\u_nav/g_support.u_support/a1_13_6 "
+          },
+          "parameters": {
+            "INIT": "4'h1"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/pose_predecoded_q": {
+      "net": "u_nav/pose_predecoded_q",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/pose_predecoded_q_0": {
+      "net": "u_nav/pose_predecoded_q_0",
+      "loads": 0,
+      "pins": {},
+      "load_primitives": {},
+      "drivers": [],
+      "exists": false,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/u_map/u_tv/bm_ra[0]": {
+      "net": "u_nav/u_map/u_tv/bm_ra[0]",
+      "loads": 512,
+      "pins": {
+        "RAD": 512
+      },
+      "load_primitives": {
+        "RAM16SDP1": 512
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_map/u_tv/bm_ra_0_s2539",
+          "kind": "LUT2",
+          "ports": {
+            "I0": "\\u_nav/u_map/u_tv/c [0]",
+            "I1": "\\u_nav/u_map/u_tv/bm_ra_13_7 ",
+            "F": "\\u_nav/u_map/u_tv/bm_ra [0]"
+          },
+          "parameters": {
+            "INIT": "4'h6"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/u_map/u_tv/bm_ra[13]": {
+      "net": "u_nav/u_map/u_tv/bm_ra[13]",
+      "loads": 512,
+      "pins": {
+        "I2": 512
+      },
+      "load_primitives": {
+        "LUT3": 512
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_map/u_tv/bm_ra_13_s1",
+          "kind": "LUT2",
+          "ports": {
+            "I0": "\\u_nav/u_map/u_tv/r [6]",
+            "I1": "\\u_nav/u_map/u_tv/bm_ra_13_7 ",
+            "F": "\\u_nav/u_map/u_tv/bm_ra [13]"
+          },
+          "parameters": {
+            "INIT": "4'h6"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/u_map/u_tv/bm_ra[1]": {
+      "net": "u_nav/u_map/u_tv/bm_ra[1]",
+      "loads": 512,
+      "pins": {
+        "RAD": 512
+      },
+      "load_primitives": {
+        "RAM16SDP1": 512
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_map/u_tv/bm_ra_1_s1",
+          "kind": "LUT2",
+          "ports": {
+            "I0": "\\u_nav/u_map/u_tv/c [1]",
+            "I1": "\\u_nav/u_map/u_tv/bm_ra_13_7 ",
+            "F": "\\u_nav/u_map/u_tv/bm_ra [1]"
+          },
+          "parameters": {
+            "INIT": "4'h6"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/u_map/u_tv/bm_ra[2]": {
+      "net": "u_nav/u_map/u_tv/bm_ra[2]",
+      "loads": 512,
+      "pins": {
+        "RAD": 512
+      },
+      "load_primitives": {
+        "RAM16SDP1": 512
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_map/u_tv/bm_ra_2_s1",
+          "kind": "LUT2",
+          "ports": {
+            "I0": "\\u_nav/u_map/u_tv/c [2]",
+            "I1": "\\u_nav/u_map/u_tv/bm_ra_13_7 ",
+            "F": "\\u_nav/u_map/u_tv/bm_ra [2]"
+          },
+          "parameters": {
+            "INIT": "4'h6"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/u_map/u_tv/bm_ra[3]": {
+      "net": "u_nav/u_map/u_tv/bm_ra[3]",
+      "loads": 512,
+      "pins": {
+        "RAD": 512
+      },
+      "load_primitives": {
+        "RAM16SDP1": 512
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_map/u_tv/bm_ra_3_s1",
+          "kind": "LUT2",
+          "ports": {
+            "I0": "\\u_nav/u_map/u_tv/c [3]",
+            "I1": "\\u_nav/u_map/u_tv/bm_ra_13_7 ",
+            "F": "\\u_nav/u_map/u_tv/bm_ra [3]"
+          },
+          "parameters": {
+            "INIT": "4'h6"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/u_map/u_tv/bm_ra_0_2543": {
+      "net": "u_nav/u_map/u_tv/bm_ra_0_2543",
+      "loads": 512,
+      "pins": {
+        "RAD": 512
+      },
+      "load_primitives": {
+        "RAM16SDP1": 512
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_map/u_tv/bm_ra_0_s2540",
+          "kind": "LUT2",
+          "ports": {
+            "I0": "\\u_nav/u_map/u_tv/c [0]",
+            "I1": "\\u_nav/u_map/u_tv/bm_ra_13_7 ",
+            "F": "\\u_nav/u_map/u_tv/bm_ra_0_2543 "
+          },
+          "parameters": {
+            "INIT": "4'h6"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/u_map/u_tv/bm_ra_1_5": {
+      "net": "u_nav/u_map/u_tv/bm_ra_1_5",
+      "loads": 512,
+      "pins": {
+        "RAD": 512
+      },
+      "load_primitives": {
+        "RAM16SDP1": 512
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_map/u_tv/bm_ra_1_s2",
+          "kind": "LUT2",
+          "ports": {
+            "I0": "\\u_nav/u_map/u_tv/c [1]",
+            "I1": "\\u_nav/u_map/u_tv/bm_ra_13_7 ",
+            "F": "\\u_nav/u_map/u_tv/bm_ra_1_5 "
+          },
+          "parameters": {
+            "INIT": "4'h6"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/u_map/u_tv/bm_ra_2_5": {
+      "net": "u_nav/u_map/u_tv/bm_ra_2_5",
+      "loads": 512,
+      "pins": {
+        "RAD": 512
+      },
+      "load_primitives": {
+        "RAM16SDP1": 512
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_map/u_tv/bm_ra_2_s2",
+          "kind": "LUT2",
+          "ports": {
+            "I0": "\\u_nav/u_map/u_tv/c [2]",
+            "I1": "\\u_nav/u_map/u_tv/bm_ra_13_7 ",
+            "F": "\\u_nav/u_map/u_tv/bm_ra_2_5 "
+          },
+          "parameters": {
+            "INIT": "4'h6"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/u_map/u_tv/bm_ra_3_5": {
+      "net": "u_nav/u_map/u_tv/bm_ra_3_5",
+      "loads": 512,
+      "pins": {
+        "RAD": 512
+      },
+      "load_primitives": {
+        "RAM16SDP1": 512
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_map/u_tv/bm_ra_3_s2",
+          "kind": "LUT2",
+          "ports": {
+            "I0": "\\u_nav/u_map/u_tv/c [3]",
+            "I1": "\\u_nav/u_map/u_tv/bm_ra_13_7 ",
+            "F": "\\u_nav/u_map/u_tv/bm_ra_3_5 "
+          },
+          "parameters": {
+            "INIT": "4'h6"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/u_map/u_tv/n24910_7": {
+      "net": "u_nav/u_map/u_tv/n24910_7",
+      "loads": 399,
+      "pins": {
+        "I0": 1,
+        "CE": 398
+      },
+      "load_primitives": {
+        "LUT4": 1,
+        "DFFRE": 398
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_map/u_tv/n24910_s2",
+          "kind": "LUT2",
+          "ports": {
+            "I0": "r2",
+            "I1": "\\u_nav/u_map/u_tv/v1 ",
+            "F": "\\u_nav/u_map/u_tv/n24910_7 "
+          },
+          "parameters": {
+            "INIT": "4'h4"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/u_map/u_tv/n25518_4": {
+      "net": "u_nav/u_map/u_tv/n25518_4",
+      "loads": 521,
+      "pins": {
+        "CE": 521
+      },
+      "load_primitives": {
+        "DFFRE": 521
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_map/u_tv/n25518_s1",
+          "kind": "LUT2",
+          "ports": {
+            "I0": "r2",
+            "I1": "\\u_nav/u_map/u_tv/ct_we ",
+            "F": "\\u_nav/u_map/u_tv/n25518_4 "
+          },
+          "parameters": {
+            "INIT": "4'h4"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/u_map/u_tv/n26292_4": {
+      "net": "u_nav/u_map/u_tv/n26292_4",
+      "loads": 395,
+      "pins": {
+        "I3": 8,
+        "CE": 387
+      },
+      "load_primitives": {
+        "LUT4": 8,
+        "DFFRE": 387
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_map/u_tv/n26292_s1",
+          "kind": "LUT2",
+          "ports": {
+            "I0": "r2",
+            "I1": "\\u_nav/u_map/u_tv/s3 ",
+            "F": "\\u_nav/u_map/u_tv/n26292_4 "
+          },
+          "parameters": {
+            "INIT": "4'h4"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/u_match/u_ex/rb_ra[6]": {
+      "net": "u_nav/u_match/u_ex/rb_ra[6]",
+      "loads": 686,
+      "pins": {
+        "I0": 294,
+        "I3": 98,
+        "I2": 294
+      },
+      "load_primitives": {
+        "LUT4": 392,
+        "LUT3": 294
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_match/u_ex/rb_ra_6_s1",
+          "kind": "LUT3",
+          "ports": {
+            "I0": "\\u_nav/u_match/u_ex/u [6]",
+            "I1": "\\u_nav/u_match/u_ex/fu [6]",
+            "I2": "\\u_nav/u_match/u_ex/flushing ",
+            "F": "\\u_nav/u_match/u_ex/rb_ra [6]"
+          },
+          "parameters": {
+            "INIT": "8'hCA"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/u_rf/gowin_reg_r_MBX_TXB_ADDR_Z[8]_1": {
+      "net": "u_nav/u_rf/gowin_reg_r_MBX_TXB_ADDR_Z[8]_1",
+      "loads": 512,
+      "pins": {
+        "I2": 512
+      },
+      "load_primitives": {
+        "LUT3": 512
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_rf/gowin_replicate_reg_r_MBX_TXB_ADDR_Z[8]_1",
+          "kind": "DFFRE",
+          "ports": {
+            "D": "\\u_nav/gowin_reg_wd_q[8]_1 ",
+            "CLK": "clk50_d",
+            "CE": "\\u_nav/u_rf/n16596_3 ",
+            "RESET": "r2",
+            "Q": "\\u_nav/u_rf/gowin_reg_r_MBX_TXB_ADDR_Z[8]_1 "
+          },
+          "parameters": {
+            "INIT": "1'b0"
+          },
+          "output_pin": "Q"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_nav/u_xt/n7923_5": {
+      "net": "u_nav/u_xt/n7923_5",
+      "loads": 416,
+      "pins": {
+        "CE": 416
+      },
+      "load_primitives": {
+        "DFFRE": 416
+      },
+      "drivers": [
+        {
+          "name": "u_nav/u_xt/n7923_s1",
+          "kind": "LUT4",
+          "ports": {
+            "I0": "\\u_nav/u_xt/n7508_5 ",
+            "I1": "\\u_nav/u_xt/n7508_6 ",
+            "I2": "\\u_nav/u_xt/fbyte ",
+            "I3": "\\u_nav/u_xt/iok ",
+            "F": "\\u_nav/u_xt/n7923_5 "
+          },
+          "parameters": {
+            "INIT": "16'h8000"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    },
+    "u_soc/cpu_rst": {
+      "net": "u_soc/cpu_rst",
+      "loads": 236,
+      "pins": {
+        "I2": 9,
+        "I0": 11,
+        "RESET": 204,
+        "I3": 7,
+        "I1": 2,
+        "SET": 3
+      },
+      "load_primitives": {
+        "LUT4": 29,
+        "DFFRE": 204,
+        "DFFSE": 3
+      },
+      "drivers": [
+        {
+          "name": "u_soc/cpu_rst_s0",
+          "kind": "LUT2",
+          "ports": {
+            "I0": "r2",
+            "I1": "\\u_soc/hold ",
+            "F": "\\u_soc/cpu_rst "
+          },
+          "parameters": {
+            "INIT": "4'hE"
+          },
+          "output_pin": "F"
+        }
+      ],
+      "exists": true,
+      "failed_route_identity_verified": false
+    }
+  },
+  "inputs": {
+    "CST": true,
+    "device": true,
+    "options": true,
+    "SDC_same_as_PNR44": true
+  },
+  "TR_available": false,
+  "all_timing_setup_hold_52_effective_coverage_and_CDC_delays_unverified": true,
+  "failed_net_identities_verified": false,
+  "failed_net_or_congestion_coordinates": null,
+  "no_unique_routing_root_cause_claim": true,
+  "first_checker_rejection": "Raw explicit-only SYN parameters differ from PNR materialized public defaults. Resolve both against unchanged public model; reject all unknown keys and compare every effective parameter.",
+  "programmed": false,
+  "deployment_accepted": false,
+  "metadata": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_AREG_pnr47\\impl\\pnr\\g2_top.vo",
+      "bytes": 44731243,
+      "mtime_ns": 1792978239377564400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_AREG_pnr47\\impl\\pnr\\g2_top.rpt.txt",
+      "bytes": 93260,
+      "mtime_ns": 1792978235121414900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\pnr34_vs_fusion32_physical_review1\\pnr32_actual_storage_loads_and_DSP.json",
+      "bytes": 1363909,
+      "mtime_ns": 1792949466124175600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_AREG_one_shot\\root_actual_DSP_AREG_mode_review.json",
+      "bytes": 113215,
+      "mtime_ns": 1792976385801925900
+    }
+  ],
+  "physical_review_script": "from pathlib import Path\nfrom collections import Counter\nfrom datetime import datetime\nimport importlib.util,json,sys,psutil,re\n\nBASE=Path('F:/nav_integration_g2_20261023');OUT=Path(__file__).parent\nsys.path.insert(0,'D:/Desktop/SOC FPGA/nav/integration/g2')\nspec=importlib.util.spec_from_file_location('physical_stream',BASE/'pnr36_vs_pnr32_final_review1/review.py')\nh=importlib.util.module_from_spec(spec);spec.loader.exec_module(h)\nh.NEW=BASE/'baseline_fusion_DSP_AREG_pnr47'\nold=BASE/'baseline_fusion32_CDC52_pnr35'\nme=psutil.Process();me.nice(psutil.BELOW_NORMAL_PRIORITY_CLASS)\ncache=h.load(h.CACHE);before,after=h.report(old),h.report(h.NEW)\ntargets=set(cache['selected_nets'])|{r['net']for t in(before,after)for r in t['globals']}\nactual=h.stream_new(targets)\n(OUT/'actual_storage_controls.json').write_text(json.dumps(actual,ensure_ascii=False,indent=2)+'\\n',encoding='utf-8')\ngeometry={n:dict(kind=c['kind'],parameters=c['parameters'])for n,c in actual['memory'].items()}\nassert geometry==cache['physical_memory_geometry'] and len(geometry)==after['resources']['BSRAM']==332\nassert all(x['source']in geometry and x['added_after_pnr']['name']in geometry for x in cache['wide_pairs'])\nassert len(cache['wide_pairs'])==18\nfull=h.load(BASE/'baseline_fusion_DSP_AREG_one_shot/actual_SYN33_review.json')\nmapping=h.load(BASE/'baseline_fusion_DSP_AREG_one_shot/root_actual_DSP_AREG_mode_review.json')\nassert full['passed']and mapping['passed']\npublic=h.LIB.read_text();macro=re.search(r'\\bmodule MULTALU27X18\\b.*?\\bendmodule',public,re.S)[0]\nparameter_text=re.sub(r'/\\*.*?\\*/|//[^\\n]*','',macro,flags=re.S)\ndefaults={k:v.strip()for k,v in re.findall(r'\\bparameter\\s+(\\w+)\\s*=\\s*([^;]+);',parameter_text)}\nassert defaults\nfirst_checker_rejection='Raw explicit-only SYN parameters differ from PNR materialized public defaults. Resolve both against unchanged public model; reject all unknown keys and compare every effective parameter.'\ndsps=[]\nfor c in full['private_DSP_AREG_actual_mapping']['action_DSPs']:\n p=actual['DSP'][c['name']]\n ports={k:h.bits(v)for k,v in p['ports'].items()}\n inputs=[k for k in c['ports']if k not in ['DOUT','CASO','SOB']]\n differences={k:dict(SYN=c['ports'][k],PNR=ports.get(k))for k in inputs if c['ports'][k]!=ports.get(k)}\n assert set(c['parameters'])<=set(defaults)and set(p['parameters'])<=set(defaults)\n resolved_source=defaults|c['parameters'];resolved_physical=defaults|p['parameters']\n param_diff={k:dict(SYN=resolved_source[k],PNR=resolved_physical[k])for k in defaults if resolved_source[k]!=resolved_physical[k]}\n dsps.append(dict(name=c['name'],parameters_identical=not param_diff,input_control_and_clock_ports_identical=not differences,parameter_differences=param_diff,input_differences=differences,all_effective_parameters=resolved_physical,actual=p))\n(OUT/'actual_DSP_preservation.json').write_text(json.dumps(dsps,ensure_ascii=False,indent=2)+'\\n',encoding='utf-8')\nassert all(d['parameters_identical']and d['input_control_and_clock_ports_identical']for d in dsps)\ncdc=h.load(h.NEW/'g2_gate.json')['cdc_first_stage_candidate']['physical_audit'];ref=h.load(old/'g2_gate.json')['cdc_first_stage_candidate']['physical_audit']\nkeys=('group','source_register','first_register','second_register','source_clock','target_clock')\nsignature=lambda c:sorted(tuple(p[k]for k in keys)for p in c['paths'])\nassert cdc['passed']and ref['passed']and len(cdc['paths'])==26 and signature(cdc)==signature(ref)\nrt=h.load(h.NEW/'tool_runtime.json');gate=h.load(h.NEW/'g2_gate.json')\nassert not rt['cancelled']and rt['tool_exit']==1 and gate['unrouted_nets']==966\nassert rt['max_runtime_s']==rt['max_no_observable_progress_s']==0\nnormalize=lambda p,r:p.read_text().replace(str(r),'<BUILD>').replace(r.as_posix(),'<BUILD>').split()\ninputs=dict(CST=(old/'g2.cst').read_bytes()==(h.NEW/'g2.cst').read_bytes(),device=(old/'impl/pnr/device.cfg').read_bytes()==(h.NEW/'impl/pnr/device.cfg').read_bytes(),options=normalize(old/'impl/pnr/cmd.do',old)==normalize(h.NEW/'impl/pnr/cmd.do',h.NEW),SDC_same_as_PNR44=(h.NEW/'g2.sdc').read_bytes()==(BASE/'baseline_fusion_DSP_round_bias_pnr44/g2.sdc').read_bytes())\nassert all(inputs.values())\nresult=dict(passed=True,scope='Actual failedPNR47 resource/storage/INIT/DSP preservation/26 physical connections, not timing acceptance',recorded_at=datetime.now().astimezone().isoformat(),build=str(h.NEW),baseline=str(old),runtime=rt,unrouted=966,actual_resources=after['resources'],resource_delta_vs_routed35={k:after['resources'][k]-before['resources'][k]for k in before['resources']},physical_RAM332_all_geometry_and_explicit_INIT_identical_to_routed_anchor=True,physical_18_split_pairs_retained=True,CPU64_and_128KiB_INIT_preserved=True,actual_clocks=actual['actual_clock_net_roots'],actual26_CDC_endpoints_and_clocks_match_routed35=True,actual6_DSP_AREG_parameters_input_clock_control_ports_same_as_proven_SYN33=True,DSP_rows=dsps,global_assignment=dict(before=before['globals'],after=after['globals']),selected_control_loads=actual['selected_nets'],inputs=inputs,TR_available=(h.NEW/'impl/pnr/g2_top.tr').exists(),all_timing_setup_hold_52_effective_coverage_and_CDC_delays_unverified=True,failed_net_identities_verified=False,failed_net_or_congestion_coordinates=None,no_unique_routing_root_cause_claim=True,first_checker_rejection=first_checker_rejection,programmed=False,deployment_accepted=False,metadata=[h.meta(p)for p in [h.NEW/'impl/pnr/g2_top.vo',h.NEW/'impl/pnr/g2_top.rpt.txt',h.CACHE,BASE/'baseline_fusion_DSP_AREG_one_shot/root_actual_DSP_AREG_mode_review.json']])\n(OUT/'final_review.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\\n',encoding='utf-8')\nprint(json.dumps(dict(passed=True,unrouted=966,resources=after['resources'],resource_delta_vs_routed35=result['resource_delta_vs_routed35'],RAM_INIT_and6_DSP_preserved=True,CDC26_preserved=True,TR_available=result['TR_available']),ensure_ascii=False))\n",
+  "first_checker_rejection_preserved": "F:\\nav_integration_g2_20261023\\pnr47_final_actual_review1\\first_checker_DSP_rejection.json",
+  "first_checker_scope": "Explicit SYN omissions versus emitted public PNR defaults; strict effective-default+explicit equality resolves all, inputs alreadyexact. No netlist changed."
+}
