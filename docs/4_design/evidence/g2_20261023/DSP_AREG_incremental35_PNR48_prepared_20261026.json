@@ -1,0 +1,122 @@
+{
+  "recorded_at": "2026-10-26T09:23:44.465946+08:00",
+  "prepared": true,
+  "actual_PNR_started": false,
+  "new_synthesis": false,
+  "source": "complete and reviewed SYN33",
+  "normal_comparison": "PNR47 sameSYN33/CST/SDC/optionsdevice; no current input changed",
+  "only_physical_change": "set_option -inc_pnr <copied routed35 g2_top.pr>",
+  "primary_local_documents": [
+    {
+      "path": "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/doc/EN/SUG100-4.4.7E_Gowin Software User Guide.pdf",
+      "pages": "42-43",
+      "finding": "AroraV and AroraIII support incrementalplacement+routing; select previous .pr checkpoint"
+    },
+    {
+      "path": "F:/nav_integration_g2_20261023/routing_diagnostics_tool_audit_20261025/SUG1220.txt",
+      "finding": "-inc_pnr <0|auto|file>; text says .p while newer SUG100 and actualroutedoutput distinguish placement.p fromplacement+routing.pr"
+    }
+  ],
+  "basis": "Unchangedroutedanchor35 isdeterministic, repeatedsmallRTL changesperturbglobalplacement; testofficial reuseofexisting routedresult ratherthannewwidth/globalparameterroulette. Doesnotguarantee actualreuse or timing.",
+  "checkpoint_not_decoded": true,
+  "old_routed_checkpoint_unchanged": true,
+  "actual_checkpoint_reuse_not_yet_verified": true,
+  "no_new_RTL_INIT_capacity_clock_global_or_timing_exception": true,
+  "proof": {
+    "passed": true,
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_AREG_syn33",
+    "reference": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35",
+    "actual_SYN_and_product_mapping_passed": true,
+    "same26_CDC_contract_as_routed35": true,
+    "report_added_to_same_single_SDC": true,
+    "new_tool_started": false,
+    "bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_AREG_one_shot\\actual_SYN33_review.json",
+        "bytes": 167124,
+        "mtime_ns": 1792976296943752000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_AREG_one_shot\\root_actual_DSP_AREG_mode_review.json",
+        "bytes": 113215,
+        "mtime_ns": 1792976385801925900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35\\run.tcl",
+        "bytes": 783,
+        "mtime_ns": 1792950051047192700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35\\g2.cst",
+        "bytes": 5495,
+        "mtime_ns": 1792950051046864700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35\\g2.sdc",
+        "bytes": 6571,
+        "mtime_ns": 1792950051047192700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_AREG_syn33\\impl\\gwsynthesis\\g2_top.vg",
+        "bytes": 24506222,
+        "mtime_ns": 1792976255475842400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35\\impl\\pnr\\g2_top.pr",
+        "bytes": 238642736,
+        "mtime_ns": 1792952578785275300
+      }
+    ],
+    "prepared_bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_AREG_incremental35_pnr48\\g2_top.vg",
+        "bytes": 24506222,
+        "mtime_ns": 1792977771321379100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_AREG_incremental35_pnr48\\g2.cst",
+        "bytes": 5495,
+        "mtime_ns": 1792977771321379100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_AREG_incremental35_pnr48\\g2.sdc",
+        "bytes": 6661,
+        "mtime_ns": 1792977771321379100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_AREG_incremental35_pnr48\\run.tcl",
+        "bytes": 938,
+        "mtime_ns": 1792977771321379100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_AREG_incremental35_pnr48\\routed35.pr",
+        "bytes": 238642736,
+        "mtime_ns": 1792977771448578200
+      }
+    ],
+    "incremental_checkpoint": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_AREG_incremental35_pnr48\\routed35.pr",
+    "original_routed_checkpoint": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35\\impl\\pnr\\g2_top.pr",
+    "only_physical_factor_vs_PNR47": "set_option -inc_pnr <routed35.pr>",
+    "documented_support": "SUG100-4.4.7E pp42-43: Arora V / Arora III, placement+routing .pr",
+    "actual_checkpoint_reuse_not_yet_proven": true
+  },
+  "actual_PNR47_not_interrupted": true,
+  "controller_queued": true,
+  "controller_job": {
+    "controller_pid": 17656,
+    "controller_created_epoch": 1792977897.1276212,
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_AREG_syn33",
+    "output": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_AREG_incremental35_pnr48",
+    "checkpoint": "F:\\nav_integration_g2_20261023\\baseline_fusion_DSP_AREG_incremental35_pnr48\\routed35.pr",
+    "total_limit_s": 0,
+    "silent_limit_s": 0,
+    "programmed": false,
+    "deployment_accepted": false,
+    "phase": "waiting_for_memory_admission",
+    "updated_at": "2026-10-26T09:25:49.780742+08:00",
+    "free_bytes": 2473312256,
+    "available_commit_bytes": 4051025920,
+    "minimum_physical_bytes": 2147483648,
+    "minimum_commit_bytes": 4294967296
+  }
+}
