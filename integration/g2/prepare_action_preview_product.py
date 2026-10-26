@@ -104,7 +104,8 @@ def prepare(out):
     return result
 
 def simulate(out):
-    commands=[('xvlog',[str(out/'map_original.v'),str(out/'control/policy_action_map.v')]),
+    vendor=[str(out/'vendor_action_macros.v')] if (out/'vendor_action_macros.v').exists() else []
+    commands=[('xvlog',vendor+[str(out/'map_original.v'),str(out/'control/policy_action_map.v')]),
         ('xvlog',['-sv',str(out/'tb_arithmetic.sv')]),('xelab',['tb_action_map_equivalence','-s','snap']),('xsim',['snap','-runall'])]
     for i,(tool,args)in enumerate(commands):
         with (out/f'{i}_{tool}.log').open('w')as log:
@@ -141,12 +142,16 @@ def simulate_policy(out):
  end
 '''
     anchor=' integer k;\n';assert tb.count(anchor)==1;tb=tb.replace(anchor,extra+anchor)
+    if (out/'vendor_action_macros.v').exists():
+        assert tb.count('module tb_snapshot_fanout;')==1
+        tb=tb.replace('module tb_snapshot_fanout;','module tb_snapshot_fanout;\n GSR GSR(.GSRI(1\'b1));',1)
     (out/'tb_policy.sv').write_text(pair+tb)
     old=(SOURCE/'control/rl_policy_tick_v5.v').read_text()
     old=old.replace('RL_POLICY_TICK_V5_V_INCLUDED','PREVIEW_POLICY_ORIGINAL_V_INCLUDED').replace('module rl_policy_tick_v5 #(','module snapshot_original #(',1)
     (out/'policy_original.v').write_text(old)
     work=out/'policy_sim';work.mkdir(exist_ok=False)
-    commands=[('xvlog',[str(out/'map_original.v'),str(out/'control/policy_action_map.v'),str(out/'policy_original.v'),str(out/'control/rl_policy_tick_v5.v')]),
+    vendor=[str(out/'vendor_action_macros.v')] if (out/'vendor_action_macros.v').exists() else []
+    commands=[('xvlog',vendor+[str(out/'map_original.v'),str(out/'control/policy_action_map.v'),str(out/'policy_original.v'),str(out/'control/rl_policy_tick_v5.v')]),
         ('xvlog',['-sv',str(out/'tb_policy.sv')]),('xelab',['tb_snapshot_fanout','-s','policy_snap']),('xsim',['policy_snap','-runall'])]
     for i,(tool,args)in enumerate(commands):
         with (work/f'{i}_{tool}.log').open('w')as log:

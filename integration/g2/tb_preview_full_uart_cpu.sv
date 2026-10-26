@@ -3,6 +3,7 @@
 // no claim of moving-vehicle or completed 4500 inference is made by this test.
 module tb_preview_full_uart_cpu;
 `include "guard_symbol.vh"
+`include "guard_probe_limits.vh"
   reg clk=0,rxc=0,key_n=0,uart_rx=1;
   always #10 clk=~clk;
   always #20 rxc=~rxc;
@@ -65,7 +66,7 @@ module tb_preview_full_uart_cpu;
     end
   endtask
   initial begin : stimulus
-    integer prior_count;reg [31:0] lost_at,start,elapsed;
+    integer prior_count;reg [31:0] lost_at,start,elapsed,zero_age;
     #200;key_n=1;wait(!dut.rst);monitoring=1;
     start=dut.u_nav.time_us;
     while(dut.u_soc.status<3 && dut.u_nav.time_us-start<100000)repeat(500)@(negedge clk);
@@ -80,14 +81,17 @@ module tb_preview_full_uart_cpu;
     prior_count=accepted;mode(1);wait_count(0,prior_count+1);
     if(locked || timed_out)$fatal(1,"fresh motion request failed after idle");
     lost_at=last_rx;start=dut.u_nav.time_us;
-    while(!timed_out && dut.u_nav.time_us-lost_at<1100000)repeat(500)@(negedge clk);
+    while(!timed_out && dut.u_nav.time_us-lost_at<HOST_TIMEOUT_US+100000)repeat(500)@(negedge clk);
     if(!locked || !timed_out)$fatal(1,"host timeout did not latch lock");
     elapsed=dut.u_nav.time_us-lost_at;
-    if(elapsed<1000000)$fatal(1,"host timeout happened before original one-second threshold");
+    if(elapsed<HOST_TIMEOUT_US)$fatal(1,"host timeout happened before configured threshold");
     start=dut.u_nav.time_us;
     while(dut.u_nav.r_SAFE_CMD_W[23:16]!=4 && dut.u_nav.time_us-start<100000)repeat(500)@(negedge clk);
     if(dut.u_nav.r_SAFE_CMD_W[23:16]!=4 || dut.u_nav.r_SAFE_CMD_W[15:0]!=0 || dut.u_nav.r_SAFE_CMD_V!=0)
       $fatal(1,"timeout did not publish zero numeric SAFE command with status mode4");
+    zero_age=dut.u_nav.time_us-lost_at;
+    if(MAX_ZERO_AGE_US>0 && zero_age>MAX_ZERO_AGE_US)
+      $fatal(1,"actual zero publication late age_us=%0d limit_us=%0d",zero_age,MAX_ZERO_AGE_US);
     $display("ACTUAL_HOST_TIMEOUT last_rx=%0d observed=%0d elapsed_us=%0d zero_publication_us=%0d",lost_at,lost_at+elapsed,elapsed,dut.u_nav.time_us);
     checks=checks+1;
     prior_count=rejected;mode(1);wait_count(1,prior_count+1);
@@ -100,7 +104,7 @@ module tb_preview_full_uart_cpu;
     while(!dut.ch_stop && dut.u_nav.time_us-start<25000)repeat(500)@(negedge clk);
     if(!dut.ch_stop || dut.nav_forward_q12!=0 || dut.nav_yaw_q12!=0)$fatal(1,"independent hardware ESTOP did not override NAV demand");
     checks=checks+1;
-    $display("FULL_G2_UART_CPU TEST PASSED checks=%0d UART_writes=%0d loops=%0d time_us=%0d timeout_elapsed_us=%0d",checks,writes,dut.u_soc.status,dut.u_nav.time_us,elapsed);
+    $display("FULL_G2_UART_CPU TEST PASSED checks=%0d UART_writes=%0d loops=%0d time_us=%0d timeout_elapsed_us=%0d zero_publication_age_us=%0d",checks,writes,dut.u_soc.status,dut.u_nav.time_us,elapsed,zero_age);
     $finish;
   end
   initial begin #1600000000;$fatal(1,"finite actual CPU/UART stimulus watchdog");end

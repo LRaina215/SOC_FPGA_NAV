@@ -1,0 +1,1552 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T08:52:49.608686+08:00",
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23",
+  "physical": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46",
+  "comparison": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35",
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-26T08:10:48.428704+08:00",
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 63244,
+    "elapsed_s": 1974.109999999986,
+    "no_observable_progress_s": 0.0,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        1736,
+        1792975419453397300
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        1253,
+        1792975419453397300
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2387820,
+        1792973866159447400
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        13823351,
+        1792973866699566500
+      ],
+      [
+        "impl\\pnr\\g2_top.rpt.txt",
+        93253,
+        1792975417072234500
+      ],
+      [
+        "impl\\pnr\\g2_top.vo",
+        44549382,
+        1792975419453397300
+      ]
+    ],
+    "tool_exit": 1,
+    "ended_at": "2026-10-26T08:43:42.540494+08:00"
+  },
+  "controller_pid": 14300,
+  "processes_exited": true,
+  "unrouted": 375,
+  "actual_resources": {
+    "Logic": 89615,
+    "Register": 40092,
+    "CLS": 55585,
+    "BSRAM": 314,
+    "DSP": 163.5,
+    "LUT": 52917,
+    "ALU": 9918,
+    "ROM16": 3650,
+    "RAM16": 3855
+  },
+  "resource_delta_vs_comparison": {
+    "Logic": -2,
+    "Register": 0,
+    "CLS": 68,
+    "BSRAM": -18,
+    "DSP": 0.0,
+    "LUT": 0,
+    "ALU": -2,
+    "ROM16": 0,
+    "RAM16": 0
+  },
+  "actual_RAM314_source_kind_geometry_all_explicit_INIT_identical": true,
+  "source_parameter_difference_count": 0,
+  "source_and_actual_memory_leaf_sets_identical": true,
+  "all18_native_wide_leaves_retained": true,
+  "previous18_added_split_leaves_absent": true,
+  "actual_CPU64_128KiB_geometry_INIT_preserved": true,
+  "memory_accounting": {
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23",
+    "physical": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46",
+    "source_count": 314,
+    "wide_split_enabled": false,
+    "wide_count": 18,
+    "wide_by_primitive": {
+      "pROMX9": 1,
+      "SDPX9B": 10,
+      "SDPB": 7
+    },
+    "wide_by_top": {
+      "u_control": 1,
+      "u_nav": 17
+    },
+    "predicted_count": 314,
+    "actual_report_count": 314,
+    "post_pnr_primitive_count": 314,
+    "counts_reconciled": true,
+    "matched_split_pairs": 0,
+    "source_by_primitive": {
+      "SP": 64,
+      "pROM": 45,
+      "pROMX9": 1,
+      "SDPB": 53,
+      "SDPX9B": 151
+    },
+    "actual_by_primitive": {
+      "SP": 64,
+      "pROM": 45,
+      "pROMX9": 1,
+      "SDPB": 53,
+      "SDPX9B": 151
+    },
+    "actual_by_top": {
+      "u_soc": 64,
+      "u_control": 48,
+      "u_nav": 202
+    },
+    "added_instances": [],
+    "missing_source_instances": [],
+    "wide_details": [
+      {
+        "source": "u_control/model_thread/ik/rom_lh_rom_lh_0_0_s",
+        "source_primitive": "pROMX9",
+        "source_parameters": {
+          "BIT_WIDTH": "36",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\""
+        },
+        "original_after_pnr": {
+          "primitive": "pROMX9",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH": "36",
+            "RESET_MODE": "\"SYNC\""
+          }
+        },
+        "added_name": null,
+        "added_after_pnr": null
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb1_lb1_0_0_s",
+        "source_primitive": "SDPX9B",
+        "source_parameters": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPX9B",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": null,
+        "added_after_pnr": null
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb1_lb1_0_1_s",
+        "source_primitive": "SDPX9B",
+        "source_parameters": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPX9B",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": null,
+        "added_after_pnr": null
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb3_lb3_0_0_s",
+        "source_primitive": "SDPB",
+        "source_parameters": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": null,
+        "added_after_pnr": null
+      },
+      {
+        "source": "u_nav/u_map/u_tv/lb3_lb3_0_1_s",
+        "source_primitive": "SDPB",
+        "source_parameters": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": null,
+        "added_after_pnr": null
+      },
+      {
+        "source": "u_nav/u_map/u_tv/vc_vc_0_0_s",
+        "source_primitive": "SDPB",
+        "source_parameters": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": null,
+        "added_after_pnr": null
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[0].mem_g_banked.g_bank[0].mem_0_0_s",
+        "source_primitive": "SDPX9B",
+        "source_parameters": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPX9B",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": null,
+        "added_after_pnr": null
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[1].mem_g_banked.g_bank[1].mem_0_0_s",
+        "source_primitive": "SDPX9B",
+        "source_parameters": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPX9B",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": null,
+        "added_after_pnr": null
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[2].mem_g_banked.g_bank[2].mem_0_0_s",
+        "source_primitive": "SDPX9B",
+        "source_parameters": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPX9B",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": null,
+        "added_after_pnr": null
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[3].mem_g_banked.g_bank[3].mem_0_0_s",
+        "source_primitive": "SDPX9B",
+        "source_parameters": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPX9B",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": null,
+        "added_after_pnr": null
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[4].mem_g_banked.g_bank[4].mem_0_0_s",
+        "source_primitive": "SDPX9B",
+        "source_parameters": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPX9B",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": null,
+        "added_after_pnr": null
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[5].mem_g_banked.g_bank[5].mem_0_0_s",
+        "source_primitive": "SDPX9B",
+        "source_parameters": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPX9B",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": null,
+        "added_after_pnr": null
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[6].mem_g_banked.g_bank[6].mem_0_0_s",
+        "source_primitive": "SDPX9B",
+        "source_parameters": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPX9B",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": null,
+        "added_after_pnr": null
+      },
+      {
+        "source": "u_nav/u_match/u_pb/g_banked.g_bank[7].mem_g_banked.g_bank[7].mem_0_0_s",
+        "source_primitive": "SDPX9B",
+        "source_parameters": {
+          "BIT_WIDTH_0": "36",
+          "BIT_WIDTH_1": "36",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPX9B",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "36",
+            "BIT_WIDTH_1": "36",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": null,
+        "added_after_pnr": null
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb1_lb1_0_0_s",
+        "source_primitive": "SDPB",
+        "source_parameters": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": null,
+        "added_after_pnr": null
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb1_lb1_0_1_s",
+        "source_primitive": "SDPB",
+        "source_parameters": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": null,
+        "added_after_pnr": null
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb3_lb3_0_0_s",
+        "source_primitive": "SDPB",
+        "source_parameters": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": null,
+        "added_after_pnr": null
+      },
+      {
+        "source": "u_nav/u_match/u_lf/lb3_lb3_0_1_s",
+        "source_primitive": "SDPB",
+        "source_parameters": {
+          "BIT_WIDTH_0": "32",
+          "BIT_WIDTH_1": "32",
+          "READ_MODE": "1'b0",
+          "RESET_MODE": "\"SYNC\"",
+          "BLK_SEL_0": "3'b000",
+          "BLK_SEL_1": "3'b000"
+        },
+        "original_after_pnr": {
+          "primitive": "SDPB",
+          "parameters": {
+            "READ_MODE": "1'b0",
+            "BIT_WIDTH_0": "32",
+            "BIT_WIDTH_1": "32",
+            "RESET_MODE": "\"SYNC\"",
+            "BLK_SEL_0": "3'b000",
+            "BLK_SEL_1": "3'b000"
+          }
+        },
+        "added_name": null,
+        "added_after_pnr": null
+      }
+    ],
+    "scope": "post-PNR storage accounting only; routing failure and timing acceptance remain separate"
+  },
+  "actual26_physical_connections_passed": true,
+  "physical26": {
+    "netlist": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46\\impl\\pnr\\g2_top.vo",
+    "passed": true,
+    "errors": [],
+    "paths": [
+      {
+        "group": "rx_write_gray",
+        "source_register": "u_nav/u_netl/u_rxf/wp_b_11_s0",
+        "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_11_s1",
+        "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_11_s1",
+        "source_clock": "rgmii_rxc_d",
+        "target_clock": "clk50_d",
+        "route_max_delay_ns": 8.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/wp_g_r2_11_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "rx_write_gray",
+        "source_register": "u_nav/u_netl/u_rxf/wp_g_10_s0",
+        "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_10_s1",
+        "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_10_s1",
+        "source_clock": "rgmii_rxc_d",
+        "target_clock": "clk50_d",
+        "route_max_delay_ns": 8.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/wp_g_r2_10_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "rx_write_gray",
+        "source_register": "u_nav/u_netl/u_rxf/wp_g_9_s0",
+        "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_9_s1",
+        "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_9_s1",
+        "source_clock": "rgmii_rxc_d",
+        "target_clock": "clk50_d",
+        "route_max_delay_ns": 8.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/wp_g_r2_9_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "rx_write_gray",
+        "source_register": "u_nav/u_netl/u_rxf/wp_g_8_s0",
+        "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_8_s1",
+        "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_8_s1",
+        "source_clock": "rgmii_rxc_d",
+        "target_clock": "clk50_d",
+        "route_max_delay_ns": 8.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/wp_g_r2_8_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "rx_write_gray",
+        "source_register": "u_nav/u_netl/u_rxf/wp_g_7_s0",
+        "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_7_s1",
+        "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_7_s1",
+        "source_clock": "rgmii_rxc_d",
+        "target_clock": "clk50_d",
+        "route_max_delay_ns": 8.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/wp_g_r2_7_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "rx_write_gray",
+        "source_register": "u_nav/u_netl/u_rxf/wp_g_6_s0",
+        "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_6_s1",
+        "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_6_s1",
+        "source_clock": "rgmii_rxc_d",
+        "target_clock": "clk50_d",
+        "route_max_delay_ns": 8.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/wp_g_r2_6_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "rx_write_gray",
+        "source_register": "u_nav/u_netl/u_rxf/wp_g_5_s0",
+        "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_5_s1",
+        "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_5_s1",
+        "source_clock": "rgmii_rxc_d",
+        "target_clock": "clk50_d",
+        "route_max_delay_ns": 8.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/wp_g_r2_5_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "rx_write_gray",
+        "source_register": "u_nav/u_netl/u_rxf/wp_g_4_s0",
+        "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_4_s1",
+        "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_4_s1",
+        "source_clock": "rgmii_rxc_d",
+        "target_clock": "clk50_d",
+        "route_max_delay_ns": 8.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/wp_g_r2_4_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "rx_write_gray",
+        "source_register": "u_nav/u_netl/u_rxf/wp_g_3_s0",
+        "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_3_s1",
+        "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_3_s1",
+        "source_clock": "rgmii_rxc_d",
+        "target_clock": "clk50_d",
+        "route_max_delay_ns": 8.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/wp_g_r2_3_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "rx_write_gray",
+        "source_register": "u_nav/u_netl/u_rxf/wp_g_2_s0",
+        "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_2_s1",
+        "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_2_s1",
+        "source_clock": "rgmii_rxc_d",
+        "target_clock": "clk50_d",
+        "route_max_delay_ns": 8.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/wp_g_r2_2_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "rx_write_gray",
+        "source_register": "u_nav/u_netl/u_rxf/wp_g_1_s0",
+        "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_1_s1",
+        "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_1_s1",
+        "source_clock": "rgmii_rxc_d",
+        "target_clock": "clk50_d",
+        "route_max_delay_ns": 8.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/wp_g_r2_1_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "rx_write_gray",
+        "source_register": "u_nav/u_netl/u_rxf/wp_g_0_s0",
+        "first_register": "u_nav/u_netl/u_rxf/wp_g_r1_0_s1",
+        "second_register": "u_nav/u_netl/u_rxf/wp_g_r2_0_s1",
+        "source_clock": "rgmii_rxc_d",
+        "target_clock": "clk50_d",
+        "route_max_delay_ns": 8.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/wp_g_r2_0_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "core_read_gray",
+        "source_register": "u_nav/u_netl/u_rxf/rp_b_11_s0",
+        "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_11_s1",
+        "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_11_s1",
+        "source_clock": "clk50_d",
+        "target_clock": "rgmii_rxc_d",
+        "route_max_delay_ns": 18.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/rp_g_w2_11_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "core_read_gray",
+        "source_register": "u_nav/u_netl/u_rxf/rp_g_10_s0",
+        "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_10_s1",
+        "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_10_s1",
+        "source_clock": "clk50_d",
+        "target_clock": "rgmii_rxc_d",
+        "route_max_delay_ns": 18.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/rp_g_w2_10_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "core_read_gray",
+        "source_register": "u_nav/u_netl/u_rxf/rp_g_9_s0",
+        "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_9_s1",
+        "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_9_s1",
+        "source_clock": "clk50_d",
+        "target_clock": "rgmii_rxc_d",
+        "route_max_delay_ns": 18.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/rp_g_w2_9_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "core_read_gray",
+        "source_register": "u_nav/u_netl/u_rxf/rp_g_8_s0",
+        "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_8_s1",
+        "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_8_s1",
+        "source_clock": "clk50_d",
+        "target_clock": "rgmii_rxc_d",
+        "route_max_delay_ns": 18.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/rp_g_w2_8_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "core_read_gray",
+        "source_register": "u_nav/u_netl/u_rxf/rp_g_7_s0",
+        "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_7_s1",
+        "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_7_s1",
+        "source_clock": "clk50_d",
+        "target_clock": "rgmii_rxc_d",
+        "route_max_delay_ns": 18.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/rp_g_w2_7_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "core_read_gray",
+        "source_register": "u_nav/u_netl/u_rxf/rp_g_6_s0",
+        "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_6_s1",
+        "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_6_s1",
+        "source_clock": "clk50_d",
+        "target_clock": "rgmii_rxc_d",
+        "route_max_delay_ns": 18.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/rp_g_w2_6_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "core_read_gray",
+        "source_register": "u_nav/u_netl/u_rxf/rp_g_5_s0",
+        "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_5_s1",
+        "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_5_s1",
+        "source_clock": "clk50_d",
+        "target_clock": "rgmii_rxc_d",
+        "route_max_delay_ns": 18.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/rp_g_w2_5_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "core_read_gray",
+        "source_register": "u_nav/u_netl/u_rxf/rp_g_4_s0",
+        "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_4_s1",
+        "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_4_s1",
+        "source_clock": "clk50_d",
+        "target_clock": "rgmii_rxc_d",
+        "route_max_delay_ns": 18.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/rp_g_w2_4_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "core_read_gray",
+        "source_register": "u_nav/u_netl/u_rxf/rp_g_3_s0",
+        "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_3_s1",
+        "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_3_s1",
+        "source_clock": "clk50_d",
+        "target_clock": "rgmii_rxc_d",
+        "route_max_delay_ns": 18.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/rp_g_w2_3_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "core_read_gray",
+        "source_register": "u_nav/u_netl/u_rxf/rp_g_2_s0",
+        "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_2_s1",
+        "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_2_s1",
+        "source_clock": "clk50_d",
+        "target_clock": "rgmii_rxc_d",
+        "route_max_delay_ns": 18.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/rp_g_w2_2_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "core_read_gray",
+        "source_register": "u_nav/u_netl/u_rxf/rp_g_1_s0",
+        "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_1_s1",
+        "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_1_s1",
+        "source_clock": "clk50_d",
+        "target_clock": "rgmii_rxc_d",
+        "route_max_delay_ns": 18.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/rp_g_w2_1_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "core_read_gray",
+        "source_register": "u_nav/u_netl/u_rxf/rp_g_0_s0",
+        "first_register": "u_nav/u_netl/u_rxf/rp_g_w1_0_s1",
+        "second_register": "u_nav/u_netl/u_rxf/rp_g_w2_0_s1",
+        "source_clock": "clk50_d",
+        "target_clock": "rgmii_rxc_d",
+        "route_max_delay_ns": 18.0,
+        "first_q_direct_loads": [
+          [
+            "u_nav/u_netl/u_rxf/rp_g_w2_0_s1",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "rx_clock_monitor",
+        "source_register": "u_lmac/rdiv_5_s0",
+        "first_register": "u_lmac/rsync_0_s0",
+        "second_register": "u_lmac/rsync_1_s0",
+        "source_clock": "rgmii_rxc_d",
+        "target_clock": "clk50_d",
+        "route_max_delay_ns": 8.0,
+        "first_q_direct_loads": [
+          [
+            "u_lmac/rsync_1_s0",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      },
+      {
+        "group": "rx_sampling_select",
+        "source_register": "u_nav/u_rf/r_NETL_CTRL_4_s0",
+        "first_register": "u_lmac/neg_s_0_s0",
+        "second_register": "u_lmac/neg_s_1_s0",
+        "source_clock": "clk50_d",
+        "target_clock": "rgmii_rxc_d",
+        "route_max_delay_ns": 18.0,
+        "first_q_direct_loads": [
+          [
+            "u_lmac/neg_s_1_s0",
+            "D"
+          ]
+        ],
+        "passed": true,
+        "failures": []
+      }
+    ],
+    "expected_paths": 26,
+    "scope": "four explicit synchronizer groups only; not full CDC, reset, IO, MTBF or physical skew signoff"
+  },
+  "actual_clock_net_roots": {
+    "u_lmac/n13_6": "rgmii_rxc",
+    "u_lmac/n630_6": "clk50",
+    "rgmii_rxc_d": "rgmii_rxc",
+    "clk50_d": "clk50"
+  },
+  "actual_options_checks": {
+    "only_actual_command_delta_is_removal_of_width_split": true,
+    "device_cfg_identical": true
+  },
+  "global_allocations": {
+    "before": [
+      {
+        "net": "clk50_d",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PTR2 PTR3 PBR0 PBR1 PBR2 PBR3"
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "resource": "PRIMARY",
+        "location": "PBR1"
+      },
+      {
+        "net": "u_control/sensor/n53_4",
+        "resource": "PRIMARY",
+        "location": "PTR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_21",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_22",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_23",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_24",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n26292_4",
+        "resource": "PRIMARY",
+        "location": "PTR2 PBR1 PBR2"
+      },
+      {
+        "net": "r2",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/n2371_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n15679_10",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n331_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_0_9",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25518_4",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n24910_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/g_support.u_support/a1_13_6",
+        "resource": "LW",
+        "location": "-"
+      }
+    ],
+    "after": [
+      {
+        "net": "clk50_d",
+        "resource": "PRIMARY",
+        "location": "PTR0 PTR1 PTR2 PTR3 PBR0 PBR1 PBR2 PBR3"
+      },
+      {
+        "net": "rgmii_rxc_d",
+        "resource": "PRIMARY",
+        "location": "PBR1"
+      },
+      {
+        "net": "u_control/sensor/n53_4",
+        "resource": "PRIMARY",
+        "location": "PTR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_21",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_22",
+        "resource": "PRIMARY",
+        "location": "PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_23",
+        "resource": "PRIMARY",
+        "location": "PBR2 PBR3"
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_24",
+        "resource": "PRIMARY",
+        "location": "PTR2 PTR3 PBR2 PBR3"
+      },
+      {
+        "net": "u_nav/u_match/u_lf/n15905_7",
+        "resource": "PRIMARY",
+        "location": "PTR1"
+      },
+      {
+        "net": "r2",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/n2371_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n15679_10",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/observation/n331_7",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_control/model_thread/policy/snapshot_0_9",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n26292_4",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n25518_4",
+        "resource": "LW",
+        "location": "-"
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n24910_7",
+        "resource": "LW",
+        "location": "-"
+      }
+    ],
+    "changes": [
+      {
+        "net": "u_control/model_thread/policy/n14311_21",
+        "before": {
+          "net": "u_control/model_thread/policy/n14311_21",
+          "resource": "PRIMARY",
+          "location": "PTR3 PBR2 PBR3"
+        },
+        "after": {
+          "net": "u_control/model_thread/policy/n14311_21",
+          "resource": "PRIMARY",
+          "location": "PBR2 PBR3"
+        },
+        "actual": {
+          "net": "u_control/model_thread/policy/n14311_21",
+          "loads": 1000,
+          "pins": {
+            "I0": 995,
+            "I1": 1,
+            "I2": 4
+          },
+          "load_primitives": {
+            "LUT4": 999,
+            "LUT3": 1
+          },
+          "drivers": [
+            {
+              "name": "u_control/model_thread/policy/n14311_s14",
+              "kind": "LUT3",
+              "ports": {
+                "I0": "\\u_control/model_thread/policy/state [0]",
+                "I1": "\\u_control/model_thread/policy/state [2]",
+                "I2": "\\u_control/model_thread/policy/state [1]",
+                "F": "\\u_control/model_thread/policy/n14311_21 "
+              },
+              "parameters": {
+                "INIT": "8'h10"
+              },
+              "output_pin": "F"
+            }
+          ],
+          "exists": true,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_22",
+        "before": {
+          "net": "u_control/model_thread/policy/n14311_22",
+          "resource": "PRIMARY",
+          "location": "PBR2 PBR3"
+        },
+        "after": {
+          "net": "u_control/model_thread/policy/n14311_22",
+          "resource": "PRIMARY",
+          "location": "PTR3 PBR2 PBR3"
+        },
+        "actual": {
+          "net": "u_control/model_thread/policy/n14311_22",
+          "loads": 1000,
+          "pins": {
+            "I0": 1000
+          },
+          "load_primitives": {
+            "LUT4": 1000
+          },
+          "drivers": [
+            {
+              "name": "u_control/model_thread/policy/n14311_s15",
+              "kind": "LUT3",
+              "ports": {
+                "I0": "\\u_control/model_thread/policy/state [0]",
+                "I1": "\\u_control/model_thread/policy/state [2]",
+                "I2": "\\u_control/model_thread/policy/state [1]",
+                "F": "\\u_control/model_thread/policy/n14311_22 "
+              },
+              "parameters": {
+                "INIT": "8'h10"
+              },
+              "output_pin": "F"
+            }
+          ],
+          "exists": true,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_23",
+        "before": {
+          "net": "u_control/model_thread/policy/n14311_23",
+          "resource": "PRIMARY",
+          "location": "PTR3 PBR2 PBR3"
+        },
+        "after": {
+          "net": "u_control/model_thread/policy/n14311_23",
+          "resource": "PRIMARY",
+          "location": "PBR2 PBR3"
+        },
+        "actual": {
+          "net": "u_control/model_thread/policy/n14311_23",
+          "loads": 1000,
+          "pins": {
+            "I3": 331,
+            "I0": 669
+          },
+          "load_primitives": {
+            "LUT4": 1000
+          },
+          "drivers": [
+            {
+              "name": "u_control/model_thread/policy/n14311_s16",
+              "kind": "LUT3",
+              "ports": {
+                "I0": "\\u_control/model_thread/policy/state [0]",
+                "I1": "\\u_control/model_thread/policy/state [2]",
+                "I2": "\\u_control/model_thread/policy/state [1]",
+                "F": "\\u_control/model_thread/policy/n14311_23 "
+              },
+              "parameters": {
+                "INIT": "8'h10"
+              },
+              "output_pin": "F"
+            }
+          ],
+          "exists": true,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_control/model_thread/policy/n14311_24",
+        "before": {
+          "net": "u_control/model_thread/policy/n14311_24",
+          "resource": "PRIMARY",
+          "location": "PTR3 PBR2 PBR3"
+        },
+        "after": {
+          "net": "u_control/model_thread/policy/n14311_24",
+          "resource": "PRIMARY",
+          "location": "PTR2 PTR3 PBR2 PBR3"
+        },
+        "actual": {
+          "net": "u_control/model_thread/policy/n14311_24",
+          "loads": 1000,
+          "pins": {
+            "I3": 1000
+          },
+          "load_primitives": {
+            "LUT4": 1000
+          },
+          "drivers": [
+            {
+              "name": "u_control/model_thread/policy/n14311_s17",
+              "kind": "LUT3",
+              "ports": {
+                "I0": "\\u_control/model_thread/policy/state [0]",
+                "I1": "\\u_control/model_thread/policy/state [2]",
+                "I2": "\\u_control/model_thread/policy/state [1]",
+                "F": "\\u_control/model_thread/policy/n14311_24 "
+              },
+              "parameters": {
+                "INIT": "8'h10"
+              },
+              "output_pin": "F"
+            }
+          ],
+          "exists": true,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_nav/g_support.u_support/a1_13_6",
+        "before": {
+          "net": "u_nav/g_support.u_support/a1_13_6",
+          "resource": "LW",
+          "location": "-"
+        },
+        "after": null,
+        "actual": {
+          "net": "u_nav/g_support.u_support/a1_13_6",
+          "loads": 112,
+          "pins": {
+            "I3": 3,
+            "I1": 1,
+            "I2": 1,
+            "CE": 106,
+            "I": 1
+          },
+          "load_primitives": {
+            "LUT4": 3,
+            "LUT3": 2,
+            "DFFRE": 105,
+            "DFFSE": 1,
+            "INV": 1
+          },
+          "drivers": [
+            {
+              "name": "u_nav/g_support.u_support/a1_13_s2",
+              "kind": "LUT2",
+              "ports": {
+                "I0": "\\u_nav/n40_3 ",
+                "I1": "\\u_nav/n1866_4 ",
+                "F": "\\u_nav/g_support.u_support/a1_13_6 "
+              },
+              "parameters": {
+                "INIT": "4'h1"
+              },
+              "output_pin": "F"
+            }
+          ],
+          "exists": true,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_nav/u_map/u_tv/n26292_4",
+        "before": {
+          "net": "u_nav/u_map/u_tv/n26292_4",
+          "resource": "PRIMARY",
+          "location": "PTR2 PBR1 PBR2"
+        },
+        "after": {
+          "net": "u_nav/u_map/u_tv/n26292_4",
+          "resource": "LW",
+          "location": "-"
+        },
+        "actual": {
+          "net": "u_nav/u_map/u_tv/n26292_4",
+          "loads": 395,
+          "pins": {
+            "I3": 8,
+            "CE": 387
+          },
+          "load_primitives": {
+            "LUT4": 8,
+            "DFFRE": 387
+          },
+          "drivers": [
+            {
+              "name": "u_nav/u_map/u_tv/n26292_s1",
+              "kind": "LUT2",
+              "ports": {
+                "I0": "r2",
+                "I1": "\\u_nav/u_map/u_tv/s3 ",
+                "F": "\\u_nav/u_map/u_tv/n26292_4 "
+              },
+              "parameters": {
+                "INIT": "4'h4"
+              },
+              "output_pin": "F"
+            }
+          ],
+          "exists": true,
+          "failed_route_identity_verified": false
+        }
+      },
+      {
+        "net": "u_nav/u_match/u_lf/n15905_7",
+        "before": null,
+        "after": {
+          "net": "u_nav/u_match/u_lf/n15905_7",
+          "resource": "PRIMARY",
+          "location": "PTR1"
+        },
+        "actual": {
+          "net": "u_nav/u_match/u_lf/n15905_7",
+          "loads": 363,
+          "pins": {
+            "CE": 363
+          },
+          "load_primitives": {
+            "DFFRE": 363
+          },
+          "drivers": [
+            {
+              "name": "u_nav/u_match/u_lf/n15905_s2",
+              "kind": "LUT2",
+              "ports": {
+                "I0": "r2",
+                "I1": "\\u_nav/u_match/u_lf/vb ",
+                "F": "\\u_nav/u_match/u_lf/n15905_7 "
+              },
+              "parameters": {
+                "INIT": "4'h4"
+              },
+              "output_pin": "F"
+            }
+          ],
+          "exists": true,
+          "failed_route_identity_verified": false
+        }
+      }
+    ]
+  },
+  "TR_available": false,
+  "all_setup_hold_52_effective_status_report5000_and_CDC_delay_unverified": true,
+  "complete_RAM_port_logic_equivalence_not_claimed": true,
+  "failed_net_identities_or_congestion_positions_unknown": true,
+  "capacity_count_alone_does_not_explain_outcome": true,
+  "no_repeated_input_retry": true,
+  "no_programming": true,
+  "evidence_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46\\g2_top.vg",
+      "bytes": 24442439,
+      "mtime_ns": 1792973448399185300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46\\g2.cst",
+      "bytes": 5495,
+      "mtime_ns": 1792973448401194000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46\\g2.sdc",
+      "bytes": 6661,
+      "mtime_ns": 1792973448401194000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46\\impl\\pnr\\cmd.do",
+      "bytes": 610,
+      "mtime_ns": 1792973449489184500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46\\impl\\pnr\\device.cfg",
+      "bytes": 565,
+      "mtime_ns": 1792973449489184500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46\\impl\\pnr\\g2_top.vo",
+      "bytes": 44549382,
+      "mtime_ns": 1792975419453397300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_anchor_native_pnr46\\impl\\pnr\\g2_top.rpt.txt",
+      "bytes": 93253,
+      "mtime_ns": 1792975417072234500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\PNR46_native_memory_accounting.json",
+      "bytes": 13739,
+      "mtime_ns": 1792975594628958000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\pnr46_native_actual_review1\\source_parameter_differences.json",
+      "bytes": 4,
+      "mtime_ns": 1792975628093268000
+    }
+  ]
+}

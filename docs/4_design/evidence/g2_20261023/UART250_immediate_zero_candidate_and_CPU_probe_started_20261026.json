@@ -1,0 +1,581 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T08:57:27.444288+08:00",
+  "source_preparation_and_compile_review": {
+    "passed": true,
+    "recorded_at": "2026-10-26T08:42:08.107003+08:00",
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_FIFO_MAC_UART_prepared1",
+    "prepared": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2",
+    "basis_actual_CPU8_timeout_us": 1000350,
+    "basis_actual_CPU8_zero_publication_age_us": 1095180,
+    "host_timeout_us": 250000,
+    "UART_heartbeat_seconds": 0.05,
+    "UART_map_ACK_wait_slice_seconds": 0.05,
+    "existing_total_map_wait_deadline_and_UDP_path_preserved": true,
+    "modified_existing_FW": [
+      "app/nav_app.c",
+      "nav/host_link_guard.h"
+    ],
+    "hardware_RTL63_all_byte_identical": true,
+    "hardware_assets69_only_CPU11_changed": true,
+    "CPU128KiB_capacity_preserved": true,
+    "new_image_bytes": 52240,
+    "image_layout": {
+      "linked_symbols": {
+        "RAM_SIZE": 131072,
+        "STACK_RESERVE": 6144,
+        "_bss_start": 52240,
+        "_bss_end": 122208,
+        "_stack_top": 131072
+      },
+      "load_file_bytes": 52240,
+      "load_memory_bytes": 122208,
+      "aligned_remaining_bytes": 2720
+    },
+    "stack_analysis": {
+      "complete": true,
+      "static_bound_bytes": 2736,
+      "direct_call_bound_bytes": 2736,
+      "path": [
+        "main",
+        "nav_app_poll",
+        "task_step_local.constprop.0",
+        "drive_to.constprop.0",
+        "candidate_check.constprop.0",
+        "support_check.constprop.0",
+        "cell",
+        "hal_map_support",
+        "hal_map_info"
+      ],
+      "resolved_switches": [
+        {
+          "function": "task_step_local.constprop.0",
+          "table": ".L1452",
+          "targets": [
+            ".L1451",
+            ".L1419",
+            ".L1416",
+            ".L1453",
+            ".L1451"
+          ]
+        },
+        {
+          "function": "xt_link_poll.constprop.0",
+          "table": ".L1758",
+          "targets": [
+            ".L1762",
+            ".L1761",
+            ".L1760",
+            ".L1759",
+            ".L1757"
+          ]
+        }
+      ],
+      "unresolved_indirect": [],
+      "nonstatic_frames": [],
+      "unresolved_sp_writes": [],
+      "irq_disabled": true,
+      "stack_reserved_bytes": 6144,
+      "largest_frames": [
+        [
+          "support_check.constprop.0",
+          992
+        ],
+        [
+          "drive_to.constprop.0",
+          624
+        ],
+        [
+          "nav_app_poll",
+          560
+        ],
+        [
+          "motion_segment.constprop.0",
+          240
+        ],
+        [
+          "task_step_local.constprop.0",
+          240
+        ],
+        [
+          "xt_link_poll.constprop.0",
+          240
+        ],
+        [
+          "motion_check.constprop.0",
+          224
+        ],
+        [
+          "send_tcp.constprop.0",
+          224
+        ]
+      ],
+      "scope": "linked image, no IRQ/recursion/heap; tail calls conservatively nested; board watermark still pending"
+    },
+    "RK31_rearm_and_feedback_contracts_passed": true,
+    "immediate_zero_once_per_lock_not_each_poll": true,
+    "new_actual_CPU_latency_not_yet_proven": true,
+    "physical_500ms_stop_not_proven": true,
+    "no_SYN_PNR_serial_RK_production_or_board_actions": true,
+    "bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\manifest.json",
+        "bytes": 9227,
+        "mtime_ns": 1792975327415675400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\firmware\\nav_fw.elf",
+        "bytes": 428884,
+        "mtime_ns": 1792975326116858800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\firmware\\nav_fw.bin",
+        "bytes": 52240,
+        "mtime_ns": 1792975326255897100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\fw\\nav\\host_link_guard.h",
+        "bytes": 749,
+        "mtime_ns": 1792975318550007000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\fw\\app\\nav_app.c",
+        "bytes": 15902,
+        "mtime_ns": 1792975318550007000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\rk\\yuntuo\\bridge\\core.py",
+        "bytes": 33112,
+        "mtime_ns": 1792975318550007000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\rk_context\\yuntuo\\bridge\\core.py",
+        "bytes": 23355,
+        "mtime_ns": 1792951813786313100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\common\\nav_ram_sdp.v",
+        "bytes": 1679,
+        "mtime_ns": 1792951812362692400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\common\\nav_ram_banked.v",
+        "bytes": 986,
+        "mtime_ns": 1792951812368694300
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\common\\nav_fifo_ob.v",
+        "bytes": 2005,
+        "mtime_ns": 1792951812369237000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\common\\nav_fifo.v",
+        "bytes": 1490,
+        "mtime_ns": 1792951812369237000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\common\\nav_async_fifo.v",
+        "bytes": 5023,
+        "mtime_ns": 1792960048921790000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\common\\nav_cdc.v",
+        "bytes": 1386,
+        "mtime_ns": 1792951812375874600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\common\\nav_skid.v",
+        "bytes": 1105,
+        "mtime_ns": 1792951812381004200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\common\\nav_timebase.v",
+        "bytes": 909,
+        "mtime_ns": 1792951812383028900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\lidar\\xt_frame_rx.v",
+        "bytes": 21682,
+        "mtime_ns": 1792951812384029800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\lidar\\pc_project.v",
+        "bytes": 4375,
+        "mtime_ns": 1792951812385028500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\lidar\\pc_transform.v",
+        "bytes": 3297,
+        "mtime_ns": 1792951812386753500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\lidar\\pc_filter.v",
+        "bytes": 5278,
+        "mtime_ns": 1792951812386753500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\map\\elev_map.v",
+        "bytes": 5531,
+        "mtime_ns": 1792951812386753500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\map\\trav_v3.v",
+        "bytes": 29698,
+        "mtime_ns": 1792951812386753500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\map\\map_subsys.v",
+        "bytes": 7248,
+        "mtime_ns": 1792951812392923400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\map\\support_coverage.v",
+        "bytes": 5664,
+        "mtime_ns": 1792951812394695100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\match\\slf_extract.v",
+        "bytes": 7361,
+        "mtime_ns": 1792951812396700900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\match\\slf_lf.v",
+        "bytes": 22807,
+        "mtime_ns": 1792951812397700600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\match\\slf_match.v",
+        "bytes": 25552,
+        "mtime_ns": 1792951812399678500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\plan\\traj_eval.v",
+        "bytes": 8380,
+        "mtime_ns": 1792951812399678500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\plan\\safety_guard.v",
+        "bytes": 4814,
+        "mtime_ns": 1792951812399678500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\net\\udp_rx.v",
+        "bytes": 9015,
+        "mtime_ns": 1792951812399678500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\net\\udp_tx.v",
+        "bytes": 8013,
+        "mtime_ns": 1792951812405678800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\net\\raw_cap.v",
+        "bytes": 4279,
+        "mtime_ns": 1792951812405678800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\net\\net_port.v",
+        "bytes": 9501,
+        "mtime_ns": 1792951812405678800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\net\\host_mbx.v",
+        "bytes": 10339,
+        "mtime_ns": 1792951812411105900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\io\\imu_uart.v",
+        "bytes": 4825,
+        "mtime_ns": 1792951812413390200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\io\\uart_bus_bridge.v",
+        "bytes": 4875,
+        "mtime_ns": 1792951812416301700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\io\\nav_bus_arb.v",
+        "bytes": 1686,
+        "mtime_ns": 1792951812417553700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\regs\\nav_regfile.v",
+        "bytes": 25589,
+        "mtime_ns": 1792951812419155900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\top\\nav_subsystem.v",
+        "bytes": 33080,
+        "mtime_ns": 1792951812422483200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\common\\nav_ram_sp.v",
+        "bytes": 549,
+        "mtime_ns": 1792951812424156400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\soc\\third_party\\picorv32.v",
+        "bytes": 94829,
+        "mtime_ns": 1792951812425791700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\soc\\nav_soc.v",
+        "bytes": 8852,
+        "mtime_ns": 1792951812425791700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav\\rtl\\net\\rgmii_mac100.v",
+        "bytes": 14411,
+        "mtime_ns": 1792960048919783500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\bmi088.v",
+        "bytes": 14824,
+        "mtime_ns": 1792951812435796700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\board_uart_tx.v",
+        "bytes": 986,
+        "mtime_ns": 1792951812435796700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\fc_v4_round_sat.v",
+        "bytes": 842,
+        "mtime_ns": 1792951812435796700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\imu_fusion.v",
+        "bytes": 20521,
+        "mtime_ns": 1792951812441354400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\imu_isqrt.v",
+        "bytes": 1997,
+        "mtime_ns": 1792951812442364500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\imu_recip.v",
+        "bytes": 2836,
+        "mtime_ns": 1792951812444092400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\ir_remote_control.v",
+        "bytes": 5317,
+        "mtime_ns": 1792951812446212600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\leg_ik_ff.v",
+        "bytes": 3328,
+        "mtime_ns": 1792951812448451400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\mem_policy.v",
+        "bytes": 6138,
+        "mtime_ns": 1792960048917059500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\model_wheel_response.v",
+        "bytes": 3889,
+        "mtime_ns": 1792951812449873800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\motor520_closed_loop.v",
+        "bytes": 13317,
+        "mtime_ns": 1792951812454737800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\motor520_hybrid_speed.v",
+        "bytes": 4818,
+        "mtime_ns": 1792951812455737600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\motor520_speed.v",
+        "bytes": 4866,
+        "mtime_ns": 1792951812457738000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\oled.v",
+        "bytes": 22421,
+        "mtime_ns": 1792951812460935300
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\oled_driver.v",
+        "bytes": 18497,
+        "mtime_ns": 1792951812463934500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\oled_front.v",
+        "bytes": 22554,
+        "mtime_ns": 1792951812466093600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\policy_action_map.v",
+        "bytes": 3026,
+        "mtime_ns": 1792960048918059600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\rl_observation_v5.v",
+        "bytes": 7026,
+        "mtime_ns": 1792951812470056400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\rl_policy_tick_v5.v",
+        "bytes": 6550,
+        "mtime_ns": 1792960048919059100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\servo_driver.v",
+        "bytes": 3774,
+        "mtime_ns": 1792951812473775800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\uart_speed_rx.v",
+        "bytes": 5465,
+        "mtime_ns": 1792951812475777900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control\\uart_telemetry.v",
+        "bytes": 2738,
+        "mtime_ns": 1792951812477623500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\control4500_core.v",
+        "bytes": 20992,
+        "mtime_ns": 1792951812477623500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\command_lease_guard.v",
+        "bytes": 4683,
+        "mtime_ns": 1792951812477623500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\nav_command_units.v",
+        "bytes": 2172,
+        "mtime_ns": 1792951812477623500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\g2_top.v",
+        "bytes": 11369,
+        "mtime_ns": 1792960048919783500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\fc_v4_top.v",
+        "bytes": 9630,
+        "mtime_ns": 1792951812477623500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2\\fixed4500_weight_rom.v",
+        "bytes": 8907,
+        "mtime_ns": 1792951812477623500
+      }
+    ]
+  },
+  "RK_fast_heartbeat_and_ACK_poll_review": {
+    "passed": true,
+    "checks": 9,
+    "labels": [
+      "no heartbeat before50ms",
+      "50ms heartbeat is non-motion TARGET",
+      "heartbeat not repeated too early",
+      "next50ms heartbeat retained",
+      "missing ACK is not invented",
+      "UART map ACK poll capped50ms with original1.5s overall wait",
+      "map ACK wait continues non-motion liveness within100ms finite fixture bound",
+      "ACK-wait heartbeats cannot create a motion or rearm command",
+      "UDP wait and lack of UART heartbeat are preserved"
+    ],
+    "UART_nominal_period_s": 0.05,
+    "UART_ACK_poll_cap_s": 0.05,
+    "finite_max_heartbeat_gap_s": 0.09999999999999998,
+    "serial_opened": false,
+    "production_services_changed": false
+  },
+  "full_CPU250_job": {
+    "controller_pid": 2020,
+    "controller_created_epoch": 1792975434.50311,
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_prepared2",
+    "output": "F:\\nav_integration_g2_20261023\\preview_full_G2_UART_CPU250_probe1_modelsim",
+    "active_PNR40_modified": false,
+    "new_SYN_PNR": false,
+    "programmed": false,
+    "physical_timing_or_vehicle_acceptance": false,
+    "phase": "running_vsim",
+    "updated_at": "2026-10-26T08:43:58.006492+08:00",
+    "hardware_inputs": 63,
+    "CPU_image_bytes": 52240,
+    "guard_symbol": 53524,
+    "admission_physical_bytes": 6054993920,
+    "admission_commit_bytes": 7757008896,
+    "simulation_declaration_order_review": [
+      {
+        "file": "control/oled.v",
+        "moved_unchanged_declarations": [
+          "wire [2:0] axis_index=segment-3'd1;",
+          "wire [15:0] current_value=frame_values[axis_index*16 +: 16];"
+        ],
+        "all_remaining_text_identical": true,
+        "expressions_widths_and_assignments_unchanged": true,
+        "simulation_copy_only": true,
+        "hardware_source_modified": false
+      },
+      {
+        "file": "control4500_core.v",
+        "moved_unchanged_declarations": [
+          "localparam signed [31:0] LEFT_TARGET_MMPS=$rtoi(TARGET_LEFT_MPS*1000.0+(TARGET_LEFT_MPS<0 ? -0.5 : 0.5));",
+          "localparam signed [31:0] RIGHT_TARGET_MMPS=$rtoi(TARGET_RIGHT_MPS*1000.0+(TARGET_RIGHT_MPS<0 ? -0.5 : 0.5));",
+          "reg [2:0] diagnostic_left_motor_fault,diagnostic_right_motor_fault;"
+        ],
+        "all_remaining_text_identical": true,
+        "expressions_widths_and_assignments_unchanged": true,
+        "simulation_copy_only": true,
+        "hardware_source_modified": false
+      },
+      {
+        "file": "g2_top.v",
+        "moved_unchanged_declarations": [
+          "wire l_rx_rst, l_tx_rst;"
+        ],
+        "all_remaining_text_identical": true,
+        "expressions_widths_and_assignments_unchanged": true,
+        "simulation_copy_only": true,
+        "hardware_source_modified": false
+      }
+    ],
+    "child_pid": 30904,
+    "child_created_epoch": 1792975437.896642,
+    "command": [
+      "E:\\modelsim_ae\\win32aloem\\vsim.exe",
+      "-c",
+      "-t",
+      "1ps",
+      "work.tb_preview_full_uart_cpu",
+      "-do",
+      "run.do"
+    ]
+  },
+  "actual_child_identity": {
+    "pid": 30904,
+    "created_epoch": 1792975437.896642,
+    "parent": 2020,
+    "command": [
+      "E:\\modelsim_ae\\win32aloem\\vsim.exe",
+      "-c",
+      "-t",
+      "1ps",
+      "work.tb_preview_full_uart_cpu",
+      "-do",
+      "run.do"
+    ]
+  },
+  "source_only_candidate_not_in_any_PNR": true,
+  "actual_new_zero_latency_not_yet_measured": true,
+  "physical500ms_stop_still_not_proven": true,
+  "first_preparation_rejection": {
+    "stage": "RK_context_was_incorrectly_treated_as_selected_overlay",
+    "selected_overlay": "rk/yuntuo/bridge/core.py",
+    "baseline_dependency_context_must_remain_unchanged": true,
+    "firmware_compile_or_simulation_started": false,
+    "no_functional_result": true
+  },
+  "first_failure_preserved": true
+}

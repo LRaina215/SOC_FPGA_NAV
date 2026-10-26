@@ -22,6 +22,8 @@ from prepare_baseline_fusion_uart_loss import decode_ram,read_elf
 ROOT=Path(__file__).resolve().parents[2]
 SOURCE=Path('F:/nav_integration_g2_20261023/baseline_fusion_preview_FIFO_MAC_UART_prepared1')
 VIV=Path('E:/2026.1/Vivado/bin')
+EXPECTED_TIMEOUT_US=1000000
+MAX_ZERO_AGE_US=0
 
 def symbol(path,wanted):
     data=path.read_bytes();h=struct.unpack_from('<16sHHIIIIIHHHHHH',data)
@@ -48,6 +50,9 @@ def run(out,wait_for_memory=False,portable_oled_declaration=False,simulator='viv
         status('checking_frozen_actual_G2_RTL_firmware_and_admission')
         review=json.loads((SOURCE/'prepared_source_review.json').read_text());assert review['passed']
         for row in review['bindings']:assert metadata(Path(row['path']))==row
+        timeout_header=(SOURCE/'fw/nav/host_link_guard.h').read_text()
+        timeout=re.search(r'^#define HOST_LINK_TIMEOUT_US (\d+)u',timeout_header,re.M)
+        assert timeout and int(timeout[1])==EXPECTED_TIMEOUT_US
         while True:
             mem=memory_status()
             if mem.avail_phys>=2*1024**3 and mem.avail_page>=4*1024**3:break
@@ -56,7 +61,14 @@ def run(out,wait_for_memory=False,portable_oled_declaration=False,simulator='viv
                    available_commit_bytes=mem.avail_page,minimum_physical_bytes=2*1024**3,minimum_commit_bytes=4*1024**3)
             time.sleep(15)
         for row in review['bindings']:assert metadata(Path(row['path']))==row
-        image,elf=read_elf(SOURCE/'firmware/nav_fw.elf');assert image==(SOURCE/'firmware/nav_fw.bin').read_bytes()
+        if EXPECTED_TIMEOUT_US==1000000:
+            image,elf=read_elf(SOURCE/'firmware/nav_fw.elf')
+        else:
+            from prepare_uart_loss_250 import read_image
+            assert EXPECTED_TIMEOUT_US==250000 and review['host_timeout_us']==250000
+            image,elf=read_image(SOURCE/'firmware/nav_fw.elf')
+            assert len(image)==review['new_image_bytes']and elf==review['image_layout']
+        assert image==(SOURCE/'firmware/nav_fw.bin').read_bytes()
         assert decode_ram(SOURCE)==image+bytes(131072-len(image))
         address=symbol(SOURCE/'firmware/nav_fw.elf','g_host_link_guard')
         manifest=json.loads((SOURCE/'manifest.json').read_text());inputs=[Path(s)for s in manifest['source_files']];assert len(inputs)==63
@@ -114,6 +126,9 @@ def run(out,wait_for_memory=False,portable_oled_declaration=False,simulator='viv
         assert all(same_bytes(SOURCE/n,out/n)for n in copied if not(portable_oled_declaration and n.as_posix()in ('control/oled.v','control4500_core.v','g2_top.v')))
         tb=ROOT/'integration/g2/tb_preview_full_uart_cpu.sv';shutil.copyfile(tb,out/tb.name)
         (out/'guard_symbol.vh').write_text(f'localparam integer GUARD_ADDRESS=32\'h{address:08x};\n')
+        (out/'guard_probe_limits.vh').write_text(
+            f'localparam integer HOST_TIMEOUT_US={EXPECTED_TIMEOUT_US};\n'
+            f'localparam integer MAX_ZERO_AGE_US={MAX_ZERO_AGE_US};\n')
         source_rows=[metadata(SOURCE/n)for n in copied]
         status('source_and_image_bound_compiling',hardware_inputs=63,CPU_image_bytes=len(image),guard_symbol=address,
                admission_physical_bytes=mem.avail_phys,admission_commit_bytes=mem.avail_page,simulation_declaration_order_review=declaration_order_review)
@@ -145,7 +160,9 @@ def run(out,wait_for_memory=False,portable_oled_declaration=False,simulator='viv
         text=(out/('3_vsim.log'if simulator=='modelsim'else'xsim.log')).read_text(errors='replace');line=re.search(r'FULL_G2_UART_CPU TEST PASSED[^\r\n]*',text)
         assert line and not re.search(r'FATAL|Fatal:|ERROR:',text)
         metrics={k:int(v)for k,v in re.findall(r'(\w+)=(\d+)',line[0])}
-        assert metrics['checks']>=8 and metrics['timeout_elapsed_us']>=1000000
+        assert metrics['checks']>=8 and metrics['timeout_elapsed_us']>=EXPECTED_TIMEOUT_US
+        if MAX_ZERO_AGE_US:
+            assert metrics['zero_publication_age_us']<=MAX_ZERO_AGE_US
         for row in source_rows:assert metadata(Path(row['path']))==row
         result=dict(passed=True,recorded_at=datetime.now().astimezone().isoformat(),source=str(SOURCE),probe=str(out),metrics=metrics,
             hardware_inputs=63,CPU_image_bytes=len(image),image_bound_to_128KiB_INIT=True,actual_PicoRV32_and_firmware=True,
@@ -156,6 +173,9 @@ def run(out,wait_for_memory=False,portable_oled_declaration=False,simulator='viv
             source_bindings=source_rows,firmware_binding=metadata(SOURCE/'firmware/nav_fw.elf'),TB_binding=metadata(out/tb.name),
             simulation_declaration_order_review=declaration_order_review,
             simulator=simulator,license_child_environment_only=(simulator=='modelsim'),
+            configured_host_timeout_us=EXPECTED_TIMEOUT_US,
+            configured_zero_publication_age_limit_us=MAX_ZERO_AGE_US,
+            physical_standstill_deadline_proven=False,
             runs=runs,scope='Finite real boot/UART/mailbox/CPU/SAFE/lease integration with idle external sensors and no populated map; not moving navigation, heavy A-star or full inference proof')
         save(out/'result.json',result);status('finite_actual_G2_CPU_UART_probe_passed',metrics=metrics);return result
     except Exception as error:
@@ -164,5 +184,10 @@ def run(out,wait_for_memory=False,portable_oled_declaration=False,simulator='viv
         status('failed_preserved_no_automatic_retry',**failure);raise
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--out',type=Path,required=True);p.add_argument('--wait-for-memory',action='store_true');p.add_argument('--portable-oled-declaration',action='store_true');p.add_argument('--simulator',choices=['vivado','modelsim'],default='vivado');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--out',type=Path,required=True);p.add_argument('--wait-for-memory',action='store_true');p.add_argument('--portable-oled-declaration',action='store_true');p.add_argument('--simulator',choices=['vivado','modelsim'],default='vivado')
+    p.add_argument('--source',type=Path,default=SOURCE)
+    p.add_argument('--timeout-us',type=int,choices=[250000,1000000],default=1000000)
+    p.add_argument('--max-zero-age-us',type=int,default=0)
+    a=p.parse_args();SOURCE=a.source.resolve();EXPECTED_TIMEOUT_US=a.timeout_us;MAX_ZERO_AGE_US=a.max_zero_age_us
+    assert MAX_ZERO_AGE_US==0 or EXPECTED_TIMEOUT_US<MAX_ZERO_AGE_US<=500000
     r=run(a.out,a.wait_for_memory,a.portable_oled_declaration,a.simulator);print(json.dumps(dict(passed=r['passed'],metrics=r['metrics'])))
