@@ -255,6 +255,60 @@ def cmd_estoptest(b, vx):
     print(json.dumps(out, ensure_ascii=False))
 
 
+def cmd_poweredtest(b):
+    """After the whole car is powered and elevated: check BMI088/policy readiness, then short
+    low-speed SAFE commands (CPU held in reset) and report whether the control saw them."""
+    t = Telemetry()
+    frames = []
+    t_end = time.time() + 3
+    while time.time() < t_end:
+        frames += t.poll()
+    if not frames:
+        print(json.dumps({'ok': False, 'reason': 'no control telemetry on P11-40'}))
+        return 1
+    last = frames[-1]
+    ready = (last['status'] & 1) == 1 and last['sensor_error'] == 0 and not (last['status'] & 2)
+    if not ready:
+        print(json.dumps({'ok': False, 'reason': 'BMI088 not ready / still calibrating',
+                          'status': last['status'], 'sensor_error': last['sensor_error'],
+                          'active': last['active']}, ensure_ascii=False))
+        return 1
+    b.wr(SOC_CTRL, 1)
+    lim_v, lim_w = b.rd(rm.REGS['SAFE_LIM_V']), b.rd(rm.REGS['SAFE_LIM_W'])
+    b.wr(rm.REGS['SAFE_LIM_V'], (lim_v & 0xFFFF0000) | 60)
+    b.wr(rm.REGS['SAFE_LIM_W'], 400)
+    b.wr(rm.REGS['SAFE_CTRL'], 1)
+    res = {'ok': True, 'start': {k: last[k] for k in ('status', 'active', 'left_speed', 'right_speed')}}
+    try:
+        for name, vx, wz in (('zero', 0, 0), ('fwd50', 50, 0), ('rev50', -50, 0),
+                             ('left300', 0, 300), ('right300', 0, -300), ('zero_end', 0, 0)):
+            seen = []
+            t_end = time.time() + 2.0
+            while time.time() < t_end:
+                b.wr(rm.REGS['SAFE_CMD_V'], vx & 0xFFFF)
+                b.wr(rm.REGS['SAFE_CMD_W'], wz & 0xFFFF)
+                seen += t.poll()
+                time.sleep(0.05)
+            tail = seen[-50:] or seen
+            avg = lambda k: round(sum(f[k] for f in tail) / max(1, len(tail)), 4)
+            res[name] = {'forward_cmd': avg('forward_command'), 'yaw_cmd': avg('yaw_command'),
+                         'left_target': avg('left_target'), 'right_target': avg('right_target'),
+                         'left_speed': avg('left_speed'), 'right_speed': avg('right_speed'),
+                         'active': tail[-1]['active'] if tail else None}
+        t_stop = time.time()
+        after = []
+        while time.time() < t_stop + 1.0:
+            after += [(round(time.time() - t_stop, 2), round(f['forward_command'], 4)) for f in t.poll()]
+            time.sleep(0.02)
+        res['after_stop'] = after[::10]
+    finally:
+        b.wr(rm.REGS['SAFE_LIM_V'], lim_v)
+        b.wr(rm.REGS['SAFE_LIM_W'], lim_w)
+        b.wr(SOC_CTRL, 0)
+    print(json.dumps(res, ensure_ascii=False))
+    return 0
+
+
 def main():
     a = sys.argv[1:]
     if not a:
@@ -278,6 +332,8 @@ def main():
         cmd_soc(b)
     elif c == 'con':
         cmd_con(b, float(a[1]) if len(a) > 1 else 3)
+    elif c == 'poweredtest':
+        return cmd_poweredtest(b)
     elif c == 'estoptest':
         cmd_estoptest(b, int(a[1]) if len(a) > 1 else 50)
     elif c == 'selftest':
