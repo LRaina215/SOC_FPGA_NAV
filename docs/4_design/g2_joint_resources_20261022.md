@@ -1007,3 +1007,11 @@ PNR47原17712/67488仍同一routing，原总0/静默0、冻结输入保持，无
 
 CPU250空读修正版仍原716/62752单会话，32.629ms启动/初锁已过，最新100ms/64loops，完整失联/≤350ms零提交/重武装/独立ESTOP待。A*461.7906ms为历史完整搜索样本，不是当前冻结固件已证最坏；当前已128pop分片，但整图初始化/距离处理、frontier BFS、回溯及HAL轨迹等待的最长不让出段仍需实测界定。250ms阈值后留给繁忙处理和零提交的100ms预算必须明确，不能拿空闲CPU探针代WCET或500ms物理停止。没有新SYN/PNR、硬件下载或固件改动。
 
+
+## 2026-10-26 10:24 区域成员与独立CPU测量
+
+**2026-10-26 10:24 区域具体成员已准备，界面运行时阻塞坐标读取；当前CPU非让出段开始真实测量。** 对35原VG与实际VO逐项核对，action有1056个名字/种类一致CFU（全部物理CFU）、另6DSP；fusion有5721个一致CFU、另43个PNR复制CFU及30DSP；全u_control有46333个一致CFU，实际46656CFU/49RAM/70DSP。名字/种类差异、PNR新增、硬资源和INV/IO等分表，不自动别名。新入口`prepare_pnr35_region_members.py`保存可复现提取，原VG/VO/CST/SDC不改；模板故意无效且坐标留空，不启动49。官方Computer Use运行时在枚举窗口前连续报`failed to write kernel assets: 系统找不到指定的路径。 (os error 3)`，按技能重试/reset仍失败，与01:31故障相同；没有读取GUI位置，不能归因FloorPlanner或GW5AT不支持。未验证的二进制/保护数据库未解码，不猜矩形。此前未交付的实际GRID/邻近合法资源/占用容量与对象绑定仍明确待证；运行时无变化时不每轮重复恢复。[具体成员与阻塞证据](evidence/g2_20261023/PNR35_region_members_and_GUI_preflight_20261026.json)。
+
+独立测量使用当前prepared3的原3份函数，仅插rdcycle；删插桩行后原文本严格还原，真实PicoRV32/nav_soc/两RAM RTL、128KiB和50MHz保持。4组小镜像交叉编译完成，原2/4GiB门槛后10:14:31控制59876、runner53988及10:14:41 xsim50528实际启动astar；后续仅接一次frontier并重验内存，不占ModelSim许可，不改部署FW或启动联合构建。有限地图的首片快照/距离/初始化/128出堆已有输出，尚非终局最大，不能承诺全应用WCET；健康轨迹FSM的固定服务条件预算和异常DONE无软件退出风险分别记录，不把while形状当已证正常超时根因。[准备、真实输入核对及实际运行身份](evidence/g2_20261023/CPU250_nonpreemptible_segments_prepared_20261026.json)。原完整CPU250仍716/62752，最新200ms/144loops，完整失联/重武装/独立ESTOP未出最终结果。
+
+真实分域的首个独立源码候选正在准备，明确为模型/融合/观测/RL/动作25MHz，BMI/编码器/PID/PWM/舵机/UART/OLED/反馈与NAV仍50MHz，区别于全u_control25MHz。目标保留外围物理时序/量纲，必须另审新增原子通道、源采样间隔、PLL/失锁停止与相关时钟；35实际PRIMARY8/8和LW8/8，新钟没有已证空轨。未启动该候选联合SYN/PNR，区域35网表不因此替换，当前所有部署门槛保留。

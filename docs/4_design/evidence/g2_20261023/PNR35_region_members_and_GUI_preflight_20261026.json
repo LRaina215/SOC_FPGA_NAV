@@ -1,0 +1,197 @@
+{
+  "recorded_at": "2026-10-26T10:19:29.855064+08:00",
+  "scope": "Exact PNR35 region-member preparation and GUI runtime blocker; no new physical build",
+  "entry": "integration/g2/prepare_pnr35_region_members.py",
+  "full_artifacts": "F:\\nav_integration_g2_20261023\\pnr35_region_members_prepared1\\artifacts",
+  "members_summary": {
+    "recorded_at": "2026-10-26T10:15:40.029917+08:00",
+    "scope": "Read-only public VG/VO/TR primitive inventory and disabled region templates",
+    "build": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35",
+    "source_bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35\\g2_top.vg",
+        "bytes": 24442439,
+        "mtime_ns": 1792950051045162200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35\\impl\\pnr\\g2_top.vo",
+        "bytes": 44583016,
+        "mtime_ns": 1792952610812603800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion32_CDC52_pnr35\\impl\\pnr\\g2_top.tr",
+        "bytes": 547343,
+        "mtime_ns": 1792952617350824300
+      }
+    ],
+    "source_VG_bytes_not_modified": true,
+    "original_PNR35_CST_SDC_options_not_modified": true,
+    "profiles": {
+      "action": {
+        "prefix": "u_control/model_thread/actuator_map/",
+        "source_leaves": 1068,
+        "physical_leaves": 1066,
+        "reconciliation_counts": {
+          "source_only": 2,
+          "exact_name_and_kind": 1066
+        },
+        "exact_source_physical_CFU_members": 1056,
+        "exact_CFU_by_kind": {
+          "DFFCE": 165,
+          "LUT3": 366,
+          "DFFPE": 28,
+          "LUT4": 268,
+          "LUT2": 141,
+          "ALU": 88
+        },
+        "physical_CFU_members": 1056,
+        "source_CFU_members": 1056,
+        "physical_BSRAM": 0,
+        "physical_DSP": 6,
+        "geometry_coordinates": null,
+        "capacity_LUT_DFF_ALU_RAM_DSP_free_sites": null,
+        "region_ready": false,
+        "physical_only_CFU_unusable_as_original_VG_names_count": 0
+      },
+      "fusion": {
+        "prefix": "u_control/model_thread/fusion/",
+        "source_leaves": 5809,
+        "physical_leaves": 5842,
+        "reconciliation_counts": {
+          "source_only": 10,
+          "exact_name_and_kind": 5799,
+          "physical_only": 43
+        },
+        "exact_source_physical_CFU_members": 5721,
+        "exact_CFU_by_kind": {
+          "DFFCE": 1492,
+          "DFFRE": 490,
+          "LUT3": 1035,
+          "LUT2": 521,
+          "LUT4": 991,
+          "DFFPE": 29,
+          "ALU": 1163
+        },
+        "physical_CFU_members": 5764,
+        "source_CFU_members": 5721,
+        "physical_BSRAM": 0,
+        "physical_DSP": 30,
+        "geometry_coordinates": null,
+        "capacity_LUT_DFF_ALU_RAM_DSP_free_sites": null,
+        "region_ready": false,
+        "physical_only_CFU_unusable_as_original_VG_names_count": 43
+      },
+      "all_control": {
+        "prefix": "u_control/",
+        "source_leaves": 46662,
+        "physical_leaves": 46895,
+        "reconciliation_counts": {
+          "source_only": 72,
+          "exact_name_and_kind": 46569,
+          "same_name_kind_changed": 21,
+          "physical_only": 305
+        },
+        "exact_source_physical_CFU_members": 46333,
+        "exact_CFU_by_kind": {
+          "LUT2": 2882,
+          "DFFCE": 12215,
+          "LUT3": 9959,
+          "LUT4": 10347,
+          "DFFRE": 5747,
+          "DFFSE": 102,
+          "ALU": 2826,
+          "MUX2_LUT5": 767,
+          "MUX2_LUT6": 319,
+          "DFFPE": 104,
+          "MUX2_LUT7": 129,
+          "RAM16SDP4": 234,
+          "ROM16": 702
+        },
+        "physical_CFU_members": 46656,
+        "source_CFU_members": 46335,
+        "physical_BSRAM": 49,
+        "physical_DSP": 70,
+        "geometry_coordinates": null,
+        "capacity_LUT_DFF_ALU_RAM_DSP_free_sites": null,
+        "region_ready": false,
+        "physical_only_CFU_unusable_as_original_VG_names_count": 302
+      }
+    },
+    "full_name_and_kind_only_not_ports_or_logic_equivalence": true,
+    "differences_not_automatically_aliased": true,
+    "coordinates_selected": false,
+    "available_region_capacity_proven": false,
+    "FloorPlanner_object_binding_executed": false,
+    "previously_prepared_two_DSP_reported_site_lock_only": true,
+    "official_document": "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/doc/EN/SUG1541-1.0E_Gowin Software Physical Constraints User Guide.pdf",
+    "manual_printed_pages": {
+      "CFU": "7-9",
+      "hard_RAM_DSP": "10-11",
+      "GROUP": "14-15",
+      "successful_PNR_back_annotation": "44-45",
+      "Chip_Array_actual_placement_and_density": "53-57"
+    },
+    "missing": [
+      "Actual C-version DSP-to-GRID column mapping and legal nearby CFU sites.",
+      "Actual occupied and free per-site LUT/DFF/ALU/SSRAM capacity and hard-resource capacity for a proposed region.",
+      "Full 49 BSRAM / 70 DSP physical site map for whole-control proposal.",
+      "Official FloorPlanner binding of the exact selected low-level primitive kinds and proposed region.",
+      "Resource pressure and cut-net cost at control-to-NAV/system boundary after the region is selected."
+    ],
+    "GUI_runtime_unavailable_reported_by_parent": true,
+    "no_repeated_GUI_recovery_attempted": true,
+    "current_PNR_started": false,
+    "current_SYN_started": false,
+    "all_templates_deliberately_invalid": true,
+    "no_protected_database_access": true,
+    "no_coordinate_inference": true,
+    "next_step": "Use official successful-PNR35 Place View/back-annotation when computer runtime is available; choose and validate sites/capacity before preparing any runnable CST or PNR."
+  },
+  "GUI_runtime": {
+    "recorded_at": "2026-10-26T10:14:35.195590+08:00",
+    "skill": "C:/Users/Li/.codex/plugins/cache/openai-bundled/computer-use/26.1016.61520/skills/computer-use/SKILL.md",
+    "skill_and_guidance_api_confirmations_read": true,
+    "GUI_attempts": 3,
+    "kernel_reset_attempted": true,
+    "exact_error": "failed to write kernel assets: 系统找不到指定的路径。 (os error 3)",
+    "failed_before_window_inventory": true,
+    "windows_enumerated": false,
+    "positions_or_occupancy_read_from_GUI": false,
+    "PNR35_original_unchanged": true,
+    "new_PNR_started": false,
+    "region_coordinates_selected": false,
+    "fallback_investigation": [
+      "Official Tcl SUG1220 only documented gen_posp for BSRAM positions; no verified post-route all-placement export CLI found.",
+      "Installed .ini examined as a filename suggestion proved binary, not a public textual GRID manifest; no binary/protected payload decoding performed."
+    ],
+    "next_steps": [
+      "Build exact CFU group membership from original PNR35 VG/VO and actual TR sites; keep coordinates/capacity unfilled until verified.",
+      "Do not repeatedly retry unchanged broken GUI runtime each heartbeat; retry on an external/runtime change.",
+      "Continue independent model25/NAV50 candidate preparation and real CPU non-yield segment measurements."
+    ],
+    "previous_identical_runtime_failure": "F:/nav_integration_g2_20261023/pnr32_local_placement_review_20261026/GUI_read_blocker_20261026.json"
+  },
+  "PNR35_actual_clock_resource_budget": {
+    "PRIMARY_used": 8,
+    "PRIMARY_total": 8,
+    "LW_used": 8,
+    "LW_total": 8,
+    "new25MHz_clock_assignment_unproven": true
+  },
+  "independent_measurement_entry": "integration/g2/prepare_cpu250_segment_probe.py",
+  "independent_measurement_preparation_evidence": "docs/4_design/evidence/g2_20261023/CPU250_nonpreemptible_segments_prepared_20261026.json",
+  "measurement_sequence_job": "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\sequence_job.json",
+  "measurement_scope": "Real unchanged PicoRV32/nav_soc/128KiB and current function text except rdcycle instrumentation; isolated functions, finite map fixtures, not complete application WCET or physical stop.",
+  "measurement_actual_result_pending": true,
+  "region_PNR_launched": false,
+  "new_joint_SYN_PNR_launched": false,
+  "parallel_clock_candidate": {
+    "agent": "/root/control25_domain_review",
+    "scope": "model/fusion/observation/RL/action25MHz; peripheral/control-feedback/NAV50MHz",
+    "not_all_u_control25MHz": true,
+    "reason": "Preserve original UART/PWM/I2C/encoder/PID/servo physical timing and units; explicit atomic related-clock interfaces required.",
+    "actual_PLL_or_physical_timing_acceptance": false,
+    "joint_SYN_PNR_started": false
+  },
+  "next_region_gate": "Actual legal coordinates, hard-resource adjacency, occupancy/capacity and official binding; disabled templates cannot start PNR49."
+}

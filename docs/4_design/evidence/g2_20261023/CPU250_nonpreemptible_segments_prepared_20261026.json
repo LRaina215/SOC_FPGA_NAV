@@ -1,0 +1,165 @@
+{
+  "recorded_at": "2026-10-26T10:17:31.316801+08:00",
+  "scope": "Prepared isolated segment timing inputs; actual astar xsim running, not a WCET proof",
+  "entry": "integration/g2/prepare_cpu250_segment_probe.py",
+  "out": "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1",
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_emptyIMU_prepared3",
+  "independent_input_audit": {
+    "three_instrumented_function_sources_after_removing_only_probe_lines": {
+      "nav/astar.c": true,
+      "nav/explore.c": true,
+      "drv/hal_fpga.c": true
+    },
+    "actual_CPU_RTL_bytes_same": {
+      "common/nav_ram_sp.v": true,
+      "common/nav_ram_sdp.v": true,
+      "soc/third_party/picorv32.v": true,
+      "soc/nav_soc.v": true
+    },
+    "PicoRV32_parameters": [
+      "picorv32 #(",
+      ".BARREL_SHIFTER(1), .TWO_CYCLE_COMPARE(0), .TWO_CYCLE_ALU(0), .COMPRESSED_ISA(1),",
+      ".CATCH_MISALIGN(1), .CATCH_ILLINSN(1), .ENABLE_PCPI(0), .ENABLE_MUL(0), .ENABLE_FAST_MUL(1),",
+      ".ENABLE_DIV(1), .ENABLE_IRQ(0), .ENABLE_TRACE(0),"
+    ],
+    "no_simulator_started_by_this_check": true,
+    "physical_available": 4195373056,
+    "same_source": "F:\\nav_integration_g2_20261023\\baseline_fusion_preview_safety250_emptyIMU_prepared3"
+  },
+  "compiled_images": {
+    "astar": {
+      "compiled": true,
+      "binary_bytes": 4200,
+      "size": "   text\t   data\t    bss\t    dec\t    hex\tfilename\n   4198\t      0\t  26392\t  30590\t   777e\tF:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\astar\\bench.elf\n",
+      "simulator_started": false,
+      "measurement_available": false
+    },
+    "frontier": {
+      "compiled": true,
+      "binary_bytes": 3416,
+      "size": "   text\t   data\t    bss\t    dec\t    hex\tfilename\n   3416\t      0\t  42608\t  46024\t   b3c8\tF:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\frontier\\bench.elf\n",
+      "simulator_started": false,
+      "measurement_available": false
+    },
+    "traj": {
+      "compiled": true,
+      "binary_bytes": 1070,
+      "size": "   text\t   data\t    bss\t    dec\t    hex\tfilename\n   1070\t      0\t   1864\t   2934\t    b76\tF:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\traj\\bench.elf\n",
+      "simulator_started": false,
+      "measurement_available": false
+    },
+    "traj_stuck": {
+      "compiled": true,
+      "binary_bytes": 1070,
+      "size": "   text\t   data\t    bss\t    dec\t    hex\tfilename\n   1070\t      0\t   1864\t   2934\t    b76\tF:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\traj_stuck\\bench.elf\n",
+      "simulator_started": false,
+      "measurement_available": false
+    }
+  },
+  "phase_names": {
+    "0": "empty_rdcycle_bracket",
+    "1": "astar_cost_snapshot",
+    "2": "astar_distance_transform",
+    "3": "astar_coordinate_and_g_parent_heap_initialization",
+    "4": "astar_up_to128_heap_pops",
+    "5": "astar_backtrace_and_atomic_path_publication",
+    "7": "frontier_distance_queue_initialization",
+    "8": "frontier_entire_BFS_and_scoring",
+    "9": "trajectory_candidate_and_command_MMIO",
+    "10": "trajectory_DONE_poll_wait",
+    "11": "trajectory_result_MMIO"
+  },
+  "sequence_job_snapshot": {
+    "phase": "running_astar",
+    "controller_pid": 59876,
+    "controller_created_epoch": 1792980871.360251,
+    "command": [
+      "D:\\Anaconda\\python.exe",
+      "-X",
+      "utf8",
+      "F:/nav_integration_g2_20261023/CPU250_nonpreemptible_segments_prepared1/run_astar_then_frontier.py"
+    ],
+    "started_epoch": 1792980871.5524545,
+    "suites": [],
+    "modelsim_started": false,
+    "updated_epoch": 1792980871.5562873,
+    "current_pid": 53988,
+    "current_command": [
+      "D:\\Anaconda\\python.exe",
+      "-X",
+      "utf8",
+      "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\run_xsim.py",
+      "--suite",
+      "astar"
+    ],
+    "current_created_epoch": 1792980871.5545692
+  },
+  "astar_admission": {
+    "phase": "running_xsim",
+    "controller": {
+      "pid": 53988,
+      "created_epoch": 1792980871.5545692,
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\run_xsim.py",
+        "--suite",
+        "astar"
+      ],
+      "cwd": "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\astar"
+    },
+    "physical_available": 4465717248,
+    "commit_available": 5441597440,
+    "current_pid": 65364,
+    "current_command": [
+      "cmd",
+      "/c",
+      "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+      "snapshot",
+      "-R"
+    ]
+  },
+  "no_ModelSim_started": true,
+  "no_joint_build_started": true,
+  "deployment_source_changed": false,
+  "actual_final_segment_measurements_available": false,
+  "stop_budget": {
+    "host_threshold_us": 250000,
+    "target_zero_age_us": 350000,
+    "max_nonpreemptible_and_submit_allowance_us": 100000,
+    "physical500ms_stop_proven": false
+  },
+  "highest_static_risk": "Fault-path liveness: HAL DONE poll has no timeout/yield. This does not prove normal trajectory hardware is slow; healthy accepted-start FSM has a conditional small bound.",
+  "next_risk": "Unchunked frontier BFS,initial A* distance/init and final traceback;128 pop budget does not cover these stages",
+  "guard_points": "nav_app.c162,335,345 and final hal_fpga.c87-93 filter; none preempts a blocked call",
+  "observer_effect": "rdcycle and trace stores change compiler layout/register pressure; raw measurements include instrumentation; no in-timed-section console output or hook yielding",
+  "optional_traj_fixtures_started": false,
+  "result_paths": [
+    "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\astar\\result.json",
+    "F:\\nav_integration_g2_20261023\\CPU250_nonpreemptible_segments_prepared1\\frontier\\result.json"
+  ],
+  "trajectory_healthy_FSM_static_review": {
+    "source": "F:/nav_integration_g2_20261023/baseline_fusion_preview_safety250_emptyIMU_prepared3/nav/rtl/plan/traj_eval.v",
+    "bound_cycles": "K*(9*T+9)+2",
+    "K": 64,
+    "T": 20,
+    "cycles": 12098,
+    "at50MHz_us": 241.96,
+    "DONE_cpu_latched_at": "nav/rtl/top/nav_subsystem.v:434-437",
+    "conditions": [
+      "start accepted in S_IDLE",
+      "50MHz clock progresses",
+      "no reset during operation",
+      "fixed synchronous RAM/read timing contract holds"
+    ],
+    "excludes": [
+      "CPU candidate/result MMIO",
+      "bus arbitration",
+      "physical timing and faults",
+      "other planner work"
+    ],
+    "actual_hardware_service_measured": false,
+    "fault_path": "start ignored while busy/reset-cleared DONE/nonprogress can leave software loop without an exit"
+  }
+}
