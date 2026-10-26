@@ -1,0 +1,63 @@
+--- a/fw/app/nav_app.c
++++ b/fw/app/nav_app.c
+@@ -185,21 +185,31 @@
+     return true;
+ }
+ 
+-static void drain_host_messages(void)
++/* Bound ordinary receive work, including invalid/rejected packets.
++ * Checkpoints keep their original one-packet/no-op-heartbeat contract. */
++static void drain_host_messages(unsigned max_packets)
+ {
+     uint32_t rx_us;
+     int len;
+-    for(;;) {
++    for(unsigned handled=0;handled<max_packets;handled++) {
+         if(host_pending_len) {
++            /* This raw payload was popped at a checkpoint. Consume it first,
++             * after the planner's local-coordinate view has unwound. */
+             len=host_pending_len;rx_us=host_pending_rx;host_pending_len=0;
+         } else len=hal_host_recv(host_rx_buf,sizeof host_rx_buf,&rx_us);
+         if(len<=0) break;
+         proto_msg_t m;
+-        if(proto_parse(host_rx_buf,len,&m) &&
+-           host_link_guard_observe(&g_host_link_guard,&m,hal_time_us(),rx_us)) {
++        bool accepted=proto_parse(host_rx_buf,len,&m) &&
++            host_link_guard_observe(&g_host_link_guard,&m,hal_time_us(),rx_us);
++        /* Preserve observe-before-poll for fresh queued arrivals. Invalid
++         * packets cannot defer the timeout publication until FIFO empty. */
++        apply_host_link_lock(hal_time_us());
++        if(accepted) {
+             on_msg(&g_app.nt,&m,rx_us);
+             g_app.n_msgs++;
+         }
++        /* A single handler may be expensive; inspect actual time on return. */
++        apply_host_link_lock(hal_time_us());
+     }
+ }
+ 
+@@ -369,7 +379,7 @@
+         loc_start_align(lc, lc->cfg.reloc_mm, lc->cfg.reloc_ang);
+ 
+     /* 4. 主机报文（包括已取消搜索保留的原报文）。 */
+-    drain_host_messages();
++    drain_host_messages(4u);
+ 
+     apply_host_link_lock(hal_time_us());
+     /* 5. 规划：有图模式下定位未就绪（等初始位姿 / 对准中 / 丢失）时原地保持，定位退化时限速 */
+@@ -382,10 +392,13 @@
+         nav_task_step(nt, now);
+     } else nav_task_map_work(nt,4);
+ 
+-    if(host_pending_len) drain_host_messages(); /* only after local-coordinate view unwinds */
++    /* At most one checkpoint payload is pending. Process exactly that head;
++     * leave newly queued frames for the next poll instead of draining again. */
++    if(host_pending_len) drain_host_messages(1u);
+     apply_host_link_lock(hal_time_us());
+     /* 6. 状态回传 */
+-    if ((uint32_t)(now - g_app.t_status) >= APP_STATUS_PERIOD_US) {
++    /* Never overwrite a retained raw payload with telemetry construction. */
++    if (!host_pending_len && (uint32_t)(now - g_app.t_status) >= APP_STATUS_PERIOD_US) {
+         g_app.t_status = now;
+         proto_status_t s;
+         nav_task_status(nt, &s, now);

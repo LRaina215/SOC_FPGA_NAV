@@ -1,0 +1,118 @@
+{
+  "recorded_at": "2026-10-26T13:59:36.784034+08:00",
+  "passed_finite_observer_policy_real4500_comparison": true,
+  "scope": "Two original/candidate observer+policy combinations with unmodified real4500 cores/input_mem/full original weights at25MHz/125Hz. Fusion calibration, fullG2 and physical acceptance excluded.",
+  "output": "F:\\nav_integration_g2_20261023\\observation_ring_real4500_probe1",
+  "job": "F:\\nav_integration_g2_20261023\\observation_ring_real4500_probe1\\job.json",
+  "actual_result": "F:\\nav_integration_g2_20261023\\observation_ring_real4500_probe1\\result.json",
+  "actual_frozen_spec": "F:\\nav_integration_g2_20261023\\observation_ring_real4500_probe1\\input_and_observation_spec.json",
+  "controller_pid": 3500,
+  "controller_created_epoch": 1792994210.732538,
+  "controller_created_local": "2026-10-26 13:56:50.732538+08:00",
+  "completed_at": "2026-10-26T13:57:18.777572+08:00",
+  "all_owned_test_processes_exited": true,
+  "clock_MHz": 25,
+  "period_clocks": 200000,
+  "capture_and_publish_period_us": 8000,
+  "hardware_time_accelerated": false,
+  "real4500_core_and_input_mem_unmodified": true,
+  "all69_original_assets_copied_byte_identical": true,
+  "no_inference_substitute": true,
+  "no_forced_state_or_private_initialization": true,
+  "initial_ring_RAM_naturalX_verified": true,
+  "complete_published_frames20": {
+    "each_input_words": 168,
+    "each_intermediate_layer_index_value_records": 425,
+    "each_core_actions": 6,
+    "frame_ids_and_external_publication_cycle_exact": true
+  },
+  "total_records_including_aborted_and_last_unpublished_result": {
+    "cycles": 4892859,
+    "words": 3932,
+    "trace": 8946,
+    "results": 21,
+    "published": 20,
+    "wraps": 2,
+    "aborts": 3,
+    "first_repeats": 4
+  },
+  "maximum_capture_to_publish_us": 3375.38,
+  "cases": [
+    "First14published frames contiguous125Hz, including two full modulo6 ring wraps and command plateaus.",
+    "Disable during history LOAD word40, then full first-history rebuild and recovery.",
+    "Disable during real layer0/index20 inference, then full first-history rebuild and recovery.",
+    "Sensor fault while actual core busy, sticky cancellation until explicit disable/rearm; subsequent recovery.",
+    "First history5identical raw copies checked in all4epochs; clipped current reads same newest raw history."
+  ],
+  "source_and_fixture_frozen_during_run": true,
+  "comparison_arrays_reject_unknowns_before_numeric_acceptance": true,
+  "runtime_records": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\observation_ring_real4500_probe1\\0_xvlog_runtime.json",
+      "tool": "xvlog",
+      "started_at": "2026-10-26T13:56:51.145475+08:00",
+      "completed_at": "2026-10-26T13:56:54.197681+08:00",
+      "admission": {
+        "physical": 4108840960,
+        "commit": 5241614336,
+        "checked_at": "2026-10-26T13:56:51.139205+08:00"
+      },
+      "wrapper_pid": 19060,
+      "wrapper_created_epoch": 1792994211.1411753,
+      "all_owned_processes_exited": true
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\observation_ring_real4500_probe1\\1_xvlog_runtime.json",
+      "tool": "xvlog",
+      "started_at": "2026-10-26T13:56:54.207734+08:00",
+      "completed_at": "2026-10-26T13:56:57.257439+08:00",
+      "admission": {
+        "physical": 4163768320,
+        "commit": 5245345792,
+        "checked_at": "2026-10-26T13:56:54.198796+08:00"
+      },
+      "wrapper_pid": 14592,
+      "wrapper_created_epoch": 1792994214.2008784,
+      "all_owned_processes_exited": true
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\observation_ring_real4500_probe1\\2_xelab_runtime.json",
+      "tool": "xelab",
+      "started_at": "2026-10-26T13:56:57.265947+08:00",
+      "completed_at": "2026-10-26T13:57:03.375177+08:00",
+      "admission": {
+        "physical": 4179779584,
+        "commit": 5291597824,
+        "checked_at": "2026-10-26T13:56:57.258947+08:00"
+      },
+      "wrapper_pid": 45916,
+      "wrapper_created_epoch": 1792994217.2606409,
+      "all_owned_processes_exited": true
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\observation_ring_real4500_probe1\\3_xsim_runtime.json",
+      "tool": "xsim",
+      "started_at": "2026-10-26T13:57:03.385305+08:00",
+      "completed_at": "2026-10-26T13:57:18.775024+08:00",
+      "admission": {
+        "physical": 4218085376,
+        "commit": 5389996032,
+        "checked_at": "2026-10-26T13:57:03.375679+08:00"
+      },
+      "wrapper_pid": 66988,
+      "wrapper_created_epoch": 1792994223.3782651,
+      "all_owned_processes_exited": true
+    }
+  ],
+  "original_production3_not_rerun": true,
+  "fusion2second_calibration_not_rerun": true,
+  "ModelSim_AE_started": false,
+  "new_SYN_PNR_started": false,
+  "SYN38_started": false,
+  "programmed": false,
+  "remaining": [
+    "Actual distributedRAM mapping/port/read latency/new FF/LUT/ALU/resource/reset fanout and25MHz input setup proof.",
+    "WholeG2 fusion/CPU/UART integration and independent RK stop behavior.",
+    "Physical routing/all clocks setup/hold/CDC/reset/IO/pulse and vehicle stopping."
+  ]
+}

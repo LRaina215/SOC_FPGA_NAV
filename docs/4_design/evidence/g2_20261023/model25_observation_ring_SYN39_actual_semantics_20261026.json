@@ -1,0 +1,60 @@
+{
+  "recorded_at": "2026-10-26T14:44:18.267009+08:00",
+  "passed": true,
+  "scope": "actual complete SYN39 VG ring partition review; no PNR started by this reviewer",
+  "actual_review": "F:\\nav_integration_g2_20261023\\ring_SYN39_actual_semantics_review6\\final_review.json",
+  "proof_checks": "F:\\nav_integration_g2_20261023\\ring_SYN39_actual_semantics_review6\\proof_checks.json",
+  "address_DSP_modes": "F:\\nav_integration_g2_20261023\\ring_SYN39_actual_semantics_review6\\actual_address_DSP_modes.json",
+  "RAM_word_permutation": "F:\\nav_integration_g2_20261023\\ring_SYN39_actual_semantics_review6\\actual_RAM_word_permutation.json",
+  "actual_VG": {
+    "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_observation_ring_syn39\\impl\\gwsynthesis\\g2_top.vg",
+    "bytes": 21430668,
+    "mtime_ns": 1792996205489177800
+  },
+  "source": "F:/nav_integration_g2_20261023/baseline_fusion_model25_observation_ring_prepared2",
+  "reproducible_entry": "integration/g2/review_model25_ring_semantics_syn39.py",
+  "mapped_checks": 1240,
+  "checks_summary": [
+    "3 explicit address MULT12X12 public modes: one async-reset/COMMIT AREG duplicate proves same next-slot transition; two signed12 combinational x28 operators",
+    "33 explicit work/live/frozen pointer FF complete next-state and reset/clock",
+    "66 RAM16SDP4 low WAD/RAD, write bank select, data DI matches original normalizer words across all28lanes and24bits",
+    "arbitrary RAM contents, no INIT assumption; actual read slot/address/current exact signed clip and raw history words",
+    "24 private prefetch FF data/clock/reset/CE outside asserted async CLEAR and complete next-state including every reset value; first0/next load+1 index"
+  ],
+  "source_functional_proofs": [
+    "F:\\nav_integration_g2_20261023\\observation_ring_model_proof1\\result.json",
+    "F:\\nav_integration_g2_20261023\\observation_ring_protocol_probe2\\result.json",
+    "F:\\nav_integration_g2_20261023\\observation_ring_real4500_probe1\\result.json"
+  ],
+  "joint_mapping_other_memories_clocks": "F:\\nav_integration_g2_20261023\\SYN39_ring_resources_memories_clocks_review2\\result.json",
+  "first_checker_rejections_preserved": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\ring_SYN39_actual_semantics_review1\\final_review.json",
+      "cause": "vanished frame_freeze treated as free net"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\ring_SYN39_actual_semantics_review2\\final_review.json",
+      "cause": "CE comparison includes dominating async reset and/or shared load==167 comparator in core not expanded"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\ring_SYN39_actual_semantics_review3\\final_review.json",
+      "cause": "CE comparison includes dominating async reset and/or shared load==167 comparator in core not expanded"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\ring_SYN39_actual_semantics_review4\\final_review.json",
+      "cause": "CE comparison includes dominating async reset and/or shared load==167 comparator in core not expanded"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\ring_SYN39_actual_semantics_review5\\final_review.json",
+      "cause": "CE comparison includes dominating async reset and/or shared load==167 comparator in core not expanded"
+    }
+  ],
+  "last_CE_counterexample_resolution": "Explicitly expand core direct combinational cells, including shared input_valid_167_18 decode; CE identity checked outside dominating async CLEAR, and complete24bit next-state checked for all reset values. No additional behavior/reachability assumption added to excuse CE difference.",
+  "assumptions_and_limits": [
+    "mapped partition proof with corresponding retained arithmetic FF/DSP boundary",
+    "physical place/routing and setup/hold not evaluated",
+    "distributed RAM electrical/hold behavior not measured on board"
+  ],
+  "deployment_approved": false,
+  "automatic_PNR": false
+}
