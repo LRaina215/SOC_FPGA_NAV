@@ -1,0 +1,904 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T15:43:12.137148+08:00",
+  "scope": "Original observer + scheduler + real4500 at50MHz; fusion calibration, actuator and wholeG2 excluded",
+  "summary": "OBSERVATION_RING_REAL4500_PASS cycles=9692859 words=3932 trace=8946 results=21 published=20 wraps=2 aborts=3 first_repeats=4 max_latency_us=1687.690 clock_MHz=50 period_us=8000",
+  "numeric_frames": [
+    "RING_REAL4500_FRAME_MATCH epoch=0 id=1 us=9687.900 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=0 id=2 us=17687.900 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=0 id=3 us=25687.900 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=0 id=4 us=33687.900 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=0 id=5 us=41687.900 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=0 id=6 us=49687.900 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=0 id=7 us=57687.900 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=0 id=8 us=65687.900 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=0 id=9 us=73687.900 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=0 id=10 us=81687.900 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=0 id=11 us=89687.900 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=0 id=12 us=97687.900 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=0 id=13 us=105687.900 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=0 id=14 us=113687.900 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=1 id=1 us=129703.080 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=1 id=2 us=137703.080 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=2 id=1 us=153839.980 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=2 id=2 us=161839.980 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=3 id=1 us=177857.400 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690",
+    "RING_REAL4500_FRAME_MATCH epoch=3 id=2 us=185857.400 words=168 trace=425 actions=6 core_cycles=83534 latency_us=1687.690"
+  ],
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1",
+  "reference": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23",
+  "clock_MHz": 50,
+  "period_clocks": 400000,
+  "period_us": 8000,
+  "real4500": true,
+  "inference_substitute": false,
+  "force_or_private_initialization": false,
+  "all69_assets_and_original_core_byte_identical": true,
+  "fixture_review": {
+    "reference": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\tb_model25_observation_ring_real4500.sv",
+    "exact_changes": [
+      [
+        "Both model clocks are physical25MHz;",
+        "Both model clocks are physical50MHz;"
+      ],
+      [
+        "both periods are200000 cycles/8ms.",
+        "both periods are400000 cycles/8ms."
+      ],
+      [
+        "always #20 clk=~clk;",
+        "always #10 clk=~clk;"
+      ],
+      [
+        ".PERIOD_CLKS(200000)",
+        ".PERIOD_CLKS(400000)"
+      ],
+      [
+        "clock_MHz=25 period_us=8000",
+        "clock_MHz=50 period_us=8000"
+      ]
+    ],
+    "input_and_comparison_logic_unchanged": true,
+    "only_clock_halfperiod_20_to10ns_and_period_200000_to400000": true
+  },
+  "actual_source_and_fixture_metadata": {
+    "frozen_at": "2026-10-26T15:31:40.139134+08:00",
+    "actual_source_bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_ram_sdp.v",
+        "bytes": 1679,
+        "mtime_ns": 1792936600529831900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_ram_banked.v",
+        "bytes": 986,
+        "mtime_ns": 1792936600529831900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_fifo_ob.v",
+        "bytes": 2005,
+        "mtime_ns": 1792936600532515900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_fifo.v",
+        "bytes": 1490,
+        "mtime_ns": 1792936600532515900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_async_fifo.v",
+        "bytes": 2817,
+        "mtime_ns": 1792936600532515900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_cdc.v",
+        "bytes": 1386,
+        "mtime_ns": 1792936600532515900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_skid.v",
+        "bytes": 1105,
+        "mtime_ns": 1792936600534522200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_timebase.v",
+        "bytes": 909,
+        "mtime_ns": 1792936600534522200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\lidar\\xt_frame_rx.v",
+        "bytes": 21682,
+        "mtime_ns": 1792936600534522200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\lidar\\pc_project.v",
+        "bytes": 4375,
+        "mtime_ns": 1792936600534522200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\lidar\\pc_transform.v",
+        "bytes": 3297,
+        "mtime_ns": 1792936600536528400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\lidar\\pc_filter.v",
+        "bytes": 5278,
+        "mtime_ns": 1792936600536528400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\map\\elev_map.v",
+        "bytes": 5531,
+        "mtime_ns": 1792936600536528400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\map\\trav_v3.v",
+        "bytes": 29698,
+        "mtime_ns": 1792936600536528400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\map\\map_subsys.v",
+        "bytes": 7248,
+        "mtime_ns": 1792936600538535000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\map\\support_coverage.v",
+        "bytes": 5664,
+        "mtime_ns": 1792936600538535000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\match\\slf_extract.v",
+        "bytes": 7361,
+        "mtime_ns": 1792936600538535000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\match\\slf_lf.v",
+        "bytes": 22807,
+        "mtime_ns": 1792936600538535000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\match\\slf_match.v",
+        "bytes": 25552,
+        "mtime_ns": 1792936600540541200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\plan\\traj_eval.v",
+        "bytes": 8380,
+        "mtime_ns": 1792936600540541200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\plan\\safety_guard.v",
+        "bytes": 4814,
+        "mtime_ns": 1792936600540541200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\net\\udp_rx.v",
+        "bytes": 9015,
+        "mtime_ns": 1792936600540541200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\net\\udp_tx.v",
+        "bytes": 8013,
+        "mtime_ns": 1792936600542581000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\net\\raw_cap.v",
+        "bytes": 4279,
+        "mtime_ns": 1792936600542581000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\net\\net_port.v",
+        "bytes": 9501,
+        "mtime_ns": 1792936600542581000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\net\\host_mbx.v",
+        "bytes": 10339,
+        "mtime_ns": 1792936600543632700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\io\\imu_uart.v",
+        "bytes": 4825,
+        "mtime_ns": 1792936600543632700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\io\\uart_bus_bridge.v",
+        "bytes": 4875,
+        "mtime_ns": 1792936600544603800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\io\\nav_bus_arb.v",
+        "bytes": 1686,
+        "mtime_ns": 1792936600544603800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\regs\\nav_regfile.v",
+        "bytes": 25589,
+        "mtime_ns": 1792936600545603300
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\top\\nav_subsystem.v",
+        "bytes": 33080,
+        "mtime_ns": 1792936600546603200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\common\\nav_ram_sp.v",
+        "bytes": 549,
+        "mtime_ns": 1792936600546603200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\soc\\third_party\\picorv32.v",
+        "bytes": 94829,
+        "mtime_ns": 1792936600547603300
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\soc\\nav_soc.v",
+        "bytes": 8852,
+        "mtime_ns": 1792936600548012600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav\\rtl\\net\\rgmii_mac100.v",
+        "bytes": 14201,
+        "mtime_ns": 1792936600548012600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\bmi088.v",
+        "bytes": 14824,
+        "mtime_ns": 1792936600549269200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\board_uart_tx.v",
+        "bytes": 986,
+        "mtime_ns": 1792936600549269200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\fc_v4_round_sat.v",
+        "bytes": 842,
+        "mtime_ns": 1792936600550269200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\imu_fusion.v",
+        "bytes": 20521,
+        "mtime_ns": 1792936600772323300
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\imu_isqrt.v",
+        "bytes": 1997,
+        "mtime_ns": 1792936600551268900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\imu_recip.v",
+        "bytes": 2836,
+        "mtime_ns": 1792936600551268900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\ir_remote_control.v",
+        "bytes": 5317,
+        "mtime_ns": 1792936600552267600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\leg_ik_ff.v",
+        "bytes": 3328,
+        "mtime_ns": 1792936600552267600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\mem_policy.v",
+        "bytes": 6039,
+        "mtime_ns": 1792936600552267600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\model_wheel_response.v",
+        "bytes": 3889,
+        "mtime_ns": 1792936600553269400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\motor520_closed_loop.v",
+        "bytes": 13317,
+        "mtime_ns": 1792936600553269400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\motor520_hybrid_speed.v",
+        "bytes": 4818,
+        "mtime_ns": 1792936600554268900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\motor520_speed.v",
+        "bytes": 4866,
+        "mtime_ns": 1792936600554268900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\oled.v",
+        "bytes": 22421,
+        "mtime_ns": 1792936600554268900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\oled_driver.v",
+        "bytes": 18497,
+        "mtime_ns": 1792936600554268900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\oled_front.v",
+        "bytes": 22554,
+        "mtime_ns": 1792936600556099200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\policy_action_map.v",
+        "bytes": 2194,
+        "mtime_ns": 1792936600556099200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\rl_observation_v5.v",
+        "bytes": 7026,
+        "mtime_ns": 1792936600556099200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\rl_policy_tick_v5.v",
+        "bytes": 6461,
+        "mtime_ns": 1792936600556099200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\servo_driver.v",
+        "bytes": 3774,
+        "mtime_ns": 1792936600558101500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\uart_speed_rx.v",
+        "bytes": 5465,
+        "mtime_ns": 1792936600558101500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control\\uart_telemetry.v",
+        "bytes": 2738,
+        "mtime_ns": 1792936600558101500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\control4500_core.v",
+        "bytes": 20992,
+        "mtime_ns": 1792936600560105400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\command_lease_guard.v",
+        "bytes": 4683,
+        "mtime_ns": 1792936600560105400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\nav_command_units.v",
+        "bytes": 2172,
+        "mtime_ns": 1792936600560105400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\g2_top.v",
+        "bytes": 11556,
+        "mtime_ns": 1792936600560105400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\fc_v4_top.v",
+        "bytes": 9630,
+        "mtime_ns": 1792936600562108200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_syn23\\fixed4500_weight_rom.v",
+        "bytes": 8907,
+        "mtime_ns": 1792936600562108200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\common\\nav_ram_sdp.v",
+        "bytes": 1679,
+        "mtime_ns": 1792936600529831900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\common\\nav_ram_banked.v",
+        "bytes": 986,
+        "mtime_ns": 1792936600529831900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\common\\nav_fifo_ob.v",
+        "bytes": 2005,
+        "mtime_ns": 1792936600532515900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\common\\nav_fifo.v",
+        "bytes": 1490,
+        "mtime_ns": 1792936600532515900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\common\\nav_async_fifo.v",
+        "bytes": 2817,
+        "mtime_ns": 1792936600532515900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\common\\nav_cdc.v",
+        "bytes": 1386,
+        "mtime_ns": 1792936600532515900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\common\\nav_skid.v",
+        "bytes": 1105,
+        "mtime_ns": 1792936600534522200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\common\\nav_timebase.v",
+        "bytes": 909,
+        "mtime_ns": 1792936600534522200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\lidar\\xt_frame_rx.v",
+        "bytes": 21682,
+        "mtime_ns": 1792936600534522200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\lidar\\pc_project.v",
+        "bytes": 4375,
+        "mtime_ns": 1792936600534522200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\lidar\\pc_transform.v",
+        "bytes": 3297,
+        "mtime_ns": 1792936600536528400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\lidar\\pc_filter.v",
+        "bytes": 5278,
+        "mtime_ns": 1792936600536528400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\map\\elev_map.v",
+        "bytes": 5531,
+        "mtime_ns": 1792936600536528400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\map\\trav_v3.v",
+        "bytes": 29698,
+        "mtime_ns": 1792936600536528400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\map\\map_subsys.v",
+        "bytes": 7248,
+        "mtime_ns": 1792936600538535000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\map\\support_coverage.v",
+        "bytes": 5664,
+        "mtime_ns": 1792936600538535000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\match\\slf_extract.v",
+        "bytes": 7361,
+        "mtime_ns": 1792936600538535000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\match\\slf_lf.v",
+        "bytes": 22807,
+        "mtime_ns": 1792936600538535000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\match\\slf_match.v",
+        "bytes": 25552,
+        "mtime_ns": 1792936600540541200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\plan\\traj_eval.v",
+        "bytes": 8380,
+        "mtime_ns": 1792936600540541200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\plan\\safety_guard.v",
+        "bytes": 4814,
+        "mtime_ns": 1792936600540541200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\net\\udp_rx.v",
+        "bytes": 9015,
+        "mtime_ns": 1792936600540541200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\net\\udp_tx.v",
+        "bytes": 8013,
+        "mtime_ns": 1792936600542581000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\net\\raw_cap.v",
+        "bytes": 4279,
+        "mtime_ns": 1792936600542581000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\net\\net_port.v",
+        "bytes": 9501,
+        "mtime_ns": 1792936600542581000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\net\\host_mbx.v",
+        "bytes": 10339,
+        "mtime_ns": 1792936600543632700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\io\\imu_uart.v",
+        "bytes": 4825,
+        "mtime_ns": 1792936600543632700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\io\\uart_bus_bridge.v",
+        "bytes": 4875,
+        "mtime_ns": 1792936600544603800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\io\\nav_bus_arb.v",
+        "bytes": 1686,
+        "mtime_ns": 1792936600544603800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\regs\\nav_regfile.v",
+        "bytes": 25589,
+        "mtime_ns": 1792936600545603300
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\top\\nav_subsystem.v",
+        "bytes": 33080,
+        "mtime_ns": 1792936600546603200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\common\\nav_ram_sp.v",
+        "bytes": 549,
+        "mtime_ns": 1792936600546603200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\soc\\third_party\\picorv32.v",
+        "bytes": 94829,
+        "mtime_ns": 1792936600547603300
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\soc\\nav_soc.v",
+        "bytes": 8852,
+        "mtime_ns": 1792936600548012600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav\\rtl\\net\\rgmii_mac100.v",
+        "bytes": 14201,
+        "mtime_ns": 1792936600548012600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\bmi088.v",
+        "bytes": 14824,
+        "mtime_ns": 1792936600549269200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\board_uart_tx.v",
+        "bytes": 986,
+        "mtime_ns": 1792936600549269200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\fc_v4_round_sat.v",
+        "bytes": 842,
+        "mtime_ns": 1792936600550269200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\imu_fusion.v",
+        "bytes": 20521,
+        "mtime_ns": 1792936600772323300
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\imu_isqrt.v",
+        "bytes": 1997,
+        "mtime_ns": 1792936600551268900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\imu_recip.v",
+        "bytes": 2836,
+        "mtime_ns": 1792936600551268900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\ir_remote_control.v",
+        "bytes": 5317,
+        "mtime_ns": 1792936600552267600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\leg_ik_ff.v",
+        "bytes": 3328,
+        "mtime_ns": 1792936600552267600
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\mem_policy.v",
+        "bytes": 6625,
+        "mtime_ns": 1792999744574020100
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\model_wheel_response.v",
+        "bytes": 3889,
+        "mtime_ns": 1792936600553269400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\motor520_closed_loop.v",
+        "bytes": 13317,
+        "mtime_ns": 1792936600553269400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\motor520_hybrid_speed.v",
+        "bytes": 4818,
+        "mtime_ns": 1792936600554268900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\motor520_speed.v",
+        "bytes": 4866,
+        "mtime_ns": 1792936600554268900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\oled.v",
+        "bytes": 22421,
+        "mtime_ns": 1792936600554268900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\oled_driver.v",
+        "bytes": 18497,
+        "mtime_ns": 1792936600554268900
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\oled_front.v",
+        "bytes": 22554,
+        "mtime_ns": 1792936600556099200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\policy_action_map.v",
+        "bytes": 2194,
+        "mtime_ns": 1792936600556099200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\rl_observation_v5.v",
+        "bytes": 10328,
+        "mtime_ns": 1792999744568655700
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\rl_policy_tick_v5.v",
+        "bytes": 7491,
+        "mtime_ns": 1792999744571731800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\servo_driver.v",
+        "bytes": 3774,
+        "mtime_ns": 1792936600558101500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\uart_speed_rx.v",
+        "bytes": 5465,
+        "mtime_ns": 1792936600558101500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\uart_telemetry.v",
+        "bytes": 2738,
+        "mtime_ns": 1792936600558101500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control4500_core.v",
+        "bytes": 20992,
+        "mtime_ns": 1792936600560105400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\command_lease_guard.v",
+        "bytes": 5692,
+        "mtime_ns": 1792999809899851500
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\nav_command_units.v",
+        "bytes": 2172,
+        "mtime_ns": 1792936600560105400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\g2_top.v",
+        "bytes": 11556,
+        "mtime_ns": 1792936600560105400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\fc_v4_top.v",
+        "bytes": 9630,
+        "mtime_ns": 1792936600562108200
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\fixed4500_weight_rom.v",
+        "bytes": 8907,
+        "mtime_ns": 1792936600562108200
+      }
+    ],
+    "fixture_binding": {
+      "path": "F:\\nav_integration_g2_20261023\\observation_ring50_real4500_probe1\\tb_model50_observation_ring_real4500.sv",
+      "bytes": 9606,
+      "mtime_ns": 1792999900127662200
+    },
+    "fixture_change_review": {
+      "reference": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\tb_model25_observation_ring_real4500.sv",
+      "exact_changes": [
+        [
+          "Both model clocks are physical25MHz;",
+          "Both model clocks are physical50MHz;"
+        ],
+        [
+          "both periods are200000 cycles/8ms.",
+          "both periods are400000 cycles/8ms."
+        ],
+        [
+          "always #20 clk=~clk;",
+          "always #10 clk=~clk;"
+        ],
+        [
+          ".PERIOD_CLKS(200000)",
+          ".PERIOD_CLKS(400000)"
+        ],
+        [
+          "clock_MHz=25 period_us=8000",
+          "clock_MHz=50 period_us=8000"
+        ]
+      ],
+      "input_and_comparison_logic_unchanged": true,
+      "only_clock_halfperiod_20_to10ns_and_period_200000_to400000": true
+    },
+    "all69_assets_byte_identical": true,
+    "source_files_name_and_include_guard_only_changed_in_simulation_copies": true,
+    "real_core_input_mem_and425_weights_outputs_unmodified": true,
+    "normal_clock_ns": 20,
+    "normal_period_clocks": 400000,
+    "normal_period_us": 8000,
+    "real_inference_substitute": false,
+    "compare": "Every168write/address/data/start,425layer-index-data records,six actions,frame IDs,publish cycle and cadence; at least2ring wraps plus reset/disable/sensor interruption and rearm",
+    "scope_excludes": [
+      "Unmodified fusion2second calibration",
+      "wholeG2 CPU/UART/RK/real sensors",
+      "Actuator mapping and command lease",
+      "Physical place-route timing/CDC/IO and vehicle stopping"
+    ],
+    "watchdog_simulated_ms": 400
+  },
+  "actual_xsim_runtime": {
+    "controller_pid": 3460,
+    "controller_created_epoch": 1792999899.5300996,
+    "tool": "xsim",
+    "command": [
+      "cmd",
+      "/c",
+      "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+      "ring50_real4500_snap",
+      "-runall"
+    ],
+    "wrapper_pid": 68692,
+    "wrapper_created_epoch": 1793000332.429057,
+    "started_at": "2026-10-26T15:38:52.433086+08:00",
+    "admission": {
+      "physical": 3350155264,
+      "commit": 4489572352,
+      "checked_at": "2026-10-26T15:38:52.426081+08:00"
+    },
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0,
+    "absolute_deadline": null,
+    "processes": [
+      {
+        "pid": 68692,
+        "parent_pid": 3460,
+        "created_epoch": 1793000332.429057,
+        "name": "cmd.exe",
+        "command": [
+          "cmd",
+          "/c",
+          "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+          "ring50_real4500_snap",
+          "-runall"
+        ],
+        "rss": 8065024,
+        "priority": 16384
+      },
+      {
+        "pid": 16564,
+        "parent_pid": 68692,
+        "created_epoch": 1793000332.4363475,
+        "name": "conhost.exe",
+        "command": [
+          "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+          "0x4"
+        ],
+        "rss": 7995392,
+        "priority": 16384
+      },
+      {
+        "pid": 4616,
+        "parent_pid": 68692,
+        "created_epoch": 1793000333.4308116,
+        "name": "xsim.exe",
+        "command": [
+          "E:/2026.1/Vivado/bin/unwrapped/win64.o/xsim.exe",
+          "ring50_real4500_snap",
+          "-runall"
+        ],
+        "rss": 224342016,
+        "priority": 16384
+      },
+      {
+        "pid": 58388,
+        "parent_pid": 4616,
+        "created_epoch": 1793000334.5071,
+        "name": "xsimk.exe",
+        "command": [
+          "xsim.dir/ring50_real4500_snap/xsimk.exe",
+          "-runall",
+          "-simmode",
+          "gui",
+          "-wdb",
+          "ring50_real4500_snap.wdb",
+          "-simrunnum",
+          "0",
+          "-socket",
+          "57450"
+        ],
+        "rss": 21078016,
+        "priority": 16384
+      },
+      {
+        "pid": 22692,
+        "parent_pid": 58388,
+        "created_epoch": 1793000334.6050627,
+        "name": "conhost.exe",
+        "command": [
+          "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+          "0x4"
+        ],
+        "rss": 7864320,
+        "priority": 16384
+      }
+    ],
+    "updated_at": "2026-10-26T15:39:14.106208+08:00",
+    "available_physical_bytes": 3074240512,
+    "available_commit_bytes": 4198526976,
+    "completed_at": "2026-10-26T15:39:17.109601+08:00",
+    "exit_code": 0,
+    "processes_exited": true
+  },
+  "original_process_identities": [
+    {
+      "pid": 3460,
+      "original_created_epoch": 1792999899.5300996,
+      "name": "controller",
+      "current_created_epoch": null,
+      "original_identity_exited": true
+    },
+    {
+      "pid": 68692,
+      "original_created_epoch": 1793000332.429057,
+      "name": "cmd.exe",
+      "current_created_epoch": null,
+      "original_identity_exited": true
+    },
+    {
+      "pid": 16564,
+      "original_created_epoch": 1793000332.4363475,
+      "name": "conhost.exe",
+      "current_created_epoch": null,
+      "original_identity_exited": true
+    },
+    {
+      "pid": 4616,
+      "original_created_epoch": 1793000333.4308116,
+      "name": "xsim.exe",
+      "current_created_epoch": null,
+      "original_identity_exited": true
+    },
+    {
+      "pid": 58388,
+      "original_created_epoch": 1793000334.5071,
+      "name": "xsimk.exe",
+      "current_created_epoch": null,
+      "original_identity_exited": true
+    },
+    {
+      "pid": 22692,
+      "original_created_epoch": 1793000334.6050627,
+      "name": "conhost.exe",
+      "current_created_epoch": null,
+      "original_identity_exited": true
+    }
+  ],
+  "actual_result": "F:\\nav_integration_g2_20261023\\observation_ring50_real4500_probe1\\result.json",
+  "full_input_observation_spec": "F:\\nav_integration_g2_20261023\\observation_ring50_real4500_probe1\\input_and_observation_spec.json",
+  "scope_excludes": [
+    "Unmodified fusion2second calibration",
+    "wholeG2 CPU/UART/RK/real sensors",
+    "Actuator mapping and command lease",
+    "Physical place-route timing/CDC/IO and vehicle stopping"
+  ],
+  "full_G2_or_fusion_calibration_or_hardware_pass": false,
+  "new_SYN_PNR_or_board_action": false,
+  "physical_timing_or_vehicle_acceptance": false
+}

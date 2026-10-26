@@ -1,0 +1,1481 @@
+{
+  "recorded_at": "2026-10-26T16:47:47.864498+08:00",
+  "human_constraints": {
+    "one_board": true,
+    "single_chip": true,
+    "self_built_operating_area_m": [
+      3,
+      5
+    ],
+    "simulation_layout_design_authorized": true,
+    "conditional_SLF128_trial_authorized": true,
+    "production_SLF128_not_yet_accepted": true
+  },
+  "implementation_plan": "docs/4_design/g2_small_field_storage_plan_20261026.md",
+  "no_new_joint_SYN_PNR_until_stage_gates": true,
+  "current_live_stage1": {
+    "directory": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026",
+    "job": {
+      "controller_pid": 57328,
+      "controller_created_epoch": 1793003754.2887788,
+      "one_worker": true,
+      "PNR52_inputs_unchanged": true,
+      "minimum_start_physical_bytes": 2684354560,
+      "minimum_start_commit_bytes": 4831838208,
+      "completed": 10,
+      "phase": "running_case",
+      "updated_at": "2026-10-26T16:52:16.045382+08:00",
+      "next": "step_sn256_prior_s1",
+      "free_bytes": 4774793216,
+      "available_commit_bytes": 5434572800,
+      "current": "step_sn256_prior_s1",
+      "child_pid": 60436,
+      "child_created_epoch": 1793004736.0377703,
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\execution_tree\\sim\\closed_loop\\stage1_case.py",
+        "--scene",
+        "field3x5_v1",
+        "--seed",
+        "1",
+        "--no-build",
+        "--firmware-dll",
+        "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\nav_fw.dll",
+        "--no-plots",
+        "--start",
+        "2.9,-0.8,0",
+        "--time",
+        "50",
+        "--out",
+        "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\step_sn256_prior_s1",
+        "--goal",
+        "3.65,-0.8",
+        "--prior",
+        "auto",
+        "--init-err",
+        "rand"
+      ],
+      "admission_physical_bytes": 4774793216,
+      "admission_commit_bytes": 5434572800,
+      "last": "step_sn128_nomap_s1",
+      "last_outcome": "arrived"
+    },
+    "frozen_N1c": "D:\\Desktop\\SOC FPGA\\nav\\sim\\build\\batch\\nav_opt_n1c_goto_20261021",
+    "planned_cases": 16,
+    "one_pilot_seed": 1,
+    "new_scene": {
+      "id": "field3x5_v1",
+      "size_m": [
+        5.0,
+        3.0
+      ],
+      "origin_m": [
+        0.0,
+        -1.5
+      ],
+      "bounds_m": [
+        0.0,
+        -1.5,
+        5.0,
+        1.5
+      ],
+      "world_res_m": 0.01,
+      "walls": {
+        "thickness_m": 0.05,
+        "height_m": 0.5
+      },
+      "primitives": [
+        {
+          "kind": "box",
+          "args": [
+            1.6,
+            -1.3,
+            1.95,
+            -0.95,
+            0.3
+          ],
+          "name": "box_A"
+        },
+        {
+          "kind": "box",
+          "args": [
+            3.6,
+            0.65,
+            3.95,
+            1.0,
+            0.25
+          ],
+          "name": "box_B"
+        },
+        {
+          "kind": "box",
+          "args": [
+            2.5,
+            -0.15,
+            2.8,
+            0.2,
+            0.3
+          ],
+          "name": "box_C"
+        },
+        {
+          "kind": "box",
+          "args": [
+            2.2,
+            1.35,
+            2.5,
+            1.5,
+            0.5
+          ],
+          "name": "asymmetric_wall_bump"
+        },
+        {
+          "kind": "ramp",
+          "args": [
+            0.7,
+            1.3,
+            0.4,
+            1.2,
+            0,
+            0.084
+          ],
+          "name": "ramp8_up"
+        },
+        {
+          "kind": "box",
+          "args": [
+            1.3,
+            0.4,
+            1.65,
+            1.2,
+            0.084
+          ],
+          "name": "ramp_platform"
+        },
+        {
+          "kind": "ramp",
+          "args": [
+            2.25,
+            1.65,
+            0.4,
+            1.2,
+            0,
+            0.084
+          ],
+          "name": "ramp8_down"
+        },
+        {
+          "kind": "box",
+          "args": [
+            3.15,
+            -1.0,
+            3.25,
+            -0.45,
+            0.015
+          ],
+          "name": "crossable_15mm_sill"
+        },
+        {
+          "kind": "box",
+          "args": [
+            4.0,
+            -1.5,
+            4.1,
+            -0.5,
+            0.06
+          ],
+          "name": "noncrossable_60mm_curb"
+        }
+      ],
+      "assumptions": {
+        "vehicle_footprint_radius_m": 0.21,
+        "step_climb_m": 0.02,
+        "slope_limit_deg": 12,
+        "all_vehicle_operation_within_rectangle": true,
+        "physical_terrain_vehicle_capabilities_not_measured": true
+      }
+    },
+    "geometry_validation": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\scene_validation.json",
+    "acceptance": "Original arrival/collision/false-arrival unchanged; matched error increase128-minus256<=10mm; not absolute1cm accuracy",
+    "partial_precision": {
+      "recorded_at": "2026-10-26T16:52:34.251102+08:00",
+      "completed": 10,
+      "planned": 16,
+      "accepted_deployable": false,
+      "first_pilot_seed1_only": true,
+      "success_rates_reported_k_over_n": true,
+      "shared_failures_do_not_qualify_as_success": true,
+      "XY_error_unit": "mm; absolute truth-minus-estimate Euclidean error; both full and localization-valid samples retained",
+      "comparison_threshold": "128 minus256 error worsening <=10mm; NOT absolute error <=10mm",
+      "XY_P95_method": "linear interpolation between saved samples",
+      "CSV_coordinates_resolution_m": 0.0001,
+      "original_terminal_position_criterion_mm": 150,
+      "subcentimeter_accuracy_accepted": false,
+      "rows": [
+        {
+          "case": "goal",
+          "seed": 1,
+          "SLF_SN": 256,
+          "SLF_SN_LOG2": 8,
+          "prior": false,
+          "arrived": true,
+          "outcome": "arrived",
+          "terminal_outcome": "arrived",
+          "false_arrival": false,
+          "collision": false,
+          "collisions": 0,
+          "firmware_arrived": true,
+          "goal_error_mm": 140.0,
+          "XY_full_trajectory": {
+            "samples": 183,
+            "RMSE_mm": 13.2320566203585,
+            "P95_mm": 19.378554654667038,
+            "endpoint_mm": 19.303885619222093,
+            "max_mm": 55.07177135338952
+          },
+          "XY_when_localization_valid": {
+            "samples": 183,
+            "RMSE_mm": 13.2320566203585,
+            "P95_mm": 19.378554654667038,
+            "endpoint_mm": 19.303885619222093,
+            "max_mm": 55.07177135338952
+          },
+          "last_sample_localization_valid": true,
+          "loc_valid_fraction": 1.0,
+          "align_s": null,
+          "n_align": 0,
+          "n_align_fail": 0,
+          "align_q": [
+            0,
+            0
+          ],
+          "loc_final": 0,
+          "t_degraded_s": 0.0,
+          "n_lost": 0,
+          "t_lost_s": 0,
+          "stopping_terminal": {
+            "criteria": {
+              "position_m": 0.15,
+              "speed_mps": 0.02,
+              "yaw_rate_rps": 0.05,
+              "dwell_s": 0.5,
+              "observe_s": 2.0
+            },
+            "declared_s": 16.3,
+            "declared_error_m": 0.13990982956370665,
+            "final_error_m": 0.13990197443944086,
+            "max_error_m": 0.13990982956370665,
+            "max_drift_m": 7.855435609587476e-06,
+            "observation_complete": true,
+            "valid": true,
+            "outcome": "arrived"
+          },
+          "time_s": 16.3,
+          "wall_s": 105.5,
+          "metrics": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\goal_sn256_nomap_s1\\metrics.json",
+          "trace": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\goal_sn256_nomap_s1\\timeseries.csv"
+        },
+        {
+          "case": "goal",
+          "seed": 1,
+          "SLF_SN": 128,
+          "SLF_SN_LOG2": 7,
+          "prior": false,
+          "arrived": false,
+          "outcome": "false_arrival",
+          "terminal_outcome": "false_arrival",
+          "false_arrival": true,
+          "collision": false,
+          "collisions": 0,
+          "firmware_arrived": true,
+          "goal_error_mm": 163.0,
+          "XY_full_trajectory": {
+            "samples": 183,
+            "RMSE_mm": 55.07254083568663,
+            "P95_mm": 72.52089354110355,
+            "endpoint_mm": 72.52089354110355,
+            "max_mm": 74.57673900084386
+          },
+          "XY_when_localization_valid": {
+            "samples": 183,
+            "RMSE_mm": 55.07254083568663,
+            "P95_mm": 72.52089354110355,
+            "endpoint_mm": 72.52089354110355,
+            "max_mm": 74.57673900084386
+          },
+          "last_sample_localization_valid": true,
+          "loc_valid_fraction": 1.0,
+          "align_s": null,
+          "n_align": 0,
+          "n_align_fail": 0,
+          "align_q": [
+            0,
+            0
+          ],
+          "loc_final": 0,
+          "t_degraded_s": 0.0,
+          "n_lost": 0,
+          "t_lost_s": 0,
+          "stopping_terminal": {
+            "criteria": {
+              "position_m": 0.15,
+              "speed_mps": 0.02,
+              "yaw_rate_rps": 0.05,
+              "dwell_s": 0.5,
+              "observe_s": 2.0
+            },
+            "declared_s": 16.3,
+            "declared_error_m": 0.1631731983986695,
+            "final_error_m": 0.16316597511167327,
+            "max_error_m": 0.1631731983986695,
+            "max_drift_m": 7.855419860691768e-06,
+            "observation_complete": true,
+            "valid": false,
+            "outcome": "false_arrival"
+          },
+          "time_s": 18.3,
+          "wall_s": 92.3,
+          "metrics": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\goal_sn128_nomap_s1\\metrics.json",
+          "trace": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\goal_sn128_nomap_s1\\timeseries.csv"
+        },
+        {
+          "case": "goal",
+          "seed": 1,
+          "SLF_SN": 256,
+          "SLF_SN_LOG2": 8,
+          "prior": true,
+          "arrived": false,
+          "outcome": "false_arrival",
+          "terminal_outcome": "false_arrival",
+          "false_arrival": true,
+          "collision": false,
+          "collisions": 0,
+          "firmware_arrived": true,
+          "goal_error_mm": 158.0,
+          "XY_full_trajectory": {
+            "samples": 196,
+            "RMSE_mm": 351.54435549095535,
+            "P95_mm": 1051.189802081432,
+            "endpoint_mm": 26.73667892614921,
+            "max_mm": 1051.189802081432
+          },
+          "XY_when_localization_valid": {
+            "samples": 161,
+            "RMSE_mm": 18.39069437926559,
+            "P95_mm": 26.892378102354268,
+            "endpoint_mm": 26.73667892614921,
+            "max_mm": 48.178937306669674
+          },
+          "last_sample_localization_valid": true,
+          "loc_valid_fraction": 0.8214285714285714,
+          "align_s": 1.6,
+          "n_align": 1,
+          "n_align_fail": 0,
+          "align_q": [
+            99,
+            1414
+          ],
+          "loc_final": 3,
+          "t_degraded_s": 1.2,
+          "n_lost": 0,
+          "t_lost_s": 0,
+          "stopping_terminal": {
+            "criteria": {
+              "position_m": 0.15,
+              "speed_mps": 0.02,
+              "yaw_rate_rps": 0.05,
+              "dwell_s": 0.5,
+              "observe_s": 2.0
+            },
+            "declared_s": 17.6,
+            "declared_error_m": 0.1579728343258331,
+            "final_error_m": 0.15796538751740224,
+            "max_error_m": 0.1579728343258331,
+            "max_drift_m": 7.483878520372321e-06,
+            "observation_complete": true,
+            "valid": false,
+            "outcome": "false_arrival"
+          },
+          "time_s": 19.6,
+          "wall_s": 128.8,
+          "metrics": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\goal_sn256_prior_s1\\metrics.json",
+          "trace": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\goal_sn256_prior_s1\\timeseries.csv"
+        },
+        {
+          "case": "goal",
+          "seed": 1,
+          "SLF_SN": 128,
+          "SLF_SN_LOG2": 7,
+          "prior": true,
+          "arrived": true,
+          "outcome": "arrived",
+          "terminal_outcome": "arrived",
+          "false_arrival": false,
+          "collision": false,
+          "collisions": 0,
+          "firmware_arrived": true,
+          "goal_error_mm": 143.0,
+          "XY_full_trajectory": {
+            "samples": 199,
+            "RMSE_mm": 349.1144481967172,
+            "P95_mm": 1051.189802081432,
+            "endpoint_mm": 31.50825288714028,
+            "max_mm": 1051.189802081432
+          },
+          "XY_when_localization_valid": {
+            "samples": 164,
+            "RMSE_mm": 22.95258766430928,
+            "P95_mm": 32.43817075325852,
+            "endpoint_mm": 31.50825288714028,
+            "max_mm": 38.044710539048424
+          },
+          "last_sample_localization_valid": true,
+          "loc_valid_fraction": 0.8241206030150754,
+          "align_s": 1.6,
+          "n_align": 1,
+          "n_align_fail": 0,
+          "align_q": [
+            61,
+            469
+          ],
+          "loc_final": 3,
+          "t_degraded_s": 1.5,
+          "n_lost": 0,
+          "t_lost_s": 0,
+          "stopping_terminal": {
+            "criteria": {
+              "position_m": 0.15,
+              "speed_mps": 0.02,
+              "yaw_rate_rps": 0.05,
+              "dwell_s": 0.5,
+              "observe_s": 2.0
+            },
+            "declared_s": 17.900000000000002,
+            "declared_error_m": 0.14327856435217573,
+            "final_error_m": 0.14327158247029986,
+            "max_error_m": 0.14327856435217573,
+            "max_drift_m": 7.310855062604898e-06,
+            "observation_complete": true,
+            "valid": true,
+            "outcome": "arrived"
+          },
+          "time_s": 17.9,
+          "wall_s": 123.9,
+          "metrics": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\goal_sn128_prior_s1\\metrics.json",
+          "trace": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\goal_sn128_prior_s1\\timeseries.csv"
+        },
+        {
+          "case": "ramp",
+          "seed": 1,
+          "SLF_SN": 256,
+          "SLF_SN_LOG2": 8,
+          "prior": false,
+          "arrived": true,
+          "outcome": "arrived",
+          "terminal_outcome": "arrived",
+          "false_arrival": false,
+          "collision": false,
+          "collisions": 0,
+          "firmware_arrived": true,
+          "goal_error_mm": 127.0,
+          "XY_full_trajectory": {
+            "samples": 88,
+            "RMSE_mm": 2.4667792767087944,
+            "P95_mm": 4.283380658060606,
+            "endpoint_mm": 2.2360679774997916,
+            "max_mm": 7.170076708097336
+          },
+          "XY_when_localization_valid": {
+            "samples": 88,
+            "RMSE_mm": 2.4667792767087944,
+            "P95_mm": 4.283380658060606,
+            "endpoint_mm": 2.2360679774997916,
+            "max_mm": 7.170076708097336
+          },
+          "last_sample_localization_valid": true,
+          "loc_valid_fraction": 1.0,
+          "align_s": null,
+          "n_align": 0,
+          "n_align_fail": 0,
+          "align_q": [
+            0,
+            0
+          ],
+          "loc_final": 0,
+          "t_degraded_s": 0.0,
+          "n_lost": 0,
+          "t_lost_s": 0,
+          "stopping_terminal": {
+            "criteria": {
+              "position_m": 0.15,
+              "speed_mps": 0.02,
+              "yaw_rate_rps": 0.05,
+              "dwell_s": 0.5,
+              "observe_s": 2.0
+            },
+            "declared_s": 6.8,
+            "declared_error_m": 0.1270084628926782,
+            "final_error_m": 0.12700064960349589,
+            "max_error_m": 0.1270084628926782,
+            "max_drift_m": 7.813289182312388e-06,
+            "observation_complete": true,
+            "valid": true,
+            "outcome": "arrived"
+          },
+          "time_s": 6.8,
+          "wall_s": 86.5,
+          "metrics": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\ramp_sn256_nomap_s1\\metrics.json",
+          "trace": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\ramp_sn256_nomap_s1\\timeseries.csv"
+        },
+        {
+          "case": "ramp",
+          "seed": 1,
+          "SLF_SN": 128,
+          "SLF_SN_LOG2": 7,
+          "prior": false,
+          "arrived": true,
+          "outcome": "arrived",
+          "terminal_outcome": "arrived",
+          "false_arrival": false,
+          "collision": false,
+          "collisions": 0,
+          "firmware_arrived": true,
+          "goal_error_mm": 127.0,
+          "XY_full_trajectory": {
+            "samples": 88,
+            "RMSE_mm": 9.197133940922726,
+            "P95_mm": 14.111129046706955,
+            "endpoint_mm": 6.708203932499325,
+            "max_mm": 23.623928547132035
+          },
+          "XY_when_localization_valid": {
+            "samples": 88,
+            "RMSE_mm": 9.197133940922726,
+            "P95_mm": 14.111129046706955,
+            "endpoint_mm": 6.708203932499325,
+            "max_mm": 23.623928547132035
+          },
+          "last_sample_localization_valid": true,
+          "loc_valid_fraction": 1.0,
+          "align_s": null,
+          "n_align": 0,
+          "n_align_fail": 0,
+          "align_q": [
+            0,
+            0
+          ],
+          "loc_final": 0,
+          "t_degraded_s": 0.0,
+          "n_lost": 0,
+          "t_lost_s": 0,
+          "stopping_terminal": {
+            "criteria": {
+              "position_m": 0.15,
+              "speed_mps": 0.02,
+              "yaw_rate_rps": 0.05,
+              "dwell_s": 0.5,
+              "observe_s": 2.0
+            },
+            "declared_s": 6.8,
+            "declared_error_m": 0.1270084628926782,
+            "final_error_m": 0.12700064960349589,
+            "max_error_m": 0.1270084628926782,
+            "max_drift_m": 7.813289182312388e-06,
+            "observation_complete": true,
+            "valid": true,
+            "outcome": "arrived"
+          },
+          "time_s": 6.8,
+          "wall_s": 60.2,
+          "metrics": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\ramp_sn128_nomap_s1\\metrics.json",
+          "trace": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\ramp_sn128_nomap_s1\\timeseries.csv"
+        },
+        {
+          "case": "ramp",
+          "seed": 1,
+          "SLF_SN": 256,
+          "SLF_SN_LOG2": 8,
+          "prior": true,
+          "arrived": true,
+          "outcome": "arrived",
+          "terminal_outcome": "arrived",
+          "false_arrival": false,
+          "collision": false,
+          "collisions": 0,
+          "firmware_arrived": true,
+          "goal_error_mm": 128.0,
+          "XY_full_trajectory": {
+            "samples": 103,
+            "RMSE_mm": 446.9646809530005,
+            "P95_mm": 961.7692030835672,
+            "endpoint_mm": 3.9293765408777253,
+            "max_mm": 961.7692030835672
+          },
+          "XY_when_localization_valid": {
+            "samples": 68,
+            "RMSE_mm": 9.235385911870525,
+            "P95_mm": 15.665253580733314,
+            "endpoint_mm": 3.9293765408777253,
+            "max_mm": 17.25949014310668
+          },
+          "last_sample_localization_valid": true,
+          "loc_valid_fraction": 0.6601941747572816,
+          "align_s": 1.6,
+          "n_align": 1,
+          "n_align_fail": 0,
+          "align_q": [
+            100,
+            1482
+          ],
+          "loc_final": 2,
+          "t_degraded_s": 0.0,
+          "n_lost": 0,
+          "t_lost_s": 0,
+          "stopping_terminal": {
+            "criteria": {
+              "position_m": 0.15,
+              "speed_mps": 0.02,
+              "yaw_rate_rps": 0.05,
+              "dwell_s": 0.5,
+              "observe_s": 2.0
+            },
+            "declared_s": 8.3,
+            "declared_error_m": 0.12818903311461383,
+            "final_error_m": 0.12818119670511763,
+            "max_error_m": 0.12818903311461383,
+            "max_drift_m": 7.836409496198016e-06,
+            "observation_complete": true,
+            "valid": true,
+            "outcome": "arrived"
+          },
+          "time_s": 8.3,
+          "wall_s": 99.4,
+          "metrics": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\ramp_sn256_prior_s1\\metrics.json",
+          "trace": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\ramp_sn256_prior_s1\\timeseries.csv"
+        },
+        {
+          "case": "ramp",
+          "seed": 1,
+          "SLF_SN": 128,
+          "SLF_SN_LOG2": 7,
+          "prior": true,
+          "arrived": true,
+          "outcome": "arrived",
+          "terminal_outcome": "arrived",
+          "false_arrival": false,
+          "collision": false,
+          "collisions": 0,
+          "firmware_arrived": true,
+          "goal_error_mm": 132.0,
+          "XY_full_trajectory": {
+            "samples": 118,
+            "RMSE_mm": 417.7728968052913,
+            "P95_mm": 961.7692030835672,
+            "endpoint_mm": 8.796590248499598,
+            "max_mm": 961.7692030835672
+          },
+          "XY_when_localization_valid": {
+            "samples": 83,
+            "RMSE_mm": 16.919301731582685,
+            "P95_mm": 30.271579436177326,
+            "endpoint_mm": 8.796590248499598,
+            "max_mm": 34.39098719141396
+          },
+          "last_sample_localization_valid": true,
+          "loc_valid_fraction": 0.7033898305084746,
+          "align_s": 1.6,
+          "n_align": 1,
+          "n_align_fail": 0,
+          "align_q": [
+            66,
+            667
+          ],
+          "loc_final": 2,
+          "t_degraded_s": 0.0,
+          "n_lost": 0,
+          "t_lost_s": 0,
+          "stopping_terminal": {
+            "criteria": {
+              "position_m": 0.15,
+              "speed_mps": 0.02,
+              "yaw_rate_rps": 0.05,
+              "dwell_s": 0.5,
+              "observe_s": 2.0
+            },
+            "declared_s": 9.8,
+            "declared_error_m": 0.13188817077451512,
+            "final_error_m": 0.1318804082662169,
+            "max_error_m": 0.13188817077451512,
+            "max_drift_m": 7.863436714089746e-06,
+            "observation_complete": true,
+            "valid": true,
+            "outcome": "arrived"
+          },
+          "time_s": 9.8,
+          "wall_s": 102.7,
+          "metrics": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\ramp_sn128_prior_s1\\metrics.json",
+          "trace": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\ramp_sn128_prior_s1\\timeseries.csv"
+        },
+        {
+          "case": "step",
+          "seed": 1,
+          "SLF_SN": 256,
+          "SLF_SN_LOG2": 8,
+          "prior": false,
+          "arrived": true,
+          "outcome": "arrived",
+          "terminal_outcome": "arrived",
+          "false_arrival": false,
+          "collision": false,
+          "collisions": 0,
+          "firmware_arrived": true,
+          "goal_error_mm": 124.0,
+          "XY_full_trajectory": {
+            "samples": 82,
+            "RMSE_mm": 3.5436132861743346,
+            "P95_mm": 4.172851211981191,
+            "endpoint_mm": 1.7691806012956828,
+            "max_mm": 13.861096637712148
+          },
+          "XY_when_localization_valid": {
+            "samples": 82,
+            "RMSE_mm": 3.5436132861743346,
+            "P95_mm": 4.172851211981191,
+            "endpoint_mm": 1.7691806012956828,
+            "max_mm": 13.861096637712148
+          },
+          "last_sample_localization_valid": true,
+          "loc_valid_fraction": 1.0,
+          "align_s": null,
+          "n_align": 0,
+          "n_align_fail": 0,
+          "align_q": [
+            0,
+            0
+          ],
+          "loc_final": 0,
+          "t_degraded_s": 0.0,
+          "n_lost": 0,
+          "t_lost_s": 0,
+          "stopping_terminal": {
+            "criteria": {
+              "position_m": 0.15,
+              "speed_mps": 0.02,
+              "yaw_rate_rps": 0.05,
+              "dwell_s": 0.5,
+              "observe_s": 2.0
+            },
+            "declared_s": 6.2,
+            "declared_error_m": 0.12421126654239181,
+            "final_error_m": 0.12420377665273517,
+            "max_error_m": 0.12421126654239181,
+            "max_drift_m": 7.493857544046867e-06,
+            "observation_complete": true,
+            "valid": true,
+            "outcome": "arrived"
+          },
+          "time_s": 6.2,
+          "wall_s": 60.3,
+          "metrics": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\step_sn256_nomap_s1\\metrics.json",
+          "trace": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\step_sn256_nomap_s1\\timeseries.csv"
+        },
+        {
+          "case": "step",
+          "seed": 1,
+          "SLF_SN": 128,
+          "SLF_SN_LOG2": 7,
+          "prior": false,
+          "arrived": true,
+          "outcome": "arrived",
+          "terminal_outcome": "arrived",
+          "false_arrival": false,
+          "collision": false,
+          "collisions": 0,
+          "firmware_arrived": true,
+          "goal_error_mm": 124.0,
+          "XY_full_trajectory": {
+            "samples": 82,
+            "RMSE_mm": 4.003870079030555,
+            "P95_mm": 11.834272263219264,
+            "endpoint_mm": 2.3769728648011337,
+            "max_mm": 11.834272263219264
+          },
+          "XY_when_localization_valid": {
+            "samples": 82,
+            "RMSE_mm": 4.003870079030555,
+            "P95_mm": 11.834272263219264,
+            "endpoint_mm": 2.3769728648011337,
+            "max_mm": 11.834272263219264
+          },
+          "last_sample_localization_valid": true,
+          "loc_valid_fraction": 1.0,
+          "align_s": null,
+          "n_align": 0,
+          "n_align_fail": 0,
+          "align_q": [
+            0,
+            0
+          ],
+          "loc_final": 0,
+          "t_degraded_s": 0.0,
+          "n_lost": 0,
+          "t_lost_s": 0,
+          "stopping_terminal": {
+            "criteria": {
+              "position_m": 0.15,
+              "speed_mps": 0.02,
+              "yaw_rate_rps": 0.05,
+              "dwell_s": 0.5,
+              "observe_s": 2.0
+            },
+            "declared_s": 6.2,
+            "declared_error_m": 0.12422947049072888,
+            "final_error_m": 0.12422199361929144,
+            "max_error_m": 0.12422947049072888,
+            "max_drift_m": 7.493857547743214e-06,
+            "observation_complete": true,
+            "valid": true,
+            "outcome": "arrived"
+          },
+          "time_s": 6.2,
+          "wall_s": 57.3,
+          "metrics": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\step_sn128_nomap_s1\\metrics.json",
+          "trace": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\results\\step_sn128_nomap_s1\\timeseries.csv"
+        }
+      ],
+      "pairs": [
+        {
+          "case": "goal",
+          "prior": false,
+          "seed": 1,
+          "absolute256": {
+            "XY_full_trajectory": {
+              "samples": 183,
+              "RMSE_mm": 13.2320566203585,
+              "P95_mm": 19.378554654667038,
+              "endpoint_mm": 19.303885619222093,
+              "max_mm": 55.07177135338952
+            },
+            "XY_when_localization_valid": {
+              "samples": 183,
+              "RMSE_mm": 13.2320566203585,
+              "P95_mm": 19.378554654667038,
+              "endpoint_mm": 19.303885619222093,
+              "max_mm": 55.07177135338952
+            }
+          },
+          "absolute128": {
+            "XY_full_trajectory": {
+              "samples": 183,
+              "RMSE_mm": 55.07254083568663,
+              "P95_mm": 72.52089354110355,
+              "endpoint_mm": 72.52089354110355,
+              "max_mm": 74.57673900084386
+            },
+            "XY_when_localization_valid": {
+              "samples": 183,
+              "RMSE_mm": 55.07254083568663,
+              "P95_mm": 72.52089354110355,
+              "endpoint_mm": 72.52089354110355,
+              "max_mm": 74.57673900084386
+            }
+          },
+          "incremental_error": {
+            "XY_full_trajectory": {
+              "delta_128_minus256_mm": {
+                "RMSE_mm": 41.84048421532813,
+                "P95_mm": 53.142338886436505,
+                "endpoint_mm": 53.217007921881454,
+                "max_mm": 19.504967647454336
+              },
+              "worsening_le10mm_all_four": false
+            },
+            "XY_when_localization_valid": {
+              "delta_128_minus256_mm": {
+                "RMSE_mm": 41.84048421532813,
+                "P95_mm": 53.142338886436505,
+                "endpoint_mm": 53.217007921881454,
+                "max_mm": 19.504967647454336
+              },
+              "worsening_le10mm_all_four": false
+            }
+          },
+          "same_time_trace_diagnostic": {
+            "first_delta_gt10mm": {
+              "t": 1.4,
+              "truth256": [
+                0.45,
+                -0.95
+              ],
+              "truth128": [
+                0.45,
+                -0.95
+              ],
+              "error256_mm": 1.4142135623730963,
+              "error128_mm": 27.202941017470913,
+              "delta128_minus256_mm": 25.788727455097817,
+              "both_localization_valid": true
+            },
+            "largest_same_time_delta": {
+              "t": 6.1,
+              "truth256": [
+                1.8915,
+                -0.552
+              ],
+              "truth128": [
+                1.8537,
+                -0.5474
+              ],
+              "error256_mm": 4.716990566028277,
+              "error128_mm": 72.446186925193,
+              "delta128_minus256_mm": 67.72919635916473,
+              "both_localization_valid": true
+            },
+            "scope": "same physical timestamps; after motion commands diverge these need not be the same physical locations"
+          },
+          "goal_error_delta128_minus256_mm": 23.0,
+          "outcome256": "arrived",
+          "outcome128": "false_arrival",
+          "both_arrived_without_collision_or_false_arrival": false,
+          "production_RTL_change_approved": false
+        },
+        {
+          "case": "goal",
+          "prior": true,
+          "seed": 1,
+          "absolute256": {
+            "XY_full_trajectory": {
+              "samples": 196,
+              "RMSE_mm": 351.54435549095535,
+              "P95_mm": 1051.189802081432,
+              "endpoint_mm": 26.73667892614921,
+              "max_mm": 1051.189802081432
+            },
+            "XY_when_localization_valid": {
+              "samples": 161,
+              "RMSE_mm": 18.39069437926559,
+              "P95_mm": 26.892378102354268,
+              "endpoint_mm": 26.73667892614921,
+              "max_mm": 48.178937306669674
+            }
+          },
+          "absolute128": {
+            "XY_full_trajectory": {
+              "samples": 199,
+              "RMSE_mm": 349.1144481967172,
+              "P95_mm": 1051.189802081432,
+              "endpoint_mm": 31.50825288714028,
+              "max_mm": 1051.189802081432
+            },
+            "XY_when_localization_valid": {
+              "samples": 164,
+              "RMSE_mm": 22.95258766430928,
+              "P95_mm": 32.43817075325852,
+              "endpoint_mm": 31.50825288714028,
+              "max_mm": 38.044710539048424
+            }
+          },
+          "incremental_error": {
+            "XY_full_trajectory": {
+              "delta_128_minus256_mm": {
+                "RMSE_mm": -2.4299072942381486,
+                "P95_mm": 0.0,
+                "endpoint_mm": 4.77157396099107,
+                "max_mm": 0.0
+              },
+              "worsening_le10mm_all_four": true
+            },
+            "XY_when_localization_valid": {
+              "delta_128_minus256_mm": {
+                "RMSE_mm": 4.561893285043691,
+                "P95_mm": 5.54579265090425,
+                "endpoint_mm": 4.77157396099107,
+                "max_mm": -10.13422676762125
+              },
+              "worsening_le10mm_all_four": true
+            }
+          },
+          "same_time_trace_diagnostic": {
+            "first_delta_gt10mm": {
+              "t": 4.1,
+              "truth256": [
+                0.5953,
+                -0.9319
+              ],
+              "truth128": [
+                0.5916,
+                -0.9328
+              ],
+              "error256_mm": 17.902513789968182,
+              "error128_mm": 33.20240955111542,
+              "delta128_minus256_mm": 15.29989576114724,
+              "both_localization_valid": true
+            },
+            "largest_same_time_delta": {
+              "t": 14.5,
+              "truth256": [
+                4.3273,
+                0.4421
+              ],
+              "truth128": [
+                4.3586,
+                0.3827
+              ],
+              "error256_mm": 7.930952023559407,
+              "error128_mm": 27.800179855533397,
+              "delta128_minus256_mm": 19.86922783197399,
+              "both_localization_valid": true
+            },
+            "scope": "same physical timestamps; after motion commands diverge these need not be the same physical locations"
+          },
+          "goal_error_delta128_minus256_mm": -15.0,
+          "outcome256": "false_arrival",
+          "outcome128": "arrived",
+          "both_arrived_without_collision_or_false_arrival": false,
+          "production_RTL_change_approved": false
+        },
+        {
+          "case": "ramp",
+          "prior": false,
+          "seed": 1,
+          "absolute256": {
+            "XY_full_trajectory": {
+              "samples": 88,
+              "RMSE_mm": 2.4667792767087944,
+              "P95_mm": 4.283380658060606,
+              "endpoint_mm": 2.2360679774997916,
+              "max_mm": 7.170076708097336
+            },
+            "XY_when_localization_valid": {
+              "samples": 88,
+              "RMSE_mm": 2.4667792767087944,
+              "P95_mm": 4.283380658060606,
+              "endpoint_mm": 2.2360679774997916,
+              "max_mm": 7.170076708097336
+            }
+          },
+          "absolute128": {
+            "XY_full_trajectory": {
+              "samples": 88,
+              "RMSE_mm": 9.197133940922726,
+              "P95_mm": 14.111129046706955,
+              "endpoint_mm": 6.708203932499325,
+              "max_mm": 23.623928547132035
+            },
+            "XY_when_localization_valid": {
+              "samples": 88,
+              "RMSE_mm": 9.197133940922726,
+              "P95_mm": 14.111129046706955,
+              "endpoint_mm": 6.708203932499325,
+              "max_mm": 23.623928547132035
+            }
+          },
+          "incremental_error": {
+            "XY_full_trajectory": {
+              "delta_128_minus256_mm": {
+                "RMSE_mm": 6.730354664213931,
+                "P95_mm": 9.827748388646349,
+                "endpoint_mm": 4.472135954999533,
+                "max_mm": 16.453851839034698
+              },
+              "worsening_le10mm_all_four": false
+            },
+            "XY_when_localization_valid": {
+              "delta_128_minus256_mm": {
+                "RMSE_mm": 6.730354664213931,
+                "P95_mm": 9.827748388646349,
+                "endpoint_mm": 4.472135954999533,
+                "max_mm": 16.453851839034698
+              },
+              "worsening_le10mm_all_four": false
+            }
+          },
+          "same_time_trace_diagnostic": {
+            "first_delta_gt10mm": {
+              "t": 1.8,
+              "truth256": [
+                0.45,
+                0.85
+              ],
+              "truth128": [
+                0.45,
+                0.85
+              ],
+              "error256_mm": 1.0000000000000009,
+              "error128_mm": 11.04536101718727,
+              "delta128_minus256_mm": 10.045361017187268,
+              "both_localization_valid": true
+            },
+            "largest_same_time_delta": {
+              "t": 3.4,
+              "truth256": [
+                0.8983,
+                0.85
+              ],
+              "truth128": [
+                0.8983,
+                0.85
+              ],
+              "error256_mm": 3.4481879299133045,
+              "error128_mm": 23.623928547132035,
+              "delta128_minus256_mm": 20.17574061721873,
+              "both_localization_valid": true
+            },
+            "scope": "same physical timestamps; after motion commands diverge these need not be the same physical locations"
+          },
+          "goal_error_delta128_minus256_mm": 0.0,
+          "outcome256": "arrived",
+          "outcome128": "arrived",
+          "both_arrived_without_collision_or_false_arrival": true,
+          "production_RTL_change_approved": false
+        },
+        {
+          "case": "ramp",
+          "prior": true,
+          "seed": 1,
+          "absolute256": {
+            "XY_full_trajectory": {
+              "samples": 103,
+              "RMSE_mm": 446.9646809530005,
+              "P95_mm": 961.7692030835672,
+              "endpoint_mm": 3.9293765408777253,
+              "max_mm": 961.7692030835672
+            },
+            "XY_when_localization_valid": {
+              "samples": 68,
+              "RMSE_mm": 9.235385911870525,
+              "P95_mm": 15.665253580733314,
+              "endpoint_mm": 3.9293765408777253,
+              "max_mm": 17.25949014310668
+            }
+          },
+          "absolute128": {
+            "XY_full_trajectory": {
+              "samples": 118,
+              "RMSE_mm": 417.7728968052913,
+              "P95_mm": 961.7692030835672,
+              "endpoint_mm": 8.796590248499598,
+              "max_mm": 961.7692030835672
+            },
+            "XY_when_localization_valid": {
+              "samples": 83,
+              "RMSE_mm": 16.919301731582685,
+              "P95_mm": 30.271579436177326,
+              "endpoint_mm": 8.796590248499598,
+              "max_mm": 34.39098719141396
+            }
+          },
+          "incremental_error": {
+            "XY_full_trajectory": {
+              "delta_128_minus256_mm": {
+                "RMSE_mm": -29.1917841477092,
+                "P95_mm": 0.0,
+                "endpoint_mm": 4.867213707621873,
+                "max_mm": 0.0
+              },
+              "worsening_le10mm_all_four": true
+            },
+            "XY_when_localization_valid": {
+              "delta_128_minus256_mm": {
+                "RMSE_mm": 7.68391581971216,
+                "P95_mm": 14.606325855444013,
+                "endpoint_mm": 4.867213707621873,
+                "max_mm": 17.13149704830728
+              },
+              "worsening_le10mm_all_four": false
+            }
+          },
+          "same_time_trace_diagnostic": {
+            "first_delta_gt10mm": {
+              "t": 3.8,
+              "truth256": [
+                0.4786,
+                0.85
+              ],
+              "truth128": [
+                0.45,
+                0.85
+              ],
+              "error256_mm": 7.24982758415679,
+              "error128_mm": 21.213203435596444,
+              "delta128_minus256_mm": 13.963375851439654,
+              "both_localization_valid": true
+            },
+            "largest_same_time_delta": {
+              "t": 9.4,
+              "truth256": [
+                1.3218,
+                0.85
+              ],
+              "truth128": [
+                1.3245,
+                0.8087
+              ],
+              "error256_mm": 5.885575587824892,
+              "error128_mm": 34.39098719141396,
+              "delta128_minus256_mm": 28.50541160358907,
+              "both_localization_valid": true
+            },
+            "scope": "same physical timestamps; after motion commands diverge these need not be the same physical locations"
+          },
+          "goal_error_delta128_minus256_mm": 4.0,
+          "outcome256": "arrived",
+          "outcome128": "arrived",
+          "both_arrived_without_collision_or_false_arrival": true,
+          "production_RTL_change_approved": false
+        },
+        {
+          "case": "step",
+          "prior": false,
+          "seed": 1,
+          "absolute256": {
+            "XY_full_trajectory": {
+              "samples": 82,
+              "RMSE_mm": 3.5436132861743346,
+              "P95_mm": 4.172851211981191,
+              "endpoint_mm": 1.7691806012956828,
+              "max_mm": 13.861096637712148
+            },
+            "XY_when_localization_valid": {
+              "samples": 82,
+              "RMSE_mm": 3.5436132861743346,
+              "P95_mm": 4.172851211981191,
+              "endpoint_mm": 1.7691806012956828,
+              "max_mm": 13.861096637712148
+            }
+          },
+          "absolute128": {
+            "XY_full_trajectory": {
+              "samples": 82,
+              "RMSE_mm": 4.003870079030555,
+              "P95_mm": 11.834272263219264,
+              "endpoint_mm": 2.3769728648011337,
+              "max_mm": 11.834272263219264
+            },
+            "XY_when_localization_valid": {
+              "samples": 82,
+              "RMSE_mm": 4.003870079030555,
+              "P95_mm": 11.834272263219264,
+              "endpoint_mm": 2.3769728648011337,
+              "max_mm": 11.834272263219264
+            }
+          },
+          "incremental_error": {
+            "XY_full_trajectory": {
+              "delta_128_minus256_mm": {
+                "RMSE_mm": 0.46025679285622,
+                "P95_mm": 7.661421051238072,
+                "endpoint_mm": 0.6077922635054509,
+                "max_mm": -2.026824374492884
+              },
+              "worsening_le10mm_all_four": true
+            },
+            "XY_when_localization_valid": {
+              "delta_128_minus256_mm": {
+                "RMSE_mm": 0.46025679285622,
+                "P95_mm": 7.661421051238072,
+                "endpoint_mm": 0.6077922635054509,
+                "max_mm": -2.026824374492884
+              },
+              "worsening_le10mm_all_four": true
+            }
+          },
+          "same_time_trace_diagnostic": {
+            "first_delta_gt10mm": {
+              "t": 6.5,
+              "truth256": [
+                3.5258,
+                -0.7997
+              ],
+              "truth128": [
+                3.5258,
+                -0.7991
+              ],
+              "error256_mm": 1.7691806012956828,
+              "error128_mm": 11.834272263219264,
+              "delta128_minus256_mm": 10.065091661923582,
+              "both_localization_valid": true
+            },
+            "largest_same_time_delta": {
+              "t": 6.5,
+              "truth256": [
+                3.5258,
+                -0.7997
+              ],
+              "truth128": [
+                3.5258,
+                -0.7991
+              ],
+              "error256_mm": 1.7691806012956828,
+              "error128_mm": 11.834272263219264,
+              "delta128_minus256_mm": 10.065091661923582,
+              "both_localization_valid": true
+            },
+            "scope": "same physical timestamps; after motion commands diverge these need not be the same physical locations"
+          },
+          "goal_error_delta128_minus256_mm": 0.0,
+          "outcome256": "arrived",
+          "outcome128": "arrived",
+          "both_arrived_without_collision_or_false_arrival": true,
+          "production_RTL_change_approved": false
+        }
+      ],
+      "groups": [
+        {
+          "SLF_SN": 256,
+          "prior": false,
+          "arrivals_k": 3,
+          "completed_n": 3,
+          "false_arrivals": 0,
+          "collision_runs": 0
+        },
+        {
+          "SLF_SN": 256,
+          "prior": true,
+          "arrivals_k": 1,
+          "completed_n": 2,
+          "false_arrivals": 1,
+          "collision_runs": 0
+        },
+        {
+          "SLF_SN": 128,
+          "prior": false,
+          "arrivals_k": 2,
+          "completed_n": 3,
+          "false_arrivals": 1,
+          "collision_runs": 0
+        },
+        {
+          "SLF_SN": 128,
+          "prior": true,
+          "arrivals_k": 2,
+          "completed_n": 2,
+          "false_arrivals": 0,
+          "collision_runs": 0
+        }
+      ],
+      "next_validation_required": [
+        "at least two additional fixed seeds",
+        "prior initial-pose offset cases",
+        "long-axis end occlusion with separately versioned scene/cache"
+      ]
+    },
+    "production_RTL_change_approved": false,
+    "execution_scope": "Frozen N1c real navigation C DLL + fixed-point perception reference + virtual lidar + velocity-response kinematics",
+    "rl_in_loop": false,
+    "safe_in_loop": false,
+    "no_RL_RTL_or_board_closed_loop": true
+  },
+  "PNR52_final": {
+    "output": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_pnr52",
+    "runtime": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-26T15:56:44.778995+08:00",
+      "max_runtime_s": 0,
+      "max_no_observable_progress_s": 0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 11212,
+      "elapsed_s": 2172.844000000041,
+      "no_observable_progress_s": 0.0,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          1707,
+          1793003574169201800
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          1233,
+          1793003574169201800
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          2068680,
+          1793001726802630600
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          11811747,
+          1793001727218044200
+        ],
+        [
+          "impl\\pnr\\g2_top.rpt.txt",
+          93139,
+          1793003571841228600
+        ],
+        [
+          "impl\\pnr\\g2_top.vo",
+          38233406,
+          1793003574162486800
+        ]
+      ],
+      "tool_exit": 1,
+      "ended_at": "2026-10-26T16:32:57.633546+08:00"
+    },
+    "unrouted": 1026,
+    "actual_resources": {
+      "BSRAM": 332,
+      "available_BSRAM": 340,
+      "Logic": 82945,
+      "LUT": 45825,
+      "ALU": 9944,
+      "FF": 31120,
+      "CLS": 51359,
+      "available_CLS": 69120,
+      "SSRAM": 3921,
+      "ROM": 3650,
+      "DSP": 165
+    },
+    "TR_available": false,
+    "all_setup_hold": null,
+    "independent_preservation_passed": true,
+    "review": "F:\\nav_integration_g2_20261023\\pnr52_system_final_actual_review1\\result.json",
+    "preservation_not_physical_acceptance": true
+  },
+  "corrections": {
+    "weight9_previous_actual_saving_BSRAM": 5,
+    "SLF_main_data_theoretical_saving_BSRAM": 48,
+    "NVMP_v2_bytes": "40+5*n_struct+gnx*gny; not quadratic in allocated SLF area",
+    "u_tv_row_and_ELU_already_BSRAM": true,
+    "previous_ring_gain_already_in_PNR52": true,
+    "proposed_24000_logic_and_290_300_BSRAM_not_verified": true,
+    "two_place_passes_not_absolute_guarantee": true,
+    "timing_required_from_first_PNR": true,
+    "SLF_structure_and_touch_conditional_budget_saving_BSRAM": 51,
+    "requested_migrations_added_BSRAM": 18,
+    "conditional_128_budget_BSRAM": 294,
+    "conditional_128_budget_not_accepted": true,
+    "keep256_lossless_budget_steps_BSRAM": [
+      319,
+      329,
+      335
+    ],
+    "all_migrations_with_pointplanes_337_fails_policy_BSRAM_le336": true
+  },
+  "source_and_previous_evidence": {
+    "weight9": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\weight9_joint_memories.json",
+    "SYN40_contract": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\observation_ring50_SYN40_actual_contract_review_20261026.json",
+    "real4500_50": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\observation_ring50_real4500_20261026.json",
+    "actual_storage_budget": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\SYN40_PNR52_storage_migration_budget_20261026.json",
+    "SLF_protocol_coordinate_contract": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\SLF128_256_RTL_FW_NVMP_coordinate_contract_20261026.json",
+    "PNR52_final": "D:\\Desktop\\SOC FPGA\\nav\\docs\\4_design\\evidence\\g2_20261023\\observation_ring50_PNR52_final_unrouted1026_20261026.json"
+  },
+  "automation": {
+    "id": "fpga",
+    "observed_and_preserved_status": "PAUSED",
+    "prompt_updated_to_current_strategy": true,
+    "active_stage1_controller_independent_of_automation": true
+  },
+  "hardware_programmed": false,
+  "physical_deployment_accepted": false,
+  "updated_at": "2026-10-26T16:52:49.044702+08:00"
+}

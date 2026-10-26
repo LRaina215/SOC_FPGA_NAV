@@ -1,0 +1,281 @@
+{
+  "recorded_at": "2026-10-26T16:51:43.967995+08:00",
+  "scene": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\scene.json",
+  "scene_image": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\scene.png",
+  "geometry_validation": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\scene_validation.json",
+  "source_and_all_commands": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\manifest.json",
+  "original_N1c_source": "D:/Desktop/SOC FPGA/nav/sim/build/batch/nav_opt_n1c_goto_20261021",
+  "original_N1c_DLL_runner_model_config_preserved": true,
+  "host_NV_packet_encoder_frozen_current_version": true,
+  "execution_scope": "frozen N1c navigation C DLL + fixed-point FPGA reference/perception + virtual lidar and velocity-command kinematic robot; SAFE and RL are NOT in this closed loop; no Torch4500, RTL or board validation",
+  "controller": {
+    "pid": 57328,
+    "created_epoch": 1793003754.2887788,
+    "one_worker": true,
+    "priority": "BELOW_NORMAL",
+    "logical_CPUs": [
+      18,
+      19
+    ],
+    "minimum_physical_bytes": 2684354560,
+    "minimum_commit_bytes": 4831838208
+  },
+  "job": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\job.json",
+  "planned_jobs": 16,
+  "pilot_goal_jobs_completed": 4,
+  "comparison_threshold": "error worsening128 minus256 <=10mm in XY RMSE/P95/endpoint/max; absolute values also retained",
+  "goal_pilot_snapshot": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\goal_seed1_pilot_snapshot.json",
+  "absolute_and_incremental_metrics": [
+    {
+      "case": "goal",
+      "prior": false,
+      "seed": 1,
+      "absolute256": {
+        "XY_full_trajectory": {
+          "samples": 183,
+          "RMSE_mm": 13.2320566203585,
+          "P95_mm": 19.378554654667038,
+          "endpoint_mm": 19.303885619222093,
+          "max_mm": 55.07177135338952
+        },
+        "XY_when_localization_valid": {
+          "samples": 183,
+          "RMSE_mm": 13.2320566203585,
+          "P95_mm": 19.378554654667038,
+          "endpoint_mm": 19.303885619222093,
+          "max_mm": 55.07177135338952
+        }
+      },
+      "absolute128": {
+        "XY_full_trajectory": {
+          "samples": 183,
+          "RMSE_mm": 55.07254083568663,
+          "P95_mm": 72.52089354110355,
+          "endpoint_mm": 72.52089354110355,
+          "max_mm": 74.57673900084386
+        },
+        "XY_when_localization_valid": {
+          "samples": 183,
+          "RMSE_mm": 55.07254083568663,
+          "P95_mm": 72.52089354110355,
+          "endpoint_mm": 72.52089354110355,
+          "max_mm": 74.57673900084386
+        }
+      },
+      "incremental_error": {
+        "XY_full_trajectory": {
+          "delta_128_minus256_mm": {
+            "RMSE_mm": 41.84048421532813,
+            "P95_mm": 53.142338886436505,
+            "endpoint_mm": 53.217007921881454,
+            "max_mm": 19.504967647454336
+          },
+          "worsening_le10mm_all_four": false
+        },
+        "XY_when_localization_valid": {
+          "delta_128_minus256_mm": {
+            "RMSE_mm": 41.84048421532813,
+            "P95_mm": 53.142338886436505,
+            "endpoint_mm": 53.217007921881454,
+            "max_mm": 19.504967647454336
+          },
+          "worsening_le10mm_all_four": false
+        }
+      },
+      "same_time_trace_diagnostic": {
+        "first_delta_gt10mm": {
+          "t": 1.4,
+          "truth256": [
+            0.45,
+            -0.95
+          ],
+          "truth128": [
+            0.45,
+            -0.95
+          ],
+          "error256_mm": 1.4142135623730963,
+          "error128_mm": 27.202941017470913,
+          "delta128_minus256_mm": 25.788727455097817,
+          "both_localization_valid": true
+        },
+        "largest_same_time_delta": {
+          "t": 6.1,
+          "truth256": [
+            1.8915,
+            -0.552
+          ],
+          "truth128": [
+            1.8537,
+            -0.5474
+          ],
+          "error256_mm": 4.716990566028277,
+          "error128_mm": 72.446186925193,
+          "delta128_minus256_mm": 67.72919635916473,
+          "both_localization_valid": true
+        },
+        "scope": "same physical timestamps; after motion commands diverge these need not be the same physical locations"
+      },
+      "goal_error_delta128_minus256_mm": 23.0,
+      "outcome256": "arrived",
+      "outcome128": "false_arrival",
+      "both_arrived_without_collision_or_false_arrival": false,
+      "production_RTL_change_approved": false
+    },
+    {
+      "case": "goal",
+      "prior": true,
+      "seed": 1,
+      "absolute256": {
+        "XY_full_trajectory": {
+          "samples": 196,
+          "RMSE_mm": 351.54435549095535,
+          "P95_mm": 1051.189802081432,
+          "endpoint_mm": 26.73667892614921,
+          "max_mm": 1051.189802081432
+        },
+        "XY_when_localization_valid": {
+          "samples": 161,
+          "RMSE_mm": 18.39069437926559,
+          "P95_mm": 26.892378102354268,
+          "endpoint_mm": 26.73667892614921,
+          "max_mm": 48.178937306669674
+        }
+      },
+      "absolute128": {
+        "XY_full_trajectory": {
+          "samples": 199,
+          "RMSE_mm": 349.1144481967172,
+          "P95_mm": 1051.189802081432,
+          "endpoint_mm": 31.50825288714028,
+          "max_mm": 1051.189802081432
+        },
+        "XY_when_localization_valid": {
+          "samples": 164,
+          "RMSE_mm": 22.95258766430928,
+          "P95_mm": 32.43817075325852,
+          "endpoint_mm": 31.50825288714028,
+          "max_mm": 38.044710539048424
+        }
+      },
+      "incremental_error": {
+        "XY_full_trajectory": {
+          "delta_128_minus256_mm": {
+            "RMSE_mm": -2.4299072942381486,
+            "P95_mm": 0.0,
+            "endpoint_mm": 4.77157396099107,
+            "max_mm": 0.0
+          },
+          "worsening_le10mm_all_four": true
+        },
+        "XY_when_localization_valid": {
+          "delta_128_minus256_mm": {
+            "RMSE_mm": 4.561893285043691,
+            "P95_mm": 5.54579265090425,
+            "endpoint_mm": 4.77157396099107,
+            "max_mm": -10.13422676762125
+          },
+          "worsening_le10mm_all_four": true
+        }
+      },
+      "same_time_trace_diagnostic": {
+        "first_delta_gt10mm": {
+          "t": 4.1,
+          "truth256": [
+            0.5953,
+            -0.9319
+          ],
+          "truth128": [
+            0.5916,
+            -0.9328
+          ],
+          "error256_mm": 17.902513789968182,
+          "error128_mm": 33.20240955111542,
+          "delta128_minus256_mm": 15.29989576114724,
+          "both_localization_valid": true
+        },
+        "largest_same_time_delta": {
+          "t": 14.5,
+          "truth256": [
+            4.3273,
+            0.4421
+          ],
+          "truth128": [
+            4.3586,
+            0.3827
+          ],
+          "error256_mm": 7.930952023559407,
+          "error128_mm": 27.800179855533397,
+          "delta128_minus256_mm": 19.86922783197399,
+          "both_localization_valid": true
+        },
+        "scope": "same physical timestamps; after motion commands diverge these need not be the same physical locations"
+      },
+      "goal_error_delta128_minus256_mm": -15.0,
+      "outcome256": "false_arrival",
+      "outcome128": "arrived",
+      "both_arrived_without_collision_or_false_arrival": false,
+      "production_RTL_change_approved": false
+    }
+  ],
+  "original_terminal_criteria_unchanged": true,
+  "cache_audit": [
+    {
+      "SLF_SN": 256,
+      "path": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\prior_cache\\field3x5_v1\\sn256\\field3x5_v1_SN256_N1c_noise4_lidarSeed11_surveySeed3_spacing1_yaws6_legacy_march.nvmp",
+      "package_bytes": 29589,
+      "largest_slot": 65535,
+      "slot_within_actual_SLF_capacity": true,
+      "scenario_and_SLF_size_in_cache_key": true,
+      "metadata": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\prior_cache\\field3x5_v1\\sn256\\field3x5_v1_SN256_N1c_noise4_lidarSeed11_surveySeed3_spacing1_yaws6_legacy_march.json",
+      "header_structure_word_entries": 5469,
+      "occupied_structure_cells": 1579,
+      "structure_window_origin_5cm_cells": [
+        -78,
+        -128
+      ],
+      "coarse_cost_shape": [
+        38,
+        58
+      ]
+    },
+    {
+      "SLF_SN": 128,
+      "path": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\prior_cache\\field3x5_v1\\sn128\\field3x5_v1_SN128_N1c_noise4_lidarSeed11_surveySeed3_spacing1_yaws6_legacy_march.nvmp",
+      "package_bytes": 15019,
+      "largest_slot": 16383,
+      "slot_within_actual_SLF_capacity": true,
+      "scenario_and_SLF_size_in_cache_key": true,
+      "metadata": "F:\\nav_integration_g2_20261023\\nav3x5_N1c_SLF128_256_stage1_20261026\\prior_cache\\field3x5_v1\\sn128\\field3x5_v1_SN128_N1c_noise4_lidarSeed11_surveySeed3_spacing1_yaws6_legacy_march.json",
+      "header_structure_word_entries": 2555,
+      "occupied_structure_cells": 839,
+      "structure_window_origin_5cm_cells": [
+        -14,
+        -64
+      ],
+      "coarse_cost_shape": [
+        38,
+        58
+      ]
+    }
+  ],
+  "PNR_RTL_inputs_unchanged": true,
+  "production_SLF128_approved": false,
+  "reproducible_prepare_and_run": "integration/g2/stage1_nav3x5_n1c.py --prepare then --run",
+  "analysis_entry": "integration/g2/analyze_nav3x5_stage1.py",
+  "remaining_jobs_continue_without_algorithm_or_scoring_changes": true,
+  "further_required": [
+    "two fixed extra seeds11 and12 after pilot",
+    "explicit prior initial offsets",
+    "independent versioned long-axis end-occlusion geometry/cache"
+  ],
+  "both_prior_coarse_cost_bytes_identical": true,
+  "actual_runner_response_assumptions": {
+    "safe_in_loop": false,
+    "rl_in_loop": false,
+    "tau_s": 0.12,
+    "accel_mps2": 1.5,
+    "angular_accel_rps2": 6.0
+  },
+  "scope_source": "F:/nav_integration_g2_20261023/nav3x5_N1c_SLF128_256_stage1_20261026/execution_tree/sim/closed_loop/run_cl.py:176",
+  "independent_real4500_ring_evidence_not_combined_as_vehicle_loop": true
+}

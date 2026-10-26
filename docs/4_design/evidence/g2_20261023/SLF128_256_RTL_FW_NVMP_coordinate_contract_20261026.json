@@ -1,0 +1,914 @@
+{
+  "recorded_at": "2026-10-26T16:46:57.078046+08:00",
+  "scope": "Static actual frozen-SYN40 RTL/FW and current model/tool contract review; no production change or new run",
+  "confirmed": {
+    "current_SLF_default_LOG2N": 8,
+    "current_SLF_N": 256,
+    "current_independent_local_elevation_MAP_LOG2N": 7,
+    "LOG2N_propagates_inside_match_to_struct_touch_lf_slot_tags_clear_bounds": true,
+    "top_does_not_yet_pass_SLF_LOG2N": true,
+    "top_write_debug_inputs_fixed16bits": true,
+    "NVMP_v2_has_no_validated_geometry_field": true,
+    "NVMP_v2_flags_emitted_zero_and_FW_ignored": true,
+    "FW_entry_slot_has_no_capacity_check": true,
+    "CPU_stores_no_complete_SLF_prior_package": true,
+    "CPU_prior_cost_layer_bytes": 4096,
+    "CPU_prior_cost_GM_DS": 2,
+    "CPU_prior_cost_resolution_nominal_cm": 10,
+    "sparse_NVMP_entries_are_only_occ_or_gate_nonzero": true
+  },
+  "sizes": {
+    "128": {
+      "LOG2N": 7,
+      "address_bits": 14,
+      "nominal_window_m": 6.4,
+      "tag_repeat_axis_m": 12.8,
+      "struct_words": 16384,
+      "struct_word_bits": 18,
+      "touch_words": 16384,
+      "nominal_gate_margin_each_side_m": 0.4,
+      "no_prior_nominal_core_width_m": 5.6000000000000005,
+      "dense_NVMP_record_bytes": 81920,
+      "dense_NVMP_upper_bytes_with_4096cost": 86056
+    },
+    "256": {
+      "LOG2N": 8,
+      "address_bits": 16,
+      "nominal_window_m": 12.8,
+      "tag_repeat_axis_m": 25.6,
+      "struct_words": 65536,
+      "struct_word_bits": 18,
+      "touch_words": 65536,
+      "nominal_gate_margin_each_side_m": 0.4,
+      "no_prior_nominal_core_width_m": 12.0,
+      "dense_NVMP_record_bytes": 327680,
+      "dense_NVMP_upper_bytes_with_4096cost": 331816
+    }
+  },
+  "firmware_contract_files_current_equal_frozen": {
+    "fw\\nav\\prior.c": true,
+    "fw\\nav\\prior.h": true,
+    "fw\\nav\\gmap.h": true,
+    "fw\\drv\\hal_fpga.c": false
+  },
+  "non_quartered": [
+    "Point buffer4096x36",
+    "Candidate/result arrays256 candidates",
+    "Sample accept bitmap1024",
+    "Touched-slot list1024 entries (slot width16->14 only)",
+    "LF line storage linear N+2, notN²",
+    "CPU streamed NVMP receive state",
+    "CPU64x64 prior cost layer",
+    "Sparse prior payload for the same unclipped physical feature set"
+  ],
+  "coordinate_geometry": {
+    "field_m": [
+      3,
+      5
+    ],
+    "bare_axis_aligned_surplus_m": [
+      3.4,
+      1.4
+    ],
+    "maximum_AABB_axis_span_any_rotation_m": 5.830951894845301,
+    "minimum_centered_nominal_margin_each_axis_any_rotation_m": 0.2845240525773498,
+    "bare_rectangle_fits_at_any_rotation": true,
+    "rotation_is_not_needed_merely_to_fit_bare_rectangle": true,
+    "with_500mm_relocalization_each_side_worst_axis_m": 6.830951894845301,
+    "all_halos_fit_unconditionally": false,
+    "prior_window_is_fixed_origin": true,
+    "no_prior_window_is_robot_centered": true,
+    "robot_at_5m_end_can_lose_other_end_from_3p2m_halfwindow": true,
+    "actual_quantization": "floor(mm*1311/65536), with1/16-cell positions from >>12; endpoint and negative rounding matter"
+  },
+  "not_proved": [
+    "SLF128 mission/navigation acceptance",
+    "Actual post-shrink BSRAM/FF/LUT/CLS/routing or timing",
+    "FullFW/new-format interoperability",
+    "Real field coordinate registration and LiDAR structures outside driving rectangle"
+  ],
+  "actionable_change_list": [
+    {
+      "order": 1,
+      "area": "One distinct SLF size parameter",
+      "files": [
+        "config/nav_params.yaml",
+        "tools/gen_config.py",
+        "rtl/regs/nav_params.vh",
+        "fw/include/nav_params.h",
+        "model/nav_params.py",
+        "rtl/top/nav_subsystem.v"
+      ],
+      "change": "After scenario acceptance, add an independent SLF_LOG2N=7/8 and derived SLF_N/CELLS; pass it explicitly into u_match. Do not change MAP_LOG2N7, the existing elevation/cost map, G2 clock overrides, point capacity or candidate counts."
+    },
+    {
+      "order": 2,
+      "area": "MMIO address validity",
+      "files": [
+        "rtl/top/nav_subsystem.v",
+        "config/regmap.yaml",
+        "fw/drv/hal_fpga.c"
+      ],
+      "change": "Use explicit2*SLF_LOG2N slices for write/debug ports; preserve32bit CSR layout. Reject/out-of-range diagnose slot>=SLF_CELLS before the HAL write; define direct-MMIO invalid address behavior so discarded high bits cannot silently alias."
+    },
+    {
+      "order": 3,
+      "area": "Address/tag/clear geometry",
+      "files": [
+        "rtl/match/slf_match.v",
+        "rtl/match/slf_lf.v",
+        "model/slf_match.py"
+      ],
+      "change": "Keep50mm INV_RES1311,18bit word and all candidates/point limits; ensure masks, concat row/column, tag extraction at bitLOG2N, N/2 rolling origin, MARGIN8 and clear exactlyN² slots all use the same selected size. Recreate all prior tags/addresses for that size."
+    },
+    {
+      "order": 4,
+      "area": "NVMP geometry discrimination",
+      "files": [
+        "model/prior_map.py",
+        "fw/nav/prior.c",
+        "fw/nav/prior.h",
+        "tools/nav_host.py"
+      ],
+      "change": "Define geometry metadata/version before using128 packages. A new format version carryingLOG2N is safer than only flags: legacyv2 firmware ignores flags and otherwise accepts a128 map into256. Keep18bit word payload and transport/ACK semantics; reject wrong geometry and slot>=N² before enabling prior mode. Bounds-check n_struct<=N² and body lengths; legacyv2 can be explicitly256-only."
+    },
+    {
+      "order": 5,
+      "area": "No imaginary CPU prior-cache saving",
+      "files": [
+        "fw/nav/prior.h",
+        "fw/nav/gmap.h",
+        "model/prior_map.py"
+      ],
+      "change": "Leave streamed40B header/5B record and independent64² prior-cost layer unless separately approved. Size the sparse package by actual nonzero records; do not budget a fourfold UART download or CPU RAM reduction from smaller SLF alone."
+    },
+    {
+      "order": 6,
+      "area": "Host/viewer/test parameter binding",
+      "files": [
+        "tools/map_tool.py",
+        "rtl/match/tb/tb_slf.sv",
+        "sim/gen/gen_slf.py",
+        "sim/gen/check_slf_cycles.py"
+      ],
+      "change": "Replace viewer masks255/shift8/extents256 with selected geometry; parameterize TB NSLOT/address vectors and pass LOG2N explicitly. Bind model env/profile per process to frozen RTL/FW and map format, without mutating a global default."
+    },
+    {
+      "order": 7,
+      "area": "Coordinate and observation envelope",
+      "files": [
+        "tools/map_tool.py",
+        "model/prior_map.py",
+        "fw/nav/loc.c",
+        "fw/nav/pose_match.c",
+        "RK/goal/initial-pose integration"
+      ],
+      "change": "Fix one map frame/origin for point cloud, initial pose, goals and observations. Reserve both candidate/relocalization shift and observed structure/normal/gating halos; test prior fixed-origin separately from no-prior robot-centered rolling mode. Bare3x5 fitting is not proof of preserved localization."
+    },
+    {
+      "order": 8,
+      "area": "Acceptance before production capacity change",
+      "files": [
+        "RTL/model128-vs256 fixtures",
+        "FW NVMP tests",
+        "closed-loop navigation scenario runner"
+      ],
+      "change": "Retain256 as production until both maps pass relevant no-prior/prior scenarios. Compare arrival against true pose and localization-valid state, false arrival, collision/stops, loss/relocalization, boundary structures and negative/rotated origins. Test clear/highest slot, wrong-size/legacy map rejection and tag wrap, not only average error or resource count."
+    }
+  ],
+  "source_anchors": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\nav\\rtl\\top\\nav_subsystem.v",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\nav\\rtl\\top\\nav_subsystem.v",
+        "bytes": 33080,
+        "mtime_ns": 1792936600546603200
+      },
+      "anchors": [
+        {
+          "anchor": "slf_match #(",
+          "matches": [
+            {
+              "line": 386,
+              "text": "slf_match #(.SIN_INIT(SIN_INIT)) u_match ("
+            }
+          ]
+        },
+        {
+          "anchor": "pw_addr(r_MATCH_SM_ADDR[15:0])",
+          "matches": [
+            {
+              "line": 398,
+              "text": ".pw_we(p_MATCH_SM_WDATA), .pw_addr(r_MATCH_SM_ADDR[15:0]), .pw_data(wd_q[17:0]),"
+            }
+          ]
+        },
+        {
+          "anchor": "dbg_addr(r_MATCH_DBG_ADDR[15:0])",
+          "matches": [
+            {
+              "line": 401,
+              "text": ".dbg_req(mt_dbg_req), .dbg_addr(r_MATCH_DBG_ADDR[15:0]), .dbg_ack(mt_dbg_ack), .dbg_q(mt_dbg_q),"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\nav\\rtl\\match\\slf_match.v",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\nav\\rtl\\match\\slf_match.v",
+        "bytes": 25552,
+        "mtime_ns": 1792936600540541200
+      },
+      "anchors": [
+        {
+          "anchor": "parameter integer LOG2N",
+          "matches": [
+            {
+              "line": 19,
+              "text": "parameter integer LOG2N  = 8,"
+            }
+          ]
+        },
+        {
+          "anchor": "localparam integer AW",
+          "matches": [
+            {
+              "line": 84,
+              "text": "localparam integer AW = 2 * LOG2N;"
+            }
+          ]
+        },
+        {
+          "anchor": "input  wire [2*LOG2N-1:0] pw_addr",
+          "matches": [
+            {
+              "line": 62,
+              "text": "input  wire [2*LOG2N-1:0] pw_addr,"
+            }
+          ]
+        },
+        {
+          "anchor": "slf_lf #(.LOG2N(LOG2N))",
+          "matches": [
+            {
+              "line": 122,
+              "text": "slf_lf #(.LOG2N(LOG2N)) u_lf ("
+            }
+          ]
+        },
+        {
+          "anchor": "DW(18), .AW(AW)",
+          "matches": [
+            {
+              "line": 117,
+              "text": "nav_ram_sdp #(.DW(18), .AW(AW)) u_sm ("
+            }
+          ]
+        },
+        {
+          "anchor": "DW(1), .AW(AW)",
+          "matches": [
+            {
+              "line": 129,
+              "text": "nav_ram_sdp #(.DW(1), .AW(AW)) u_touch ("
+            }
+          ]
+        },
+        {
+          "anchor": "DW(AW), .AW(10)",
+          "matches": [
+            {
+              "line": 136,
+              "text": "nav_ram_sdp #(.DW(AW), .AW(10)) u_slist (          // 本遍写过的槽（清位图用）"
+            }
+          ]
+        },
+        {
+          "anchor": "cfg_prior ? 32'sd0 : MARGIN",
+          "matches": [
+            {
+              "line": 221,
+              "text": "wire signed [31:0] mg = cfg_prior ? 32'sd0 : MARGIN;"
+            }
+          ]
+        },
+        {
+          "anchor": "wire [1:0]  ptag",
+          "matches": [
+            {
+              "line": 223,
+              "text": "wire [1:0]  ptag = {wya[LOG2N], wxa[LOG2N]};      // 点所在格的标签（每轴 1 位）"
+            }
+          ]
+        },
+        {
+          "anchor": "clr_a[AW-1:0] == {AW{1'b1}}",
+          "matches": [
+            {
+              "line": 401,
+              "text": "if (clr_a[AW-1:0] == {AW{1'b1}}) st <= S_IDLE;"
+            }
+          ]
+        },
+        {
+          "anchor": "lfo_x <= lf_cx - N/2",
+          "matches": [
+            {
+              "line": 507,
+              "text": "lf_start <= 1'b1; lfo_x <= lf_cx - N/2; lfo_y <= lf_cy - N/2; st <= S_LFW;"
+            }
+          ]
+        },
+        {
+          "anchor": "10'd256",
+          "matches": [
+            {
+              "line": 409,
+              "text": "lut_re <= 1'b1; lut_si <= da_r[15:6]; lut_ci <= da_r[15:6] + 10'd256;"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\nav\\rtl\\match\\slf_lf.v",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\nav\\rtl\\match\\slf_lf.v",
+        "bytes": 22807,
+        "mtime_ns": 1792936600538535000
+      },
+      "anchors": [
+        {
+          "anchor": "localparam integer LB = N + 2",
+          "matches": [
+            {
+              "line": 31,
+              "text": "localparam integer LB = N + 2;"
+            }
+          ]
+        },
+        {
+          "anchor": "sm_raddr = {gy0[LOG2N-1:0]",
+          "matches": [
+            {
+              "line": 43,
+              "text": "assign sm_raddr = {gy0[LOG2N-1:0], gx0[LOG2N-1:0]};"
+            }
+          ]
+        },
+        {
+          "anchor": "etag1 <= {gy0[LOG2N]",
+          "matches": [
+            {
+              "line": 249,
+              "text": "etag1 <= {gy0[LOG2N], gx0[LOG2N]};"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\fw\\nav\\prior.c",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\fw\\nav\\prior.c",
+        "bytes": 3677,
+        "mtime_ns": 1792660815883378900
+      },
+      "anchors": [
+        {
+          "anchor": "hal_prior_write(rd16(r->ent)",
+          "matches": [
+            {
+              "line": 42,
+              "text": "hal_prior_write(rd16(r->ent), w & 0x3FFFF);"
+            }
+          ]
+        },
+        {
+          "anchor": "rd16(h + 4) != 2",
+          "matches": [
+            {
+              "line": 60,
+              "text": "if (h[0] != 'N' || h[1] != 'V' || h[2] != 'M' || h[3] != 'P' || rd16(h + 4) != 2) { r->state = PRIOR_EFMT; return true; }   /* 版本 2 = 18 位槽字 */"
+            }
+          ]
+        },
+        {
+          "anchor": "r->n_struct > 65536u",
+          "matches": [
+            {
+              "line": 66,
+              "text": "if (r->gnx > GM_N || r->gny > GM_N || r->n_struct > 65536u ||"
+            }
+          ]
+        },
+        {
+          "anchor": "r->body_len != r->n_struct * 5",
+          "matches": [
+            {
+              "line": 67,
+              "text": "r->body_len != r->n_struct * 5 + (uint32_t)r->gnx * r->gny || r->body_len + PRIOR_HDR_LEN != r->total) {"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\fw\\nav\\prior.h",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\fw\\nav\\prior.h",
+        "bytes": 1731,
+        "mtime_ns": 1792660815883378900
+      },
+      "anchors": [
+        {
+          "anchor": "#define PRIOR_HDR_LEN 40",
+          "matches": [
+            {
+              "line": 14,
+              "text": "#define PRIOR_HDR_LEN 40"
+            }
+          ]
+        },
+        {
+          "anchor": "uint8_t  ent[5]",
+          "matches": [
+            {
+              "line": 26,
+              "text": "uint8_t  ent[5];"
+            }
+          ]
+        },
+        {
+          "anchor": "不在软核内存里存整包",
+          "matches": [
+            {
+              "line": 2,
+              "text": "* （格式见 model/prior_map.py），不在软核内存里存整包："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\fw\\drv\\hal_fpga.c",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\fw\\drv\\hal_fpga.c",
+        "bytes": 15661,
+        "mtime_ns": 1792660816074374300
+      },
+      "anchors": [
+        {
+          "anchor": "void hal_prior_begin",
+          "matches": [
+            {
+              "line": 246,
+              "text": "void hal_prior_begin(void)"
+            }
+          ]
+        },
+        {
+          "anchor": "match_wait_idle(50000)",
+          "matches": [
+            {
+              "line": 248,
+              "text": "match_wait_idle(50000);"
+            },
+            {
+              "line": 262,
+              "text": "match_wait_idle(50000);"
+            }
+          ]
+        },
+        {
+          "anchor": "match_wait_idle(5000)",
+          "matches": [
+            {
+              "line": 251,
+              "text": "match_wait_idle(5000);"
+            },
+            {
+              "line": 270,
+              "text": "match_wait_idle(5000);"
+            }
+          ]
+        },
+        {
+          "anchor": "void hal_prior_write(uint16_t slot",
+          "matches": [
+            {
+              "line": 254,
+              "text": "void hal_prior_write(uint16_t slot, uint32_t word)"
+            }
+          ]
+        },
+        {
+          "anchor": "nav_wr(NAV_MATCH_SM_ADDR, slot)",
+          "matches": [
+            {
+              "line": 256,
+              "text": "nav_wr(NAV_MATCH_SM_ADDR, slot);"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\fw\\nav\\gmap.h",
+      "metadata": {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_syn40\\fw\\nav\\gmap.h",
+        "bytes": 4438,
+        "mtime_ns": 1792660815872112400
+      },
+      "anchors": [
+        {
+          "anchor": "#define GM_N 64",
+          "matches": [
+            {
+              "line": 22,
+              "text": "#define GM_N 64"
+            }
+          ]
+        },
+        {
+          "anchor": "#define GM_DS 2",
+          "matches": [
+            {
+              "line": 25,
+              "text": "#define GM_DS 2"
+            }
+          ]
+        },
+        {
+          "anchor": "uint8_t prior[GM_N * GM_N]",
+          "matches": [
+            {
+              "line": 44,
+              "text": "uint8_t prior[GM_N * GM_N];     /* 先验代价（有图模式；255 = 无） */"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\config\\nav_params.yaml",
+      "metadata": {
+        "path": "D:\\Desktop\\SOC FPGA\\nav\\config\\nav_params.yaml",
+        "bytes": 2189,
+        "mtime_ns": 1790694109927589600
+      },
+      "anchors": [
+        {
+          "anchor": "MAP_LOG2N:",
+          "matches": [
+            {
+              "line": 24,
+              "text": "MAP_LOG2N:     7           # 局部栅格边长 N = 2^7 = 128"
+            }
+          ]
+        },
+        {
+          "anchor": "MAP_RES_MM:",
+          "matches": [
+            {
+              "line": 25,
+              "text": "MAP_RES_MM:    50          # 栅格分辨率（默认值，运行期经 MAP_INV_RES 可改）"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\tools\\gen_config.py",
+      "metadata": {
+        "path": "D:\\Desktop\\SOC FPGA\\nav\\tools\\gen_config.py",
+        "bytes": 12246,
+        "mtime_ns": 1790847261077592200
+      },
+      "anchors": [
+        {
+          "anchor": "def gen_params",
+          "matches": [
+            {
+              "line": 41,
+              "text": "def gen_params(p):"
+            }
+          ]
+        },
+        {
+          "anchor": "\"MAP_N\":",
+          "matches": [
+            {
+              "line": 44,
+              "text": "\"MAP_N\": 1 << p[\"map\"][\"MAP_LOG2N\"],"
+            }
+          ]
+        },
+        {
+          "anchor": "\"MAP_CELLS\":",
+          "matches": [
+            {
+              "line": 45,
+              "text": "\"MAP_CELLS\": 1 << (2 * p[\"map\"][\"MAP_LOG2N\"]),"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\model\\slf_match.py",
+      "metadata": {
+        "path": "D:\\Desktop\\SOC FPGA\\nav\\model\\slf_match.py",
+        "bytes": 20507,
+        "mtime_ns": 1790847260365329900
+      },
+      "anchors": [
+        {
+          "anchor": "SN_LOG2 =",
+          "matches": [
+            {
+              "line": 26,
+              "text": "SN_LOG2 = int(os.environ.get(\"SLF_SN_LOG2\", \"8\"))"
+            }
+          ]
+        },
+        {
+          "anchor": "SN = 1 << SN_LOG2",
+          "matches": [
+            {
+              "line": 28,
+              "text": "SN = 1 << SN_LOG2            # 结构图边长"
+            }
+          ]
+        },
+        {
+          "anchor": "def tag_of",
+          "matches": [
+            {
+              "line": 75,
+              "text": "def tag_of(gx, gy):"
+            }
+          ]
+        },
+        {
+          "anchor": "gx >> SN_LOG2",
+          "matches": [
+            {
+              "line": 77,
+              "text": "return (((gy >> SN_LOG2) & m) << TAG_AX) | ((gx >> SN_LOG2) & m)"
+            }
+          ]
+        },
+        {
+          "anchor": "SN // 2",
+          "matches": [
+            {
+              "line": 202,
+              "text": "gx = cx - SN // 2 + w"
+            },
+            {
+              "line": 203,
+              "text": "gy = cy - SN // 2 + w"
+            },
+            {
+              "line": 211,
+              "text": "self.lf = (cx - SN // 2, cy - SN // 2, occ, d, cxs, cys, nx, ny, has)"
+            }
+          ]
+        },
+        {
+          "anchor": "core = (wx0 >= mg)",
+          "matches": [
+            {
+              "line": 225,
+              "text": "core = (wx0 >= mg) & (wx0 < SN - mg) & (wy0 >= mg) & (wy0 < SN - mg)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\model\\prior_map.py",
+      "metadata": {
+        "path": "D:\\Desktop\\SOC FPGA\\nav\\model\\prior_map.py",
+        "bytes": 13374,
+        "mtime_ns": 1790699070437181800
+      },
+      "anchors": [
+        {
+          "anchor": "SN = slf.SN",
+          "matches": [
+            {
+              "line": 24,
+              "text": "SN = slf.SN                   # 256"
+            }
+          ]
+        },
+        {
+          "anchor": "DS = 2",
+          "matches": [
+            {
+              "line": 27,
+              "text": "DS = 2                        # 代价图一格 = 2 个 5 cm 格（10 cm，与固件 GM_DS 一致）"
+            }
+          ]
+        },
+        {
+          "anchor": "GM_MAX = 64",
+          "matches": [
+            {
+              "line": 28,
+              "text": "GM_MAX = 64                   # 固件记忆栅格边长（GM_N）"
+            }
+          ]
+        },
+        {
+          "anchor": "HDR_FMT =",
+          "matches": [
+            {
+              "line": 31,
+              "text": "HDR_FMT = \"<4sHHiiIiiHHII\""
+            }
+          ]
+        },
+        {
+          "anchor": "slot = ((gy & (SN - 1))",
+          "matches": [
+            {
+              "line": 105,
+              "text": "slot = ((gy & (SN - 1)) << slf.SN_LOG2) | (gx & (SN - 1))"
+            }
+          ]
+        },
+        {
+          "anchor": "if span > SN:",
+          "matches": [
+            {
+              "line": 169,
+              "text": "if span > SN:"
+            }
+          ]
+        },
+        {
+          "anchor": "hdr = struct.pack(HDR_FMT, MAGIC, PKG_VER, 0,",
+          "matches": [
+            {
+              "line": 187,
+              "text": "hdr = struct.pack(HDR_FMT, MAGIC, PKG_VER, 0, ox, oy, len(slot), gox, goy, gnx, gny, zlib.crc32(body), len(body))"
+            }
+          ]
+        },
+        {
+          "anchor": "if ver != PKG_VER:",
+          "matches": [
+            {
+              "line": 199,
+              "text": "if ver != PKG_VER:"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\tools\\map_tool.py",
+      "metadata": {
+        "path": "D:\\Desktop\\SOC FPGA\\nav\\tools\\map_tool.py",
+        "bytes": 7010,
+        "mtime_ns": 1790655400996425000
+      },
+      "anchors": [
+        {
+          "anchor": "s = (((wy + oy) & 255) << 8)",
+          "matches": [
+            {
+              "line": 97,
+              "text": "s = (((wy + oy) & 255) << 8) | ((wx + ox) & 255)"
+            }
+          ]
+        },
+        {
+          "anchor": "(ox + 256)",
+          "matches": [
+            {
+              "line": 103,
+              "text": "ax[0].imshow(occ * 2 + gate, origin=\"lower\", extent=(ox * c, (ox + 256) * c, oy * c, (oy + 256) * c), cmap=\"viridis\")"
+            }
+          ]
+        },
+        {
+          "anchor": "cloud = cloud[m]",
+          "matches": [
+            {
+              "line": 136,
+              "text": "cloud = cloud[m]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\rtl\\match\\tb\\tb_slf.sv",
+      "metadata": {
+        "path": "D:\\Desktop\\SOC FPGA\\nav\\rtl\\match\\tb\\tb_slf.sv",
+        "bytes": 9146,
+        "mtime_ns": 1792563577605593600
+      },
+      "anchors": [
+        {
+          "anchor": "NSLOT = 65536",
+          "matches": [
+            {
+              "line": 7,
+              "text": "localparam int NPIX = 9600, NSLOT = 65536, MAXF = 8;"
+            }
+          ]
+        },
+        {
+          "anchor": "2*65536",
+          "matches": [
+            {
+              "line": 15,
+              "text": "logic [31:0] prior [0:2*65536-1];"
+            }
+          ]
+        },
+        {
+          "anchor": "pw_addr <= prior[2*i][15:0]",
+          "matches": [
+            {
+              "line": 135,
+              "text": "@(posedge clk); pw_we <= 1; pw_addr <= prior[2*i][15:0]; pw_data <= prior[2*i+1][17:0];"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\fw\\nav\\loc.c",
+      "metadata": {
+        "path": "D:\\Desktop\\SOC FPGA\\nav\\fw\\nav\\loc.c",
+        "bytes": 7459,
+        "mtime_ns": 1792585587182569300
+      },
+      "anchors": [
+        {
+          "anchor": "c->range_mm = 500",
+          "matches": [
+            {
+              "line": 10,
+              "text": "c->range_mm = 500;"
+            }
+          ]
+        },
+        {
+          "anchor": "c->reloc_mm = 500",
+          "matches": [
+            {
+              "line": 12,
+              "text": "c->reloc_mm = 500;"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\tools\\nav_host.py",
+      "metadata": {
+        "path": "D:\\Desktop\\SOC FPGA\\nav\\tools\\nav_host.py",
+        "bytes": 9644,
+        "mtime_ns": 1792738505833225400
+      },
+      "anchors": [
+        {
+          "anchor": "def map_messages",
+          "matches": [
+            {
+              "line": 77,
+              "text": "def map_messages(pkg):"
+            }
+          ]
+        },
+        {
+          "anchor": "map_begin(len(pkg))",
+          "matches": [
+            {
+              "line": 79,
+              "text": "msgs = [map_begin(len(pkg))]"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "model_rotated_geometry_not_a_navigation_simulation": true,
+  "production_RTL_FW_map_format_modified": false,
+  "simulation_started": false,
+  "EDA_started": false,
+  "board_action": false,
+  "no_SHA_used": true,
+  "evidence_file": "F:\\nav_integration_g2_20261023\\SLF128_256_contract_review1\\result.json",
+  "production_capacity_change_accepted": false,
+  "acceptance_state_note": "Root reports first 3x5m no-prior pilot seed1: SLF128 false arrival while SLF256 normal arrival; complete scenario comparison remains separate and this static contract does not override it."
+}

@@ -1,0 +1,1028 @@
+{
+  "passed": true,
+  "phase": "read_only_budget_not_implementation_acceptance",
+  "baseline": "Actual PNR52 completed report, including already-realized ring gain",
+  "current": {
+    "Logic": {
+      "used": 82945,
+      "capacity": 138240
+    },
+    "Register": {
+      "used": 31120,
+      "capacity": 139095
+    },
+    "CLS": {
+      "used": 51359,
+      "capacity": 69120
+    },
+    "BSRAM": {
+      "used": 332,
+      "capacity": 340
+    },
+    "LUT": 45825,
+    "ALU": 9944,
+    "ROM16": 3650,
+    "RAM16": 3921,
+    "unrouted_nets": 1026,
+    "TR_available": false,
+    "report": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_pnr52\\impl\\pnr\\g2_top.rpt.txt"
+  },
+  "rows": [
+    {
+      "name": "SLF256_to128_structure_and_touch",
+      "actual_scope": "u_nav/u_match/u_sm",
+      "classification": "conditional_semantic_change",
+      "logical_bits": 1245184,
+      "actual_SYN_leaf_counts": {
+        "FF": 8,
+        "LUT_leaf": 774,
+        "MUX_LUT_leaf": 541,
+        "BSRAM": 68,
+        "RAM16": 0,
+        "ROM16": 0,
+        "ALU": 0,
+        "primitive_counts": {
+          "LUT3": 670,
+          "LUT2": 18,
+          "LUT4": 86,
+          "DFFRE": 8,
+          "SDPX9B": 64,
+          "MUX2_LUT5": 289,
+          "MUX2_LUT6": 144,
+          "MUX2_LUT7": 72,
+          "MUX2_LUT8": 36,
+          "VCC": 2,
+          "GND": 2,
+          "SDPB": 4
+        }
+      },
+      "current_physical_BSRAM": 68,
+      "proposed_physical_BSRAM_delta": -51,
+      "port_and_cycle_contract": "Keep each structure/touch store1W+1R and enabled1-cycle read; reset/clear scans and all address consumers require the separate SLF contract.",
+      "initialization": "Preserve every initialized word and held output; most writable nav stores start zero. No added service cycle is assumed.",
+      "local_logic_recovery_upper_bound_policy": "RAM16 removal is budgeted at6 report logic units/leaf, ROM16 at1; local LUT/MUX counts are only an eligibility ceiling. Added glue and actual CLS packing are unmeasured.",
+      "note": "Only structure18bit and touch1bit arrays quarter:64+4 source/native blocks ->16+1. Delta -48-3=-51. This is a changed navigation window, not a capacity-preserving migration. Current no-map128 evidence is not accepted by this budget.",
+      "known_current_storage_report_logic_units": 0,
+      "current_local_LUT_eligibility_ceiling": 774,
+      "current_storage_plus_local_LUT_upper_bound": 774,
+      "actual_recovered_logic_or_CLS": "unmeasured; bounds are not measured savings"
+    },
+    {
+      "name": "packed_weight9",
+      "actual_scope": "u_control/model_thread/policy/core/weights",
+      "classification": "existing_numeric_and_SYN_proof_not_current_PNR",
+      "logical_bits": 651264,
+      "actual_SYN_leaf_counts": {
+        "FF": 40,
+        "LUT_leaf": 432,
+        "MUX_LUT_leaf": 256,
+        "BSRAM": 40,
+        "RAM16": 0,
+        "ROM16": 0,
+        "ALU": 0,
+        "primitive_counts": {
+          "LUT3": 369,
+          "LUT4": 60,
+          "LUT2": 3,
+          "DFFRE": 40,
+          "pROM": 40,
+          "MUX2_LUT5": 176,
+          "MUX2_LUT6": 64,
+          "MUX2_LUT7": 16,
+          "VCC": 1,
+          "GND": 1
+        }
+      },
+      "current_physical_BSRAM": 40,
+      "proposed_physical_BSRAM_delta": -5,
+      "port_and_cycle_contract": "One enabled weight read/cycle, identical latency and hold; no extra MAC cycle.",
+      "initialization": "Preserve every initialized word and held output; most writable nav stores start zero. No added service cycle is assumed.",
+      "local_logic_recovery_upper_bound_policy": "RAM16 removal is budgeted at6 report logic units/leaf, ROM16 at1; local LUT/MUX counts are only an eligibility ceiling. Added glue and actual CLS packing are unmeasured.",
+      "note": "Existing isolated and joint evidence40->35 blocks, not9 saved; all40704 values preserved including3 bit14 exceptions. Rebase INIT/address proof onto current40 required.",
+      "known_current_storage_report_logic_units": 0,
+      "current_local_LUT_eligibility_ceiling": 432,
+      "current_storage_plus_local_LUT_upper_bound": 432,
+      "actual_recovered_logic_or_CLS": "unmeasured; bounds are not measured savings"
+    },
+    {
+      "name": "traversability_four_row_caches_and_column_state",
+      "actual_scope": "u_nav/u_map/u_tv",
+      "classification": "already_BSRAM",
+      "logical_bits": 21392,
+      "actual_SYN_leaf_counts": {
+        "FF": 0,
+        "LUT_leaf": 12,
+        "MUX_LUT_leaf": 0,
+        "BSRAM": 5,
+        "RAM16": 0,
+        "ROM16": 0,
+        "ALU": 0,
+        "primitive_counts": {
+          "LUT3": 5,
+          "SDPX9B": 2,
+          "SDPB": 3,
+          "LUT2": 2,
+          "LUT4": 5
+        }
+      },
+      "current_physical_BSRAM": 10,
+      "proposed_physical_BSRAM_delta": 0,
+      "port_and_cycle_contract": "Four simultaneous row-chain old values and column history; preserve same-address read-before-write and pipeline alignment.",
+      "initialization": "Preserve every initialized word and held output; most writable nav stores start zero. No added service cycle is assumed.",
+      "local_logic_recovery_upper_bound_policy": "RAM16 removal is budgeted at6 report logic units/leaf, ROM16 at1; local LUT/MUX counts are only an eligibility ceiling. Added glue and actual CLS packing are unmeasured.",
+      "note": "Already5 wide BSRAM leaves: two36bit, three32bit, becoming10 physical under split1. Their existing BSRAM occupancy is not a new migration gain. W/pipeline FFs are not these RAM arrays.",
+      "known_current_storage_report_logic_units": 0,
+      "current_local_LUT_eligibility_ceiling": 12,
+      "current_storage_plus_local_LUT_upper_bound": 12,
+      "actual_recovered_logic_or_CLS": "unmeasured; bounds are not measured savings"
+    },
+    {
+      "name": "traversability_bitmap",
+      "actual_scope": "u_nav/u_map/u_tv/u_bm",
+      "classification": "candidate",
+      "logical_bits": 16384,
+      "actual_SYN_leaf_counts": {
+        "FF": 1,
+        "LUT_leaf": 1704,
+        "MUX_LUT_leaf": 495,
+        "BSRAM": 0,
+        "RAM16": 1024,
+        "ROM16": 0,
+        "ALU": 0,
+        "primitive_counts": {
+          "LUT3": 528,
+          "LUT2": 1024,
+          "LUT4": 152,
+          "DFFRE": 1,
+          "RAM16SDP1": 1024,
+          "MUX2_LUT5": 264,
+          "MUX2_LUT6": 132,
+          "MUX2_LUT7": 66,
+          "MUX2_LUT8": 33,
+          "VCC": 1,
+          "GND": 1
+        }
+      },
+      "current_physical_BSRAM": 0,
+      "proposed_physical_BSRAM_delta": 1,
+      "port_and_cycle_contract": "16384x1 simple dual port,1W+1R with enabled1-cycle read/hold and old-data collision semantics.",
+      "initialization": "Preserve every initialized word and held output; most writable nav stores start zero. No added service cycle is assumed.",
+      "local_logic_recovery_upper_bound_policy": "RAM16 removal is budgeted at6 report logic units/leaf, ROM16 at1; local LUT/MUX counts are only an eligibility ceiling. Added glue and actual CLS packing are unmeasured.",
+      "note": "Actual1024 RAM16SDP1 plus1704 local LUT; source wrapper uses distributed at the exact block-depth boundary. One native16384x1 block is the proposed geometry.",
+      "known_current_storage_report_logic_units": 6144,
+      "current_local_LUT_eligibility_ceiling": 1704,
+      "current_storage_plus_local_LUT_upper_bound": 7848,
+      "actual_recovered_logic_or_CLS": "unmeasured; bounds are not measured savings"
+    },
+    {
+      "name": "traversability_column_scratch",
+      "actual_scope": "u_nav/u_map/u_tv/u_ct",
+      "classification": "candidate",
+      "logical_bits": 2816,
+      "actual_SYN_leaf_counts": {
+        "FF": 22,
+        "LUT_leaf": 96,
+        "MUX_LUT_leaf": 66,
+        "BSRAM": 0,
+        "RAM16": 48,
+        "ROM16": 0,
+        "ALU": 0,
+        "primitive_counts": {
+          "LUT3": 88,
+          "LUT4": 8,
+          "DFFRE": 22,
+          "RAM16SDP4": 48,
+          "MUX2_LUT5": 44,
+          "MUX2_LUT6": 22,
+          "VCC": 1,
+          "GND": 1
+        }
+      },
+      "current_physical_BSRAM": 0,
+      "proposed_physical_BSRAM_delta": 2,
+      "port_and_cycle_contract": "128x22 synchronous1W+1R; original T1 request/T2 consume contract must remain.",
+      "initialization": "Preserve every initialized word and held output; most writable nav stores start zero. No added service cycle is assumed.",
+      "local_logic_recovery_upper_bound_policy": "RAM16 removal is budgeted at6 report logic units/leaf, ROM16 at1; local LUT/MUX counts are only an eligibility ceiling. Added glue and actual CLS packing are unmeasured.",
+      "note": "Actual48 RAM16SDP4. Conservative two native<=18bit planes; capacity bits alone would undercount wide parallel ports.",
+      "known_current_storage_report_logic_units": 288,
+      "current_local_LUT_eligibility_ceiling": 96,
+      "current_storage_plus_local_LUT_upper_bound": 384,
+      "actual_recovered_logic_or_CLS": "unmeasured; bounds are not measured savings"
+    },
+    {
+      "name": "mailbox_injection_and_TX_shadow",
+      "actual_scope": "u_nav/u_mbx",
+      "classification": "candidate",
+      "logical_bits": 32768,
+      "actual_SYN_leaf_counts": {
+        "FF": 64,
+        "LUT_leaf": 1096,
+        "MUX_LUT_leaf": 960,
+        "BSRAM": 0,
+        "RAM16": 512,
+        "ROM16": 0,
+        "ALU": 0,
+        "primitive_counts": {
+          "LUT3": 1032,
+          "LUT4": 64,
+          "DFFRE": 32,
+          "RAM16SDP4": 512,
+          "MUX2_LUT5": 512,
+          "MUX2_LUT6": 256,
+          "MUX2_LUT7": 128,
+          "MUX2_LUT8": 64,
+          "VCC": 2,
+          "GND": 2,
+          "DFFCE": 32
+        }
+      },
+      "current_physical_BSRAM": 0,
+      "proposed_physical_BSRAM_delta": 4,
+      "port_and_cycle_contract": "Two independent512x32 SDP stores, each one write and one enabled read; retain original injection/RX timestamps and2-stage caller alignment.",
+      "initialization": "Preserve every initialized word and held output; most writable nav stores start zero. No added service cycle is assumed.",
+      "local_logic_recovery_upper_bound_policy": "RAM16 removal is budgeted at6 report logic units/leaf, ROM16 at1; local LUT/MUX counts are only an eligibility ceiling. Added glue and actual CLS packing are unmeasured.",
+      "note": "Only u_injb/u_txs remain, each256 RAM16SDP4. u_txb has zero actual leaves and cannot be counted a third time. u_rxb is already2BSRAM. Budget two16/18bit planes per retained store.",
+      "known_current_storage_report_logic_units": 3072,
+      "current_local_LUT_eligibility_ceiling": 1096,
+      "current_storage_plus_local_LUT_upper_bound": 4168,
+      "actual_recovered_logic_or_CLS": "unmeasured; bounds are not measured savings"
+    },
+    {
+      "name": "SLF_written_slot_list",
+      "actual_scope": "u_nav/u_match/u_slist",
+      "classification": "candidate",
+      "logical_bits": 16384,
+      "actual_SYN_leaf_counts": {
+        "FF": 16,
+        "LUT_leaf": 600,
+        "MUX_LUT_leaf": 480,
+        "BSRAM": 0,
+        "RAM16": 256,
+        "ROM16": 0,
+        "ALU": 0,
+        "primitive_counts": {
+          "LUT3": 528,
+          "LUT4": 72,
+          "DFFRE": 16,
+          "RAM16SDP4": 256,
+          "MUX2_LUT5": 256,
+          "MUX2_LUT6": 128,
+          "MUX2_LUT7": 64,
+          "MUX2_LUT8": 32,
+          "VCC": 1,
+          "GND": 1
+        }
+      },
+      "current_physical_BSRAM": 0,
+      "proposed_physical_BSRAM_delta": 1,
+      "port_and_cycle_contract": "1024 entries, one write and one enabled read; old1-cycle hold and list-clear ordering.",
+      "initialization": "Preserve every initialized word and held output; most writable nav stores start zero. No added service cycle is assumed.",
+      "local_logic_recovery_upper_bound_policy": "RAM16 removal is budgeted at6 report logic units/leaf, ROM16 at1; local LUT/MUX counts are only an eligibility ceiling. Added glue and actual CLS packing are unmeasured.",
+      "note": "Actual256 RAM16SDP4 +600 local LUT. LOG2N7 changes word16->14 only (14336bits), depth1024 stays; BSRAM still1, RAM16 leaf-count reduction is not guaranteed.",
+      "known_current_storage_report_logic_units": 1536,
+      "current_local_LUT_eligibility_ceiling": 600,
+      "current_storage_plus_local_LUT_upper_bound": 2136,
+      "actual_recovered_logic_or_CLS": "unmeasured; bounds are not measured savings"
+    },
+    {
+      "name": "SLF_accept_mask",
+      "actual_scope": "u_nav/u_match/u_acc",
+      "classification": "candidate",
+      "logical_bits": 1024,
+      "actual_SYN_leaf_counts": {
+        "FF": 1,
+        "LUT_leaf": 105,
+        "MUX_LUT_leaf": 30,
+        "BSRAM": 0,
+        "RAM16": 64,
+        "ROM16": 0,
+        "ALU": 0,
+        "primitive_counts": {
+          "LUT3": 33,
+          "LUT4": 72,
+          "DFFRE": 1,
+          "RAM16SDP1": 64,
+          "MUX2_LUT5": 16,
+          "MUX2_LUT6": 8,
+          "MUX2_LUT7": 4,
+          "MUX2_LUT8": 2,
+          "VCC": 1,
+          "GND": 1
+        }
+      },
+      "current_physical_BSRAM": 0,
+      "proposed_physical_BSRAM_delta": 1,
+      "port_and_cycle_contract": "1024x1 separate gate-write/score-read store with original enabled1-cycle behavior.",
+      "initialization": "Preserve every initialized word and held output; most writable nav stores start zero. No added service cycle is assumed.",
+      "local_logic_recovery_upper_bound_policy": "RAM16 removal is budgeted at6 report logic units/leaf, ROM16 at1; local LUT/MUX counts are only an eligibility ceiling. Added glue and actual CLS packing are unmeasured.",
+      "note": "Actual64 RAM16SDP1; LOG2N shrink does not change point-index depth.",
+      "known_current_storage_report_logic_units": 384,
+      "current_local_LUT_eligibility_ceiling": 105,
+      "current_storage_plus_local_LUT_upper_bound": 489,
+      "actual_recovered_logic_or_CLS": "unmeasured; bounds are not measured savings"
+    },
+    {
+      "name": "SLF_candidate_and_result_tables",
+      "actual_scope": "u_nav/u_match/u_cand",
+      "classification": "candidate",
+      "logical_bits": 32768,
+      "actual_SYN_leaf_counts": {
+        "FF": 64,
+        "LUT_leaf": 1096,
+        "MUX_LUT_leaf": 960,
+        "BSRAM": 0,
+        "RAM16": 512,
+        "ROM16": 0,
+        "ALU": 0,
+        "primitive_counts": {
+          "LUT3": 1032,
+          "LUT4": 64,
+          "DFFRE": 64,
+          "RAM16SDP4": 512,
+          "MUX2_LUT5": 512,
+          "MUX2_LUT6": 256,
+          "MUX2_LUT7": 128,
+          "MUX2_LUT8": 64,
+          "VCC": 2,
+          "GND": 2
+        }
+      },
+      "current_physical_BSRAM": 0,
+      "proposed_physical_BSRAM_delta": 4,
+      "port_and_cycle_contract": "Two512x32 stores with independent host/FSM accesses;2 physical narrow planes each, no extra result bus wait.",
+      "initialization": "Preserve every initialized word and held output; most writable nav stores start zero. No added service cycle is assumed.",
+      "local_logic_recovery_upper_bound_policy": "RAM16 removal is budgeted at6 report logic units/leaf, ROM16 at1; local LUT/MUX counts are only an eligibility ceiling. Added glue and actual CLS packing are unmeasured.",
+      "note": "Both actual256 RAM16SDP4 and548 LUT each. LOG2N shrink does not change these candidate counts; u_res is a separate same-sized actual scope.",
+      "known_current_storage_report_logic_units": 3072,
+      "current_local_LUT_eligibility_ceiling": 1096,
+      "current_storage_plus_local_LUT_upper_bound": 4168,
+      "actual_recovered_logic_or_CLS": "unmeasured; bounds are not measured savings"
+    },
+    {
+      "name": "SLF_extractor_row_cache",
+      "actual_scope": "u_nav/u_match/u_ex/u_rb",
+      "classification": "candidate",
+      "logical_bits": 15680,
+      "actual_SYN_leaf_counts": {
+        "FF": 98,
+        "LUT_leaf": 700,
+        "MUX_LUT_leaf": 294,
+        "BSRAM": 0,
+        "RAM16": 275,
+        "ROM16": 0,
+        "ALU": 0,
+        "primitive_counts": {
+          "LUT3": 308,
+          "LUT4": 392,
+          "DFFRE": 98,
+          "RAM16SDP4": 275,
+          "MUX2_LUT6": 98,
+          "MUX2_LUT5": 196,
+          "VCC": 1,
+          "GND": 1
+        }
+      },
+      "current_physical_BSRAM": 0,
+      "proposed_physical_BSRAM_delta": 6,
+      "port_and_cycle_contract": "160x98, wide one write and one synchronous read per accepted pixel; retain upstream backpressure and flush order.",
+      "initialization": "Preserve every initialized word and held output; most writable nav stores start zero. No added service cycle is assumed.",
+      "local_logic_recovery_upper_bound_policy": "RAM16 removal is budgeted at6 report logic units/leaf, ROM16 at1; local LUT/MUX counts are only an eligibility ceiling. Added glue and actual CLS packing are unmeasured.",
+      "note": "Actual275 RAM16SDP4. W160/UW8 is independent of SLF LOG2N. Six<=18bit planes conservatively preserve98bit/cycle; a bit-capacity quotient of1 block is invalid.",
+      "known_current_storage_report_logic_units": 1650,
+      "current_local_LUT_eligibility_ceiling": 700,
+      "current_storage_plus_local_LUT_upper_bound": 2350,
+      "actual_recovered_logic_or_CLS": "unmeasured; bounds are not measured savings"
+    },
+    {
+      "name": "console_four_byte_lanes",
+      "actual_scope": "u_soc",
+      "classification": "candidate",
+      "logical_bits": 32768,
+      "actual_SYN_leaf_counts": {
+        "FF": 32,
+        "LUT_leaf": 1391,
+        "MUX_LUT_leaf": 960,
+        "BSRAM": 0,
+        "RAM16": 512,
+        "ROM16": 0,
+        "ALU": 0,
+        "primitive_counts": {
+          "LUT3": 1071,
+          "LUT4": 320,
+          "DFFCE": 32,
+          "RAM16SDP4": 512,
+          "MUX2_LUT5": 512,
+          "MUX2_LUT6": 256,
+          "MUX2_LUT7": 128,
+          "MUX2_LUT8": 64,
+          "VCC": 4,
+          "GND": 4
+        }
+      },
+      "current_physical_BSRAM": 0,
+      "proposed_physical_BSRAM_delta": 4,
+      "port_and_cycle_contract": "Four1024x8 lanes, independently byte-enabled writes and four same-address reads forming a32bit debug word.",
+      "initialization": "Preserve every initialized word and held output; most writable nav stores start zero. No added service cycle is assumed.",
+      "local_logic_recovery_upper_bound_policy": "RAM16 removal is budgeted at6 report logic units/leaf, ROM16 at1; local LUT/MUX counts are only an eligibility ceiling. Added glue and actual CLS packing are unmeasured.",
+      "note": "Actual512 RAM16SDP4; lane LUT totals407+328+328+328=1391. Four native8bit blocks preserve byte writes; claiming2 blocks requires a separately proved byte-enable/word-assembly redesign.",
+      "known_current_storage_report_logic_units": 3072,
+      "current_local_LUT_eligibility_ceiling": 1391,
+      "current_storage_plus_local_LUT_upper_bound": 4463,
+      "actual_recovered_logic_or_CLS": "unmeasured; bounds are not measured savings"
+    },
+    {
+      "name": "four_trig_lookup_ports",
+      "actual_scope": "u_nav/u_match/u_sin",
+      "classification": "candidate",
+      "logical_bits": 65536,
+      "actual_SYN_leaf_counts": {
+        "FF": 64,
+        "LUT_leaf": 1694,
+        "MUX_LUT_leaf": 1320,
+        "BSRAM": 0,
+        "RAM16": 0,
+        "ROM16": 2948,
+        "ALU": 0,
+        "primitive_counts": {
+          "LUT3": 1440,
+          "LUT4": 182,
+          "LUT2": 72,
+          "DFFRE": 64,
+          "ROM16": 2948,
+          "MUX2_LUT5": 720,
+          "MUX2_LUT6": 356,
+          "MUX2_LUT7": 164,
+          "MUX2_LUT8": 80,
+          "VCC": 4,
+          "GND": 4
+        }
+      },
+      "current_physical_BSRAM": 0,
+      "proposed_physical_BSRAM_delta": 4,
+      "port_and_cycle_contract": "SLF and trajectory each read sin+cos together: four enabled lookup ports total, one clock/read latency and hold unchanged.",
+      "initialization": "Preserve every initialized word and held output; most writable nav stores start zero. No added service cycle is assumed.",
+      "local_logic_recovery_upper_bound_policy": "RAM16 removal is budgeted at6 report logic units/leaf, ROM16 at1; local LUT/MUX counts are only an eligibility ceiling. Added glue and actual CLS packing are unmeasured.",
+      "note": "Actual4x737=2948 ROM16 and4 local LUT totals1694. Existing prior trigblock joint SYN measured +4BSRAM,-2948ROM16,-1660T_Lut,-104FF,-2ALU. Those are prior-context results, not current CLS savings.",
+      "known_current_storage_report_logic_units": 2948,
+      "current_local_LUT_eligibility_ceiling": 1694,
+      "current_storage_plus_local_LUT_upper_bound": 4642,
+      "actual_recovered_logic_or_CLS": "unmeasured; bounds are not measured savings"
+    },
+    {
+      "name": "inference_bias",
+      "actual_scope": "u_control/model_thread/policy/core",
+      "classification": "candidate",
+      "logical_bits": 11050,
+      "actual_SYN_leaf_counts": {
+        "ROM16": 702,
+        "RAM16": 0,
+        "BSRAM": 0,
+        "local_selector_LUT": "not separately attributed from shared core logic"
+      },
+      "current_physical_BSRAM": 0,
+      "proposed_physical_BSRAM_delta": 2,
+      "port_and_cycle_contract": "One425x26 enabled lookup in BIAS_REQ; BIAS_CAPTURE must see same signed32bit extension at the same edge.",
+      "initialization": "Preserve every initialized word and held output; most writable nav stores start zero. No added service cycle is assumed.",
+      "local_logic_recovery_upper_bound_policy": "RAM16 removal is budgeted at6 report logic units/leaf, ROM16 at1; local LUT/MUX counts are only an eligibility ceiling. Added glue and actual CLS packing are unmeasured.",
+      "note": "Actual702 ROM16 in core; ELU and weights are already BSRAM. Conservative16+10bit planes use2 blocks. Do not count all1925 core-local LUT as bias-only selectors.",
+      "known_current_storage_report_logic_units": 702,
+      "current_local_LUT_eligibility_ceiling": null,
+      "current_storage_plus_local_LUT_upper_bound": null,
+      "actual_recovered_logic_or_CLS": "unmeasured; bounds are not measured savings"
+    },
+    {
+      "name": "inference_ELU",
+      "actual_scope": "u_control/model_thread/policy/core",
+      "classification": "already_BSRAM",
+      "logical_bits": 29991,
+      "actual_SYN_leaf_counts": {
+        "FF": 0,
+        "LUT_leaf": 0,
+        "MUX_LUT_leaf": 0,
+        "BSRAM": 4,
+        "RAM16": 0,
+        "ROM16": 0,
+        "ALU": 0,
+        "primitive_counts": {
+          "pROM": 4
+        }
+      },
+      "current_physical_BSRAM": 4,
+      "proposed_physical_BSRAM_delta": 0,
+      "port_and_cycle_contract": "Existing ACT_WAIT enabled read plus constant -4096 tail must remain cycle-exact.",
+      "initialization": "Preserve every initialized word and held output; most writable nav stores start zero. No added service cycle is assumed.",
+      "local_logic_recovery_upper_bound_policy": "RAM16 removal is budgeted at6 report logic units/leaf, ROM16 at1; local LUT/MUX counts are only an eligibility ceiling. Added glue and actual CLS packing are unmeasured.",
+      "note": "Already4 pROM BIT_WIDTH4 leaves. No LUT-to-BSRAM migration saving remains; any further packing is a separate optimization and not credited.",
+      "known_current_storage_report_logic_units": 0,
+      "current_local_LUT_eligibility_ceiling": 0,
+      "current_storage_plus_local_LUT_upper_bound": 0,
+      "actual_recovered_logic_or_CLS": "unmeasured; bounds are not measured savings"
+    },
+    {
+      "name": "SLF_LF_four_row_caches",
+      "actual_scope": "u_nav/u_match/u_lf",
+      "classification": "already_BSRAM",
+      "logical_bits": 19608,
+      "actual_SYN_leaf_counts": {
+        "FF": 0,
+        "LUT_leaf": 1,
+        "MUX_LUT_leaf": 0,
+        "BSRAM": 4,
+        "RAM16": 0,
+        "ROM16": 0,
+        "ALU": 0,
+        "primitive_counts": {
+          "LUT3": 1,
+          "SDPB": 4
+        }
+      },
+      "current_physical_BSRAM": 8,
+      "proposed_physical_BSRAM_delta": 0,
+      "port_and_cycle_contract": "Four simultaneous old row values; preserve T1/T1b column-moment alignment.",
+      "initialization": "Preserve every initialized word and held output; most writable nav stores start zero. No added service cycle is assumed.",
+      "local_logic_recovery_upper_bound_policy": "RAM16 removal is budgeted at6 report logic units/leaf, ROM16 at1; local LUT/MUX counts are only an eligibility ceiling. Added glue and actual CLS packing are unmeasured.",
+      "note": "Already4 wide32bit BSRAM leaves ->8 physical. LOG2N8->7 logical row capacity19608->9880 bits (about half), not quarter. Physical blocks are conservatively held at8 until actual mapping.",
+      "known_current_storage_report_logic_units": 0,
+      "current_local_LUT_eligibility_ceiling": 1,
+      "current_storage_plus_local_LUT_upper_bound": 1,
+      "actual_recovered_logic_or_CLS": "unmeasured; bounds are not measured savings"
+    },
+    {
+      "name": "point_buffer_explicit18bit_planes",
+      "actual_scope": "u_nav/u_match/u_pb",
+      "classification": "optional_prior_isolated_physical_proof",
+      "logical_bits": 147456,
+      "actual_SYN_leaf_counts": {
+        "FF": 3,
+        "LUT_leaf": 160,
+        "MUX_LUT_leaf": 108,
+        "BSRAM": 8,
+        "RAM16": 0,
+        "ROM16": 0,
+        "ALU": 0,
+        "primitive_counts": {
+          "LUT3": 144,
+          "LUT4": 16,
+          "DFFRE": 3,
+          "SDPX9B": 8,
+          "MUX2_LUT5": 72,
+          "MUX2_LUT6": 36,
+          "VCC": 1,
+          "GND": 1
+        }
+      },
+      "current_physical_BSRAM": 16,
+      "proposed_physical_BSRAM_delta": -8,
+      "port_and_cycle_contract": "Same4096x36 capacity,1W+1R, enabled1-cycle read, read-first and output hold.",
+      "initialization": "Preserve every initialized word and held output; most writable nav stores start zero. No added service cycle is assumed.",
+      "local_logic_recovery_upper_bound_policy": "RAM16 removal is budgeted at6 report logic units/leaf, ROM16 at1; local LUT/MUX counts are only an eligibility ceiling. Added glue and actual CLS packing are unmeasured.",
+      "note": "Current8x36bit leaves split to16physical. Old isolated slf_point_planes_probe1 really measured16->8 with capacity/latency retained; current40 has not adopted planes. Rebase and recheck all actual geometry/INIT/port binding; prior source was sfp_lane2_obsreuse_syn9.",
+      "known_current_storage_report_logic_units": 0,
+      "current_local_LUT_eligibility_ceiling": 160,
+      "current_storage_plus_local_LUT_upper_bound": 160,
+      "actual_recovered_logic_or_CLS": "unmeasured; bounds are not measured savings"
+    }
+  ],
+  "SLF128": {
+    "structure_blocks_64_to16": -48,
+    "touch_blocks_4_to1": -3,
+    "credited_physical_blocks": -51,
+    "structure_touch_bits": [
+      1245184,
+      311296
+    ],
+    "LF_row_bits": [
+      19608,
+      9880
+    ],
+    "slot_list_bits": [
+      16384,
+      14336
+    ],
+    "unchanged": "Point buffer4096x36, extractor160x98, candidate/result512x32, accept mask1024 and four trig tables; CPU/prior cache not budgeted here.",
+    "algorithm_acceptance": "not accepted; first no-map128 scenario is reported degraded, so no128 RTL is recommended for immediate use"
+  },
+  "already_realized_ring": {
+    "SYN23_FF": 38183,
+    "SYN40_FF": 29642,
+    "FF_delta": -8541,
+    "SYN23_T_Lut": 53059,
+    "SYN40_T_Lut": 45967,
+    "T_Lut_delta": -7092,
+    "added_RAM16": 66,
+    "added_MULT12X12": 3,
+    "subtract_again": false,
+    "physical_baseline_already_includes_this": true
+  },
+  "budget_formulas": {
+    "current_physical": "314 source BSRAM +18 wide extra =332 actual PNR52",
+    "existing_report_logic": "45825 LUT +9944 ALU +3650 ROM16 +6*3921 RAM16 =82945",
+    "requested_migrations_physical_add": "bitmap1 +column2 +mailbox4 +slist1 +console4 +trig4 +bias2 =18",
+    "no_128_no_point_planes_all_requested": "332 -5(weight9) +18 =345 >340",
+    "no_128_with_point_planes_all_requested": "332 -5 -8(point planes) +18 =337; within340 hardware capacity but fails existing deployment policy<=336",
+    "conditional_128_requested": "332 -51(SLF) -5(weight9) +18 =294;46 spare (not yet accepted)",
+    "conditional_128_plus_point_planes": "294 -8 =286;54 spare",
+    "optional_other_SLF_lists": "accept1 +candidate/result4 +extractor row6 =11 additional physical blocks",
+    "CLS": "No measured per-candidate CLS saving. Logic totals/eligible local selectors must not be divided into a promised CLS reduction.",
+    "no_128_policy_compliant_subset": "332 -5 -8 +10(trig/bitmap/mailbox/slist) +6(bias/console) =335; omit column scratch2"
+  },
+  "proposed_review_batches": [
+    {
+      "order": 1,
+      "items": [
+        "weight9",
+        "capacity-preserving point planes"
+      ],
+      "physical_after": 319,
+      "scope": "Independent exact-numeric/SDP proofs on current40 before any large migration; no map-size semantic change."
+    },
+    {
+      "order": 2,
+      "items": [
+        "trig block4",
+        "bitmap1",
+        "two actual mailbox buffers4",
+        "slot list1"
+      ],
+      "physical_after": 329,
+      "scope": "Existing source-specific methods may be rebased; prove read-first, hold, INIT, bus latency and all simultaneous ports, then actual mapping/PNR."
+    },
+    {
+      "order": 3,
+      "items": [
+        "bias2",
+        "four console lanes4"
+      ],
+      "physical_after": 335,
+      "scope": "Only after previous measured results; omit column scratch2 to respect<=336 policy. Budget not routability evidence."
+    },
+    {
+      "order": "conditional",
+      "items": [
+        "SLF128"
+      ],
+      "physical_delta": -51,
+      "scope": "Deferred to independent protocol/geometry/behavior contract; current degraded no-map result prevents assuming equivalence."
+    }
+  ],
+  "evidence": {
+    "weight9": "D:/Desktop/SOC FPGA/nav/docs/4_design/evidence/g2_20261023/weight9_synthesis_comparison.json",
+    "weight9_joint": "D:/Desktop/SOC FPGA/nav/docs/4_design/evidence/g2_20261023/weight9_joint_synthesis_complete.json",
+    "weight9_primitive_checks": "D:/Desktop/SOC FPGA/nav/docs/4_design/evidence/g2_20261023/weight9_netlist_functional.json",
+    "trig": "D:/Desktop/SOC FPGA/nav/docs/4_design/evidence/g2_20261023/weight9_gyro17_trigblock_joint_synthesis.json",
+    "point_planes": "D:/Desktop/SOC FPGA/nav/docs/4_design/evidence/g2_20261023/slf_point_planes_contract_20261024.json"
+  },
+  "no_EDA": true,
+  "no_production_source_or_plan_changes": true,
+  "physical_CLS_saving": "unknown",
+  "deployment_accepted": false,
+  "recorded_at": "2026-10-26T16:45:31.564626+08:00",
+  "evidence_directory": "F:\\nav_integration_g2_20261023\\SYN40_storage_migration_budget_review3",
+  "reproduction_script": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_syn40_storage_budget.py",
+  "reproduction_args": [
+    "--out",
+    "F:/nav_integration_g2_20261023/SYN40_storage_migration_budget_repeat_NEW"
+  ],
+  "actual_inventory": {
+    "SYN_hierarchy": {
+      "name": "g2_top",
+      "Register": "26",
+      "Alu": "25",
+      "Lut": "3",
+      "T_Register": "29642(26)",
+      "T_Alu": "9638(25)",
+      "T_Lut": "45967(3)",
+      "T_MULTALU27X18": "77(0)",
+      "T_MULT12X12": "26(0)",
+      "T_MULT27X36": "37(0)",
+      "T_MULTADDALU12X12": "1(0)",
+      "T_Bsram": "314(0)",
+      "T_Ssram": "3921(0)",
+      "T_ROM16": "3650(0)"
+    },
+    "leaf_totals": {
+      "FF": 29642,
+      "LUT_leaf": 45736,
+      "MUX_LUT_leaf": 8646,
+      "BSRAM": 314,
+      "RAM16": 3921,
+      "ROM16": 3650,
+      "ALU": 9638,
+      "primitive_counts": {
+        "IBUF": 15,
+        "IOBUF": 5,
+        "OBUF": 30,
+        "DFFCE": 5264,
+        "ALU": 9638,
+        "INV": 231,
+        "DFFPE": 116,
+        "VCC": 141,
+        "GND": 141,
+        "LUT3": 20856,
+        "LUT2": 6835,
+        "LUT4": 18045,
+        "DFFRE": 23529,
+        "DFFSE": 733,
+        "RAM16SDP4": 2833,
+        "MULT27X36": 37,
+        "SP": 64,
+        "MUX2_LUT5": 4922,
+        "MUX2_LUT6": 2356,
+        "MUX2_LUT7": 993,
+        "MUX2_LUT8": 375,
+        "MULTALU27X18": 77,
+        "MULT12X12": 26,
+        "pROM": 45,
+        "ROM16": 3650,
+        "pROMX9": 1,
+        "SDPB": 53,
+        "SDPX9B": 151,
+        "RAM16SDP1": 1088,
+        "MULTADDALU12X12": 1,
+        "GSR": 1
+      }
+    },
+    "BSRAM_leaves": 314,
+    "wide_extra": 18,
+    "PNR52_input_VG_byte_identical": true,
+    "inputs_metadata_unchanged": true
+  },
+  "detail_files": {
+    "inventory.json": "F:\\nav_integration_g2_20261023\\SYN40_storage_migration_budget_review3\\inventory.json",
+    "memory_geometry.json": "F:\\nav_integration_g2_20261023\\SYN40_storage_migration_budget_review3\\memory_geometry.json",
+    "source_lines.json": "F:\\nav_integration_g2_20261023\\SYN40_storage_migration_budget_review3\\source_lines.json",
+    "budget.json": "F:\\nav_integration_g2_20261023\\SYN40_storage_migration_budget_review3\\budget.json"
+  },
+  "source_line_evidence": {
+    "nav/rtl/common/nav_ram_sdp.v": [
+      {
+        "line": 8,
+        "text": "localparam integer BAW=DW<=1?14:DW<=2?13:DW<=4?12:DW<=9?11:DW<=18?10:DW<=36?9:10;"
+      },
+      {
+        "line": 9,
+        "text": "generate if(INIT_FILE==\"\" && DEPTH>(1<<BAW))begin:g_banked"
+      },
+      {
+        "line": 14,
+        "text": "always @(posedge clk)if(re)selected<=raddr[AW-1:BAW];"
+      },
+      {
+        "line": 17,
+        "text": "(* syn_ramstyle=\"block_ram\",syn_romstyle=\"block_rom\" *)reg [DW-1:0] mem[0:(1<<BAW)-1];"
+      },
+      {
+        "line": 26,
+        "text": "(* syn_ramstyle=\"distributed_ram\",syn_romstyle=\"distributed_rom\" *)reg [DW-1:0] mem[0:DEPTH-1];"
+      },
+      {
+        "line": 29,
+        "text": "if(INIT_FILE!=\"\")$readmemh(INIT_FILE,mem);"
+      },
+      {
+        "line": 33,
+        "text": "always @(posedge clk)if(we)mem[waddr]<=wdata;"
+      },
+      {
+        "line": 34,
+        "text": "always @(posedge clk)if(re)qr<=mem[raddr];"
+      }
+    ],
+    "nav/rtl/match/slf_match.v": [
+      {
+        "line": 19,
+        "text": "parameter integer LOG2N  = 8,"
+      },
+      {
+        "line": 100,
+        "text": "nav_ram_sdp #(.DW(36), .AW(PB_AW)) u_pb ("
+      },
+      {
+        "line": 117,
+        "text": "nav_ram_sdp #(.DW(18), .AW(AW)) u_sm ("
+      },
+      {
+        "line": 129,
+        "text": "nav_ram_sdp #(.DW(1), .AW(AW)) u_touch ("
+      },
+      {
+        "line": 136,
+        "text": "nav_ram_sdp #(.DW(AW), .AW(10)) u_slist (          // 本遍写过的槽（清位图用）"
+      },
+      {
+        "line": 142,
+        "text": "nav_ram_sdp #(.DW(1), .AW(10)) u_acc (            // 门控结果（第 jj 个抽样点是否参与）"
+      },
+      {
+        "line": 148,
+        "text": "nav_ram_sdp #(.DW(32), .AW(9)) u_cand ("
+      },
+      {
+        "line": 154,
+        "text": "nav_ram_sdp #(.DW(32), .AW(9)) u_res ("
+      },
+      {
+        "line": 160,
+        "text": "nav_ram_sdp #(.DW(16), .AW(10), .INIT_FILE(SIN_INIT)) u_sin ("
+      },
+      {
+        "line": 163,
+        "text": "nav_ram_sdp #(.DW(16), .AW(10), .INIT_FILE(SIN_INIT)) u_cos ("
+      }
+    ],
+    "nav/rtl/match/slf_lf.v": [
+      {
+        "line": 31,
+        "text": "localparam integer LB = N + 2;"
+      },
+      {
+        "line": 33,
+        "text": "localparam integer CW = 1 + 4 + 4 + HB;          // 窗口格 {occ, cx(1/16 格), cy, 原字高位}"
+      },
+      {
+        "line": 53,
+        "text": "reg [CW-1:0] lb1 [0:LB-1];"
+      },
+      {
+        "line": 54,
+        "text": "reg [CW-1:0] lb2 [0:LB-1];"
+      },
+      {
+        "line": 55,
+        "text": "reg [CW-1:0] lb3 [0:LB-1];"
+      },
+      {
+        "line": 56,
+        "text": "reg [CW-1:0] lb4 [0:LB-1];"
+      }
+    ],
+    "nav/rtl/map/trav_v3.v": [
+      {
+        "line": 61,
+        "text": "localparam integer LB = N + 2;              // 每行扫描列数（多 2 列无效格作行间隔）"
+      },
+      {
+        "line": 62,
+        "text": "localparam integer CW = 34;                 // 窗口格 {b, v, h16, ro16}"
+      },
+      {
+        "line": 87,
+        "text": "nav_ram_sdp #(.DW(1), .AW(AW)) u_bm ("
+      },
+      {
+        "line": 116,
+        "text": "reg [CW-1:0] lb1 [0:LB-1];"
+      },
+      {
+        "line": 117,
+        "text": "reg [CW-1:0] lb2 [0:LB-1];"
+      },
+      {
+        "line": 118,
+        "text": "reg [CW-1:0] lb3 [0:LB-1];"
+      },
+      {
+        "line": 119,
+        "text": "reg [CW-1:0] lb4 [0:LB-1];"
+      },
+      {
+        "line": 184,
+        "text": "nav_ram_sdp #(.DW(22), .AW(LOG2N)) u_ct ("
+      },
+      {
+        "line": 294,
+        "text": "reg [4:0]  vc [0:N-1];"
+      },
+      {
+        "line": 340,
+        "text": "reg  [23:0] dhist [0:N-1];                       // 每列最近 8 行的 d（位 [3j+2:3j] = 前 j+1 行）"
+      }
+    ],
+    "nav/rtl/net/host_mbx.v": [
+      {
+        "line": 10,
+        "text": "parameter integer RX_AW  = 12,     // 接收缓冲字节地址位宽"
+      },
+      {
+        "line": 12,
+        "text": "parameter integer TX_WAW = 9       // 发送缓冲字地址位宽（2^TX_WAW 个 32 位字）"
+      },
+      {
+        "line": 81,
+        "text": "nav_ram_sdp #(.DW(32), .AW(TX_WAW)) u_injb ("
+      },
+      {
+        "line": 172,
+        "text": "nav_fifo #(.DW(96), .AW(DQ_AW)) u_dq ("
+      },
+      {
+        "line": 192,
+        "text": "nav_ram_sdp #(.DW(8), .AW(RX_AW)) u_rxb ("
+      },
+      {
+        "line": 237,
+        "text": "nav_ram_sdp #(.DW(32), .AW(TX_WAW)) u_txb ("
+      },
+      {
+        "line": 243,
+        "text": "nav_ram_sdp #(.DW(32), .AW(TX_WAW)) u_txs (          // 发送缓冲影子（总线回读）"
+      }
+    ],
+    "nav/rtl/soc/nav_soc.v": [
+      {
+        "line": 8,
+        "text": "//   0xE000–0xEFFF  控制台环形缓冲（4 KB，按字读：字 i = 第 4i..4i+3 个字节）"
+      },
+      {
+        "line": 98,
+        "text": "// ================================================================ 控制台环形缓冲（4 KB，4 个字节通道）"
+      },
+      {
+        "line": 100,
+        "text": "wire [31:0] con_q;"
+      },
+      {
+        "line": 104,
+        "text": "nav_ram_sdp #(.DW(8), .AW(10)) u_con ("
+      },
+      {
+        "line": 105,
+        "text": ".clk(clk), .we(con_we && con_wp[1:0] == b), .waddr(con_wp[11:2]), .wdata(mem_wdata[7:0]),"
+      },
+      {
+        "line": 166,
+        "text": "con_ra <= d_addr[11:2];"
+      },
+      {
+        "line": 182,
+        "text": "d_rdata <= d_ram ? (hold ? ram_q : 32'd0) : con_q;"
+      }
+    ],
+    "nav/rtl/plan/traj_eval.v": [
+      {
+        "line": 78,
+        "text": "// 正弦表：两个只读实例，sin 与 cos 同拍查"
+      },
+      {
+        "line": 82,
+        "text": "nav_ram_sdp #(.DW(16), .AW(10), .INIT_FILE(SIN_INIT)) u_sin ("
+      },
+      {
+        "line": 85,
+        "text": "nav_ram_sdp #(.DW(16), .AW(10), .INIT_FILE(SIN_INIT)) u_cos ("
+      }
+    ],
+    "nav/rtl/match/slf_extract.v": [
+      {
+        "line": 6,
+        "text": "parameter integer W = 160,"
+      },
+      {
+        "line": 35,
+        "text": "localparam integer RB = 1 + 1 + 96;      // {mark, pv, z, y, x}"
+      },
+      {
+        "line": 45,
+        "text": "nav_ram_sdp #(.DW(RB), .AW(UW), .DEPTH(W)) u_rb ("
+      }
+    ],
+    "fc_v4_top.v": [
+      {
+        "line": 38,
+        "text": "(* syn_ramstyle=\"distributed_ram\",syn_romstyle=\"distributed_rom\" *)reg signed [25:0] bias_mem [0:424];"
+      },
+      {
+        "line": 39,
+        "text": "(* syn_ramstyle=\"block_ram\",syn_romstyle=\"block_rom\" *)reg signed [12:0] elu_mem [0:2306];"
+      },
+      {
+        "line": 82,
+        "text": "$readmemh(BIASES_FILE, bias_mem);"
+      },
+      {
+        "line": 83,
+        "text": "$readmemh(ELU_FILE, elu_mem);"
+      },
+      {
+        "line": 98,
+        "text": "if (state == BIAS_REQ) bias_q <= bias_mem[bias_address];"
+      },
+      {
+        "line": 108,
+        "text": "if (state == ACT_WAIT) elu_q <= elu_address>=2307 ? -24'sd4096 : $signed(elu_mem[elu_address]);"
+      }
+    ],
+    "fixed4500_weight_rom.v": [
+      {
+        "line": 6,
+        "text": "(* syn_ramstyle=\"block_ram\",syn_romstyle=\"block_rom\" *)reg [15:0] bank0 [0:1023];"
+      },
+      {
+        "line": 123,
+        "text": "(* syn_ramstyle=\"block_ram\",syn_romstyle=\"block_rom\" *)reg [15:0] bank39 [0:1023];"
+      }
+    ]
+  },
+  "preliminary_evidence_scope_correction": "review1 initially searched the wrong nested PNR input path and recordedunknown. review2 row counters included enclosing-module context for several pooled candidates. review3 uses actual root g2_top.vg and candidate-only pooled/direct counters; no frozen hardware or older evidence was overwritten.",
+  "root_policy_amendment": "Budget only: existing deployment BSRAM ceiling336 remains; original F review3 source inventory unchanged; no EDA repeated."
+}

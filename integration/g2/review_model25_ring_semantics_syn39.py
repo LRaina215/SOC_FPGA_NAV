@@ -16,6 +16,10 @@ NEW=BASE/'baseline_fusion_model25_observation_ring_syn39'
 PREP=BASE/'baseline_fusion_model25_observation_ring_prepared2'
 OBS='u_control/model_thread/model/observation'
 POL='u_control/model_thread/model/policy'
+MODEL='u_control/model_thread/model'
+CLOCK='clk_model25'
+PERIOD=200000
+PROFILE='model25'
 OUT=BASE/'ring_SYN39_actual_semantics_reproduction'
 
 def run(out):
@@ -32,7 +36,7 @@ def run(out):
  def bv(n,w):return z3.BitVecVal(n,w)
  def boolbit(v,b):return z3.Extract(b,b,v)==bv(1,1)
  def vector(bits):return z3.Concat(*[z3.If(b,bv(1,1),bv(0,1))for b in bits])if len(bits)>1 else z3.If(bits[0],bv(1,1),bv(0,1))
- anc={'','u_control','u_control/model_thread','u_control/model_thread/model',OBS,POL,POL+'/core'}
+ anc={'','u_control','u_control/model_thread',MODEL,OBS,POL,POL+'/core'}
  keep=lambda n:n in anc or n.rpartition('/')[0]in anc or n.startswith(OBS+'/')
  a=read(OLD/'impl/gwsynthesis/g2_top.vg',keep);b=read(NEW/'impl/gwsynthesis/g2_top.vg',keep)
  pa=parameter_reader(definitions(OLD/'impl/gwsynthesis/g2_top.vg'));pb=parameter_reader(definitions(NEW/'impl/gwsynthesis/g2_top.vg'))
@@ -51,21 +55,23 @@ def run(out):
  def qvec(cs):return vector([ex(c['ports']['Q'][0])for c in cs])
  def nxt(cs):return vector([lb.next_state(c)for c in cs])
  ost=vec(OBS+'/state',3);pst=vec(POL+'/state',3);lane=vec(OBS+'/lane',5)
- work=vec(OBS+'/g_ring.work_slot',3);reset=ex(OBS+'/n331_5');preset=ex('u_control/model_thread/n1113_6')
+ work=vec(OBS+'/g_ring.work_slot',3)
+ reset=lb.one(regs(OBS+'/g_ring.work_slot',3)[0],'CLEAR')
+ preset=lb.one(regs(POL+'/snapshot_word',24)[0],'CLEAR')
  init=ex(OBS+'/history_initialized');commit=ost==bv(4,3)
  invariant=z3.And(z3.ULE(work,bv(5,3)),z3.ULE(lane,bv(27,5)))
  # The work-address DSP duplicates the public work-slot transition internally.
  # Its input register and the explicit three FFs have the same async reset,
  # CE/update function and initial zero, so equality is an inductive relation.
  dsps={n:c for n,c in b.items()if c['kind']=='MULT12X12'and n.startswith(OBS+'/')}
- assert set(dsps)=={OBS+'/'+x for x in ('n22065_s','n22100_s','n22165_s')}
+ assert len(dsps)==3 and sum(pb(c)['AREG_CLK']=='"CLK0"'for c in dsps.values())==1
  dsp_rows=[]
  for n,c in dsps.items():
   p=pb(c);assert all(p[k]=='"BYPASS"'for k in ('BREG_CLK','PREG_CLK','OREG_CLK'))
   prove(n+' B=28',pvec(c,'B'),bv(28,12))
   if p['AREG_CLK']=='"CLK0"':
-   assert n.endswith('/n22065_s') and p['MULT_RESET_MODE']=='"ASYNC"'
-   assert c['ports']['CLK']==['GND','clk_model25']
+   assert p['MULT_RESET_MODE']=='"ASYNC"'
+   assert c['ports']['CLK']==['GND',CLOCK]
    prove(n+' reset matches observer',ex(c['ports']['RESET'][1]),reset)
    prove(n+' CE exactly COMMIT',ex(c['ports']['CE'][1]),commit)
    expected=z3.If(work==bv(5,3),bv(0,3),work+bv(1,3))
@@ -87,11 +93,22 @@ def run(out):
  # and all published-valid controls retain their actual reset roots.
  live=[vec(OBS+'/g_ring.live'+str(i),3)for i in range(5)]
  frozen=[vec(OBS+'/g_ring.frozen'+str(i),3)for i in range(5)]
- tick=vec(POL+'/tick_count',32);fault=vec('u_control/model_thread/policy_fault_25',3)
- runok=z3.And(ex('u_control/model_thread/model/fault_0_8'),ex('u_control/model_thread/config_data[139]'),ex('u_control/model_thread/model/fusion_seen'),fault==bv(0,3))
- deadline=z3.And(tick==bv(199999,32),pst!=bv(0,3))
- framevalid=ex('u_control/model_thread/model/frame_valid')
- freeze=z3.And(pst==bv(1,3),framevalid,runok,z3.Not(deadline))
+ tick=vec(POL+'/tick_count',32);fault=qvec(regs(POL+'/fault',3))
+ deadline=z3.And(tick==bv(PERIOD-1,32),pst!=bv(0,3))
+ validcells=[c for n,c in b.items()if n==OBS+'/valid_s0'];assert len(validcells)==1
+ framevalid=lb.one(validcells[0],'Q')
+ if PROFILE=='fusion50':
+  # At the two-clock anchor use the actual original 4032bit snapshot's CE
+  # as the guard boundary. Its cone contains the original enable/sensor/
+  # fault/deadline priorities; no guessed synthesized name is a free input.
+  original_snapshot=[c for n,c in a.items()if re.fullmatch(re.escape(POL)+r'/snapshot_\d+_s\d+',n)and c['kind'].startswith('DFF')]
+  assert len(original_snapshot)==4032,len(original_snapshot)
+  original_capture=la.one(original_snapshot[0],'CE')
+  runok=z3.BoolVal(True)
+  freeze=z3.And(original_capture,pst==bv(1,3),framevalid)
+ else:
+  runok=z3.And(ex(MODEL+'/fault_0_8'),ex('u_control/model_thread/config_data[139]'),ex(MODEL+'/fusion_seen'),fault==bv(0,3))
+  freeze=z3.And(pst==bv(1,3),framevalid,runok,z3.Not(deadline))
  for i in range(5):
   cs=regs(OBS+'/g_ring.live'+str(i),3)
   dest=work if i==4 else z3.If(init,live[i+1],work)
@@ -99,7 +116,7 @@ def run(out):
   cs=regs(OBS+'/g_ring.frozen'+str(i),3)
   prove('frozen'+str(i)+' complete next-state',nxt(cs),z3.If(reset,bv(0,3),z3.If(z3.And(freeze,init),live[i],frozen[i])))
  for c in [x for x in b.values()if x['kind'].startswith('DFF')and('g_ring.'in x['name']or'/snapshot_word_'in x['name'])]:
-  assert c['ports']['CLK']==['clk_model25']
+  assert c['ports']['CLK']==[CLOCK]
   if 'g_ring.'in c['name']:prove(c['name']+' reset root',lb.one(c,'CLEAR'),reset)
   else:prove(c['name']+' reset root',lb.one(c,'CLEAR'),preset)
  # Every bank has six four-bit cells and shares its true word address.
@@ -116,7 +133,7 @@ def run(out):
  direct=z3.And(*[lane!=bv(i,5)for i in (0,1,2,7,10,11,13,14,18,21)])
  writing=z3.And(z3.Not(reset),z3.Or(z3.And(ost==bv(1,3),direct),ost==bv(3,3)))
  for (bank,group),c in rams.items():
-  assert c['ports']['CLK']==['clk_model25']
+  assert c['ports']['CLK']==[CLOCK]
   prove(c['name']+' low write address',pvec(c,'WAD'),z3.Extract(3,0,address))
   prove(c['name']+' bank write enable',ex(c['ports']['WRE'][0]),z3.And(writing,z3.Extract(7,4,address)==bv(bank,4)),invariant)
   prove(c['name']+' shared low read address',pvec(c,'RAD'),z3.Extract(3,0,vec(OBS+'/g_ring.read_address',8)))
@@ -151,27 +168,27 @@ def run(out):
  # Clear dependent caches after replacing opaque RAM outputs. State/constant
  # expressions retain exactly the same interpretation.
  lb.memo={'GND':z3.BoolVal(False),'VCC':z3.BoolVal(True)}
- index=vec('u_control/model_thread/model/observation_read_index',8)
+ index=vec(MODEL+'/observation_read_index',8)
  segment=z3.If(z3.ULT(index,bv(28,8)),bv(0,3),z3.If(z3.ULT(index,bv(56,8)),bv(1,3),z3.If(z3.ULT(index,bv(84,8)),bv(2,3),z3.If(z3.ULT(index,bv(112,8)),bv(3,3),z3.If(z3.ULT(index,bv(140,8)),bv(4,3),bv(5,3))))))
  prove('actual segment decode',vec(OBS+'/g_ring.segment',3),segment)
  rr=[z3.If(freeze,live[i],frozen[i])for i in range(5)]
  slot=z3.If(segment==bv(0,3),rr[4],z3.If(segment==bv(1,3),rr[0],z3.If(segment==bv(2,3),rr[1],z3.If(segment==bv(3,3),rr[2],z3.If(segment==bv(4,3),rr[3],rr[4])))))
- read_active=z3.And(runok,z3.Not(deadline),z3.Or(z3.And(pst==bv(1,3),framevalid),pst==bv(2,3)))
+ read_active=z3.And(original_capture,z3.Or(z3.And(pst==bv(1,3),framevalid),pst==bv(2,3)))if PROFILE=='fusion50'else z3.And(runok,z3.Not(deadline),z3.Or(z3.And(pst==bv(1,3),framevalid),pst==bv(2,3)))
  prove('read slot selects live on freeze otherwise frozen at active read',vec(OBS+'/g_ring.read_slot',3),slot,read_active)
  ra=z3.ZeroExt(5,slot)*bv(28,8)+index-z3.ZeroExt(5,segment)*bv(28,8)
  prove('complete read address at active read',vec(OBS+'/g_ring.read_address',8),ra,read_active)
  raw=z3.Select(memory,ra);clip=z3.If(raw>bv(409600,24),bv(409600,24),z3.If(raw<bv(-409600,24),bv(-409600,24),raw))
  result=z3.If(z3.UGE(index,bv(168,8)),bv(0,24),z3.If(segment==bv(0,3),clip,raw))
  valid_slots=z3.And(*[z3.ULE(x,bv(5,3))for x in live+frozen])
- prove('all24 output bits arbitrary RAM values/current exact clip/history raw',vec('u_control/model_thread/model/observation_read_data',24),result,z3.And(valid_slots,read_active))
+ prove('all24 output bits arbitrary RAM values/current exact clip/history raw',vec(MODEL+'/observation_read_data',24),result,z3.And(valid_slots,read_active))
  # Verify the actual private prefetch FF, including abort/enable/deadline CE.
  snap=regs(POL+'/snapshot_word',24);ld=regs(POL+'/load_index',8);load=qvec(ld)
- capture=z3.And(runok,z3.Not(deadline),z3.Or(z3.And(pst==bv(1,3),framevalid),z3.And(pst==bv(2,3),load!=bv(167,8))))
+ capture=z3.And(original_capture,z3.Or(z3.And(pst==bv(1,3),framevalid),z3.And(pst==bv(2,3),load!=bv(167,8))))if PROFILE=='fusion50'else z3.And(runok,z3.Not(deadline),z3.Or(z3.And(pst==bv(1,3),framevalid),z3.And(pst==bv(2,3),load!=bv(167,8))))
  debug.update(policy_state=pst,load=load,tick=tick,run_ok=runok,fault=fault,reset=preset,capture=capture,frame_valid=framevalid,deadline=deadline,frame_freeze=freeze,ce=lb.one(snap[0],'CE'),actual_D=pvec(snap[0],'D'),actual_Q=pvec(snap[0],'Q'))
- prove('optimized snapshot select agrees on permitted consumption',ex('u_control/model_thread/model/snapshot_word_23_16'),freeze,read_active)
+ if PROFILE!='fusion50':prove('optimized snapshot select agrees on permitted consumption',ex(MODEL+'/snapshot_word_23_16'),freeze,read_active)
  for c in snap:
   bitno=int(re.search(r'/snapshot_word_(\d+)_s',c['name'])[1])
-  prove(c['name']+' data exact output bit',lb.one(c,'D'),boolbit(vec('u_control/model_thread/model/observation_read_data',24),bitno))
+  prove(c['name']+' data exact output bit',lb.one(c,'D'),boolbit(vec(MODEL+'/observation_read_data',24),bitno))
   # The mapper may suppress CE while async CLEAR dominates. Require the
   # complete next-state below for every reset value; CE identity only matters
   # outside the asserted reset interval.

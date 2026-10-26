@@ -145,11 +145,12 @@ def group_ffs(cells):
                   and (key == 'words' or re.match(r'\d+_s', n[len(stem):]))}
             for key, stem in stems.items()}
 
-def ring_structure(cells, parameters, directions, drivers, loads, clock):
-    ring = {n: c for n, c in cells.items() if n.startswith(OBS + 'g_ring.')}
+def ring_structure(cells, parameters, directions, drivers, loads, clock,
+                   observation_prefix=OBS, policy_prefix=POLICY, expected_clock=('model25', 0)):
+    ring = {n: c for n, c in cells.items() if n.startswith(observation_prefix + 'g_ring.')}
     rams = {n: c for n, c in ring.items() if c['kind'].startswith('RAM16')}
     address_dsp = {n: c for n, c in cells.items()
-                   if n.startswith(OBS) and c['kind'] == 'MULT12X12'}
+                   if n.startswith(observation_prefix) and c['kind'] == 'MULT12X12'}
     assert rams, 'ring did not map to actual distributed RAM'
     assert not any(c['kind'] in BSRAM for c in ring.values()), 'ring unexpectedly consumes BSRAM'
     assert not any(c['kind'].startswith('DFF') and 'frame_mem' in n for n, c in ring.items()), 'ring storage was rebuilt in FFs'
@@ -161,19 +162,19 @@ def ring_structure(cells, parameters, directions, drivers, loads, clock):
         assert set(c['ports']) == {'DO', 'DI', 'WAD', 'RAD', 'WRE', 'CLK'}, (n, c)
         assert len(c['ports']['WAD']) == len(c['ports']['RAD']) == 4
         assert len(c['ports']['DO']) == len(c['ports']['DI']) == widths[c['kind']]
-        assert [clock(v) for v in c['ports']['CLK']] == [('model25', 0)]
+        assert [clock(v) for v in c['ports']['CLK']] == [expected_clock]
         write = {p: c['ports'][p] for p in ('CLK', 'WRE', 'WAD', 'DI')}
         banks[json.dumps(dict(kind=c['kind'], parameters=parameters(c), ports=write), sort_keys=True)].append(n)
         ram_rows.append(dict(**c, parameters=parameters(c), words=16, width=widths[c['kind']],
                              primitive_capacity_bits=16 * widths[c['kind']],
                              single_synchronous_write_port=True, separate_asynchronous_read_address=True,
                              no_RAM_reset_pin=True))
-    prefetch = {n: c for n, c in cells.items() if c['kind'].startswith('DFF') and n.startswith(POLICY + 'snapshot_word_')}
+    prefetch = {n: c for n, c in cells.items() if c['kind'].startswith('DFF') and n.startswith(policy_prefix + 'snapshot_word_')}
     assert len(prefetch) == 24, ('actual prefetch width', len(prefetch))
     pointers = {}
     for stem in ('work_slot', 'live0', 'live1', 'live2', 'live3', 'live4',
                  'frozen0', 'frozen1', 'frozen2', 'frozen3', 'frozen4'):
-        group = {n: c for n, c in ring.items() if c['kind'].startswith('DFF') and n.startswith(OBS + 'g_ring.' + stem + '_')}
+        group = {n: c for n, c in ring.items() if c['kind'].startswith('DFF') and n.startswith(observation_prefix + 'g_ring.' + stem + '_')}
         assert len(group) <= 3, ('pointer wider than source slot', stem, len(group))
         pointers[stem] = [dict(**c, parameters=parameters(c)) for c in group.values()]
     @lru_cache(None)

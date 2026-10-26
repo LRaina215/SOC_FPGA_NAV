@@ -1,0 +1,690 @@
+{
+  "recorded_at": "2026-10-26T15:27:58.278588+08:00",
+  "scope": "PNR51 natural failure: completed physical resources, storage/CPU, original26, five related channels and guard preservation; no timing or deployment acceptance",
+  "physical": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_observation_ring_pnr51",
+  "completed_SYN_source": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_observation_ring_syn39",
+  "runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-26T14:42:39.340000+08:00",
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 22376,
+    "elapsed_s": 2044.0779999999795,
+    "no_observable_progress_s": 0.0,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        1847,
+        1792999000854443400
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        1331,
+        1792999000854443400
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        2103060,
+        1792997278209854200
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        12172449,
+        1792997278644278400
+      ],
+      [
+        "impl\\pnr\\g2_top.rpt.txt",
+        93285,
+        1792998998739035200
+      ],
+      [
+        "impl\\pnr\\g2_top.vo",
+        39729802,
+        1792999000849442100
+      ]
+    ],
+    "tool_exit": 1,
+    "ended_at": "2026-10-26T15:16:43.426606+08:00"
+  },
+  "original_process_identity": {
+    "pid": 22376,
+    "original_start_epoch": 1792996959.34,
+    "current_PID_exists": false,
+    "current_creation_epoch": null,
+    "original_tool_identity_exited": true
+  },
+  "actual_unrouted_nets": 1288,
+  "actual_resources": {
+    "35": {
+      "Logic": {
+        "used": 89617,
+        "available": 138240
+      },
+      "Register": {
+        "used": 40092,
+        "available": 139095
+      },
+      "CLS": {
+        "used": 55517,
+        "available": 69120
+      },
+      "BSRAM": {
+        "used": 332,
+        "available": 340
+      },
+      "DSP": {
+        "used": 163.5,
+        "available": 298
+      },
+      "LUT": 52917,
+      "ALU": 9920,
+      "ROM16": 3650,
+      "SSRAM": 3855
+    },
+    "50": {
+      "Logic": {
+        "used": 89977,
+        "available": 138240
+      },
+      "Register": {
+        "used": 41576,
+        "available": 139095
+      },
+      "CLS": {
+        "used": 56044,
+        "available": 69120
+      },
+      "BSRAM": {
+        "used": 332,
+        "available": 340
+      },
+      "DSP": {
+        "used": 163.5,
+        "available": 298
+      },
+      "LUT": 53264,
+      "ALU": 9933,
+      "ROM16": 3650,
+      "SSRAM": 3855
+    },
+    "51": {
+      "Logic": {
+        "used": 83175,
+        "available": 138240
+      },
+      "Register": {
+        "used": 32602,
+        "available": 139095
+      },
+      "CLS": {
+        "used": 52268,
+        "available": 69120
+      },
+      "BSRAM": {
+        "used": 332,
+        "available": 340
+      },
+      "DSP": {
+        "used": 165,
+        "available": 298
+      },
+      "LUT": 46045,
+      "ALU": 9954,
+      "ROM16": 3650,
+      "SSRAM": 3921
+    }
+  },
+  "delta_from50": {
+    "LUT": -7219,
+    "ALU": 21,
+    "ROM16": 0,
+    "SSRAM": 66
+  },
+  "delta_major_from50": {
+    "Logic": -6802,
+    "Register": -8974,
+    "CLS": -3776,
+    "BSRAM": 0,
+    "DSP": 1.5
+  },
+  "BSRAM": {
+    "passed": true,
+    "source": 314,
+    "physical": 332,
+    "unsplit": 296,
+    "wide_split_pairs": 18,
+    "initialized_split_words_checked": 9216,
+    "all_ordinary_parameters_and_effective_INIT_checked": true,
+    "all18_split_address_data_control_and_INIT_reconstruction_checked": true
+  },
+  "CPU": {
+    "actual_physical_SP_bitplanes": 64,
+    "complete_image_bytes": 131072,
+    "frozen_firmware_bytes": 51712,
+    "checks": {
+      "source_and_physical_complete_128KiB_equal": true,
+      "physical_equals_original_firmware_and_zero_tail": true,
+      "physical_equals_word_hex": true,
+      "physical_equals_all_four_lane_hex": true
+    }
+  },
+  "distributed": {
+    "passed": true,
+    "leaves": 7571,
+    "by_kind": {
+      "RAM16SDP4": 2833,
+      "ROM16": 3650,
+      "RAM16SDP1": 1088
+    },
+    "all_effective_geometry_and_INIT_equal": true,
+    "original_explicit_INIT_preserved": true,
+    "physical_added_zero_default_INIT_parameters": 12420,
+    "all_input_cones_equivalent": false
+  },
+  "original26_paths": 26,
+  "first_stage_Q_single_second_D_fanout": true,
+  "five_related_channels": [
+    {
+      "name": "BMI",
+      "logical_width": 128,
+      "compared_primitives": 269,
+      "original_primitives_all_pins_effective_INIT_equal": true,
+      "additional_checked_buffers_or_same_transition_replicas": []
+    },
+    {
+      "name": "configuration",
+      "logical_width": 140,
+      "compared_primitives": 360,
+      "original_primitives_all_pins_effective_INIT_equal": true,
+      "additional_checked_buffers_or_same_transition_replicas": []
+    },
+    {
+      "name": "action",
+      "logical_width": 336,
+      "compared_primitives": 332,
+      "original_primitives_all_pins_effective_INIT_equal": true,
+      "additional_checked_buffers_or_same_transition_replicas": []
+    },
+    {
+      "name": "fusion",
+      "logical_width": 145,
+      "compared_primitives": 236,
+      "original_primitives_all_pins_effective_INIT_equal": true,
+      "additional_checked_buffers_or_same_transition_replicas": []
+    },
+    {
+      "name": "status",
+      "logical_width": 15,
+      "compared_primitives": 46,
+      "original_primitives_all_pins_effective_INIT_equal": true,
+      "additional_checked_buffers_or_same_transition_replicas": []
+    }
+  ],
+  "guards": [
+    {
+      "instance": "u_control/model_clock_guard",
+      "kind": "g2_model25_guard",
+      "checked_primitive_count": 35,
+      "primitive_function_ports_effective_INIT_preserved": true,
+      "additional_checked_buffers_or_registered_replicas": []
+    },
+    {
+      "instance": "u_nav/u_sg",
+      "kind": "safety_guard",
+      "checked_primitive_count": 1025,
+      "primitive_function_ports_effective_INIT_preserved": true,
+      "additional_checked_buffers_or_registered_replicas": []
+    }
+  ],
+  "actual_clock_pin_count": 37168,
+  "actual_clock_root_counts": [
+    {
+      "root": "clk50",
+      "inverted": false,
+      "pins": 31848
+    },
+    {
+      "root": "clk50",
+      "inverted": true,
+      "pins": 1
+    },
+    {
+      "root": "model25",
+      "inverted": false,
+      "pins": 5176
+    },
+    {
+      "root": "rgmii_rxc",
+      "inverted": false,
+      "pins": 138
+    },
+    {
+      "root": "rgmii_rxc",
+      "inverted": true,
+      "pins": 5
+    }
+  ],
+  "proved_registered_replica_aliases": [
+    {
+      "source_net": "u_nav/wd_q[4]",
+      "physical_net": "u_nav/gowin_reg_wd_q[4]_1",
+      "source_original_FF": "u_nav/wd_q_4_s0",
+      "physical_replica_FF": "u_nav/gowin_replicate_reg_wd_q[4]_1",
+      "same_kind_all_effective_INIT_parameters_and_all_transition_inputs": true,
+      "source_original_physical_anchor_transition_identical": true
+    }
+  ],
+  "PRIMARY_used": 8,
+  "LW_used": 8,
+  "global_assignment_rows": [
+    {
+      "signal": "clk50_d",
+      "kind": "PRIMARY",
+      "locations": [
+        "PTR0",
+        "PTR1",
+        "PTR2",
+        "PTR3",
+        "PBR0",
+        "PBR1",
+        "PBR2",
+        "PBR3"
+      ]
+    },
+    {
+      "signal": "rgmii_rxc_d",
+      "kind": "PRIMARY",
+      "locations": [
+        "PTR1",
+        "PBR1"
+      ]
+    },
+    {
+      "signal": "clk_model25",
+      "kind": "PRIMARY",
+      "locations": [
+        "PTR2",
+        "PTR3",
+        "PBR0",
+        "PBR1",
+        "PBR2",
+        "PBR3"
+      ]
+    },
+    {
+      "signal": "u_control/sensor/n53_4",
+      "kind": "PRIMARY",
+      "locations": [
+        "PTR2",
+        "PTR3"
+      ]
+    },
+    {
+      "signal": "u_control/model_thread/model/observation/n331_5",
+      "kind": "PRIMARY",
+      "locations": [
+        "PTR2",
+        "PTR3",
+        "PBR2",
+        "PBR3"
+      ]
+    },
+    {
+      "signal": "u_nav/u_match/u_ex/rb_ra[0]",
+      "kind": "PRIMARY",
+      "locations": [
+        "PTR0"
+      ]
+    },
+    {
+      "signal": "u_nav/u_match/u_ex/rb_ra[1]",
+      "kind": "PRIMARY",
+      "locations": [
+        "PTR0"
+      ]
+    },
+    {
+      "signal": "u_nav/u_match/u_ex/rb_ra[2]",
+      "kind": "PRIMARY",
+      "locations": [
+        "PTR0"
+      ]
+    },
+    {
+      "signal": "r2",
+      "kind": "LW",
+      "locations": [
+        "-"
+      ]
+    },
+    {
+      "signal": "u_control/n2375_7",
+      "kind": "LW",
+      "locations": [
+        "-"
+      ]
+    },
+    {
+      "signal": "u_control/model_rst_n",
+      "kind": "LW",
+      "locations": [
+        "-"
+      ]
+    },
+    {
+      "signal": "u_control/model_thread/model/policy/core/n1466_10",
+      "kind": "LW",
+      "locations": [
+        "-"
+      ]
+    },
+    {
+      "signal": "u_control/telemetry_thread/snapshot_959_10",
+      "kind": "LW",
+      "locations": [
+        "-"
+      ]
+    },
+    {
+      "signal": "u_nav/u_map/u_tv/n26292_4",
+      "kind": "LW",
+      "locations": [
+        "-"
+      ]
+    },
+    {
+      "signal": "u_nav/u_map/u_tv/n25518_4",
+      "kind": "LW",
+      "locations": [
+        "-"
+      ]
+    },
+    {
+      "signal": "u_nav/u_map/u_tv/n24910_7",
+      "kind": "LW",
+      "locations": [
+        "-"
+      ]
+    }
+  ],
+  "global_comparison_to50": {
+    "same": [
+      "u_control/telemetry_thread/snapshot_959_10",
+      "r2",
+      "u_control/model_rst_n",
+      "u_control/n2375_7",
+      "clk50_d"
+    ],
+    "changed": [
+      {
+        "signal": "u_control/model_thread/model/observation/n331_5",
+        "before": {
+          "signal": "u_control/model_thread/model/observation/n331_5",
+          "kind": "LW",
+          "locations": [
+            "-"
+          ]
+        },
+        "after": {
+          "signal": "u_control/model_thread/model/observation/n331_5",
+          "kind": "PRIMARY",
+          "locations": [
+            "PTR2",
+            "PTR3",
+            "PBR2",
+            "PBR3"
+          ]
+        }
+      },
+      {
+        "signal": "clk_model25",
+        "before": {
+          "signal": "clk_model25",
+          "kind": "PRIMARY",
+          "locations": [
+            "PTR0",
+            "PTR1",
+            "PTR2",
+            "PTR3",
+            "PBR2",
+            "PBR3"
+          ]
+        },
+        "after": {
+          "signal": "clk_model25",
+          "kind": "PRIMARY",
+          "locations": [
+            "PTR2",
+            "PTR3",
+            "PBR0",
+            "PBR1",
+            "PBR2",
+            "PBR3"
+          ]
+        }
+      },
+      {
+        "signal": "rgmii_rxc_d",
+        "before": {
+          "signal": "rgmii_rxc_d",
+          "kind": "PRIMARY",
+          "locations": [
+            "PBR1"
+          ]
+        },
+        "after": {
+          "signal": "rgmii_rxc_d",
+          "kind": "PRIMARY",
+          "locations": [
+            "PTR1",
+            "PBR1"
+          ]
+        }
+      },
+      {
+        "signal": "u_nav/u_map/u_tv/n25518_4",
+        "before": {
+          "signal": "u_nav/u_map/u_tv/n25518_4",
+          "kind": "PRIMARY",
+          "locations": [
+            "PTR1",
+            "PTR2",
+            "PBR1",
+            "PBR2"
+          ]
+        },
+        "after": {
+          "signal": "u_nav/u_map/u_tv/n25518_4",
+          "kind": "LW",
+          "locations": [
+            "-"
+          ]
+        }
+      }
+    ],
+    "old_names_not_listed": [
+      {
+        "signal": "u_control/model_thread/model/observation/n21455_12",
+        "kind": "PRIMARY",
+        "locations": [
+          "PTR3",
+          "PBR3"
+        ]
+      },
+      {
+        "signal": "u_control/model_thread/model/policy/snapshot_0_9",
+        "kind": "LW",
+        "locations": [
+          "-"
+        ]
+      },
+      {
+        "signal": "u_control/model_thread/model/policy/n14308_23",
+        "kind": "PRIMARY",
+        "locations": [
+          "PTR2",
+          "PTR3",
+          "PBR2",
+          "PBR3"
+        ]
+      },
+      {
+        "signal": "u_control/model_transport_rst_n",
+        "kind": "LW",
+        "locations": [
+          "-"
+        ]
+      },
+      {
+        "signal": "u_control/model_thread/model/policy/n14308_24",
+        "kind": "PRIMARY",
+        "locations": [
+          "PTR2",
+          "PTR3",
+          "PBR2",
+          "PBR3"
+        ]
+      },
+      {
+        "signal": "u_control/model_thread/model/observation/n15679_10",
+        "kind": "LW",
+        "locations": [
+          "-"
+        ]
+      },
+      {
+        "signal": "u_control/model_thread/model/policy/n14308_22",
+        "kind": "PRIMARY",
+        "locations": [
+          "PTR2",
+          "PTR3",
+          "PBR2",
+          "PBR3"
+        ]
+      }
+    ],
+    "new_names_listed": [
+      {
+        "signal": "u_control/sensor/n53_4",
+        "kind": "PRIMARY",
+        "locations": [
+          "PTR2",
+          "PTR3"
+        ]
+      },
+      {
+        "signal": "u_control/model_thread/model/policy/core/n1466_10",
+        "kind": "LW",
+        "locations": [
+          "-"
+        ]
+      },
+      {
+        "signal": "u_nav/u_map/u_tv/n24910_7",
+        "kind": "LW",
+        "locations": [
+          "-"
+        ]
+      },
+      {
+        "signal": "u_nav/u_match/u_ex/rb_ra[0]",
+        "kind": "PRIMARY",
+        "locations": [
+          "PTR0"
+        ]
+      },
+      {
+        "signal": "u_nav/u_map/u_tv/n26292_4",
+        "kind": "LW",
+        "locations": [
+          "-"
+        ]
+      },
+      {
+        "signal": "u_nav/u_match/u_ex/rb_ra[1]",
+        "kind": "PRIMARY",
+        "locations": [
+          "PTR0"
+        ]
+      },
+      {
+        "signal": "u_nav/u_match/u_ex/rb_ra[2]",
+        "kind": "PRIMARY",
+        "locations": [
+          "PTR0"
+        ]
+      }
+    ]
+  },
+  "global_changes_are_not_failed_network_identity_or_root_cause": true,
+  "strict_first_rejection": "F:/nav_integration_g2_20261023/pnr51_system_final_actual_review1/review_failed.json",
+  "strict_reviewer_correction": {
+    "only_ALU_ADD0_I0_I1_commutation": true,
+    "actual_instances": [
+      "u_nav/u_sg/n676_s",
+      "u_nav/u_sg/n677_s",
+      "u_nav/u_sg/n678_s",
+      "u_nav/u_sg/n679_s",
+      "u_nav/u_sg/n680_s",
+      "u_nav/u_sg/n681_s",
+      "u_nav/u_sg/n682_s",
+      "u_nav/u_sg/n683_s",
+      "u_nav/u_sg/n684_s",
+      "u_nav/u_sg/n685_s",
+      "u_nav/u_sg/n686_s",
+      "u_nav/u_sg/n687_s",
+      "u_nav/u_sg/n688_s",
+      "u_nav/u_sg/n689_s",
+      "u_nav/u_sg/n696_s",
+      "u_nav/u_sg/n697_s",
+      "u_nav/u_sg/n784_s",
+      "u_nav/u_sg/n785_s",
+      "u_nav/u_sg/n872_s",
+      "u_nav/u_sg/n873_s"
+    ],
+    "all16_binary_assignments_and_both_outputs_checked": true,
+    "arbitrary_XZ_equivalence_claimed": false
+  },
+  "timing": {
+    "TR_available": false,
+    "all_three_domain_setup_hold": "unknown",
+    "original52_actual_Actived": "unknown",
+    "actual5000_endpoint_coverage": "unknown",
+    "physical_payload_delay_CDC_MTBF_reset_pulse_IO": "unverified"
+  },
+  "independent_ring_result": {
+    "available": true,
+    "result": "F:\\nav_integration_g2_20261023\\pnr51_ring_final_actual_review1\\final_review.json",
+    "reviewed_here": false,
+    "passed": false,
+    "independent_root_binding_still_required": true,
+    "metadata": {
+      "path": "F:\\nav_integration_g2_20261023\\pnr51_ring_final_actual_review1\\final_review.json",
+      "bytes": 1811,
+      "mtime_ns": 1792999403400785400
+    }
+  },
+  "machine_evidence": {
+    "final_review.json": "F:\\nav_integration_g2_20261023\\pnr51_system_final_actual_review2\\final_review.json",
+    "actual_connections_clocks_guards.json": "F:\\nav_integration_g2_20261023\\pnr51_system_final_actual_review2\\actual_connections_clocks_guards.json",
+    "actual_timing_review.json": "F:\\nav_integration_g2_20261023\\pnr51_system_final_actual_review2\\actual_timing_review.json",
+    "BSRAM_CPU/result.json": "F:\\nav_integration_g2_20261023\\pnr51_system_final_actual_review2\\BSRAM_CPU\\result.json",
+    "distributed_INIT/result.json": "F:\\nav_integration_g2_20261023\\pnr51_system_final_actual_review2\\distributed_INIT\\result.json",
+    "reviewer_correction_and_global_notes.json": "F:\\nav_integration_g2_20261023\\pnr51_system_final_actual_review2\\reviewer_correction_and_global_notes.json"
+  },
+  "BSRAM_and_connection_preservation_review_passed": true,
+  "all_frozen_input_metadata_unchanged": true,
+  "new_EDA_started": false,
+  "new_PNR_started": false,
+  "programmed": false,
+  "deployment_accepted": false,
+  "no_SHA_used": true
+}
