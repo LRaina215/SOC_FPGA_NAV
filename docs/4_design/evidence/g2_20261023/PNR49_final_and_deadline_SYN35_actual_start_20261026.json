@@ -1,0 +1,127 @@
+{
+  "recorded_at": "2026-10-26T12:03:02.227527+08:00",
+  "PNR49": {
+    "ended_at": "2026-10-26T11:46:44.163200+08:00",
+    "tool_exit": 1,
+    "cancelled": false,
+    "total_limit_s": 0,
+    "silent_limit_s": 0,
+    "unrouted": 427,
+    "TR_exists": false,
+    "setup_hold_all_three_clocks": null,
+    "actual_resources": {
+      "Logic": 89958,
+      "Register": 41574,
+      "CLS": 56091,
+      "BSRAM": 332,
+      "DSP": 163.5,
+      "LUT": 53241,
+      "ALU": 9937,
+      "ROM16": 3650,
+      "RAM16": 3855
+    },
+    "resource_delta_vs_routed35": {
+      "Logic": 341,
+      "Register": 1482,
+      "CLS": 574,
+      "BSRAM": 0,
+      "DSP": 0.0,
+      "LUT": 324,
+      "ALU": 17,
+      "ROM16": 0,
+      "RAM16": 0
+    },
+    "actual_all_RAM_geometry_INIT_and_CPU_preserved": true,
+    "actual_three_clock_roots_preserved": true,
+    "target_cells_checked": 1565,
+    "independent_review": "F:\\nav_integration_g2_20261023\\pnr49_final_actual_review2\\final_review.json",
+    "first_strict_rejection_preserved": "pnr49_final_actual_review1",
+    "failed_net_identity_or_congestion_coordinates_known": false,
+    "routing_failure_unique_root_cause_proven": false
+  },
+  "SYN35": {
+    "actual_started_at": "2026-10-26T11:56:41.336087+08:00",
+    "output": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_syn35",
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared4",
+    "identities": [
+      {
+        "pid": 57512,
+        "created_epoch": 1792986998.1437292,
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:/Desktop/SOC FPGA/nav/integration/g2/run_model25_deadline_syn.py"
+        ],
+        "cwd": "D:\\Desktop\\SOC FPGA\\nav"
+      },
+      {
+        "pid": 45024,
+        "created_epoch": 1792986999.25,
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\retry_frozen_synthesis.py",
+          "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared4",
+          "--out",
+          "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_syn35",
+          "--start-now",
+          "--tool-priority",
+          "normal"
+        ],
+        "cwd": "D:\\Desktop\\SOC FPGA\\nav"
+      },
+      {
+        "pid": 10380,
+        "created_epoch": 1792987001.3324907,
+        "command": [
+          "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+          "run.tcl"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_syn35"
+      }
+    ],
+    "admission_physical_bytes": 4221747200,
+    "admission_commit_bytes": 5005639680,
+    "one_RTL_change": "command_lease_guard deadline expression",
+    "other65_RTL_unchanged": true,
+    "original69assets31headers_FW_and_clocks_preserved": true,
+    "runtime_minutes": 40,
+    "memory_policy": "cancel sustained commit reserve below512MiB; or physical below256MiB together with commit below1GiB",
+    "math_all_age32_timeout32_proved": true,
+    "targeted_cycles": 3123,
+    "check_count": 23,
+    "parameter_XZ_cases": 225,
+    "preserved_prepared3_Tcl_was_still_bound_to_parent": true,
+    "new_prepared4_Tcl_bound_to_all66_actual_new_inputs": true,
+    "changed_RTL_byte_identical_to_prepared3_proof": true,
+    "no_synthesis_of_the_unrebound_prepared3": true,
+    "actual_new_mapping_and_physical_benefit_not_yet_proven": true,
+    "automatic_PNR": false
+  },
+  "production_probe3": {
+    "numerical_matching_frames": 10,
+    "last_matching_lines": [
+      "FRAME_NUMERIC_MATCH epoch=1 id=1 actual_input_words=168 trace_words=425 core_actions=6 actuator_bits=336 capture_us=2107385.310 publish_us=2110760.840 latency_us=3375.530 core_cycles25=83534 core_ms25=3.341360",
+      "FRAME_NUMERIC_MATCH epoch=1 id=2 actual_input_words=168 trace_words=425 core_actions=6 actuator_bits=336 capture_us=2115385.310 publish_us=2118760.840 latency_us=3375.530 core_cycles25=83534 core_ms25=3.341360",
+      "FRAME_NUMERIC_MATCH epoch=1 id=3 actual_input_words=168 trace_words=425 core_actions=6 actuator_bits=336 capture_us=2123385.310 publish_us=2126760.840 latency_us=3375.530 core_cycles25=83534 core_ms25=3.341360"
+    ],
+    "passed_stop_milestones": [
+      "CONTROLLED_ZERO_BALANCING_PASS us=2079385.080 model_active=1",
+      "FAULT_STOP_POSE_HOLD_PASS no_auto_resume=1 us=2097385.180",
+      "EXPLICIT_REARM_PASS us=2126760.840"
+    ],
+    "per_frame_capture_to50MHz_publication_us": 3375.53,
+    "period_us": 8000,
+    "core_cycles25": 83534,
+    "final_result_available": false,
+    "pending": [
+      "pending-transfer reset and full200-sample recalibration",
+      "model25 clock halt guard"
+    ],
+    "no_real_hardware_or_fullWCET_acceptance": true
+  },
+  "programmed": false,
+  "deployment_accepted": false
+}

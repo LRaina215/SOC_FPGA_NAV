@@ -1,0 +1,221 @@
+{
+  "recorded_at": "2026-10-26T11:51:55.949241+08:00",
+  "phase": "exact32bit_math_and_targeted_RTL_cycles_passed_no_mapping_yet",
+  "candidate": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared3",
+  "source_diff": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared3\\lease_deadline_delta.patch",
+  "source_preparation": {
+    "prepared": true,
+    "recorded_at": "2026-10-26T11:36:48.661360+08:00",
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4",
+    "out": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared3",
+    "only_changed_RTL": [
+      "command_lease_guard.v"
+    ],
+    "unchanged_selected_RTL": 65,
+    "selected_RTL": 66,
+    "unselected_modgen_template_byte_identical": true,
+    "identical_assets": 69,
+    "identical_headers": 31,
+    "original_firmware_and_all_weights_byte_identical": true,
+    "clock_CST_SDC_capacities_unchanged": true,
+    "original_counting_saturation_ramp_output_cycles_and_priority_unchanged": true,
+    "production_timeout_ms": 200,
+    "age_unsigned_bits": 32,
+    "timeout_integer_bits": 32,
+    "arithmetic_domain": "All2^32 known age values and all2^32 integer timeout bit patterns; normal200ms. Nonzero parameters use compare199 plus explicit MAX exclusion; timeout0 retains original32bit arithmetic to preserve X/Z behavior.",
+    "full_state_math_proof_pending": true,
+    "targeted_cycle_comparison_pending": true,
+    "new_mapping_or_timing_benefit_verified": false,
+    "balanced_reduction_not_guaranteed": true,
+    "new_SYN_PNR_started": false,
+    "programmed": false,
+    "deployment_accepted": false,
+    "bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared3\\command_lease_guard.v",
+        "bytes": 5023,
+        "mtime_ns": 1792985808536274800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared3\\manifest.json",
+        "bytes": 9345,
+        "mtime_ns": 1792985808538406000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared3\\g2.sdc",
+        "bytes": 6762,
+        "mtime_ns": 1792981482047268800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared3\\g2.cst",
+        "bytes": 5495,
+        "mtime_ns": 1792981482046224100
+      }
+    ]
+  },
+  "full_state_math_proof": {
+    "passed": true,
+    "recorded_at": "2026-10-26T11:36:48.969576+08:00",
+    "solver": "Z3 5.3.1",
+    "elapsed_s": 0.0779999999795109,
+    "proofs": [
+      {
+        "label": "all_age32_timeout32_arithmetic",
+        "status": "unsat",
+        "smt2": "F:\\nav_integration_g2_20261023\\lease_deadline_compare_math3\\all_age32_timeout32_arithmetic.smt2",
+        "statistics": "(:max-memory              25.93\n :memory                  17.60\n :num-allocs              150256\n :rlimit-count            92103\n :sat-backjumps           1429\n :sat-conflicts           1430\n :sat-decisions           2573\n :sat-del-clause          1110\n :sat-elim-bool-vars-res  130\n :sat-elim-clauses        231\n :sat-elim-literals       201\n :sat-minimized-lits      3406\n :sat-mk-clause-2ary      836\n :sat-mk-clause-3ary      202\n :sat-mk-clause-nary      2284\n :sat-mk-var              441\n :sat-probing-assigned    1\n :sat-propagations-2ary   38521\n :sat-propagations-nary   37292\n :sat-restarts            26\n :sat-scc-elim-vars       1\n :sat-subs-resolution     7\n :sat-subs-resolution-dyn 72\n :sat-subsumed            189\n :sat-units               17\n :time                    0.03)"
+      },
+      {
+        "label": "all_age32_timeout32_tick_lease_boolean_gate",
+        "status": "unsat",
+        "smt2": "F:\\nav_integration_g2_20261023\\lease_deadline_compare_math3\\all_age32_timeout32_tick_lease_boolean_gate.smt2",
+        "statistics": "(:elim-unconstrained      2\n :max-memory              25.96\n :memory                  17.62\n :num-allocs              704401\n :rlimit-count            157715\n :sat-backjumps           942\n :sat-conflicts           943\n :sat-decisions           2554\n :sat-del-clause          1615\n :sat-elim-bool-vars-res  186\n :sat-elim-clauses        354\n :sat-elim-literals       225\n :sat-minimized-lits      2266\n :sat-mk-clause-2ary      840\n :sat-mk-clause-3ary      365\n :sat-mk-clause-nary      2041\n :sat-mk-var              446\n :sat-probing-assigned    1\n :sat-propagations-2ary   26052\n :sat-propagations-nary   22107\n :sat-restarts            2\n :sat-scc-elim-vars       3\n :sat-subs-resolution     5\n :sat-subs-resolution-dyn 56\n :sat-subsumed            301\n :sat-units               36\n :time                    0.01)"
+      }
+    ],
+    "known_age_state_count": 4294967296,
+    "known_timeout_bit_pattern_count": 4294967296,
+    "no_reachability_assumption": true,
+    "unchanged_remainder_of_module_text": true,
+    "implications": "For every same prestate and input, identical deadline and all other statements yield identical registered next state/output; no pipeline, priority or period change.",
+    "four_state_scope": "All-state solver is2state. Timeout0 explicitly retains original arithmetic; directed SV X/Z semantics checked separately in finite fixture.",
+    "bad_naive_rewrite_counterexample": {
+      "age_hex": "0xffffffff",
+      "timeout": 200,
+      "original": false,
+      "naive_without_MAX_exclusion": true
+    },
+    "input_bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\command_lease_guard.v",
+        "bytes": 4683,
+        "mtime_ns": 1792981481766260400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared3\\command_lease_guard.v",
+        "bytes": 5023,
+        "mtime_ns": 1792985808536274800
+      }
+    ],
+    "new_SYN_PNR_started": false,
+    "physical_mapping_or_timing_accepted": false
+  },
+  "targeted_cycle_result": {
+    "passed": true,
+    "recorded_at": "2026-10-26T11:51:09.531552+08:00",
+    "summary": "LEASE_DEADLINE_COMPARE_PASS contracts=23 compared_cycles=3123 math_parameter_XZ_cases=225",
+    "contracts": [
+      "fresh stopped zero arms",
+      "baseline reaches motion target",
+      "age198 tick accepts renewal and age reset overrides increment",
+      "age199 non-tick accepts renewal",
+      "deadline beats same-edge valid command; rejects without sequence renewal",
+      "deadline output begins original same-tick controlled ramp",
+      "nonzero command cannot automatically recover",
+      "fresh stopped zero arms",
+      "baseline reaches motion target",
+      "source fault beats valid command",
+      "fresh stopped zero arms",
+      "baseline reaches motion target",
+      "estop retains immediate zero priority",
+      "fresh stopped zero arms",
+      "baseline reaches motion target",
+      "owner/session change retains original priority over coincident estop and controlled output update",
+      "fresh stopped zero arms",
+      "baseline reaches motion target",
+      "stale prestate feedback revokes before same-edge fresh feedback/command",
+      "fresh stopped zero arms",
+      "baseline reaches motion target",
+      "common asynchronous reset clears both exact output/state chains",
+      "reset requires fresh zero handshake"
+    ],
+    "compared_cycles": 3123,
+    "math_parameter_XZ_cases": 225,
+    "output_and_registered_state_every_cycle": true,
+    "full_production_model_untouched": true,
+    "physical_200ms_stopping_or_setup_hold_not_verified": true,
+    "new_SYN_PNR_started": false,
+    "programmed": false
+  },
+  "check_count_including_repeated_rearms": 23,
+  "distinct_check_count": 13,
+  "distinct_check_labels": [
+    "fresh stopped zero arms",
+    "baseline reaches motion target",
+    "age198 tick accepts renewal and age reset overrides increment",
+    "age199 non-tick accepts renewal",
+    "deadline beats same-edge valid command; rejects without sequence renewal",
+    "deadline output begins original same-tick controlled ramp",
+    "nonzero command cannot automatically recover",
+    "source fault beats valid command",
+    "estop retains immediate zero priority",
+    "owner/session change retains original priority over coincident estop and controlled output update",
+    "stale prestate feedback revokes before same-edge fresh feedback/command",
+    "common asynchronous reset clears both exact output/state chains",
+    "reset requires fresh zero handshake"
+  ],
+  "first_cycle_fixture_failure": {
+    "path": "F:\\nav_integration_g2_20261023\\lease_deadline_compare_cycle1",
+    "stage": "newTB compilation only",
+    "reason": "math_done used before declaration, plus minimum-negative unsized literal warning. Preserved oldTB/log. No functional simulation was run.",
+    "correction": "Only moved math_done declaration before first use and used explicit32'sh80000000. Candidate RTL/source and math proof unchanged."
+  },
+  "actual_old_cycle_processes_exited": [
+    {
+      "pid": 54256,
+      "original_created_epoch": 1792986657.6589355,
+      "original_process_exited": true
+    },
+    {
+      "pid": 52488,
+      "original_created_epoch": 1792986665.293261,
+      "original_process_exited": true
+    },
+    {
+      "pid": 65856,
+      "original_created_epoch": 1792986666.4287806,
+      "original_process_exited": true
+    },
+    {
+      "pid": 61040,
+      "original_created_epoch": 1792985817.2784903,
+      "original_process_exited": true
+    }
+  ],
+  "actual_SYN34_cone_review": "F:\\nav_integration_g2_20261023\\lease_deadline_syn34_review1\\result.json",
+  "arithmetic_domain": "All2^32 known age values and2^32 known timeout integer bit patterns; no reachable-state assumption. DefaultT200 uses>=199 and explicitMAX exclusion; T0 retains old arithmetic for four-state behavior.",
+  "unchanged": "One deadline expression only. Original count saturation, age display, output register cycles, ramp function, TIMEOUT_MS200, timeout/newpacket/owner/ESTOP/feedback priority, all other65RTL,69assets,31headers,originalFW andCST/SDC/clocks unchanged.",
+  "source_declaration_count_or_balanced_LUT_mapping_not_a_measured_resource_benefit": true,
+  "actual_new_synthesis_or_physical_setup_hold_or_route_benefit_verified": false,
+  "whole_project_deployment_accepted": false,
+  "new_SYN_PNR_started": false,
+  "PNR49_or_frozen_sources_modified": false,
+  "programmed": false,
+  "current_entry_bindings": [
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prepare_lease_deadline_compare.py",
+      "bytes": 5350,
+      "mtime_ns": 1792985807655243900
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prove_lease_deadline_compare.py",
+      "bytes": 3062,
+      "mtime_ns": 1792985716142737500
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\probe_lease_deadline_compare.py",
+      "bytes": 6121,
+      "mtime_ns": 1792986715434634900
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\tb_lease_deadline_compare.sv",
+      "bytes": 6782,
+      "mtime_ns": 1792986657214152700
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\inspect_lease_deadline_syn_path.py",
+      "bytes": 4704,
+      "mtime_ns": 1792985884803223600
+    }
+  ],
+  "next": "Parent may independently review source and proofs, then choose a later mapping build. Exact new source may still map its MAX reduction to a long shared chain; no gain is claimed until actual map and route. Do not repeat the old post-ramp regression."
+}

@@ -22,6 +22,7 @@ ORIGIN = BASE/'baseline_fusion_only_syn23'
 PREP = BASE/'baseline_fusion_model25_NAV50_prepared4'
 OUTPUT = BASE/'baseline_fusion_model25_NAV50_syn34'
 CONTROL = BASE/'baseline_fusion_model25_NAV50_one_shot'
+BUILD_LABEL = 'SYN34'
 CHANGED = sorted(['g2_top.v', 'control4500_core.v', 'control/mem_policy.v',
                   'control/imu_fusion.v'])
 ADDED = sorted(['control/mem_policy_related25.v', 'model25_related_mailbox.v',
@@ -105,14 +106,14 @@ def main():
         cmd = [sys.executable, '-X', 'utf8', str(Path(__file__).with_name(
             'retry_frozen_synthesis.py')), str(PREP), '--out', str(OUTPUT),
             '--start-now', '--tool-priority', 'normal']
-        with (CONTROL/'full_SYN34_stdout.log').open('w') as log:
+        with (CONTROL/('full_'+BUILD_LABEL+'_stdout.log')).open('w') as log:
             child = subprocess.Popen(cmd, stdout=log, stderr=subprocess.STDOUT,
                                      creationflags=subprocess.CREATE_NO_WINDOW)
-            status('running_unique_full_SYN34', runner_pid=child.pid,
+            status('running_unique_full_'+BUILD_LABEL, runner_pid=child.pid,
                    runner_created_epoch=psutil.Process(child.pid).create_time(), command=cmd)
             code = child.wait()
         assert code == 0, ('full synthesis did not finish successfully', code)
-        status('SYN34_complete_actual_3clock_RAM_INIT_related_boundaries_review_pending',
+        status(BUILD_LABEL+'_complete_actual_3clock_RAM_INIT_related_boundaries_review_pending',
                review_required=['all RAM geometry and INIT', 'CPU128KiB and original FW',
                                 'actual 50/25/100MHz clock drivers and PLL parameters',
                                 'original26 CDC plus five atomic related-clock channels',

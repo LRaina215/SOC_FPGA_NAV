@@ -1,0 +1,213 @@
+{
+  "recorded_at": "2026-10-26T11:52:32.282435+08:00",
+  "phase": "partial_real4500_numeric_frames_and125Hz_cadence_observed_full_stop_reset_suite_running",
+  "output": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3",
+  "source": "F:/nav_integration_g2_20261023/baseline_fusion_model25_NAV50_prepared4",
+  "job_snapshot": {
+    "controller_pid": 40420,
+    "controller_created_epoch": 1792983202.955645,
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4",
+    "output": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3",
+    "real4500": true,
+    "inference_substitute": false,
+    "force_internal_state": false,
+    "production_BIAS_SAMPLES": 200,
+    "source_sensor_hz": 100,
+    "model_clock_mhz": 25,
+    "reference_clock_mhz": 50,
+    "policy_hz": 125,
+    "period_us": 8000,
+    "testbench_watchdog_simulated_seconds": 5,
+    "new_SYN_PNR": false,
+    "programmed": false,
+    "physical_stop_or_deployment_accepted": false,
+    "phase": "running_xsim",
+    "updated_at": "2026-10-26T11:52:31.631078+08:00",
+    "input_and_observation_spec": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3\\input_and_observation_spec.json",
+    "tool_command": [
+      "cmd",
+      "/c",
+      "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+      "full_production_snap",
+      "-runall"
+    ],
+    "wrapper_pid": 59744,
+    "wrapper_created_epoch": 1792983215.6214323,
+    "tool_start_admission": {
+      "available_physical_bytes": 3402735616,
+      "available_commit_bytes": 4860067840,
+      "checked_at": "2026-10-26T10:53:35.617009+08:00"
+    },
+    "current_tool_processes": [
+      {
+        "pid": 59744,
+        "parent_pid": 40420,
+        "created_epoch": 1792983215.6214323,
+        "name": "cmd.exe",
+        "command": [
+          "cmd",
+          "/c",
+          "E:\\2026.1\\Vivado\\bin\\xsim.bat",
+          "full_production_snap",
+          "-runall"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3",
+        "priority": 16384,
+        "rss": 1683456
+      },
+      {
+        "pid": 8672,
+        "parent_pid": 59744,
+        "created_epoch": 1792983215.6316392,
+        "name": "conhost.exe",
+        "command": [
+          "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+          "0x4"
+        ],
+        "cwd": "C:\\WINDOWS",
+        "priority": 16384,
+        "rss": 2715648
+      },
+      {
+        "pid": 2832,
+        "parent_pid": 59744,
+        "created_epoch": 1792983216.7878656,
+        "name": "xsim.exe",
+        "command": [
+          "E:/2026.1/Vivado/bin/unwrapped/win64.o/xsim.exe",
+          "full_production_snap",
+          "-runall"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3",
+        "priority": 16384,
+        "rss": 66379776
+      },
+      {
+        "pid": 52180,
+        "parent_pid": 2832,
+        "created_epoch": 1792983217.313412,
+        "name": "xsimk.exe",
+        "command": [
+          "xsim.dir/full_production_snap/xsimk.exe",
+          "-runall",
+          "-simmode",
+          "gui",
+          "-wdb",
+          "full_production_snap.wdb",
+          "-simrunnum",
+          "0",
+          "-socket",
+          "50947"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3",
+        "priority": 16384,
+        "rss": 11112448
+      },
+      {
+        "pid": 18528,
+        "parent_pid": 52180,
+        "created_epoch": 1792983217.4378676,
+        "name": "conhost.exe",
+        "command": [
+          "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+          "0x4"
+        ],
+        "cwd": "C:\\WINDOWS",
+        "priority": 16384,
+        "rss": 2289664
+      }
+    ]
+  },
+  "identity_checked_original_processes": [
+    {
+      "pid": 40420,
+      "created_epoch": 1792983202.955645,
+      "name": "python.exe",
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "D:/Desktop/SOC FPGA/nav/integration/g2/probe_model25_full_production.py",
+        "--out",
+        "F:/nav_integration_g2_20261023/model25_full_production_probe3",
+        "--wait-for-memory"
+      ],
+      "cwd": "D:\\Desktop\\SOC FPGA\\nav"
+    },
+    {
+      "pid": 2832,
+      "created_epoch": 1792983216.7878656,
+      "name": "xsim.exe",
+      "command": [
+        "E:/2026.1/Vivado/bin/unwrapped/win64.o/xsim.exe",
+        "full_production_snap",
+        "-runall"
+      ],
+      "cwd": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3"
+    },
+    {
+      "pid": 52180,
+      "created_epoch": 1792983217.313412,
+      "name": "xsimk.exe",
+      "command": [
+        "xsim.dir/full_production_snap/xsimk.exe",
+        "-runall",
+        "-simmode",
+        "gui",
+        "-wdb",
+        "full_production_snap.wdb",
+        "-simrunnum",
+        "0",
+        "-socket",
+        "50947"
+      ],
+      "cwd": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3"
+    }
+  ],
+  "source_or_fixture_edited_after_start": false,
+  "production_BIAS_SAMPLES": 200,
+  "actual_sensor_HZ": 100,
+  "actual_public_vendor_PLL_dynamic_model": true,
+  "reference_model_mhz": 50,
+  "candidate_model_mhz": 25,
+  "peripheral_NAV_target_mhz": 50,
+  "real4500": true,
+  "inference_substitute": false,
+  "force_internal_state": false,
+  "partial_numeric_frame_count": 7,
+  "numeric_rows": [
+    "FRAME_NUMERIC_MATCH epoch=0 id=1 actual_input_words=168 trace_words=425 core_actions=6 actuator_bits=336 capture_us=2028009.550 publish_us=2031385.080 latency_us=3375.530 core_cycles25=83534 core_ms25=3.341360",
+    "FRAME_NUMERIC_MATCH epoch=0 id=2 actual_input_words=168 trace_words=425 core_actions=6 actuator_bits=336 capture_us=2036009.550 publish_us=2039385.080 latency_us=3375.530 core_cycles25=83534 core_ms25=3.341360",
+    "FRAME_NUMERIC_MATCH epoch=0 id=3 actual_input_words=168 trace_words=425 core_actions=6 actuator_bits=336 capture_us=2044009.550 publish_us=2047385.080 latency_us=3375.530 core_cycles25=83534 core_ms25=3.341360",
+    "FRAME_NUMERIC_MATCH epoch=0 id=4 actual_input_words=168 trace_words=425 core_actions=6 actuator_bits=336 capture_us=2052009.550 publish_us=2055385.080 latency_us=3375.530 core_cycles25=83534 core_ms25=3.341360",
+    "FRAME_NUMERIC_MATCH epoch=0 id=5 actual_input_words=168 trace_words=425 core_actions=6 actuator_bits=336 capture_us=2060009.550 publish_us=2063385.080 latency_us=3375.530 core_cycles25=83534 core_ms25=3.341360",
+    "FRAME_NUMERIC_MATCH epoch=0 id=6 actual_input_words=168 trace_words=425 core_actions=6 actuator_bits=336 capture_us=2068009.550 publish_us=2071385.080 latency_us=3375.530 core_cycles25=83534 core_ms25=3.341360",
+    "FRAME_NUMERIC_MATCH epoch=0 id=7 actual_input_words=168 trace_words=425 core_actions=6 actuator_bits=336 capture_us=2076009.550 publish_us=2079385.080 latency_us=3375.530 core_cycles25=83534 core_ms25=3.341360"
+  ],
+  "actual_inputs_compared_perframe": 168,
+  "all_layer_index_data_results_compared_perframe": 425,
+  "actual_actuator_publication_bundle_bits": 336,
+  "all_comparisons_explicitly_reject_unknown_bits": true,
+  "core_cycle_values": [
+    83534
+  ],
+  "core_milliseconds25_values": [
+    3.34136
+  ],
+  "capture_to_50MHz_publication_us": {
+    "min": 3375.53,
+    "max": 3375.53
+  },
+  "actual_capture_and_publication_cadence_us": 8000,
+  "perframe_latency_check_limit_us": 8000,
+  "physical_command_plateau_changes_in_this_stimulus": true,
+  "completed_stop_stage_rows": [
+    "CONTROLLED_ZERO_BALANCING_PASS us=2079385.080 model_active=1",
+    "FAULT_STOP_POSE_HOLD_PASS no_auto_resume=1 us=2097385.180"
+  ],
+  "complete_scenario_passed": false,
+  "full_motion_numeric_domain_or_physical_setup_hold_CDC_IO_stop_deployment_accepted": false,
+  "next": "Keep the original single probe3 running; pending stop/rearm/action-inflight reset/full secondBIAS200 calibration/25MHz halt sequence remains. No restart or shortened calibration. Result will land in original result.json.",
+  "new_SYN_PNR_started_by_this_probe": false,
+  "programmed": false
+}

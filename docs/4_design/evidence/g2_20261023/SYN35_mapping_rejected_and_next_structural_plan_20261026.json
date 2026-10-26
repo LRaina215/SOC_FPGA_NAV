@@ -1,0 +1,101 @@
+{
+  "recorded_at": "2026-10-26T12:15:24.666025+08:00",
+  "SYN35": {
+    "completed_at": "2026-10-26T12:04:31.691525+08:00",
+    "tool_exit": 0,
+    "actual_mapping_review": "F:\\nav_integration_g2_20261023\\lease_deadline_SYN35_mapping_review1\\final_review.json",
+    "review_completed": true,
+    "mapping_goal_achieved": false,
+    "original_FF": 39597,
+    "new_FF": 39597,
+    "original_LUT": 53384,
+    "new_LUT": 53385,
+    "original_lease_LUT": 599,
+    "new_lease_LUT": 617,
+    "first_estimated_path_before_ns": 21.318,
+    "first_estimated_path_after_ns": 21.153,
+    "original12level_prefix_not_eliminated": true,
+    "new_merged13th_gate": true,
+    "scope": "Synthesis estimates and actual mapped structure; not routed timing",
+    "automatic_PNR": false,
+    "promoted_to_PNR50": false,
+    "independent_memory_clock_CDC_review": "F:\\nav_integration_g2_20261023\\lease_deadline_SYN35_memory_clock_review1\\result.json"
+  },
+  "PNR49": {
+    "unrouted": 427,
+    "actual_BSRAM": 332,
+    "actual_Logic": 89958,
+    "actual_Register": 41574,
+    "actual_CLS": 56091,
+    "actual_DSP": 163.5,
+    "actual_PRIMARY_used": 8,
+    "actual_LW_used": 8,
+    "TR_available": false,
+    "setup_hold_all_three_clocks": null,
+    "actual_preservation_review": "F:\\nav_integration_g2_20261023\\pnr49_final_actual_review4\\final_review.json",
+    "reset_distribution_table": "F:\\nav_integration_g2_20261023\\pnr49_final_actual_review4\\actual_reset548_modules_and35_load_comparison.json",
+    "failed_net_identity_or_unique_cause_proven": false
+  },
+  "production_probe3": {
+    "identities": [
+      {
+        "pid": 2832,
+        "created_epoch": 1792983216.7878656,
+        "command": [
+          "E:/2026.1/Vivado/bin/unwrapped/win64.o/xsim.exe",
+          "full_production_snap",
+          "-runall"
+        ]
+      },
+      {
+        "pid": 52180,
+        "created_epoch": 1792983217.313412,
+        "command": [
+          "xsim.dir/full_production_snap/xsimk.exe",
+          "-runall",
+          "-simmode",
+          "gui",
+          "-wdb",
+          "full_production_snap.wdb",
+          "-simrunnum",
+          "0",
+          "-socket",
+          "50947"
+        ]
+      }
+    ],
+    "matched_frames": 10,
+    "last_matching_line": "FRAME_NUMERIC_MATCH epoch=1 id=3 actual_input_words=168 trace_words=425 core_actions=6 actuator_bits=336 capture_us=2123385.310 publish_us=2126760.840 latency_us=3375.530 core_cycles25=83534 core_ms25=3.341360",
+    "last_progress": "PRODUCTION_PROGRESS us=2700000.000 samples=57 refcal=1 candcal=1 ref_frames=0 cand_frames=0 flags=03 fault=0 epoch=2",
+    "capture_to_publication_us": 3375.53,
+    "period_us": 8000,
+    "final_result_available": false,
+    "reset_recalibration_and_clock_halt_completion_pending": true
+  },
+  "next_structural_work": [
+    {
+      "candidate": "Explicit bounded-depth MAX exclusion tree",
+      "target": "8 LUT4 -> 2 LUT4 -> 1 LUT2; at most3 age-to-nonMAX logic levels",
+      "retain": "All original200 FF, count/ramp, parameter semantics, wraparound, XZ, stopping priority and cycles",
+      "first_gate": "Single guard actual mapping and all-state/cycle equivalence before any full build"
+    },
+    {
+      "candidate": "Write-before-read private source payload reset reduction",
+      "current_source_data_FF": 552,
+      "theoretical_max_reset_pin_reduction": 551,
+      "model_root_max_reduction": 284,
+      "transport_root_max_reduction": 267,
+      "scope": "Forecast only; preserve public destination, request/ACK, valid/overflow and stopping reset states",
+      "first_gate": "Prove reset during transfer/clock halt/rearm and measure actual mapping including sharedFF changes"
+    }
+  ],
+  "diagnosis": {
+    "capacity_not_exceeded": true,
+    "local_placement_interconnect_global_distribution_pressure": "Supported hypothesis, not unique proven root cause",
+    "counterexample": "PNR35 routed with332BSRAM; same-anchor native314PNR46 failed375",
+    "algorithm_runtime_separate_from_physical_route_failure": true
+  },
+  "no_new_joint_PNR": true,
+  "programmed": false,
+  "deployment_accepted": false
+}

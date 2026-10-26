@@ -1,0 +1,1515 @@
+{
+  "recorded_at": "2026-10-26T11:39:06.809333+08:00",
+  "phase": "prepared_full_state_math_passed_targeted_cycle_test_memory_queued",
+  "candidate": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared3",
+  "source_preparation": {
+    "prepared": true,
+    "recorded_at": "2026-10-26T11:36:48.661360+08:00",
+    "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4",
+    "out": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared3",
+    "only_changed_RTL": [
+      "command_lease_guard.v"
+    ],
+    "unchanged_selected_RTL": 65,
+    "selected_RTL": 66,
+    "unselected_modgen_template_byte_identical": true,
+    "identical_assets": 69,
+    "identical_headers": 31,
+    "original_firmware_and_all_weights_byte_identical": true,
+    "clock_CST_SDC_capacities_unchanged": true,
+    "original_counting_saturation_ramp_output_cycles_and_priority_unchanged": true,
+    "production_timeout_ms": 200,
+    "age_unsigned_bits": 32,
+    "timeout_integer_bits": 32,
+    "arithmetic_domain": "All2^32 known age values and all2^32 integer timeout bit patterns; normal200ms. Nonzero parameters use compare199 plus explicit MAX exclusion; timeout0 retains original32bit arithmetic to preserve X/Z behavior.",
+    "full_state_math_proof_pending": true,
+    "targeted_cycle_comparison_pending": true,
+    "new_mapping_or_timing_benefit_verified": false,
+    "balanced_reduction_not_guaranteed": true,
+    "new_SYN_PNR_started": false,
+    "programmed": false,
+    "deployment_accepted": false,
+    "bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared3\\command_lease_guard.v",
+        "bytes": 5023,
+        "mtime_ns": 1792985808536274800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared3\\manifest.json",
+        "bytes": 9345,
+        "mtime_ns": 1792985808538406000
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared3\\g2.sdc",
+        "bytes": 6762,
+        "mtime_ns": 1792981482047268800
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared3\\g2.cst",
+        "bytes": 5495,
+        "mtime_ns": 1792981482046224100
+      }
+    ]
+  },
+  "exact_source_diff": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared3\\lease_deadline_delta.patch",
+  "actual_SYN34_cone_review": {
+    "recorded_at": "2026-10-26T11:38:05.716074+08:00",
+    "read_only": true,
+    "source_synthesis": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_syn34",
+    "scope": "Actual SYN34 netlist/report structure and estimated delay only; not PNR49 actual critical path, unrouted-net identity or unique congestion cause.",
+    "source_anchors": [
+      {
+        "line": 39,
+        "text": "wire deadline=tick && have_lease && age_ms+1>=TIMEOUT_MS;"
+      },
+      {
+        "line": 40,
+        "text": "wire stop_mode=!armed || expired || source_fault || !fresh_feedback || changing || deadline;"
+      },
+      {
+        "line": 68,
+        "text": "out_forward_q12<=approach(out_forward_q12,stop_mode?24'sd0:target_v,STEP_V_Q12);"
+      },
+      {
+        "line": 77,
+        "text": "if(changing)begin"
+      },
+      {
+        "line": 82,
+        "text": "end else if(estop)begin"
+      },
+      {
+        "line": 86,
+        "text": "end else if(source_fault || deadline ||"
+      }
+    ],
+    "first_reported_path": {
+      "Slack": "-1.004",
+      "Data Arrival Time": "21.318",
+      "Data Required Time": "20.314",
+      "From": "u_command_lease/age_ms_0_s3",
+      "To": "u_command_lease/out_forward_q12_2_s1",
+      "Launch Clk": "clk50[R]",
+      "Latch Clk": "clk50[R]"
+    },
+    "arrival_path_rows": [
+      {
+        "arrival_ns": "0.000",
+        "delay_ns": "0.000",
+        "type": "",
+        "edge": "",
+        "fanout": "",
+        "node": "active clock edge time"
+      },
+      {
+        "arrival_ns": "0.000",
+        "delay_ns": "0.000",
+        "type": "",
+        "edge": "",
+        "fanout": "",
+        "node": "clk50"
+      },
+      {
+        "arrival_ns": "0.000",
+        "delay_ns": "0.000",
+        "type": "tCL",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "clk50_ibuf/I"
+      },
+      {
+        "arrival_ns": "0.000",
+        "delay_ns": "0.000",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "30414",
+        "node": "clk50_ibuf/O"
+      },
+      {
+        "arrival_ns": "0.371",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/age_ms_0_s3/CLK"
+      },
+      {
+        "arrival_ns": "0.715",
+        "delay_ns": "0.344",
+        "type": "tC2Q",
+        "edge": "RR",
+        "fanout": "4",
+        "node": "u_command_lease/age_ms_0_s3/Q"
+      },
+      {
+        "arrival_ns": "1.087",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n1007_s3/I0"
+      },
+      {
+        "arrival_ns": "1.608",
+        "delay_ns": "0.521",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "5",
+        "node": "u_command_lease/n1007_s3/F"
+      },
+      {
+        "arrival_ns": "1.979",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n1004_s4/I1"
+      },
+      {
+        "arrival_ns": "2.490",
+        "delay_ns": "0.511",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "4",
+        "node": "u_command_lease/n1004_s4/F"
+      },
+      {
+        "arrival_ns": "2.861",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n1001_s4/I3"
+      },
+      {
+        "arrival_ns": "3.121",
+        "delay_ns": "0.260",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "4",
+        "node": "u_command_lease/n1001_s4/F"
+      },
+      {
+        "arrival_ns": "3.492",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n998_s4/I1"
+      },
+      {
+        "arrival_ns": "4.003",
+        "delay_ns": "0.511",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "3",
+        "node": "u_command_lease/n998_s4/F"
+      },
+      {
+        "arrival_ns": "4.374",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n996_s4/I2"
+      },
+      {
+        "arrival_ns": "4.831",
+        "delay_ns": "0.457",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "2",
+        "node": "u_command_lease/n996_s4/F"
+      },
+      {
+        "arrival_ns": "5.202",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n995_s3/I1"
+      },
+      {
+        "arrival_ns": "5.713",
+        "delay_ns": "0.511",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "4",
+        "node": "u_command_lease/n995_s3/F"
+      },
+      {
+        "arrival_ns": "6.084",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n992_s4/I1"
+      },
+      {
+        "arrival_ns": "6.595",
+        "delay_ns": "0.511",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "3",
+        "node": "u_command_lease/n992_s4/F"
+      },
+      {
+        "arrival_ns": "6.966",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n991_s3/I1"
+      },
+      {
+        "arrival_ns": "7.477",
+        "delay_ns": "0.511",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "4",
+        "node": "u_command_lease/n991_s3/F"
+      },
+      {
+        "arrival_ns": "7.848",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n987_s3/I2"
+      },
+      {
+        "arrival_ns": "8.305",
+        "delay_ns": "0.457",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "5",
+        "node": "u_command_lease/n987_s3/F"
+      },
+      {
+        "arrival_ns": "8.676",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n983_s3/I2"
+      },
+      {
+        "arrival_ns": "9.133",
+        "delay_ns": "0.457",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "4",
+        "node": "u_command_lease/n983_s3/F"
+      },
+      {
+        "arrival_ns": "9.504",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n980_s4/I1"
+      },
+      {
+        "arrival_ns": "10.015",
+        "delay_ns": "0.511",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "3",
+        "node": "u_command_lease/n980_s4/F"
+      },
+      {
+        "arrival_ns": "10.386",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/age_ms_31_s6/I2"
+      },
+      {
+        "arrival_ns": "10.843",
+        "delay_ns": "0.457",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "2",
+        "node": "u_command_lease/age_ms_31_s6/F"
+      },
+      {
+        "arrival_ns": "11.214",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n4094_s69/I2"
+      },
+      {
+        "arrival_ns": "11.671",
+        "delay_ns": "0.457",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n4094_s69/F"
+      },
+      {
+        "arrival_ns": "12.042",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n4094_s4/I0"
+      },
+      {
+        "arrival_ns": "12.563",
+        "delay_ns": "0.521",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "41",
+        "node": "u_command_lease/n4094_s4/F"
+      },
+      {
+        "arrival_ns": "12.934",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n590_s3/I1"
+      },
+      {
+        "arrival_ns": "13.445",
+        "delay_ns": "0.511",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "2",
+        "node": "u_command_lease/n590_s3/F"
+      },
+      {
+        "arrival_ns": "13.816",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "2",
+        "node": "u_command_lease/n641_s/I0"
+      },
+      {
+        "arrival_ns": "14.352",
+        "delay_ns": "0.535",
+        "type": "tINS",
+        "edge": "RF",
+        "fanout": "1",
+        "node": "u_command_lease/n641_s/COUT"
+      },
+      {
+        "arrival_ns": "14.352",
+        "delay_ns": "0.000",
+        "type": "tNET",
+        "edge": "FF",
+        "fanout": "2",
+        "node": "u_command_lease/n640_s/CIN"
+      },
+      {
+        "arrival_ns": "14.397",
+        "delay_ns": "0.045",
+        "type": "tINS",
+        "edge": "FR",
+        "fanout": "1",
+        "node": "u_command_lease/n640_s/COUT"
+      },
+      {
+        "arrival_ns": "14.397",
+        "delay_ns": "0.000",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "2",
+        "node": "u_command_lease/n639_s/CIN"
+      },
+      {
+        "arrival_ns": "14.442",
+        "delay_ns": "0.045",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n639_s/COUT"
+      },
+      {
+        "arrival_ns": "14.442",
+        "delay_ns": "0.000",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "2",
+        "node": "u_command_lease/n638_s/CIN"
+      },
+      {
+        "arrival_ns": "14.487",
+        "delay_ns": "0.045",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n638_s/COUT"
+      },
+      {
+        "arrival_ns": "14.487",
+        "delay_ns": "0.000",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "2",
+        "node": "u_command_lease/n637_s/CIN"
+      },
+      {
+        "arrival_ns": "14.532",
+        "delay_ns": "0.045",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n637_s/COUT"
+      },
+      {
+        "arrival_ns": "14.532",
+        "delay_ns": "0.000",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "2",
+        "node": "u_command_lease/n636_s/CIN"
+      },
+      {
+        "arrival_ns": "14.577",
+        "delay_ns": "0.045",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n636_s/COUT"
+      },
+      {
+        "arrival_ns": "14.577",
+        "delay_ns": "0.000",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "2",
+        "node": "u_command_lease/n635_s/CIN"
+      },
+      {
+        "arrival_ns": "14.622",
+        "delay_ns": "0.045",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n635_s/COUT"
+      },
+      {
+        "arrival_ns": "14.622",
+        "delay_ns": "0.000",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "2",
+        "node": "u_command_lease/n634_s/CIN"
+      },
+      {
+        "arrival_ns": "14.667",
+        "delay_ns": "0.045",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n634_s/COUT"
+      },
+      {
+        "arrival_ns": "14.667",
+        "delay_ns": "0.000",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "2",
+        "node": "u_command_lease/n633_s/CIN"
+      },
+      {
+        "arrival_ns": "14.712",
+        "delay_ns": "0.045",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n633_s/COUT"
+      },
+      {
+        "arrival_ns": "14.712",
+        "delay_ns": "0.000",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "2",
+        "node": "u_command_lease/n632_s/CIN"
+      },
+      {
+        "arrival_ns": "14.757",
+        "delay_ns": "0.045",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n632_s/COUT"
+      },
+      {
+        "arrival_ns": "14.757",
+        "delay_ns": "0.000",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "2",
+        "node": "u_command_lease/n631_s/CIN"
+      },
+      {
+        "arrival_ns": "14.802",
+        "delay_ns": "0.045",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n631_s/COUT"
+      },
+      {
+        "arrival_ns": "14.802",
+        "delay_ns": "0.000",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "2",
+        "node": "u_command_lease/n630_s/CIN"
+      },
+      {
+        "arrival_ns": "14.847",
+        "delay_ns": "0.045",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n630_s/COUT"
+      },
+      {
+        "arrival_ns": "14.847",
+        "delay_ns": "0.000",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "2",
+        "node": "u_command_lease/n629_s/CIN"
+      },
+      {
+        "arrival_ns": "14.892",
+        "delay_ns": "0.045",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n629_s/COUT"
+      },
+      {
+        "arrival_ns": "14.892",
+        "delay_ns": "0.000",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "2",
+        "node": "u_command_lease/n628_s/CIN"
+      },
+      {
+        "arrival_ns": "15.111",
+        "delay_ns": "0.219",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "2",
+        "node": "u_command_lease/n628_s/SUM"
+      },
+      {
+        "arrival_ns": "15.482",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n1099_s10/I1"
+      },
+      {
+        "arrival_ns": "15.993",
+        "delay_ns": "0.511",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n1099_s10/F"
+      },
+      {
+        "arrival_ns": "16.364",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n1099_s9/I2"
+      },
+      {
+        "arrival_ns": "16.821",
+        "delay_ns": "0.457",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n1099_s9/F"
+      },
+      {
+        "arrival_ns": "17.192",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n1099_s5/I3"
+      },
+      {
+        "arrival_ns": "17.452",
+        "delay_ns": "0.260",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n1099_s5/F"
+      },
+      {
+        "arrival_ns": "17.823",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n1099_s4/I0"
+      },
+      {
+        "arrival_ns": "18.344",
+        "delay_ns": "0.521",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "11",
+        "node": "u_command_lease/n1099_s4/F"
+      },
+      {
+        "arrival_ns": "18.715",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n1098_s3/I0"
+      },
+      {
+        "arrival_ns": "19.236",
+        "delay_ns": "0.521",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "2",
+        "node": "u_command_lease/n1098_s3/F"
+      },
+      {
+        "arrival_ns": "19.608",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n1097_s3/I1"
+      },
+      {
+        "arrival_ns": "20.118",
+        "delay_ns": "0.511",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n1097_s3/F"
+      },
+      {
+        "arrival_ns": "20.490",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n1097_s2/I2"
+      },
+      {
+        "arrival_ns": "20.946",
+        "delay_ns": "0.457",
+        "type": "tINS",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/n1097_s2/F"
+      },
+      {
+        "arrival_ns": "21.318",
+        "delay_ns": "0.371",
+        "type": "tNET",
+        "edge": "RR",
+        "fanout": "1",
+        "node": "u_command_lease/out_forward_q12_2_s1/D"
+      }
+    ],
+    "actual_all_ones_cone": {
+      "root": "age_ms_31_s6/F",
+      "function": "AND of exactly age_ms[31:0]",
+      "LUT_logic_levels": 12,
+      "leaves": [
+        "age_ms[0]",
+        "age_ms[10]",
+        "age_ms[11]",
+        "age_ms[12]",
+        "age_ms[13]",
+        "age_ms[14]",
+        "age_ms[15]",
+        "age_ms[16]",
+        "age_ms[17]",
+        "age_ms[18]",
+        "age_ms[19]",
+        "age_ms[1]",
+        "age_ms[20]",
+        "age_ms[21]",
+        "age_ms[22]",
+        "age_ms[23]",
+        "age_ms[24]",
+        "age_ms[25]",
+        "age_ms[26]",
+        "age_ms[27]",
+        "age_ms[28]",
+        "age_ms[29]",
+        "age_ms[2]",
+        "age_ms[30]",
+        "age_ms[31]",
+        "age_ms[3]",
+        "age_ms[4]",
+        "age_ms[5]",
+        "age_ms[6]",
+        "age_ms[7]",
+        "age_ms[8]",
+        "age_ms[9]"
+      ],
+      "actual_AND_primitives": [
+        {
+          "type": "LUT3",
+          "name": "n1007_s3",
+          "ports": {
+            "F": "n1007_8",
+            "I0": "age_ms[0]",
+            "I1": "age_ms[1]",
+            "I2": "age_ms[2]"
+          },
+          "params": {
+            "INIT": "8'h80"
+          }
+        },
+        {
+          "type": "LUT4",
+          "name": "n1004_s4",
+          "ports": {
+            "F": "n1004_10",
+            "I0": "age_ms[5]",
+            "I1": "n1007_8",
+            "I2": "age_ms[3]",
+            "I3": "age_ms[4]"
+          },
+          "params": {
+            "INIT": "16'h8000"
+          }
+        },
+        {
+          "type": "LUT4",
+          "name": "n1001_s4",
+          "ports": {
+            "F": "n1001_10",
+            "I0": "age_ms[8]",
+            "I1": "age_ms[6]",
+            "I2": "age_ms[7]",
+            "I3": "n1004_10"
+          },
+          "params": {
+            "INIT": "16'h8000"
+          }
+        },
+        {
+          "type": "LUT4",
+          "name": "n998_s4",
+          "ports": {
+            "F": "n998_10",
+            "I0": "age_ms[11]",
+            "I1": "n1001_10",
+            "I2": "age_ms[9]",
+            "I3": "age_ms[10]"
+          },
+          "params": {
+            "INIT": "16'h8000"
+          }
+        },
+        {
+          "type": "LUT3",
+          "name": "n996_s4",
+          "ports": {
+            "F": "n996_10",
+            "I0": "age_ms[13]",
+            "I1": "age_ms[12]",
+            "I2": "n998_10"
+          },
+          "params": {
+            "INIT": "8'h80"
+          }
+        },
+        {
+          "type": "LUT2",
+          "name": "n995_s3",
+          "ports": {
+            "F": "n995_8",
+            "I0": "age_ms[14]",
+            "I1": "n996_10"
+          },
+          "params": {
+            "INIT": "4'h8"
+          }
+        },
+        {
+          "type": "LUT4",
+          "name": "n992_s4",
+          "ports": {
+            "F": "n992_10",
+            "I0": "age_ms[17]",
+            "I1": "n995_8",
+            "I2": "age_ms[15]",
+            "I3": "age_ms[16]"
+          },
+          "params": {
+            "INIT": "16'h8000"
+          }
+        },
+        {
+          "type": "LUT2",
+          "name": "n991_s3",
+          "ports": {
+            "F": "n991_8",
+            "I0": "age_ms[18]",
+            "I1": "n992_10"
+          },
+          "params": {
+            "INIT": "4'h8"
+          }
+        },
+        {
+          "type": "LUT2",
+          "name": "n989_s3",
+          "ports": {
+            "F": "n989_8",
+            "I0": "age_ms[19]",
+            "I1": "age_ms[20]"
+          },
+          "params": {
+            "INIT": "4'h8"
+          }
+        },
+        {
+          "type": "LUT4",
+          "name": "n987_s3",
+          "ports": {
+            "F": "n987_8",
+            "I0": "age_ms[21]",
+            "I1": "age_ms[22]",
+            "I2": "n991_8",
+            "I3": "n989_8"
+          },
+          "params": {
+            "INIT": "16'h8000"
+          }
+        },
+        {
+          "type": "LUT2",
+          "name": "n985_s3",
+          "ports": {
+            "F": "n985_8",
+            "I0": "age_ms[23]",
+            "I1": "age_ms[24]"
+          },
+          "params": {
+            "INIT": "4'h8"
+          }
+        },
+        {
+          "type": "LUT4",
+          "name": "n983_s3",
+          "ports": {
+            "F": "n983_8",
+            "I0": "age_ms[25]",
+            "I1": "age_ms[26]",
+            "I2": "n987_8",
+            "I3": "n985_8"
+          },
+          "params": {
+            "INIT": "16'h8000"
+          }
+        },
+        {
+          "type": "LUT4",
+          "name": "n980_s4",
+          "ports": {
+            "F": "n980_10",
+            "I0": "age_ms[29]",
+            "I1": "n983_8",
+            "I2": "age_ms[27]",
+            "I3": "age_ms[28]"
+          },
+          "params": {
+            "INIT": "16'h8000"
+          }
+        },
+        {
+          "type": "LUT3",
+          "name": "age_ms_31_s6",
+          "ports": {
+            "F": "age_ms_31_13",
+            "I0": "age_ms[31]",
+            "I1": "age_ms[30]",
+            "I2": "n980_10"
+          },
+          "params": {
+            "INIT": "8'h80"
+          }
+        }
+      ],
+      "Q_arrival_ns": 0.715,
+      "AND_root_arrival_ns": 10.843,
+      "elapsed_Q_to_all_ones_ns": 10.128
+    },
+    "actual_path_primitives": [
+      {
+        "type": "DFFCE",
+        "name": "age_ms_0_s3",
+        "ports": {
+          "Q": "age_ms[0]",
+          "D": "n1010_15",
+          "CLK": "clk50_d",
+          "CLEAR": "r2",
+          "CE": "VCC"
+        },
+        "params": {
+          "INIT": "1'b0"
+        }
+      },
+      {
+        "type": "LUT3",
+        "name": "n1007_s3",
+        "ports": {
+          "F": "n1007_8",
+          "I0": "age_ms[0]",
+          "I1": "age_ms[1]",
+          "I2": "age_ms[2]"
+        },
+        "params": {
+          "INIT": "8'h80"
+        }
+      },
+      {
+        "type": "LUT4",
+        "name": "n1004_s4",
+        "ports": {
+          "F": "n1004_10",
+          "I0": "age_ms[5]",
+          "I1": "n1007_8",
+          "I2": "age_ms[3]",
+          "I3": "age_ms[4]"
+        },
+        "params": {
+          "INIT": "16'h8000"
+        }
+      },
+      {
+        "type": "LUT4",
+        "name": "n1001_s4",
+        "ports": {
+          "F": "n1001_10",
+          "I0": "age_ms[8]",
+          "I1": "age_ms[6]",
+          "I2": "age_ms[7]",
+          "I3": "n1004_10"
+        },
+        "params": {
+          "INIT": "16'h8000"
+        }
+      },
+      {
+        "type": "LUT4",
+        "name": "n998_s4",
+        "ports": {
+          "F": "n998_10",
+          "I0": "age_ms[11]",
+          "I1": "n1001_10",
+          "I2": "age_ms[9]",
+          "I3": "age_ms[10]"
+        },
+        "params": {
+          "INIT": "16'h8000"
+        }
+      },
+      {
+        "type": "LUT3",
+        "name": "n996_s4",
+        "ports": {
+          "F": "n996_10",
+          "I0": "age_ms[13]",
+          "I1": "age_ms[12]",
+          "I2": "n998_10"
+        },
+        "params": {
+          "INIT": "8'h80"
+        }
+      },
+      {
+        "type": "LUT2",
+        "name": "n995_s3",
+        "ports": {
+          "F": "n995_8",
+          "I0": "age_ms[14]",
+          "I1": "n996_10"
+        },
+        "params": {
+          "INIT": "4'h8"
+        }
+      },
+      {
+        "type": "LUT4",
+        "name": "n992_s4",
+        "ports": {
+          "F": "n992_10",
+          "I0": "age_ms[17]",
+          "I1": "n995_8",
+          "I2": "age_ms[15]",
+          "I3": "age_ms[16]"
+        },
+        "params": {
+          "INIT": "16'h8000"
+        }
+      },
+      {
+        "type": "LUT2",
+        "name": "n991_s3",
+        "ports": {
+          "F": "n991_8",
+          "I0": "age_ms[18]",
+          "I1": "n992_10"
+        },
+        "params": {
+          "INIT": "4'h8"
+        }
+      },
+      {
+        "type": "LUT4",
+        "name": "n987_s3",
+        "ports": {
+          "F": "n987_8",
+          "I0": "age_ms[21]",
+          "I1": "age_ms[22]",
+          "I2": "n991_8",
+          "I3": "n989_8"
+        },
+        "params": {
+          "INIT": "16'h8000"
+        }
+      },
+      {
+        "type": "LUT4",
+        "name": "n983_s3",
+        "ports": {
+          "F": "n983_8",
+          "I0": "age_ms[25]",
+          "I1": "age_ms[26]",
+          "I2": "n987_8",
+          "I3": "n985_8"
+        },
+        "params": {
+          "INIT": "16'h8000"
+        }
+      },
+      {
+        "type": "LUT4",
+        "name": "n980_s4",
+        "ports": {
+          "F": "n980_10",
+          "I0": "age_ms[29]",
+          "I1": "n983_8",
+          "I2": "age_ms[27]",
+          "I3": "age_ms[28]"
+        },
+        "params": {
+          "INIT": "16'h8000"
+        }
+      },
+      {
+        "type": "LUT3",
+        "name": "age_ms_31_s6",
+        "ports": {
+          "F": "age_ms_31_13",
+          "I0": "age_ms[31]",
+          "I1": "age_ms[30]",
+          "I2": "n980_10"
+        },
+        "params": {
+          "INIT": "8'h80"
+        }
+      },
+      {
+        "type": "LUT4",
+        "name": "n4094_s69",
+        "ports": {
+          "F": "n4094_73",
+          "I0": "age_ms[27]",
+          "I1": "n4094_46",
+          "I2": "age_ms_31_13",
+          "I3": "n4094_30"
+        },
+        "params": {
+          "INIT": "16'h0B0F"
+        }
+      },
+      {
+        "type": "LUT4",
+        "name": "n4094_s4",
+        "ports": {
+          "F": "n4094_7",
+          "I0": "n4094_73",
+          "I1": "out_forward_q12_23_6",
+          "I2": "have_lease",
+          "I3": "led_d[3]"
+        },
+        "params": {
+          "INIT": "16'h007F"
+        }
+      },
+      {
+        "type": "LUT3",
+        "name": "n590_s3",
+        "ports": {
+          "F": "n590_9",
+          "I0": "target_v[0]",
+          "I1": "n4094_7",
+          "I2": "n797_9"
+        },
+        "params": {
+          "INIT": "8'h80"
+        }
+      },
+      {
+        "type": "ALU",
+        "name": "n641_s",
+        "ports": {
+          "SUM": "n641_2",
+          "COUT": "n641_3",
+          "I0": "n590_9",
+          "I1": "nav_forward_q12[0]",
+          "I3": "VCC",
+          "CIN": "VCC"
+        },
+        "params": {
+          "ALU_MODE": "1"
+        }
+      },
+      {
+        "type": "ALU",
+        "name": "n628_s",
+        "ports": {
+          "SUM": "n628_2",
+          "COUT": "n628_3",
+          "I0": "n577_9",
+          "I1": "nav_forward_q12[13]",
+          "I3": "VCC",
+          "CIN": "n629_3"
+        },
+        "params": {
+          "ALU_MODE": "1"
+        }
+      },
+      {
+        "type": "LUT4",
+        "name": "n1099_s10",
+        "ports": {
+          "F": "n1099_15",
+          "I0": "n629_2",
+          "I1": "n628_2",
+          "I2": "n627_2",
+          "I3": "n626_2"
+        },
+        "params": {
+          "INIT": "16'h8000"
+        }
+      },
+      {
+        "type": "LUT4",
+        "name": "n1099_s9",
+        "ports": {
+          "F": "n1099_14",
+          "I0": "n635_2",
+          "I1": "n634_2",
+          "I2": "n1099_15",
+          "I3": "n1099_16"
+        },
+        "params": {
+          "INIT": "16'h8000"
+        }
+      },
+      {
+        "type": "LUT4",
+        "name": "n1099_s5",
+        "ports": {
+          "F": "n1099_10",
+          "I0": "n1099_13",
+          "I1": "n637_2",
+          "I2": "n636_2",
+          "I3": "n1099_14"
+        },
+        "params": {
+          "INIT": "16'hF400"
+        }
+      },
+      {
+        "type": "LUT4",
+        "name": "n1099_s4",
+        "ports": {
+          "F": "n1099_9",
+          "I0": "n1099_10",
+          "I1": "n1099_11",
+          "I2": "n1099_12",
+          "I3": "n617_2"
+        },
+        "params": {
+          "INIT": "16'h7F00"
+        }
+      },
+      {
+        "type": "LUT4",
+        "name": "n1098_s3",
+        "ports": {
+          "F": "n1098_8",
+          "I0": "n1099_9",
+          "I1": "n1080_10",
+          "I2": "nav_forward_q12[0]",
+          "I3": "nav_forward_q12[1]"
+        },
+        "params": {
+          "INIT": "16'hD33D"
+        }
+      },
+      {
+        "type": "LUT4",
+        "name": "n1097_s3",
+        "ports": {
+          "F": "n1097_8",
+          "I0": "nav_forward_q12[0]",
+          "I1": "n1098_8",
+          "I2": "n1097_9",
+          "I3": "n1097_10"
+        },
+        "params": {
+          "INIT": "16'hE100"
+        }
+      },
+      {
+        "type": "LUT3",
+        "name": "n1097_s2",
+        "ports": {
+          "F": "n1097_7",
+          "I0": "n588_9",
+          "I1": "n1099_18",
+          "I2": "n1097_8"
+        },
+        "params": {
+          "INIT": "8'hB0"
+        }
+      },
+      {
+        "type": "DFFCE",
+        "name": "out_forward_q12_2_s1",
+        "ports": {
+          "Q": "nav_forward_q12[2]",
+          "D": "n1097_7",
+          "CLK": "clk50_d",
+          "CLEAR": "r2",
+          "CE": "out_forward_q12_23_12"
+        },
+        "params": {
+          "INIT": "1'b0"
+        }
+      }
+    ],
+    "interpretation": "32bit increment/wrap all-ones cone reaches deadline/stop selection, then target selection before ramp subtraction/comparison/output selection. Source deadline rewrite aims to remove increment arithmetic from this decision; balancing or reducing its new mapping is not established.",
+    "minimum_candidate": "Only rewrite default200ms age+1>=200 as exact32bit range >=199 AND age!=FFFFFFFF, with timeout0 retaining original arithmetic; no count/ramp/register/clock/priority edits.",
+    "mapped_improvement_verified": false,
+    "PNR49_modified": false,
+    "new_SYN_PNR_started": false,
+    "bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_syn34\\command_lease_guard.v",
+        "bytes": 4683,
+        "mtime_ns": 1792981481766260400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_syn34\\impl\\gwsynthesis\\g2_top.vg",
+        "bytes": 24879074,
+        "mtime_ns": 1792983486443030400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_syn34\\impl\\gwsynthesis\\g2_top_syn.rpt.html",
+        "bytes": 334478,
+        "mtime_ns": 1792983494984576600
+      }
+    ]
+  },
+  "arithmetic_and_boolean_all_state_proof": {
+    "passed": true,
+    "recorded_at": "2026-10-26T11:36:48.969576+08:00",
+    "solver": "Z3 5.3.1",
+    "elapsed_s": 0.0779999999795109,
+    "proofs": [
+      {
+        "label": "all_age32_timeout32_arithmetic",
+        "status": "unsat",
+        "smt2": "F:\\nav_integration_g2_20261023\\lease_deadline_compare_math3\\all_age32_timeout32_arithmetic.smt2",
+        "statistics": "(:max-memory              25.93\n :memory                  17.60\n :num-allocs              150256\n :rlimit-count            92103\n :sat-backjumps           1429\n :sat-conflicts           1430\n :sat-decisions           2573\n :sat-del-clause          1110\n :sat-elim-bool-vars-res  130\n :sat-elim-clauses        231\n :sat-elim-literals       201\n :sat-minimized-lits      3406\n :sat-mk-clause-2ary      836\n :sat-mk-clause-3ary      202\n :sat-mk-clause-nary      2284\n :sat-mk-var              441\n :sat-probing-assigned    1\n :sat-propagations-2ary   38521\n :sat-propagations-nary   37292\n :sat-restarts            26\n :sat-scc-elim-vars       1\n :sat-subs-resolution     7\n :sat-subs-resolution-dyn 72\n :sat-subsumed            189\n :sat-units               17\n :time                    0.03)"
+      },
+      {
+        "label": "all_age32_timeout32_tick_lease_boolean_gate",
+        "status": "unsat",
+        "smt2": "F:\\nav_integration_g2_20261023\\lease_deadline_compare_math3\\all_age32_timeout32_tick_lease_boolean_gate.smt2",
+        "statistics": "(:elim-unconstrained      2\n :max-memory              25.96\n :memory                  17.62\n :num-allocs              704401\n :rlimit-count            157715\n :sat-backjumps           942\n :sat-conflicts           943\n :sat-decisions           2554\n :sat-del-clause          1615\n :sat-elim-bool-vars-res  186\n :sat-elim-clauses        354\n :sat-elim-literals       225\n :sat-minimized-lits      2266\n :sat-mk-clause-2ary      840\n :sat-mk-clause-3ary      365\n :sat-mk-clause-nary      2041\n :sat-mk-var              446\n :sat-probing-assigned    1\n :sat-propagations-2ary   26052\n :sat-propagations-nary   22107\n :sat-restarts            2\n :sat-scc-elim-vars       3\n :sat-subs-resolution     5\n :sat-subs-resolution-dyn 56\n :sat-subsumed            301\n :sat-units               36\n :time                    0.01)"
+      }
+    ],
+    "known_age_state_count": 4294967296,
+    "known_timeout_bit_pattern_count": 4294967296,
+    "no_reachability_assumption": true,
+    "unchanged_remainder_of_module_text": true,
+    "implications": "For every same prestate and input, identical deadline and all other statements yield identical registered next state/output; no pipeline, priority or period change.",
+    "four_state_scope": "All-state solver is2state. Timeout0 explicitly retains original arithmetic; directed SV X/Z semantics checked separately in finite fixture.",
+    "bad_naive_rewrite_counterexample": {
+      "age_hex": "0xffffffff",
+      "timeout": 200,
+      "original": false,
+      "naive_without_MAX_exclusion": true
+    },
+    "input_bindings": [
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_NAV50_prepared4\\command_lease_guard.v",
+        "bytes": 4683,
+        "mtime_ns": 1792981481766260400
+      },
+      {
+        "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared3\\command_lease_guard.v",
+        "bytes": 5023,
+        "mtime_ns": 1792985808536274800
+      }
+    ],
+    "new_SYN_PNR_started": false,
+    "physical_mapping_or_timing_accepted": false
+  },
+  "targeted_new_cycle_probe": {
+    "path": "F:\\nav_integration_g2_20261023\\lease_deadline_compare_cycle1",
+    "job_snapshot": {
+      "controller_pid": 61040,
+      "controller_created_epoch": 1792985817.2784903,
+      "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_deadline_compare_prepared3",
+      "output": "F:\\nav_integration_g2_20261023\\lease_deadline_compare_cycle1",
+      "full_production_model_untouched": true,
+      "logical_clock_HZ_parameter": 4000,
+      "logical_DIV": 4,
+      "actual_default_200ms_timeout_cycles_preserved_under_scaled_clock": true,
+      "no_internal_force_or_hierarchical_state_write": true,
+      "new_SYN_PNR_started": false,
+      "programmed": false,
+      "phase": "waiting_for_actual_memory_admission",
+      "updated_at": "2026-10-26T11:38:57.561625+08:00",
+      "next_tool": "xvlog",
+      "available_physical_bytes": 1297125376,
+      "available_commit_bytes": 1527353344
+    },
+    "identity_checked_controller": {
+      "pid": 61040,
+      "created_epoch": 1792985817.2784903,
+      "command": [
+        "D:\\Anaconda\\python.exe",
+        "-X",
+        "utf8",
+        "D:/Desktop/SOC FPGA/nav/integration/g2/probe_lease_deadline_compare.py",
+        "--source",
+        "F:/nav_integration_g2_20261023/baseline_fusion_model25_deadline_compare_prepared3",
+        "--out",
+        "F:/nav_integration_g2_20261023/lease_deadline_compare_cycle1",
+        "--wait-for-memory"
+      ]
+    },
+    "not_old_post_ramp_regression": true,
+    "full_production_or_real_stop_acceptance": false
+  },
+  "first_preparation_inventory_rejections": [
+    {
+      "passed": false,
+      "stage": "source_inventory_check",
+      "recorded_at": "2026-10-26T11:36:21.570860+08:00",
+      "reason": "Initialchecker counted all67 .v including unselected ModGen model25_pll_tmp.v; actual manifest selects66 hardware inputs. Candidate never built or tested.",
+      "source_RTL_changed_after_failure": false,
+      "new_SYN_PNR_started": false,
+      "retained_as_failed_preparation": true,
+      "replacement": "baseline_fusion_model25_deadline_compare_prepared2"
+    },
+    {
+      "passed": false,
+      "stage": "header_inventory_check",
+      "recorded_at": "2026-10-26T11:36:48.168373+08:00",
+      "reason": "Initialchecker counted only3 .vh rather than31 combined28 .h plus3 .vh. Actualsource and copied headers were unchanged. Candidate never built or tested.",
+      "source_RTL_changed_after_failure": false,
+      "new_SYN_PNR_started": false,
+      "retained_as_failed_preparation": true,
+      "replacement": "baseline_fusion_model25_deadline_compare_prepared3"
+    }
+  ],
+  "mapping": "No new synthesis or place-route was started. Rewritten all-ones expression may still be shared/restructured into a long chain; actual mapping, resource delta and physical timing benefit are unknown.",
+  "original_counts_saturation_no_wrap_change": true,
+  "original_ramp_and_output_cycles_and_stop_new_command_priorities": true,
+  "PNR49_or_frozen_SYN34_or_prepared4_modified": false,
+  "new_SYN_PNR_started_by_this_candidate": false,
+  "programmed": false,
+  "production_probe3": {
+    "path": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3",
+    "same_original_processes_identity_checked": [
+      {
+        "pid": 40420,
+        "created_epoch": 1792983202.955645,
+        "name": "python.exe",
+        "command": [
+          "D:\\Anaconda\\python.exe",
+          "-X",
+          "utf8",
+          "D:/Desktop/SOC FPGA/nav/integration/g2/probe_model25_full_production.py",
+          "--out",
+          "F:/nav_integration_g2_20261023/model25_full_production_probe3",
+          "--wait-for-memory"
+        ],
+        "cwd": "D:\\Desktop\\SOC FPGA\\nav"
+      },
+      {
+        "pid": 2832,
+        "created_epoch": 1792983216.7878656,
+        "name": "xsim.exe",
+        "command": [
+          "E:/2026.1/Vivado/bin/unwrapped/win64.o/xsim.exe",
+          "full_production_snap",
+          "-runall"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3"
+      },
+      {
+        "pid": 52180,
+        "created_epoch": 1792983217.313412,
+        "name": "xsimk.exe",
+        "command": [
+          "xsim.dir/full_production_snap/xsimk.exe",
+          "-runall",
+          "-simmode",
+          "gui",
+          "-wdb",
+          "full_production_snap.wdb",
+          "-simrunnum",
+          "0",
+          "-socket",
+          "50947"
+        ],
+        "cwd": "F:\\nav_integration_g2_20261023\\model25_full_production_probe3"
+      }
+    ],
+    "last_progress": [
+      "PRODUCTION_PROGRESS us=1600000.000 samples=159 refcal=1 candcal=1 ref_frames=0 cand_frames=0 flags=03 fault=0 epoch=0"
+    ],
+    "complete_numeric_result_accepted": false,
+    "not_restarted_or_modified": true
+  },
+  "stable_repo_entries": [
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prepare_lease_deadline_compare.py",
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prove_lease_deadline_compare.py",
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\probe_lease_deadline_compare.py",
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\tb_lease_deadline_compare.sv",
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\inspect_lease_deadline_syn_path.py"
+  ],
+  "next": "Read current unique cycle1 job/result after2GiB physical/4GiB commit admission. Do not duplicate it. Review exact focused outputs and preserve failures. Only parent may decide any later mapping/physical build; no automatic SYN/PNR."
+}
