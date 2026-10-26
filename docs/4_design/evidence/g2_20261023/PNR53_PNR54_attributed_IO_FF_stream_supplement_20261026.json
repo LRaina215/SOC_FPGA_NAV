@@ -1,0 +1,630 @@
+{
+  "passed": true,
+  "scope": "Lightweight stream supplement for exactly3 parser-omitted clock pins and their complete OE/IOBUF chains",
+  "recorded_at": "2026-10-26T23:28:29.753081+08:00",
+  "whole_G2_graph_loaded": false,
+  "EDA_started": false,
+  "root_cause": "Old physical CELL regular expression starts at primitive kind and misses an inline Verilog attribute prefix",
+  "original_failed_review_preserved": true,
+  "all_other_original_clock_checks_reused_from": {
+    "path": "F:\\nav_integration_g2_20261023\\PNR53_actual_clock_stop_review1\\all_original_clock_pin_role_comparison.json",
+    "bytes": 186048,
+    "mtime_ns": 1793028010776297200
+  },
+  "original_nonconstant_clock_pins": 31877,
+  "old_matched_original_clock_pins": 31874,
+  "additional_strictly_matched_original_clock_pins": 3,
+  "supplemented_original_matched_clock_pins": 31877,
+  "all_original_source_clock_pin_roles_accounted_for": true,
+  "reused_base_scope": "Full source-clock role accounting is reused from PNR53 only. PNR54 here proves these3 attributed sites, not its remaining all-clock inventory.",
+  "source_modules_streamed": [
+    "control4500_core",
+    "g2_top",
+    "iic_2",
+    "oled",
+    "oled_axes_thread",
+    "oled_driver",
+    "rgmii_mac100"
+  ],
+  "source_module_count": 7,
+  "input_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43\\impl\\gwsynthesis\\g2_top.vg",
+      "bytes": 16881549,
+      "mtime_ns": 1793019134777639400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\PNR53_actual_clock_stop_review1\\all_original_clock_pin_role_comparison.json",
+      "bytes": 186048,
+      "mtime_ns": 1793028010776297200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\PNR53_actual_clock_stop_review1\\review_failed.json",
+      "bytes": 1264,
+      "mtime_ns": 1793028010780137900
+    },
+    {
+      "path": "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\simlib\\gw5a\\prim_sim.v",
+      "bytes": 710345,
+      "mtime_ns": 1790043686000000000
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_pnr53_54_attributed_IO_FF.py",
+      "bytes": 13335,
+      "mtime_ns": 1793028496884681500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_place1_pnr53\\impl\\pnr\\g2_top.vo",
+      "bytes": 30773537,
+      "mtime_ns": 1793023583532833500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_place2_pnr54\\impl\\pnr\\g2_top.vo",
+      "bytes": 30773537,
+      "mtime_ns": 1793027878115798200
+    }
+  ],
+  "exact_pin_scope": "D/CLK/CE/synchronous RESET/Q nets and explicit INIT unchanged, through resolved source port aliases; local upstream combinational functionality not re-proved by this clock supplement",
+  "DFFRE_semantics": "Same primitive on both sides, positive-edge CLK, active-high synchronous RESET and CE, Q noninverting, explicit INIT0",
+  "official_primitive_semantic_binding": {
+    "DFFRE_start_line": 411,
+    "IOBUF_start_line": 849,
+    "DFFRE_synchronous_RESET_over_CE_and_noninverting_Q_checked": true,
+    "IOBUF_bufif0_active_low_OEN_checked": true
+  },
+  "limitations": [
+    "Does not prove whole OLED/MDIO state-machine functionality or timing",
+    "Does not accept external IO timing/reset pulse/CDC MTBF/physical stop"
+  ],
+  "deployment_accepted": false,
+  "builds": [
+    {
+      "build": "SLF128_storage_place1_pnr53",
+      "attributed_inventory": {
+        "all_attributed_primitives": [
+          {
+            "name": "u_lmac/mdio_oe_s1",
+            "kind": "DFFRE",
+            "line": 121253,
+            "attribute": "(*gowin_io_reg = \"FALSE\" *)",
+            "clock_pins": {
+              "CLK": [
+                "clk50_d"
+              ]
+            },
+            "raw_head": "(*gowin_io_reg = \"FALSE\" *) DFFRE \\u_lmac/mdio_oe_s1  ("
+          },
+          {
+            "name": "u_control/display/axes_display.thread/driver/bus/scl_low_s1",
+            "kind": "DFFRE",
+            "line": 367035,
+            "attribute": "(*gowin_io_reg = \"FALSE\" *)",
+            "clock_pins": {
+              "CLK": [
+                "clk50_d"
+              ]
+            },
+            "raw_head": "(*gowin_io_reg = \"FALSE\" *) DFFRE \\u_control/display/axes_display.thread/driver/bus/scl_low_s1  ("
+          },
+          {
+            "name": "u_control/display/axes_display.thread/driver/bus/sda_low_s1",
+            "kind": "DFFRE",
+            "line": 367043,
+            "attribute": "(*gowin_io_reg = \"FALSE\" *)",
+            "clock_pins": {
+              "CLK": [
+                "clk50_d"
+              ]
+            },
+            "raw_head": "(*gowin_io_reg = \"FALSE\" *) DFFRE \\u_control/display/axes_display.thread/driver/bus/sda_low_s1  ("
+          }
+        ],
+        "all_attributed_primitives_count": 3,
+        "attributed_clock_pins": 3,
+        "primitive_heads_scanned": 85550,
+        "clock_pin_token_groups_scanned": 33176,
+        "whole_graph_retained": false
+      },
+      "three_attributed_FF_strict_checks": [
+        {
+          "name": "u_lmac/mdio_oe_s1",
+          "source": {
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "mdio_oe"
+              ],
+              "D": [
+                "u_lmac/n2004_10"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "u_lmac/mdio_oe_12"
+              ]
+            },
+            "parameters": {
+              "INIT": "1'b0"
+            }
+          },
+          "physical": {
+            "kind": "DFFRE",
+            "ports": {
+              "D": [
+                "u_lmac/n2004_10"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "CE": [
+                "u_lmac/mdio_oe_12"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "Q": [
+                "mdio_oe"
+              ]
+            },
+            "parameters": {
+              "INIT": "1'b0"
+            }
+          },
+          "physical_line": 121253,
+          "physical_attribute": "(*gowin_io_reg = \"FALSE\" *)",
+          "strict_kind_all_ports_explicit_parameters_identical": true
+        },
+        {
+          "name": "u_control/display/axes_display.thread/driver/bus/scl_low_s1",
+          "source": {
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_control/display/axes_display.thread/driver/bus/scl_low"
+              ],
+              "D": [
+                "u_control/display/axes_display.thread/driver/bus/n758_12"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "u_control/n2371_7"
+              ],
+              "CE": [
+                "u_control/display/axes_display.thread/driver/bus/scl_low_8"
+              ]
+            },
+            "parameters": {
+              "INIT": "1'b0"
+            }
+          },
+          "physical": {
+            "kind": "DFFRE",
+            "ports": {
+              "D": [
+                "u_control/display/axes_display.thread/driver/bus/n758_12"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "CE": [
+                "u_control/display/axes_display.thread/driver/bus/scl_low_8"
+              ],
+              "RESET": [
+                "u_control/n2371_7"
+              ],
+              "Q": [
+                "u_control/display/axes_display.thread/driver/bus/scl_low"
+              ]
+            },
+            "parameters": {
+              "INIT": "1'b0"
+            }
+          },
+          "physical_line": 367035,
+          "physical_attribute": "(*gowin_io_reg = \"FALSE\" *)",
+          "strict_kind_all_ports_explicit_parameters_identical": true
+        },
+        {
+          "name": "u_control/display/axes_display.thread/driver/bus/sda_low_s1",
+          "source": {
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_control/display/axes_display.thread/driver/bus/sda_low"
+              ],
+              "D": [
+                "u_control/display/axes_display.thread/driver/bus/n1001_6"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "u_control/n2371_7"
+              ],
+              "CE": [
+                "u_control/display/axes_display.thread/driver/bus/sda_low_9"
+              ]
+            },
+            "parameters": {
+              "INIT": "1'b0"
+            }
+          },
+          "physical": {
+            "kind": "DFFRE",
+            "ports": {
+              "D": [
+                "u_control/display/axes_display.thread/driver/bus/n1001_6"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "CE": [
+                "u_control/display/axes_display.thread/driver/bus/sda_low_9"
+              ],
+              "RESET": [
+                "u_control/n2371_7"
+              ],
+              "Q": [
+                "u_control/display/axes_display.thread/driver/bus/sda_low"
+              ]
+            },
+            "parameters": {
+              "INIT": "1'b0"
+            }
+          },
+          "physical_line": 367043,
+          "physical_attribute": "(*gowin_io_reg = \"FALSE\" *)",
+          "strict_kind_all_ports_explicit_parameters_identical": true
+        }
+      ],
+      "output_enable_chains": [
+        {
+          "FF": "u_lmac/mdio_oe_s1",
+          "registered_Q": [
+            "mdio_oe"
+          ],
+          "inverter": "eth_mdio_s5",
+          "IOBUF": "eth_mdio_iobuf",
+          "OEN": [
+            "eth_mdio_8"
+          ],
+          "Q_to_OEN_inversion": true,
+          "source_and_physical_identical": true,
+          "active_high_FF_drives_active_low_IO_enable": true,
+          "IO_data": [
+            "mdio_o"
+          ],
+          "IO_pad": [
+            "eth_mdio"
+          ]
+        },
+        {
+          "FF": "u_control/display/axes_display.thread/driver/bus/scl_low_s1",
+          "registered_Q": [
+            "u_control/display/axes_display.thread/driver/bus/scl_low"
+          ],
+          "inverter": "u_control/display/axes_display.thread/driver/bus/IIC_SCL_s3",
+          "IOBUF": "sck_iobuf",
+          "OEN": [
+            "IIC_SCL_6"
+          ],
+          "Q_to_OEN_inversion": true,
+          "source_and_physical_identical": true,
+          "active_high_FF_drives_active_low_IO_enable": true,
+          "IO_data": [
+            "GND"
+          ],
+          "IO_pad": [
+            "sck"
+          ]
+        },
+        {
+          "FF": "u_control/display/axes_display.thread/driver/bus/sda_low_s1",
+          "registered_Q": [
+            "u_control/display/axes_display.thread/driver/bus/sda_low"
+          ],
+          "inverter": "u_control/display/axes_display.thread/driver/bus/IIC_SDA_s3",
+          "IOBUF": "sda_iobuf",
+          "OEN": [
+            "IIC_SDA_6"
+          ],
+          "Q_to_OEN_inversion": true,
+          "source_and_physical_identical": true,
+          "active_high_FF_drives_active_low_IO_enable": true,
+          "IO_data": [
+            "GND"
+          ],
+          "IO_pad": [
+            "sda"
+          ]
+        }
+      ],
+      "all3_original_clk50_noninverted": true,
+      "no_IOB_absorption_or_FF_replacement": true
+    },
+    {
+      "build": "SLF128_storage_place2_pnr54",
+      "attributed_inventory": {
+        "all_attributed_primitives": [
+          {
+            "name": "u_lmac/mdio_oe_s1",
+            "kind": "DFFRE",
+            "line": 121253,
+            "attribute": "(*gowin_io_reg = \"FALSE\" *)",
+            "clock_pins": {
+              "CLK": [
+                "clk50_d"
+              ]
+            },
+            "raw_head": "(*gowin_io_reg = \"FALSE\" *) DFFRE \\u_lmac/mdio_oe_s1  ("
+          },
+          {
+            "name": "u_control/display/axes_display.thread/driver/bus/scl_low_s1",
+            "kind": "DFFRE",
+            "line": 367035,
+            "attribute": "(*gowin_io_reg = \"FALSE\" *)",
+            "clock_pins": {
+              "CLK": [
+                "clk50_d"
+              ]
+            },
+            "raw_head": "(*gowin_io_reg = \"FALSE\" *) DFFRE \\u_control/display/axes_display.thread/driver/bus/scl_low_s1  ("
+          },
+          {
+            "name": "u_control/display/axes_display.thread/driver/bus/sda_low_s1",
+            "kind": "DFFRE",
+            "line": 367043,
+            "attribute": "(*gowin_io_reg = \"FALSE\" *)",
+            "clock_pins": {
+              "CLK": [
+                "clk50_d"
+              ]
+            },
+            "raw_head": "(*gowin_io_reg = \"FALSE\" *) DFFRE \\u_control/display/axes_display.thread/driver/bus/sda_low_s1  ("
+          }
+        ],
+        "all_attributed_primitives_count": 3,
+        "attributed_clock_pins": 3,
+        "primitive_heads_scanned": 85550,
+        "clock_pin_token_groups_scanned": 33176,
+        "whole_graph_retained": false
+      },
+      "three_attributed_FF_strict_checks": [
+        {
+          "name": "u_lmac/mdio_oe_s1",
+          "source": {
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "mdio_oe"
+              ],
+              "D": [
+                "u_lmac/n2004_10"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "CE": [
+                "u_lmac/mdio_oe_12"
+              ]
+            },
+            "parameters": {
+              "INIT": "1'b0"
+            }
+          },
+          "physical": {
+            "kind": "DFFRE",
+            "ports": {
+              "D": [
+                "u_lmac/n2004_10"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "CE": [
+                "u_lmac/mdio_oe_12"
+              ],
+              "RESET": [
+                "r2"
+              ],
+              "Q": [
+                "mdio_oe"
+              ]
+            },
+            "parameters": {
+              "INIT": "1'b0"
+            }
+          },
+          "physical_line": 121253,
+          "physical_attribute": "(*gowin_io_reg = \"FALSE\" *)",
+          "strict_kind_all_ports_explicit_parameters_identical": true
+        },
+        {
+          "name": "u_control/display/axes_display.thread/driver/bus/scl_low_s1",
+          "source": {
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_control/display/axes_display.thread/driver/bus/scl_low"
+              ],
+              "D": [
+                "u_control/display/axes_display.thread/driver/bus/n758_12"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "u_control/n2371_7"
+              ],
+              "CE": [
+                "u_control/display/axes_display.thread/driver/bus/scl_low_8"
+              ]
+            },
+            "parameters": {
+              "INIT": "1'b0"
+            }
+          },
+          "physical": {
+            "kind": "DFFRE",
+            "ports": {
+              "D": [
+                "u_control/display/axes_display.thread/driver/bus/n758_12"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "CE": [
+                "u_control/display/axes_display.thread/driver/bus/scl_low_8"
+              ],
+              "RESET": [
+                "u_control/n2371_7"
+              ],
+              "Q": [
+                "u_control/display/axes_display.thread/driver/bus/scl_low"
+              ]
+            },
+            "parameters": {
+              "INIT": "1'b0"
+            }
+          },
+          "physical_line": 367035,
+          "physical_attribute": "(*gowin_io_reg = \"FALSE\" *)",
+          "strict_kind_all_ports_explicit_parameters_identical": true
+        },
+        {
+          "name": "u_control/display/axes_display.thread/driver/bus/sda_low_s1",
+          "source": {
+            "kind": "DFFRE",
+            "ports": {
+              "Q": [
+                "u_control/display/axes_display.thread/driver/bus/sda_low"
+              ],
+              "D": [
+                "u_control/display/axes_display.thread/driver/bus/n1001_6"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "RESET": [
+                "u_control/n2371_7"
+              ],
+              "CE": [
+                "u_control/display/axes_display.thread/driver/bus/sda_low_9"
+              ]
+            },
+            "parameters": {
+              "INIT": "1'b0"
+            }
+          },
+          "physical": {
+            "kind": "DFFRE",
+            "ports": {
+              "D": [
+                "u_control/display/axes_display.thread/driver/bus/n1001_6"
+              ],
+              "CLK": [
+                "clk50_d"
+              ],
+              "CE": [
+                "u_control/display/axes_display.thread/driver/bus/sda_low_9"
+              ],
+              "RESET": [
+                "u_control/n2371_7"
+              ],
+              "Q": [
+                "u_control/display/axes_display.thread/driver/bus/sda_low"
+              ]
+            },
+            "parameters": {
+              "INIT": "1'b0"
+            }
+          },
+          "physical_line": 367043,
+          "physical_attribute": "(*gowin_io_reg = \"FALSE\" *)",
+          "strict_kind_all_ports_explicit_parameters_identical": true
+        }
+      ],
+      "output_enable_chains": [
+        {
+          "FF": "u_lmac/mdio_oe_s1",
+          "registered_Q": [
+            "mdio_oe"
+          ],
+          "inverter": "eth_mdio_s5",
+          "IOBUF": "eth_mdio_iobuf",
+          "OEN": [
+            "eth_mdio_8"
+          ],
+          "Q_to_OEN_inversion": true,
+          "source_and_physical_identical": true,
+          "active_high_FF_drives_active_low_IO_enable": true,
+          "IO_data": [
+            "mdio_o"
+          ],
+          "IO_pad": [
+            "eth_mdio"
+          ]
+        },
+        {
+          "FF": "u_control/display/axes_display.thread/driver/bus/scl_low_s1",
+          "registered_Q": [
+            "u_control/display/axes_display.thread/driver/bus/scl_low"
+          ],
+          "inverter": "u_control/display/axes_display.thread/driver/bus/IIC_SCL_s3",
+          "IOBUF": "sck_iobuf",
+          "OEN": [
+            "IIC_SCL_6"
+          ],
+          "Q_to_OEN_inversion": true,
+          "source_and_physical_identical": true,
+          "active_high_FF_drives_active_low_IO_enable": true,
+          "IO_data": [
+            "GND"
+          ],
+          "IO_pad": [
+            "sck"
+          ]
+        },
+        {
+          "FF": "u_control/display/axes_display.thread/driver/bus/sda_low_s1",
+          "registered_Q": [
+            "u_control/display/axes_display.thread/driver/bus/sda_low"
+          ],
+          "inverter": "u_control/display/axes_display.thread/driver/bus/IIC_SDA_s3",
+          "IOBUF": "sda_iobuf",
+          "OEN": [
+            "IIC_SDA_6"
+          ],
+          "Q_to_OEN_inversion": true,
+          "source_and_physical_identical": true,
+          "active_high_FF_drives_active_low_IO_enable": true,
+          "IO_data": [
+            "GND"
+          ],
+          "IO_pad": [
+            "sda"
+          ]
+        }
+      ],
+      "all3_original_clk50_noninverted": true,
+      "no_IOB_absorption_or_FF_replacement": true
+    }
+  ],
+  "actual_result": {
+    "path": "F:\\nav_integration_g2_20261023\\PNR53_PNR54_attributed_IO_FF_stream_review2\\result.json",
+    "bytes": 91921,
+    "mtime_ns": 1793028509753081100
+  },
+  "reproduce": "D:/Anaconda/python.exe -X utf8 integration/g2/review_pnr53_54_attributed_IO_FF.py --out <new empty output>",
+  "first_supplement_receipt_retained": "F:/nav_integration_g2_20261023/PNR53_PNR54_attributed_IO_FF_stream_review1/result.json",
+  "second_receipt_reason": "Added direct official DFFRE/IOBUF macro semantic checks and input bindings; no frozen VG/VO/RTL or primitive connections changed"
+}

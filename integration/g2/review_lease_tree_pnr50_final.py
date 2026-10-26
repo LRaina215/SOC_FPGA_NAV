@@ -16,7 +16,11 @@ PNR=BASE/'baseline_fusion_model25_bounded_MAX_pnr50'
 REF49=BASE/'baseline_fusion_model25_NAV50_pnr49'
 REF35=BASE/'baseline_fusion32_CDC52_pnr35'
 LIB=Path('D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/simlib/gw5a/prim_sim.v')
-CELL=re.compile(r'^(\w+)\s+(\\\S+|[^\s(]+)\s*\(\s*\n(.*?)\)\s*;',re.M|re.S)
+# PNR53/54 put this standard annotation before exactly3 explicit DFFREs.
+# Accept only the observed Gowin IO-register Boolean-string attribute; keep
+# the original3 capture groups and all port/primitive semantic checks intact.
+IO_ATTRIBUTE=r'(?:\(\*\s*gowin_io_reg\s*=\s*"(?:TRUE|FALSE)"\s*\*\)\s*)?'
+CELL=re.compile(r'^'+IO_ATTRIBUTE+r'(\w+)\s+(\\\S+|[^\s(]+)\s*\(\s*\n(.*?)\)\s*;',re.M|re.S)
 CLOCK=re.compile(r'CLK\d*|CLKA|CLKB|CLOCK|WCLK|RCLK')
 BUFFERS={'IBUF','BUF','BUFG','INV'}
 CHANNELS=[('BMI','u_control/model_thread/bmi_bridge',128),('configuration','u_control/model_thread/config_bridge',140),('action','u_control/model_thread/action_bridge',336),('fusion','u_control/model_thread/fusion_bridge',145),('status','u_control/model_thread/status_bridge',15)]
@@ -27,6 +31,8 @@ def resource(r):
  c=Counter(x['kind']for x in r.values());return dict(FF=sum(v for k,v in c.items()if k.startswith('DFF')),LUT=sum(v for k,v in c.items()if re.fullmatch(r'LUT[1-6]',k)),ALU=c['ALU'],primitives=dict(c))
 def parse_vo(path,extra):
  text=path.read_text(encoding='utf8');assert not re.search(r'^assign\s',text,re.M)
+ attribute_heads=[m[0]for m in re.finditer(r'^[ \t]*\(\*.*$',text,re.M)]
+ assert all(re.match(r'^'+IO_ATTRIBUTE+r'\w+\s+(?:\\\S+|[^\s(]+)\s*\(',s)for s in attribute_heads),('unsupported physical attribute syntax',attribute_heads)
  declarations={n.lstrip('\\'):(d,int(h)if h else None,int(l)if l else None)for d,h,l,n in DECL.findall(text)}
  def expand(expr):
   ns=[];pos=0
@@ -56,12 +62,12 @@ def parse_vo(path,extra):
      if net not in('GND','VCC'):clockpins[(n,pin,i)]=net
   if not(selected(n)or n in extra or kind.startswith('DFF')or kind in BUFFERS or kind=='PLL'):continue
   cells[n]=dict(name=n,kind=kind,ports={p:expand(v)for p,v in raw.items()})
- assert ff==len(re.findall(r'^DFF\w*\s+(?:\\\S+|[^\s(]+)\s*\(',text,re.M))
+ assert ff==len(re.findall(r'^'+IO_ATTRIBUTE+r'DFF\w*\s+(?:\\\S+|[^\s(]+)\s*\(',text,re.M))
  params={n:{}for n in cells}
  for name,k,v in PARAM.findall(text):
   n=name.strip().lstrip('\\')
   if n in params:assert k not in params[n];params[n][k]=v.strip()
- return cells,params,clockpins,dict(leaf_instances=total,explicit_DFF_heads=ff,parser_handles_inline_RAM_DO_close=True)
+ return cells,params,clockpins,dict(leaf_instances=total,explicit_DFF_heads=ff,parser_handles_inline_RAM_DO_close=True,parser_handles_known_gowin_IO_attribute=True,known_attributed_primitive_heads=len(attribute_heads))
 def report(root):
  p=root/'impl/pnr/g2_top.rpt.txt';t=p.read_text();r={}
  for name in('Logic','Register','CLS','BSRAM','DSP'):

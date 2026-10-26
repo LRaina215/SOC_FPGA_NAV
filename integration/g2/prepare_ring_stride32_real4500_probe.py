@@ -61,7 +61,7 @@ def rename(text, module, suffix):
 EXTRA_MONITORS = r'''
  // Valid-slot ownership proves that accepted reads never depend on naturalX
  // RAM startup contents. Padding stays X; no TB assignment targets DUT RAM.
- integer normal_weight_reads=0,weight_frames=0,load_stops=0,clip_cases=0;
+ integer normal_weight_reads=0,weight_frames=0,load_stops=0,clip_cases=0,deadline_hits=0;
  reg[40703:0]weight_seen=0;
  reg[15:0]gold_weights[0:40703];
  reg weight_pending=0;reg[15:0]weight_pending_addr=0;
@@ -154,7 +154,6 @@ DEADLINE_PAIR = r'''
  wire drav,dcav;wire[143:0]dra,dca;wire[31:0]drframes,dcframes,drcycles,dccycles;
  wire[2:0]drfault,dcfault;
  wire dreset=rst_n&&enable;
- integer deadline_hits=0;
  rl_observation_v5_ref #(.OBS_RING_STORAGE(1))dr_obs(.clk(clk),.rst_n(dreset),.capture(drcap),
   .frame_freeze(drfreeze),.frame_read_index(drindex),.frame_read_data(drdata),
   .angular_velocity_q12(72'd0),.gravity_q12(72'd0),.left_delta(16'd0),.right_delta(16'd0),

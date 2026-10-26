@@ -1,0 +1,125 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-26T23:31:41.978728+08:00",
+  "checks": "Original attributed6 physical cell blocks only; no full parse_vo, graph, EDA or simulator",
+  "reader": {
+    "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_lease_tree_pnr50_final.py",
+    "bytes": 20469,
+    "mtime_ns": 1793028658824300900
+  },
+  "checker": {
+    "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\check_vo_IO_attribute_reader_fix.py",
+    "bytes": 3479,
+    "mtime_ns": 1793028689179556900
+  },
+  "restricted_prefix": "(?:\\(\\*\\s*gowin_io_reg\\s*=\\s*\"(?:TRUE|FALSE)\"\\s*\\*\\)\\s*)?",
+  "CELL_capture_groups": 3,
+  "actual_six_rows": [
+    {
+      "build": "SLF128_storage_place1_pnr53",
+      "instance": "u_lmac/mdio_oe_s1",
+      "line": 121253,
+      "exact_physical_head": "(*gowin_io_reg = \"FALSE\" *) DFFRE \\u_lmac/mdio_oe_s1  (",
+      "old_parser_matches": 0,
+      "new_parser_matches": 1,
+      "kind": "DFFRE",
+      "raw_name": "\\u_lmac/mdio_oe_s1",
+      "same3_capture_groups_and_exact_port_body_as_plain_original": true,
+      "independent_DFF_head_count_now_includes_attribute": true
+    },
+    {
+      "build": "SLF128_storage_place1_pnr53",
+      "instance": "u_control/display/axes_display.thread/driver/bus/scl_low_s1",
+      "line": 367035,
+      "exact_physical_head": "(*gowin_io_reg = \"FALSE\" *) DFFRE \\u_control/display/axes_display.thread/driver/bus/scl_low_s1  (",
+      "old_parser_matches": 0,
+      "new_parser_matches": 1,
+      "kind": "DFFRE",
+      "raw_name": "\\u_control/display/axes_display.thread/driver/bus/scl_low_s1",
+      "same3_capture_groups_and_exact_port_body_as_plain_original": true,
+      "independent_DFF_head_count_now_includes_attribute": true
+    },
+    {
+      "build": "SLF128_storage_place1_pnr53",
+      "instance": "u_control/display/axes_display.thread/driver/bus/sda_low_s1",
+      "line": 367043,
+      "exact_physical_head": "(*gowin_io_reg = \"FALSE\" *) DFFRE \\u_control/display/axes_display.thread/driver/bus/sda_low_s1  (",
+      "old_parser_matches": 0,
+      "new_parser_matches": 1,
+      "kind": "DFFRE",
+      "raw_name": "\\u_control/display/axes_display.thread/driver/bus/sda_low_s1",
+      "same3_capture_groups_and_exact_port_body_as_plain_original": true,
+      "independent_DFF_head_count_now_includes_attribute": true
+    },
+    {
+      "build": "SLF128_storage_place2_pnr54",
+      "instance": "u_lmac/mdio_oe_s1",
+      "line": 121253,
+      "exact_physical_head": "(*gowin_io_reg = \"FALSE\" *) DFFRE \\u_lmac/mdio_oe_s1  (",
+      "old_parser_matches": 0,
+      "new_parser_matches": 1,
+      "kind": "DFFRE",
+      "raw_name": "\\u_lmac/mdio_oe_s1",
+      "same3_capture_groups_and_exact_port_body_as_plain_original": true,
+      "independent_DFF_head_count_now_includes_attribute": true
+    },
+    {
+      "build": "SLF128_storage_place2_pnr54",
+      "instance": "u_control/display/axes_display.thread/driver/bus/scl_low_s1",
+      "line": 367035,
+      "exact_physical_head": "(*gowin_io_reg = \"FALSE\" *) DFFRE \\u_control/display/axes_display.thread/driver/bus/scl_low_s1  (",
+      "old_parser_matches": 0,
+      "new_parser_matches": 1,
+      "kind": "DFFRE",
+      "raw_name": "\\u_control/display/axes_display.thread/driver/bus/scl_low_s1",
+      "same3_capture_groups_and_exact_port_body_as_plain_original": true,
+      "independent_DFF_head_count_now_includes_attribute": true
+    },
+    {
+      "build": "SLF128_storage_place2_pnr54",
+      "instance": "u_control/display/axes_display.thread/driver/bus/sda_low_s1",
+      "line": 367043,
+      "exact_physical_head": "(*gowin_io_reg = \"FALSE\" *) DFFRE \\u_control/display/axes_display.thread/driver/bus/sda_low_s1  (",
+      "old_parser_matches": 0,
+      "new_parser_matches": 1,
+      "kind": "DFFRE",
+      "raw_name": "\\u_control/display/axes_display.thread/driver/bus/sda_low_s1",
+      "same3_capture_groups_and_exact_port_body_as_plain_original": true,
+      "independent_DFF_head_count_now_includes_attribute": true
+    }
+  ],
+  "unsupported_attribute_examples_rejected": [
+    "(*unknown = \"FALSE\" *) DFFRE example (",
+    "(*gowin_io_reg = \"OTHER\" *) DFFRE example (",
+    "(*gowin_io_reg = secret_expression + 1 *) DFFRE example (",
+    "(*gowin_io_reg = \"FALSE\", other = 1 *) DFFRE example ("
+  ],
+  "input_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_place1_pnr53\\impl\\pnr\\g2_top.vo",
+      "bytes": 30773537,
+      "mtime_ns": 1793023583532833500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_place2_pnr54\\impl\\pnr\\g2_top.vo",
+      "bytes": 30773537,
+      "mtime_ns": 1793027878115798200
+    }
+  ],
+  "source_RTL_or_frozen_VO_changed": false,
+  "full54_clock_stop_review_still_root_owned": true,
+  "physical_timing_accepted": false,
+  "actual_receipt": {
+    "path": "F:\\nav_integration_g2_20261023\\PNR53_PNR54_IO_attribute_reader_fix1.json",
+    "bytes": 4927,
+    "mtime_ns": 1793028701980728600
+  },
+  "supplement_receipt": "F:/nav_integration_g2_20261023/PNR53_PNR54_attributed_IO_FF_stream_review2/result.json",
+  "exact_shared_locations": [
+    "integration/g2/review_lease_tree_pnr50_final.py:CELL",
+    "integration/g2/review_lease_tree_pnr50_final.py:parse_vo attribute validation",
+    "integration/g2/review_lease_tree_pnr50_final.py:parse_vo independent DFF head count"
+  ],
+  "root_next_action": "Use a new54 full-clock/IR/lease review once2/4GiB admits;53 big graph need not be reparsed. Original53 failed review remains unchanged.",
+  "semantic_scope": "Only standard known attribute prefix tokenization changed. Primitive kind, original3 match groups, full port body, effective parameters and all downstream equality/CDC/stop checks remain intact."
+}

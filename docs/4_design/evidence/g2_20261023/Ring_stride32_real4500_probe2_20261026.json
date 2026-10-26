@@ -1,0 +1,158 @@
+{
+  "passed": true,
+  "phase": "finite_RTL_and_independent_reader_contract_complete",
+  "source": "F:/nav_integration_g2_20261023/SLF128_storage_safeFW_syn43",
+  "candidate": "F:/nav_integration_g2_20261023/SLF128_ring_stride32_prepared1",
+  "original_failed_probe": "F:/nav_integration_g2_20261023/ring_stride32_real4500_probe1",
+  "fixture_repair": "Only move deadline_hits declaration before its first use;7 hardware copies/104 assets exact unchanged",
+  "actual_probe": "F:\\nav_integration_g2_20261023\\ring_stride32_real4500_probe2",
+  "result": "F:\\nav_integration_g2_20261023\\ring_stride32_real4500_probe2\\result.json",
+  "terminal_review": "F:\\nav_integration_g2_20261023\\ring_stride32_real4500_probe2\\terminal_review.json",
+  "controller_pid": 27184,
+  "controller_created_epoch": 1793028372.141244,
+  "all13_recorded_process_identities_exited": true,
+  "normal": {
+    "cycles": 18670391,
+    "words": 6918,
+    "trace": 13621,
+    "results": 32,
+    "published": 31,
+    "wraps": 2,
+    "aborts": 3,
+    "first_repeats": 15,
+    "max_latency_us": 1687.69,
+    "clock_MHz": 50,
+    "period_us": 8000
+  },
+  "targeted": {
+    "load_stops": 9,
+    "clip_cases": 2,
+    "deadline_hits": 17,
+    "weight_frames": 32
+  },
+  "tool_exit_codes": {
+    "0_xvlog": 0,
+    "1_xvlog": 0,
+    "2_xelab": 0,
+    "3_xsim": 0
+  },
+  "every_complete_inference": "168 input words,425 traces,6 actions,40704 actual gold weights;frameID and publication edge compared",
+  "warnings": {
+    "xsim_total": 10212,
+    "bias_lowbit_truncation": 984,
+    "ELU_lowbit_truncation": 9224,
+    "ELU_extra_words": 4,
+    "xelab_task_sensitivity": 1,
+    "xvlog": 0,
+    "effective_low26_and_low13_match_narrow_assets": true
+  },
+  "proof": "F:\\nav_integration_g2_20261023\\ring_stride32_reader_induction_review1\\result.json",
+  "proof_method": "All finite legal pointer/address states plus exact opaque symbolic-term equality; no sampled RAM data, noZ3 dependency, noRTL frontend",
+  "proof_counts": {
+    "pointer_tuples": 7776,
+    "first_word": 7776,
+    "prefetch_words": 1298592,
+    "induction_steps": 1290816,
+    "final_sentinel": 7776,
+    "reset_states": 2048,
+    "hold_states": 2048,
+    "freeze_overrides": 12288,
+    "qualification_cases": 107520,
+    "write_read_pairs": 28224,
+    "padding_nonalias_pairs": 4032
+  },
+  "total_accepted_word_equalities": 1306368,
+  "source_text_checks": {
+    "producer_arithmetic_clipping_reset_commit_exact": true,
+    "original_RAM_writer_and_all_pointer_COMMIT_freeze_logic_exact": true,
+    "default_flat_branch_exact": true,
+    "complete_policy_sequential_tail_exact": true,
+    "owner_only_two_direct_narrow_signals": true,
+    "all_other60_RTL_byte_identical": true
+  },
+  "proof_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43\\control\\rl_observation_v5.v",
+      "bytes": 10328,
+      "mtime_ns": 1792999744568655700
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43\\control\\rl_policy_tick_v5.v",
+      "bytes": 7491,
+      "mtime_ns": 1792999744571731800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43\\control\\mem_policy.v",
+      "bytes": 6625,
+      "mtime_ns": 1792999744574020100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_prepared1\\control\\rl_observation_v5.v",
+      "bytes": 11117,
+      "mtime_ns": 1793027988063922900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_prepared1\\control\\rl_policy_tick_v5.v",
+      "bytes": 8205,
+      "mtime_ns": 1793027988063922900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_prepared1\\control\\mem_policy.v",
+      "bytes": 6779,
+      "mtime_ns": 1793027988063922900
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43\\manifest.json",
+      "bytes": 10424,
+      "mtime_ns": 1793018637159427500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_prepared1\\manifest.json",
+      "bytes": 10214,
+      "mtime_ns": 1793027988065925200
+    }
+  ],
+  "proof_anchors": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_prepared1\\control\\rl_observation_v5.v",
+      "line": 173,
+      "anchor": "wire [7:0] read_address="
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_prepared1\\control\\rl_observation_v5.v",
+      "line": 184,
+      "anchor": "read_segment<=0;read_lane<=1;read_slot<=live4;"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_prepared1\\control\\rl_observation_v5.v",
+      "line": 189,
+      "anchor": "case(read_segment)"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_prepared1\\control\\rl_policy_tick_v5.v",
+      "line": 70,
+      "anchor": "assign frame_read_peek_first="
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_prepared1\\control\\rl_policy_tick_v5.v",
+      "line": 145,
+      "anchor": "if(load_index!=167) snapshot_word<=frame_read_data;"
+    }
+  ],
+  "all_value_argument": "Opaque RAM terms may be assigned ANY24bit value or4-state pattern. Identical source clip function is kept as an uninterpreted deterministic operation; matching terms prove equality for every assignment, including repeated slots and unknown contents. No RAM is read, initialized or forced by this proof.",
+  "stop_and_reset": "With no reset, noacceptedfreeze and noadvance every11bit cursor state holds. When disable/STOP actually asserts observer reset, reset wins and sets6/0/0; it is incorrect to require allSTOP types to leave cursorFF unchanged.",
+  "proof_limits": [
+    "Manual exact-source semantic binding; not parsing/elaborating completeVerilog",
+    "Known legal control/pointer values, initialized/caller contract; arbitraryX/Z control/reset not universally quantified",
+    "Internal speculative data outside accepted paired transactions may differ",
+    "No wholeG2 reachability/timing/CDC/IO/actuator or physical stop claim"
+  ],
+  "whole_RTL_formal_equivalence": false,
+  "whole_G2_or_physical_acceptance": false,
+  "automatic_SYN_or_PNR": false,
+  "reproducible_entries": [
+    "integration/g2/prepare_ring_stride32_real4500_probe.py",
+    "integration/g2/review_ring_stride32_probe_terminal.py",
+    "integration/g2/prove_ring_stride32_reader_contract.py"
+  ]
+}

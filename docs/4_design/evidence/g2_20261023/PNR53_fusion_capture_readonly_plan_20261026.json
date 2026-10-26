@@ -1,0 +1,291 @@
+{
+  "at": "2026-10-26T23:23:05.839875+08:00",
+  "phase": "read-only fusion review, one next-direction plan",
+  "source_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\control\\imu_fusion.v",
+      "bytes": 20521,
+      "mtime_ns": 1792936600772323300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion50_ring_MAX_prepared1\\control\\imu_fusion.v",
+      "bytes": 20521,
+      "mtime_ns": 1792936600772323300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\baseline_fusion_only_prepared1\\control\\imu_fusion.v",
+      "bytes": 20521,
+      "mtime_ns": 1792936600772323300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\PNR53_all_failed_endpoints_classification1\\result.json",
+      "bytes": 61842,
+      "mtime_ns": 1793024063512959300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\PNR53_all_failed_endpoints_classification1\\representative_path_details.json",
+      "bytes": 197771,
+      "mtime_ns": 1793024063521036100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_place1_pnr53\\impl\\pnr\\g2_top.tr",
+      "bytes": 82329746,
+      "mtime_ns": 1793023682110143600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_place1_pnr53\\impl\\pnr\\g2_top.vo",
+      "bytes": 30773537,
+      "mtime_ns": 1793023583532833500
+    }
+  ],
+  "current_norm_pipeline": {
+    "already_inherited_from_SYN23_SYN40": true,
+    "source_byte_identical_to_both_ancestors": true,
+    "current_registers": "three64bit norm_square registers feed the already retimed sqrt start path; state4/state9 write them",
+    "unchanged_literals": [
+      "reg [63:0] norm_square_x=0,norm_square_y=0,norm_square_z=0;",
+      "wire [63:0] sqrt_value=norm_square_x+norm_square_y+norm_square_z;",
+      "norm_square_x<={32'd0, abs16(accel_x)} * abs16(accel_x);",
+      "norm_square_x<=abs24(egx) * abs24(egx);"
+    ],
+    "not_readding_old_square2_or_other_failed_stack": true
+  },
+  "all_fusion_failures": {
+    "negative_unique_endpoints": 107,
+    "pin_counts": {
+      "CE": 65,
+      "DSP_CE": 2,
+      "DSP_A": 27,
+      "D": 13
+    },
+    "raw_pin_counts": {
+      "CE[0]": 2,
+      "A[26]": 1,
+      "A[25]": 1,
+      "A[24]": 1,
+      "A[21]": 1,
+      "A[23]": 1,
+      "A[22]": 1,
+      "A[15]": 1,
+      "A[10]": 1,
+      "A[19]": 1,
+      "A[20]": 1,
+      "A[17]": 1,
+      "A[16]": 1,
+      "A[18]": 1,
+      "A[11]": 1,
+      "A[12]": 1,
+      "A[13]": 1,
+      "A[7]": 1,
+      "A[9]": 1,
+      "A[14]": 1,
+      "A[5]": 1,
+      "A[3]": 1,
+      "A[4]": 1,
+      "A[8]": 1,
+      "A[6]": 1,
+      "A[1]": 1,
+      "CE": 65,
+      "A[2]": 1,
+      "D": 13,
+      "A[0]": 1
+    },
+    "worst_slack_ns": -5.936,
+    "worst_path_number": 387,
+    "not_all107_the_same_issue": true
+  },
+  "actual_worst": {
+    "source": "sensor gyro_y bit3 FF",
+    "endpoint": "fusion MULT27X36 mult_3469_s1 CE[0]",
+    "logic_levels": 24,
+    "data_delay_ns": 25.61,
+    "gate_ns": 10.169,
+    "route_ns": 15.111,
+    "C2Q_ns": 0.331,
+    "single_final_route_ns": 8.058,
+    "final_driver_fanout": 74,
+    "final_driver_location": "R42C162[2][A]",
+    "DSP_location": "DSP_R55[23]",
+    "source_to_enable_chain": "raw gyro abs16 -> two gyro magnitude sum carry chains -> state6 trust/rejected selection -> eg* capture enable -> DSP AREG CE",
+    "note": "Endpoint is an operand-register enable, not the old square-sum datapath or an inference multiplication delay",
+    "AREG_actual": "CLK0/CE0, operand capture was absorbed into hardDSP; BREG has its separate existing CE. No source stage change is inferred from a name alone",
+    "actual_DSP_ports": {
+      "DOUT": "{\\u_control/model_thread/fusion/DOUT_6 [62:32], \\u_control/model_thread/n7504_2 , \\u_control/model_thread/n7505_2 , \\u_control/model_thread/n7506_2 , \\u_control/model_thread/n7507_2 , \\u_control/model_thread/n7508_2 , \\u_control/model_thread/n7509_2 , \\u_control/model_thread/n7510_2 , \\u_control/model_thread/n7511_2 , \\u_control/model_thread/n7512_2 , \\u_control/model_thread/n7513_2 , \\u_control/model_thread/n7514_2 , \\u_control/model_thread/n7515_2 , \\u_control/model_thread/n7516_2 , \\u_control/model_thread/n7517_2 , \\u_control/model_thread/n7518_2 , \\u_control/model_thread/n7519_2 , \\u_control/model_thread/fusion/DOUT_6 [15:0]}",
+      "PADDSUB": "GND",
+      "PSEL": "GND",
+      "A": "{\\u_control/model_thread/fusion/n8728_40 , \\u_control/model_thread/fusion/n8728_40 , \\u_control/model_thread/fusion/n8728_40 , \\u_control/model_thread/fusion/n8728_40 , \\u_control/model_thread/fusion/n8729_40 , \\u_control/model_thread/fusion/n8730_40 , \\u_control/model_thread/fusion/n8731_40 , \\u_control/model_thread/fusion/n8732_40 , \\u_control/model_thread/fusion/n8733_40 , \\u_control/model_thread/fusion/n8734_40 , \\u_control/model_thread/fusion/n8735_40 , \\u_control/model_thread/fusion/n8736_40 , \\u_control/model_thread/fusion/n8737_40 , \\u_control/model_thread/fusion/n8738_40 , \\u_control/model_thread/fusion/n8739_40 , \\u_control/model_thread/fusion/n8740_40 , \\u_control/model_thread/fusion/n8741_40 , \\u_control/model_thread/fusion/n8742_40 , \\u_control/model_thread/fusion/n8743_40 , \\u_control/model_thread/fusion/n8744_40 , \\u_control/model_thread/fusion/n8745_40 , \\u_control/model_thread/fusion/n8746_40 , \\u_control/model_thread/fusion/n8747_40 , \\u_control/model_thread/fusion/n8748_40 , \\u_control/model_thread/fusion/n8749_40 , \\u_control/model_thread/fusion/n8750_40 , \\u_control/model_thread/fusion/n8751_40 }",
+      "B": "{\\u_control/model_thread/fusion/n9_5 , \\u_control/model_thread/fusion/n9_5 , \\u_control/model_thread/fusion/n9_5 , \\u_control/model_thread/fusion/n9_5 , \\u_control/model_thread/fusion/n9_5 , \\u_control/model_thread/fusion/n10_5 , \\u_control/model_thread/fusion/n11_5 , \\u_control/model_thread/fusion/n12_5 , \\u_control/model_thread/fusion/n13_5 , \\u_control/model_thread/fusion/n14_5 , \\u_control/model_thread/fusion/n15_5 , \\u_control/model_thread/fusion/n16_5 , \\u_control/model_thread/fusion/n17_5 , \\u_control/model_thread/fusion/n18_5 , \\u_control/model_thread/fusion/n19_5 , \\u_control/model_thread/fusion/n20_5 , \\u_control/model_thread/fusion/n21_5 , \\u_control/model_thread/fusion/n22_5 , \\u_control/model_thread/fusion/n23_5 , \\u_control/model_thread/fusion/n24_5 , \\u_control/model_thread/fusion/n25_5 , \\u_control/model_thread/fusion/n26_5 , \\u_control/model_thread/fusion/n27_5 , \\u_control/model_thread/fusion/n28_5 , \\u_control/model_thread/fusion/n29_5 , \\u_control/model_thread/fusion/n30_5 , \\u_control/model_thread/fusion/n31_8 , \\u_control/model_thread/fusion/n32_8 , \\u_control/model_thread/fusion/n33_5 , \\u_control/model_thread/fusion/n34_5 , \\u_control/model_thread/fusion/n35_5 , \\u_control/model_thread/fusion/n36_5 , \\u_control/model_thread/fusion/n37_5 , \\u_control/model_thread/fusion/n38_5 , \\u_control/model_thread/fusion/n39_5 , \\u_control/model_thread/fusion/n40_5 }",
+      "D": "{GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND, GND}",
+      "CLK": "{GND, clk50_d}",
+      "CE": "{VCC, \\u_control/model_thread/fusion/egx_23_12 }",
+      "RESET": "{GND, \\u_control/n2371_7 }"
+    },
+    "actual_DSP_parameters": [
+      "OREG_CLK=\"BYPASS\"",
+      "OREG_CE=\"CE0\"",
+      "OREG_RESET=\"RESET0\"",
+      "MULT_RESET_MODE=\"ASYNC\"",
+      "AREG_CLK=\"CLK0\"",
+      "AREG_CE=\"CE0\"",
+      "AREG_RESET=\"RESET0\"",
+      "BREG_CLK=\"CLK0\"",
+      "BREG_CE=\"CE1\"",
+      "BREG_RESET=\"RESET0\"",
+      "DREG_CLK=\"BYPASS\"",
+      "DREG_CE=\"CE0\"",
+      "DREG_RESET=\"RESET0\"",
+      "PADDSUB_IREG_CLK=\"BYPASS\"",
+      "PADDSUB_IREG_CE=\"CE0\"",
+      "PADDSUB_IREG_RESET=\"RESET0\"",
+      "PREG_CLK=\"BYPASS\"",
+      "PREG_CE=\"CE0\"",
+      "PREG_RESET=\"RESET0\"",
+      "PSEL_IREG_CLK=\"BYPASS\"",
+      "PSEL_IREG_CE=\"CE0\"",
+      "PSEL_IREG_RESET=\"RESET0\"",
+      "DYN_P_SEL=\"FALSE\"",
+      "P_SEL=1'b0",
+      "DYN_P_ADDSUB=\"FALSE\"",
+      "P_ADDSUB=1'b0"
+    ]
+  },
+  "original_capture_and_use": {
+    "source_reference_lines": [
+      {
+        "line": 122,
+        "text": "sample_clock<=0; last_sample_clock<=0; integration_ticks<=CLK_HZ/100;"
+      },
+      {
+        "line": 126,
+        "text": "integration_ticks<=sample_clock-last_sample_clock;"
+      },
+      {
+        "line": 171,
+        "text": "reg signed [23:0] egx, egy, egz;    // candidate after accel correction"
+      },
+      {
+        "line": 206,
+        "text": "egx <= 0; egy <= 0; egz <= -4096;"
+      },
+      {
+        "line": 314,
+        "text": "5'd6: begin"
+      },
+      {
+        "line": 325,
+        "text": "egx <= n1; egy <= n2; egz <= n3;"
+      },
+      {
+        "line": 336,
+        "text": "5'd7: if (recip_done) begin"
+      },
+      {
+        "line": 345,
+        "text": "// into egx/egy/egz, preserving gyro-only integration."
+      },
+      {
+        "line": 346,
+        "text": "5'd8: begin"
+      },
+      {
+        "line": 347,
+        "text": "egx <= n1 + (((nx - n1) * ACCEL_TRUST) >>> 12);"
+      },
+      {
+        "line": 348,
+        "text": "egy <= n2 + (((ny - n2) * ACCEL_TRUST) >>> 12);"
+      },
+      {
+        "line": 349,
+        "text": "egz <= n3 + (((nz - n3) * ACCEL_TRUST) >>> 12);"
+      },
+      {
+        "line": 356,
+        "text": "5'd9: begin"
+      },
+      {
+        "line": 357,
+        "text": "norm_square_x<=abs24(egx) * abs24(egx);"
+      },
+      {
+        "line": 358,
+        "text": "norm_square_y<=abs24(egy) * abs24(egy);"
+      },
+      {
+        "line": 359,
+        "text": "norm_square_z<=abs24(egz) * abs24(egz);"
+      },
+      {
+        "line": 381,
+        "text": "5'd12: if (recip_done) begin"
+      },
+      {
+        "line": 382,
+        "text": "gravity_x <= (egx * recip_q) >>> 16;"
+      },
+      {
+        "line": 383,
+        "text": "gravity_y <= (egy * recip_q) >>> 16;"
+      },
+      {
+        "line": 384,
+        "text": "gravity_z <= (egz * recip_q) >>> 16;"
+      },
+      {
+        "line": 385,
+        "text": "gx <= (egx * recip_q) >>> 16;"
+      },
+      {
+        "line": 386,
+        "text": "gy <= (egy * recip_q) >>> 16;"
+      },
+      {
+        "line": 387,
+        "text": "gz <= (egz * recip_q) >>> 16;"
+      },
+      {
+        "line": 391,
+        "text": "5'd13: begin"
+      },
+      {
+        "line": 395,
+        "text": "valid <= 1;"
+      }
+    ],
+    "state6": "accepted accel leaves eg* holding and starts recip; rejected accel writes eg*=n1/n2/n3 then goes state9",
+    "state7": "accepted path waits recip_done, writes nx/ny/nz; no source consumer of eg*",
+    "state8": "accepted path unconditionally writes blended eg* then goes state9",
+    "consumers": "eg* reads only at state9 norm_square capture and state12 gravity/gx/gy/gz publish",
+    "final_valid": "state13 pulses valid and accel_rejected, unchanged",
+    "measured_dt": "sample_clock/integration_ticks captures raw sample_valid independently of FSM; cannot silently resample or retime this",
+    "earlier_precompute_not_selected": "moving gyro trust sampling earlier would change behavior if raw gyro updates during a busy interval; retain original state6 decision exactly"
+  },
+  "only_next_structure_direction": {
+    "name": "unconditional provisional eg* capture in state6",
+    "change": "in state6 write egx=n1,egy=n2,egz=n3 for both accepted and rejected paths; retain original trust predicate, recip_d/start, rejected_sample and st transitions verbatim",
+    "accepted_lifetime": "new provisional eg* differs privately only during state7 wait; original state8 blend overwrites it before every state9/state12 consumer",
+    "rejected_lifetime": "same original n* values captured on the same state6 edge",
+    "expected_CE": "state6 OR state8 capture, independent of raw gyro abs/sum trust predicate",
+    "expected_resources": "same three existing24bit eg* registers, no new clock/state/public latency; actual FF/DSP mapping not measured",
+    "no_RTL_written": true
+  },
+  "exact_proof_obligations": [
+    "list all actual source consumers and prove no eg* use in accepted state7 interval; explicitly permit private-state difference only there",
+    "public outputs/valid/accel_rejected/calibrating/bias_suspect and all sqrt/recip/div start/done/return cycles must compare exactly",
+    "accepted/rejected transition, raw publication during each busy stage, actual state6 gyro decision unchanged, reset in state6/7/8/9 and reciprocal waits",
+    "retain full signed24 arithmetic and all norms/trust thresholds; existing arithmetic proofs can bind unchanged expressions, not replace new capture-lifetime comparison",
+    "no forced calibration, unknown output rejection, production50MHz and BIAS_SAMPLES200/100Hz cases if a full dynamic run is selected"
+  ],
+  "required_actual_mapping_checks": [
+    "actual DSP/FF captureCE must lose dependency on raw gyro trust sum; if optimizer reconstructs it, the mapping objective is not met",
+    "check whether the27 negative DSP_A inputs and13 D/state/divider endpoints remain; this CE change does not promise they disappear",
+    "measure resulting CE fanout/route/arrival and all107 negative fusion endpoints, plus complete new design timing categories",
+    "unchanged clocks/INIT/4500/125Hz/control/reset/stop and no new timing exception"
+  ],
+  "priority": "reasonable small isolated backup after53/54 comparison; not a claim to close overall50MHz or justification to alter the running layout",
+  "mathematical_or_RTL_test_started": false,
+  "RTL_generated_or_modified": false,
+  "EDA_started": false,
+  "current54_or_prepared_queue_modified": false,
+  "deployment_ready": false
+}
