@@ -28,6 +28,8 @@ OBS=MODEL+'/observation'
 POL=MODEL+'/policy'
 CORE=POL+'/core'
 CHANGED={'control/rl_observation_v5.v','control/rl_policy_tick_v5.v','control/mem_policy.v'}
+OLD_OBSERVER_ADDRESS_DSPS=3
+EXTRA_STATE_BINDER=None
 
 
 def load(p):return json.loads(p.read_text(encoding='utf-8-sig'))
@@ -116,11 +118,13 @@ def ring(a,b,out):
         sym=z3.Bool('verified_semantic_load_index:'+str(i))
         la.q_symbols[x['ports']['Q'][0]]=lb.q_symbols[y['ports']['Q'][0]]=sym
         semantic_state.append(dict(bit=i,Q_before=x['ports']['Q'][0],Q_after=y['ports']['Q'][0],before=x['name'],after=y['name'],kind=x['kind'],parameters=pa(x)))
+    if EXTRA_STATE_BINDER is not None:
+        EXTRA_STATE_BINDER(la,lb,ca,cb,pa,pb,semantic_state)
     qvec=lambda cs:vector([lb.one(c,'Q')for c in cs])
     nxt=lambda cs:vector([lb.next_state(c)for c in cs])
     pvec=lambda c,p:vector([lb.expr(n)for n in c['ports'][p]])
     for row in semantic_state:
-        prove('load_index'+str(row['bit'])+' actual complete next-state across renamed FF',la.next_state(ca[row['before']]),lb.next_state(cb[row['after']]))
+        prove(row.get('role','load_index')+str(row['bit'])+' actual complete next-state across renamed FF',la.next_state(ca[row['before']]),lb.next_state(cb[row['after']]))
     work=qvec(regs(cb,OBS+'/g_ring.work_slot',3));lane=qvec(regs(cb,OBS+'/lane',5))
     ost=qvec(regs(cb,OBS+'/state',3));pst=qvec(regs(cb,POL+'/state',3))
     valid=lb.one(cb[OBS+'/valid_s0'],'Q');init=lb.one(cb[OBS+'/initialized_s0'],'Q')
@@ -193,7 +197,7 @@ def ring(a,b,out):
         prove(c['name']+' accepted CE identical to original',lb.one(c,'CE'),oldce,z3.Not(polreset))
     assert not any(c['kind']=='MULT12X12'and n.startswith(OBS+'/')for n,c in cb.items())
     olddsp=[dict(**c,parameters=pa(c))for n,c in ca.items()if n.startswith(OBS+'/')and c['kind']=='MULT12X12']
-    assert len(olddsp)==3
+    assert len(olddsp)==OLD_OBSERVER_ADDRESS_DSPS
     # The outer LOAD comparator was remapped into the input-valid/address
     # region.  Check the changed RAM write boundary directly rather than
     # demanding byte-identical whole-core mapped module text.
@@ -206,6 +210,7 @@ def ring(a,b,out):
             input_mem_proofs+=1
     assert input_mem_proofs==132*3,input_mem_proofs
     actual_core_body_equal=b.modules[b.module_kinds[CORE]]==a.modules[a.module_kinds[CORE]]
+    old_frame_leaves=sum(c['kind']=='RAM16SDP4'and n.startswith(OBS+'/g_ring.frame_mem')for n,c in ca.items())
     save(out/'actual_ring_primitives.json',dict(RAMs=[dict(**c,parameters=pb(c))for c in rams.values()],cursor=cursor,old_address_DSPs=olddsp))
     save(out/'actual_ring_checks.json',dict(passed=True,count=len(checks),checks=checks,boundaries=boundaries,verified_semantic_state_bindings=semantic_state,word_permutation=permutation))
     return dict(passed=True,actual_frame_RAM16SDP4=78,all_observer_SSRAM_are_frame_mem=True,
@@ -213,9 +218,10 @@ def ring(a,b,out):
                 real_declared_words=192,logical_live_words=168,allocated_words=208,allocated_bits=4992,
                 unexpected_vs72_reason='Six leaves form bank12 (nominal addresses192..207); all actual WREs are false for legalwork_slot0..5/lane0..27 and arbitrary bank12 outputs cannot affect accepted prefetchD.',
                 normal_banks=12,extra_unreachable_bank=12,extra_unused_words=16,explicit_INIT_parameters=False,
-                source_hole_words=24,total_unconsumed_physical_words=40,old_allocated_bits=4224,allocated_delta_bits=768,
+                source_hole_words=24,total_unconsumed_physical_words=40,old_frame_RAM16SDP4=old_frame_leaves,
+                old_allocated_bits=old_frame_leaves*64,allocated_delta_bits=(len(rams)-old_frame_leaves)*64,
                 actual_cursor_FFs=11,cursor_reset_classes=dict(Counter(c['kind']for c in cursor)),
-                removed_observer_MULT12X12=3,new_observer_MULT12X12=0,checks=len(checks),
+                removed_observer_MULT12X12=len(olddsp),new_observer_MULT12X12=0,checks=len(checks),
                 actual_real4500_core_module_body_exact=actual_core_body_equal,
                 actual_core_input_RAM_write_port_miters=input_mem_proofs,
                 core_body_difference='Mapped LOAD/input_valid comparators and automatic net/instance roles changed; complete mapped core equivalence is not asserted.',

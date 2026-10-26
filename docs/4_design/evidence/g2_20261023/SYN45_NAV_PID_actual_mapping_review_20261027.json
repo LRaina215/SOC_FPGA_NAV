@@ -1,0 +1,115 @@
+{
+  "at": "2026-10-27T00:33:42.153335+08:00",
+  "baseline": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_syn44",
+  "candidate": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_SYN45_prepared1",
+  "build": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_syn45",
+  "mapped_NAV_pulse_contract_passed": true,
+  "NAV_decode_removed_from_selected_consumer_CE": true,
+  "mapped_PID_reachable_contract_passed": true,
+  "PID_target_amplification_removed": true,
+  "IR_immediate_stop_preserved": true,
+  "combined_actual_goal_passed": true,
+  "entry": "integration/g2/review_measured_NAV_PID_syn45.py",
+  "source_bound_prepare_only_plan": "F:\\nav_integration_g2_20261023\\SYN45_NAV_PID_mapping_plan1\\result.json",
+  "actual_result": "F:\\nav_integration_g2_20261023\\SYN45_NAV_PID_actual_review3\\result.json",
+  "actual_queries": 8896,
+  "actual_failures": 0,
+  "NAV": {
+    "new_FF_count": 6,
+    "kinds": [
+      "DFFRE"
+    ],
+    "INIT": 0,
+    "clock": "clk50_d",
+    "RESET": "r2",
+    "full_accepted_nextstate_equivalence": true,
+    "original_consumer_transitions": 8815,
+    "unmatched_original_consumers": 0,
+    "consumer_control_pins_with_original_address_Q_removed": 867
+  },
+  "PID": [
+    {
+      "wheel": "left",
+      "original_and_new_public_ramp_full_nextstate_equal": true,
+      "direct_model_data_proved_at_original_capture": true,
+      "old_IR_key_hold_D_frontier": 41,
+      "new_IR_key_hold_D_frontier": 0,
+      "old_target_D_logic_cells": 301,
+      "new_target_D_logic_cells": 250
+    },
+    {
+      "wheel": "right",
+      "original_and_new_public_ramp_full_nextstate_equal": true,
+      "direct_model_data_proved_at_original_capture": true,
+      "old_IR_key_hold_D_frontier": 41,
+      "new_IR_key_hold_D_frontier": 0,
+      "old_target_D_logic_cells": 289,
+      "new_target_D_logic_cells": 248
+    }
+  ],
+  "IR_stop": {
+    "latch_full_transition_equal": true,
+    "public_reference_bits_same_cycle_reset": 64,
+    "actual_PWM_DIR_outputs_immediately_low": 6
+  },
+  "prior_readers_preserved": [
+    {
+      "result": "F:\\nav_integration_g2_20261023\\SYN45_NAV_PID_actual_review1\\result.json",
+      "query_count": 8893,
+      "free_state_SAT_count": 30,
+      "cause": "top arbiter/SOC qualifier drivers cut independently;3 tied-inactive reset type rewrites unpaired;directD tested outside capture/reachable reference scope"
+    },
+    {
+      "result": "F:\\nav_integration_g2_20261023\\SYN45_NAV_PID_actual_review2\\result.json",
+      "query_count": 8896,
+      "free_state_SAT_count": 8,
+      "cause": "SOC qualifier driver cut remained;directD had no original capture qualification"
+    }
+  ],
+  "admitted_correspondences": "Same actual semantic Q or original instance/kind/INIT/clock;only DFFCE CLEAR=literalGND versus DFFRE RESET=literalGND type change allowed and full nextstate proved;no automatic suffix matching",
+  "assumptions": [
+    "Known original reset/INIT and the first common edge establish pulse versus RF-command relation.",
+    "Both public model targets in[-600,600], established by the independently source-proved action mapper;actual preview mapping is a separate gate.",
+    "Direct accepted ramp-D proof also uses original reference range[-600,600] and actual CE&&!RESET;disabled/reset D values are not consumers."
+  ],
+  "boundaries": [
+    "This reader does not claim complete G2 or every PID private DSP sequential equivalence.",
+    "Complete memory INIT,clocks/26CDC and optional action-preview mappings are separate gates.",
+    "Physical routed setup/hold,CDC payload delay,reset pulse width andIO/vehicle stopping remain unaccepted."
+  ],
+  "EDA_started": false,
+  "RTL_modified": false,
+  "deployment_accepted": false,
+  "bindings": [
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_measured_NAV_PID_syn45.py",
+      "bytes": 28088,
+      "mtime_ns": 1793032421464773000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SYN45_NAV_PID_actual_review3\\result.json",
+      "bytes": 4303848,
+      "mtime_ns": 1793032457117157700
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SYN45_NAV_PID_actual_review3\\actual_semantic_state_correspondences.json",
+      "bytes": 13213867,
+      "mtime_ns": 1793032456983702800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_syn44\\impl\\gwsynthesis\\g2_top.vg",
+      "bytes": 16900907,
+      "mtime_ns": 1793029376309591100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_syn45\\impl\\gwsynthesis\\g2_top.vg",
+      "bytes": 16945360,
+      "mtime_ns": 1793032053484269500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_syn45\\job.json",
+      "bytes": 2027,
+      "mtime_ns": 1793032064963501100
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "passed": true,
+  "completed_at": "2026-10-27T00:43:41.143959+08:00",
+  "old": "F:\\nav_integration_g2_20261023\\SLF128_ring_stride32_syn44",
+  "new": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_syn45",
+  "storage_CPU_passed": true,
+  "ring_passed": true,
+  "two_clocks_passed": true,
+  "original26_passed": true,
+  "FIFO_reset_passed": true,
+  "IR_passed": true,
+  "lease_passed": true,
+  "actual_roles26": "F:\\nav_integration_g2_20261023\\SYN45_storage_clock_ring_final1\\actual_roles26.json",
+  "source": {
+    "RTL": 63,
+    "changed_RTL": [
+      "control/mem_policy.v",
+      "control/policy_action_map.v",
+      "control/rl_policy_tick_v5.v",
+      "control4500_core.v",
+      "nav/rtl/top/nav_subsystem.v"
+    ],
+    "all104_assets_exact": true,
+    "FW_BIN_bytes": 53572
+  },
+  "storage": {
+    "nonring_leaves": 2076,
+    "every_nonring_name_kind_effective_parameter_INIT_equal": true,
+    "BSRAM": 269,
+    "counts": {
+      "RAM16SDP4": 1821,
+      "SP": 64,
+      "SDPB": 56,
+      "pROM": 25,
+      "pROMX9": 21,
+      "SDPX9B": 103,
+      "RAM16SDP1": 64
+    },
+    "CPU": {
+      "passed": true,
+      "bytes": 131072,
+      "bitplanes": 64,
+      "BIN_bytes": 53572,
+      "BIN_zero_padding_ram_w_four_byte_lanes_exact": true
+    }
+  },
+  "ring": {
+    "actual_frame_RAM16SDP4": 78,
+    "all_are_frame_mem": true,
+    "allocated_words": 208,
+    "allocated_bits": 4992,
+    "cursor_FFs": 11,
+    "address_MULT12X12": 0,
+    "all13banks_read_write_and_24bit_prefetch_checked": true,
+    "checks": 1038,
+    "core_input_RAM_write_port_miters": 396,
+    "source_producer_unchanged": true,
+    "extra18_numerator_high_FF_sign_aliases": "Actual two-level INIT/base+nextstate induction certificate, then rechecked DI miter",
+    "whole_actual_core_equivalence_proved": false,
+    "before_frame_RAM16SDP4": 78,
+    "before_allocated_bits": 4992,
+    "allocated_delta_bits": 0
+  },
+  "clocks": {
+    "nonconstant_clockpins": 31947,
+    "constant_clockpins": 177,
+    "roots": [
+      {
+        "root": "clk50",
+        "inverted": false,
+        "pins": 31803
+      },
+      {
+        "root": "clk50",
+        "inverted": true,
+        "pins": 1
+      },
+      {
+        "root": "rgmii_rxc",
+        "inverted": false,
+        "pins": 138
+      },
+      {
+        "root": "rgmii_rxc",
+        "inverted": true,
+        "pins": 5
+      }
+    ],
+    "every_clockpin_individually_traced": true,
+    "original26_group_counts": {
+      "rx_write_gray": 12,
+      "core_read_gray": 12,
+      "rx_clock_monitor": 1,
+      "rx_sampling_select": 1
+    },
+    "all78_role_kind_INIT_parameters_preserved": true,
+    "FIFO_FFs": 445
+  },
+  "stop": {
+    "IR_FFs": 154,
+    "IR_checks": 182,
+    "lease_FFs": 200,
+    "lease_checks": 248
+  },
+  "evidence": {
+    "source": "F:\\nav_integration_g2_20261023\\SYN45_storage_clock_ring_review1\\ring_memory\\source.json",
+    "all_memories_CPU": "F:\\nav_integration_g2_20261023\\SYN45_storage_clock_ring_review1\\ring_memory\\all_memories_CPU.json",
+    "all_actual_memories": "F:\\nav_integration_g2_20261023\\SYN45_storage_clock_ring_review1\\ring_memory\\all_actual_memories.json",
+    "actual_ring": "F:\\nav_integration_g2_20261023\\SYN45_ring_alias_DI_review3\\actual_ring\\result.json",
+    "actual_ring_checks": "F:\\nav_integration_g2_20261023\\SYN45_ring_alias_DI_review3\\actual_ring\\actual_ring_checks.json",
+    "actual_IR": "F:\\nav_integration_g2_20261023\\SYN45_ring_IR_binding_review2\\actual_IR_stop_partition\\result.json",
+    "actual_IR_bindings": "F:\\nav_integration_g2_20261023\\SYN45_ring_IR_binding_review2\\actual_IR_stop_partition\\IR_actual_bindings_checks.json",
+    "alias_proof": "F:\\nav_integration_g2_20261023\\SYN45_action_last_high_alias_supplement1\\result.json",
+    "actual_two_clocks": "F:\\nav_integration_g2_20261023\\SYN45_storage_clock_ring_review1\\clock_stop\\actual_two_clocks.json",
+    "actual_FIFO": "F:\\nav_integration_g2_20261023\\SYN45_storage_clock_ring_review1\\clock_stop\\actual_FIFO_state_reset_classes.json",
+    "actual_lease": "F:\\nav_integration_g2_20261023\\SYN45_storage_clock_ring_review1\\clock_stop\\actual_lease_stop_partition.json",
+    "actual_roles26": "F:\\nav_integration_g2_20261023\\SYN45_storage_clock_ring_final1\\actual_roles26.json"
+  },
+  "proof_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SYN45_action_last_high_alias_supplement1\\result.json",
+      "bytes": 65819,
+      "mtime_ns": 1793032877718134000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SYN45_ring_alias_DI_review3\\actual_ring\\result.json",
+      "bytes": 2211,
+      "mtime_ns": 1793032976440332200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SYN45_ring_IR_binding_review2\\actual_IR_stop_partition\\result.json",
+      "bytes": 679,
+      "mtime_ns": 1793032438410144100
+    }
+  ],
+  "preserved_initial_failures": [
+    "F:\\nav_integration_g2_20261023\\SYN45_storage_clock_ring_review1\\result.json",
+    "F:\\nav_integration_g2_20261023\\SYN45_ring_IR_binding_review2\\result.json"
+  ],
+  "resolution": "First attempt used instance-name-only state pairing and exact auto port sets. New evidence proves semantic age FF transitions, renamed IR input and every live IR transition/output, plus actual high/sign state invariants before comparing ring RAM DI.",
+  "physical_exploration_audited_gates_pass": true,
+  "automatic_PNR": false,
+  "deployment_accepted": false,
+  "no_EDA_started": true,
+  "not_covered": [
+    "Action product/DSP mapping and NAV/PID mappings have separate root-assigned reviewers",
+    "Complete mapped core equivalence and universal nonring data/control-port equivalence",
+    "Routed timing, physical BSRAM splitting, actual52 Actived status/maxdelay/MTBF",
+    "Physical reset recovery/removal/min pulsewidth, CPU busy-stop and vehicle stopping"
+  ],
+  "detailed_metadata_clarification": "The first reusable ring report retained SYN43->44 legacy old_allocated_bits=4224/delta768. For this SYN44->45 comparison both actual frame inventories are78 leaves/4992bits, so delta0. The corrected reviewer derives these fields from actual leaf counts; this metadata clarification does not rerun or alter proofs.",
+  "reproducible_entrypoints": {
+    "initial_review": "D:/Desktop/SOC FPGA/nav/integration/g2/review_measured_timing_syn45_storage_clock_ring.py",
+    "ring_IR_binding_supplement": "D:/Desktop/SOC FPGA/nav/integration/g2/review_measured_timing_syn45_ring_IR_supplement.py",
+    "finalizer": "D:/Desktop/SOC FPGA/nav/integration/g2/finalize_measured_timing_syn45_storage_clock_ring.py",
+    "ring_command": "D:/Anaconda/python.exe -B -X utf8 D:/Desktop/SOC FPGA/nav/integration/g2/review_measured_timing_syn45_ring_IR_supplement.py --out <new-empty-out> --parts actual_ring --certified-aliases F:\\nav_integration_g2_20261023\\SYN45_action_last_high_alias_supplement1\\result.json",
+    "IR_command": "D:/Anaconda/python.exe -B -X utf8 D:/Desktop/SOC FPGA/nav/integration/g2/review_measured_timing_syn45_ring_IR_supplement.py --out <different-new-empty-out> --parts actual_IR_stop_partition"
+  }
+}

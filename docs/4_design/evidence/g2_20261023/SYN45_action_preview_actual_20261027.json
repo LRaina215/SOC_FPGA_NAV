@@ -1,0 +1,362 @@
+{
+  "passed": true,
+  "phase": "actual_action_product_partition_passed",
+  "controller_pid": 54088,
+  "controller_created_epoch": 1793032473.9456575,
+  "actual6_product_registers_verified": true,
+  "actual_source_core_actions_verified": true,
+  "EDA_started": false,
+  "scope": "actual six product modes/FF input boundary + exact source proof binding, not whole mapped G2 equivalence or physical timing",
+  "admission": {
+    "physical": 3583528960,
+    "commit": 7027302400
+  },
+  "actual_signed_clip_gain_modes_verified": true,
+  "source_edge_contract_preserved": true,
+  "actual_separate_product_FF_count": 0,
+  "DSP_count": 6,
+  "all_action_bits_per_group": 16777216,
+  "mapped_math_UNSAT_checks": 12,
+  "small_partition_cells": 1494,
+  "action_primitive_counts": {
+    "LUT3": 302,
+    "LUT4": 324,
+    "LUT2": 218,
+    "DFFCE": 183,
+    "DFFPE": 28,
+    "MULTALU27X18": 6,
+    "ALU": 88,
+    "INV": 4,
+    "VCC": 1,
+    "GND": 1
+  },
+  "actual_vg": {
+    "path": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_syn45\\impl\\gwsynthesis\\g2_top.vg",
+    "bytes": 16945360,
+    "mtime_ns": 1793032053484269500
+  },
+  "DSP_modes_result": {
+    "path": "F:\\nav_integration_g2_20261023\\SYN45_action_preview_actual_review1\\actual_six_DSP_modes.json",
+    "bytes": 131142,
+    "mtime_ns": 1793032478027426500
+  },
+  "source_proof": {
+    "path": "F:\\nav_integration_g2_20261023\\SLF128_ring44_action_preview_overlay2\\prepared_review.json",
+    "bytes": 6330,
+    "mtime_ns": 1793031441573694600
+  },
+  "edge_proof": {
+    "path": "F:\\nav_integration_g2_20261023\\SLF128_ring44_action_preview_overlay2\\edge_relation_proof.json",
+    "bytes": 2786,
+    "mtime_ns": 1793031441571261000
+  },
+  "current_source_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_SYN45_prepared1\\control\\policy_action_map.v",
+      "bytes": 3026,
+      "mtime_ns": 1793031533485917400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_SYN45_prepared1\\control\\rl_policy_tick_v5.v",
+      "bytes": 8294,
+      "mtime_ns": 1793031533485917400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_SYN45_prepared1\\control\\mem_policy.v",
+      "bytes": 6878,
+      "mtime_ns": 1793031533485917400
+    }
+  ],
+  "source_rounding_and_output_edge": "currentmap exactly overlay2/oldprovenmap; source19UNSAT edge proof binds captureE→consumeE+1/latestff/publicreset-stop. Remaining LUT-rounding fullmapped-output partition not separatelyprovedhere",
+  "no_new_clock_or_public_pipeline_stage": true,
+  "full_mapped_core_or_wholeG2_equivalence": false,
+  "actual_50MHz_physical_STA_or_routability_proven": false,
+  "ended_at": "2026-10-27T00:34:38.027426+08:00",
+  "actual_result": {
+    "path": "F:\\nav_integration_g2_20261023\\SYN45_action_preview_actual_review1\\result.json",
+    "bytes": 2754,
+    "mtime_ns": 1793032478027426500
+  },
+  "timing_summary": {
+    "report": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_syn45\\impl\\gwsynthesis\\g2_top_syn.rpt.html",
+      "bytes": 311596,
+      "mtime_ns": 1793032061287843600
+    },
+    "frequency_rows": [
+      [
+        "1",
+        "clk50",
+        "50.000(MHz)",
+        "48.744(MHz)",
+        "26",
+        "TOP"
+      ],
+      [
+        "2",
+        "rgmii_rxc",
+        "50.000(MHz)",
+        "100.735(MHz)",
+        "6",
+        "TOP"
+      ]
+    ],
+    "listed_path_count": 25,
+    "paths": [
+      {
+        "Slack": "-0.515",
+        "Data Arrival Time": "20.829",
+        "Data Required Time": "20.314",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/st_1_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 1
+      },
+      {
+        "Slack": "0.628",
+        "Data Arrival Time": "19.686",
+        "Data Required Time": "20.314",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/st_3_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 2
+      },
+      {
+        "Slack": "0.681",
+        "Data Arrival Time": "19.632",
+        "Data Required Time": "20.314",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/st_2_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 3
+      },
+      {
+        "Slack": "0.988",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "19.990",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/mult_3469_s1",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 4
+      },
+      {
+        "Slack": "0.988",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "19.990",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/mult_3468_s1",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 5
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_0_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 6
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_1_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 7
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_2_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 8
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_3_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 9
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_4_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 10
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_5_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 11
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_6_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 12
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_7_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 13
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_8_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 14
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_9_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 15
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_10_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 16
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_11_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 17
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_12_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 18
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_13_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 19
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_14_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 20
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_15_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 21
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_16_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 22
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_17_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 23
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_18_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 24
+      },
+      {
+        "Slack": "1.090",
+        "Data Arrival Time": "19.001",
+        "Data Required Time": "20.091",
+        "From": "u_control/sensor/gyro_y_3_s0",
+        "To": "u_control/model_thread/fusion/recip_d_19_s0",
+        "Launch Clk": "clk50[R]",
+        "Latch Clk": "clk50[R]",
+        "Path": 25
+      }
+    ],
+    "all_listed_action_path_count": 0,
+    "warning": "SYN estimates only;25listedpaths are not allSTA endpoints. RX table target50MHz is a synthesis-report convention, physicalSDC remains100MHz; no signoff claim"
+  },
+  "controller_natural_exit_required_before_EDA_admission": true,
+  "unchanged_source_map_and_E2_E3_basis": "Ring44overlay2 exact3sourcebinding; nooldSYN28netlist/CST imported"
+}

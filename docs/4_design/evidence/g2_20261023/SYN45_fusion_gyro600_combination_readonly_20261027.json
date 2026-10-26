@@ -1,0 +1,254 @@
+{
+  "at": "2026-10-27T00:45:27.986140+08:00",
+  "passed": true,
+  "stage": "fallback_combination_plan_with_lightweight_math_only",
+  "entry": "integration/g2/plan_fusion_gyro600_small_compare.py",
+  "result": "F:\\nav_integration_g2_20261023\\SYN45_fusion_gyro600_combination_plan2\\result.json",
+  "actual_old_path": {
+    "summary": {
+      "Slack": "-0.515",
+      "Data Arrival Time": "20.829",
+      "Data Required Time": "20.314",
+      "From": "u_control/sensor/gyro_y_3_s0",
+      "To": "u_control/model_thread/fusion/st_1_s0",
+      "Launch Clk": "clk50[R]",
+      "Latch Clk": "clk50[R]"
+    },
+    "primitive_outputs": 33,
+    "primitive_kinds": {
+      "LUT4": 8,
+      "LUT3": 3,
+      "LUT2": 9,
+      "ALU": 13
+    },
+    "sections": [
+      {
+        "role": "zero_prefix_through_abs_bit14",
+        "primitive_outputs": 11,
+        "estimated_cell_delay_ns": 5.587
+      },
+      {
+        "role": "sum_carry_ALU_outputs",
+        "primitive_outputs": 13,
+        "estimated_cell_delay_ns": 1.918
+      },
+      {
+        "role": "rejection_and_state_decode",
+        "primitive_outputs": 9,
+        "estimated_cell_delay_ns": 4.073
+      }
+    ],
+    "cell_route_C2Q_estimated_ns": {
+      "cell": 11.575,
+      "route": 8.539,
+      "C2Q": 0.344
+    },
+    "actual_abs_prefix_function_proved": "NOR(rawgyro_y[3:0]), then extend zero test throughbit13 in9dependent LUT steps, then LUT3INITB4 forms original sign-dependent absbit14. It is an actual11-LUT source-to-abs prefix, not an assumed32-bit adder."
+  },
+  "candidate": "Default600: raw high6 guard with negative-1024 rejection; exact low10 abs of each axis; explicit XOR/majority CSA plus single12bit carry-propagate sum<600. Other parameter values use the literal original expression.",
+  "known48_math": {
+    "passed": true,
+    "symbolic_queries": [
+      {
+        "label": "all2^48 known signed raw triples: original32bit abs sum<600 == guarded low10 CSA12 sum<600",
+        "result": "UNSAT"
+      },
+      {
+        "label": "accepted high guard means each low10 magnitude equals complete original abs32",
+        "result": "UNSAT"
+      },
+      {
+        "label": "unsigned12bit carry-save result equals full sum of three10bit magnitudes without truncation",
+        "result": "UNSAT"
+      }
+    ],
+    "all65536_single_axis_raw_encodings_checked": true,
+    "corner_triples": [
+      {
+        "raw": [
+          0,
+          0,
+          0
+        ],
+        "original_sum": 0,
+        "accepted": true
+      },
+      {
+        "raw": [
+          599,
+          0,
+          0
+        ],
+        "original_sum": 599,
+        "accepted": true
+      },
+      {
+        "raw": [
+          600,
+          0,
+          0
+        ],
+        "original_sum": 600,
+        "accepted": false
+      },
+      {
+        "raw": [
+          -599,
+          0,
+          0
+        ],
+        "original_sum": 599,
+        "accepted": true
+      },
+      {
+        "raw": [
+          -600,
+          0,
+          0
+        ],
+        "original_sum": 600,
+        "accepted": false
+      },
+      {
+        "raw": [
+          -1024,
+          0,
+          0
+        ],
+        "original_sum": 1024,
+        "accepted": false
+      },
+      {
+        "raw": [
+          -32768,
+          0,
+          0
+        ],
+        "original_sum": 32768,
+        "accepted": false
+      },
+      {
+        "raw": [
+          32767,
+          0,
+          0
+        ],
+        "original_sum": 32767,
+        "accepted": false
+      },
+      {
+        "raw": [
+          199,
+          200,
+          200
+        ],
+        "original_sum": 599,
+        "accepted": true
+      },
+      {
+        "raw": [
+          200,
+          200,
+          200
+        ],
+        "original_sum": 600,
+        "accepted": false
+      },
+      {
+        "raw": [
+          1023,
+          1023,
+          1023
+        ],
+        "original_sum": 3069,
+        "accepted": false
+      },
+      {
+        "raw": [
+          -1023,
+          -1023,
+          -1023
+        ],
+        "original_sum": 3069,
+        "accepted": false
+      }
+    ],
+    "maximum_low10_sum": 3069,
+    "exact_sum_width": 12,
+    "precision_lost": 0,
+    "threshold_changed": false
+  },
+  "four_state_branch_proof": {
+    "passed": true,
+    "queries": [
+      {
+        "label": "all raw48 value+known masks and arbitrary common mag-window0/1/X/Z: original/candidate procedural known-true acceptance",
+        "result": "UNSAT"
+      },
+      {
+        "label": "candidate cannot accept an unknown raw gyro bit",
+        "result": "UNSAT"
+      }
+    ],
+    "logic_value_equality_claimed": false,
+    "exact_scope": "All16bit raw values and independent known/unknown masks for all48bits; X/Z collapsed only where Verilog arithmetic/relational/logic treats both as unknown. Common original mag-window may also be unknown. A procedural if takes its true branch only for known1.",
+    "permitted_difference": "If another axis is definitely outside the small window while one gyro bit isX/Z, the new gate may be0 while original arithmetic comparison isX; BOTH take the original rejection/else branch. The new gate is used only by that original if, not exposed as an output."
+  },
+  "source_diff_contract": "Only combinational generate wires plus the state6 condition token; original abs16 stays unchanged for bias accumulation and all normalization. Other GYRO_MOVE_LIMIT values select the literal original expression.",
+  "sample_edge_contract": "Original state6 positive edge reads the then-current raw gyro inputs and mag32 exactly as before; no sample_valid-edge precompute, no holding FF, no state/latency or stop/reset change. Inputs changing between state2 and state6 remain observed at state6.",
+  "analytic_structure_not_mapping": {
+    "old_range": "abs16 returns32bits; known axis0..32768, sum0..98304",
+    "candidate": "high6 validity in parallel; three low10 magnitudes; explicit carry-save XOR/majority followed by one12bit carry-propagate add and unsigned<600",
+    "added_FF": 0,
+    "added_cycles": 0,
+    "threshold": 600,
+    "low_magnitude_bits": 10,
+    "exact_sum_bits": 12,
+    "no_promise": "Actual synthesis may widen/share/flatten logic or move the critical path; source widths and CSA syntax do not prove mapped depth or physical timing gains."
+  },
+  "recommendation": "Reserve only if the current two-layout physical run still fails setup in this same gyro trust cone. The actual first path remains multi-level; this is a testable combination rewrite, not a proved cure.",
+  "next_validation": [
+    "Materialize only by root authorization in a unique source snapshot after current physical results; keep all source assets/FW/SDC unchanged.",
+    "RTL four-state comparison at original state6 acceptance, threshold599/600, signed-min,-1024, X/Z and active reset; any public state/latency difference blocks.",
+    "One actual small/full-context mapping review: verify high rejection, low10/CSA12 preservation or equivalent bound; bind all state/stop/reset and public trust decision. Preserve failed mapping instead of retrying identical inputs.",
+    "Only a mapped structural improvement can justify a later physical candidate; compare full routed timing endpoint coverage, not only the25 synthesis paths."
+  ],
+  "bindings": [
+    {
+      "path": "integration\\g2\\plan_fusion_gyro600_small_compare.py",
+      "bytes": 17013,
+      "mtime_ns": 1793033119143963300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SYN45_fusion_gyro600_combination_plan2\\result.json",
+      "bytes": 28733,
+      "mtime_ns": 1793033128000745500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_syn45\\control\\imu_fusion.v",
+      "bytes": 20521,
+      "mtime_ns": 1792936600772323300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_syn45\\control\\mem_policy.v",
+      "bytes": 6878,
+      "mtime_ns": 1793031533485917400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_syn45\\impl\\gwsynthesis\\g2_top_syn.rpt.html",
+      "bytes": 311596,
+      "mtime_ns": 1793032061287843600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_measured_timing_syn45\\impl\\gwsynthesis\\g2_top.vg",
+      "bytes": 16945360,
+      "mtime_ns": 1793032053484269500
+    }
+  ],
+  "RTL_materialized": false,
+  "EDA_started": false,
+  "simulator_started": false,
+  "actual_new_mapping_passed": false,
+  "physical_timing_accepted": false,
+  "deployment_accepted": false
+}
