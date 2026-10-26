@@ -1,0 +1,1007 @@
+{
+  "at": "2026-10-26T23:04:37.416632+08:00",
+  "phase": "source/math induction and actual path plan only; not an equivalence run",
+  "source_inputs": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\control4500_core.v",
+      "bytes": 20992,
+      "mtime_ns": 1792936600560105400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\g2_top.v",
+      "bytes": 11633,
+      "mtime_ns": 1793013325206198000
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\control\\policy_action_map.v",
+      "bytes": 2194,
+      "mtime_ns": 1792936600556099200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\control\\mem_policy.v",
+      "bytes": 6625,
+      "mtime_ns": 1792999744574020100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\control\\motor520_closed_loop.v",
+      "bytes": 13317,
+      "mtime_ns": 1792936600553269400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\PNR53_all_failed_endpoints_classification1\\result.json",
+      "bytes": 61842,
+      "mtime_ns": 1793024063512959300
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_place1_pnr53\\impl\\pnr\\g2_top.tr",
+      "bytes": 82329746,
+      "mtime_ns": 1793023682110143600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_place1_pnr53\\impl\\pnr\\g2_top.vo",
+      "bytes": 30773537,
+      "mtime_ns": 1793023583532833500
+    }
+  ],
+  "gate54": {
+    "runtime": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_place2_pnr54\\tool_runtime.json",
+      "bytes": 928,
+      "mtime_ns": 1793027059234006400
+    },
+    "pid": 48212,
+    "original_created_epoch": 1793024323.6441314,
+    "tool_exit": null,
+    "ended_at": null,
+    "original_process_still_running": true,
+    "pid_reused_by_other_process": false,
+    "cancelled": false,
+    "total_seconds": 0,
+    "silent_seconds": 0,
+    "natural_completion_gate": false
+  },
+  "actual_PID_failed_endpoints": {
+    "right": 362,
+    "left": 381,
+    "total": 743,
+    "not_a_claim_all743_will_be_fixed": true
+  },
+  "actual_path_details": {
+    "146": {
+      "summary": {
+        "Slack": "-7.211",
+        "Data Arrival Time": "30.795",
+        "Data Required Time": "23.583",
+        "From": "u_control/remote_thread/gowin_replicate_reg_ir_emergency_stop_2",
+        "To": "u_control/wheel_control/right_control/ramped_target_mmps_0_s0",
+        "Launch Clk": "clk50:[R]",
+        "Latch Clk": "clk50:[R]"
+      },
+      "reported_logic_level": 20,
+      "vendor_data_statistics": {
+        "cell": {
+          "delay_ns": 8.661,
+          "percent": 32.213
+        },
+        "route": {
+          "delay_ns": 17.882,
+          "percent": 66.506
+        },
+        "tC2Q": {
+          "delay_ns": 0.344,
+          "percent": 1.28
+        }
+      },
+      "actual_data_rows": [
+        {
+          "arrival_ns": 4.252,
+          "delay_ns": 0.344,
+          "type": "tC2Q",
+          "transition": "RR",
+          "fanout": 57,
+          "location": "R62C126[2][B]",
+          "node": "u_control/remote_thread/gowin_replicate_reg_ir_emergency_stop_2/Q"
+        },
+        {
+          "arrival_ns": 7.33,
+          "delay_ns": 3.078,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R59C127[3][B]",
+          "node": "u_control/telemetry_thread/n1726_s9/I0"
+        },
+        {
+          "arrival_ns": 7.74,
+          "delay_ns": 0.411,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R59C127[3][B]",
+          "node": "u_control/telemetry_thread/n1726_s9/F"
+        },
+        {
+          "arrival_ns": 8.305,
+          "delay_ns": 0.565,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R56C128[3][B]",
+          "node": "u_control/telemetry_thread/n1726_s4/I3"
+        },
+        {
+          "arrival_ns": 8.821,
+          "delay_ns": 0.516,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 52,
+          "location": "R56C128[3][B]",
+          "node": "u_control/telemetry_thread/n1726_s4/F"
+        },
+        {
+          "arrival_ns": 14.008,
+          "delay_ns": 5.186,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R9C164[1][A]",
+          "node": "u_control/wheel_control/right_control/n1321_s8/I1"
+        },
+        {
+          "arrival_ns": 14.268,
+          "delay_ns": 0.26,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 12,
+          "location": "R9C164[1][A]",
+          "node": "u_control/wheel_control/right_control/n1321_s8/F"
+        },
+        {
+          "arrival_ns": 14.844,
+          "delay_ns": 0.576,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R7C164[3][B]",
+          "node": "u_control/wheel_control/right_control/next_reference_5_s4/I2"
+        },
+        {
+          "arrival_ns": 15.336,
+          "delay_ns": 0.493,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 5,
+          "location": "R7C164[3][B]",
+          "node": "u_control/wheel_control/right_control/next_reference_5_s4/F"
+        },
+        {
+          "arrival_ns": 15.496,
+          "delay_ns": 0.16,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R6C164[0][A]",
+          "node": "u_control/wheel_control/right_control/next_reference_30_s21/I3"
+        },
+        {
+          "arrival_ns": 15.953,
+          "delay_ns": 0.457,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R6C164[0][A]",
+          "node": "u_control/wheel_control/right_control/next_reference_30_s21/F"
+        },
+        {
+          "arrival_ns": 16.089,
+          "delay_ns": 0.136,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R6C164[3][A]",
+          "node": "u_control/wheel_control/right_control/next_reference_30_s16/I3"
+        },
+        {
+          "arrival_ns": 16.605,
+          "delay_ns": 0.516,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R6C164[3][A]",
+          "node": "u_control/wheel_control/right_control/next_reference_30_s16/F"
+        },
+        {
+          "arrival_ns": 16.761,
+          "delay_ns": 0.155,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R6C165[2][B]",
+          "node": "u_control/wheel_control/right_control/next_reference_30_s14/I2"
+        },
+        {
+          "arrival_ns": 17.281,
+          "delay_ns": 0.521,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R6C165[2][B]",
+          "node": "u_control/wheel_control/right_control/next_reference_30_s14/F"
+        },
+        {
+          "arrival_ns": 17.284,
+          "delay_ns": 0.002,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R6C165[2][A]",
+          "node": "u_control/wheel_control/right_control/next_reference_30_s9/I2"
+        },
+        {
+          "arrival_ns": 17.805,
+          "delay_ns": 0.521,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 2,
+          "location": "R6C165[2][A]",
+          "node": "u_control/wheel_control/right_control/next_reference_30_s9/F"
+        },
+        {
+          "arrival_ns": 18.15,
+          "delay_ns": 0.345,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R7C166[2][B]",
+          "node": "u_control/wheel_control/right_control/next_reference_30_s7/I0"
+        },
+        {
+          "arrival_ns": 18.671,
+          "delay_ns": 0.521,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 2,
+          "location": "R7C166[2][B]",
+          "node": "u_control/wheel_control/right_control/next_reference_30_s7/F"
+        },
+        {
+          "arrival_ns": 19.016,
+          "delay_ns": 0.345,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R8C165[1][B]",
+          "node": "u_control/wheel_control/right_control/next_reference_30_s5/I1"
+        },
+        {
+          "arrival_ns": 19.473,
+          "delay_ns": 0.457,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 5,
+          "location": "R8C165[1][B]",
+          "node": "u_control/wheel_control/right_control/next_reference_30_s5/F"
+        },
+        {
+          "arrival_ns": 19.899,
+          "delay_ns": 0.426,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R11C165[0][A]",
+          "node": "u_control/wheel_control/right_control/next_reference_30_s3/I0"
+        },
+        {
+          "arrival_ns": 20.42,
+          "delay_ns": 0.521,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 27,
+          "location": "R11C165[0][A]",
+          "node": "u_control/wheel_control/right_control/next_reference_30_s3/F"
+        },
+        {
+          "arrival_ns": 21.235,
+          "delay_ns": 0.815,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R6C165[1][B]",
+          "node": "u_control/wheel_control/right_control/next_reference_4_s0/I2"
+        },
+        {
+          "arrival_ns": 21.495,
+          "delay_ns": 0.26,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 4,
+          "location": "R6C165[1][B]",
+          "node": "u_control/wheel_control/right_control/next_reference_4_s0/F"
+        },
+        {
+          "arrival_ns": 23.289,
+          "delay_ns": 1.794,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R11C168[1][B]",
+          "node": "u_control/wheel_control/right_control/ramped_target_mmps_31_s51/I1"
+        },
+        {
+          "arrival_ns": 23.746,
+          "delay_ns": 0.457,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R11C168[1][B]",
+          "node": "u_control/wheel_control/right_control/ramped_target_mmps_31_s51/F"
+        },
+        {
+          "arrival_ns": 23.748,
+          "delay_ns": 0.002,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R11C168[1][A]",
+          "node": "u_control/wheel_control/right_control/ramped_target_mmps_31_s56/I0"
+        },
+        {
+          "arrival_ns": 24.259,
+          "delay_ns": 0.511,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R11C168[1][A]",
+          "node": "u_control/wheel_control/right_control/ramped_target_mmps_31_s56/F"
+        },
+        {
+          "arrival_ns": 24.449,
+          "delay_ns": 0.19,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R11C166[1][A]",
+          "node": "u_control/wheel_control/right_control/ramped_target_mmps_31_s55/I0"
+        },
+        {
+          "arrival_ns": 24.709,
+          "delay_ns": 0.26,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 2,
+          "location": "R11C166[1][A]",
+          "node": "u_control/wheel_control/right_control/ramped_target_mmps_31_s55/F"
+        },
+        {
+          "arrival_ns": 25.411,
+          "delay_ns": 0.702,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R14C167[0][A]",
+          "node": "u_control/wheel_control/right_control/ramped_target_mmps_31_s14/I1"
+        },
+        {
+          "arrival_ns": 25.921,
+          "delay_ns": 0.511,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 2,
+          "location": "R14C167[0][A]",
+          "node": "u_control/wheel_control/right_control/ramped_target_mmps_31_s14/F"
+        },
+        {
+          "arrival_ns": 26.079,
+          "delay_ns": 0.157,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R14C168[3][B]",
+          "node": "u_control/wheel_control/right_control/ramped_target_mmps_31_s5/I0"
+        },
+        {
+          "arrival_ns": 26.572,
+          "delay_ns": 0.493,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 3,
+          "location": "R14C168[3][B]",
+          "node": "u_control/wheel_control/right_control/ramped_target_mmps_31_s5/F"
+        },
+        {
+          "arrival_ns": 26.576,
+          "delay_ns": 0.005,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R14C168[1][B]",
+          "node": "u_control/wheel_control/right_control/ramped_target_mmps_31_s2/I2"
+        },
+        {
+          "arrival_ns": 27.097,
+          "delay_ns": 0.521,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 183,
+          "location": "R14C168[1][B]",
+          "node": "u_control/wheel_control/right_control/ramped_target_mmps_31_s2/F"
+        },
+        {
+          "arrival_ns": 30.2,
+          "delay_ns": 3.103,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R8C164[0][B]",
+          "node": "u_control/wheel_control/right_control/ramped_target_mmps_0_s2/I3"
+        },
+        {
+          "arrival_ns": 30.657,
+          "delay_ns": 0.457,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 2,
+          "location": "R8C164[0][B]",
+          "node": "u_control/wheel_control/right_control/ramped_target_mmps_0_s2/F"
+        },
+        {
+          "arrival_ns": 30.795,
+          "delay_ns": 0.138,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R8C164[0][A]",
+          "node": "u_control/wheel_control/right_control/ramped_target_mmps_0_s0/CE"
+        }
+      ],
+      "largest_data_route_segments": [
+        {
+          "arrival_ns": 14.008,
+          "delay_ns": 5.186,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R9C164[1][A]",
+          "node": "u_control/wheel_control/right_control/n1321_s8/I1"
+        },
+        {
+          "arrival_ns": 30.2,
+          "delay_ns": 3.103,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R8C164[0][B]",
+          "node": "u_control/wheel_control/right_control/ramped_target_mmps_0_s2/I3"
+        },
+        {
+          "arrival_ns": 7.33,
+          "delay_ns": 3.078,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R59C127[3][B]",
+          "node": "u_control/telemetry_thread/n1726_s9/I0"
+        },
+        {
+          "arrival_ns": 23.289,
+          "delay_ns": 1.794,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R11C168[1][B]",
+          "node": "u_control/wheel_control/right_control/ramped_target_mmps_31_s51/I1"
+        },
+        {
+          "arrival_ns": 21.235,
+          "delay_ns": 0.815,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R6C165[1][B]",
+          "node": "u_control/wheel_control/right_control/next_reference_4_s0/I2"
+        }
+      ],
+      "data_gate_and_route_sums": {
+        "cell_ns": 8.664,
+        "route_ns": 17.88,
+        "C2Q_ns": 0.344
+      }
+    },
+    "298": {
+      "summary": {
+        "Slack": "-6.221",
+        "Data Arrival Time": "29.811",
+        "Data Required Time": "23.590",
+        "From": "u_control/remote_thread/gowin_replicate_reg_ir_emergency_stop_2",
+        "To": "u_control/wheel_control/left_control/gowin_replicate_reg_state[2]_2",
+        "Launch Clk": "clk50:[R]",
+        "Latch Clk": "clk50:[R]"
+      },
+      "reported_logic_level": 20,
+      "vendor_data_statistics": {
+        "cell": {
+          "delay_ns": 8.625,
+          "percent": 33.298
+        },
+        "route": {
+          "delay_ns": 16.934,
+          "percent": 65.373
+        },
+        "tC2Q": {
+          "delay_ns": 0.344,
+          "percent": 1.329
+        }
+      },
+      "actual_data_rows": [
+        {
+          "arrival_ns": 4.252,
+          "delay_ns": 0.344,
+          "type": "tC2Q",
+          "transition": "RR",
+          "fanout": 57,
+          "location": "R62C126[2][B]",
+          "node": "u_control/remote_thread/gowin_replicate_reg_ir_emergency_stop_2/Q"
+        },
+        {
+          "arrival_ns": 7.33,
+          "delay_ns": 3.078,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R59C127[3][B]",
+          "node": "u_control/telemetry_thread/n1726_s9/I0"
+        },
+        {
+          "arrival_ns": 7.74,
+          "delay_ns": 0.411,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R59C127[3][B]",
+          "node": "u_control/telemetry_thread/n1726_s9/F"
+        },
+        {
+          "arrival_ns": 8.305,
+          "delay_ns": 0.565,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R56C128[3][B]",
+          "node": "u_control/telemetry_thread/n1726_s4/I3"
+        },
+        {
+          "arrival_ns": 8.821,
+          "delay_ns": 0.516,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 52,
+          "location": "R56C128[3][B]",
+          "node": "u_control/telemetry_thread/n1726_s4/F"
+        },
+        {
+          "arrival_ns": 11.503,
+          "delay_ns": 2.682,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R27C127[0][A]",
+          "node": "u_control/wheel_control/left_control/n1321_s9/I1"
+        },
+        {
+          "arrival_ns": 12.014,
+          "delay_ns": 0.511,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 18,
+          "location": "R27C127[0][A]",
+          "node": "u_control/wheel_control/left_control/n1321_s9/F"
+        },
+        {
+          "arrival_ns": 15.983,
+          "delay_ns": 3.968,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R7C149[1][B]",
+          "node": "u_control/wheel_control/left_control/next_reference_6_s5/I2"
+        },
+        {
+          "arrival_ns": 16.503,
+          "delay_ns": 0.521,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 5,
+          "location": "R7C149[1][B]",
+          "node": "u_control/wheel_control/left_control/next_reference_6_s5/F"
+        },
+        {
+          "arrival_ns": 16.52,
+          "delay_ns": 0.017,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R7C149[3][B]",
+          "node": "u_control/wheel_control/left_control/next_reference_28_s42/I2"
+        },
+        {
+          "arrival_ns": 17.037,
+          "delay_ns": 0.516,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R7C149[3][B]",
+          "node": "u_control/wheel_control/left_control/next_reference_28_s42/F"
+        },
+        {
+          "arrival_ns": 17.38,
+          "delay_ns": 0.343,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R6C148[0][A]",
+          "node": "u_control/wheel_control/left_control/next_reference_28_s38/I3"
+        },
+        {
+          "arrival_ns": 17.64,
+          "delay_ns": 0.26,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R6C148[0][A]",
+          "node": "u_control/wheel_control/left_control/next_reference_28_s38/F"
+        },
+        {
+          "arrival_ns": 17.776,
+          "delay_ns": 0.136,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R6C148[3][A]",
+          "node": "u_control/wheel_control/left_control/next_reference_28_s33/I3"
+        },
+        {
+          "arrival_ns": 18.269,
+          "delay_ns": 0.493,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R6C148[3][A]",
+          "node": "u_control/wheel_control/left_control/next_reference_28_s33/F"
+        },
+        {
+          "arrival_ns": 18.647,
+          "delay_ns": 0.378,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R6C151[2][B]",
+          "node": "u_control/wheel_control/left_control/next_reference_28_s27/I1"
+        },
+        {
+          "arrival_ns": 19.103,
+          "delay_ns": 0.457,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R6C151[2][B]",
+          "node": "u_control/wheel_control/left_control/next_reference_28_s27/F"
+        },
+        {
+          "arrival_ns": 19.259,
+          "delay_ns": 0.155,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R6C152[1][A]",
+          "node": "u_control/wheel_control/left_control/next_reference_28_s17/I1"
+        },
+        {
+          "arrival_ns": 19.715,
+          "delay_ns": 0.457,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 2,
+          "location": "R6C152[1][A]",
+          "node": "u_control/wheel_control/left_control/next_reference_28_s17/F"
+        },
+        {
+          "arrival_ns": 19.873,
+          "delay_ns": 0.157,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R5C152[0][A]",
+          "node": "u_control/wheel_control/left_control/next_reference_28_s11/I1"
+        },
+        {
+          "arrival_ns": 20.33,
+          "delay_ns": 0.457,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R5C152[0][A]",
+          "node": "u_control/wheel_control/left_control/next_reference_28_s11/F"
+        },
+        {
+          "arrival_ns": 20.485,
+          "delay_ns": 0.155,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R6C152[1][B]",
+          "node": "u_control/wheel_control/left_control/next_reference_28_s7/I0"
+        },
+        {
+          "arrival_ns": 20.996,
+          "delay_ns": 0.511,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 2,
+          "location": "R6C152[1][B]",
+          "node": "u_control/wheel_control/left_control/next_reference_28_s7/F"
+        },
+        {
+          "arrival_ns": 21.341,
+          "delay_ns": 0.345,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R7C153[2][A]",
+          "node": "u_control/wheel_control/left_control/next_reference_28_s4/I0"
+        },
+        {
+          "arrival_ns": 21.852,
+          "delay_ns": 0.511,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 28,
+          "location": "R7C153[2][A]",
+          "node": "u_control/wheel_control/left_control/next_reference_28_s4/F"
+        },
+        {
+          "arrival_ns": 22.742,
+          "delay_ns": 0.89,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R6C149[3][B]",
+          "node": "u_control/wheel_control/left_control/next_reference_5_s2/I3"
+        },
+        {
+          "arrival_ns": 23.258,
+          "delay_ns": 0.516,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 3,
+          "location": "R6C149[3][B]",
+          "node": "u_control/wheel_control/left_control/next_reference_5_s2/F"
+        },
+        {
+          "arrival_ns": 23.962,
+          "delay_ns": 0.704,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R9C150[3][A]",
+          "node": "u_control/wheel_control/left_control/n1530_s16/I0"
+        },
+        {
+          "arrival_ns": 24.249,
+          "delay_ns": 0.287,
+          "type": "tINS",
+          "transition": "RF",
+          "fanout": 1,
+          "location": "R9C150[3][A]",
+          "node": "u_control/wheel_control/left_control/n1530_s16/F"
+        },
+        {
+          "arrival_ns": 24.254,
+          "delay_ns": 0.005,
+          "type": "tNET",
+          "transition": "FF",
+          "fanout": 1,
+          "location": "R9C150[3][B]",
+          "node": "u_control/wheel_control/left_control/n1530_s6/I2"
+        },
+        {
+          "arrival_ns": 24.664,
+          "delay_ns": 0.411,
+          "type": "tINS",
+          "transition": "FR",
+          "fanout": 1,
+          "location": "R9C150[3][B]",
+          "node": "u_control/wheel_control/left_control/n1530_s6/F"
+        },
+        {
+          "arrival_ns": 24.819,
+          "delay_ns": 0.155,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R9C151[3][B]",
+          "node": "u_control/wheel_control/left_control/n1530_s3/I0"
+        },
+        {
+          "arrival_ns": 25.082,
+          "delay_ns": 0.262,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 3,
+          "location": "R9C151[3][B]",
+          "node": "u_control/wheel_control/left_control/n1530_s3/F"
+        },
+        {
+          "arrival_ns": 25.545,
+          "delay_ns": 0.463,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R11C152[3][B]",
+          "node": "u_control/wheel_control/left_control/n3722_s17/I1"
+        },
+        {
+          "arrival_ns": 26.038,
+          "delay_ns": 0.493,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R11C152[3][B]",
+          "node": "u_control/wheel_control/left_control/n3722_s17/F"
+        },
+        {
+          "arrival_ns": 26.174,
+          "delay_ns": 0.136,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R11C152[3][A]",
+          "node": "u_control/wheel_control/left_control/n3722_s13/I2"
+        },
+        {
+          "arrival_ns": 26.69,
+          "delay_ns": 0.516,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 7,
+          "location": "R11C152[3][A]",
+          "node": "u_control/wheel_control/left_control/n3722_s13/F"
+        },
+        {
+          "arrival_ns": 28.344,
+          "delay_ns": 1.654,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R24C151[2][A]",
+          "node": "u_control/wheel_control/left_control/state_0_s4/I0"
+        },
+        {
+          "arrival_ns": 28.865,
+          "delay_ns": 0.521,
+          "type": "tINS",
+          "transition": "RR",
+          "fanout": 5,
+          "location": "R24C151[2][A]",
+          "node": "u_control/wheel_control/left_control/state_0_s4/F"
+        },
+        {
+          "arrival_ns": 29.811,
+          "delay_ns": 0.946,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R21C155[1][A]",
+          "node": "u_control/wheel_control/left_control/gowin_replicate_reg_state[2]_2/CE"
+        }
+      ],
+      "largest_data_route_segments": [
+        {
+          "arrival_ns": 15.983,
+          "delay_ns": 3.968,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R7C149[1][B]",
+          "node": "u_control/wheel_control/left_control/next_reference_6_s5/I2"
+        },
+        {
+          "arrival_ns": 7.33,
+          "delay_ns": 3.078,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R59C127[3][B]",
+          "node": "u_control/telemetry_thread/n1726_s9/I0"
+        },
+        {
+          "arrival_ns": 11.503,
+          "delay_ns": 2.682,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R27C127[0][A]",
+          "node": "u_control/wheel_control/left_control/n1321_s9/I1"
+        },
+        {
+          "arrival_ns": 28.344,
+          "delay_ns": 1.654,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R24C151[2][A]",
+          "node": "u_control/wheel_control/left_control/state_0_s4/I0"
+        },
+        {
+          "arrival_ns": 29.811,
+          "delay_ns": 0.946,
+          "type": "tNET",
+          "transition": "RR",
+          "fanout": 1,
+          "location": "R21C155[1][A]",
+          "node": "u_control/wheel_control/left_control/gowin_replicate_reg_state[2]_2/CE"
+        }
+      ],
+      "data_gate_and_route_sums": {
+        "cell_ns": 8.627,
+        "route_ns": 16.932,
+        "C2Q_ns": 0.344
+      }
+    }
+  },
+  "path_interpretation": [
+    "same registered IR stop copy atR62C126 feeds telemetry-named shared combinational LUTs, not a UART receive stage",
+    "LUTn1726_s9 I0 directly takes IR stop and its F drives LUTn1726_s4 I3",
+    "shared n1726_s4 F drives actual left/right n1321 target/amplification selection cones",
+    "next_reference and running/opposite/stall predicates feed PID state/ramp CE",
+    "right26.887ns data includes8.661ns gates+17.882ns routing+0.344nsC2Q; largest net5.186ns",
+    "left25.904ns data includes8.625ns gates+16.934ns routing+0.344nsC2Q; largest net3.968ns"
+  ],
+  "actual_elaborated_gain": {
+    "top_instance": "control4500_core u_control has no parameter overrides/defparam",
+    "default_real": 1.0,
+    "compiled_expression": "$rtoi(MODEL_WHEEL_SPEED_GAIN*4096.0+0.5)",
+    "effective_Q12": 4096
+  },
+  "current_amplifier_math": {
+    "product": "signed64 x*gain",
+    "round": "p<0 ? -((-p+2048)>>>12) : ((p+2048)>>>12)",
+    "saturation": "signed32 output limited[-600,600]",
+    "unity_identity": "for every known signed32 x within[-600,600], x*4096 is exact multiple4096 and symmetric rounding returnsx; saturation does not change it",
+    "invalid_generalization": "for arbitrary signed32 x outside this reachable model domain the amplifier is NOT identity"
+  },
+  "inductive_model_range": {
+    "base": "policy_action_map reset or !run explicitly assigns both wheel registers0",
+    "accepted_action": "clip(signed24 action) lies[-4096,4096]; signed64 multiplication by+-600 lies[-2457600,2457600]; symmetric rounding(/4096) lies[-600,600]",
+    "other_edge": "if reset deasserted,run1,action_valid0, both output registers hold their previous values",
+    "source_topology": "mem_policy targets are directly these register outputs; no NAV/MMIO/UART/IR alternate register writer exists",
+    "no_unconditional_arbitrary_state_or_XZ_equivalence_claim": true,
+    "required_initial_state": "known original reset/INIT and finite real inputs; X/unknown behavior needs explicit rejection/contract rather than hiding it"
+  },
+  "only_proposed_change": "when integer MODEL_WHEEL_GAIN_Q12==4096 explicitly wire model wheel targets directly; MODEL_ENABLE0 fixed targets and every nonunity expression remain original",
+  "preservation": [
+    "same public wheel targets and telemetry on the proven reachable domain, not a private post-telemetry mux",
+    "IR emergency_stop latch, command_emergency_stop, control_run and wheel_control_enable remain literal original",
+    "original PID/PWM per-cycle enable and reset priority, fault handling and all sample/update/output clocks unchanged",
+    "original model external fault, servo last-pose behavior, UART telemetry and no software parallel owner retained",
+    "no FF/clock/RAM/weight/capacity change and no new timing exception intended"
+  ],
+  "required_low_cost_proofs_before_full_build": [
+    "establish all8193 clipped values and1201 model speeds unity identity; apply invariant to both signs and reset/invalid/hold edges",
+    "sequential miter full original action-map and unchanged PID/PWM for arbitrary valid actions, IR transitions at every PID state/sample edge, zero/fault/re-enable",
+    "keep all nonunity parameters as original expressions; include representative negative/fractional gain cases if any materializer edits more than the explicit unity branch",
+    "reject unknown outputs rather than compare X as equal; no force/internal state substitute"
+  ],
+  "required_actual_mapping_and_physical_checks": [
+    "stop must remain direct same-cycle disable/clear influence; no extra ESTOP register or multicycle/false path",
+    "actual model target cone must no longer use IR amplification select atunity; inspect drivers rather than auto-name disappearance",
+    "new full setup endpoint coverage against original362right/381left plus all other negative categories, not just worst two paths",
+    "cell/route delay and actual global/routing compare to completed53 AND54; do not promise that saving LUTs makes PNR succeed",
+    "all original memory INIT, clocks/26CDC/control weights/stop/reset/PWM preserved"
+  ],
+  "previous_failures_scope": "not a whole32bit arbitrary-input identity and not proof that the whole design meets50MHz; NAV/CPU and other control failures remain",
+  "mathematical_test_executed": false,
+  "RTL_materialized": false,
+  "EDA_started": false,
+  "PNR_inputs_modified": false,
+  "deployment_ready": false
+}

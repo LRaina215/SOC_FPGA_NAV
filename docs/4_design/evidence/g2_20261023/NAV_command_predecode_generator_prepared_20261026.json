@@ -1,0 +1,153 @@
+{
+  "recorded_at": "2026-10-26T22:55:40.278729+08:00",
+  "phase": "generator_prepared_only",
+  "source": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43",
+  "generator": {
+    "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prepare_nav_command_predecode.py",
+    "bytes": 24830,
+    "mtime_ns": 1793026527756025900
+  },
+  "helper": {
+    "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prepare_ring_stride32_private_reader.py",
+    "bytes": 21795,
+    "mtime_ns": 1793025634389797000
+  },
+  "plan_binding": {
+    "path": "F:\\nav_integration_g2_20261023\\PNR53_NAV_command_predecode_plan2\\plan.json",
+    "bytes": 50276,
+    "mtime_ns": 1793025212215376500
+  },
+  "expected_changed_RTL": [
+    "nav/rtl/top/nav_subsystem.v"
+  ],
+  "source_diff_contract": {
+    "file": "nav/rtl/top/nav_subsystem.v",
+    "source_bytes": 34871,
+    "generated_UTF8_LF_bytes": 35808,
+    "old_lines": 610,
+    "new_lines": 632,
+    "removed_lines": 6,
+    "added_lines": 28
+  },
+  "affected_consumers": [
+    {
+      "old_expression": "p_MATCH_CMD & wd_q[0]",
+      "new_pulse": "match_eval_predecoded_q",
+      "line": 408,
+      "text": ".cmd_eval(p_MATCH_CMD & wd_q[0]), .cmd_update(p_MATCH_CMD & wd_q[1]), .cmd_clear(p_MATCH_CMD & wd_q[2]),"
+    },
+    {
+      "old_expression": "p_MATCH_CMD & wd_q[0]",
+      "new_pulse": "match_eval_predecoded_q",
+      "line": 422,
+      "text": "if (p_MATCH_CMD & wd_q[0]) mt_eval_st <= 1'b0;"
+    },
+    {
+      "old_expression": "p_MATCH_CMD & wd_q[1]",
+      "new_pulse": "match_update_predecoded_q",
+      "line": 408,
+      "text": ".cmd_eval(p_MATCH_CMD & wd_q[0]), .cmd_update(p_MATCH_CMD & wd_q[1]), .cmd_clear(p_MATCH_CMD & wd_q[2]),"
+    },
+    {
+      "old_expression": "p_MATCH_CMD & wd_q[2]",
+      "new_pulse": "match_clear_predecoded_q",
+      "line": 408,
+      "text": ".cmd_eval(p_MATCH_CMD & wd_q[0]), .cmd_update(p_MATCH_CMD & wd_q[1]), .cmd_clear(p_MATCH_CMD & wd_q[2]),"
+    },
+    {
+      "old_expression": "p_LIDAR_POSE_COMMIT",
+      "new_pulse": "pose_commit_predecoded_q",
+      "line": 209,
+      "text": ".cfg_raw_inv(r_LIDAR_VALID_CFG[31:16]), .cfg_wait_pose(r_LIDAR_CTRL[3]), .pose_commit(p_LIDAR_POSE_COMMIT),"
+    },
+    {
+      "old_expression": "p_MAP_CMD & wd_q[0]",
+      "new_pulse": "map_sweep_predecoded_q",
+      "line": 333,
+      "text": ".cmd_sweep(p_MAP_CMD & wd_q[0]), .cmd_clear(p_MAP_CMD & wd_q[1]),"
+    },
+    {
+      "old_expression": "p_MAP_CMD & wd_q[1]",
+      "new_pulse": "map_clear_predecoded_q",
+      "line": 333,
+      "text": ".cmd_sweep(p_MAP_CMD & wd_q[0]), .cmd_clear(p_MAP_CMD & wd_q[1]),"
+    },
+    {
+      "old_expression": "p_MAP_CMD & wd_q[1]",
+      "new_pulse": "map_clear_predecoded_q",
+      "line": 352,
+      "text": ".clk(clk),.rst(rst),.clear((p_MAP_CMD & wd_q[1])|support_time_wrap),.age_epoch(support_epoch),"
+    }
+  ],
+  "extra_source_pulse_bits": 6,
+  "physical_FF_delta_unknown": true,
+  "extra_RAM_target": 0,
+  "frame_and_bus_extra_cycles": 0,
+  "inherited_assets": 69,
+  "packed_weight_files": 35,
+  "all_assets": 104,
+  "firmware_BIN_bytes": 53572,
+  "unchanged_source_RTL": 62,
+  "measured_basis": {
+    "address7_failing_endpoints": 2546,
+    "representative_data_ns": 29.88,
+    "listed_decode_prefix_ns": 5.505,
+    "illustrative_unchanged_suffix_ns": 24.375,
+    "interpretation": "Removing the prefix alone leaves about24.4ns; no50MHz guarantee, route or physical closure claim"
+  },
+  "exact_capture_contract": {
+    "pulse_clear": "Same always block and unconditional every-edge0 default as rf_wr; reset and stalls emit no command",
+    "pulse_set": "Only original B_IDLE final ordinary-RF write branch with aligned live bus_addr and bus_wdata; preserve all special-window priority",
+    "four_state": "Use equality result bitwise AND payload bit; never procedural if(address_match). Bus write if retains original X behavior.",
+    "E0": "a_q/wd_q/rf_wr plus six pulses registered; no consumer event/ACK moved earlier",
+    "E1": "Existing consumers see old pulse/operands and RF ACK/rdata; clear vector together with rf_wr",
+    "E2": "Original B_END bubble and arbiter hold retained",
+    "independent_command_bits": true,
+    "RAW_ownership_and_frame_start": "Original RAW acceptance trigger and WAIT_POINTS/read_admit retained byte-for-byte",
+    "stop": "No changes to motion/support/SAFE/lease/IR priorities or actuator clock paths"
+  },
+  "materialization_gate": "Both exact PNR53/54 natural ends and original tools exited; explicit token plus unique output; run.tcl disabled with immediateerror/no run command",
+  "validation_entry": "Same generator --prepare-bus-miter after candidate creation; writes renamed exact old/new NAV, real arbiter wrappers, finite TB and run_plan.json only, never starts tools",
+  "validation_scope": {
+    "basic": "All independent commandbit combinations, aliases, reads, nearby addresses, window writes, two masters/held requests/reset/XZ; every-edge original bus/command/RAW readiness/SAFE publication comparisons",
+    "still_required": [
+      "All-state one-step equality of six new post-clock pulses to untouched original regfile pulse/word bits; Boolean/all16-bit-address proof and finite X/Z/reset tests separately",
+      "Old/new nav_subsystem bus miter: ACK/rdata/IRQ/command effects identical every edge; address/data/mode atomic under both-master arbitration, waits and B_END",
+      "RF writes0/FFFFFFFF/allcommand-bit combinations; all four byte-alignment aliases; reads never trigger; special windows retain priority and ACK timing",
+      "Costmap4-byte read stalls, MATCH/TRAJ result latency, MBX_RX variable wait and held req across ACK/reset. Preserve original repeated-req behavior, not a new exactly-once claim",
+      "CPU NAV request held stable plus simultaneous UART master; other master may change its payload while blocked. Preserve selector and original nonposted NAV capture",
+      "Console posted byte versus UART console read/reset and concurrent NAV commands: keep original accepted byte, console ACK and21-bit pending ownership. Do not move posted logic",
+      "TXshadow read at E0 versus TX_DATA write at B_RF; injection DATA/GO/large lengths/wrap/busy GO retain original capacity/order/ACK. No new mailbox protocol restriction",
+      "RAW accept E0 with command bus acceptance E0, command E1 versus SOF/ex_busy/last pb_we, EVAL/UPDATE/CLEAR combinations, HOLD/disable/zero-point/reset and retained second pass",
+      "POSE request early/when rd_wait and read_admit blocked, pose_pending retention and exact accepted RAW edge; do not revert coverage to pre-ownership POSE trigger",
+      "MAP clear/sweep simultaneous with incoming valid/SOF and support epoch clear; compare stream backpressure and all RAM read/write enables/addresses/data",
+      "Stop/IR/lease/tick and SAFE_CMD same-edge boundaries retain original priority and publication cycles; this optimization does not waive their independent existing failures",
+      "Actual C mapping: predecoded FFs present, no a_q MATCH/MAP/POSE decode remains in the targeted CE cones, actual new FF D paths also meet timing, unchanged RAM geometry/INIT/clock/26CDC",
+      "Full physical report: all setup/hold endpoints and stops checked. Retiming input decode is not proof that the remaining ready-chain routing closes"
+    ],
+    "limits": "Basic miter holds both MAC RX idle; it does not exercise simultaneous real RAW/SOF/point drain, MBX variable wait traffic or CPU console. Those require the existing full fixtures extended before mapped/physical acceptance."
+  },
+  "all_original_code_outside_six_pulse_transform_restored_exactly": true,
+  "future_receipts": "Copied historical JSON receipts remain ancestor provenance; root source/mapped gates must be rerun for new candidate",
+  "RTL_generated": false,
+  "validation_RTL_generated": false,
+  "simulation_started": false,
+  "EDA_started": false,
+  "SYN_started": false,
+  "PNR_started": false,
+  "automatic_SYN": false,
+  "automatic_PNR": false,
+  "deployment_accepted": false,
+  "plan_only_receipt": {
+    "path": "F:\\nav_integration_g2_20261023\\NAV_command_predecode_generator_prepared2.json",
+    "bytes": 19339,
+    "mtime_ns": 1793026540285941300
+  },
+  "future_materialize_command": "D:/Anaconda/python.exe -X utf8 integration/g2/prepare_nav_command_predecode.py --materialize --authorization materialize-nav-predecode-after-natural-PNR53-PNR54-completion --candidate F:/nav_integration_g2_20261023/SLF128_NAV_command_predecode_prepared1 --receipt F:/nav_integration_g2_20261023/NAV_command_predecode_materialized1.json",
+  "future_bus_miter_prepare_command": "D:/Anaconda/python.exe -X utf8 integration/g2/prepare_nav_command_predecode.py --prepare-bus-miter --authorization prepare-bus-miter-only-no-tools --candidate F:/nav_integration_g2_20261023/SLF128_NAV_command_predecode_prepared1 --validation-out F:/nav_integration_g2_20261023/NAV_command_predecode_bus_miter_prepared1 --receipt F:/nav_integration_g2_20261023/NAV_command_predecode_bus_miter_receipt1.json",
+  "current_actions": [
+    "Only Python templates and JSON were saved",
+    "Only memory-rendering/unique-anchor/consumer inventory/source reconstruction checks executed",
+    "No .v or .sv output, candidate directory, simulator, synthesis or PNR created"
+  ]
+}

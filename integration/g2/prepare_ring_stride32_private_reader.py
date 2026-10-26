@@ -238,9 +238,13 @@ def natural_pair_complete():
         except psutil.NoSuchProcess:
             pass
         assert not same_process_live, ('original PNR process still exists', pid)
-        job = json.loads((build/'job.json').read_text(encoding='utf8'))
+        # Runtime belongs to the physical output; the durable controller's
+        # job is its sibling *_one_shot directory, not build/job.json.
+        controller_job = BASE/(build.name+'_one_shot')/'job.json'
+        job = json.loads(controller_job.read_text(encoding='utf8'))
         assert str(Path(job.get('build', job.get('output', str(build)))).resolve()).lower() == str(build.resolve()).lower()
         result.append(dict(build=str(build), runtime=metadata(p), ended_at=runtime['ended_at'],
+            controller_job=metadata(controller_job),
             tool_exit=runtime['tool_exit'], cancelled=False, pid=pid,
             original_tool_process_exited=True, currently_reused_PID=reused_pid))
     return result

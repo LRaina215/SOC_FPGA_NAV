@@ -1,0 +1,64 @@
+{
+  "at": "2026-10-26T22:54:09.055329+08:00",
+  "phase": "JSON plan only; RTL remains Python strings",
+  "source": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1",
+  "baseline": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\nav\\rtl\\soc\\nav_soc.v",
+      "bytes": 10034,
+      "mtime_ns": 1793013805847048800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\sin_lut.hex",
+      "bytes": 6144,
+      "mtime_ns": 1792936600569619500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_FW_sin_MMIO_prepared1\\fw\\include\\nav_fw_sin_lookup.h",
+      "bytes": 650,
+      "mtime_ns": 1793026054081255600
+    }
+  ],
+  "gate54": {
+    "runtime": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_place2_pnr54\\tool_runtime.json",
+      "bytes": 938,
+      "mtime_ns": 1793026427983713700
+    },
+    "pid": 48212,
+    "original_created_epoch": 1793024323.6441314,
+    "tool_exit": null,
+    "ended_at": null,
+    "original_process_still_running": true,
+    "pid_reused_by_other_process": false,
+    "cancelled": false,
+    "total_seconds": 0,
+    "silent_seconds": 0,
+    "natural_completion_gate": false
+  },
+  "materialized": false,
+  "EDA_started": false,
+  "full_FW_or_PNR_input_modified": false,
+  "files_if_later_materialized": [
+    "nav/rtl/soc/nav_soc.v",
+    "nav/rtl/soc/nav_fw_sin_rom.v",
+    "fw_sin_lut.hex"
+  ],
+  "exact_decoding": "0x90000000..0x90000fff; word index mem_addr[11:2]; signed16 extended32; writes ignoredACK0",
+  "acceptance": "E0 demand at req, E1 per_q+per_ready; pending suppresses duplicate acceptance, cpu_rst cancels pending",
+  "unchanged_sections": [
+    "entire original CPU RAM and console posted-write block",
+    "entire original debug FSM",
+    "all four original trigROMs, ports and INIT"
+  ],
+  "content": "all1024 original signed16 Q14 words, byte-identical existing sin_lut.hex; no floating point regeneration",
+  "hardware_resource_expected": "one16bit1024-word BSRAM, no new clock, actual mapping/reset/STA not proved",
+  "integration_remaining": [
+    "root must explicitly add new module to future source list and copy/init-path binding; this overlay does not silently update run.tcl or select a FW image",
+    "selected new FW still additionally requires real P11 parser/CSR and RX-only quiesce implementation; do not run it on current selected hardware",
+    "actual ROM/CPU miter: all1024/both sign/reset-beforeACK/heldreq/backtoback/writeignore/oldRAM-per-nav-console arbitration",
+    "small actual mapping/INIT and final complete CPUINIT/resource/clock/CDC/reset/STA",
+    "busyCPU350mszero and physical500ms stop"
+  ],
+  "deployment_ready": false
+}

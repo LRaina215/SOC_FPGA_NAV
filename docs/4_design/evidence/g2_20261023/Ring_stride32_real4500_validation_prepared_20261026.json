@@ -1,0 +1,119 @@
+{
+  "phase": "plan_only_not_materialized",
+  "plan": "F:\\nav_integration_g2_20261023\\ring_stride32_real4500_validation_plan1\\plan.json",
+  "generator": {
+    "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prepare_ring_stride32_real4500_probe.py",
+    "bytes": 28906,
+    "mtime_ns": 1793027175951098000
+  },
+  "frozen_generator": {
+    "path": "F:\\nav_integration_g2_20261023\\ring_stride32_real4500_validation_plan1\\prepare_and_run.py",
+    "bytes": 28906,
+    "mtime_ns": 1793027175951098000
+  },
+  "actual_candidate": null,
+  "actual_candidate_required": true,
+  "RTL_generated": false,
+  "simulation_started": false,
+  "automatic_run": false,
+  "automatic_SYN": false,
+  "automatic_PNR": false,
+  "selected_ancestor": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_syn43",
+  "source_RTL": 63,
+  "changed_RTL": [
+    "control/rl_observation_v5.v",
+    "control/rl_policy_tick_v5.v",
+    "control/mem_policy.v"
+  ],
+  "assets": 104,
+  "packed_weight_banks": 35,
+  "normal_clock_MHz": 50,
+  "normal_period_clocks": 400000,
+  "normal_period_us": 8000,
+  "real_model_weights": 40704,
+  "normal_comparison": [
+    "Both observer/policy use ring branch; old exactSYN43 vs new stride32",
+    "50MHz physical simulation clock,400000 clocks per8ms/125Hz; no accelerated normal time",
+    "Every168 input write/address/data/START,425 layer/index/data/ID trace records,six actions/result/frameID/publication cycle",
+    "Each completed normal core inference reads every40704 gold weight address exactly once, actual packed35-bank values checked",
+    "At least two six-slot wraps and first-history repetition; normal core and all inherited inputs/INIT remain exact source"
+  ],
+  "added_finite_cases": {
+    "LOAD_stops": {
+      "external_reset": [
+        0,
+        26,
+        167
+      ],
+      "disable": [
+        27,
+        82,
+        138
+      ],
+      "sensor": [
+        54,
+        139,
+        166
+      ]
+    },
+    "deadline": "Separate original/new real pair PERIOD709 naturally expires atLOAD27; no force/counter assignment. NoSTART/publication allowed.",
+    "clipping": "Two completed168word LOADs: +/-409600 and adjacent values, signed24bit extremes,0,+/-1; current clips but same newest history remains raw; disable beforeSTART, not an inference acceptance claim",
+    "RAM": "NaturalX startup retained; only original DUT producer writes; valid lanes0..27 only, padding28..31 remainsX; accepted reads must be known and old/new equal"
+  },
+  "arbitrary_initial_RAM_scope": "Finite4-state simulation detects X leakage; it is not exhaustive quantification over all initial24bit values. Memory-bijection/cursor induction remains a separate source proof obligation.",
+  "preserved_abort_edge": "At a missed-deadline LOAD edge original core.wr_en may still be high; compare and preserve it, while snapshot/cursor hold and subsequent reset preventSTART/publication.",
+  "scope_excludes": [
+    "WholeG2 CPU/UART/RK/real sensors/fusion calibration",
+    "Actuator/lease/IR/CDC and physical stopping",
+    "Physical timing/resource improvements",
+    "Arbitrary independent frame_read_index/freezing callers",
+    "Default flat-branch execution"
+  ],
+  "gates": [
+    "No.v before both frozenPNR53/54 natural completion and original tool identity gone",
+    "Explicit actual new candidate;63sources and104assets match the exact current stride32 generator",
+    "Explicit materialize token; new unique directory; no active RTL tool before writing validation sources",
+    "Separate explicit start token;2GiB physical/4GiB commit before each child; one immutable run/no retry",
+    "All tools exit0 AND both requiredPASS markers and noFatal/error; preserve warnings and failed receipts"
+  ],
+  "commands": {
+    "materialize": [
+      "D:\\Anaconda\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prepare_ring_stride32_real4500_probe.py",
+      "--materialize",
+      "--candidate",
+      "<ACTUAL_FROZEN_STRIDE32_CANDIDATE>",
+      "--out",
+      "<UNIQUE_VALIDATION_DIRECTORY>",
+      "--authorization",
+      "freeze-only-after-natural-PNR53-PNR54-completion"
+    ],
+    "run": [
+      "D:\\Anaconda\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "<UNIQUE_VALIDATION_DIRECTORY>/runner.py",
+      "--start",
+      "--out",
+      "<UNIQUE_VALIDATION_DIRECTORY>",
+      "--authorization",
+      "run-one-frozen-stride32-real4500-comparison",
+      "--wait-for-memory"
+    ]
+  },
+  "pure_preparation_checks": {
+    "python_import_and_memory_only_fixture_render": true,
+    "no_Verilog_or_SV_output": true,
+    "output_files": [
+      "job.json",
+      "plan.json",
+      "prepare_and_run.py"
+    ],
+    "RTL_compilation_or_execution": false
+  },
+  "current_numerical_or_physical_pass": false
+}

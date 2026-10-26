@@ -1,0 +1,354 @@
+{
+  "at": "2026-10-26T22:57:09.523522+08:00",
+  "scope": "reviewed source formulas only; no EDA/CPU timing run",
+  "source_bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\fixmath.c",
+      "bytes": 2519,
+      "mtime_ns": 1792741123632120700
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\traj_sw.c",
+      "bytes": 1761,
+      "mtime_ns": 1792741123649230700
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\local_frame.c",
+      "bytes": 1220,
+      "mtime_ns": 1792741123638116800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\explore.c",
+      "bytes": 9643,
+      "mtime_ns": 1792984188250359800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\motion_guard.c",
+      "bytes": 10919,
+      "mtime_ns": 1792741123640419200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\support_guard.c",
+      "bytes": 8171,
+      "mtime_ns": 1792741123790463200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\local_planner.c",
+      "bytes": 9587,
+      "mtime_ns": 1792741123639116100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\pose.c",
+      "bytes": 13228,
+      "mtime_ns": 1792741123642838400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\pose_match.c",
+      "bytes": 8290,
+      "mtime_ns": 1792741123643395800
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\nav_task.c",
+      "bytes": 39350,
+      "mtime_ns": 1793020489039182500
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\app\\nav_app.c",
+      "bytes": 24123,
+      "mtime_ns": 1793024610381128600
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\drv\\hal_fpga.c",
+      "bytes": 17878,
+      "mtime_ns": 1793024610382126600
+    }
+  ],
+  "counts": [
+    {
+      "path": "nav/fixmath.c",
+      "function": "fx_sin/fx_cos",
+      "source_lookup_calls": "1 each",
+      "frequency": "all relevant consumers below; real rate not measured"
+    },
+    {
+      "path": "nav/fixmath.c",
+      "function": "fx_rot_zyx",
+      "source_lookup_calls": "12 per call",
+      "frequency": "initial mounting and per lidar transform, not a500Hz inference loop"
+    },
+    {
+      "path": "nav/traj_sw.c",
+      "function": "traj_eval_sw",
+      "source_lookup_calls": "2*k*t maximum, early collisions reduce",
+      "frequency": "software reference/fallback; actual selected HAL uses hardware and this function is absent in new linked ELF"
+    },
+    {
+      "path": "nav/local_frame.c",
+      "function": "local_frame_point/local_frame_pose",
+      "source_lookup_calls": "4 per call",
+      "frequency": "planning-frame transforms"
+    },
+    {
+      "path": "nav/local_frame.c",
+      "function": "local_frame_preserve",
+      "source_lookup_calls": "0 unchanged;8 when correction changes frame",
+      "frequency": "pose/frame corrections"
+    },
+    {
+      "path": "nav/explore.c",
+      "function": "explore_seen_mark",
+      "source_lookup_calls": "50 (25 rays *sin/cos)",
+      "frequency": "with prior+map and no hold in task_step_local"
+    },
+    {
+      "path": "nav/explore.c",
+      "function": "explore_pick",
+      "source_lookup_calls": "32 on failed selection;34 on successful selection",
+      "frequency": "after frontier fallback, not every BFS node"
+    },
+    {
+      "path": "nav/explore.c",
+      "function": "explore_frontier",
+      "source_lookup_calls": "0 internally",
+      "frequency": "BFS still has existing bounded search checkpoints"
+    },
+    {
+      "path": "nav/motion_guard.c",
+      "function": "motion_check",
+      "source_lookup_calls": "4*(h+1)+4*U0 maximum;h=ceil(safe_steps*dt_ms/50)<=64",
+      "default": "100+4*U0 at h24",
+      "U0": "s0 unknown cells not completely contained in original footprint, each recomputes a sin/cos interpolated pair",
+      "warning": "260 is not a complete upper bound: the s0 unknown cell loop adds4 per qualifying cell",
+      "frequency": "candidate detail checks and final checked command exit"
+    },
+    {
+      "path": "nav/motion_guard.c",
+      "function": "motion_check pure rotation/motion_segment",
+      "source_lookup_calls": "pure rotation<=4 depending unknown cells;motion_segment0",
+      "frequency": "special branches retain original semantics"
+    },
+    {
+      "path": "nav/support_guard.c",
+      "function": "support_check",
+      "source_lookup_calls": "8*(steps+1),steps<=64; maximum520;default200;pure rotation40",
+      "frequency": "up to six selected localplanner details plus unshared final source check; early query failure reduces"
+    },
+    {
+      "path": "nav/local_planner.c",
+      "function": "lp_plan",
+      "source_lookup_calls": "default<=1800+4*sum(U_i), at most3+3=6 CPU detailed candidates",
+      "frequency": "final send_checked motion adds separately; support may be reused when exact CMD_LOCAL tuple agrees"
+    },
+    {
+      "path": "nav/pose.c",
+      "function": "pose_odom",
+      "source_lookup_calls": "2 normal;4 when pitch decomposition enabled",
+      "frequency": "per consumed odometry feedback, actual observed rate not measured"
+    },
+    {
+      "path": "nav/pose.c",
+      "function": "pose_set",
+      "source_lookup_calls": "2; history<=32 does not multiply these calls",
+      "frequency": "explicit pose/frame reset"
+    },
+    {
+      "path": "nav/pose.c",
+      "function": "pose_at future prediction",
+      "source_lookup_calls": "4 normal;5 pitch-decomposed",
+      "frequency": "frame alignment/extrapolation"
+    },
+    {
+      "path": "nav/pose.c",
+      "function": "pose_lidar_tf/pose_body_to_odom/anchor_z_at",
+      "source_lookup_calls": "12/2/8 respectively",
+      "frequency": "real frame/target/anchor transformations"
+    },
+    {
+      "path": "nav/pose_match.c",
+      "function": "match commit including pose_set",
+      "source_lookup_calls": "4",
+      "frequency": "accepted localization correction"
+    },
+    {
+      "path": "drv/hal_fpga.c",
+      "function": "hal_match_lf_forward",
+      "source_lookup_calls": "2",
+      "frequency": "each accepted LF update wrapper"
+    }
+  ],
+  "actual_source_anchors": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\fixmath.c",
+      "line": 4,
+      "text": "int32_t fx_sin(angle_t a) { return NAV_SIN_LUT[a >> 6]; }"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\fixmath.c",
+      "line": 5,
+      "text": "int32_t fx_cos(angle_t a) { return NAV_SIN_LUT[((a >> 6) + 256) & 1023]; }"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\fixmath.c",
+      "line": 62,
+      "text": "fx_mat3_t rz = {{{fx_cos(yaw), -fx_sin(yaw), 0}, {fx_sin(yaw), fx_cos(yaw), 0}, {0, 0, Q14}}};"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\fixmath.c",
+      "line": 63,
+      "text": "fx_mat3_t ry = {{{fx_cos(pitch), 0, fx_sin(pitch)}, {0, Q14, 0}, {-fx_sin(pitch), 0, fx_cos(pitch)}}};"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\fixmath.c",
+      "line": 64,
+      "text": "fx_mat3_t rx = {{{Q14, 0, 0}, {0, fx_cos(roll), -fx_sin(roll)}, {0, fx_sin(roll), fx_cos(roll)}}};"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\traj_sw.c",
+      "line": 16,
+      "text": "int64_t sn = NAV_SIN_LUT[si], cs = NAV_SIN_LUT[(si + 256) & 1023];"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\local_frame.c",
+      "line": 5,
+      "text": "return (fx_sin(a)*(64-b)+fx_sin((angle_t)(a+64))*b)/64;"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\explore.c",
+      "line": 47,
+      "text": "int32_t ca = fx_cos(a), sa = fx_sin(a);"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\explore.c",
+      "line": 84,
+      "text": "int32_t ca = fx_cos(a), sa = fx_sin(a);"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\explore.c",
+      "line": 120,
+      "text": "*gx = pose->x + (int32_t)((int64_t)fx_cos(a) * dist_mm / Q14);"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\explore.c",
+      "line": 121,
+      "text": "*gy = pose->y + (int32_t)((int64_t)fx_sin(a) * dist_mm / Q14);"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\explore.c",
+      "line": 156,
+      "text": "if(!nav_app_search_checkpoint()) return false;"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\explore.c",
+      "line": 165,
+      "text": "if(!nav_app_search_checkpoint()) return false;"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\explore.c",
+      "line": 176,
+      "text": "if((qh&31)==0 && !nav_app_search_checkpoint()) return false;"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\explore.c",
+      "line": 215,
+      "text": "if(!nav_app_search_checkpoint()) return false;"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\motion_guard.c",
+      "line": 35,
+      "text": "return (fx_sin(a) * (64-f) + fx_sin((angle_t)(a+64)) * f) / 64;"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\support_guard.c",
+      "line": 91,
+      "text": "static int32_t sn(angle_t a) {int f=a&63;return (fx_sin(a)*(64-f)+fx_sin((angle_t)(a+64))*f)/64;}"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\pose.c",
+      "line": 68,
+      "text": "int64_t cp = p->decomp_pitch ? fx_cos(p->cur.pitch) : Q14, sp = p->decomp_pitch ? fx_sin(p->cur.pitch) : 0;"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\pose.c",
+      "line": 70,
+      "text": "int64_t c = fx_cos(p->cur.yaw), s = fx_sin(p->cur.yaw);"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\pose.c",
+      "line": 157,
+      "text": "int64_t c = fx_cos((angle_t)da), s = fx_sin((angle_t)da);"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\pose.c",
+      "line": 231,
+      "text": "int32_t vh = p->decomp_pitch ? p->odo_vx * fx_cos(out->pitch) / Q14 : p->odo_vx;"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\pose.c",
+      "line": 232,
+      "text": "out->x += (int32_t)(((int64_t)vh * fx_cos(mid) - (int64_t)p->odo_vy * fx_sin(mid)) * future / Q14 / 1000000);"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\pose.c",
+      "line": 233,
+      "text": "out->y += (int32_t)(((int64_t)vh * fx_sin(mid) + (int64_t)p->odo_vy * fx_cos(mid)) * future / Q14 / 1000000);"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\pose.c",
+      "line": 293,
+      "text": "int64_t c = fx_cos(at->yaw), s = fx_sin(at->yaw);"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\pose_match.c",
+      "line": 160,
+      "text": "int64_t c = fx_cos((angle_t)st->dyaw), s = fx_sin((angle_t)st->dyaw);"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\nav_task.c",
+      "line": 568,
+      "text": "int32_t x=p->x+(int32_t)((int64_t)450*fx_cos(p->yaw)/Q14);"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\nav\\nav_task.c",
+      "line": 569,
+      "text": "int32_t y=p->y+(int32_t)((int64_t)450*fx_sin(p->yaw)/Q14);"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\app\\nav_app.c",
+      "line": 273,
+      "text": "bool nav_app_search_checkpoint(void)"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\drv\\hal_fpga.c",
+      "line": 30,
+      "text": "int32_t dx=lf_round_cell((int64_t)distance_mm*inv*fx_cos(yaw));"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\drv\\hal_fpga.c",
+      "line": 31,
+      "text": "int32_t dy=lf_round_cell((int64_t)distance_mm*inv*fx_sin(yaw));"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\P11_quiesce_shared_guard_FW_prepared1\\fw\\drv\\hal_fpga.c",
+      "line": 102,
+      "text": "do st = nav_rd(NAV_TRAJ_STAT); while (!(st & NAV_TRAJ_STAT_DONE_MASK));"
+    }
+  ],
+  "checkpoints": {
+    "frontier": "per256 clearing cells/per32 BFS nodes",
+    "no_internal_checkpoint_in": "explore_pick, localplanner, motion/support, localframe/pose transforms",
+    "HAL_busy_wait": "actual hardware hal_traj_eval DONE wait has no timeout or search checkpoint; preexisting issue cannot be closed by LUT relocation"
+  },
+  "performance_caveats": [
+    "100ms planner interval is a target, not measured actual period or completed work budget",
+    "original C table reads could be merged by compiler; new volatile MMIO calls must execute when reached, so equal numeric outputs do not imply same instructions or latency",
+    "proposed CPU-local ROM avoids NAV/host bus arbitration but still adds response and instruction latency, unmeasured until real bus/Pico tests",
+    "the native numeric probe201058 modeled reads describes that explicit finite test only; it is not a real task lookup frequency",
+    "P11 strict sequential snapshots may safely lock on missed publications during busy planning; usability and350ms zero/500ms stop remain separate gates"
+  ],
+  "parent_summary": "F:\\nav_integration_g2_20261023\\FW_sin_MMIO_actual_review1\\result.json",
+  "RTL_generated": false,
+  "EDA_started": false,
+  "selected_image_changed": false,
+  "actual_frequency_or_WCET_proven": false,
+  "deployment_ready": false
+}

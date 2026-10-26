@@ -1,0 +1,84 @@
+{
+  "at": "2026-10-26T23:15:29.224162+08:00",
+  "phase": "prepared not executed",
+  "gate54": {
+    "runtime": {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_place2_pnr54\\tool_runtime.json",
+      "bytes": 938,
+      "mtime_ns": 1793027720530185900
+    },
+    "pid": 48212,
+    "original_created_epoch": 1793024323.6441314,
+    "tool_exit": null,
+    "ended_at": null,
+    "original_process_still_running": true,
+    "pid_reused_by_other_process": false,
+    "cancelled": false,
+    "total_seconds": 0,
+    "silent_seconds": 0,
+    "natural_completion_gate": false
+  },
+  "bindings": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\control4500_core.v",
+      "bytes": 20992,
+      "mtime_ns": 1792936600560105400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\control\\policy_action_map.v",
+      "bytes": 2194,
+      "mtime_ns": 1792936600556099200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\SLF128_storage_safeFW_SYN43_prepared1\\control\\motor520_closed_loop.v",
+      "bytes": 13317,
+      "mtime_ns": 1792936600553269400
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prepare_PID_unity_equivalence_probe.py",
+      "bytes": 20085,
+      "mtime_ns": 1793027728767995600
+    },
+    {
+      "path": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\plan_PNR53_PID_unity_bypass.py",
+      "bytes": 12301,
+      "mtime_ns": 1793027075670940100
+    }
+  ],
+  "materialized": false,
+  "EDA_started": false,
+  "files_if_materialized": [
+    "policy_action_map.v (exact copy)",
+    "motor520_closed_loop.v (exact copy; includes real left/right PID and PWM)",
+    "target_select_pair.sv (literal old/new selected expressions)",
+    "tb_PID_unity_equivalence.sv"
+  ],
+  "mathematical_coverage": [
+    "Z3 all2^24 known signed actions through source-bound clip/scale for+-600",
+    "reset0/run0/valid/hold inductive range[-600,600]",
+    "all1201 known model speeds through gain4096 round/limit",
+    "arbitrary IR selection over the proven model domain"
+  ],
+  "RTL_coverage": [
+    "production50MHz clock; original100Hz feedback counters and original timeout10M/stall100/wrong10 thresholds",
+    "actual policy_action_map + actual two left/right closed loops and PWM; no changed PID function or inference substitute",
+    "13 min/max/clip-border/half-scale/zero signed24 actions, held/invalid edges",
+    "IR stop,enable loss,reset at each observed actual eight PID states; immediate PWM/dir disable and original next-edge clears",
+    "positive/negative reverse/coast,zero targets,missing feedback,wrong direction,stall and explicit re-enable",
+    "known after real reset, then explicit X rejection and every-cycle comparison of public targets,duty/reference/error/fault/control_valid/all6PWM-dir outputs"
+  ],
+  "explicit_component_boundary": "arbitrary action_valid/action words feed the actual mapper; map_run/model_ready condition is an explicit external boundary, not a claim that full fusion/policy/stop_latched integration was simulated",
+  "unchanged_nonunity": "generator retains literal original nonunity target expressions; this finite sequential DUT selects actual production unity configuration",
+  "not_yet_checked": [
+    "SV compile/elaboration",
+    "actual Z3/RTL results",
+    "unknown arbitrary initial-state four-state equivalence",
+    "full4500 timing/numerics and live IR decoder",
+    "actual mapping/physical path/complete743PID negative endpoint coverage"
+  ],
+  "finite_watchdog": "3s simulated stimulus bound only; no PNR deadline",
+  "run_admission": "2GiB available physical/4GiB available commit before eachxsim stage; only one sequential xvlog/xelab/xsim chain",
+  "command": "D:/Anaconda/python.exe -B -X utf8 integration/g2/prepare_PID_unity_equivalence_probe.py --run --out <new-output>",
+  "selected_RTL_or_PNR_inputs_modified": false,
+  "deployment_ready": false
+}
