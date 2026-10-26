@@ -1,0 +1,99 @@
+{
+  "recorded_at": "2026-10-26T11:29:26.007348+08:00",
+  "scope": "Actual completed SYN34 RAM/CPU INIT/PLL three clocks/original radar26/five related-clock channel controls plus logical word alias and actual final consumer proof. Not physical or whole-model/deployment signoff.",
+  "passed_structural_and_payload_review": true,
+  "actual_synthesis": "F:/nav_integration_g2_20261023/baseline_fusion_model25_NAV50_syn34",
+  "frozen_prepared_source": "F:/nav_integration_g2_20261023/baseline_fusion_model25_NAV50_prepared4",
+  "actual_review4_unchanged_after_PNR49_admission": true,
+  "structural_final": "F:\\nav_integration_g2_20261023\\model25_SYN34_actual_review1\\actual_review4\\final_review.json",
+  "guard_INIT1_actual_startup_proof": "F:\\nav_integration_g2_20261023\\model25_SYN34_actual_review1\\actual_review4\\actual_guard_cold_start_and_INIT1_proof.json",
+  "actual_guard_init": {
+    "source_zero_ignored": true,
+    "actual_primitive": "DFFPE",
+    "actual_INIT": 1,
+    "clears_on_first50MHz_edge_while_original255edge_startup_reset_active": true,
+    "does_not_assume_source_INIT0": true
+  },
+  "original_radar26": "F:\\nav_integration_g2_20261023\\model25_SYN34_actual_review1\\actual_review4\\actual_original_radar26.json",
+  "memory_INIT_binding": "F:\\nav_integration_g2_20261023\\model25_SYN34_actual_review1\\actual_review4\\actual_memory_binding.json",
+  "actual_clock_PLL_inventory": "F:\\nav_integration_g2_20261023\\model25_SYN34_actual_review1\\actual_review4\\actual_clock_PLL_inventory.json",
+  "actual_ram_source_leaves": 314,
+  "actual_source_wide_leaves": 18,
+  "physical_split1_RAM332_is_prediction": true,
+  "actual_CPU_image_bytes": 131072,
+  "FW_bin_bytes": 51712,
+  "RAM_INIT_vs_SYN23_preserved": true,
+  "actual_model_all12639_DFF_CLK": "clk_model25",
+  "actual_control_DFF_clock_roles": {
+    "control_io_guard50": 6394,
+    "related25_mailbox_or_guard": 551,
+    "full_model_internal25": 12639
+  },
+  "related_channel_counts": [
+    {
+      "name": "BMI",
+      "RTL_logical_width": 128,
+      "actual_retained_source_payload_FFs": 128,
+      "actual_retained_destination_payload_FFs": 128
+    },
+    {
+      "name": "configuration",
+      "RTL_logical_width": 140,
+      "actual_retained_source_payload_FFs": 140,
+      "actual_retained_destination_payload_FFs": 116
+    },
+    {
+      "name": "action",
+      "RTL_logical_width": 336,
+      "actual_retained_source_payload_FFs": 160,
+      "actual_retained_destination_payload_FFs": 160
+    },
+    {
+      "name": "fusion",
+      "RTL_logical_width": 145,
+      "actual_retained_source_payload_FFs": 112,
+      "actual_retained_destination_payload_FFs": 112
+    },
+    {
+      "name": "status",
+      "RTL_logical_width": 15,
+      "actual_retained_source_payload_FFs": 12,
+      "actual_retained_destination_payload_FFs": 12
+    }
+  ],
+  "actual_control_Boolean_endpoints": 2294,
+  "payload_extra_symbolic_endpoints": 283,
+  "payload_supplement_final": "F:\\nav_integration_g2_20261023\\model25_SYN34_actual_review1\\payload_semantics_review1\\final_review.json",
+  "actual_final_consumer_proof": "F:\\nav_integration_g2_20261023\\model25_SYN34_actual_review1\\payload_semantics_review1\\actual_final_consumers_and_clock_roles.json",
+  "payload_optimizations": {
+    "configuration": "140 source FF,116 explicit destination FF plus24 actual hard DSP AREG bits. A bit0..23 are original stable yaw holding24..47; CLK0/CE0/RESET0 exactly equal same request-commit destination FF, async reset.",
+    "action": "160 source and destination FF. Two cross-index pairs335<-327 and303<-295 are same signed wheel high-bit value, proved for all2^24 action inputs via original clip/scale/round.16 missing servo bits are zero;16 missing wheel bits sign aliases.144 outer executed_actions bits have no parent consumer both old/new;96 real inner last_actions FF still feed observation.",
+    "fusion": "112 retained of145:33 missing bits are exact signed extension from original32bit product>>>16 gravity, or all16bit gyro/bias with4466>>>10 angular expression.112 actual final consumer transitions and their output projection checked.",
+    "status": "12 retained of15:bits10=13(active),5=11(bias_suspect),4=12(calibrating).",
+    "latest": "Config and status accept exactly ready AND(not sent OR complete retained-word inequality), including mapped config sent merged into139 constant1 payload FF."
+  },
+  "source_packet_concat_and_destination_unpack_literals_bound": true,
+  "actual_action_final_consumer_transitions": 160,
+  "actual_fusion_final_consumer_transitions": 112,
+  "first_checker_rejections_preserved": [
+    "F:\\nav_integration_g2_20261023\\model25_SYN34_actual_review1\\actual_review1\\review_failed.json",
+    "F:\\nav_integration_g2_20261023\\model25_SYN34_actual_review1\\actual_review2\\review_failed.json",
+    "F:\\nav_integration_g2_20261023\\model25_SYN34_actual_review1\\actual_review3\\review_failed.json"
+  ],
+  "rejection_explanation": "Read-only checkers first over-assumed nonmodel RAM50MHz, autogenerated send alias, and equal source/destination suffixes. Corrected by actual roots, actual capture CE/full word Boolean identity, and signed source expression proof. Hardware was not changed or resynthesized for checker correction.",
+  "reproducible_repo_entries": [
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_model25_joint_syn.py",
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\prove_model25_related_transport.py",
+    "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\review_model25_payload_semantics.py"
+  ],
+  "reproduction": [
+    "D:/Anaconda/python.exe -X utf8 integration/g2/review_model25_joint_syn.py --out <new directory>",
+    "D:/Anaconda/python.exe -X utf8 integration/g2/review_model25_payload_semantics.py --base-review <completed review directory> --out <new directory>"
+  ],
+  "all_original_model_end_to_end_sequential_equivalence_proved": false,
+  "full4500_numerical_and125Hz_acceptance": false,
+  "physical_clock_routes_setup_hold_CDC_bundle_stability_reset_pulse_IO_acceptance": false,
+  "stop_and_deployment_accepted": false,
+  "no_SYN_or_PNR_started_by_this_review": true,
+  "no_frozen_source_or_PNR_input_changed": true
+}
