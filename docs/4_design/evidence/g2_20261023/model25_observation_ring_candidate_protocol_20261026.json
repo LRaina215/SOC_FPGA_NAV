@@ -1,0 +1,70 @@
+{
+  "passed_source_and_minimal_load_protocol": true,
+  "recorded_at": "2026-10-26T13:46:39.811170+08:00",
+  "source": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_observation_ring_prepared1",
+  "source_review": "F:\\nav_integration_g2_20261023\\baseline_fusion_model25_observation_ring_prepared1\\prepared_source_review.json",
+  "actual_changed_RTL": [
+    "control/mem_policy.v",
+    "control/mem_policy_related25.v",
+    "control/rl_observation_v5.v",
+    "control/rl_policy_tick_v5.v"
+  ],
+  "remaining62_RTL_unchanged": true,
+  "assets69_headers31_original_FW_core_input_mem_weights_math_clocks_CST_SDC_unchanged": true,
+  "default_old_branch_compared": true,
+  "ring_explicit_enabled_only_in_candidate_wrapper": true,
+  "new_narrow_interface": "freeze1/index8/signed_read24; legacy flat outputs constant/unconsumed in active ring branch",
+  "invariants": [
+    "Initialized live slot IDs are valid0..5; next working slot is distinct from every committed ID.",
+    "During each work generation, only its own28word slot is written and all28lanes must be written before COMMIT.",
+    "First COMMIT publishes five pointers to the one fully written first raw frame.",
+    "Later COMMIT shifts five logical frame IDs and appends work_slot.",
+    "No observation write overlaps the actual scheduler168cycle LOAD. Frozen reader IDs stay stable through its final word.",
+    "RAM data has no reset/initialization; metadata and first complete frame gate every reader/core write."
+  ],
+  "edge_schedule": {
+    "observation_capture": "C0",
+    "last_lane_write": "C678",
+    "publish_valid": "C679",
+    "freeze_and_first_prefetch": "C680",
+    "core_input_writes": "C681..C848 exactly168",
+    "core_START": "C849"
+  },
+  "formal_model": "F:\\nav_integration_g2_20261023\\observation_ring_model_proof1\\result.json",
+  "formal_model_scope": "Finite closed11state pointer graph plus arbitrary24bit-per-lane array relation, address injectivity/no wrap and signed clip. Exact RTL source transformation bound; not RTL-frontend/full-system proof.",
+  "formal_UNSAT": 24,
+  "four_state_RTL": "F:\\nav_integration_g2_20261023\\observation_ring_protocol_probe2\\result.json",
+  "four_state_scope": "Original real observation normalization and original/candidate real scheduler; explicitly substituted fc_v4_top for load/error/deadline protocol only. PERIOD_CLKS2500 for pressure test, not production125Hz.",
+  "actual_counts": {
+    "cycles": 121202,
+    "words": 6474,
+    "starts": 35,
+    "wraps": 3,
+    "aborts": 12,
+    "complete_slots": 43,
+    "positive_clips": 243,
+    "negative_clips": 243,
+    "first_repeats": 13
+  },
+  "cases": [
+    "Default OBS_RING_STORAGE0 branch full current/history and all scheduler outputs equal original.",
+    "Three complete modulo6 wraps;35START streams and6474words compared by clock/history/address/data.",
+    "First-frame fivefold raw history repeat13 sessions; positive and negative current clipping243 cases each.",
+    "Disable LOAD at indices0,27,28,139,140,167; normalization interrupt; sensor fault; deadline; saturation; wrong frame ID; clock stop/reset/rearm.",
+    "NaturalX RAM; every committed slot completed28lane writes; no unknown word escaped to accepted core writes."
+  ],
+  "actual_physical_FF_saving_not_known": true,
+  "old_replaced_FF_upper_bound8596": true,
+  "new_RAM_read_mux_address_clip_timing_and_resource_mapping_pending": true,
+  "next_required": [
+    "Memory mapping/read latency/port/reset and actual new resources/fanout review.",
+    "Real4500 BIAS200/full weights production comparison: every168input,425intermediate trace, actions, frame IDs,336bit output and exact original publication cycle.",
+    "Complete joint synthesis/netlist and physical routing/all timing/CDC/reset/IO/stop signoff."
+  ],
+  "new_joint_SYN_PNR_started": false,
+  "SYN38_started": false,
+  "PNR50_modified": false,
+  "licensed_ModelSim_started": false,
+  "production_rerun_started": false,
+  "full4500_or_vehicle_acceptance": false
+}
