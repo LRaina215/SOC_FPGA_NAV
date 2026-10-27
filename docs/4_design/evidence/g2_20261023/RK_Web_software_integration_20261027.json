@@ -224,11 +224,15 @@
       "not_phone_or_real_FPGA": true
     },
     "public_frontend": {
-      "deployed": false,
-      "observed_entry": "index-BeZmKxod.js",
+      "deployed": true,
+      "observed_entry": "index-BdtanrPA.js",
       "prepared_entry": "index-BdtanrPA.js",
       "ready_archive": "F:\\nav_integration_g2_20261023\\QHXD_frontend_stop_feedback_20261027.tar.gz",
-      "blocker": "Cloud SSH auth unavailable with existing local key for documented ubuntu account and prior administrator root. No unknown host key was accepted; public DNS-known host identity checked via HostKeyAlias."
+      "blocker": null,
+      "previous_entry": "index-BeZmKxod.js",
+      "detail_report": "reports/real_fpga_integration_20261027/cloud_frontend_deployment.json",
+      "backup": "/var/backups/lingxunrobot/frontend-20261027-143742",
+      "rollback_command": "sudo python3 /var/backups/lingxunrobot/frontend-20261027-143742/rollback.py"
     },
     "browser_UI": {
       "attempted": true,
@@ -243,16 +247,135 @@
       "real_link_selected": false,
       "Flash_written": false
     },
-    "next": "Cloud static frontend requires usable SSH login; physical PNR61 switch, IR5, real UART 10min and30min/physical tests deferred by operator."
+    "next": "Physical PNR61 switch, IR5, real UART10min and30min/physical tests deferred by operator; actual browser playback unverified."
   },
   "physical_validation": "Not started: operator deferred switch from hold; real10min/30min, serial unplug, manual tilt and original4500 vehicle behavior remain pending",
-  "public_frontend_pending": true,
-  "cloud_SSH_information_requested": true,
+  "public_frontend_pending": false,
+  "cloud_SSH_information_requested": false,
   "current_notes": "RK API/backend running in real API mode with explicitly mock navigation/control sources. Real UART env prepared but not selected.",
   "task_checklist": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\docs\\REAL_FPGA_INTEGRATION_20261027.md",
   "concerns": {
     "suspension_not_a_hardware_interlock": true,
     "IR5_control_stop_will_reject_motion_missions_in_backend": true,
     "automatic_MODE_idle_on_reconnect_conflicts_with_latched_link_loss": true
-  }
+  },
+  "updated_at": "2026-10-27T14:41:33.143106+08:00",
+  "latest_Web_results_commit": "b825858",
+  "cloud_frontend_deployment": {
+    "recorded_at": "2026-10-27T14:40:47.333241+08:00",
+    "frontend_commit": "398393a",
+    "user_authorization": "Provided cloud PEM location to continue prepared frontend deployment; physical image switch still deferred",
+    "server": {
+      "host": "106.53.169.127",
+      "transport": "100.118.160.119",
+      "user": "ubuntu",
+      "host_identity_verified": true,
+      "key_location": "D:/Desktop/SOC FPGA/RK3588/UBUNTU.pem",
+      "key_content_saved_or_committed": false,
+      "key_access": "Original inherited broad ACL rejected by Windows OpenSSH; tightened to current user only. Prior ACL saved only in local deployment artifact."
+    },
+    "deployment": {
+      "published_at": "2026-10-27T06:38:12.741324+00:00",
+      "root": "/var/www/lingxunrobot",
+      "backup": "/var/backups/lingxunrobot/frontend-20261027-143742",
+      "stage": "/home/ubuntu/deployments/yuntuo_frontend_20261027-143742",
+      "changed": [
+        "assets/index-BdtanrPA.js",
+        "index.html"
+      ],
+      "files_verified_by_bytes": 21,
+      "old_entry_retained": true,
+      "nginx_config_changed": false,
+      "nginx_reload": false,
+      "RK_changed": false,
+      "FPGA_changed": false,
+      "rollback_command": "sudo python3 /var/backups/lingxunrobot/frontend-20261027-143742/rollback.py"
+    },
+    "public_verification": {
+      "checked_at": "2026-10-27T14:40:00.518181+08:00",
+      "checks": [
+        {
+          "case": "public_index_new_entry_and_both_filings",
+          "passed": true,
+          "entry": [
+            "/assets/index-BdtanrPA.js"
+          ],
+          "status": 200
+        },
+        {
+          "case": "published_resource_matches_build",
+          "path": "/assets/index-BdtanrPA.js",
+          "passed": true,
+          "bytes": 152676,
+          "content_type": "application/javascript"
+        },
+        {
+          "case": "published_resource_matches_build",
+          "path": "/assets/index-DqB0ZMGu.css",
+          "passed": true,
+          "bytes": 32854,
+          "content_type": "text/css"
+        },
+        {
+          "case": "published_resource_matches_build",
+          "path": "/assets/hls-NGB6t2eD.js",
+          "passed": true,
+          "bytes": 524932,
+          "content_type": "application/javascript"
+        },
+        {
+          "case": "published_resource_matches_build",
+          "path": "/brand/yuntuo-avatar.svg",
+          "passed": true,
+          "bytes": 1197,
+          "content_type": "image/svg+xml"
+        },
+        {
+          "case": "old_cached_entry_remains_available",
+          "passed": true,
+          "status": 200,
+          "bytes": 152565
+        },
+        {
+          "case": "/api/platform/status",
+          "passed": true,
+          "observed": {
+            "nav_link": "mock",
+            "control_link": "mock",
+            "fpga_mode": "idle",
+            "status_rate_hz": 5.01,
+            "control_estop": false
+          }
+        },
+        {
+          "case": "/api/perception/video_health",
+          "passed": true,
+          "observed": {
+            "status": "ok",
+            "latest_frame_fresh": true,
+            "latest_frame_age_s": 0.32304978370666504,
+            "yolo_camera_running": true
+          }
+        }
+      ],
+      "passed": true,
+      "browser_playback_verified": false,
+      "real_FPGA_verified": false
+    },
+    "first_checker_failure": {
+      "reason": "Read-only verifier initially assumed top-level API fields; corrected to actual success/data envelope",
+      "product_changed": false,
+      "artifact": "F:\\nav_integration_g2_20261023\\QHXD_cloud_frontend_20261027_1\\public_verification_first_checker_failure.json"
+    },
+    "scope": {
+      "cloud_static_only": true,
+      "RK_config_changed": false,
+      "FPGA_changed": false,
+      "motion_commands": 0,
+      "browser_playback_not_verified": true
+    },
+    "artifacts": "F:\\nav_integration_g2_20261023\\QHXD_cloud_frontend_20261027_1",
+    "remaining": "Real UART/IR5/10min IDLE and30min soak/physical integration deferred by operator; actual browser video playback remains unverified."
+  },
+  "cloud_SSH_information_resolved": true
 }
