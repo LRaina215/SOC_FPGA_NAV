@@ -21,6 +21,8 @@
 
 - `tb_iic_bus_clear.v`：模拟一个从机读到一半、把 SDA 拉低到再看到 5 个时钟为止。BUS_CLEAR=1 时第一次事务报错 5 并把总线时钟解开，第二次越过 START（报错 1 = 无应答，因为测试里没有真从机）；BUS_CLEAR=0 时一直是错误 5。
 
+**综合与布线结果**：SYN50（00:51–00:57）0 错误，寄存器 30907（比 SYN49 多 133）、LUT 39288（多 111）、ALU 10049，BSRAM 269 和 DSP 不变。PNR63 `K_pnr63_s50p2r0`（place2/route0，与 PNR61 相同的 SDC/CST，00:58–01:09）：0 条未布通，clk50 实测 **50.075 MHz**，RX 136.831 MHz，两个时钟的 setup/hold TNS 都是 0；最差裕量 setup +0.030 ns、hold +0.162 ns、recovery +5.996 ns、removal +0.282 ns；61 条约束全部 Actived；BSRAM 280/340、Logic 61054、Register 32151、CLS 43136。位流备份 `D:\tools\g2_joint_slf128_syn50_pnr63_20261028.fs`（sha 766e72f2…，全部哈希见 `syn50/pnr63_hashes.txt`）。位流里已带前移 1000 固件，下载后不用再经调试口装载。
+
 `control4500_core.v` 在 ModelSim 下有 8 个"先用后声明"报错（LEFT/RIGHT_TARGET_MMPS、diagnostic_*_motor_fault），SYN49 原文件完全一样，高云综合接受，不是这次改动引入的。
 
 ## 19:20 落地前核对与第一阶段（站立）方案
