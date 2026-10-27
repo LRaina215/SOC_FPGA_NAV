@@ -1,0 +1,258 @@
+{
+  "recorded_at": "2026-10-27T14:19:03.239358+08:00",
+  "user_direction": "先做软件，镜像切换稍后",
+  "physical_state_source": "User current handoff and updated integration/g2/k_bench_20261027/README.md: hold image after motor/IMU repair testing by Claude",
+  "FPGA_or_CPU_access_in_this_work": false,
+  "SRAM_programmed": false,
+  "Flash_written": false,
+  "physical_motion_commands": 0,
+  "application_repo": "D:\\Desktop\\SOC FPGA\\QHXD_Web",
+  "software_commit": "398393a",
+  "local_results_commit": "0805a5e",
+  "deployed_RK_commit": "398393a",
+  "requested_changes": [
+    "Heartbeat all transports at100ms without implicit re-arming",
+    "Application ACK/terminal map checks and current v3 geometry",
+    "Control-body attitude axes",
+    "Unknown physical fields null",
+    "Stop feedback and discard stale queued motion",
+    "No task replay or implicit IDLE after reset/link loss"
+  ],
+  "software_regression": {
+    "recorded_at": "2026-10-27T14:02:16.784012+08:00",
+    "stage": "software_only_operator_deferred_FPGA_switch",
+    "software_tests": {
+      "focused_initial_contracts": {
+        "passed": 93
+      },
+      "full_yuntuo": {
+        "passed": 117,
+        "skipped": 1,
+        "skip": "cv2 unavailable for existing stream test"
+      },
+      "targeted_after_mock_axis_fix": {
+        "passed": 39
+      },
+      "backend_full": {
+        "passed": 64,
+        "warnings": 1
+      },
+      "backend_final_unknown_fields_boundary": {
+        "passed": 5
+      },
+      "confirmed_clock_reset_map_cache": {
+        "passed": 1
+      }
+    },
+    "frontend": {
+      "typecheck": true,
+      "production_build": true,
+      "entry_asset": "index-BdtanrPA.js",
+      "warning": "existing HLS chunk exceeds500kB"
+    },
+    "scope": [
+      "No device access by tests",
+      "600s heartbeat cases use a simulated clock",
+      "ACK/CPU lease service are explicit test doubles",
+      "No real 10min/30min soak or physical standstill proof"
+    ],
+    "physical_state": {
+      "reported_image": "hold",
+      "JTAG_used": false,
+      "CPU_reset": false,
+      "actual_motion_commands": 0,
+      "Flash_written": false
+    },
+    "planned_RK_deployment": "Backup selected mock env, fast-forward committed bundle, restart backend/mock/bridge only; keep hardware profile unselected"
+  },
+  "online_validation": {
+    "recorded_at": "2026-10-27T14:17:42.328609+08:00",
+    "RK_deployment": {
+      "code_updated": true,
+      "old_commit": "862a9a9393aff2ba3c4999efc03195f218f601da",
+      "new_commit": "398393adce481f4bf19c6a68ad2924e46004a31d",
+      "remote_backup": "/home/robomaster/backups/yuntuo_software_20261027-140325",
+      "selected_env_unchanged": true,
+      "real_profile_prepared_but_not_selected": "/home/robomaster/backups/yuntuo_software_20261027-140325/env.real-ready",
+      "hardware_changed": false,
+      "services_restarted": [
+        "qhxd-backend",
+        "yuntuo-mock-fpga",
+        "yuntuo-fpga-bridge"
+      ],
+      "health": {
+        "backend_mode": "real",
+        "link": "udp:127.0.0.1:9000",
+        "nav_link": "mock",
+        "control_link": "mock",
+        "status_rate_hz": 4.98,
+        "status_age_s": 0.17,
+        "selected_env_unchanged": true,
+        "services": {
+          "qhxd-backend": "active",
+          "yuntuo-mock-fpga": "active",
+          "yuntuo-fpga-bridge": "active",
+          "yuntuo-perception": "active",
+          "yuntuo-llm": "active",
+          "yuntuo-tts": "active"
+        },
+        "FPGA_changed": false
+      }
+    },
+    "actual_RK_mock_API": {
+      "passed": true,
+      "cases": [
+        {
+          "case": "maximum_map_READY_and_backend_version",
+          "passed": true,
+          "bytes": 86064,
+          "elapsed_s": 0.3769997040508315,
+          "map_version": "9e07fe518833",
+          "link": "mock"
+        },
+        {
+          "case": "bad_CRC_rejected",
+          "passed": true,
+          "detail": "地图包不可用：地图包损坏（长度或 CRC 不符）"
+        },
+        {
+          "case": "bad_profile_rejected",
+          "passed": true,
+          "detail": "地图包不可用：地图几何/profile/ZHI/ZLO与当前SLF128固件不匹配"
+        },
+        {
+          "case": "set_pose_backend_to_mock",
+          "passed": true,
+          "pose": {
+            "x": 1.25,
+            "y": -0.35,
+            "yaw": 0.20001473227855018
+          }
+        },
+        {
+          "case": "map_clear_returns_mapless",
+          "passed": true
+        },
+        {
+          "case": "goto_pause_resume_cancel",
+          "passed": true,
+          "pause_detail": "任务已暂停；已请求 FPGA 停止，等待反馈确认停稳。"
+        },
+        {
+          "case": "return_home_cancel",
+          "passed": true
+        },
+        {
+          "case": "explicit_estop_and_release",
+          "passed": true
+        },
+        {
+          "case": "unmeasured_fields_null",
+          "passed": true,
+          "device_status": {
+            "battery_percent": null,
+            "emergency_stop": false,
+            "fault_code": null,
+            "online": true
+          },
+          "env_sensor": {
+            "temperature_c": null,
+            "humidity_percent": null,
+            "status": "offline"
+          }
+        }
+      ],
+      "cleanup": "mock idle/map cleared/initial pose requested",
+      "raw": "F:\\nav_integration_g2_20261023\\QHXD_software_deploy_20261027_1\\api_mock_result2.json",
+      "first_rejection": {
+        "path": "F:\\nav_integration_g2_20261023\\QHXD_software_deploy_20261027_1\\api_mock_result1.json",
+        "reason": "Synthetic map ID software-bench conflicted with waypoint map yuntuo_field; preflight correctly rejected. Harness ID corrected, no product gate weakened."
+      }
+    },
+    "public_readonly": [
+      {
+        "base": "https://lingxunrobot.cn",
+        "root_status": 200,
+        "js_entries": [
+          "/assets/index-BeZmKxod.js"
+        ],
+        "title": [
+          "云拓 · 多模态复杂地形轮腿机器人"
+        ],
+        "platform": {
+          "nav_link": "mock",
+          "control_link": "mock",
+          "fpga_mode": "idle",
+          "status_rate_hz": 4.99,
+          "control_estop": false,
+          "updated_at": "2026-10-27T06:11:19.468159Z"
+        },
+        "video_health": {
+          "status": "ok",
+          "latest_frame_fresh": true,
+          "latest_frame_age_s": 0.10112190246582031,
+          "yolo_camera_running": true,
+          "detail": "video and perception health look normal"
+        }
+      },
+      {
+        "base": "https://api.lingxunrobot.cn",
+        "root_error": "HTTP Error 404: Not Found",
+        "platform": {
+          "nav_link": "mock",
+          "control_link": "mock",
+          "fpga_mode": "idle",
+          "status_rate_hz": 5.02,
+          "control_estop": false,
+          "updated_at": "2026-10-27T06:11:24.116033Z"
+        },
+        "video_health": {
+          "status": "ok",
+          "latest_frame_fresh": true,
+          "latest_frame_age_s": 0.3527646064758301,
+          "yolo_camera_running": true,
+          "detail": "video and perception health look normal"
+        }
+      }
+    ],
+    "miniprogram_public_readonly": {
+      "passed": true,
+      "checks": 17,
+      "source": "tests/smoke.js",
+      "log": "F:\\nav_integration_g2_20261023\\QHXD_software_deploy_20261027_1\\miniprogram_public_smoke.log",
+      "writes": 0,
+      "not_phone_or_real_FPGA": true
+    },
+    "public_frontend": {
+      "deployed": false,
+      "observed_entry": "index-BeZmKxod.js",
+      "prepared_entry": "index-BdtanrPA.js",
+      "ready_archive": "F:\\nav_integration_g2_20261023\\QHXD_frontend_stop_feedback_20261027.tar.gz",
+      "blocker": "Cloud SSH auth unavailable with existing local key for documented ubuntu account and prior administrator root. No unknown host key was accepted; public DNS-known host identity checked via HostKeyAlias."
+    },
+    "browser_UI": {
+      "attempted": true,
+      "page_opened": false,
+      "error": "failed to write kernel assets: 系统找不到指定的路径。 (os error 3)",
+      "playback_verified": false
+    },
+    "physical": {
+      "image": "hold per latest user/Claude handoff",
+      "programmed_in_this_work": false,
+      "reset_in_this_work": false,
+      "real_link_selected": false,
+      "Flash_written": false
+    },
+    "next": "Cloud static frontend requires usable SSH login; physical PNR61 switch, IR5, real UART 10min and30min/physical tests deferred by operator."
+  },
+  "physical_validation": "Not started: operator deferred switch from hold; real10min/30min, serial unplug, manual tilt and original4500 vehicle behavior remain pending",
+  "public_frontend_pending": true,
+  "cloud_SSH_information_requested": true,
+  "current_notes": "RK API/backend running in real API mode with explicitly mock navigation/control sources. Real UART env prepared but not selected.",
+  "task_checklist": "D:\\Desktop\\SOC FPGA\\QHXD_Web\\docs\\REAL_FPGA_INTEGRATION_20261027.md",
+  "concerns": {
+    "suspension_not_a_hardware_interlock": true,
+    "IR5_control_stop_will_reject_motion_missions_in_backend": true,
+    "automatic_MODE_idle_on_reconnect_conflicts_with_latched_link_loss": true
+  }
+}
