@@ -108,7 +108,7 @@ $kit = 'D:\tools\nav_slf128_mapkit_20261027'
 1. 网页设置访问Token，并确认当前连接真实机器人。
 2. 取消运行或暂停的任务，等待FPGA在线且空闲。上传不会自动解除运行急停。
 3. 点“上传地图”选文件，再点“上传并下发”。当前只接受配套SLF128的地图包，不直接接收图片或点云。
-4. 观察已确认字节和进度；最后一个数据块发完仍不算成功，只有最终READY才显示100%和“地图已加载”。失败、断线、中止或复位失效会显示原因。
+4. 仅看效果时可点“仅预览”，hold下也能显示，并标明“未下发FPGA”；预览隐藏机器人和任务点，不替换真实导航地图。实际下发时观察已确认字节和进度；最后一个数据块发完仍不算成功，只有最终READY才显示100%和“地图已加载”。失败、断线、中止或复位失效会显示原因。
 5. 随后按5.3设置实际初始位姿并对准；加载成功不会自动启动导航。
 
 关闭窗口不会取消已开始的下发，运行急停可以中止。界面暂时不可用时仍可使用下面的RK维护接口；该接口的 `path` 指的是 **RK本机绝对路径**，不是 Windows 文件路径。网页入口、文件校验与下发复用同一条桥接链路。
@@ -206,5 +206,5 @@ RK工程 `~/QHXD/backend/app/config/yuntuo/waypoints.json` 配置位置和别名
 - [离线流程核对与示例结果](../4_design/evidence/g2_20261023/ground_mapping_workflow_review_20261027.json)。
 - [当前PNR61剩余签核](../4_design/g2_PNR61_signoff_20261027.md)、[RK真链路与USB失败记录](../4_design/evidence/g2_20261023/RK_Web_real_hardware_integration_20261027.json)。
 - [量测点云生成器](../../tools/field_to_cloud.py)、[选定profile工具导出器](../../tools/prepare_slf128_map_tools.py)、[演示量测模板](../../config/field3x5_survey.example.json)。
-- QHXD_Web：`yuntuo/fpga_link/nvmp.py` 为当前包格式，`yuntuo/bridge/core.py` 为地图、位姿、保活与复位行为；网页上传实现见提交 `49435d5` 及同级工程 `docs/MAP_UPLOAD_20261027.md`。
+- QHXD_Web：`yuntuo/fpga_link/nvmp.py` 为当前包格式，`yuntuo/bridge/core.py` 为地图、位姿、保活与复位行为；网页上传及离线预览实现见提交 `047c648` 及同级工程 `docs/MAP_UPLOAD_20261027.md`。
 - 选定冻结源码：`F:/nav_integration_g2_20261023/K_timing_syn49/host_profile` 与同目录 `fw/app/nav_app.c`、`fw/nav/loc.c`、`fw/nav/nav_task.c`。
