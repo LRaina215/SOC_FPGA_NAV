@@ -1,0 +1,103 @@
+{
+  "date": "2026-10-27",
+  "request": "Explore the next grounded-debug sequence and the actual mapping/import workflow; deliver an operational guide",
+  "guide": "docs/3_guide/ground_debug_and_mapping_20261027.md",
+  "scope": {
+    "hardware_access": false,
+    "SRAM_download": false,
+    "Flash_write": false,
+    "map_upload": false,
+    "motion_commands": false,
+    "new_EDA_or_simulation": false,
+    "SHA_validation": false,
+    "last_recorded_board_state": "hold F322 after cleanup at2026-10-27T17:17:46+08:00; not freshly queried for this document"
+  },
+  "current_readiness": {
+    "selected_candidate": "PNR61/G3c, SLF128, target50/100MHz; reported setup/hold0",
+    "PNR62": "Same logical design, second placement;124 setup violations, not selected",
+    "controlled_stop_meaning": "Cancel motion goals while retaining original4500 balance; stable standing requires physical evidence",
+    "telemetry_remaining": "User-requested RK USB software reset succeeded but post-reset25.537s trial again lost a frame; ten-minute IDLE and thirty-minute soak not accepted",
+    "grounded_standing_and_braking": "Not accepted yet"
+  },
+  "read_only_RK_inventory": {
+    "artifact": "F:/nav_integration_g2_20261023/ground_mapping_review_20261027/RK_readonly_inventory.json",
+    "deployed_Web_source": "fdf3f4a",
+    "prior_packages": "Synthetic maximum-v3/loaded-reset/badCRC/badprofile probes only; not an actual surveyed field map",
+    "bridge_active": true,
+    "old_SLAM_services": "qhxd-nav-mission and qhxd-point-lio inactive",
+    "field_to_cloud_and_xt_to_cloud_on_RK": "Both absent at inventory; only offline PC field_to_cloud supplied in this change"
+  },
+  "format_findings": {
+    "legacy_root_tool": "NAV root prior_map/map_tool still represent older package geometry/version; not used for the selected board",
+    "selected_profile_source": "F:/nav_integration_g2_20261023/K_timing_syn49/host_profile",
+    "version": 3,
+    "header_bytes": 48,
+    "geometry_flags": "0x0107",
+    "profile": "0x33580001",
+    "structure_grid": [128, 128],
+    "structure_cell_mm": 50,
+    "structure_word_bits": 18,
+    "cost_grid_max": [64, 64],
+    "cost_cell_mm": 100,
+    "ZHI_mm": 350,
+    "ZLO_mm": -300,
+    "max_packet_bytes": 86064
+  },
+  "supplied_offline_tools": {
+    "scene_generator": "tools/field_to_cloud.py",
+    "scene_example": "config/field3x5_survey.example.json",
+    "profile_exporter": "tools/prepare_slf128_map_tools.py",
+    "prepared_kit": "D:/tools/nav_slf128_mapkit_20261027",
+    "selected_model_files": "slf_match.py/prior_map.py/nav_fixed.py/nav_params.py copied byte-identically, no hash checks",
+    "tool_only_changes": "Correct cost plot scale20cm to10cm, selected-format guards, current help, provisional20mm/12degree defaults",
+    "scene_is_measured": false,
+    "geometry_supported": "Ground plane, wall segments, rotated boxes/platforms/steps, straight ramps with side surfaces; floors under solid footprints removed",
+    "geometry_not_proven": "Actual dimensions, sensor registration, terrain capability and real localization"
+  },
+  "offline_result": {
+    "artifact": "F:/nav_integration_g2_20261023/ground_mapping_review_20261027/offline_map_example_result.json",
+    "bounds_m": [0, -1.5, 5, 1.5],
+    "points": 47874,
+    "packet_bytes": 11840,
+    "slot_words": 1998,
+    "cost_grid": [53, 34],
+    "cost_lethal_cells": 351,
+    "cost_unknown_cells": 172,
+    "CRC32": "pass",
+    "all_slots_unique_and_legal": true,
+    "all_words_within18bit": true,
+    "selected_model_parse_roundtrip": "pass",
+    "actual_Web_package_constants_and_checks": "match; header/length/CRC/slot checks independently executed without calling the cache-ID hash",
+    "PNG_visual_review": "Wall and object positions, metres and10cm cost scale checked",
+    "example_file": "D:/tools/nav_slf128_mapkit_20261027/example_only/field_example_not_for_robot.nvmp",
+    "uploaded_to_FPGA": false
+  },
+  "workflow_findings": {
+    "recommended_first_mapping": "Survey fixed3x5m geometry; mapping is not a prerequisite for first grounded balance tests",
+    "Web_file_upload_UI": false,
+    "actual_import": "Copy measured nvmp to RK, POST loopback9101/api/internal/fpga/map with RK-local path and map_id while fresh IDLE; wait successful terminal acknowledgement",
+    "initial_pose": "Backend8000/api/platform/set_pose, metres/radians; map READY alone is not alignment",
+    "active_alignment": "Frozen nav_app.c may request400mrad/s for1.5s if structure is insufficient; actual motion still gated, ground behavior not measured",
+    "waypoints": "Current home/A/B sample points lie on the proposed enclosure boundary and must be replaced with measured reachable positions",
+    "reset": "FPGA RAM prior lost after full reset/download; reupload map, set pose, never automatically resume old task",
+    "serial_ownership": "Bridge owns both ports; nav_host/nav_uart require bridge stopped; pose exits and listen has no heartbeat",
+    "SLAM_or_FPGA_map_export": "No current end-to-end production workflow; not represented as completed",
+    "live_PATH_COSTMAP_TILE": "Firmware not publishing these yet; static prior image is not live local terrain"
+  },
+  "source_files_reviewed": [
+    "QHXD_Web/yuntuo/fpga_link/nvmp.py",
+    "QHXD_Web/yuntuo/fpga_link/nv_proto.py",
+    "QHXD_Web/yuntuo/bridge/core.py",
+    "QHXD_Web/yuntuo/bridge/server.py",
+    "QHXD_Web/yuntuo/bridge/config.py",
+    "QHXD_Web/backend/app/main.py",
+    "QHXD_Web/backend/app/services/platform_adapter.py",
+    "QHXD_Web/backend/app/services/waypoint_registry.py",
+    "QHXD_Web/backend/app/services/patrol_registry.py",
+    "QHXD_Web/backend/app/config/yuntuo/waypoints.json",
+    "QHXD_Web/backend/app/config/yuntuo/patrol_routes.json",
+    "F:/nav_integration_g2_20261023/K_timing_syn49/fw/app/nav_app.c",
+    "F:/nav_integration_g2_20261023/K_timing_syn49/fw/nav/loc.c",
+    "F:/nav_integration_g2_20261023/K_timing_syn49/fw/nav/nav_task.c"
+  ]
+}
