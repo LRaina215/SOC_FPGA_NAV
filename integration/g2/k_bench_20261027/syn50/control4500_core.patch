@@ -1,0 +1,29 @@
+--- K_timing_syn49/control4500_core.v	2026-10-27 03:11:34.749338400 +0800
++++ K_timing_syn50/control4500_core.v	2026-10-28 00:46:24.271023000 +0800
+@@ -85,10 +85,14 @@
+     uart_speed_rx #(.CLKS_PER_BIT(UART_CLKS_PER_BIT)) speed_command_rx(
+         .clk(clk),.reset_n(device_reset_n),.rx(UART_RXD),
+         .forward_q12(uart_forward_q12),.yaw_q12(uart_yaw_q12),.command_seen(uart_speed_seen),.command_valid(uart_speed_valid));
+-    wire signed [23:0] command_forward_q12=command_emergency_stop ? 24'sd0 : NAV_INPUT_ENABLE ? nav_forward_q12 : FIXED_FORWARD_ENABLE ? FORWARD_Q12 :
++    // A held IR direction key (2/8/4/6) overrides navigation; release hands both axes back together.
++    wire ir_drive=IR_ENABLE && (ir_forward_q12!=0 || ir_yaw_q12!=0);
++    wire signed [23:0] command_forward_q12=command_emergency_stop ? 24'sd0 :
++        NAV_INPUT_ENABLE ? (ir_drive ? ir_forward_q12 : nav_forward_q12) : FIXED_FORWARD_ENABLE ? FORWARD_Q12 :
+         (UART_SPEED_ENABLE && uart_speed_seen) ? uart_forward_q12 :
+         (IR_ENABLE ? ir_forward_q12 : FORWARD_Q12);
+-    wire signed [23:0] command_yaw_q12=command_emergency_stop ? 24'sd0 : NAV_INPUT_ENABLE ? nav_yaw_q12 :
++    wire signed [23:0] command_yaw_q12=command_emergency_stop ? 24'sd0 :
++        NAV_INPUT_ENABLE ? (ir_drive ? ir_yaw_q12 : nav_yaw_q12) :
+         (UART_SPEED_ENABLE && uart_speed_seen) ? uart_yaw_q12 : (IR_ENABLE ? ir_yaw_q12 : YAW_Q12);
+     wire signed [23:0] command_height_q12=IR_ENABLE ? ir_height_q12 : HEIGHT_Q12;
+     wire signed [31:0] model_left_mmps,model_right_mmps;
+@@ -147,7 +151,8 @@
+     wire sensor_ready,sensor_error,sample_valid;
+     wire [3:0] sensor_error_code;
+     wire signed [15:0] accel_x,accel_y,accel_z,gyro_x,gyro_y,gyro_z;
+-    bmi088 sensor(
++    // An FPGA reload can cut a BMI088 read mid-byte and leave SDA held low.
++    bmi088 #(.BUS_CLEAR(1)) sensor(
+         .clk(clk),.reset_n(device_reset_n),.IIC_SCL(BMI088_SCL),.IIC_SDA(BMI088_SDA),
+         .init_done(sensor_ready),.init_error(sensor_error),.data_valid(sample_valid),
+         .accel_x(accel_x),.accel_y(accel_y),.accel_z(accel_z),
