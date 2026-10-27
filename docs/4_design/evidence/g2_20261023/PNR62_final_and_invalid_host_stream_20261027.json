@@ -1,0 +1,1642 @@
+{
+  "recorded_at": "2026-10-27T09:54:34.052747+08:00",
+  "PNR62_actual": {
+    "actual": {
+      "completed_at": "2026-10-27T09:20:32.625715+08:00",
+      "runtime": {
+        "command": [
+          "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/bin/gw_sh.exe",
+          "F:\\nav_integration_g2_20261023\\K_pnr62_s49p1r0\\run.tcl"
+        ],
+        "started_at": "2026-10-27T09:03:55.662586+08:00",
+        "max_runtime_s": 0,
+        "max_no_observable_progress_s": 0,
+        "cancelled": false,
+        "programmed": false,
+        "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+        "system_telemetry_file": "system_telemetry.jsonl",
+        "telemetry_is_progress_evidence": false,
+        "pid": 4328,
+        "elapsed_s": 996.969000000041,
+        "no_observable_progress_s": 0.0,
+        "observed_files": [
+          [
+            "gw_sh.log",
+            1763,
+            1793063993218007700
+          ],
+          [
+            "impl\\pnr\\g2_top.log",
+            1365,
+            1793063993218007700
+          ],
+          [
+            "impl\\pnr\\g2_top.db",
+            1757056,
+            1793063273996487200
+          ],
+          [
+            "impl\\pnr\\g2_top.p",
+            9754021,
+            1793063274313256800
+          ],
+          [
+            "impl\\pnr\\g2_top.pr",
+            206037921,
+            1793063971952032400
+          ],
+          [
+            "impl\\pnr\\g2_top.tr",
+            75267167,
+            1793064030622634000
+          ],
+          [
+            "impl\\pnr\\g2_top.rpt.txt",
+            92509,
+            1793063991661613500
+          ],
+          [
+            "impl\\pnr\\g2_top.vo",
+            31431138,
+            1793063993213005600
+          ]
+        ],
+        "tool_exit": 0,
+        "ended_at": "2026-10-27T09:20:32.623711+08:00"
+      },
+      "routing_completed": true,
+      "unrouted_numeric": [],
+      "timing_report_present": true,
+      "complete_signoff": false,
+      "programmed": false,
+      "setup_hold": {
+        "Setup": 124,
+        "Hold": 0
+      },
+      "actual_cmd_only_expected_path_place_change": true,
+      "actual_device_cfg_equal": true
+    },
+    "checked_at": "2026-10-27T09:20:37.170468+08:00",
+    "physical_audit_completed": true,
+    "complete_signoff": false,
+    "programmed": false,
+    "requires_root_analysis": true,
+    "physical_audit_exit": 0,
+    "physical_audit": "F:\\nav_integration_g2_20261023\\PNR62_after_natural_exit_review1\\summary.json"
+  },
+  "PNR62_physical_audit": {
+    "recorded_at": "2026-10-27T09:20:57.994910+08:00",
+    "read_only": true,
+    "EDA_started": false,
+    "hardware_access": false,
+    "hashes_computed": false,
+    "source": "F:\\nav_integration_g2_20261023\\K_timing_syn49",
+    "physical": "F:\\nav_integration_g2_20261023\\K_pnr62_s49p1r0",
+    "input_VG_byte_identical": true,
+    "inputs_unchanged": true,
+    "memories": {
+      "source_count": 269,
+      "physical_count": 280,
+      "split_pairs": 11,
+      "all_physical_leaves_bound": true,
+      "CPU128KiB": {
+        "physical_bitplanes": 64,
+        "BIN_bytes": 54164,
+        "image_bytes": 131072,
+        "source_physical_equal": true,
+        "BIN_zero_tail_equal": true,
+        "word_hex_equal": true,
+        "lane_hex_equal": true
+      },
+      "CPU_checks_passed": true,
+      "every_geometry_and_INIT_check_passed": true,
+      "scope": "Memory geometry/effective INIT and split address/data/control only; no complete RAM caller equivalence claim",
+      "passed": true,
+      "distributed_memories": {
+        "passed": true,
+        "source_count": 1885,
+        "physical_count": 1885,
+        "source_by_kind": {
+          "RAM16SDP4": 1821,
+          "RAM16SDP1": 64
+        }
+      }
+    },
+    "clock_inventory": {
+      "passed": true,
+      "primitive_heads_scanned": 87891,
+      "attributed_heads_included": 3,
+      "nonconstant_clock_pins": 34431,
+      "roots": [
+        {
+          "root": "clk50",
+          "inverted": false,
+          "pins": 34279
+        },
+        {
+          "root": "clk50",
+          "inverted": true,
+          "pins": 1
+        },
+        {
+          "root": "rgmii_rxc",
+          "inverted": false,
+          "pins": 146
+        },
+        {
+          "root": "rgmii_rxc",
+          "inverted": true,
+          "pins": 5
+        }
+      ],
+      "clock_nets": [
+        {
+          "net": "clk50_d",
+          "root": [
+            "clk50",
+            false
+          ]
+        },
+        {
+          "net": "rgmii_rxc_d",
+          "root": [
+            "rgmii_rxc",
+            false
+          ]
+        },
+        {
+          "net": "u_lmac/n13_6",
+          "root": [
+            "rgmii_rxc",
+            true
+          ]
+        },
+        {
+          "net": "u_lmac/n641_6",
+          "root": [
+            "clk50",
+            true
+          ]
+        }
+      ],
+      "largest_reset_control_loads": [
+        {
+          "kind": "DFFRE",
+          "pin": "RESET",
+          "net": "r2",
+          "loads": 5322
+        },
+        {
+          "kind": "DFFCE",
+          "pin": "CLEAR",
+          "net": "\\u_control/n1786_7",
+          "loads": 3632
+        },
+        {
+          "kind": "DFFRE",
+          "pin": "RESET",
+          "net": "\\u_control/n1786_7",
+          "loads": 1417
+        },
+        {
+          "kind": "DFFRE",
+          "pin": "RESET",
+          "net": "\\u_control/wheel_control/n88_3",
+          "loads": 865
+        },
+        {
+          "kind": "DFFRE",
+          "pin": "RESET",
+          "net": "\\u_control/wheel_control/n88_3_25",
+          "loads": 865
+        },
+        {
+          "kind": "DFFCE",
+          "pin": "CLEAR",
+          "net": "r2",
+          "loads": 719
+        },
+        {
+          "kind": "DFFCE",
+          "pin": "CLEAR",
+          "net": "\\u_control/model_thread/policy/core/n1466_7",
+          "loads": 600
+        },
+        {
+          "kind": "DFFCE",
+          "pin": "CLEAR",
+          "net": "\\u_control/model_thread/observation/n331_7",
+          "loads": 411
+        },
+        {
+          "kind": "DFFRE",
+          "pin": "RESET",
+          "net": "\\u_control/sensor/n53_4",
+          "loads": 375
+        },
+        {
+          "kind": "DFFSE",
+          "pin": "SET",
+          "net": "r2",
+          "loads": 332
+        },
+        {
+          "kind": "DFFRE",
+          "pin": "RESET",
+          "net": "\\u_soc/cpu_rst",
+          "loads": 210
+        },
+        {
+          "kind": "DFFRE",
+          "pin": "RESET",
+          "net": "\\u_nav/g_support.u_support/n489_5",
+          "loads": 195
+        }
+      ],
+      "scope": "Every physical primitive clock pin token, including attributed IO FF; reset counts include synchronous RESET and asynchronous CLEAR/PRESET, not electrical reset signoff"
+    },
+    "CDC26_structure_passed": true,
+    "direct_DFF_CDC_inventory_count": 26,
+    "timing_summary": {
+      "report_created": "Tue Oct 27 09:20:19 2026",
+      "setup_violated_endpoints": 124,
+      "hold_violated_endpoints": 0,
+      "paths_analyzed": 112529,
+      "endpoints_analyzed": 126729,
+      "corners": [
+        [
+          "Setup Delay Model",
+          "Slow 0.873V 0C C1/I0"
+        ],
+        [
+          "Hold Delay Model",
+          "Fast 0.927V 85C C1/I0"
+        ]
+      ],
+      "tables": {
+        "setup": {
+          "reported_rows": 5000,
+          "worst_reported_slack_ns": -0.379,
+          "negative_rows": 124,
+          "unique_endpoints": 5000,
+          "by_clock": {
+            "clk50:[R]": 4958,
+            "rgmii_rxc:[R]": 42
+          }
+        },
+        "hold": {
+          "reported_rows": 5000,
+          "worst_reported_slack_ns": 0.163,
+          "negative_rows": 0,
+          "unique_endpoints": 5000,
+          "by_clock": {
+            "clk50:[R]": 4985,
+            "rgmii_rxc:[R]": 15
+          }
+        },
+        "recovery": {
+          "reported_rows": 5000,
+          "worst_reported_slack_ns": 4.239,
+          "negative_rows": 0,
+          "unique_endpoints": 5000,
+          "by_clock": {
+            "clk50:[R]": 4937,
+            "rgmii_rxc:[R]": 63
+          }
+        },
+        "removal": {
+          "reported_rows": 5000,
+          "worst_reported_slack_ns": 0.268,
+          "negative_rows": 0,
+          "unique_endpoints": 5000,
+          "by_clock": {
+            "clk50:[R]": 4937,
+            "rgmii_rxc:[R]": 63
+          }
+        },
+        "clock_pulse": {
+          "reported_rows": 5000,
+          "worst_reported_slack_ns": 2.2,
+          "negative_rows": 0,
+          "unique_endpoints": 4154,
+          "by_clock": {
+            "rgmii_rxc": 302,
+            "clk50": 4698
+          }
+        }
+      },
+      "constraint_status": {
+        "Actived": 61
+      },
+      "constraint_kinds": {
+        "TC_CLOCK": 2,
+        "TC_FALSE_PATH": 26,
+        "TC_MAX_DELAY": 26,
+        "TC_REPORT_TIMING": 4,
+        "TC_REPORT_HIGH_FANOUT_NETS": 1,
+        "TC_REPORT_ROUTE_CONGESTION": 1,
+        "TC_REPORT_MIN_PULSE_WIDTH": 1
+      },
+      "exact_CDC52_match": true,
+      "IO_delay_constraints": 0,
+      "external_IO_timing_accepted": false,
+      "asynchronous_reset_pulse_accepted": false,
+      "CDC_MTBF_accepted": false,
+      "missing_report_rows_are_not_pass": true,
+      "all_target_clock_setup_hold_report_passed": false
+    },
+    "IO_summary": {
+      "requested_pins": 51,
+      "observed_pins": 51,
+      "mismatches": [],
+      "requested_but_unplaced": [],
+      "placed": {
+        "clk50": {
+          "pin": "W19",
+          "bank": "4",
+          "direction": "in",
+          "site": "IOB122[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "key_rst_n": {
+          "pin": "D21",
+          "bank": "2",
+          "direction": "in",
+          "site": "IOR51[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "uart_rxd": {
+          "pin": "L21",
+          "bank": "3",
+          "direction": "in",
+          "site": "IOR71[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "imu_rxd": {
+          "pin": "A15",
+          "bank": "2",
+          "direction": "in",
+          "site": "IOR20[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "IRIN": {
+          "pin": "A21",
+          "bank": "2",
+          "direction": "in",
+          "site": "IOR44[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "M1_ENCA": {
+          "pin": "D14",
+          "bank": "2",
+          "direction": "in",
+          "site": "IOR4[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "M1_ENCB": {
+          "pin": "F13",
+          "bank": "2",
+          "direction": "in",
+          "site": "IOR11[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "M2_ENCA": {
+          "pin": "D15",
+          "bank": "2",
+          "direction": "in",
+          "site": "IOR4[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "M2_ENCB": {
+          "pin": "F14",
+          "bank": "2",
+          "direction": "in",
+          "site": "IOR11[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "rgmii_rxc": {
+          "pin": "Y18",
+          "bank": "4",
+          "direction": "in",
+          "site": "IOB116[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_rx_ctl": {
+          "pin": "T20",
+          "bank": "4",
+          "direction": "in",
+          "site": "IOB102[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_rxd[0]": {
+          "pin": "P20",
+          "bank": "4",
+          "direction": "in",
+          "site": "IOB92[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_rxd[1]": {
+          "pin": "N15",
+          "bank": "4",
+          "direction": "in",
+          "site": "IOB146[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_rxd[2]": {
+          "pin": "AA18",
+          "bank": "4",
+          "direction": "in",
+          "site": "IOB108[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_rxd[3]": {
+          "pin": "AB18",
+          "bank": "4",
+          "direction": "in",
+          "site": "IOB108[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "sfp1_los": {
+          "pin": "P15",
+          "bank": "4",
+          "direction": "in",
+          "site": "IOB140[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "uart_txd": {
+          "pin": "M21",
+          "bank": "3",
+          "direction": "out",
+          "site": "IOR71[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "control_txd": {
+          "pin": "A16",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR20[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "M1_PWM": {
+          "pin": "D17",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR26[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "M1_DIR1": {
+          "pin": "B20",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR40[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "M1_DIR2": {
+          "pin": "B17",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR24[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "M2_PWM": {
+          "pin": "C17",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR26[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "M2_DIR1": {
+          "pin": "B18",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR24[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "M2_DIR2": {
+          "pin": "A20",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR40[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "SERVO1": {
+          "pin": "C18",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR31[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "SERVO2": {
+          "pin": "C19",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR31[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "SERVO3": {
+          "pin": "E19",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR29[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "SERVO4": {
+          "pin": "D19",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR29[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_txc": {
+          "pin": "AB21",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB129[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_tx_ctl": {
+          "pin": "AA19",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB110[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_txd[0]": {
+          "pin": "AB20",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB110[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_txd[1]": {
+          "pin": "Y19",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB116[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_txd[2]": {
+          "pin": "AB22",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB129[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_txd[3]": {
+          "pin": "W20",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB122[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "eth_rst_n": {
+          "pin": "P14",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB133[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "eth_mdc": {
+          "pin": "R14",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB133[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "sfp1_tx_dis": {
+          "pin": "R17",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB144[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "led[0]": {
+          "pin": "U22",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB104[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "led[1]": {
+          "pin": "V22",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB104[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "led[2]": {
+          "pin": "W21",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB124[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "led[3]": {
+          "pin": "W22",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB124[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "led_cpu[0]": {
+          "pin": "Y21",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB131[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "led_cpu[1]": {
+          "pin": "Y22",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB131[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "led_cpu[2]": {
+          "pin": "N13",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB142[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "led_cpu[3]": {
+          "pin": "N17",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB135[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "led_trap": {
+          "pin": "P17",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB135[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "sck": {
+          "pin": "F19",
+          "bank": "2",
+          "direction": "io",
+          "site": "IOR33[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "sda": {
+          "pin": "F20",
+          "bank": "2",
+          "direction": "io",
+          "site": "IOR33[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "BMI088_SCL": {
+          "pin": "E18",
+          "bank": "2",
+          "direction": "io",
+          "site": "IOR35[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "BMI088_SDA": {
+          "pin": "F18",
+          "bank": "2",
+          "direction": "io",
+          "site": "IOR35[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "eth_mdio": {
+          "pin": "U21",
+          "bank": "4",
+          "direction": "io",
+          "site": "IOB97[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        }
+      },
+      "pin_binding_check_passed": true,
+      "P11_39_external_control_input_present": false,
+      "control_UART_RXD_tied_high": true,
+      "old_external_IMU_imu_rxd_used": false,
+      "inactive_SFP_or_unused_top_ports_require_review": true,
+      "voltage_and_external_electrical_measurement_accepted": false
+    },
+    "complete_signoff": false,
+    "vehicle_acceptance": false,
+    "open_items": [
+      "External RGMII min/max/both-edge timing and board/PHY delays",
+      "Asynchronous reset phase and assertion pulse, physical grade/PVT coverage",
+      "Full CDC payload stability, all stage2 route/resolution data and characterized MTBF",
+      "Firmware loaded at04:10 differs from baked INIT; live identity/config must be recorded",
+      "Independent stop with stalled50MHz, actual IR/key and actuator physical stopping",
+      "IMU repair/axes/calibration, lidar link, actual motion/terrain/no-map/prior tasks"
+    ],
+    "selected_UART_architecture": {
+      "command_and_task_status": "CH9102 bidirectional",
+      "control_telemetry": "P11-40 output",
+      "P11_39_receive_required": false,
+      "unused_control_RX_is_not_a_functional_defect": true,
+      "authority": "User clarification and exact Zcode session final summary,2026-10-27"
+    }
+  },
+  "all_negative_setup_endpoint_count": 124,
+  "negative_endpoints_by_top": {
+    "u_nav": 27,
+    "u_soc": 3,
+    "u_control": 94
+  },
+  "worst_setup": {
+    "number": 1,
+    "slack_ns": -0.379,
+    "source": "u_nav/u_match/st_4_s0/Q",
+    "destination": "u_nav/u_map/u_em/u_ram/g_banked.g_bank[11].mem_g_banked.g_bank[11].mem_0_2_s/CEB",
+    "from_clock": "clk50:[R]",
+    "to_clock": "clk50:[R]",
+    "relation_ns": 20.0,
+    "skew_ns": -0.054,
+    "data_delay_ns": 20.351
+  },
+  "setup_report_contains_all_summary_negative_endpoints": true,
+  "clock_Fmax_MHz": {
+    "clk50": 49.07,
+    "rgmii_rxc": 139.625
+  },
+  "resources": {
+    "BSRAM": 280,
+    "FF": 32017,
+    "Logic": 60883,
+    "CLS": 42965
+  },
+  "two_place_options_routing_completed": true,
+  "two_place_options_timing_clean": false,
+  "PNR61_remains_selected_and_onboard": true,
+  "reprogrammed": false,
+  "new_SYN_PNR_started": false,
+  "live_invalid_stream": {
+    "passed": true,
+    "ended_at": "2026-10-27T09:52:03.488783+08:00",
+    "sent_counts": {
+      "explicit_idle": 1,
+      "valid_zero_heartbeat": 30,
+      "wrong_version": 27,
+      "unknown_type": 27,
+      "short_target": 27,
+      "fresh_zero_after_timeout": 10
+    },
+    "status_count": 14,
+    "first_timeout_status_after_last_legal_packet_s": 0.35044442099751905,
+    "all_observed_numeric_targets_zero": true,
+    "invalid_traffic_did_not_renew": true,
+    "fresh_heartbeat_did_not_automatically_rearm": true,
+    "final_mode": 4,
+    "status_rows": [
+      {
+        "phase": "initial",
+        "host_s": 0.05085280898492783,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 205024406,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "initial",
+        "host_s": 0.24739439197583124,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 205224466,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "healthy",
+        "host_s": 0.4492348629864864,
+        "type": "status",
+        "mode": 0,
+        "state": "空闲",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 205424473,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "healthy",
+        "host_s": 0.6553112929686904,
+        "type": "status",
+        "mode": 0,
+        "state": "空闲",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 205624498,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "healthy",
+        "host_s": 0.8528612579684705,
+        "type": "status",
+        "mode": 0,
+        "state": "空闲",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 205824540,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "healthy",
+        "host_s": 1.0467321039759554,
+        "type": "status",
+        "mode": 0,
+        "state": "空闲",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 206024573,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "invalid_stream",
+        "host_s": 1.250163757998962,
+        "type": "status",
+        "mode": 0,
+        "state": "空闲",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 206224590,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "invalid_stream",
+        "host_s": 1.4506942369625904,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 206424650,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "invalid_stream",
+        "host_s": 1.6502939260099083,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 206624660,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "invalid_stream",
+        "host_s": 1.846143613976892,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 206824680,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "invalid_stream",
+        "host_s": 2.044506234000437,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 207024693,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "invalid_stream",
+        "host_s": 2.2539537139819004,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 207224703,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "locked_fresh_zero",
+        "host_s": 2.4441611929796636,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 207424739,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "locked_fresh_zero",
+        "host_s": 2.644733675988391,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 207624777,
+        "loc": "无图",
+        "loc_q": 0
+      }
+    ],
+    "sends": [
+      {
+        "kind": "explicit_idle",
+        "host_s": 0.3050932259648107
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.3081962509895675
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.3331595939816907
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.3576387260109186
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.3820055579999462
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.40688401798252016
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.43167817796347663
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.46283823798876256
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.4880419349647127
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.5139891559956595
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.5394369999994524
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.5673980669816956
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.5934815090149641
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.621269310999196
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.6601215119590051
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.684942299965769
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.7140570110059343
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.7394797700108029
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.7639379010070115
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.7940455329953693
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.8220646469853818
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.8555107020074502
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.8892927860142663
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.9144641049788333
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.940583424991928
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.9681938780122437
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 0.9937231040094048
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 1.0179020849755034
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 1.0496114009874873
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 1.0747725109686144
+      },
+      {
+        "kind": "valid_zero_heartbeat",
+        "host_s": 1.1002498159650713
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.1257828339585103
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.1398537919740193
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.1524540369864553
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.1665404550149105
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.1798226760001853
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.1926326469983906
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.2068220329820178
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.2202923959703185
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.2333225950133055
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.2525778060080484
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.2667038940126076
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.2792102129897103
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.2947034639655612
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.3092901349882595
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.325343728007283
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.3391886239987798
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.3529425119631924
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.366001296963077
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.37985581997782
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.3938039749627933
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.406546565995086
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.4201715259696357
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.4341214320156723
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.4524222239851952
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.4668038350064307
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.4802141090040095
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.4940730069647543
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.508306437986903
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.5238307339604944
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.5373816039646044
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.5518293039640412
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.5658559249714017
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.5789400869980454
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.5929935440071858
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.6069344069692306
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.6198467629728839
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.6340834019938484
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.6532589810085483
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.6663947720080614
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.6799532269942574
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.6943818000145257
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.7077666969853453
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.72201996401418
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.7362554359715432
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.749034195963759
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.7624724739580415
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.7761995259788819
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.78870759595884
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.8031256679678336
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.8169510209700093
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.8299613849958405
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.8493154789903201
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.8630851189955138
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.8758157499833032
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.8904062130022794
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.9044946719659492
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.9172786829876713
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.9316547519993037
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.9458642639801838
+      },
+      {
+        "kind": "short_target",
+        "host_s": 1.9586657760082744
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 1.9732976589584723
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 1.9872851929976605
+      },
+      {
+        "kind": "short_target",
+        "host_s": 2.000153211003635
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 2.0140783229726367
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 2.028411804989446
+      },
+      {
+        "kind": "short_target",
+        "host_s": 2.046901613997761
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 2.0621135070105083
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 2.076876942999661
+      },
+      {
+        "kind": "short_target",
+        "host_s": 2.0907828029594384
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 2.10510065901326
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 2.119554900971707
+      },
+      {
+        "kind": "short_target",
+        "host_s": 2.1330809770151973
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 2.1472376929596066
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 2.1619830449926667
+      },
+      {
+        "kind": "short_target",
+        "host_s": 2.1750604980043136
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 2.189420231967233
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 2.2072928189882077
+      },
+      {
+        "kind": "short_target",
+        "host_s": 2.222491168999113
+      },
+      {
+        "kind": "wrong_version",
+        "host_s": 2.236339566006791
+      },
+      {
+        "kind": "unknown_type",
+        "host_s": 2.25703194597736
+      },
+      {
+        "kind": "short_target",
+        "host_s": 2.270046101999469
+      },
+      {
+        "kind": "fresh_zero_after_timeout",
+        "host_s": 2.283933585975319
+      },
+      {
+        "kind": "fresh_zero_after_timeout",
+        "host_s": 2.320557046972681
+      },
+      {
+        "kind": "fresh_zero_after_timeout",
+        "host_s": 2.356296679994557
+      },
+      {
+        "kind": "fresh_zero_after_timeout",
+        "host_s": 2.3922247469890863
+      },
+      {
+        "kind": "fresh_zero_after_timeout",
+        "host_s": 2.4276481849956326
+      },
+      {
+        "kind": "fresh_zero_after_timeout",
+        "host_s": 2.4693120939773507
+      },
+      {
+        "kind": "fresh_zero_after_timeout",
+        "host_s": 2.505364421987906
+      },
+      {
+        "kind": "fresh_zero_after_timeout",
+        "host_s": 2.5453263049712405
+      },
+      {
+        "kind": "fresh_zero_after_timeout",
+        "host_s": 2.5807016139733605
+      },
+      {
+        "kind": "fresh_zero_after_timeout",
+        "host_s": 2.6163371119764633
+      }
+    ],
+    "CPU_reset": false,
+    "IMU_dependency": false,
+    "physical_stopping_proved": false,
+    "busy_full_APP_WCET_proved": false,
+    "caveat": "Finite actual idle firmware workload, not transport saturation, busy planning,350ms zero-publication or500ms mechanical stopping proof"
+  },
+  "latency_note": "350.444ms is host status observation after the last legal packet, not zero-target submission latency or physical stopping time.",
+  "tests_available_without_IMU": [
+    "CH protocol malformed/profile/CRC/bounds rejection under idle zero control",
+    "Current RTL frame-owner admission/backpressure and asynchronous reset/clock phase cases offline",
+    "Current-firmware busy planner/continuous receive latency and hardware command watchdog digitally",
+    "Physical IO/CDC/reset evidence review; actual pin/board phase measurements need appropriate hardware access"
+  ],
+  "tests_await_physical_conditions": [
+    "Lidar real link/frames requires lidar power",
+    "BMI calibration/axis/4500 live inference/actuator stopping and vehicle navigation require valid sensors and support conditions"
+  ],
+  "communication_split": "CH command/map/status bidirectional; P11-40 control telemetry; P11-39 receive not required"
+}
