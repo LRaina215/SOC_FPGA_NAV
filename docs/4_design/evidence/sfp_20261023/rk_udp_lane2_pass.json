@@ -1,0 +1,59 @@
+{
+  "started_at": "2026-10-24T00:10:48.805711+08:00",
+  "interface": "eth2",
+  "profile": "codex-sfp-test-20261024",
+  "profile_saved_to_disk": false,
+  "address": "192.168.2.10/24",
+  "peer": "192.168.2.100:9000",
+  "profile_add": "Connection 'codex-sfp-test-20261024' (c3c4aa28-0d09-455c-b0aa-4c4ac4ae4d5a) successfully added.\n",
+  "profile_up": "Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/10)\n",
+  "profile_configuration": "connection.id:                          codex-sfp-test-20261024\nconnection.interface-name:              eth2\nconnection.autoconnect:                 no\nipv4.method:                            manual\nipv4.addresses:                         192.168.2.10/24\nipv4.never-default:                     yes\nipv6.method:                            disabled\n",
+  "route_to_fpga": "192.168.2.100 from 192.168.2.10 dev eth2 uid 1000 \n    cache \n",
+  "udp": {
+    "passed": true,
+    "sent": 100,
+    "received": 100,
+    "error": null,
+    "results": [
+      {
+        "payload_bytes": 1,
+        "packets": 20,
+        "rtt_min_ms": 0.13242800196167082,
+        "rtt_max_ms": 0.72660599835217,
+        "rtt_avg_ms": 0.2938218000053894
+      },
+      {
+        "payload_bytes": 18,
+        "packets": 20,
+        "rtt_min_ms": 0.13359500735532492,
+        "rtt_max_ms": 0.3719079977599904,
+        "rtt_avg_ms": 0.20418465064722113
+      },
+      {
+        "payload_bytes": 64,
+        "packets": 20,
+        "rtt_min_ms": 0.151388012454845,
+        "rtt_max_ms": 0.45678998867515475,
+        "rtt_avg_ms": 0.2330331008124631
+      },
+      {
+        "payload_bytes": 256,
+        "packets": 20,
+        "rtt_min_ms": 0.27360700187273324,
+        "rtt_max_ms": 0.5848440050613135,
+        "rtt_avg_ms": 0.39454319776268676
+      },
+      {
+        "payload_bytes": 1472,
+        "packets": 20,
+        "rtt_min_ms": 0.28206699062138796,
+        "rtt_max_ms": 0.5413809994934127,
+        "rtt_avg_ms": 0.38131489855004475
+      }
+    ]
+  },
+  "neighbor_after": "192.168.2.100 lladdr 02:4e:56:00:00:02 REACHABLE\n",
+  "network_after": "lo               UNKNOWN        127.0.0.1/8 \neth2             UP             192.168.2.10/24 \nwlan0            UP             10.165.111.244/24 \ntailscale0       UNKNOWN        100.113.173.115/32 \ndocker0          DOWN           172.17.0.1/16 \ndefault via 10.165.111.79 dev wlan0 proto dhcp metric 600 \n10.165.111.0/24 dev wlan0 proto kernel scope link src 10.165.111.244 metric 600 \n169.254.0.0/16 dev wlan0 scope link metric 1000 \n172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown \n192.168.2.0/24 dev eth2 proto kernel scope link src 192.168.2.10 metric 100 \n\tSpeed: 1000Mb/s\n\tDuplex: Full\n\tAuto-negotiation: on\n\tLink detected: yes\n",
+  "passed": true,
+  "ended_at": "2026-10-24T00:10:52.961251+08:00"
+}

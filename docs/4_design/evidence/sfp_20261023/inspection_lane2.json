@@ -1,0 +1,49 @@
+{
+  "constrained_timing_passed": true,
+  "physical_port": "SFP1",
+  "serdes_lane": "Q0 Lane2",
+  "clocks": {
+    "core_clk": {
+      "required_mhz": 50.0,
+      "reported_fmax_mhz": 111.964
+    },
+    "rx_mac_clk": {
+      "required_mhz": 125.0,
+      "reported_fmax_mhz": 171.965
+    },
+    "tx_mac_clk": {
+      "required_mhz": 125.0,
+      "reported_fmax_mhz": 175.461
+    }
+  },
+  "minimum_reported_slack_ns": {
+    "setup": 2.185,
+    "hold": 0.176,
+    "recovery": 3.491,
+    "removal": 0.326,
+    "pulse_width": 1.137
+  },
+  "resources": {
+    "Logic": 3568,
+    "Register": 3114,
+    "BSRAM": 5,
+    "GTR12_QUAD": 1
+  },
+  "actuator_outputs_tied_to_ground": [
+    "M1_DIR1",
+    "M1_DIR2",
+    "M1_PWM",
+    "M2_DIR1",
+    "M2_DIR2",
+    "M2_PWM",
+    "SERVO1",
+    "SERVO2",
+    "SERVO3",
+    "SERVO4"
+  ],
+  "csr_passed_to_pnr": true,
+  "bitstream": "F:\\nav_sfp_20261023\\build_lane2_v3\\impl\\pnr\\sfp_bringup.fs",
+  "physical_cdc_skew_signoff": false,
+  "hardware_tested": false,
+  "note": "Independent-clock paths use vendor-reference exceptions; not joint G2 acceptance"
+}

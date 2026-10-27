@@ -1,5 +1,7 @@
 # 整车 FPGA 引脚、电平与连接器分配
 
+**2026-10-27共同工程补记：** PNR61已核对51个实际CST引脚与物理报告一致；当前用板载CH导航串口和P11-40/A16控制遥测，P11-39未启用，不需补成外部速度入口。SFP1/P6/U11对应Q0 Lane2的独立链路已实测，当前PNR61不含SFP。以下v0.3正文为2026-10-21的独立工程核对基线，其中“尚未合成整车约束”不再描述当前PNR61；IO实际电气/外部时序及实物B/C条件仍未完整签核。见[PNR61独立签核](../4_design/g2_PNR61_signoff_20261027.md)。
+
 版本 v0.3（2026-10-21）。依据控制仓库 `Chenyudog/fpga` 提交 `6443f5678b4de222c22cbf331b8396f7c8df6a41` 的 `fpga/src/main.cst` 和 `main.v` 核对控制引脚；导航侧按现有 `gowin/nav_board.cst` 记录。**两套独立约束尚未合成整车约束**。用户于 2026-10-21 确认车上已烧录带新 UART 接口的位流；本次未重新测量线束，且车上位流与仓库位流的对应关系仍待厘清。
 
 第 4 节用控制仓库分配取代旧 SPI/MT6701 设想，未列用途的针脚保持未冻结。详见 [控制仓库审阅](../5_teams/control_repo_review_20261021.md)、[整车集成计划](../1_plan/system_integration_plan_20261021.md) 与 [ICD](icd.md) 第 4–5 节。
@@ -45,7 +47,7 @@ P11（2×20 排针）的针号与 GPIO0 编号：1–10 针 = GPIO0_0..9，11 �
 | `rgmii_rxc`、`rgmii_rx_ctl`、`rgmii_rxd[3:0]` | Y18、T20、P20 N15 AA18 AB18 | 4 | RJ45（RTL8211F） | 雷达口接收 |
 | `rgmii_txc`、`rgmii_tx_ctl`、`rgmii_txd[3:0]` | AB21、AA19、AB20 Y19 AB22 W20 | 4 | RJ45 | 雷达口发送 |
 | `eth_rst_n`、`eth_mdc`、`eth_mdio` | P14、R14、U21 | 4 | RTL8211F | PHY 复位与管理口 |
-| `sfp1_tx_dis`、`sfp1_los` | R17、P15 | 4 | SFP1 笼子 | 主机口（SFP IP 未生成，目前常量） |
+| `sfp1_tx_dis`、`sfp1_los` | R17、P15 | 4 | SFP1/P6/U11 | 独立诊断已实物通过；高速通道为 Q0 Lane2，RX B10/A10、TX B6/A6；联合工程仍须 G2 验收 |
 | `led[3:0]` | U22 V22 W21 W22 | 4 | LED0–LED3 | 心跳、中断、急停、速度指令超时 |
 | `led_cpu[3:0]`、`led_trap` | Y21 Y22 N13 N17、P17 | 4 | LED4–LED8 | 软核计数、软核异常 |
 

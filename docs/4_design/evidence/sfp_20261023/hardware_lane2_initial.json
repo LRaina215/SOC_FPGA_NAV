@@ -1,0 +1,219 @@
+{
+  "started_at": "2026-10-24T00:06:55.794444+08:00",
+  "build": "F:\\nav_sfp_20261023\\build_lane2_v3",
+  "port": "COM11",
+  "steps": [
+    {
+      "name": "usercode_before",
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\Programmer\\bin\\programmer_cli.exe",
+        "--cable-index",
+        "1",
+        "--location",
+        "579",
+        "--device",
+        "GW5AT-138C",
+        "--run",
+        "73"
+      ],
+      "returncode": 0
+    },
+    {
+      "name": "program_sram",
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\Programmer\\bin\\programmer_cli.exe",
+        "--cable-index",
+        "1",
+        "--location",
+        "579",
+        "--device",
+        "GW5AT-138C",
+        "--run",
+        "2",
+        "--fsFile",
+        "F:\\nav_sfp_20261023\\build_lane2_v3\\impl\\pnr\\sfp_bringup.fs"
+      ],
+      "returncode": 0
+    },
+    {
+      "name": "usercode_after",
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\Programmer\\bin\\programmer_cli.exe",
+        "--cable-index",
+        "1",
+        "--location",
+        "579",
+        "--device",
+        "GW5AT-138C",
+        "--run",
+        "73"
+      ],
+      "returncode": 0
+    }
+  ],
+  "flash_written": false,
+  "motion_commands": 0,
+  "programmed": true,
+  "full_previous_image_identity_proven": false,
+  "usercode_before": 18309,
+  "build_inspection": {
+    "constrained_timing_passed": true,
+    "physical_port": "SFP1",
+    "serdes_lane": "Q0 Lane2",
+    "clocks": {
+      "core_clk": {
+        "required_mhz": 50.0,
+        "reported_fmax_mhz": 111.964
+      },
+      "rx_mac_clk": {
+        "required_mhz": 125.0,
+        "reported_fmax_mhz": 171.965
+      },
+      "tx_mac_clk": {
+        "required_mhz": 125.0,
+        "reported_fmax_mhz": 175.461
+      }
+    },
+    "minimum_reported_slack_ns": {
+      "setup": 2.185,
+      "hold": 0.176,
+      "recovery": 3.491,
+      "removal": 0.326,
+      "pulse_width": 1.137
+    },
+    "resources": {
+      "Logic": 3568,
+      "Register": 3114,
+      "BSRAM": 5,
+      "GTR12_QUAD": 1
+    },
+    "actuator_outputs_tied_to_ground": [
+      "M1_DIR1",
+      "M1_DIR2",
+      "M1_PWM",
+      "M2_DIR1",
+      "M2_DIR2",
+      "M2_PWM",
+      "SERVO1",
+      "SERVO2",
+      "SERVO3",
+      "SERVO4"
+    ],
+    "csr_passed_to_pnr": true,
+    "bitstream": "F:\\nav_sfp_20261023\\build_lane2_v3\\impl\\pnr\\sfp_bringup.fs",
+    "physical_cdc_skew_signoff": false,
+    "hardware_tested": false,
+    "note": "Independent-clock paths use vendor-reference exceptions; not joint G2 acceptance"
+  },
+  "programming_attempted": true,
+  "usercode_after": 37371,
+  "snapshots": [
+    {
+      "signature": 1397116977,
+      "config": 2,
+      "status": 23,
+      "partner": 416,
+      "diagnostic": 23,
+      "link_losses": 0,
+      "rx_frames": 8,
+      "rx_udp": 0,
+      "rx_errors": 0,
+      "arp_requests": 0,
+      "tx_frames": 0,
+      "echoes": 0,
+      "echo_drops": 0,
+      "ipv4": 3232236132,
+      "port": 9000,
+      "image": "standalone",
+      "register_base": 0,
+      "decoded": {
+        "mode": "1000BASE-X",
+        "autoneg": true,
+        "honour_los": false,
+        "qpll_locked": true,
+        "rx_locked": true,
+        "aligned": true,
+        "los": false,
+        "link_ready": true,
+        "ip_reset": false,
+        "pcs_sync": true,
+        "pcs_link": true,
+        "an_complete": true,
+        "partner_phy_link": null
+      },
+      "recorded_at": "2026-10-24T00:07:10.528182+08:00"
+    },
+    {
+      "signature": 1397116977,
+      "config": 2,
+      "status": 23,
+      "partner": 416,
+      "diagnostic": 23,
+      "link_losses": 0,
+      "rx_frames": 8,
+      "rx_udp": 0,
+      "rx_errors": 0,
+      "arp_requests": 0,
+      "tx_frames": 0,
+      "echoes": 0,
+      "echo_drops": 0,
+      "ipv4": 3232236132,
+      "port": 9000,
+      "image": "standalone",
+      "register_base": 0,
+      "decoded": {
+        "mode": "1000BASE-X",
+        "autoneg": true,
+        "honour_los": false,
+        "qpll_locked": true,
+        "rx_locked": true,
+        "aligned": true,
+        "los": false,
+        "link_ready": true,
+        "ip_reset": false,
+        "pcs_sync": true,
+        "pcs_link": true,
+        "an_complete": true,
+        "partner_phy_link": null
+      },
+      "recorded_at": "2026-10-24T00:07:12.538558+08:00"
+    },
+    {
+      "signature": 1397116977,
+      "config": 2,
+      "status": 23,
+      "partner": 416,
+      "diagnostic": 23,
+      "link_losses": 0,
+      "rx_frames": 10,
+      "rx_udp": 0,
+      "rx_errors": 0,
+      "arp_requests": 0,
+      "tx_frames": 0,
+      "echoes": 0,
+      "echo_drops": 0,
+      "ipv4": 3232236132,
+      "port": 9000,
+      "image": "standalone",
+      "register_base": 0,
+      "decoded": {
+        "mode": "1000BASE-X",
+        "autoneg": true,
+        "honour_los": false,
+        "qpll_locked": true,
+        "rx_locked": true,
+        "aligned": true,
+        "los": false,
+        "link_ready": true,
+        "ip_reset": false,
+        "pcs_sync": true,
+        "pcs_link": true,
+        "an_complete": true,
+        "partner_phy_link": null
+      },
+      "recorded_at": "2026-10-24T00:07:14.548387+08:00"
+    }
+  ],
+  "completed": true,
+  "ended_at": "2026-10-24T00:07:14.575732+08:00"
+}

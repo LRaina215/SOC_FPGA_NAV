@@ -1,9 +1,12 @@
 # 文档目录
 
-按用途分五类。第一次接手先读 [当前总计划](1_plan/system_integration_plan_20261021.md) 和 [控制仓库审阅](5_teams/control_repo_review_20261021.md)，历史进度见 [roadmap](1_plan/roadmap.md)，要改代码先读 [3_guide/dev_guide.md](3_guide/dev_guide.md)。
+先读[项目总体设计](system_architecture.md)，了解FPGA、RK3588边缘多模态任务引擎、Web与微信小程序的完整架构。当前状态和执行顺序只查[当前总计划](1_plan/system_integration_plan_20261021.md)；控制来源见[控制仓库审阅](5_teams/control_repo_review_20261021.md)，历史进度见[roadmap](1_plan/roadmap.md)，要改代码先读[3_guide/dev_guide.md](3_guide/dev_guide.md)。
+
+2026-10-27入口已按PNR61 / SLF128 / 双串口、Qwen3、Web地图上传/预览与小程序HLS对账。独立SFP已实测，未进入当前共同候选；遥测浸泡、落地站稳和新版手机视频仍按各自证据保留未验收。较早专项里的“当前”以其记录日期解释，避免把旧镜像/旧部署误当现状。
 
 | 目录 | 文档 | 内容 |
 |---|---|---|
+| 总体设计 | [system_architecture.md](system_architecture.md) | 项目定位、边缘模型、FPGA导航与原4500控制、Web / 小程序、通信、典型流程及实现边界 |
 | `1_plan/` 进度与计划 | [system_integration_plan_20261021.md](1_plan/system_integration_plan_20261021.md) | 唯一当前状态与顺序：检查点、G2联合资源、终点精度/命令有效期、后续验收 |
 | | [control_improvement_plan_20261021.md](1_plan/control_improvement_plan_20261021.md) | 控制侧专项：启动/失联/反馈整改、无损存储优化、执行响应与量化/蒸馏/架构分支 |
 | | [roadmap.md](1_plan/roadmap.md) | 历史板级记录、本机环境与踩坑记录；不维护当前状态 |
@@ -20,6 +23,7 @@
 | `4_design/` 设计与参数 | [algorithms.md](4_design/algorithms.md) | 闭环仿真平台、算法改进记录、批量评测结果 |
 | | [g2_joint_resources_20261022.md](4_design/g2_joint_resources_20261022.md) | 原4500真实策略与导航共同工程资源、分解、无损优化和时序证据 |
 | | [endpoint_stop_20261022.md](4_design/endpoint_stop_20261022.md) | 航向数值反例、同版本终点配对、零偏/漂移和命令有效期故障注入 |
+| | [rk_task_layer_replay_20261025.md](4_design/rk_task_layer_replay_20261025.md) | RK任务完成/停稳核验、目标复核、重复状态处理与隔离回放证据 |
 | | [platform.md](4_design/platform.md) | 机器人 / 传感器 / 场地参数（已知 / 假设 / 待测） |
 | | [nav_optimization_results.md](4_design/nav_optimization_results.md) | 导航优化实施证据：独立判分、原版基线、参数来源、输入合同与迁移边界 |
 | | [local_map_terrain_feasibility_report_20261021.md](4_design/local_map_terrain_feasibility_report_20261021.md) | 真实地形/原4500条件性能力/地图决策三条证据，负空间反例及全部视频 |

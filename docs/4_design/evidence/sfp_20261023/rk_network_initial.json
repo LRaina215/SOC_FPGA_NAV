@@ -1,0 +1,24 @@
+{
+  "recorded_at": "2026-10-23T23:58:26.047746+08:00",
+  "ssh_authenticated": true,
+  "host": "100.113.173.115",
+  "user": "robomaster",
+  "commands": {
+    "eth1": {
+      "stdout": "Settings for eth1:\n\tSupported ports: [ TP\t MII ]\n\tSupported link modes:   10baseT/Half 10baseT/Full\n\t                        100baseT/Half 100baseT/Full\n\t                        1000baseT/Full\n\tSupported pause frame use: Symmetric Receive-only\n\tSupports auto-negotiation: Yes\n\tSupported FEC modes: Not reported\n\tAdvertised link modes:  10baseT/Half 10baseT/Full\n\t                        100baseT/Half 100baseT/Full\n\t                        1000baseT/Full\n\tAdvertised pause frame use: Symmetric Receive-only\n\tAdvertised auto-negotiation: Yes\n\tAdvertised FEC modes: Not reported\n\tSpeed: Unknown!\n\tDuplex: Unknown! (255)\n\tAuto-negotiation: on\n\tmaster-slave cfg: preferred slave\n\tmaster-slave status: unknown\n\tPort: Twisted Pair\n\tPHYAD: 1\n\tTransceiver: external\n\tMDI-X: Unknown\n        Current message level: 0x0000003f (63)\n                               drv probe link timer ifdown ifup\n\tLink detected: no\ndriver: st_gmac\nversion: Jan_2016\nfirmware-version: \nexpansion-rom-version: \nbus-info: \nsupports-statistics: yes\nsupports-test: no\nsupports-eeprom-access: no\nsupports-register-dump: yes\nsupports-priv-flags: no\n",
+      "stderr": "netlink error: Operation not permitted\n"
+    },
+    "eth2": {
+      "stdout": "Settings for eth2:\n\tSupported ports: [ TP ]\n\tSupported link modes:   10baseT/Half 10baseT/Full\n\t                        100baseT/Half 100baseT/Full\n\t                        1000baseT/Full\n\tSupported pause frame use: Symmetric Receive-only\n\tSupports auto-negotiation: Yes\n\tSupported FEC modes: Not reported\n\tAdvertised link modes:  10baseT/Half 10baseT/Full\n\t                        100baseT/Half 100baseT/Full\n\t                        1000baseT/Full\n\tAdvertised pause frame use: No\n\tAdvertised auto-negotiation: Yes\n\tAdvertised FEC modes: Not reported\n\tSpeed: Unknown!\n\tDuplex: Unknown! (255)\n\tAuto-negotiation: on\n\tPort: Twisted Pair\n\tPHYAD: 0\n\tTransceiver: internal\n\tMDI-X: Unknown\n        Current message level: 0x00000033 (51)\n                               drv probe ifdown ifup\n\tLink detected: no\ndriver: r8168\nversion: 8.049.02-NAPI\nfirmware-version: \nexpansion-rom-version: \nbus-info: 0004:41:00.0\nsupports-statistics: yes\nsupports-test: no\nsupports-eeprom-access: no\nsupports-register-dump: yes\nsupports-priv-flags: no\n",
+      "stderr": "netlink error: Operation not permitted\n"
+    },
+    "network_manager": {
+      "stdout": "wlan0:wifi:connected:MEIZU 21 Pro 1\ntailscale0:tun:connected (externally):tailscale0\ndocker0:bridge:connected (externally):docker0\np2p-dev-wlan0:wifi-p2p:disconnected:\neth1:ethernet:unavailable:\neth2:ethernet:unavailable:\nlo:loopback:unmanaged:\nMEIZU 21 Pro 1:802-11-wireless:wlan0\ntailscale0:tun:tailscale0\ndocker0:bridge:docker0\n",
+      "stderr": ""
+    },
+    "model": {
+      "stdout": "RK3588 OPi 5 Plus\n2: eth1: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc mq state DOWN mode DEFAULT group default qlen 1000\n    link/ether 00:00:a4:e3:fb:ff brd ff:ff:ff:ff:ff:ff\n    RX:  bytes packets errors dropped  missed   mcast           \n             0       0      0       0       0       0 \n    TX:  bytes packets errors dropped carrier collsns           \n             0       0      0       0       0       0 \n3: eth2: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc fq_codel state DOWN mode DEFAULT group default qlen 1000\n    link/ether 7e:89:b3:39:2b:b3 brd ff:ff:ff:ff:ff:ff permaddr b2:c6:d2:09:2f:ef\n    RX:  bytes packets errors dropped  missed   mcast           \n             0       0      0       0       0       0 \n    TX:  bytes packets errors dropped carrier collsns           \n          1539      10      0       0       0       0 \n    altname enP4p65s0\n",
+      "stderr": ""
+    }
+  }
+}

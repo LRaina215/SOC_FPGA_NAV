@@ -1,5 +1,7 @@
 # 上板与实机接入步骤
 
+**2026-10-27当前入口：** 选择PNR61 / G3c / SLF128 / 双串口，内部50/100MHz时序报告通过，BSRAM280/340。最近测试收尾为hold，恢复PNR61后须核对配套固件（位流初始化前移1500mm、已测后装G3c为1000mm），不直接套用下文独立导航旧命令。运行急停保持平衡，不等于hold或IR5断轮锁存；当前落地、建图及上传操作只按[落地调试与建图指南](ground_debug_and_mapping_20261027.md)，当前验收查[总计划](../1_plan/system_integration_plan_20261021.md)。本次仅文档对账，没有执行下载或运动。
+
 实物到货后的完整操作步骤（含通过标准与故障排查）见 [hardware_guide.md](hardware_guide.md)；本文件是开发侧的要点记录。
 **2026-10-21适用范围：** 本页旧命令和位流属于独立导航台架，不能直接替换车上控制位流。现有控制占用C18/C19等作为舵机，BMI088为P11-7/8上的I2C；旧SPI1–7计划撤销。当前导航工作区N2g尚未通过联合验收，上车先完成 [G1–G3](../1_plan/system_integration_plan_20261021.md) 和约束核对。
 雷达口 PHY 管理口 MDC R14、MDIO U21。全部引脚与电平见 [pinout.md](../2_interface/pinout.md)。
@@ -31,12 +33,12 @@
 | IP | 模块名 | 关键选项 | 顶层宏 |
 |---|---|---|---|
 | PLL | `Gowin_PLL_Nav` | 输入 50 MHz，clkout0 = 100 MHz，带 lock | `NAV_USE_PLL` |
-| SerDes → 1G Serial Ethernet | `Gowin_1GSERETH_Host` | Quad0 通道 0（SFP1），参考时钟 MGT_CLK1（125 MHz），1000BASE-X，勾选 MAC 功能 | `NAV_USE_SFP` |
+| SerDes → 1G Serial Ethernet | `SfpSerDes` / `Giga_Serial_Ethernet_Top` | Quad0 通道 2（SFP1/P6/U11），参考时钟 MGT_CLK1（125 MHz），1000BASE-X，MAC 启用 | 当前真实接入见 `integration/sfp` 与 G2 `--real-sfp` |
 
 生成后对照 IP 的实际端口核对 `gowin/nav_board_top.v` 中对应的 `ifdef` 块，特别是 1G Serial Ethernet：IP 生成的顶层会同时包含 SerDes 与 PCS/MAC，端口名以生成结果为准。
 
 注意：
-- 底板 SFP1 接收发器通道 0，SFP2 接通道 1，PCIe 接通道 2（以管脚信息表为准）。
+- 底板连接器页确认：SFP1 接收发器通道 2，SFP2 接通道 1，PCIe 接通道 0。此前 SFP1/PCIe 通道记录颠倒，已于 2026-10-24 更正并通过独立实物 UDP 回显；见 [映射更正与实测](../4_design/sfp_mapping_correction_20261024.md)。
 - 电口 SFP 模块（1000BASE-T）的主机侧多数是带自协商的 SGMII，少数是 1000BASE-X：选型时确认，IP 里选对应模式。RK3588 自己不能插 SFP，用网线接这个电口模块（[rk3588_design.md](../5_teams/rk3588_design.md) 第 3.4 节）。
 - `ge_pcs.v` 为加密源码，能否综合取决于授权文件是否覆盖该 IP。
 

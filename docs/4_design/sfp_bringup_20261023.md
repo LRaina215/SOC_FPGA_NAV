@@ -2,6 +2,12 @@
 
 记录日期：2026-10-23。本记录只负责 SFP 专项；整车状态仍以 [总计划](../1_plan/system_integration_plan_20261021.md) 为准。
 
+**2026-10-27范围对账：** Lane2独立诊断已于10月24日千兆/100包回显通过；下文“硬件尚未验收、模块未插”属于10月23日首次交付。当前整车采用无SFP的PNR61双串口、280块BSRAM和50/100MHz，内部时序通过；当前不是仍驻留91FB的独立SFP台架，最近实板收尾为hold。独立SFP成功不等于其NV应用/整车接入通过，见[总体设计](../system_architecture.md)与[映射修正](sfp_mapping_correction_20261024.md)。
+
+**2026-10-24 通道更正：** SFP1/P6/U11 实际为 **Q0 Lane2**，Lane0 是 PCIe。此前映射核对有误，现已修正生成配置和时钟/诊断线并完成 Lane2 独立构建；旧 Lane0 的物理链路结果不能评价 SFP1。先读 [映射更正与最新测试](sfp_mapping_correction_20261024.md)。
+
+**23:45 实板更新：** 用户已接模块和 RK3588，独立 SFP1 镜像已下载至 SRAM（UserCode 4785），UART 读回正常，PLL 锁定但 RX/PCS 未建链，UDP 尚未通过。最新板上镜像、实测结果和待补信息见 [实板简单测试记录](sfp_hardware_20261023.md)。以下为当天首次离线交付记录，其中“未插入、未下载、未合入、未提交”等描述保留其当时范围，不代表后续当前状态。
+
 ## 1. 给接手对话的结论
 
 已把高云官方 1G Serial Ethernet 参考方案适配到本板，形成可重建的独立调试工程，并完成实际综合、布局布线、下载文件生成及两项专项仿真。核心代码在 [integration/sfp](../../integration/sfp/README.md)。
@@ -27,9 +33,9 @@
 | 项目 | 本轮配置/依据 |
 |---|---|
 | 器件 | GW5AT-LV138PG484AC1/I0，工程 device_version=C，与现有控制工程目标一致 |
-| 插槽 | SFP1；Q0 Lane0 |
-| 高速 RX | B8/A8，P/N |
-| 高速 TX | B4/A4，P/N |
+| 插槽 | SFP1；Q0 Lane2（2026-10-24 依据底板连接器页更正） |
+| 高速 RX | B10/A10，P/N |
+| 高速 TX | B6/A6，P/N |
 | 参考时钟 | 板载 U13 125 MHz；MGT_CLK1 F10/E10 → Q0 REFCLK1 |
 | PLL / 线速率 | QPLL1 / 1.25 Gbit/s，8b/10b，MAC 侧 1 Gbit/s |
 | 环回 | OFF，外部链路候选 |
@@ -87,7 +93,7 @@
 
 `generate_ip.py` 使用同版本 `serdes_toml_to_csr_138k.exe` 生成 CSR，使用 `GowinModGen.exe` 生成 SerDes 包装，再复制匹配的 MAC 导出文件。包装层只增加三个已有状态线的诊断输出，没有改厂商 PMA/PCS 行为。厂商包装中高位 TX 总线未驱动警告来自 10bit 模式只连接低 10 位；已检查原始输出，未擅自修改厂商其他端口。
 
-新机器如没有 MAC 缓存，需要在 V1.9.12.04 GUI 中先建立目标器件为 C/PG484 的项目，再加载配置或按第 3 节生成：Q0 Lane0、Q0 REFCLK1 125 MHz、QPLL1、1.25G、MAC=true、PHY MIIM=false、Loopback=OFF。保存完整生成结果后，将包含 MAC `.v` 和 `_tmp.v` 的目录传给 `--mac-export`。生成器版本升级后应重新导出配置，不能猜测 TOML 内部枚举。
+新机器如没有 MAC 缓存，需要在 V1.9.12.04 GUI 中先建立目标器件为 C/PG484 的项目，再加载配置或按第 3 节生成：Q0 Lane2、Q0 REFCLK1 125 MHz、QPLL1、1.25G、MAC=true、PHY MIIM=false、Loopback=OFF。保存完整生成结果后，将包含 MAC `.v` 和 `_tmp.v` 的目录传给 `--mac-export`。生成器版本升级后应重新导出配置，不能猜测 TOML 内部枚举。
 
 旧参考 TOML 在新生成器中缺 `bias_tc` 等字段，本轮最初两次尝试因此或因旧时钟选择编码失败；这些失败目录保留用于溯源，**最终使用的是当前 GUI 完整导出配置**。首次独立综合还遇到 RAM 初始化循环超过默认 2000 次，已按现有项目做法加入 `-looplimit 100000`，没有缩减 RAM。
 

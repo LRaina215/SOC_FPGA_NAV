@@ -1,5 +1,7 @@
 # 3×5m单芯片存储方案：独立审阅与实施门槛
 
+**2026-10-27状态索引：** 128格共同工程已推进到SYN49 / PNR61，实际280/340块且报告内部50/100MHz setup/hold0；PNR62同网表第二布局仍124个setup违例。当前选择双串口、不含SFP；架空专项与遥测浸泡失败分别保存。下文23:40的SYN43/PNR53/54及运行队列属于10月26日历史，不代表现在仍在构建。最新接受边界和任务顺序统一查[总计划](../1_plan/system_integration_plan_20261021.md)与[PNR61签核](g2_PNR61_signoff_20261027.md)，本次不新增规划。
+
 ## 23:40 两布局布通与stride32实际综合
 
 **2026-10-26 23:40 两种布局均已布通；SYN44已实际接续。** PNR54于23:19:43自然退出0/cancelled=false，原48212/36664退出，总0/静默0；同一SYN43 VG的place1/2均完成routing，成功报告未单列未布通数，保留null而不伪造literal0。54实测280RAM/11拆分、LUT38712/ALU9922/Logic59872、FF30714、CLS41981/69120(61%)、DSP165、PRIMARY6/8而LW8/8。50MHz域setup2709/hold0，Fmax36.549MHz、最差−7.361ns；RX100域setup0/hold0、Fmax102.283MHz。真实5000路径覆盖全部2709唯一负终点，control798/NAV1911；CPU本轮无负终点只归此完整报告，不代IO/应用接受。52条均Actived，全部280RAM/1873分布式INIT和CPU128KiB/53572B固件、31877原时钟脚/26CDC/IR/lease保持审阅过。首次RAM DI拒绝仍保留，32个实际同输入/INIT复制FF补证闭合；53另3个clock缺项是标准gowin_io_reg属性解析漏项，原同名DFFRE/IOBUF反相链严格相同，读器只接受TRUE/FALSE属性并拒绝未知属性，54完整审阅已通过。全物理载荷/CDC分辨时间/MTBF、外部复位脉宽及IO/停止仍待。[两布局终局与实际接续](../4_design/evidence/g2_20261023/PNR54_both_place_routed_and_SYN44_actual_start_20261026.json)。

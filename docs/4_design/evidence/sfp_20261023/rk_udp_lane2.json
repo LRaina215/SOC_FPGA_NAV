@@ -1,0 +1,121 @@
+{
+  "started_at": "2026-10-24T00:09:20.951856+08:00",
+  "interface": "eth2",
+  "temporary_ip": "192.168.2.10/24",
+  "peer": "192.168.2.100:9000",
+  "persistent_config_changed": false,
+  "ipv4_before": [
+    {
+      "ifindex": 1,
+      "ifname": "lo",
+      "flags": [
+        "LOOPBACK",
+        "UP",
+        "LOWER_UP"
+      ],
+      "mtu": 65536,
+      "qdisc": "noqueue",
+      "operstate": "UNKNOWN",
+      "group": "default",
+      "txqlen": 1000,
+      "addr_info": [
+        {
+          "family": "inet",
+          "local": "127.0.0.1",
+          "prefixlen": 8,
+          "scope": "host",
+          "label": "lo",
+          "valid_life_time": 4294967295,
+          "preferred_life_time": 4294967295
+        }
+      ]
+    },
+    {
+      "ifindex": 4,
+      "ifname": "wlan0",
+      "flags": [
+        "BROADCAST",
+        "MULTICAST",
+        "UP",
+        "LOWER_UP"
+      ],
+      "mtu": 1500,
+      "qdisc": "fq_codel",
+      "operstate": "UP",
+      "group": "default",
+      "txqlen": 1000,
+      "addr_info": [
+        {
+          "family": "inet",
+          "local": "10.165.111.244",
+          "prefixlen": 24,
+          "broadcast": "10.165.111.255",
+          "scope": "global",
+          "dynamic": true,
+          "noprefixroute": true,
+          "label": "wlan0",
+          "valid_life_time": 2643,
+          "preferred_life_time": 2643
+        }
+      ]
+    },
+    {
+      "ifindex": 5,
+      "ifname": "tailscale0",
+      "flags": [
+        "POINTOPOINT",
+        "MULTICAST",
+        "NOARP",
+        "UP",
+        "LOWER_UP"
+      ],
+      "mtu": 1280,
+      "qdisc": "fq_codel",
+      "operstate": "UNKNOWN",
+      "group": "default",
+      "txqlen": 500,
+      "addr_info": [
+        {
+          "family": "inet",
+          "local": "100.113.173.115",
+          "prefixlen": 32,
+          "scope": "global",
+          "label": "tailscale0",
+          "valid_life_time": 4294967295,
+          "preferred_life_time": 4294967295
+        }
+      ]
+    },
+    {
+      "ifindex": 6,
+      "ifname": "docker0",
+      "flags": [
+        "NO-CARRIER",
+        "BROADCAST",
+        "MULTICAST",
+        "UP"
+      ],
+      "mtu": 1500,
+      "qdisc": "noqueue",
+      "operstate": "DOWN",
+      "group": "default",
+      "addr_info": [
+        {
+          "family": "inet",
+          "local": "172.17.0.1",
+          "prefixlen": 16,
+          "broadcast": "172.17.255.255",
+          "scope": "global",
+          "label": "docker0",
+          "valid_life_time": 4294967295,
+          "preferred_life_time": 4294967295
+        }
+      ]
+    }
+  ],
+  "temporary_address_added": true,
+  "route_to_fpga": "192.168.2.100 from 192.168.2.10 dev eth2 uid 1000 \n    cache \n",
+  "passed": false,
+  "error": "RuntimeError('Remote command failed: Traceback (most recent call last):\\n  File \"<string>\", line 9, in <module>\\nOSError: [Errno 101] Network is unreachable\\n')",
+  "ended_at": "2026-10-24T00:09:22.933371+08:00"
+}

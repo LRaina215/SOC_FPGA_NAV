@@ -1,8 +1,10 @@
 # 实机搭建与测试手册
 
+**2026-10-27当前整车入口：** 本文保留独立导航历史台架命令。当前选定PNR61 / SLF128 / 双串口，内部50/100MHz报告通过、BSRAM280/340，但最近实板回hold、长时遥测与落地站稳未验。当前操作查[落地调试与建图指南](ground_debug_and_mapping_20261027.md)，状态/执行顺序查[整车总计划](../1_plan/system_integration_plan_20261021.md)，总体关系查[系统架构](../system_architecture.md)。不要把下面旧独立位流、v2地图工具或roadmap历史成绩直接当当前整车配置。
+
 本手册给实物到货后的阶段用：从一台新电脑装环境开始，到烧录、逐个接入外设、实地导航测试。按章节顺序做，
 每一步都写了"通过标准"；不通过时先查第 9 节，不要跳到下一步。算法与接口细节分别见 [icd.md](../2_interface/icd.md)、[regmap.md](../2_interface/regmap.md)、
-[platform.md](../4_design/platform.md)，进度见 [roadmap.md](../1_plan/roadmap.md)。
+[platform.md](../4_design/platform.md)，当前进度见[整车总计划](../1_plan/system_integration_plan_20261021.md)，[roadmap](../1_plan/roadmap.md)只保存历史。
 
 **2026-10-21适用范围：** 本页保留的烧录命令与10月1日测试属于独立导航台架。车上已有原4500控制和新接口（用户确认），导航单独位流会覆盖它，旧C18/C19 IMU引脚也与舵机冲突。整车操作先完成 [当前总计划G1–G3](../1_plan/system_integration_plan_20261021.md)，采用核对后的统一工程；当前工作区N2g未通过联合验收，不是可直接部署版本。版本对应冲突见 [控制仓库审阅](../5_teams/control_repo_review_20261021.md)。
 
