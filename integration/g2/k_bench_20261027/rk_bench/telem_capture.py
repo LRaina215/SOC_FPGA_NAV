@@ -1,5 +1,5 @@
-"""Record every control telemetry frame (P11-40, 230400) with host time to a JSON-lines file.
-Usage: python3 telem_capture.py <seconds> <out.jsonl>
+"""Record every control telemetry frame (P11-40, default 230400) with host time to a JSON-lines file.
+Usage: python3 telem_capture.py <seconds> <out.jsonl> [baud]
 """
 import json
 import sys
@@ -10,7 +10,7 @@ from bench import Telemetry
 
 def main():
     secs, path = float(sys.argv[1]), sys.argv[2]
-    t = Telemetry()
+    t = Telemetry(baud=int(sys.argv[3])) if len(sys.argv) > 3 else Telemetry()
     t0 = time.time()
     n = 0
     with open(path, 'w') as f:
