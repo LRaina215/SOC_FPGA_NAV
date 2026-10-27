@@ -1,0 +1,33 @@
+{
+  "recorded_at": "2026-10-27T09:17:00.235330+08:00",
+  "session_id": "sess_6ac1dbd7-1a60-4d06-a50e-b27b1a031b31",
+  "requested_CLI_log": "C:\\Users\\Li\\.zcode\\cli\\log\\zcode-2026-10-27.jsonl",
+  "CLI_log_exists": true,
+  "CLI_log_matching_session_records": 3776,
+  "CLI_log_semantic_role_keyword_matches": 0,
+  "CLI_log_is_primarily_execution_events": true,
+  "exact_session_response_rollout": "C:\\Users\\Li\\.zcode\\cli\\rollout\\model-io-sess_6ac1dbd7-1a60-4d06-a50e-b27b1a031b31.jsonl",
+  "final_summary_record": 11,
+  "final_summary_lines": [
+    "- /dev/ttyACM0 = on-board CH9102 nav bus bridge, 921600, protocol `W addr32 val` → K, `R addr` → D+u32.",
+    "- /dev/ttyUSB0 = P11-40 USB-TTL control telemetry, 230400, V2 120-byte frames (protocol.py)."
+  ],
+  "selected_communication_split": {
+    "CH9102": {
+      "device": "/dev/ttyACM0",
+      "baud": 921600,
+      "role": "NAV command/map/status bidirectional"
+    },
+    "P11_40": {
+      "device": "/dev/ttyUSB0",
+      "baud": 230400,
+      "role": "Control telemetry output"
+    },
+    "P11_39_required": false,
+    "control_UART_RXD_tied_high_is_intentional": true
+  },
+  "correction": "The fact that P11-39 is unused is confirmed; treating that fact as a functional/deployment blocker under the selected split was incorrect and is withdrawn.",
+  "no_P11_receive_implementation_or_SYN_started": true,
+  "PNR62_independent_of_this_correction": true,
+  "external_RGMII_IO_delay_and_CDC_reset_signoff_still_pending": true
+}

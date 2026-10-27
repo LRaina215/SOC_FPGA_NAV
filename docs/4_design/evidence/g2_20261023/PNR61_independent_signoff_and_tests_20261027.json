@@ -1,0 +1,1552 @@
+{
+  "recorded_at": "2026-10-27T09:07:40.389390+08:00",
+  "source": "K_timing_syn49",
+  "PNR": "K_pnr61_s49p2r0",
+  "memory_clock_IO_CDC_audit": {
+    "recorded_at": "2026-10-27T08:54:53.984866+08:00",
+    "read_only": true,
+    "EDA_started": false,
+    "hardware_access": false,
+    "hashes_computed": false,
+    "source": "F:\\nav_integration_g2_20261023\\K_timing_syn49",
+    "physical": "F:\\nav_integration_g2_20261023\\K_pnr61_s49p2r0",
+    "input_VG_byte_identical": true,
+    "inputs_unchanged": true,
+    "memories": {
+      "source_count": 269,
+      "physical_count": 280,
+      "split_pairs": 11,
+      "all_physical_leaves_bound": true,
+      "CPU128KiB": {
+        "physical_bitplanes": 64,
+        "BIN_bytes": 54164,
+        "image_bytes": 131072,
+        "source_physical_equal": true,
+        "BIN_zero_tail_equal": true,
+        "word_hex_equal": true,
+        "lane_hex_equal": true
+      },
+      "CPU_checks_passed": true,
+      "every_geometry_and_INIT_check_passed": true,
+      "scope": "Memory geometry/effective INIT and split address/data/control only; no complete RAM caller equivalence claim",
+      "passed": true,
+      "distributed_memories": {
+        "passed": true,
+        "source_count": 1885,
+        "physical_count": 1885,
+        "source_by_kind": {
+          "RAM16SDP4": 1821,
+          "RAM16SDP1": 64
+        }
+      }
+    },
+    "clock_inventory": {
+      "passed": true,
+      "primitive_heads_scanned": 87891,
+      "attributed_heads_included": 3,
+      "nonconstant_clock_pins": 34431,
+      "roots": [
+        {
+          "root": "clk50",
+          "inverted": false,
+          "pins": 34279
+        },
+        {
+          "root": "clk50",
+          "inverted": true,
+          "pins": 1
+        },
+        {
+          "root": "rgmii_rxc",
+          "inverted": false,
+          "pins": 146
+        },
+        {
+          "root": "rgmii_rxc",
+          "inverted": true,
+          "pins": 5
+        }
+      ],
+      "clock_nets": [
+        {
+          "net": "clk50_d",
+          "root": [
+            "clk50",
+            false
+          ]
+        },
+        {
+          "net": "rgmii_rxc_d",
+          "root": [
+            "rgmii_rxc",
+            false
+          ]
+        },
+        {
+          "net": "u_lmac/n13_6",
+          "root": [
+            "rgmii_rxc",
+            true
+          ]
+        },
+        {
+          "net": "u_lmac/n641_6",
+          "root": [
+            "clk50",
+            true
+          ]
+        }
+      ],
+      "largest_reset_control_loads": [
+        {
+          "kind": "DFFRE",
+          "pin": "RESET",
+          "net": "r2",
+          "loads": 5322
+        },
+        {
+          "kind": "DFFCE",
+          "pin": "CLEAR",
+          "net": "\\u_control/n1786_7",
+          "loads": 3632
+        },
+        {
+          "kind": "DFFRE",
+          "pin": "RESET",
+          "net": "\\u_control/n1786_7",
+          "loads": 1417
+        },
+        {
+          "kind": "DFFRE",
+          "pin": "RESET",
+          "net": "\\u_control/wheel_control/n88_3",
+          "loads": 865
+        },
+        {
+          "kind": "DFFRE",
+          "pin": "RESET",
+          "net": "\\u_control/wheel_control/n88_3_25",
+          "loads": 865
+        },
+        {
+          "kind": "DFFCE",
+          "pin": "CLEAR",
+          "net": "r2",
+          "loads": 719
+        },
+        {
+          "kind": "DFFCE",
+          "pin": "CLEAR",
+          "net": "\\u_control/model_thread/policy/core/n1466_7",
+          "loads": 600
+        },
+        {
+          "kind": "DFFCE",
+          "pin": "CLEAR",
+          "net": "\\u_control/model_thread/observation/n331_7",
+          "loads": 411
+        },
+        {
+          "kind": "DFFRE",
+          "pin": "RESET",
+          "net": "\\u_control/sensor/n53_4",
+          "loads": 375
+        },
+        {
+          "kind": "DFFSE",
+          "pin": "SET",
+          "net": "r2",
+          "loads": 332
+        },
+        {
+          "kind": "DFFRE",
+          "pin": "RESET",
+          "net": "\\u_soc/cpu_rst",
+          "loads": 210
+        },
+        {
+          "kind": "DFFRE",
+          "pin": "RESET",
+          "net": "\\u_nav/g_support.u_support/n489_5",
+          "loads": 195
+        }
+      ],
+      "scope": "Every physical primitive clock pin token, including attributed IO FF; reset counts include synchronous RESET and asynchronous CLEAR/PRESET, not electrical reset signoff"
+    },
+    "CDC26_structure_passed": true,
+    "direct_DFF_CDC_inventory_count": 26,
+    "timing_summary": {
+      "report_created": "Tue Oct 27 03:44:14 2026",
+      "setup_violated_endpoints": 0,
+      "hold_violated_endpoints": 0,
+      "paths_analyzed": 112529,
+      "endpoints_analyzed": 126729,
+      "corners": [
+        [
+          "Setup Delay Model",
+          "Slow 0.873V 0C C1/I0"
+        ],
+        [
+          "Hold Delay Model",
+          "Fast 0.927V 85C C1/I0"
+        ]
+      ],
+      "tables": {
+        "setup": {
+          "reported_rows": 5000,
+          "worst_reported_slack_ns": 0.045,
+          "negative_rows": 0,
+          "unique_endpoints": 5000,
+          "by_clock": {
+            "clk50:[R]": 4898,
+            "rgmii_rxc:[R]": 102
+          }
+        },
+        "hold": {
+          "reported_rows": 5000,
+          "worst_reported_slack_ns": 0.163,
+          "negative_rows": 0,
+          "unique_endpoints": 5000,
+          "by_clock": {
+            "clk50:[R]": 4982,
+            "rgmii_rxc:[R]": 18
+          }
+        },
+        "recovery": {
+          "reported_rows": 5000,
+          "worst_reported_slack_ns": 3.813,
+          "negative_rows": 0,
+          "unique_endpoints": 5000,
+          "by_clock": {
+            "clk50:[R]": 4937,
+            "rgmii_rxc:[R]": 63
+          }
+        },
+        "removal": {
+          "reported_rows": 5000,
+          "worst_reported_slack_ns": 0.258,
+          "negative_rows": 0,
+          "unique_endpoints": 5000,
+          "by_clock": {
+            "clk50:[R]": 4937,
+            "rgmii_rxc:[R]": 63
+          }
+        },
+        "clock_pulse": {
+          "reported_rows": 5000,
+          "worst_reported_slack_ns": 2.848,
+          "negative_rows": 0,
+          "unique_endpoints": 4154,
+          "by_clock": {
+            "rgmii_rxc": 302,
+            "clk50": 4698
+          }
+        }
+      },
+      "constraint_status": {
+        "Actived": 61
+      },
+      "constraint_kinds": {
+        "TC_CLOCK": 2,
+        "TC_FALSE_PATH": 26,
+        "TC_MAX_DELAY": 26,
+        "TC_REPORT_TIMING": 4,
+        "TC_REPORT_HIGH_FANOUT_NETS": 1,
+        "TC_REPORT_ROUTE_CONGESTION": 1,
+        "TC_REPORT_MIN_PULSE_WIDTH": 1
+      },
+      "exact_CDC52_match": true,
+      "IO_delay_constraints": 0,
+      "external_IO_timing_accepted": false,
+      "asynchronous_reset_pulse_accepted": false,
+      "CDC_MTBF_accepted": false,
+      "missing_report_rows_are_not_pass": true,
+      "all_target_clock_setup_hold_report_passed": true
+    },
+    "IO_summary": {
+      "requested_pins": 51,
+      "observed_pins": 51,
+      "mismatches": [],
+      "requested_but_unplaced": [],
+      "placed": {
+        "clk50": {
+          "pin": "W19",
+          "bank": "4",
+          "direction": "in",
+          "site": "IOB122[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "key_rst_n": {
+          "pin": "D21",
+          "bank": "2",
+          "direction": "in",
+          "site": "IOR51[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "uart_rxd": {
+          "pin": "L21",
+          "bank": "3",
+          "direction": "in",
+          "site": "IOR71[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "imu_rxd": {
+          "pin": "A15",
+          "bank": "2",
+          "direction": "in",
+          "site": "IOR20[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "IRIN": {
+          "pin": "A21",
+          "bank": "2",
+          "direction": "in",
+          "site": "IOR44[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "M1_ENCA": {
+          "pin": "D14",
+          "bank": "2",
+          "direction": "in",
+          "site": "IOR4[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "M1_ENCB": {
+          "pin": "F13",
+          "bank": "2",
+          "direction": "in",
+          "site": "IOR11[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "M2_ENCA": {
+          "pin": "D15",
+          "bank": "2",
+          "direction": "in",
+          "site": "IOR4[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "M2_ENCB": {
+          "pin": "F14",
+          "bank": "2",
+          "direction": "in",
+          "site": "IOR11[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "rgmii_rxc": {
+          "pin": "Y18",
+          "bank": "4",
+          "direction": "in",
+          "site": "IOB116[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_rx_ctl": {
+          "pin": "T20",
+          "bank": "4",
+          "direction": "in",
+          "site": "IOB102[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_rxd[0]": {
+          "pin": "P20",
+          "bank": "4",
+          "direction": "in",
+          "site": "IOB92[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_rxd[1]": {
+          "pin": "N15",
+          "bank": "4",
+          "direction": "in",
+          "site": "IOB146[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_rxd[2]": {
+          "pin": "AA18",
+          "bank": "4",
+          "direction": "in",
+          "site": "IOB108[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_rxd[3]": {
+          "pin": "AB18",
+          "bank": "4",
+          "direction": "in",
+          "site": "IOB108[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "sfp1_los": {
+          "pin": "P15",
+          "bank": "4",
+          "direction": "in",
+          "site": "IOB140[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "uart_txd": {
+          "pin": "M21",
+          "bank": "3",
+          "direction": "out",
+          "site": "IOR71[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "control_txd": {
+          "pin": "A16",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR20[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "M1_PWM": {
+          "pin": "D17",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR26[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "M1_DIR1": {
+          "pin": "B20",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR40[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "M1_DIR2": {
+          "pin": "B17",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR24[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "M2_PWM": {
+          "pin": "C17",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR26[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "M2_DIR1": {
+          "pin": "B18",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR24[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "M2_DIR2": {
+          "pin": "A20",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR40[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "SERVO1": {
+          "pin": "C18",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR31[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "SERVO2": {
+          "pin": "C19",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR31[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "SERVO3": {
+          "pin": "E19",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR29[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "SERVO4": {
+          "pin": "D19",
+          "bank": "2",
+          "direction": "out",
+          "site": "IOR29[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_txc": {
+          "pin": "AB21",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB129[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_tx_ctl": {
+          "pin": "AA19",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB110[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_txd[0]": {
+          "pin": "AB20",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB110[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_txd[1]": {
+          "pin": "Y19",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB116[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_txd[2]": {
+          "pin": "AB22",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB129[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "rgmii_txd[3]": {
+          "pin": "W20",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB122[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "eth_rst_n": {
+          "pin": "P14",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB133[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "eth_mdc": {
+          "pin": "R14",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB133[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "sfp1_tx_dis": {
+          "pin": "R17",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB144[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "led[0]": {
+          "pin": "U22",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB104[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "led[1]": {
+          "pin": "V22",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB104[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "led[2]": {
+          "pin": "W21",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB124[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "led[3]": {
+          "pin": "W22",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB124[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "led_cpu[0]": {
+          "pin": "Y21",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB131[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "led_cpu[1]": {
+          "pin": "Y22",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB131[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "led_cpu[2]": {
+          "pin": "N13",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB142[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "led_cpu[3]": {
+          "pin": "N17",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB135[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "led_trap": {
+          "pin": "P17",
+          "bank": "4",
+          "direction": "out",
+          "site": "IOB135[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "sck": {
+          "pin": "F19",
+          "bank": "2",
+          "direction": "io",
+          "site": "IOR33[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "sda": {
+          "pin": "F20",
+          "bank": "2",
+          "direction": "io",
+          "site": "IOR33[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        },
+        "BMI088_SCL": {
+          "pin": "E18",
+          "bank": "2",
+          "direction": "io",
+          "site": "IOR35[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "BMI088_SDA": {
+          "pin": "F18",
+          "bank": "2",
+          "direction": "io",
+          "site": "IOR35[A]",
+          "IO_type": "LVCMOS33",
+          "pull": "NONE"
+        },
+        "eth_mdio": {
+          "pin": "U21",
+          "bank": "4",
+          "direction": "io",
+          "site": "IOB97[B]",
+          "IO_type": "LVCMOS33",
+          "pull": "UP"
+        }
+      },
+      "pin_binding_check_passed": true,
+      "P11_39_external_control_input_present": false,
+      "control_UART_RXD_tied_high": true,
+      "old_external_IMU_imu_rxd_used": false,
+      "inactive_SFP_or_unused_top_ports_require_review": true,
+      "voltage_and_external_electrical_measurement_accepted": false
+    },
+    "complete_signoff": false,
+    "vehicle_acceptance": false,
+    "open_items": [
+      "External RGMII min/max/both-edge timing and board/PHY delays",
+      "Asynchronous reset phase and assertion pulse, physical grade/PVT coverage",
+      "Full CDC payload stability, all stage2 route/resolution data and characterized MTBF",
+      "Firmware loaded at04:10 differs from baked INIT; live identity/config must be recorded",
+      "Independent stop with stalled50MHz, actual IR/key and actuator physical stopping",
+      "IMU repair/axes/calibration, lidar link, actual motion/terrain/no-map/prior tasks"
+    ],
+    "selected_UART_architecture": {
+      "CH9102": {
+        "device": "/dev/ttyACM0",
+        "baud": 921600,
+        "role": "NAV command/map/status bidirectional"
+      },
+      "P11_40": {
+        "device": "/dev/ttyUSB0",
+        "baud": 230400,
+        "role": "Control telemetry output"
+      },
+      "P11_39_required": false,
+      "control_UART_RXD_tied_high_is_intentional": true
+    }
+  },
+  "exact_firmware_stack": {
+    "recorded_at": "2026-10-27T08:59:51.349214+08:00",
+    "passed": true,
+    "profiles": [
+      {
+        "profile": "baked1500",
+        "target": "F:\\nav_integration_g2_20261023\\K_timing_syn49\\firmware\\nav_fw.bin",
+        "BIN_bytes": 54164,
+        "whole_BIN_byte_identical": true,
+        "exact_banner_date": "Oct 27 2026",
+        "exact_banner_time": "03:22:03",
+        "forward_mm": 1500,
+        "actual_static_bound_bytes": 2576,
+        "stack_reserved_bytes": 6144,
+        "actual_jr_count": 3,
+        "actual_jalr_count": 0,
+        "full_stack_result": "F:\\nav_integration_g2_20261023\\PNR61_exact_firmware_stack_review1\\baked1500\\strict\\result.json"
+      },
+      {
+        "profile": "loaded1000",
+        "target": "D:\\tools\\nav_fw_g3_fwd1000_20261027.bin",
+        "BIN_bytes": 54164,
+        "whole_BIN_byte_identical": true,
+        "exact_banner_date": "Oct 27 2026",
+        "exact_banner_time": "04:08:05",
+        "forward_mm": 1000,
+        "actual_static_bound_bytes": 2576,
+        "stack_reserved_bytes": 6144,
+        "actual_jr_count": 3,
+        "actual_jalr_count": 0,
+        "full_stack_result": "F:\\nav_integration_g2_20261023\\PNR61_exact_firmware_stack_review1\\loaded1000\\strict\\result.json"
+      }
+    ],
+    "copied_old_stack_report_rejected": true,
+    "hashes_computed": false,
+    "hardware_access": false,
+    "programmed": false,
+    "original_images_unchanged": true,
+    "board_stack_watermark_or_busy_deadline_accepted": false
+  },
+  "idle_only_live_host_test": {
+    "passed": true,
+    "started_at_local": "2026-10-27T08:55:48+0800",
+    "test": "IDLE-only host timeout latch and explicit recovery",
+    "status_samples": 16,
+    "messages_sent": 22,
+    "first_timeout_status_after_last_packet_s": 0.287374,
+    "all_observed_numeric_targets_zero": true,
+    "latched_noop_status_count": 2,
+    "firmware_timeout_constant_us": 250000,
+    "physical_stopping_accepted": false,
+    "busy_planner_latency_accepted": false,
+    "IMU_or_motor_dependency": false,
+    "final_mode": 4,
+    "sent": [
+      {
+        "label": "explicit_IDLE_initial",
+        "started_s": 0.304882,
+        "finished_s": 0.308189,
+        "hex": "4e56013000000000"
+      },
+      {
+        "label": "zero_noop_heartbeat",
+        "started_s": 0.308411,
+        "finished_s": 0.312996,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "zero_noop_heartbeat",
+        "started_s": 0.369298,
+        "finished_s": 0.373907,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "zero_noop_heartbeat",
+        "started_s": 0.429509,
+        "finished_s": 0.432342,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "zero_noop_heartbeat",
+        "started_s": 0.482666,
+        "finished_s": 0.48585,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "zero_noop_heartbeat",
+        "started_s": 0.542942,
+        "finished_s": 0.545793,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "zero_noop_heartbeat",
+        "started_s": 0.603287,
+        "finished_s": 0.606792,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "zero_noop_heartbeat",
+        "started_s": 0.659316,
+        "finished_s": 0.662484,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "zero_noop_heartbeat",
+        "started_s": 0.717991,
+        "finished_s": 0.72136,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "zero_noop_heartbeat",
+        "started_s": 0.777258,
+        "finished_s": 0.781134,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "zero_noop_heartbeat",
+        "started_s": 0.843987,
+        "finished_s": 0.846956,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "zero_noop_heartbeat",
+        "started_s": 0.901946,
+        "finished_s": 0.905112,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "zero_noop_heartbeat",
+        "started_s": 0.960078,
+        "finished_s": 0.962721,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "heartbeat_after_latched_timeout",
+        "started_s": 1.873514,
+        "finished_s": 1.87657,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "heartbeat_after_latched_timeout",
+        "started_s": 1.931744,
+        "finished_s": 1.935494,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "heartbeat_after_latched_timeout",
+        "started_s": 1.99095,
+        "finished_s": 1.994971,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "heartbeat_after_latched_timeout",
+        "started_s": 2.046957,
+        "finished_s": 2.049669,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "heartbeat_after_latched_timeout",
+        "started_s": 2.104707,
+        "finished_s": 2.108393,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "heartbeat_after_latched_timeout",
+        "started_s": 2.163656,
+        "finished_s": 2.167196,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "heartbeat_after_latched_timeout",
+        "started_s": 2.22281,
+        "finished_s": 2.226008,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "heartbeat_after_latched_timeout",
+        "started_s": 2.277875,
+        "finished_s": 2.281293,
+        "hex": "4e5601200000e80300000000000000000000000000000000"
+      },
+      {
+        "label": "explicit_IDLE_rearm",
+        "started_s": 2.336672,
+        "finished_s": 2.339065,
+        "hex": "4e56013000000000"
+      }
+    ],
+    "status_rows": [
+      {
+        "phase": "initial_readonly",
+        "host_s": 0.05081,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 1124534536,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "initial_readonly",
+        "host_s": 0.250137,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 1124734586,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "heartbeats",
+        "host_s": 0.450144,
+        "type": "status",
+        "mode": 0,
+        "state": "空闲",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 1124934616,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "heartbeats",
+        "host_s": 0.648378,
+        "type": "status",
+        "mode": 0,
+        "state": "空闲",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 1125134662,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "heartbeats",
+        "host_s": 0.84388,
+        "type": "status",
+        "mode": 0,
+        "state": "空闲",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 1125334667,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "silence_after_heartbeat",
+        "host_s": 1.047238,
+        "type": "status",
+        "mode": 0,
+        "state": "空闲",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 1125534706,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "silence_after_heartbeat",
+        "host_s": 1.250095,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 1125734723,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "silence_after_heartbeat",
+        "host_s": 1.442757,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 1125934723,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "silence_after_heartbeat",
+        "host_s": 1.645759,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 1126134783,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "silence_after_heartbeat",
+        "host_s": 1.851404,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 1126334786,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "fresh_heartbeat_does_not_rearm",
+        "host_s": 2.046869,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 1126534835,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "fresh_heartbeat_does_not_rearm",
+        "host_s": 2.244806,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 1126734871,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "explicit_rearm",
+        "host_s": 2.446793,
+        "type": "status",
+        "mode": 0,
+        "state": "空闲",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 1126934878,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "final_silence_leave_locked_zero",
+        "host_s": 2.652583,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 1127134924,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "final_silence_leave_locked_zero",
+        "host_s": 2.846924,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 1127334927,
+        "loc": "无图",
+        "loc_q": 0
+      },
+      {
+        "phase": "final_silence_leave_locked_zero",
+        "host_s": 3.052249,
+        "type": "status",
+        "mode": 4,
+        "state": "急停",
+        "map_seq": 0,
+        "x": 0,
+        "y": 0,
+        "yaw": 0.0,
+        "goal": [
+          0,
+          0
+        ],
+        "vx": 0,
+        "wz": 0,
+        "flags": 0,
+        "t_us": 1127534927,
+        "loc": "无图",
+        "loc_q": 0
+      }
+    ],
+    "caveat": "Status publication/serial observation includes report cadence. Zero-start test proves neither a moving-car stop nor worst-case planner latency."
+  },
+  "live_runtime_query": {
+    "type": "slf_ack",
+    "result": "查询",
+    "window": "前移 1000 mm",
+    "zhi_mm": 350,
+    "profile": "0x534C0108",
+    "query_only": true,
+    "configuration_changed": false,
+    "CPU_reset": false,
+    "full_binary_JTAG_identity_proved": false
+  },
+  "network_pipeline_test": {
+    "started_at": "2026-10-27T09:01:24.457818+08:00",
+    "phase": "complete",
+    "source": "F:\\nav_integration_g2_20261023\\K_timing_syn49",
+    "bindings": [
+      {
+        "source": "F:\\nav_integration_g2_20261023\\K_timing_syn49\\nav\\rtl\\common\\nav_async_fifo.v",
+        "copied": "F:\\nav_integration_g2_20261023\\PNR61_MAC_UDP_XT_pipeline_probe2\\nav_async_fifo.v",
+        "bytes": 5161,
+        "changed_from_previous_probe": true
+      },
+      {
+        "source": "F:\\nav_integration_g2_20261023\\K_timing_syn49\\nav\\rtl\\common\\nav_cdc.v",
+        "copied": "F:\\nav_integration_g2_20261023\\PNR61_MAC_UDP_XT_pipeline_probe2\\nav_cdc.v",
+        "bytes": 1386,
+        "changed_from_previous_probe": false
+      },
+      {
+        "source": "F:\\nav_integration_g2_20261023\\K_timing_syn49\\nav\\rtl\\common\\nav_ram_sdp.v",
+        "copied": "F:\\nav_integration_g2_20261023\\PNR61_MAC_UDP_XT_pipeline_probe2\\nav_ram_sdp.v",
+        "bytes": 3177,
+        "changed_from_previous_probe": true
+      },
+      {
+        "source": "F:\\nav_integration_g2_20261023\\K_timing_syn49\\nav\\rtl\\common\\nav_ram_banked.v",
+        "copied": "F:\\nav_integration_g2_20261023\\PNR61_MAC_UDP_XT_pipeline_probe2\\nav_ram_banked.v",
+        "bytes": 986,
+        "changed_from_previous_probe": false
+      },
+      {
+        "source": "F:\\nav_integration_g2_20261023\\K_timing_syn49\\nav\\rtl\\common\\nav_fifo_ob.v",
+        "copied": "F:\\nav_integration_g2_20261023\\PNR61_MAC_UDP_XT_pipeline_probe2\\nav_fifo_ob.v",
+        "bytes": 2005,
+        "changed_from_previous_probe": false
+      },
+      {
+        "source": "F:\\nav_integration_g2_20261023\\K_timing_syn49\\nav\\rtl\\common\\nav_fifo.v",
+        "copied": "F:\\nav_integration_g2_20261023\\PNR61_MAC_UDP_XT_pipeline_probe2\\nav_fifo.v",
+        "bytes": 1490,
+        "changed_from_previous_probe": false
+      },
+      {
+        "source": "F:\\nav_integration_g2_20261023\\K_timing_syn49\\nav\\rtl\\net\\rgmii_mac100.v",
+        "copied": "F:\\nav_integration_g2_20261023\\PNR61_MAC_UDP_XT_pipeline_probe2\\rgmii_mac100.v",
+        "bytes": 14966,
+        "changed_from_previous_probe": true
+      },
+      {
+        "source": "F:\\nav_integration_g2_20261023\\K_timing_syn49\\nav\\rtl\\net\\net_port.v",
+        "copied": "F:\\nav_integration_g2_20261023\\PNR61_MAC_UDP_XT_pipeline_probe2\\net_port.v",
+        "bytes": 9501,
+        "changed_from_previous_probe": false
+      },
+      {
+        "source": "F:\\nav_integration_g2_20261023\\K_timing_syn49\\nav\\rtl\\net\\udp_rx.v",
+        "copied": "F:\\nav_integration_g2_20261023\\PNR61_MAC_UDP_XT_pipeline_probe2\\udp_rx.v",
+        "bytes": 9015,
+        "changed_from_previous_probe": false
+      },
+      {
+        "source": "F:\\nav_integration_g2_20261023\\K_timing_syn49\\nav\\rtl\\net\\udp_tx.v",
+        "copied": "F:\\nav_integration_g2_20261023\\PNR61_MAC_UDP_XT_pipeline_probe2\\udp_tx.v",
+        "bytes": 8013,
+        "changed_from_previous_probe": false
+      },
+      {
+        "source": "F:\\nav_integration_g2_20261023\\K_timing_syn49\\nav\\rtl\\net\\raw_cap.v",
+        "copied": "F:\\nav_integration_g2_20261023\\PNR61_MAC_UDP_XT_pipeline_probe2\\raw_cap.v",
+        "bytes": 4279,
+        "changed_from_previous_probe": false
+      },
+      {
+        "source": "F:\\nav_integration_g2_20261023\\K_timing_syn49\\nav\\rtl\\lidar\\xt_frame_rx.v",
+        "copied": "F:\\nav_integration_g2_20261023\\PNR61_MAC_UDP_XT_pipeline_probe2\\xt_frame_rx.v",
+        "bytes": 22153,
+        "changed_from_previous_probe": true
+      }
+    ],
+    "finite_stimulus_copied_from": "F:\\nav_integration_g2_20261023\\preview_MAC_UDP_XT_reset_probe2",
+    "physical_memory_at_start": 4174397440,
+    "commit_at_start": 11726893056,
+    "hardware_access": false,
+    "new_SYN_PNR": false,
+    "previous_harness_rejection": "F:\\nav_integration_g2_20261023\\PNR61_MAC_UDP_XT_pipeline_probe1\\xsim.log",
+    "sole_testbench_change": "Connect new public read_admit input to an always-admitting consumer; preserve all other stimulus",
+    "passed": true,
+    "ended_at": "2026-10-27T09:01:37.663444+08:00",
+    "metrics": {
+      "frames": 4,
+      "pixels": 38400,
+      "packets": 70,
+      "UDP_bytes": 98530,
+      "resets": 2,
+      "stalls": 12798
+    },
+    "scope": "Actual MAC/FIFO/RAW1 UDP/XT at50MHz core,25MHz synthetic PHY,falling-edge sampling; current extra RX register included",
+    "no_internal_force": true,
+    "no_CPU_or_IMU_or_actuator_in_this_test": true,
+    "external_PHY_IO_STA_or_real_link_accepted": false,
+    "complete_vehicle_accepted": false
+  },
+  "first_network_probe_failed_due_to_unconnected_new_public_read_admit_input": true,
+  "first_network_failure_retained": "F:\\nav_integration_g2_20261023\\PNR61_MAC_UDP_XT_pipeline_probe1\\xsim.log",
+  "first_live_time_field_note": "started_at_local in captured stdout is actually emitted at completion; all latency assertions use relative monotonic timestamps",
+  "PNR62": {
+    "job": {
+      "prepared_at": "2026-10-27T09:03:55.256862+08:00",
+      "phase": "PNR_running",
+      "source": "F:\\nav_integration_g2_20261023\\K_pnr61_s49p2r0",
+      "output": "F:\\nav_integration_g2_20261023\\K_pnr62_s49p1r0",
+      "sole_factor": "place_option2->1; route0, VG/CST/SDC/device/options otherwise unchanged",
+      "total_limit_s": 0,
+      "silent_limit_s": 0,
+      "SYN_started": false,
+      "programmed": false,
+      "Flash_written": false,
+      "open_external_IO_CDC_reset_and_vehicle_gates_preserved": true,
+      "controller_pid": 38488,
+      "controller_created_epoch": 1793063035.4163752,
+      "updated_at": "2026-10-27T09:03:55.661081+08:00",
+      "available_physical_bytes": 3380453376,
+      "available_commit_bytes": 10890719232,
+      "actual_start_requested_at": "2026-10-27T09:03:55.661081+08:00",
+      "admission_physical": 3380453376,
+      "admission_commit": 10890719232
+    },
+    "runtime_at_read": {
+      "command": [
+        "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/bin/gw_sh.exe",
+        "F:\\nav_integration_g2_20261023\\K_pnr62_s49p1r0\\run.tcl"
+      ],
+      "started_at": "2026-10-27T09:03:55.662586+08:00",
+      "max_runtime_s": 0,
+      "max_no_observable_progress_s": 0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 4328,
+      "elapsed_s": 210.25,
+      "no_observable_progress_s": 20.0,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          851,
+          1793063224025806500
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          453,
+          1793063224025806500
+        ]
+      ]
+    },
+    "actual_cmd_only_path_place_change": true,
+    "actual_device_cfg_equal": true,
+    "outcome_not_known": true,
+    "postprocessor": {
+      "pid": 21400,
+      "created_epoch": 1793063331.887559,
+      "job": "F:\\nav_integration_g2_20261023\\PNR62_after_natural_exit_review1\\job.json",
+      "scope": "Wait natural result, then read-only physical review. No process control/restart/programming"
+    }
+  },
+  "no_IMU_hardware_diagnosis_repeated": true,
+  "no_motion_targets_sent": true,
+  "no_CPU_hold_reset_or_reprogramming": true,
+  "no_Flash": true,
+  "full_signoff_or_vehicle_acceptance": false,
+  "external_PHY_IO_preflight": {
+    "recorded_at": "2026-10-27T09:13:37.102150+08:00",
+    "read_only": true,
+    "SDC_modified": false,
+    "datasheet": {
+      "path": "D:/Desktop/SOC FPGA/小梅哥ACG750型国产高云GW5AT-138K FPGA开发板资料/器件手册/Ethernet/RTL8211F-CG.pdf",
+      "revision": "1.1, page marked DRAFT",
+      "PDF_pages": [
+        16,
+        22,
+        68,
+        69,
+        70
+      ],
+      "printed_pages": [
+        9,
+        15,
+        61,
+        62,
+        63
+      ],
+      "timing_table": 58,
+      "table_visually_verified": true
+    },
+    "schematic": {
+      "path": "D:/Desktop/SOC FPGA/小梅哥ACG750型国产高云GW5AT-138K FPGA开发板资料/硬件图纸/ACX750-GW5A138-CB-250928.pdf",
+      "PDF_page": 2,
+      "title": "02_ETH",
+      "drawing_revision": "250928",
+      "visually_verified": true,
+      "RXDLY_RXD0_R1": "4.7K to VCCIO4",
+      "TXDLY_RXD1_R2": "4.7K to VCCIO4",
+      "CFG_EXT_R5": "4.7K to ENET1_DVDDH",
+      "CFG_LDO0_R7": "4.7K to GND",
+      "CFG_LDO1_R9": "4.7K to GND"
+    },
+    "expected_from_drawing_not_live_readback": {
+      "RXC_added_delay_ns_typ": 2,
+      "TXC_added_delay_ns_typ": 2,
+      "PHY_IO_external_voltage_V": 3.3
+    },
+    "datasheet_RGMII_100Mbps_clock_cycle_ns": {
+      "min": 36,
+      "typical": 40,
+      "max": 44
+    },
+    "datasheet_10_100_duty_pct": {
+      "min": 40,
+      "typical": 50,
+      "max": 60
+    },
+    "table58": {
+      "integrated_transmitter_setup_min_ns": 1.2,
+      "integrated_transmitter_hold_min_ns": 1.2,
+      "integrated_receiver_setup_min_ns": 1.0,
+      "integrated_receiver_hold_min_ns": 1.0,
+      "output_skew_ns": {
+        "min": -0.5,
+        "typical": 0,
+        "max": 0.5
+      },
+      "input_skew_ns": {
+        "min": 1,
+        "typical": 1.8,
+        "max": 2.6
+      }
+    },
+    "source_MAC": {
+      "path": "F:/nav_integration_g2_20261023/K_timing_syn49/nav/rtl/net/rgmii_mac100.v",
+      "writes_standard_registers": [
+        {
+          "register": 4,
+          "value": "0x0181"
+        },
+        {
+          "register": 9,
+          "value": "0"
+        },
+        {
+          "register": 0,
+          "value": "0x1200"
+        }
+      ],
+      "no_RGMII_delay_page_override_in_init": true,
+      "RX_both_edge_sampling_and_quasistatic_select": true,
+      "extra_selected_RX_pipeline_present": true,
+      "TX_clock_is_25MHz_from50MHz_core_with_negedge_output_register": true
+    },
+    "still_missing": [
+      "As-built resistor population and actual PHY delay state/readback",
+      "Clock/data board flight delays and skew, actual receiving-pad setup/hold at both relevant edges",
+      "Source-synchronous input/output/generated-clock SDC budgets bound to actual100Mbps mode",
+      "Real link/frame tests after lidar power available"
+    ],
+    "no_arbitrary_delay_numbers_applied": true,
+    "external_IO_signoff_complete": false
+  },
+  "UART_role_correction": {
+    "recorded_at": "2026-10-27T09:17:00.235330+08:00",
+    "session_id": "sess_6ac1dbd7-1a60-4d06-a50e-b27b1a031b31",
+    "requested_CLI_log": "C:\\Users\\Li\\.zcode\\cli\\log\\zcode-2026-10-27.jsonl",
+    "CLI_log_exists": true,
+    "CLI_log_matching_session_records": 3776,
+    "CLI_log_semantic_role_keyword_matches": 0,
+    "CLI_log_is_primarily_execution_events": true,
+    "exact_session_response_rollout": "C:\\Users\\Li\\.zcode\\cli\\rollout\\model-io-sess_6ac1dbd7-1a60-4d06-a50e-b27b1a031b31.jsonl",
+    "final_summary_record": 11,
+    "final_summary_lines": [
+      "- /dev/ttyACM0 = on-board CH9102 nav bus bridge, 921600, protocol `W addr32 val` → K, `R addr` → D+u32.",
+      "- /dev/ttyUSB0 = P11-40 USB-TTL control telemetry, 230400, V2 120-byte frames (protocol.py)."
+    ],
+    "selected_communication_split": {
+      "CH9102": {
+        "device": "/dev/ttyACM0",
+        "baud": 921600,
+        "role": "NAV command/map/status bidirectional"
+      },
+      "P11_40": {
+        "device": "/dev/ttyUSB0",
+        "baud": 230400,
+        "role": "Control telemetry output"
+      },
+      "P11_39_required": false,
+      "control_UART_RXD_tied_high_is_intentional": true
+    },
+    "correction": "The fact that P11-39 is unused is confirmed; treating that fact as a functional/deployment blocker under the selected split was incorrect and is withdrawn.",
+    "no_P11_receive_implementation_or_SYN_started": true,
+    "PNR62_independent_of_this_correction": true,
+    "external_RGMII_IO_delay_and_CDC_reset_signoff_still_pending": true
+  }
+}
