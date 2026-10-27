@@ -1,0 +1,300 @@
+{
+  "recorded_at": "2026-10-27T16:32:41.896908+08:00",
+  "task_complete": false,
+  "current_board": {
+    "verified": "PNR61 C30F",
+    "during": "finite full-load real-link soak with USB capture",
+    "firmware": "g3c 54164B, forward1000/ZHI350",
+    "Flash_written": false,
+    "evidence": "F:\\nav_integration_g2_20261023\\QHXD_real_hw_integration_20261027_1\\usbmon_full_soak1\\PNR61_identity.log"
+  },
+  "RK_code": "fdf3f4a",
+  "cloud_gateway_code": "ac7b706",
+  "Flash_written": false,
+  "operational_stop_contract": "Cancel movement targets, retain original4500 balance, and verify stable standing separately; never substitute all-wheel cutoff.",
+  "operational_stop_actual": {
+    "passed_operational_stop_chain": true,
+    "observed_ESTOP_s_from_request_start": 0.9877219367772341,
+    "balance_kept_active": true,
+    "motion_inputs_zero": true,
+    "refused_new_goal_while_locked": true,
+    "explicit_release_required": true,
+    "physical_stable_standing_or_braking_tested": false,
+    "limitation": "Elevated fixed body with spinning wheels; commands were already zero before ESTOP. This proves mode lock, command-zero contract and preserved healthy balance, not grounded stable standing or nonzero-to-zero braking."
+  },
+  "stop_wording_deployment": {
+    "code": "fdf3f4a",
+    "link": "uart:/dev/ttyACM0",
+    "nav_link": "offline",
+    "control_link": "offline",
+    "usbmon_loaded": false,
+    "dirty": "",
+    "deployed_at": "2026-10-27T16:27:26.128043+08:00",
+    "before": "569fb39",
+    "scope": "Only operational stop receipt wording; NV commands, balance controller and RTL unchanged",
+    "hold_F322_verified": true,
+    "Flash_written": false,
+    "first_checker_failure": "Health socket was listening before its first platform publication; retried read-only, did not redeploy or repeat hardware test"
+  },
+  "telemetry_disconnect_actual": {
+    "code_commit": "569fb39",
+    "bridge_offline_after_unbind_s": 0.3640225700219162,
+    "backend_card_offline_after_unbind_s": 0.3640225700219162,
+    "online_after_bind_s": 0.7486539639648981,
+    "physical_cable_unplug": false,
+    "method": "selected ch341 interface unbind/bind",
+    "healthy_recovery": true
+  },
+  "map_loaded_reset_actual": {
+    "passed": true,
+    "package_bytes": 4224,
+    "upload_s": 1.6552211020025425,
+    "version": "c43359e93ceb",
+    "same_bridge_pid": true,
+    "uptime_before_s": 45.022519,
+    "uptime_after_s": 5.061303,
+    "map_loaded_after": false,
+    "no_old_task_replayed_in_observation": true,
+    "g3c_restored_forward1000_ZHI350": true,
+    "cleanup": {
+      "Flash_written": false,
+      "hold_verified": true,
+      "bridge_restarted": true,
+      "ended_at": "2026-10-27T16:14:42.631562+08:00"
+    },
+    "scope": "State/cache test with synthetic map and elevated body; no navigation accuracy or grounded standing proof."
+  },
+  "preserved_soak_failures": [
+    {
+      "duration_s": 33.050062060006894,
+      "CRC_delta": 1,
+      "skipped_delta": 1,
+      "source": "F:\\nav_integration_g2_20261023\\QHXD_real_hw_integration_20261027_1\\soak_result.json"
+    },
+    {
+      "duration_s": 52.0711051489925,
+      "CRC_delta": 0,
+      "skipped_delta": 1,
+      "source": "F:\\nav_integration_g2_20261023\\QHXD_real_hw_integration_20261027_1\\trace_attempt2\\soak_result.json"
+    }
+  ],
+  "application_input_truncation": {
+    "expected_frame_bytes": 126,
+    "received_gap_bytes": 45,
+    "difference_bytes": 81,
+    "raw_analysis": {
+      "bytes": 760832,
+      "valid_frames": 6037,
+      "CRC_bad_candidates": [],
+      "sequence_or_byte_anomalies": [
+        {
+          "previous": {
+            "offset": 704666,
+            "timestamp_ms": 61649,
+            "sequence": 6164
+          },
+          "next": {
+            "offset": 704837,
+            "timestamp_ms": 61669,
+            "sequence": 6166
+          },
+          "sequence_delta": 2,
+          "timestamp_delta_ms": 20,
+          "byte_span": 171,
+          "gap_bytes": 45,
+          "gap_hex": "a55a05a805da05101d00004e460100d9ffffff27000000a8fdffffa8fdffff00000000000000003f173f17a616"
+        }
+      ]
+    },
+    "location_of_loss_proven": false
+  },
+  "standalone_serial_observation": {
+    "duration_s": 180.0752795219887,
+    "bytes": 2268525,
+    "frames": 18004,
+    "bad_crc": 0,
+    "skipped": 0,
+    "scope": "No reproduction in a finite standalone run; not a fix or full-system acceptance."
+  },
+  "USB_application_finite_observation": {
+    "common_interval": {
+      "first_frame": {
+        "offset": 0,
+        "timestamp_ms": 5969,
+        "sequence": 596
+      },
+      "last_frame": {
+        "offset": 3038994,
+        "timestamp_ms": 247159,
+        "sequence": 24715
+      },
+      "USB_start": 64,
+      "application_start": 0,
+      "USB_bytes": 3039120,
+      "application_bytes": 3039120,
+      "exact_byte_equal": true
+    },
+    "monitor_capture_complete": true,
+    "common_valid_frames": 24120,
+    "common_CRC_errors": 0,
+    "common_sequence_or_byte_anomalies": 0,
+    "only_end_cancellations": true,
+    "conclusion": "No anomaly reproduced in this finite capture; prior failures remain unresolved and long soak is not accepted.",
+    "public_WebSocket_consumers_present": false,
+    "sources": [
+      "https://docs.kernel.org/usb/usbmon.html",
+      "https://github.com/torvalds/linux/blob/v5.10/drivers/usb/mon/mon_bin.c"
+    ]
+  },
+  "physical_context_from_user": {
+    "recorded_at": "2026-10-27T16:12:06.433348+08:00",
+    "source": "direct user answer",
+    "TTL_ground_shared_with_FPGA": true,
+    "TTL_signal_wiring_separate_from_motor_and_servo_harness": true,
+    "voltage_waveform_or_TX_pin_capture_available": false,
+    "inference": "No current evidence of missing shared ground or bundled signal/power harness; does not identify the point of data truncation."
+  },
+  "current_full_load_soak": {
+    "controller_identity_verified_live": true,
+    "runtime": {
+      "pid": 8136,
+      "created": 1793089882.0967307,
+      "started_at": "2026-10-27T16:31:22.620833+08:00",
+      "directory": "F:\\nav_integration_g2_20261023\\QHXD_real_hw_integration_20261027_1\\usbmon_full_soak1",
+      "bridge_process": {
+        "pid": 531654,
+        "start_ticks": "39747825"
+      },
+      "USB_monitor": {
+        "ready": true,
+        "pid": 531652,
+        "bus": 2,
+        "device": 4,
+        "start_ticks": "39747806"
+      },
+      "soak_process": {
+        "pid": 531672,
+        "start_ticks": "39747955"
+      },
+      "duration_s": 1800
+    },
+    "launch": {
+      "started_at": "2026-10-27T16:31:22.620833+08:00",
+      "scope": "HCD USB bulk-IN versus same-run application serial bytes; original bridge/protocol/hardware unchanged",
+      "passed_soak": false,
+      "requested_s": 1800,
+      "Flash_written": false,
+      "initial": {
+        "module": false,
+        "bus": 2,
+        "dev": 4,
+        "driver": "/sys/bus/usb/drivers/ch341",
+        "code": "fdf3f4a",
+        "bridge_env": {
+          "YUNTUO_BLOCKED_FAIL_SECONDS": "25",
+          "WAYPOINTS_CONFIG_PATH": "/home/robomaster/QHXD/backend/app/config/yuntuo/waypoints.json",
+          "YUNTUO_MAP_ID": "yuntuo_field",
+          "YUNTUO_FPGA_LINK": "uart:/dev/ttyACM0",
+          "YUNTUO_REQUIRE_LOCALIZATION": "true",
+          "YUNTUO_TARGET_RATE_HZ": "12",
+          "YUNTUO_TARGET_MAX_LATENCY_MS": "400",
+          "YUNTUO_PERCEPTION_UDP": "127.0.0.1:9102",
+          "YUNTUO_CONTROL_TELEMETRY": "serial:/dev/ttyUSB0@230400",
+          "YUNTUO_ALLOW_MAPLESS_GOTO": "true",
+          "PATROL_ROUTES_CONFIG_PATH": "/home/robomaster/QHXD/backend/app/config/yuntuo/patrol_routes.json",
+          "YUNTUO_FIELD_BOUNDS": "-1,-3,6,3",
+          "YUNTUO_PRIOR_MAP": "",
+          "NAV_MISSION_EXECUTOR_PORT": "9101",
+          "YUNTUO_FPGA_IS_MOCK": "false"
+        },
+        "disk_free_bytes": 71159590912
+      },
+      "USB_monitor": {
+        "ready": true,
+        "pid": 531652,
+        "bus": 2,
+        "device": 4,
+        "start_ticks": "39747806"
+      },
+      "bridge_process": {
+        "pid": 531654,
+        "start_ticks": "39747825"
+      },
+      "explicit_bench_release": {
+        "mode": "idle"
+      },
+      "soak_process": {
+        "pid": 531672,
+        "start_ticks": "39747955"
+      }
+    },
+    "progress": {
+      "elapsed_s": 55.57705956703285,
+      "remaining_s": 1744.4229404329672,
+      "samples": 112,
+      "decoder": {
+        "frames": 5684,
+        "bad_crc": 0,
+        "skipped": 0
+      },
+      "websockets": {
+        "state": {
+          "messages": 465,
+          "errors": [],
+          "last_received_s": 55.54892418300733
+        },
+        "navigation": {
+          "messages": 267,
+          "errors": [],
+          "last_received_s": 55.395184513996355
+        }
+      },
+      "idle_10min_complete": false,
+      "last": {
+        "elapsed_s": 55.57705956703285,
+        "status_age_s": 0.14,
+        "status_rate_hz": 5.01,
+        "telemetry_rate_hz": 101.7,
+        "mode": "idle",
+        "uptime_s": 62.641874,
+        "left_mps": -0.6,
+        "right_mps": -0.6,
+        "decoder": {
+          "frames": 5684,
+          "bad_crc": 0,
+          "skipped": 0
+        }
+      },
+      "last_memory": {
+        "elapsed_s": 50.070359987032134,
+        "processes": {
+          "yuntuo-fpga-bridge": {
+            "pid": 531654,
+            "rss_kib": 22520,
+            "start_ticks": "39747825"
+          },
+          "qhxd-backend": {
+            "pid": 512269,
+            "rss_kib": 70836,
+            "start_ticks": "38863544"
+          }
+        }
+      },
+      "error": null
+    },
+    "result": null,
+    "adds_public_WebSocket_consumers": true,
+    "automatic_hold_cleanup": true,
+    "idle_10min_accepted": false,
+    "soak_30min_accepted": false
+  },
+  "remaining": [
+    "Known intermittent telemetry CRC/truncation origin; do not declare resolved from a clean finite capture.",
+    "Ten-minute real IDLE and thirty-minute full-load observation final result.",
+    "Actual browser/phone playback and controls, physical tilt and microphone ASR.",
+    "Real target identification/follow latency and target loss, physical lidar cable recovery.",
+    "Grounded stable standing, nonzero-to-zero braking, navigation completion and physical stop."
+  ],
+  "raw_artifact_directory": "F:\\nav_integration_g2_20261023\\QHXD_real_hw_integration_20261027_1",
+  "hardware_or_balance_RTL_changed_for_stop_clarification": false
+}
