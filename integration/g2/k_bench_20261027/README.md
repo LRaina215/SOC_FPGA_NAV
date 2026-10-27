@@ -1,5 +1,9 @@
 # 整车联合镜像：时序收敛与架空测试（2026-10-27 夜）
 
+## 08:40 IMU诊断结论及等待现场处理
+
+用户确认BMI088取电自车上电源板，并安排稍后现场处理。4秒被动遥测403帧/CRC0，全部error5、未激活。已核源/实际引脚：错误发生在START前的空闲SDA低超时，不是ID不符或导航解析问题；SDA=P11-7/F18、SCL=P11-8/E18，与之前成功接线一致。电源电压、外部上拉和拉低来源尚未量测，当前驱动BUS_CLEAR=0，重试没有九时钟解锁。本轮没有复位、解锁、动作或重新下载，保留PNR61候选等待现场修复。
+
 ## 08:27 跟进现场（只读）
 
 PNR61实际报告已重新核对：50/100MHz setup/hold均0，61条Actived，BSRAM280/340，FF32017/CLS42995；PNR57的对应值为31491/42760。经RK唯一3秒只读检查收到304帧/CRC0，CPU运行，但BMI088仍error5/active=false、姿态NaN，雷达link0/0fps，尚无原4500有效推理。07:00等待脚本已经退出、没有powered_results；日志“without vehicle power”不是供电电压测量，仍需区分供电、接线和I2C线故障。本轮没有发动作或重新下载。3种子窗口结果继续只归有限导航模型，不是原4500实车闭环或普遍不漂移的证明。
@@ -9,7 +13,7 @@ PNR61实际报告已重新核对：50/100MHz setup/hold均0，61条Actived，BSR
 - 导航 + 原 4500 控制的联合镜像（SLF128、存储迁移、SYN45 时序候选，加本次融合模块两处寄存）在 place2/route0 下布通且时序收敛：clk50 实测 50.080 MHz，rgmii_rxc 110.318 MHz，两个时钟 setup/hold 违例都为 0；recovery/removal/最小脉宽为正（最差 +5.067/+0.329/+2.200 ns）；SDC 61 条约束全部 Actived。
 - 资源：BSRAM 280/340（83%），Logic 60436/138240（44%），CLS 42760/69120（62%），寄存器 31491。
 - 位流已下载到 SRAM（UserCode 0x248F，未写 Flash），只读自检和导航侧 SAFE 指令链测试通过。
-- 电机、BMI088、雷达相关测试没有做成：BMI088 的 I2C 报错 5（SDA 被拉低），下载前控制组原镜像同样报错 5；雷达网口 PHY 无链路。判断是车上传感器和执行器没有供电，需要整车上电后补测。
+- 电机、BMI088、雷达相关测试没有做成：BMI088 的 I2C 报错 5（SDA 被拉低），下载前控制组原镜像同样报错 5；雷达网口 PHY 无链路。当时怀疑供电未接通，未测得电压；08:40用户确认IMU来自车上电源板，真实故障原因仍待现场检查。
 - **板上最终镜像是 G3 候选 K_pnr61_s49p2r0**（03:50 下载，UserCode 0xC30F）：在上面基础上加了 BMI088 姿态接入导航、固定窗口固件，并加了 pf 流 skid 和 RGMII 接收打拍。clk50 50.114 MHz，RX 152.934 MHz，setup/hold 0，61 条约束 Actived，recovery/removal/最小脉宽最差 +3.813/+0.258/+2.848 ns。同一组架空测试在这个镜像上重跑全部通过。备份 `D:\tools\g2_joint_slf128_g3_pnr61_20261027.fs`，哈希见 `pnr61_hashes.txt`；需要回退时下载 `D:\tools\g2_joint_slf128_pnr57_20261027.fs`。
 - RK3588 上 `~/fpga_bench/watch_and_test.py` 在后台等到 07:00：每 20 s 看一次遥测，BMI088 连续两次就绪后自动跑一遍 selftest、poweredtest（±50 mm/s、±300 mrad/s 各 2 s）和 estoptest，结果写到 `~/fpga_bench/powered_results_*.json`，过程记在 `watch.log`。
 

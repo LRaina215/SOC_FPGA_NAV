@@ -1,0 +1,89 @@
+{
+  "recorded_at": "2026-10-27T08:41:35.537336+08:00",
+  "human_power_source": "车上的电源板",
+  "human_steering": "如果你实在检测不到那就算了，等我去修",
+  "requested_disposition": "Await user onsite IMU repair; no further active hardware diagnosis in this turn",
+  "latest_passive_capture": {
+    "started_at": "2026-10-27T08:36:52.257079+08:00",
+    "duration_requested_s": 4,
+    "frames": 403,
+    "bad_crc": 0,
+    "sensor_error_counts": {
+      "5": 403
+    },
+    "status_counts": {
+      "10": 403
+    },
+    "active_counts": {
+      "False": 403
+    },
+    "first_sequence": 13192,
+    "last_sequence": 13594,
+    "completed_frames": 0
+  },
+  "source_verified_error5": "WAIT_IDLE, sampled SCL high and sampled SDA low for the full timeout, before START/address transfer",
+  "timeout_cycles": 50000,
+  "core_clock_Hz": 50000000,
+  "timeout_ms": 1,
+  "sensor_pins": {
+    "SDA": "P11-7/F18",
+    "SCL": "P11-8/E18"
+  },
+  "current_and_previous_working_pinout_same": true,
+  "physical_constraints": {
+    "IO_TYPE": "LVCMOS33",
+    "PULL_MODE": "NONE",
+    "external_pullups_required_by_design": true
+  },
+  "driver_retry": {
+    "retry_wait_cycles": 5000000,
+    "startup_wait_cycles": 1500000,
+    "controller_and_pins_released_on_retry": true,
+    "BUS_CLEAR": 0,
+    "nine_clock_recovery_not_enabled_in_current_source": true
+  },
+  "no_lidar_gate_in_sensor_reset": "device_reset_n depends on physical reset/startup, not lidar link; bmi088 uses device_reset_n directly",
+  "exact_electrical_root_cause_known": false,
+  "remaining_possible_causes": [
+    "Local IMU VCC/VDDIO or external pullup supply absent",
+    "Ground/signal connection or short",
+    "Target remains in unfinished I2C transfer",
+    "Physical line/readback problem not yet measured"
+  ],
+  "cannot_infer": [
+    "That only lidar power is missing proves IMU supply voltage",
+    "Error5 identifies which device is pulling SDA low",
+    "Zero six-axis fields represent valid stationary measurements"
+  ],
+  "authoritative_bus_clear_reference": "https://www.nxp.com/docs/en/user-guide/UM10204.pdf",
+  "sensor_reference": "https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi088-ds001.pdf",
+  "current_PNR61_preserved": true,
+  "programmed": false,
+  "Flash_written": false,
+  "motion_commands": 0,
+  "resets_or_bus_clear_performed": false,
+  "new_EDA_started": false,
+  "new_tests_by_this_recorder": false,
+  "metadata_at_read": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\K_timing_syn49\\control\\oled_driver.v",
+      "bytes": 18497,
+      "mtime_ns": 1793041862791585100
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\K_timing_syn49\\control\\bmi088.v",
+      "bytes": 14824,
+      "mtime_ns": 1793041862754371200
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\K_timing_syn49\\control4500_core.v",
+      "bytes": 22103,
+      "mtime_ns": 1793041894749338400
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\K_pnr61_s49p2r0\\g2.cst",
+      "bytes": 5495,
+      "mtime_ns": 1793043172975646600
+    }
+  ]
+}
