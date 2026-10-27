@@ -1,0 +1,454 @@
+{
+  "recorded_at": "2026-10-27T10:25:11.513920+08:00",
+  "selected_source": "F:\\nav_integration_g2_20261023\\K_timing_syn49",
+  "board_retained": "PNR61; no FPGA programming or CPU reset in this work",
+  "communication_roles": {
+    "CH9102": "command/map/status bidirectional",
+    "P11-40": "control telemetry only",
+    "P11-39_required": false
+  },
+  "map_package_live": {
+    "passed": true,
+    "ended_at": "2026-10-27T10:05:18.622448+08:00",
+    "cases": [
+      {
+        "name": "legacy_version",
+        "bytes": 67,
+        "state": 4,
+        "next": 48,
+        "elapsed_s": 0.055359
+      },
+      {
+        "name": "wrong_geometry",
+        "bytes": 67,
+        "state": 4,
+        "next": 48,
+        "elapsed_s": 0.778579
+      },
+      {
+        "name": "wrong_profile",
+        "bytes": 67,
+        "state": 4,
+        "next": 48,
+        "elapsed_s": 0.747764
+      },
+      {
+        "name": "wrong_ZHI",
+        "bytes": 67,
+        "state": 4,
+        "next": 48,
+        "elapsed_s": 0.053929
+      },
+      {
+        "name": "wrong_ZLO",
+        "bytes": 67,
+        "state": 4,
+        "next": 48,
+        "elapsed_s": 0.05351
+      },
+      {
+        "name": "grid_width65",
+        "bytes": 67,
+        "state": 4,
+        "next": 48,
+        "elapsed_s": 0.049382
+      },
+      {
+        "name": "grid_height65",
+        "bytes": 67,
+        "state": 4,
+        "next": 48,
+        "elapsed_s": 0.051688
+      },
+      {
+        "name": "structure_count16385",
+        "bytes": 67,
+        "state": 4,
+        "next": 48,
+        "elapsed_s": 0.757991
+      },
+      {
+        "name": "wrong_body_size",
+        "bytes": 67,
+        "state": 4,
+        "next": 48,
+        "elapsed_s": 0.778747
+      },
+      {
+        "name": "bad_magic",
+        "bytes": 67,
+        "state": 4,
+        "next": 48,
+        "elapsed_s": 0.743895
+      },
+      {
+        "name": "invalid_slot_16384",
+        "bytes": 62,
+        "state": 4,
+        "next": 62,
+        "elapsed_s": 0.068715
+      },
+      {
+        "name": "invalid_slot_65535",
+        "bytes": 62,
+        "state": 4,
+        "next": 62,
+        "elapsed_s": 0.071083
+      },
+      {
+        "name": "invalid_word_19bits",
+        "bytes": 62,
+        "state": 4,
+        "next": 62,
+        "elapsed_s": 0.07234
+      },
+      {
+        "name": "bad_body_CRC",
+        "bytes": 67,
+        "state": 3,
+        "next": 67,
+        "elapsed_s": 0.074097
+      },
+      {
+        "name": "truncated_header",
+        "bytes": 17,
+        "state": 4,
+        "next": 17,
+        "elapsed_s": 0.068207
+      },
+      {
+        "name": "truncated_body",
+        "bytes": 66,
+        "state": 4,
+        "next": 66,
+        "elapsed_s": 0.088993
+      },
+      {
+        "name": "valid_boundary_words_fragmented",
+        "bytes": 67,
+        "state": 2,
+        "next": 67,
+        "elapsed_s": 1.916588
+      },
+      {
+        "name": "gap_duplicate_then_retry",
+        "state": 2,
+        "bytes": 67
+      },
+      {
+        "name": "maximum_128_structure_64_grid",
+        "bytes": 86064,
+        "state": 2,
+        "next": 86064,
+        "elapsed_s": 18.330212
+      }
+    ],
+    "case_count": 19,
+    "sent_counts": {
+      "0x44": 2,
+      "0x43": 27,
+      "0x40": 20,
+      "0x41": 175,
+      "0x42": 19
+    },
+    "status_samples": 116,
+    "all_observed_numeric_targets_zero": true,
+    "initial_SLF": {
+      "type": "slf_ack",
+      "result": "查询",
+      "window": "前移 1000 mm",
+      "zhi_mm": 350,
+      "profile": "0x534C0108"
+    },
+    "final_SLF": {
+      "type": "slf_ack",
+      "result": "查询",
+      "window": "前移 1000 mm",
+      "zhi_mm": 350,
+      "profile": "0x534C0108"
+    },
+    "actual_CPU_mailbox_and_MAP_ACK": true,
+    "maximum_package_bytes": 86064,
+    "no_motion_or_pose_or_firmware_changes": true,
+    "CPU_reset": false,
+    "final_map_state": 0,
+    "IMU_required": false,
+    "elapsed_s": 30.356183039024472,
+    "latest_reply_mailbox_requires_host_retry": true,
+    "caveat": "Receive state/ACK validation; not numerical localization, physical stopping or full RAM readback equivalence"
+  },
+  "map_package_live_raw": "F:\\nav_integration_g2_20261023\\PNR61_actual_prior_package_test2\\stdout.json",
+  "map_retry_observations": {
+    "bounded_retry_events": 29,
+    "journal": "F:\\nav_integration_g2_20261023\\PNR61_actual_prior_package_test2\\journal.jsonl",
+    "cause_scope": "Replies can be missed/overwritten; first failure was missing CLEAR ACK, not proven parser failure"
+  },
+  "host_uploader_fix": {
+    "file": "tools/nav_host.py",
+    "problem": [
+      "reliable transport skipped application DATA acknowledgements",
+      "END accepted a stale receive-state ACK instead of waiting for terminal state"
+    ],
+    "change": "bounded idempotent retries, exact chunk progress and READY/error terminal-state checks",
+    "unit_test": {
+      "file": "integration/g2/test_nav_host_map_ack_retry.py",
+      "passed_cases": 18,
+      "result_record": "PASS actual upload_map ACK loss/stale terminal/progress guard cases=18 (earlier execution in this work; not repeated)"
+    },
+    "live_fault_injection": {
+      "passed": true,
+      "ended_at": "2026-10-27T10:13:31.845529+08:00",
+      "cases": [
+        {
+          "case": "maximum_map_ACK_loss_and_stale_RECV",
+          "passed": true,
+          "bytes": 86064,
+          "elapsed_s": 11.947497293993365
+        },
+        {
+          "case": "CRC_error_returns_false",
+          "passed": true
+        },
+        {
+          "case": "geometry_error_returns_false",
+          "passed": true
+        }
+      ],
+      "injected_ACK_losses": [
+        {
+          "injected_loss": "begin",
+          "actual_ACK": {
+            "type": "map_ack",
+            "next": 0,
+            "state": "接收中",
+            "state_code": 1
+          }
+        },
+        {
+          "injected_loss": "data",
+          "actual_ACK": {
+            "type": "map_ack",
+            "next": 1024,
+            "state": "接收中",
+            "state_code": 1
+          }
+        },
+        {
+          "injected_loss": "end",
+          "actual_ACK": {
+            "type": "map_ack",
+            "next": 86064,
+            "state": "已加载",
+            "state_code": 2
+          }
+        }
+      ],
+      "actual_packet_counts": {
+        "67": 5,
+        "64": 4,
+        "65": 98,
+        "66": 3
+      },
+      "status_samples": 29,
+      "all_observed_targets_zero": true,
+      "logs": [
+        "地图 86064 字节，11.9 s，板上状态：已加载",
+        "地图 62 字节，0.1 s，板上状态：校验错",
+        "地图在偏移 0 被拒绝：格式错"
+      ],
+      "CPU_reset": false,
+      "reprogrammed": false,
+      "final_prior_cleared": true,
+      "caveat": "Device/CPU transfer is real; three missing ACK observations and one stale receive-state reply were explicitly injected in the host reader."
+    },
+    "live_raw": "F:\\nav_integration_g2_20261023\\PNR61_actual_fixed_uploader_test1\\stdout.json",
+    "selected_RK_install": {
+      "passed": true,
+      "installed_at": "2026-10-27T10:22:27.659217+08:00",
+      "selected_path": "/home/robomaster/fpga_bench/tools/nav_host.py",
+      "rollback_path": "/home/robomaster/fpga_bench/tools/nav_host.pre_ack_fix_20261027.py",
+      "previous_matches_Git_HEAD": true,
+      "installed_matches_previously_live_tested_candidate": true,
+      "atomic_replace": true,
+      "bytes_before": 11405,
+      "bytes_after": 12032,
+      "backup_bytes_equal": true,
+      "preserved_failed_install": "F:\\nav_integration_g2_20261023\\PNR61_map_uploader_install1\\failure.json",
+      "FPGA_reprogrammed": false,
+      "CPU_reset": false,
+      "hardware_messages_sent": 0,
+      "scope": "Host-side diagnostic map uploader only; selected RK application/service code unchanged"
+    }
+  },
+  "busy_current_CPU": {
+    "passed": true,
+    "scope": "Actual PicoRV32/128KiB/50MHz plus actual candidate guard/checkpoint/HAL with synthetic timer/mailbox register service; not full G2/UART or physical stop",
+    "rows": [
+      {
+        "kind": 0,
+        "result": 1,
+        "x": 4049,
+        "y": 3049,
+        "frontier": 2076,
+        "cycles": 10620533,
+        "max_gap": 135617,
+        "checks": 146,
+        "locked": 0,
+        "messages": 4,
+        "time_us": 212410.66,
+        "max_checkpoint_gap_us": 2712.34
+      },
+      {
+        "kind": 1,
+        "result": 1,
+        "x": 4049,
+        "y": 3049,
+        "frontier": 2076,
+        "cycles": 12896096,
+        "max_gap": 172481,
+        "checks": 146,
+        "locked": 0,
+        "messages": 5,
+        "time_us": 257921.92,
+        "max_checkpoint_gap_us": 3449.62
+      },
+      {
+        "kind": 2,
+        "result": 0,
+        "x": 99,
+        "y": 99,
+        "frontier": 0,
+        "cycles": 51849,
+        "max_gap": 8518,
+        "checks": 7,
+        "locked": 1,
+        "messages": 0,
+        "time_us": 1036.98,
+        "max_checkpoint_gap_us": 170.36
+      },
+      {
+        "kind": 3,
+        "result": 0,
+        "x": 99,
+        "y": 99,
+        "frontier": 0,
+        "cycles": 53086,
+        "max_gap": 9755,
+        "checks": 7,
+        "locked": 1,
+        "messages": 0,
+        "time_us": 1061.72,
+        "max_checkpoint_gap_us": 195.1
+      }
+    ],
+    "zero_commit": [
+      {
+        "age_us": 250034,
+        "now_us": 542083,
+        "last_rx_us": 292049
+      },
+      {
+        "age_us": 250059,
+        "now_us": 564657,
+        "last_rx_us": 314598
+      }
+    ],
+    "max_checkpoint_gap_us": 3449.62,
+    "kernel_observer_effect": true,
+    "whole_loop_WCET_proven": false,
+    "physical_stop500ms_proven": false,
+    "uses_actual_250ms_threshold": true,
+    "healthy_50ms_mailbox_heartbeat_preserved": true
+  },
+  "busy_raw": "F:\\nav_integration_g2_20261023\\PNR61_current_busy_CPU_probe1\\frontier\\result.json",
+  "current_C_receive_fairness": {
+    "passed": true,
+    "recorded_at": "2026-10-27T10:21:14.814119+08:00",
+    "source": "F:\\nav_integration_g2_20261023\\K_timing_syn49\\fw",
+    "output": "DRAIN_SCHEDULE passed cases=15 checks=394 queue_capacity=16 quota=4 pending_quota=1 frontier_reference_target=2749,49\n",
+    "scope": "Actual current app/guard/proto/explore C with explicit HAL FIFO/time substitutes and two planner hooks; not CPU timing/full APP WCET",
+    "additional_counted_stub_functions": [
+      "hal_imu_config",
+      "hal_match_lf_center_mm",
+      "hal_match_lf_forward"
+    ],
+    "previous_harness_missing_G3_symbols": "F:\\nav_integration_g2_20261023\\PNR61_current_drain_fairness_native1\\compile.log",
+    "previous_legacy_header_fixture": "F:\\nav_integration_g2_20261023\\PNR61_current_drain_fairness_native2\\actual_current_schedule.log",
+    "fixture_only_map_header_adaptation": "v2/40 bytes to current v3/48 bytes, explicit profile/ZHI/ZLO; scheduling assertions retained",
+    "production_FW_or_RTL_modified": false,
+    "hardware_access": false
+  },
+  "fairness_raw": "F:\\nav_integration_g2_20261023\\PNR61_current_drain_fairness_native3\\result.json",
+  "flow_reset_clock_recovery": {
+    "started_at": "2026-10-27T10:11:45.419459+08:00",
+    "phase": "complete",
+    "source": "F:\\nav_integration_g2_20261023\\K_timing_syn49",
+    "reference": "F:\\nav_integration_g2_20261023\\PNR61_MAC_UDP_XT_pipeline_probe2",
+    "production_RTL_modified": false,
+    "hardware_access": false,
+    "scope": "Public owner admission/pose pulse,640-cycle output stall,30us core pause,6us RX pause,existing two common resets and FCS rejection",
+    "passed": true,
+    "metrics": {
+      "admissions": 2,
+      "pending_pose": 1,
+      "clock_pauses": 2,
+      "frame_accepts": 4,
+      "frames": 4,
+      "pixels": 38400,
+      "packets": 70,
+      "UDP_bytes": 98530,
+      "resets": 2,
+      "stalls": 13439
+    },
+    "ended_at": "2026-10-27T10:11:58.487250+08:00",
+    "all_current_RTL_bytes_bound": true,
+    "whole_G2_or_physical_clock_loss_fail_safe_proved": false
+  },
+  "flow_raw": "F:\\nav_integration_g2_20261023\\PNR61_flow_reset_clock_recovery_probe2\\result.json",
+  "preserved_first_failures": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\PNR61_actual_prior_package_test1\\stderr.txt",
+      "meaning": "Missing observed CLEAR ACK; no parser root cause claimed"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\PNR61_flow_reset_clock_recovery_probe1",
+      "meaning": "Fixture-generation anchor was not unique; no EDA launched"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\PNR61_current_drain_fairness_native1\\compile.log",
+      "meaning": "Old HAL fixture lacked three current G3/window functions"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\PNR61_current_drain_fairness_native2\\actual_current_schedule.log",
+      "meaning": "Old fixture sent v2/40-byte map rejected by current v3/48-byte parser"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\PNR61_map_uploader_install1\\failure.json",
+      "meaning": "Paramiko xb mode did not enable writing; selected tool unchanged, retry verified original and completed install"
+    }
+  ],
+  "remaining_limits": [
+    "Map ACK/CRC acceptance is not full numerical RAM readback or localization accuracy.",
+    "Busy CPU fixture has synthetic timer/mailbox/SAFE CSR service, not complete UART/G2/full APP WCET.",
+    "Native fairness uses explicit HAL queue/time and two planner hooks; chosen handler delay is not measured WCET.",
+    "Core/RX pauses and common resets are finite digital sequences; RX stimulus is paused with RX clock and core-pause arrivals fit the FIFO.",
+    "External IO budget, all CDC route/MTBF and asynchronous reset electrical timing remain unverified.",
+    "Full planning tick still exceeds 100ms in the selected heavy sample; physical 500ms standstill and valid IMU/real vehicle loop remain pending."
+  ],
+  "production_RTL_or_FW_changed": false,
+  "FPGA_reprogrammed": false,
+  "CPU_reset": false,
+  "Flash_written": false,
+  "motion_targets_sent_to_board": false,
+  "final_synthetic_prior_cleared": true,
+  "IMU_repair_left_to_user": true,
+  "SHA_performed": false,
+  "scripts": [
+    "integration/g2/k_bench_20261027/rk_bench/prior_package_test.py",
+    "integration/g2/k_bench_20261027/rk_bench/map_uploader_recovery_test.py",
+    "integration/g2/probe_PNR61_busy_CPU.py",
+    "integration/g2/probe_PNR61_flow_recovery.py",
+    "integration/g2/validate_PNR61_drain_fairness.py",
+    "integration/g2/test_nav_host_map_ack_retry.py"
+  ]
+}

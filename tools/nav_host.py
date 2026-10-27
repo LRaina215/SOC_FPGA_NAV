@@ -187,37 +187,41 @@ def open_link(spec):
 
 
 def upload_map(link, pkg, reliable=False, log=print):
-    """下发先验地图。网口：按 MAP_ACK 的"下一个期望偏移"重发丢失的块；串口：注入不会丢，只在最后确认状态"""
-    msgs = map_messages(pkg)
-    link.send(msgs[0])
-    off, tries, t0 = 0, 0, time.time()
+    """按应用ACK确认进度；串口注入成功也不等于固件已处理或ACK已读到。
+
+    MAP_DATA重复偏移、MAP_END均可重发。接收缓冲只保留最新发送报文，
+    周期STATUS可能覆盖ACK；结束时必须等READY/错误终态，不能拿RECV当终态。
+    reliable参数保留兼容旧调用方，两种链路都核对应用进度。
+    """
+    t0 = time.monotonic()
+
+    def exchange(message, accept):
+        for _ in range(21):
+            link.send(message)
+            deadline = time.monotonic() + 0.35
+            while time.monotonic() < deadline:
+                raw = link.recv(min(0.05, max(0.001, deadline - time.monotonic())))
+                a = parse(raw) if isinstance(raw, (bytes, bytearray)) else raw
+                if a and a.get("type") == "map_ack" and accept(a):
+                    return a
+        raise IOError("地图应用应答超时，已保留有界重发")
+
+    # Establish a receive-session barrier before DATA; stale ACKs from an old
+    # completed transfer do not authorize skipping the new package.
+    exchange(map_begin(len(pkg)), lambda a: a["state_code"] == 1 and a["next"] == 0)
+    off = 0
     while off < len(pkg):
-        link.send(map_data(off, pkg[off:off + CHUNK]))
-        if reliable:
-            off += CHUNK
-            continue
-        a = None
-        for _ in range(5):
-            r = link.recv(0.3)
-            a = parse(r) if r else None
-            if a and a["type"] == "map_ack":
-                break
-        if a and a["type"] == "map_ack" and a["next"] > off:
-            off = a["next"]
-            tries = 0
-        else:
-            tries += 1
-            if tries > 20:
-                raise IOError(f"地图下发在偏移 {off} 失败")
-    link.send(map_end())
-    for _ in range(20):
-        r = link.recv(0.3)
-        a = parse(r) if r else None
-        if a and a["type"] == "map_ack":
-            log(f"地图 {len(pkg)} 字节，{time.time() - t0:.1f} s，板上状态：{a['state']}")
-            return a["state_code"] == 2
-    log("未收到地图应答")
-    return False
+        end = min(off + CHUNK, len(pkg))
+        a = exchange(map_data(off, pkg[off:end]),
+                     lambda a: a["state_code"] in (3, 4) or
+                     (a["state_code"] == 1 and a["next"] == end))
+        if a["state_code"] in (3, 4):
+            log(f"地图在偏移 {off} 被拒绝：{a['state']}")
+            return False
+        off = end
+    a = exchange(map_end(), lambda a: a["state_code"] in (2, 3, 4))
+    log(f"地图 {len(pkg)} 字节，{time.monotonic() - t0:.1f} s，板上状态：{a['state']}")
+    return a["state_code"] == 2 and a["next"] == len(pkg)
 
 
 def main():
