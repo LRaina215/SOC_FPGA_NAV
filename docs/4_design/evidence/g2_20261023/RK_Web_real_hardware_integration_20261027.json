@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-10-27T17:19:16.215852+08:00",
+  "recorded_at": "2026-10-27T17:24:12.889458+08:00",
   "task_complete": false,
   "current_board": {
     "verified": "hold F322",
@@ -737,6 +737,446 @@
     },
     "bridge_restarted": true,
     "ended_at": "2026-10-27T17:16:05.374302+08:00"
+  },
+  "post_USB_soft_restart_final": {
+    "result": {
+      "started_at": "2026-10-27T17:16:40.093194+08:00",
+      "scope": "Post user-requested USB device soft reconnect/reset; HCD bulk-IN versus same-run application bytes; original bridge/protocol/FPGA unchanged",
+      "passed_soak": false,
+      "requested_s": 1800,
+      "Flash_written": false,
+      "initial": {
+        "module": false,
+        "bus": 2,
+        "dev": 4,
+        "driver": "/sys/bus/usb/drivers/ch341",
+        "code": "fdf3f4a",
+        "bridge_env": {
+          "YUNTUO_BLOCKED_FAIL_SECONDS": "25",
+          "WAYPOINTS_CONFIG_PATH": "/home/robomaster/QHXD/backend/app/config/yuntuo/waypoints.json",
+          "YUNTUO_MAP_ID": "yuntuo_field",
+          "YUNTUO_FPGA_LINK": "uart:/dev/ttyACM0",
+          "YUNTUO_REQUIRE_LOCALIZATION": "true",
+          "YUNTUO_TARGET_RATE_HZ": "12",
+          "YUNTUO_TARGET_MAX_LATENCY_MS": "400",
+          "YUNTUO_PERCEPTION_UDP": "127.0.0.1:9102",
+          "YUNTUO_CONTROL_TELEMETRY": "serial:/dev/ttyUSB0@230400",
+          "YUNTUO_ALLOW_MAPLESS_GOTO": "true",
+          "PATROL_ROUTES_CONFIG_PATH": "/home/robomaster/QHXD/backend/app/config/yuntuo/patrol_routes.json",
+          "YUNTUO_FIELD_BOUNDS": "-1,-3,6,3",
+          "YUNTUO_PRIOR_MAP": "",
+          "NAV_MISSION_EXECUTOR_PORT": "9101",
+          "YUNTUO_FPGA_IS_MOCK": "false"
+        },
+        "disk_free_bytes": 71123935232
+      },
+      "USB_monitor": {
+        "ready": true,
+        "pid": 536504,
+        "bus": 2,
+        "device": 4,
+        "start_ticks": "40019329"
+      },
+      "bridge_process": {
+        "pid": 536506,
+        "start_ticks": "40019347"
+      },
+      "explicit_bench_release": {
+        "mode": "idle"
+      },
+      "soak_process": {
+        "pid": 536523,
+        "start_ticks": "40019476"
+      },
+      "soak_result": {
+        "duration_s": 25.537467718997505,
+        "requested_duration_s": 1800.0,
+        "error": "AssertionError: Telemetry sequence gap during soak",
+        "completed": false,
+        "samples": 51,
+        "first_decoder": {
+          "frames": 125,
+          "bad_crc": 0,
+          "skipped": 0
+        },
+        "last_decoder": {
+          "frames": 2676,
+          "bad_crc": 0,
+          "skipped": 1
+        },
+        "websockets": {
+          "state": {
+            "messages": 213,
+            "errors": [],
+            "last_received_s": 25.45955473399954
+          },
+          "navigation": {
+            "messages": 122,
+            "errors": [],
+            "last_received_s": 25.333633323025424
+          }
+        },
+        "memory": [
+          {
+            "elapsed_s": 0.023547132033854723,
+            "processes": {
+              "yuntuo-fpga-bridge": {
+                "pid": 536506,
+                "rss_kib": 21808,
+                "start_ticks": "40019347"
+              },
+              "qhxd-backend": {
+                "pid": 512269,
+                "rss_kib": 71640,
+                "start_ticks": "38863544"
+              }
+            }
+          },
+          {
+            "elapsed_s": 10.521206956007518,
+            "processes": {
+              "yuntuo-fpga-bridge": {
+                "pid": 536506,
+                "rss_kib": 22072,
+                "start_ticks": "40019347"
+              },
+              "qhxd-backend": {
+                "pid": 512269,
+                "rss_kib": 71640,
+                "start_ticks": "38863544"
+              }
+            }
+          },
+          {
+            "elapsed_s": 20.533583820040803,
+            "processes": {
+              "yuntuo-fpga-bridge": {
+                "pid": 536506,
+                "rss_kib": 22072,
+                "start_ticks": "40019347"
+              },
+              "qhxd-backend": {
+                "pid": 512269,
+                "rss_kib": 71640,
+                "start_ticks": "38863544"
+              }
+            }
+          }
+        ],
+        "scope": "Real UART/control telemetry, original4500 active, public WebSocket consumers. Elevated fixed body; no browser video or grounded standing acceptance.",
+        "status_rate_range_hz": [
+          4.95,
+          5.05
+        ],
+        "telemetry_rate_range_hz": [
+          101.0,
+          102.8
+        ],
+        "maximum_status_age_s": 0.18,
+        "idle_continuous_s": 25.537467718997505,
+        "telemetry_frames_observed": 2551,
+        "CRC_delta": 0,
+        "skipped_delta": 1
+      },
+      "error": "AssertionError: Telemetry sequence gap during soak",
+      "USB_monitor_exit": 0,
+      "ended_at": "2026-10-27T17:17:46.839891+08:00",
+      "automatic_comparison_exit": 0
+    },
+    "comparison": {
+      "USB_monitor": {
+        "duration_s": 32.81627915397985,
+        "bulk_in_completions": 12855,
+        "bulk_in_bytes": 404860,
+        "USB_status_errors": 2,
+        "truncated_capture_events": 0,
+        "monitor_queued_at_end": 0,
+        "monitor_dropped_events": 0,
+        "scope": "HCD/driver monitor, not an electrical USB bus or FPGA TX measurement"
+      },
+      "USB_bytes": {
+        "bytes": 404860,
+        "valid_frames": 3211,
+        "CRC_bad_candidates": [
+          {
+            "offset": 0,
+            "computed": 61278,
+            "received": 535,
+            "packet_hex": "a55a02780900000000000a0000000001000000000000000000000000000000000000000000000000000000000000000000f0ffff000000000000000017020000a55a02784717000053028100000000006404f1f736291100eefffcff41000000b1ffffffeaffffff29feffff6702000049f0ffff00000000000000001702"
+          }
+        ],
+        "sequence_or_byte_anomalies": [
+          {
+            "previous": {
+              "offset": 332074,
+              "timestamp_ms": 32309,
+              "sequence": 3230
+            },
+            "next": {
+              "offset": 332314,
+              "timestamp_ms": 32329,
+              "sequence": 3232
+            },
+            "sequence_delta": 2,
+            "timestamp_delta_ms": 20,
+            "byte_span": 240,
+            "gap_bytes": 114,
+            "gap_hex": "a55a0000db04b5f858290100f4fffefffbffffffcbfffffff2ffffff20feffff740200004cf0ffff000000000000000017020000a8fdffffa8fdffffc5ffc2ff2ef9bef9ec05de05a805da05bc0e00004e460100daffffff28000000a8fdffffa8fdfffff6ffffff14000000c90bc90bbe65"
+          }
+        ]
+      },
+      "application_bytes": {
+        "bytes": 403968,
+        "valid_frames": 3205,
+        "CRC_bad_candidates": [],
+        "sequence_or_byte_anomalies": [
+          {
+            "previous": {
+              "offset": 332010,
+              "timestamp_ms": 32309,
+              "sequence": 3230
+            },
+            "next": {
+              "offset": 332250,
+              "timestamp_ms": 32329,
+              "sequence": 3232
+            },
+            "sequence_delta": 2,
+            "timestamp_delta_ms": 20,
+            "byte_span": 240,
+            "gap_bytes": 114,
+            "gap_hex": "a55a0000db04b5f858290100f4fffefffbffffffcbfffffff2ffffff20feffff740200004cf0ffff000000000000000017020000a8fdffffa8fdffffc5ffc2ff2ef9bef9ec05de05a805da05bc0e00004e460100daffffff28000000a8fdffffa8fdfffff6ffffff14000000c90bc90bbe65"
+          }
+        ]
+      },
+      "method": "Direct byte equality over common complete-frame boundaries; independent C-library CRC, no hash",
+      "FPGA_TX_electrical_signal_measured": false,
+      "USB_common_interval": {
+        "bytes": 403944,
+        "valid_frames": 3205,
+        "CRC_bad_candidates": [],
+        "sequence_or_byte_anomalies": [
+          {
+            "previous": {
+              "offset": 332010,
+              "timestamp_ms": 32309,
+              "sequence": 3230
+            },
+            "next": {
+              "offset": 332250,
+              "timestamp_ms": 32329,
+              "sequence": 3232
+            },
+            "sequence_delta": 2,
+            "timestamp_delta_ms": 20,
+            "byte_span": 240,
+            "gap_bytes": 114,
+            "gap_hex": "a55a0000db04b5f858290100f4fffefffbffffffcbfffffff2ffffff20feffff740200004cf0ffff000000000000000017020000a8fdffffa8fdffffc5ffc2ff2ef9bef9ec05de05a805da05bc0e00004e460100daffffff28000000a8fdffffa8fdfffff6ffffff14000000c90bc90bbe65"
+          }
+        ]
+      },
+      "application_common_interval": {
+        "bytes": 403944,
+        "valid_frames": 3205,
+        "CRC_bad_candidates": [],
+        "sequence_or_byte_anomalies": [
+          {
+            "previous": {
+              "offset": 332010,
+              "timestamp_ms": 32309,
+              "sequence": 3230
+            },
+            "next": {
+              "offset": 332250,
+              "timestamp_ms": 32329,
+              "sequence": 3232
+            },
+            "sequence_delta": 2,
+            "timestamp_delta_ms": 20,
+            "byte_span": 240,
+            "gap_bytes": 114,
+            "gap_hex": "a55a0000db04b5f858290100f4fffefffbffffffcbfffffff2ffffff20feffff740200004cf0ffff000000000000000017020000a8fdffffa8fdffffc5ffc2ff2ef9bef9ec05de05a805da05bc0e00004e460100daffffff28000000a8fdffffa8fdfffff6ffffff14000000c90bc90bbe65"
+          }
+        ]
+      },
+      "common_interval": {
+        "first_frame": {
+          "offset": 0,
+          "timestamp_ms": 5959,
+          "sequence": 595
+        },
+        "last_frame": {
+          "offset": 403818,
+          "timestamp_ms": 38009,
+          "sequence": 3800
+        },
+        "USB_start": 64,
+        "application_start": 0,
+        "USB_bytes": 403944,
+        "application_bytes": 403944,
+        "exact_byte_equal": true
+      },
+      "monitor_capture_complete": true,
+      "conclusion": "The same anomaly is present at HCD USB receive and application input; the Web decoder did not remove these bytes. Adapter/UART/FPGA/HCD electrical origin remains unknown.",
+      "USB_status_context": {
+        "completions_with_nonzero_status": [
+          {
+            "id": 18446743525527632896,
+            "event": "C",
+            "transfer_type": 3,
+            "endpoint": 130,
+            "status": -2,
+            "actual": 0,
+            "captured": 0,
+            "seconds": 1793092642,
+            "useconds": 648075,
+            "stream_offset": 404860
+          },
+          {
+            "id": 18446743525527627776,
+            "event": "C",
+            "transfer_type": 3,
+            "endpoint": 130,
+            "status": -2,
+            "actual": 0,
+            "captured": 0,
+            "seconds": 1793092642,
+            "useconds": 650957,
+            "stream_offset": 404860
+          }
+        ],
+        "only_end_of_capture_cancellations": true
+      },
+      "excluded_prefix_tail": "USB monitoring began before the serial reader flushed/opened and continued after it stopped; only common complete-frame boundaries locate losses. The offset0 USB CRC candidate is outside that interval."
+    },
+    "queue_review": {
+      "bulk_in_requested_lengths": {
+        "32": 12855
+      },
+      "unique_reused_bulk_URB_ids": 2,
+      "max_callback_gap_ms": 12.949943542480469,
+      "nearby_callbacks": [
+        {
+          "stream_offset": 332012,
+          "bytes": 32,
+          "gap_ms": 1.1799335479736328
+        },
+        {
+          "stream_offset": 332044,
+          "bytes": 30,
+          "gap_ms": 3.2510757446289062
+        },
+        {
+          "stream_offset": 332074,
+          "bytes": 32,
+          "gap_ms": 12.949943542480469
+        },
+        {
+          "stream_offset": 332106,
+          "bytes": 32,
+          "gap_ms": 0.026941299438476562
+        },
+        {
+          "stream_offset": 332138,
+          "bytes": 32,
+          "gap_ms": 0.14710426330566406
+        },
+        {
+          "stream_offset": 332170,
+          "bytes": 32,
+          "gap_ms": 0.13399124145507812
+        },
+        {
+          "stream_offset": 332202,
+          "bytes": 32,
+          "gap_ms": 1.2400150299072266
+        },
+        {
+          "stream_offset": 332234,
+          "bytes": 32,
+          "gap_ms": 1.3780593872070312
+        },
+        {
+          "stream_offset": 332266,
+          "bytes": 32,
+          "gap_ms": 1.3730525970458984
+        },
+        {
+          "stream_offset": 332298,
+          "bytes": 16,
+          "gap_ms": 2.6259422302246094
+        },
+        {
+          "stream_offset": 332314,
+          "bytes": 32,
+          "gap_ms": 4.004955291748047
+        },
+        {
+          "stream_offset": 332346,
+          "bytes": 32,
+          "gap_ms": 1.3859272003173828
+        },
+        {
+          "stream_offset": 332378,
+          "bytes": 32,
+          "gap_ms": 1.5959739685058594
+        },
+        {
+          "stream_offset": 332410,
+          "bytes": 30,
+          "gap_ms": 3.1549930572509766
+        },
+        {
+          "stream_offset": 332440,
+          "bytes": 32,
+          "gap_ms": 3.9131641387939453
+        },
+        {
+          "stream_offset": 332472,
+          "bytes": 32,
+          "gap_ms": 1.3699531555175781
+        }
+      ],
+      "inference": "Actual receive requests are32B with two reused URBs. A larger queued-receive candidate is a software hypothesis; this does not establish adapter FIFO overrun or justify disabling CRC."
+    },
+    "cleanup": {
+      "hold_verified": true,
+      "Flash_written": false,
+      "soak_process": {
+        "identity_matched": false,
+        "stopped_if_still_running": false
+      },
+      "manual_bridge": {
+        "identity_matched": true,
+        "stopped": true
+      },
+      "temporary_monitor_module_removed": true,
+      "normal_bridge_restarted": true,
+      "ended_at": "2026-10-27T17:17:46.839891+08:00"
+    },
+    "driver_review": {
+      "kernel": "5.10.160-rockchip-rk3588",
+      "headers_path": "/usr/lib/modules/5.10.160-rockchip-rk3588/build",
+      "headers_present": false,
+      "module_symvers_present": false,
+      "source_path": "/usr/lib/modules/5.10.160-rockchip-rk3588/source",
+      "compiler": {
+        "rc": 0,
+        "text": "/usr/bin/gcc\n"
+      },
+      "make": {
+        "rc": 0,
+        "text": "/usr/bin/make\n"
+      },
+      "module": {
+        "rc": 0,
+        "text": "filename:       /lib/modules/5.10.160-rockchip-rk3588/kernel/drivers/usb/serial/ch341.ko\nlicense:        GPL v2\nsrcversion:     67417DAE3A952679C040E8E\nalias:          usb:v9986p7523d*dc*dsc*dp*ic*isc*ip*in*\nalias:          usb:v4348p5523d*dc*dsc*dp*ic*isc*ip*in*\nalias:          usb:v2184p0057d*dc*dsc*dp*ic*isc*ip*in*\nalias:          usb:v1A86p7523d*dc*dsc*dp*ic*isc*ip*in*\nalias:          usb:v1A86p7522d*dc*dsc*dp*ic*isc*ip*in*\nalias:          usb:v1A86p5523d*dc*dsc*dp*ic*isc*ip*in*\ndepends:        \nintree:         Y\nname:           ch341\nvermagic:       5.10.160-rockchip-rk3588 SMP mod_unload modversions aarch64\n"
+      },
+      "sources": {
+        "rc": 0,
+        "text": "gmock\ngoogletest\ngtest\nhello\npython3.10\nwiringOP\nwiringOP-Python\n"
+      }
+    }
   },
   "current_full_load_soak": {
     "controller_identity_verified_live": false,
