@@ -1,0 +1,85 @@
+{
+  "recorded_at": "2026-10-27T12:05:15.022307+08:00",
+  "user_report": {
+    "sound": "Long beep about once per second; confirmed from lidar body",
+    "supply_label": "12V 3000mAh battery",
+    "measured_loaded_voltage": null,
+    "battery_chemistry_or_continuous_current": null
+  },
+  "read_only_raw": "F:\\nav_integration_g2_20261023\\PNR61_lidar_click_readonly_20261027_1\\stdout.json",
+  "samples": 25,
+  "duration_s": 12.191,
+  "observed_link_states": [
+    {
+      "observed_host_s": 0.0,
+      "link_up": false,
+      "PHY_STAT_hex": "0x00270006"
+    },
+    {
+      "observed_host_s": 1.015,
+      "link_up": true,
+      "PHY_STAT_hex": "0x01860007"
+    },
+    {
+      "observed_host_s": 7.111,
+      "link_up": false,
+      "PHY_STAT_hex": "0x00280006"
+    },
+    {
+      "observed_host_s": 11.172,
+      "link_up": true,
+      "PHY_STAT_hex": "0x01870007"
+    }
+  ],
+  "received_ethernet_frame_delta": 14,
+  "received_UDP_delta": 0,
+  "received_depth_frame_delta": 0,
+  "total_depth_frames": 0,
+  "PHY_link_bit_source": "F:\\nav_integration_g2_20261023\\K_timing_syn49\\nav\\rtl\\net\\rgmii_mac100.v:310 (bit0 = MDIO BMSR link)",
+  "manufacturer_source": {
+    "path": "D:/Desktop/SOC FPGA/XT-M60技术资料/XT-M60产品手册-202510.pdf",
+    "verified_pages": [
+      13,
+      14
+    ],
+    "recommended_low_voltage_adapter": "12V 3A",
+    "DC_interface": "12V-25V; text says current above3A",
+    "stable_adapter_alternative": "19V 3.42A"
+  },
+  "confirmed_facts": [
+    "Intermittent reported PHY link and no depth stream over the selected read-only interval",
+    "3000mAh specifies capacity, not verified current or loaded input voltage"
+  ],
+  "inference": "Voltage sag/unstable supply or repeated lidar restart is a priority hypothesis, not a confirmed cause. Connection/device faults remain possible.",
+  "unknown": [
+    "Actual input voltage at the lidar during sound",
+    "Exact manufacturer meaning of this audible pattern",
+    "Whether sound and observed link transitions are synchronized"
+  ],
+  "board_reprogrammed": false,
+  "CPU_reset": false,
+  "hardware_writes": false,
+  "FPGA_image_retained": "PNR61",
+  "recovery_after_user_battery_correction": {
+    "ended_at": "2026-10-27T12:06:00.759268+08:00",
+    "raw_path": "F:\\nav_integration_g2_20261023\\PNR61_lidar_power_recovered_readonly_20261027_1\\stdout.json",
+    "user_report": "Now normal; earlier battery charge was insufficient",
+    "samples": 21,
+    "interval_s": 10.21393,
+    "all_observed_PHY_links_up": true,
+    "depth_frames": 103,
+    "map_frame_counter_delta": 103,
+    "fps": 10.0843,
+    "bad_frame_delta": 0,
+    "drop_delta": 0,
+    "RX_error_delta": 0,
+    "width": 160,
+    "height": 60,
+    "measured_loaded_voltage": null,
+    "scope": "Short static acquisition/map admission observation, not pose accuracy, physical stop or original4500 vehicle loop",
+    "board_reprogrammed": false,
+    "CPU_reset": false,
+    "hardware_writes": false
+  },
+  "current_conclusion": "User identifies low battery; link and lidar stream recovered after the correction. Exact electrical transient was not measured."
+}
