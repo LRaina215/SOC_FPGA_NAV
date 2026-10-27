@@ -1,9 +1,9 @@
 {
-  "recorded_at": "2026-10-27T16:48:06.126201+08:00",
+  "recorded_at": "2026-10-27T17:19:16.215852+08:00",
   "task_complete": false,
   "current_board": {
     "verified": "hold F322",
-    "download_at": "2026-10-27T16:42:15.343959+08:00",
+    "download_at": "2026-10-27T17:17:46.839891+08:00",
     "Flash_written": false
   },
   "RK_code": "fdf3f4a",
@@ -639,12 +639,111 @@
     "voltage_waveform_or_TX_pin_capture_available": false,
     "inference": "No current evidence of missing shared ground or bundled signal/power harness; does not identify the point of data truncation."
   },
+  "user_requested_USB_soft_restart": {
+    "started_at": "2026-10-27T17:16:03.424416+08:00",
+    "FPGA_image_unchanged": "hold F322",
+    "Flash_written": false,
+    "device": {
+      "method": "USB device authorization0/1 followed by USBDEVFS_RESET",
+      "physical_power_cycle_proven": false,
+      "other_USB_devices_reset": false,
+      "passed": true,
+      "before": {
+        "idVendor": "1a86",
+        "idProduct": "7523",
+        "busnum": "2",
+        "devnum": "4",
+        "authorized": "1",
+        "tty": [
+          "ttyUSB0"
+        ]
+      },
+      "peers_before": {
+        "2-1.4": {
+          "idVendor": "1a86",
+          "idProduct": "55d4",
+          "busnum": "2",
+          "devnum": "7",
+          "authorized": "1"
+        },
+        "5-1.1": {
+          "idVendor": "2bc5",
+          "idProduct": "060f",
+          "busnum": "5",
+          "devnum": "15",
+          "authorized": "1"
+        },
+        "5-1.2": {
+          "idVendor": "2bc5",
+          "idProduct": "050f",
+          "busnum": "5",
+          "devnum": "16",
+          "authorized": "1"
+        }
+      },
+      "disconnected": {
+        "idVendor": "1a86",
+        "idProduct": "7523",
+        "busnum": "2",
+        "devnum": "4",
+        "authorized": "0",
+        "tty": []
+      },
+      "reconnected": {
+        "idVendor": "1a86",
+        "idProduct": "7523",
+        "busnum": "2",
+        "devnum": "4",
+        "authorized": "1",
+        "tty": [
+          "ttyUSB0"
+        ]
+      },
+      "USBDEVFS_RESET_return": 0,
+      "after": {
+        "idVendor": "1a86",
+        "idProduct": "7523",
+        "busnum": "2",
+        "devnum": "4",
+        "authorized": "1",
+        "tty": [
+          "ttyUSB0"
+        ]
+      },
+      "peers_after": {
+        "2-1.4": {
+          "idVendor": "1a86",
+          "idProduct": "55d4",
+          "busnum": "2",
+          "devnum": "7",
+          "authorized": "1"
+        },
+        "5-1.1": {
+          "idVendor": "2bc5",
+          "idProduct": "060f",
+          "busnum": "5",
+          "devnum": "15",
+          "authorized": "1"
+        },
+        "5-1.2": {
+          "idVendor": "2bc5",
+          "idProduct": "050f",
+          "busnum": "5",
+          "devnum": "16",
+          "authorized": "1"
+        }
+      },
+      "same_physical_USB_path": "2-1.2"
+    },
+    "bridge_restarted": true,
+    "ended_at": "2026-10-27T17:16:05.374302+08:00"
+  },
   "current_full_load_soak": {
     "controller_identity_verified_live": false,
     "runtime": null,
     "launch": {
-      "started_at": "2026-10-27T16:40:09.789031+08:00",
-      "scope": "HCD USB bulk-IN versus same-run application serial bytes; original bridge/protocol/hardware unchanged",
+      "started_at": "2026-10-27T17:16:40.093194+08:00",
+      "scope": "Post user-requested USB device soft reconnect/reset; HCD bulk-IN versus same-run application bytes; original bridge/protocol/FPGA unchanged",
       "passed_soak": false,
       "requested_s": 1800,
       "Flash_written": false,
@@ -671,86 +770,75 @@
           "NAV_MISSION_EXECUTOR_PORT": "9101",
           "YUNTUO_FPGA_IS_MOCK": "false"
         },
-        "disk_free_bytes": 71138275328
-      },
-      "IRQ22_trial": {
-        "before": {
-          "smp_affinity_list": "0-7",
-          "effective_affinity_list": "0"
-        },
-        "after": {
-          "smp_affinity_list": "5",
-          "effective_affinity_list": "5"
-        },
-        "changed_only_irq": 22
+        "disk_free_bytes": 71123935232
       },
       "USB_monitor": {
         "ready": true,
-        "pid": 533051,
+        "pid": 536504,
         "bus": 2,
         "device": 4,
-        "start_ticks": "39800600"
+        "start_ticks": "40019329"
       },
       "bridge_process": {
-        "pid": 533053,
-        "start_ticks": "39800617"
+        "pid": 536506,
+        "start_ticks": "40019347"
       },
       "explicit_bench_release": {
         "mode": "idle"
       },
       "soak_process": {
-        "pid": 533070,
-        "start_ticks": "39800760"
+        "pid": 536523,
+        "start_ticks": "40019476"
       }
     },
     "progress": {
-      "elapsed_s": 76.10349930101074,
-      "remaining_s": 1723.8965006989893,
-      "samples": 153,
+      "elapsed_s": 25.037219165998977,
+      "remaining_s": 1774.962780834001,
+      "samples": 51,
       "decoder": {
-        "frames": 7748,
+        "frames": 2629,
         "bad_crc": 0,
         "skipped": 0
       },
       "websockets": {
         "state": {
-          "messages": 639,
+          "messages": 209,
           "errors": [],
-          "last_received_s": 76.0484240949736
+          "last_received_s": 24.94955691602081
         },
         "navigation": {
-          "messages": 366,
+          "messages": 120,
           "errors": [],
-          "last_received_s": 76.0486749500269
+          "last_received_s": 24.910293043009005
         }
       },
       "idle_10min_complete": false,
       "last": {
-        "elapsed_s": 76.10349930101074,
-        "status_age_s": 0.0,
-        "status_rate_hz": 4.96,
-        "telemetry_rate_hz": 101.5,
+        "elapsed_s": 25.037219165998977,
+        "status_age_s": 0.01,
+        "status_rate_hz": 5.0,
+        "telemetry_rate_hz": 101.4,
         "mode": "idle",
-        "uptime_s": 83.12274,
+        "uptime_s": 31.734317,
         "left_mps": -0.6,
         "right_mps": -0.6,
         "decoder": {
-          "frames": 7748,
+          "frames": 2629,
           "bad_crc": 0,
           "skipped": 0
         }
       },
       "last_memory": {
-        "elapsed_s": 70.09623148600804,
+        "elapsed_s": 20.533583820040803,
         "processes": {
           "yuntuo-fpga-bridge": {
-            "pid": 533053,
-            "rss_kib": 22536,
-            "start_ticks": "39800617"
+            "pid": 536506,
+            "rss_kib": 22072,
+            "start_ticks": "40019347"
           },
           "qhxd-backend": {
             "pid": 512269,
-            "rss_kib": 70836,
+            "rss_kib": 71640,
             "start_ticks": "38863544"
           }
         }
@@ -758,8 +846,8 @@
       "error": null
     },
     "result": {
-      "started_at": "2026-10-27T16:40:09.789031+08:00",
-      "scope": "HCD USB bulk-IN versus same-run application serial bytes; original bridge/protocol/hardware unchanged",
+      "started_at": "2026-10-27T17:16:40.093194+08:00",
+      "scope": "Post user-requested USB device soft reconnect/reset; HCD bulk-IN versus same-run application bytes; original bridge/protocol/FPGA unchanged",
       "passed_soak": false,
       "requested_s": 1800,
       "Flash_written": false,
@@ -786,182 +874,96 @@
           "NAV_MISSION_EXECUTOR_PORT": "9101",
           "YUNTUO_FPGA_IS_MOCK": "false"
         },
-        "disk_free_bytes": 71138275328
-      },
-      "IRQ22_trial": {
-        "before": {
-          "smp_affinity_list": "0-7",
-          "effective_affinity_list": "0"
-        },
-        "after": {
-          "smp_affinity_list": "5",
-          "effective_affinity_list": "5"
-        },
-        "changed_only_irq": 22
+        "disk_free_bytes": 71123935232
       },
       "USB_monitor": {
         "ready": true,
-        "pid": 533051,
+        "pid": 536504,
         "bus": 2,
         "device": 4,
-        "start_ticks": "39800600"
+        "start_ticks": "40019329"
       },
       "bridge_process": {
-        "pid": 533053,
-        "start_ticks": "39800617"
+        "pid": 536506,
+        "start_ticks": "40019347"
       },
       "explicit_bench_release": {
         "mode": "idle"
       },
       "soak_process": {
-        "pid": 533070,
-        "start_ticks": "39800760"
+        "pid": 536523,
+        "start_ticks": "40019476"
       },
       "soak_result": {
-        "duration_s": 78.6080568319885,
+        "duration_s": 25.537467718997505,
         "requested_duration_s": 1800.0,
-        "error": "AssertionError: CRC error during soak",
+        "error": "AssertionError: Telemetry sequence gap during soak",
         "completed": false,
-        "samples": 157,
+        "samples": 51,
         "first_decoder": {
-          "frames": 141,
+          "frames": 125,
           "bad_crc": 0,
           "skipped": 0
         },
         "last_decoder": {
-          "frames": 7998,
-          "bad_crc": 1,
-          "skipped": 2
+          "frames": 2676,
+          "bad_crc": 0,
+          "skipped": 1
         },
         "websockets": {
           "state": {
-            "messages": 659,
+            "messages": 213,
             "errors": [],
-            "last_received_s": 78.51064164197305
+            "last_received_s": 25.45955473399954
           },
           "navigation": {
-            "messages": 377,
+            "messages": 122,
             "errors": [],
-            "last_received_s": 78.4299856480211
+            "last_received_s": 25.333633323025424
           }
         },
         "memory": [
           {
-            "elapsed_s": 0.017348953988403082,
+            "elapsed_s": 0.023547132033854723,
             "processes": {
               "yuntuo-fpga-bridge": {
-                "pid": 533053,
-                "rss_kib": 22268,
-                "start_ticks": "39800617"
+                "pid": 536506,
+                "rss_kib": 21808,
+                "start_ticks": "40019347"
               },
               "qhxd-backend": {
                 "pid": 512269,
-                "rss_kib": 70836,
+                "rss_kib": 71640,
                 "start_ticks": "38863544"
               }
             }
           },
           {
-            "elapsed_s": 10.020957775006536,
+            "elapsed_s": 10.521206956007518,
             "processes": {
               "yuntuo-fpga-bridge": {
-                "pid": 533053,
-                "rss_kib": 22532,
-                "start_ticks": "39800617"
+                "pid": 536506,
+                "rss_kib": 22072,
+                "start_ticks": "40019347"
               },
               "qhxd-backend": {
                 "pid": 512269,
-                "rss_kib": 70836,
+                "rss_kib": 71640,
                 "start_ticks": "38863544"
               }
             }
           },
           {
-            "elapsed_s": 20.033500407007523,
+            "elapsed_s": 20.533583820040803,
             "processes": {
               "yuntuo-fpga-bridge": {
-                "pid": 533053,
-                "rss_kib": 22532,
-                "start_ticks": "39800617"
+                "pid": 536506,
+                "rss_kib": 22072,
+                "start_ticks": "40019347"
               },
               "qhxd-backend": {
                 "pid": 512269,
-                "rss_kib": 70836,
-                "start_ticks": "38863544"
-              }
-            }
-          },
-          {
-            "elapsed_s": 30.04733319202205,
-            "processes": {
-              "yuntuo-fpga-bridge": {
-                "pid": 533053,
-                "rss_kib": 22532,
-                "start_ticks": "39800617"
-              },
-              "qhxd-backend": {
-                "pid": 512269,
-                "rss_kib": 70836,
-                "start_ticks": "38863544"
-              }
-            }
-          },
-          {
-            "elapsed_s": 40.06242283497704,
-            "processes": {
-              "yuntuo-fpga-bridge": {
-                "pid": 533053,
-                "rss_kib": 22532,
-                "start_ticks": "39800617"
-              },
-              "qhxd-backend": {
-                "pid": 512269,
-                "rss_kib": 70836,
-                "start_ticks": "38863544"
-              }
-            }
-          },
-          {
-            "elapsed_s": 50.07855215203017,
-            "processes": {
-              "yuntuo-fpga-bridge": {
-                "pid": 533053,
-                "rss_kib": 22536,
-                "start_ticks": "39800617"
-              },
-              "qhxd-backend": {
-                "pid": 512269,
-                "rss_kib": 70836,
-                "start_ticks": "38863544"
-              }
-            }
-          },
-          {
-            "elapsed_s": 60.08307088399306,
-            "processes": {
-              "yuntuo-fpga-bridge": {
-                "pid": 533053,
-                "rss_kib": 22536,
-                "start_ticks": "39800617"
-              },
-              "qhxd-backend": {
-                "pid": 512269,
-                "rss_kib": 70836,
-                "start_ticks": "38863544"
-              }
-            }
-          },
-          {
-            "elapsed_s": 70.09623148600804,
-            "processes": {
-              "yuntuo-fpga-bridge": {
-                "pid": 533053,
-                "rss_kib": 22536,
-                "start_ticks": "39800617"
-              },
-              "qhxd-backend": {
-                "pid": 512269,
-                "rss_kib": 70836,
+                "rss_kib": 71640,
                 "start_ticks": "38863544"
               }
             }
@@ -969,22 +971,22 @@
         ],
         "scope": "Real UART/control telemetry, original4500 active, public WebSocket consumers. Elevated fixed body; no browser video or grounded standing acceptance.",
         "status_rate_range_hz": [
-          4.96,
-          5.06
+          4.95,
+          5.05
         ],
         "telemetry_rate_range_hz": [
-          101.2,
-          102.2
+          101.0,
+          102.8
         ],
         "maximum_status_age_s": 0.18,
-        "idle_continuous_s": 78.6080568319885,
-        "telemetry_frames_observed": 7857,
-        "CRC_delta": 1,
-        "skipped_delta": 2
+        "idle_continuous_s": 25.537467718997505,
+        "telemetry_frames_observed": 2551,
+        "CRC_delta": 0,
+        "skipped_delta": 1
       },
-      "error": "AssertionError: CRC error during soak",
+      "error": "AssertionError: Telemetry sequence gap during soak",
       "USB_monitor_exit": 0,
-      "ended_at": "2026-10-27T16:42:15.343959+08:00",
+      "ended_at": "2026-10-27T17:17:46.839891+08:00",
       "automatic_comparison_exit": 0
     },
     "adds_public_WebSocket_consumers": true,
@@ -993,7 +995,7 @@
     "soak_30min_accepted": false
   },
   "remaining": [
-    "Known intermittent telemetry loss already present at the HCD receive monitor; exact HCD/adapter/UART/FPGA origin unproven. IRQ22-to-CPU5 comparison failed; next isolate a different physical USB controller or observe FPGA TX independently.",
+    "Known intermittent telemetry loss already present at the HCD receive monitor; exact HCD/adapter/UART/FPGA origin unproven. IRQ22-to-CPU5 comparison failed. User cannot move the plug; a user-requested device software disconnect/reconnect/reset was performed and the same-path full-load comparison is recorded below. This is not physical power cycling or controller substitution.",
     "Ten-minute real IDLE and thirty-minute full-load acceptance have not passed; the full-load and IRQ5 trials failed early.",
     "Actual browser/phone playback and controls, physical tilt and microphone ASR.",
     "Real target identification/follow latency and target loss, physical lidar cable recovery.",
