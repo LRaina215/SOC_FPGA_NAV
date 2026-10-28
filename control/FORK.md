@@ -1,5 +1,7 @@
 # 本仓库内的控制副本
 
+**2026-10-28候选对账：** 原始受跟踪副本与已部署联合候选不是同一源码入口。最新SYN50/PNR63在构建副本中修改命令均值授权、红外方向双轴覆盖、BMI088总线恢复及CPU固件INIT；原4500权重/网络/125Hz未重训替换。补丁与有限测试已保存于[integration/g2/k_bench_20261027/syn50](../integration/g2/k_bench_20261027/syn50/command_lease_guard.v)，完整构建目录为`F:/nav_integration_g2_20261023/K_timing_syn50`。不能只运行旧根构建器或读取本目录就认为已复现PNR63。实际资源、实车后退失败与待验边界见[PNR63核对](../docs/4_design/g2_PNR63_review_20261028.md)；本次只补文档。
+
 此目录是原4500控制仓库的完整受跟踪文件副本，来源为
 `D:/Desktop/SOC FPGA/control_repo_snapshot_20261021`的`main@6443f56`。
 原本地快照只有这一层可见提交（浅克隆），此次按Git树导入845个受跟踪条目，保留文件类型和原内容，不建立嵌套Git仓库。没有在GitHub另建远程fork。

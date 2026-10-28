@@ -13,7 +13,7 @@ RK3588 / PC --板载CH导航串口；P11-40独立控制遥测--> 邮箱 -> 软�
                               安全限幅/斜坡/看门狗/急停 -> vx vy wz -> 轮腿 RL 运动控制（同一 FPGA）-> odo -> 位姿
 ```
 
-上图为整车计算架构。2026-10-27当前选择SYN49→PNR61、SLF128、128KiB软核RAM、原4500/125Hz与双串口，实际BSRAM280/340，布通且报告内部50/100MHz setup/hold均0；同源PNR62仍124个setup违例。G3姿态、实际地图接收、指令受理和架空控制短测已有证据，完整IO/CDC/复位签核、长期遥测完整性与落地导航仍未验收。最近实板收尾为hold，不能把已生成位流当作当前机器人正运行导航；详见[PNR61签核](docs/4_design/g2_PNR61_signoff_20261027.md)和[整车总计划](docs/1_plan/system_integration_plan_20261021.md)。SFP1/Lane2独立千兆回显已通过，未进入本候选。
+上图为整车计算架构。2026-10-28最新受测SYN50→PNR63采用SLF128、128KiB软核RAM、原4500/125Hz与双串口，实际BSRAM280/340、内部50/100MHz setup/hold0。IR5、BMI重复下载恢复及直接SAFE命令已有专项；落地后退失败，稳定保持/失联回稳和自主导航尚未验收，最近实板记录回hold。详见[PNR63核对](docs/4_design/g2_PNR63_review_20261028.md)、[总体设计](docs/system_architecture.md)与[总计划](docs/1_plan/system_integration_plan_20261021.md)。SFP独立验证保留，未进入本候选。
 
 当前任务顺序和状态只维护在[整车总计划](docs/1_plan/system_integration_plan_20261021.md)。实验记录与历史板级成绩分别保留，不能代替整车验收。
 
@@ -96,4 +96,4 @@ python tools/nav_host.py --link uart:COM5 map field.nvmp    # PC 下发地图；
 
 ## 未完成 / 需实机确认
 
-以 [当前总计划](docs/1_plan/system_integration_plan_20261021.md) 为准：现有控制与导航的接口/时间/停止适配、同片资源和统一顶层、N2g新增退化修复，以及装车参数和真实响应验收。BMI088 I2C、原4500模型及转向接口已有实现，不再从零开发。RK3588任务与可选显示按资源和整车进度安排。
+以[当前总计划](docs/1_plan/system_integration_plan_20261021.md)为准：共同顶层和280块BSRAM候选已形成，剩余重点是落地响应/回稳、任务终点与遥测、完整板级签核及真实导航。原4500后退失败和局部地图负空间反例分别保留；不再将联合顶层或BMI驱动列为从零待实现。

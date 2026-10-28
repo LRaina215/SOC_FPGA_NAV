@@ -1,0 +1,108 @@
+{
+  "review_date": "2026-10-28",
+  "timezone": "Asia/Shanghai",
+  "scope": "documentation reconciliation; no hardware or runtime changes",
+  "source_baselines": {
+    "nav": "8e247b0",
+    "web": "b20812e",
+    "miniprogram": "b4be81c"
+  },
+  "sessions": {
+    "zcode_navigation": "sess_6ac1dbd7-1a60-4d06-a50e-b27b1a031b31",
+    "zcode_last_completed_turn": "2026-10-28T01:43:18+08:00",
+    "codex_main": "01a15a14-f781-7b43-9d53-a8dca480c4e9",
+    "codex_mini": "01a1650e-0f9d-7960-9538-ef4adecae897",
+    "codex_sfp": "01a15a0f-cd57-7742-bfe9-4e75a0630318"
+  },
+  "candidate": {
+    "synthesis": "SYN50",
+    "pnr": "K_pnr63_s50p2r0",
+    "bitstream_backup": "D:/tools/g2_joint_slf128_syn50_pnr63_20261028.fs",
+    "bsram_physical": 280,
+    "bsram_device": 340,
+    "logic": 61054,
+    "register": 32151,
+    "cls": 43136,
+    "clock_constraints_mhz": [
+      50,
+      100
+    ],
+    "reported_fmax_mhz": [
+      50.075,
+      136.831
+    ],
+    "setup_violations": 0,
+    "hold_violations": 0,
+    "min_setup_slack_ns": 0.03,
+    "min_hold_slack_ns": 0.162,
+    "full_board_signoff": false,
+    "reports": [
+      "F:/nav_integration_g2_20261023/K_pnr63_s50p2r0/impl/pnr/g2_top.rpt.txt",
+      "F:/nav_integration_g2_20261023/K_pnr63_s50p2r0/impl/pnr/g2_top.tr"
+    ]
+  },
+  "ground_test": {
+    "source": "RK ~/fpga_bench/gcmd_ground1.jsonl, summaries preserved in Zcode tool results and nav bench README",
+    "navigation_cpu_held_reset": true,
+    "command_entry": "direct SAFE register writes",
+    "forward_command_received_mps": 0.15,
+    "reverse_command_mps": -0.15,
+    "reverse_result": "fell backward; subsequent sensor fault latched motor shutdown",
+    "frames": 2520,
+    "bad_crc": 0,
+    "skipped": 0,
+    "forward_wheel_integral_cm": 1.6,
+    "zero_initial_wheel_integral_cm": -22.9,
+    "wheel_integrals_are_ground_truth": false,
+    "turning_accepted": false,
+    "host_loss_stop_accepted": false,
+    "printed_176ms_is_valid_acceptance": false,
+    "autonomous_navigation_accepted": false,
+    "root_cause_uniquely_identified": false
+  },
+  "authorization": {
+    "samples_per_nonoverlapping_block": 100,
+    "nominal_feedback_hz": 100,
+    "signed_mean_v_limit_mmps": 50,
+    "signed_mean_w_limit_mradps": 100,
+    "task_stop_limits_unchanged": {
+      "per_wheel_mmps": 5,
+      "yaw_mradps": 20,
+      "continuous_ms": 500
+    },
+    "is_physical_stop_proof": false
+  },
+  "last_board_record": {
+    "at": "2026-10-28T01:41:44+08:00",
+    "usercode": "0xF322",
+    "image": "hold",
+    "read_again_this_review": false
+  },
+  "last_service_record": {
+    "at": "2026-10-28T01:43:02+08:00",
+    "source": "Zcode final message",
+    "fpga_bridge": "stopped; not independently checked now"
+  },
+  "public_readonly_snapshot": {
+    "gateway_observed_at": "2026-10-28T13:13:53.688076+08:00",
+    "gateway_http_status": 200,
+    "gateway_status": "ok",
+    "rk_online": false,
+    "state_result": "read operation timed out",
+    "video_result": "read operation timed out",
+    "offline_cause": "unknown"
+  },
+  "retained_limits": [
+    "intermittent telemetry byte loss unresolved",
+    "new mini app video release/phone acceptance unconfirmed",
+    "IMU +4 degree root cause not independently verified",
+    "PNR61 physical audits do not automatically sign off PNR63",
+    "no new geometry/vision calibration"
+  ],
+  "actions_this_update": {
+    "rtl_or_runtime_modified": false,
+    "hardware_tests_rerun": false,
+    "services_restarted": false,
+    "flash_written": false
+  }
+}

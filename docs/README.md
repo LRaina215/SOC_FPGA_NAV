@@ -2,7 +2,7 @@
 
 先读[项目总体设计](system_architecture.md)，了解FPGA、RK3588边缘多模态任务引擎、Web与微信小程序的完整架构。当前状态和执行顺序只查[当前总计划](1_plan/system_integration_plan_20261021.md)；控制来源见[控制仓库审阅](5_teams/control_repo_review_20261021.md)，历史进度见[roadmap](1_plan/roadmap.md)，要改代码先读[3_guide/dev_guide.md](3_guide/dev_guide.md)。
 
-2026-10-27入口已按PNR61 / SLF128 / 双串口、Qwen3、Web地图上传/预览与小程序HLS对账。独立SFP已实测，未进入当前共同候选；遥测浸泡、落地站稳和新版手机视频仍按各自证据保留未验收。较早专项里的“当前”以其记录日期解释，避免把旧镜像/旧部署误当现状。
+2026-10-28入口已按SYN50/PNR63及落地失败证据对账。IR5断轮、IR2/4覆盖、BMI重下载恢复已有分项实测；后退、实际停稳与自主导航仍未通过。平均速度命令授权不替代任务停稳；旧PNR61/SFP候选和早期站立结论按日期解释。详见[PNR63核对](4_design/g2_PNR63_review_20261028.md)。
 
 | 目录 | 文档 | 内容 |
 |---|---|---|
@@ -21,6 +21,7 @@
 | | [board_bringup.md](3_guide/board_bringup.md) | 开发侧上板要点、IP 生成、有图模式与 PC 单独操作 |
 | | [dev_guide.md](3_guide/dev_guide.md) | 开发规范：唯一真值、改动后必跑、新模块接入、地址空间、协作 |
 | `4_design/` 设计与参数 | [algorithms.md](4_design/algorithms.md) | 闭环仿真平台、算法改进记录、批量评测结果 |
+| | [g2_PNR63_review_20261028.md](4_design/g2_PNR63_review_20261028.md) | SYN50改动、实际资源时序、落地失败、授权/停稳区别与结论更正 |
 | | [g2_joint_resources_20261022.md](4_design/g2_joint_resources_20261022.md) | 原4500真实策略与导航共同工程资源、分解、无损优化和时序证据 |
 | | [endpoint_stop_20261022.md](4_design/endpoint_stop_20261022.md) | 航向数值反例、同版本终点配对、零偏/漂移和命令有效期故障注入 |
 | | [rk_task_layer_replay_20261025.md](4_design/rk_task_layer_replay_20261025.md) | RK任务完成/停稳核验、目标复核、重复状态处理与隔离回放证据 |
