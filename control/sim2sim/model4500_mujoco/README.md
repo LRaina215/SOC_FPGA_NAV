@@ -72,7 +72,7 @@ bash /home/cyd/fpga/sim2sim/model4500_mujoco/open_mujoco.sh --eval
 
 ## 固定后退指令偏置
 
-按用户要求，`open_mujoco_bias.sh`启动时增加固定-0.01m/s车身速度指令偏置。用户零指令实际送入模型-0.01m/s；+0.2送入+0.19，-0.2送入-0.21，转向和重置后也保留偏置，最后限幅±0.6。偏置不累计，权重和FPGA代码不变。曲线Command显示偏置后的实际模型指令；viewer_status.json另存requested_command。
+`open_mujoco_bias.sh` 启动时增加固定 −0.01 m/s 车身速度指令偏置。输入零指令时送入模型 −0.01 m/s；+0.2送入+0.19，-0.2送入-0.21，转向和重置后也保留偏置，最后限幅±0.6。偏置不累计，权重和FPGA代码不变。曲线Command显示偏置后的实际模型指令；viewer_status.json另存requested_command。
 
 ```bash
 bash /home/cyd/fpga/sim2sim/model4500_mujoco/open_mujoco_bias.sh

@@ -74,7 +74,7 @@ Bosch官方资料：https://www.bosch-sensortec.com/media/boschsensortec/downloa
 
 另有tb_units.v，用独立Decimal四舍五入参考核对25组正负数、接近0、0.98g、1g、进位和满量程，覆盖全部六轴。
 
-RTL仿真和编译验证已完成，尚未执行此次位流的实物点亮验证。
+该版本记录包含 RTL 仿真与编译结果，OLED 实物显示结果单独记录。
 
 ## 当前顶部已改为轮速
 

@@ -20,6 +20,6 @@ SHA256：`a0c0024e132b71d10fc42cc92081129e2738e8148b0191f56acf7eecfc73d99b`。�
 bash /home/cyd/fpga/model/wheel_velocity_original/open_parking_preview.sh
 ```
 
-预览入口路径已修正为现有`rl_ws`，本次未打开交互窗口。FPGA工程ROM副本在`/home/cyd/fpga/fpga/src/mem`，本次清理未改动该工程。
+预览程序依赖 `rl_ws` 中的运行环境。FPGA 工程的 ROM 副本位于 `control/fpga/src/mem`。
 
 其他模型、试验目录与历史日志已移到可恢复备份：`/home/cyd/fpga/_model_backups/20261021_110907`。备份中的`cleanup_manifest.json`逐项记录原位置，未永久删除。

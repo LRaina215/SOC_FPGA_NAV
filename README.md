@@ -1,4 +1,4 @@
-# FPGA 导航子系统（嵌赛 2026 FPGA 选题 3）
+# 云拓 · FPGA 自主导航与轮腿运动控制
 
 目标板：小梅哥 ACX750（高云 GW5AT-LV138PG484AC1/I0；导航历史工程记录版本B，控制工程记录C，统一构建前核对实物）。架构依据《嵌赛-FPGA-选题3.pdf》第 13–14 页：
 感知、定位、规划、避障与轮腿控制都在这一块 FPGA 上完成（RTL + 软核），RK3588 只提供视觉目标与任务，**导航不依赖 RK3588**。
@@ -13,9 +13,9 @@ RK3588 / PC --板载CH导航串口；P11-40独立控制遥测--> 邮箱 -> 软�
                               安全限幅/斜坡/看门狗/急停 -> vx vy wz -> 轮腿 RL 运动控制（同一 FPGA）-> odo -> 位姿
 ```
 
-上图为整车计算架构。2026-10-28最新受测SYN50→PNR63采用SLF128、128KiB软核RAM、原4500/125Hz与双串口，实际BSRAM280/340、内部50/100MHz setup/hold0。IR5、BMI重复下载恢复及直接SAFE命令已有专项；落地后退失败，稳定保持/失联回稳和自主导航尚未验收，最近实板记录回hold。详见[PNR63核对](docs/4_design/g2_PNR63_review_20261028.md)、[总体设计](docs/system_architecture.md)与[总计划](docs/1_plan/system_integration_plan_20261021.md)。SFP独立验证保留，未进入本候选。
+工程采用 RTL 与 PicoRV32 软核协同实现导航，在同一片 FPGA 中集成原 4500 轮腿运动控制。导航源码位于 `rtl/` 与 `fw/`，控制源码位于 `control/`，联合构建与板级适配位于 `integration/`。系统分工见[总体设计](docs/system_architecture.md)。
 
-当前任务顺序和状态只维护在[整车总计划](docs/1_plan/system_integration_plan_20261021.md)。实验记录与历史板级成绩分别保留，不能代替整车验收。
+开发进度见[整车总计划](docs/1_plan/system_integration_plan_20261021.md)，构建和实测结果见[PNR63 报告](docs/4_design/g2_PNR63_review_20261028.md)。
 
 两种模式（选题 3 方案），局部高程图 / 可通行性分析 / 局部规划共用：
 
@@ -24,7 +24,7 @@ RK3588 / PC --板载CH导航串口；P11-40独立控制遥测--> 邮箱 -> 软�
 | 无图（上电默认） | 里程计 + IMU，SLF 匹配自己的局部结构图（激光里程计，抑制漂移） | 记忆栅格（在线累积） | 记忆栅格上的边界探索 |
 | 有图（下发先验地图 + SET_POSE） | **只定位不建图**：SLF 匹配先验定位图；初始对准、质量判定、丢失自动重定位 | 先验代价图 + 观测到的动态障碍 | 找相机还没看过的区域 |
 
-当前先验地图采用量测JSON→点云→配套SLF128工具→NVMP v3；根目录旧v2工具不能直接用于当前镜像。Web已部署地图上传/ACK进度和明确标记的离线预览，真实地图READY、定位对准与运动验收分开。导入工具、格式和实际操作见[落地调试与建图指南](docs/3_guide/ground_debug_and_mapping_20261027.md)。SLAM录包转换尚未形成生产链路。
+先验地图通过场地几何 JSON 生成点云，再使用 SLF128 配套工具生成 NVMP v3 地图包。Web 提供地图上传、下发进度与预览入口；制作和导入步骤见[落地调试与建图指南](docs/3_guide/ground_debug_and_mapping_20261027.md)。
 
 ## 文档导航
 
@@ -78,22 +78,11 @@ python tools/map_tool.py build map.pcd -o field.nvmp --step 20 --slope 12   # �
 python tools/nav_host.py --link uart:COM5 map field.nvmp    # PC 下发地图；pose / goal / wp / mode / listen 见 --help
 ```
 
-## 验证现状
+## 验证与报告
 
-- RTL 回归 15 项全部通过，全部与 Python 定点模型逐位比较：公共库、XT-M60 帧接收（含真雷达抓包）、点云链路 + 地图、SLF 匹配（在线 + 有图）、
-  轨迹评估、安全限幅、网口协议栈、百兆 RGMII MAC（上升沿 / 下降沿两种接收采样）、串口桥、软核 SoC、`nav_subsystem` 端到端。
-- 固件主机测试：定点数学、协议、位姿、A*、C 版轨迹评估与模型逐位一致、闭环（绕障、巡航、探索找目标并跟踪、急停）；
-  有图模式（`test_prior.py`）、方向表生成（`test_lidar_cal.py`，与模型差 ≤ 1 LSB）、雷达启动 TCP 客户端（`test_xt_link.py`，对假雷达 20 个场景）。
-- 闭环仿真（5 m 场地、两轮自平衡、整车标定的车体、雷达正装下俯 10°，2026-10-01，[docs/4_design/algorithms.md](docs/4_design/algorithms.md) 第 10 节）：
-  10 用例 × 5 种子 50/50 到达、0 碰撞，无图定位 xy RMS 均值 2.7 cm、有图 2.2 cm，地形误报均值 ≤ 1.9%。
-- 板级（ACX750，50 MHz）：软核 + 导航固件 + 完整点云链路 + 百兆 MAC + 雷达口原始帧通道上板运行；真雷达直连 10 帧/秒、坏帧 0，
-  软核自动启动雷达并在掉电重启后恢复。2026-10-01 用 10° 比特流补测：雷达冷启动复测 4 次、断流重启、PC 经 USB 串口下发报文 / 读状态（含地图包与 TARGET）、
-  速度安全层台架测试都已通过；10° 安装的标定要等雷达装车后做（roadmap 第 8 节 N0）。
-
-## 实物到货后
-
-按 [docs/3_guide/hardware_guide.md](docs/3_guide/hardware_guide.md) 逐步搭建与测试（环境、烧录、上电初始化 `tools/board_init.py`、IMU / 雷达 / 底盘接入、实地测试、故障排查）。
-
-## 未完成 / 需实机确认
-
-以[当前总计划](docs/1_plan/system_integration_plan_20261021.md)为准：共同顶层和280块BSRAM候选已形成，剩余重点是落地响应/回稳、任务终点与遥测、完整板级签核及真实导航。原4500后退失败和局部地图负空间反例分别保留；不再将联合顶层或BMI驱动列为从零待实现。
+| 层级 | 内容 | 入口 |
+|---|---|---|
+| RTL 与定点模型 | 雷达、点云、地图、匹配、轨迹评估、网络和软核 | `sim/run.py`、`model/` |
+| 固件与导航闭环 | 协议、位姿、路径、探索、目标跟踪与虚拟场景 | `fw/test/build.py`、`sim/closed_loop/` |
+| 地形动力学 | 原 4500 在坡道、台阶和沟槽中的运动、接触与地图判断 | [地形可行性分析](docs/4_design/local_map_terrain_feasibility_report_20261021.md) |
+| 联合实现与实板 | 片上资源、时序、通信、传感器与轮腿执行 | [联合资源记录](docs/4_design/g2_joint_resources_20261022.md)、[PNR63 报告](docs/4_design/g2_PNR63_review_20261028.md) |

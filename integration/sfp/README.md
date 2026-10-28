@@ -1,14 +1,10 @@
 # SFP1 千兆网络独立调试工程
 
-首次记录：2026-10-23；2026-10-24 实测更新。**交接先读 [通道修正与成功实测](../../docs/4_design/sfp_mapping_correction_20261024.md)**。
+本工程用于 ACX750-GW5AT138 的 SFP1 千兆网络调试，采用高云 1G Serial Ethernet MAC / PCS / SerDes，支持 ARP 与 UDP 回显，通过网线连接 PC 或 RK3588。
 
-**2026-10-27架构对账：** 本目录为独立扩展；当前整车选用PNR61 / SLF128 / 双串口、280/340块BSRAM，报告内部50/100MHz时序通过，未含本SFP。10月24日91FB为历史实板时点，最近测试已回hold。本文及实测说明/证据随本轮文档提交；生成器、配置/约束和G2构建器中已有的未提交源码改动仍保留工作区，不因文档推送就宣称这些源码已纳入提交。
+SFP1 位于 P6 / U11，连接 Q0 Lane2；Lane0 对应 PCIe。电口模块使用 SFP-GE-T，所测配置为 1000BASE-X 与自协商。独立顶层保持十路执行器输出为零，导航与原 4500 共同工程另由 `integration/g2/` 管理。
 
-**2026-10-24 更正：SFP1/P6/U11 实际连接 Q0 Lane2，Lane0 是 PCIe。** 当前源码/配置已修正，旧 Lane0 镜像不用于 SFP1 验收。最新构建和硬件状态见 [通道映射更正与后续测试](../../docs/4_design/sfp_mapping_correction_20261024.md)。
-
-面向 ACG750 / ACX750-GW5AT138、GW5AT-LV138PG484AC1/I0，使用板上 SFP1 插槽接用户已购的 SFP-GE-T 电口模块。FPGA 内部复用高云 1G Serial Ethernet MAC/PCS/SerDes，外部网线接 PC 或 RK3588。
-
-已完成：IP生成、独立综合/布局布线、有效约束时序检查及MAC/UDP、UART仿真。**10月24日正确Lane2镜像实测UserCode=91FB；RK eth2千兆全双工，五种长度共100个UDP原样回显通过，错误/回显丢弃0，十路执行器恒低，Flash未改。** 旧4785/Lane0不能用于SFP1验收。含SFP的历史G2候选未通过；后续无SFP的PNR61与本目录分开记账。根构建器工作区MAC时钟源随Lane2修正，旧冻结输入未追改；独立工程跨域例外与联合CDC门禁的边界见交接文档。
+接线及实测记录见[通道映射与测试](../../docs/4_design/sfp_mapping_correction_20261024.md)。
 
 ## 入口
 
@@ -24,7 +20,7 @@
 | `sfp_client.py` | UART 状态/模式配置；PC/RK3588 上的 UDP 回显客户端 |
 | `hardware_probe.py` | 带当前 UserCode 和物理恒低检查的 SRAM 诊断下载/读回；不写 Flash |
 | `test_echo.py` / `test_control.py` | 两项专项仿真；均不模拟真实模拟收发器 |
-| `evidence_20261023.json` | 本轮时序、资源、输出核对和两项仿真的机器结果汇总 |
+| `evidence_20261023.json` | 2026-10-23 时序、资源、输出与仿真记录 |
 
 ## 重建
 

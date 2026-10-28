@@ -52,8 +52,8 @@ bash /home/cyd/fpga/tools/fpga_telemetry/open_monitor.sh --port /dev/ttyUSB0
 
 `verification.json`记录8N1线级仿真、CRC、快照隔离、序号/时间戳、分段输入、坏帧恢复、带符号物理量及顶层编译检查。`tb_uart_telemetry.v`捕获实际RTL串口输出。
 
-FPGA工程：`/home/cyd/fpga/fpga/fpga.gprj`；构建日志`build_telemetry.log`；生成位流`impl/pnr/fpga.fs`。下载前需确认位流是本次新生成文件。
+FPGA工程：`/home/cyd/fpga/fpga/fpga.gprj`；构建日志`build_telemetry.log`；生成位流`impl/pnr/fpga.fs`。下载时核对位流与构建记录的对应关系。
 
 ## V2追加PID诊断
 
-本次源码使用V2：版本02，负载长度78(hex，即120字节)，100Hz，230400 8N1。前100字节布局与V1相同；偏移100/104为左/右PID内部参考int32 mm/s，108/112为左/右误差int32 mm/s，116/118为左/右控制完成计数uint16。CRC覆盖版本、长度和全部120字节负载，总帧长126字节。解码兼容V1，旧固件缺失的新字段为空/NaN；监控曲线新增PID内部参考。协议参数和待实车验证的调参依据见[轮速响应调整](../motor_response_tuning/README.md)。
+V2 遥测格式：版本02，负载长度78(hex，即120字节)，100Hz，230400 8N1。前100字节布局与V1相同；偏移100/104为左/右PID内部参考int32 mm/s，108/112为左/右误差int32 mm/s，116/118为左/右控制完成计数uint16。CRC覆盖版本、长度和全部120字节负载，总帧长126字节。解码兼容V1，旧固件缺失的新字段为空/NaN；监控曲线新增PID内部参考。协议参数和待实车验证的调参依据见[轮速响应调整](../motor_response_tuning/README.md)。

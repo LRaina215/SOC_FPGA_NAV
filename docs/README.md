@@ -2,7 +2,7 @@
 
 先读[项目总体设计](system_architecture.md)，了解FPGA、RK3588边缘多模态任务引擎、Web与微信小程序的完整架构。当前状态和执行顺序只查[当前总计划](1_plan/system_integration_plan_20261021.md)；控制来源见[控制仓库审阅](5_teams/control_repo_review_20261021.md)，历史进度见[roadmap](1_plan/roadmap.md)，要改代码先读[3_guide/dev_guide.md](3_guide/dev_guide.md)。
 
-2026-10-28入口已按SYN50/PNR63及落地失败证据对账。IR5断轮、IR2/4覆盖、BMI重下载恢复已有分项实测；后退、实际停稳与自主导航仍未通过。平均速度命令授权不替代任务停稳；旧PNR61/SFP候选和早期站立结论按日期解释。详见[PNR63核对](4_design/g2_PNR63_review_20261028.md)。
+文档按设计、接口、操作指南和开发记录组织。总体设计从[系统架构](system_architecture.md)开始，专项测试结果在对应报告中查阅。
 
 | 目录 | 文档 | 内容 |
 |---|---|---|

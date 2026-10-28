@@ -47,7 +47,7 @@ OLED参数 `.SIX_AXIS_MODE(1),.WHEEL_HEADER_MODE(1)`，输入 `.SPEED_L(left_spe
 - tb_wheel_screen.v：轮速m/s首行与g/dps六轴显示，与全部1024字节黄金显存对比；检查每帧快照、负速度及BMI故障/恢复。
 - tb_bmi_oled_system.v：完整main的BMI与OLED实际I2C模型端到端整屏对比，停止时轮速为0。
 
-打开 fpga.gprj，顶层main；运行 bash build_oled.sh，输出 impl/pnr/fpga.fs。此次实物测速和点亮验证尚未执行。
+打开 fpga.gprj，顶层main；运行 bash build_oled.sh，输出 impl/pnr/fpga.fs。该版本验证记录覆盖仿真与构建，实物测速和显示结果另行记录。
 
 ## 已加入速度闭环
 

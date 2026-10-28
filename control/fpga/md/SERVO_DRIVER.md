@@ -55,6 +55,6 @@ CLK_HZ须为1MHz的整数倍；MAX_US应小于FRAME_US。MIN_US/MAX_US和CENTER_
 
 验证四路独立脉宽、50Hz帧、方向映射、直接物理模式、宽输入钳位、帧原子更新、帧中改值无毛刺、禁用/复位/重启；另外在默认50MHz下核对1500µs及其他通道脉宽、20ms周期。
 
-测试源 /home/cyd/fpga/tools/bmi088_oled_validation/tb_servo_driver.v、tb_servo50.v。工程烧录文件仍为impl/pnr/fpga.fs。此次未执行实物舵机动作验证或下载到开发板。
+测试源 /home/cyd/fpga/tools/bmi088_oled_validation/tb_servo_driver.v、tb_servo50.v。工程烧录文件仍为impl/pnr/fpga.fs。本节验证记录覆盖仿真，实物动作按对应板级测试记录。
 
 当前main仍包含左右1m/s电机闭环与BMI088/OLED功能，舵机新增接口默认中位；如只测试舵机，可将main的MOTOR_ENABLE设为0后编译。

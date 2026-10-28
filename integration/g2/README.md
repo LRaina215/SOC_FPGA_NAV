@@ -1,6 +1,10 @@
 # G2共同资源工程
 
-固定输入：控制`6443f56`的真实RTL/ROM，导航检查点`cd9b816`。不会烧录。实际构建读取当前仓库`control/fpga/src`，由`prepare_control.py`应用`control_nav_adapter.patch`生成导航入口/反馈适配；补丁不匹配就停止，不静默使用旧副本。`../control4500/original_src`与本目录`control4500_core.v`仅保留6443基线对照。控制副本的来源与提交方式见`control/FORK.md`。
+本目录构建导航与原 4500 的共同 FPGA 工程，并提供存储、流水与布线候选的生成和检查工具。`prepare_control.py` 从 `control/fpga/src` 读取控制源码，应用 `control_nav_adapter.patch` 生成命令与反馈适配；补丁不匹配时停止。`control4500_core.v` 保留早期基线对照。
+
+SYN50 / PNR63 的冻结输入、补丁和实现结果见[k_bench 记录](k_bench_20261027/README.md)及[PNR63 报告](../../docs/4_design/g2_PNR63_review_20261028.md)。根构建器按各选项生成候选；复现某个已记录镜像时使用该记录对应的冻结输入。控制来源见[control/FORK.md](../../control/FORK.md)。
+
+## 构建入口
 
 ```powershell
 D:\Anaconda\python.exe -X utf8 integration/g2/build_g2.py --nav as --stage all --out F:/nav_integration_g2_20261022/example_as
@@ -8,7 +12,7 @@ D:\Anaconda\python.exe -X utf8 integration/g2/build_g2.py --nav coverage --packi
 D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out F:/nav_integration_g2_20261022/example_equivalence
 ```
 
-输出目录必须不存在。`--packing none|nav|control|both|ssram|hybrid|planes|directed`比较存储布局；`ssram`转两张完整代价图，`hybrid`还转完整帧缓冲/触碰位图。`planes`拆高程元数据；`directed`在导航/控制两侧显式区分大块存储和小分布式存储，避免自动提升小RAM消耗余量。旧失败报告使用开启宽RAM拆分的设置，已保留；不把相同布局在关闭拆分后的结果混写。`--stage syn|all`区分综合与完整构建。硬上限340块BSRAM、工作门槛336；只有综合数不构成通过。
+输出目录必须不存在。`--packing none|nav|control|both|ssram|hybrid|planes|directed`比较存储布局；`ssram`转两张完整代价图，`hybrid`还转完整帧缓冲/触碰位图。`planes`拆高程元数据；`directed`在导航/控制两侧显式区分大块存储和小分布式存储，避免自动提升小RAM消耗余量。旧失败报告使用开启宽RAM拆分的设置，已保留；不把相同布局在关闭拆分后的结果混写。`--stage syn|all`区分综合与完整构建。器件上限为 340 块 BSRAM。早期脚本的 336 块门槛保留为候选配置；SLF128 联合方案预算为不超过 300 块，资源判定使用实际布局布线结果。
 
 必须显式记录`--wide-split 0|1`（现默认0）。安装工具的旧实际PNR命令开启了32/36位存储拆分，八次构建的额外需求与宽叶子数量逐一相等。`pnr_from_netlist.py`可以固定已有网表，仅改该开关配对；`audit_netlist_memories.py`给出原语、位宽和层次归因。关闭拆分可避免重复占用，不改变算法/数据，但仍需实际资源和时序通过。
 
@@ -16,11 +20,11 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 `pnr_from_netlist.py`也可读取SYN-only构建，从实际PRJ/有效配置获取频率；`--replicate-resources 0|1`显式覆盖工具高负载资源复制，否则保持来源设置。`--place-option`默认1（可布线优先），2为时序优先，均在预检回读。实际PNR二进制复制标志为`-replicate`。这是物理实现试验，不改RTL算法或权重，仍须重测实际占用/布线/时序。示例：`python integration/g2/pnr_from_netlist.py <SYN-build> --wide-split 1 --replicate-resources 1 --place-option 2 --out <new-build>`。
 
-`--route-option 0|1|2`分别为默认、更深搜索、较快布线，预检回读。布线轮次必须显式记录预算，历史60/35分钟取消与延长后的自然失败分开保存。本次用户要求继续介入后的轮次采用`--place-option 1 --route-option 2 --max-runtime-minutes 120 --max-no-progress-minutes 0`，其余时钟/CDC/资源门槛不变。预算默认0表示不启用；对本任务新PNR必须显式指定。`tool_runtime.json`保存进程和预算，观察日志/中间产物变化，CPU忙或监管心跳不算进展；超限只终止本次启动的工具，保存取消说明并返回未通过。`test_bounded_tool.py`验证真实子进程生命周期，不跑FPGA或物理仿真。
+`--route-option 0|1|2` 分别选择默认、更深搜索和较快布线，并在预检中回读。`--max-runtime-minutes` 与 `--max-no-progress-minutes` 以分钟设置总运行和无进展时限，0 表示不启用；当前 PNR 默认均为 0。`tool_runtime.json` 记录实际进程、选项和结束原因，正数限时到达后只终止本次工具并保存结果。
 
-`--capture-system-telemetry`可每30秒向`system_telemetry.jsonl`记录所属进程CPU/线程/工作集/私有内存/I/O及主机物理空闲/提交余量。依赖psutil，Windows提交值来自GlobalMemoryStatusEx；缺少观测记录错误，不伪造零值。系统观测文件明确排除在日志/产物进展集合之外，CPU、I/O或记录写入不会刷新静默预算；页错误累计也不能直接视为硬分页次数。当前一次延长诊断仍由总计划规定独立上限，不恢复定时监督。
+`--capture-system-telemetry` 每 30 秒记录所属进程的 CPU、线程、内存与 I/O，以及主机空闲和提交余量，输出 `system_telemetry.jsonl`。依赖 psutil，Windows 提交值由 GlobalMemoryStatusEx 获取。系统观测与工具产物进展分别记录。
 
-`adopt_pnr_deadline.py <正在运行的冻结PNR目录> --deadline <带时区绝对时间>`仅用于用户明确延长现有一轮：校验实际工具PID/创建时间、包装器命令和构建目录，暂停原Python预算包装器，继续同一Gowin进程；新监管器按绝对截止收尾，保留旧预算快照。工具退出后恢复原包装器进行报告采集，再保存扩展后的实际运行记录，不重新启动厂商工具。只读系统观测继续、不计进展；历史2026-10-23T13:00:00+08:00延期只归旧轮次；各轮最新预算以总计划、对应deadline_extension.json及有效tool_runtime为准。静默预算取消时仍由绝对截止兜底，不能只改静态JSON来声称运行中的包装预算已改变。两种一次性子进程合同验证了自然结束/截止终止、PID保持和原包装器恢复，不代表已测试退出ChatGPT应用后任务存活。
+`adopt_pnr_deadline.py <冻结PNR目录> --deadline <带时区绝对时间>` 调整已有运行的截止时间：核对 PID、创建时间、包装命令与目录，交接原包装器监管并保留同一 Gowin 进程。工具退出后恢复报告采集。`--no-deadline` 取消时限，两者互斥；有效配置记录在 `runtime_override.json`。
 
 `--diagnostic-only`显式标记受控实现对照。采集器及最终写出的`g2_gate.json`均强制不准入，即使报告的资源/时序满足条件也不会成为生产通过结果；缺报告同样拒绝。基础SDC对照直接取SYN来源的两条50/100MHz时钟，省略`--cdc-reference-audit`，不删除或修改旧候选目录。它仅用于判断CDC候选约束是否参与长时间搜索，后续生产仍需完整26路径/52约束核验，不作烧录来源。输出策略的合成指标夹具合同不冒充真实FPGA报告。
 
@@ -32,7 +36,7 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 `--command-units-pipeline`（要求`--command-lease`）将NAV单位换算改为精确四级流水，正常接收多4拍/80ns，序号同步、停止/看门狗直接优先并清空在途命令。`test_nav_command_units.py`穷举两轴全部16位输入并验证连续输入、序号和复位/故障；不改变原4500算法、网络、权重或125Hz推理。
 
-`--coverage-static-bounds`提前计算覆盖层每帧固定的窗口基点/边界，保留32位回绕算术、全部状态和外部周期。AS可指定相同标志用于同源码对照（覆盖层仍不实例化）。`test_coverage_collision.py --static-bounds`比较原/新模块所有外部信号与有效RAM端口每拍一致，沿用独立模型及碰撞X读值；`measure_coverage_timing.py`仅测模块综合。模块Fmax改善不等于共同工程或PNR通过，当前在跑的双流水配对没有此标志。
+`--coverage-static-bounds`提前计算覆盖层每帧固定的窗口基点/边界，保留32位回绕算术、全部状态和外部周期。AS可指定相同标志用于同源码对照（覆盖层仍不实例化）。`test_coverage_collision.py --static-bounds`比较原/新模块所有外部信号与有效RAM端口每拍一致，沿用独立模型及碰撞X读值；`measure_coverage_timing.py`仅测模块综合。模块综合结果用于候选比较，联合资源与时序由对应共同工程报告记录。
 
 `--fusion-norm-pipeline`由`control/tools/g2_fusion_pipeline.py`生成BMI模长寄存边界调整版，滤波、标定参数及所有外部周期保持；`test_fusion_equivalence.py`对照完整原融合模块和24位极值。有符号平方的carry-save/显式扩展加法两版均触发综合器内部错误，记录保留；当前恢复原绝对值平方表达式，只调整寄存边界；`measure_fusion_timing.py`原/新模块综合均成功，联合结果另验。原控制源不覆盖。
 
@@ -136,11 +140,9 @@ D:\Anaconda\python.exe -X utf8 integration/g2/test_storage_equivalence.py --out 
 
 `clock_resource_plan_lane2_obsreuse.json`保留正确Lane2的544条物理参考的12项分配，只将观测复位名n331_7映射到n971_7。`revalidate_observation_routing.py`证明这一个具名LUT4别名的全部输入、INIT16'hEFFF/16项真值、四个唯一上游驱动/参数；其余11个目标和四真实时钟源严格相同。应用器只在该证明通过后借用原物理网络的负载证据，不能用任意别名跳过检查。`test_observation_routing.py --out <new-folder>`的实际正例和7项负例已通过。
 
-`continue_bank_select_once.py --synthesis <obsreuse-SYN> --baseline <fixed-CDC-reference> --pnr-out <new-dir> --state-dir <new-state> --clock-resource-plan <obsreuse-plan>`只运行一次，默认总时限0/静默0（不设截止）；`validate_observation_reuse.py`重计全部26＋51已知CDC、实际Lane2 RX/TX时钟，保留原存储/104资产与所有功能。自动名变化的36个雷达RESET连接仍需已有完整驱动/模块INIT证明。完整网表仿真许可缺口和43额外跨域/PCS/复位/IO继续待签核。源检查通过不能代替PNR的真实资源、时序、分配与154条有效命令；本次不恢复周期监督，也不进行硬件操作。
+`continue_bank_select_once.py --synthesis <obsreuse-SYN> --baseline <fixed-CDC-reference> --pnr-out <new-dir> --state-dir <new-state> --clock-resource-plan <obsreuse-plan>`只运行一次，默认总时限0/静默0（不设截止）；`validate_observation_reuse.py`重计全部26＋51已知CDC、实际Lane2 RX/TX时钟，保留原存储/104资产与所有功能。自动名变化的36个雷达RESET连接仍需已有完整驱动/模块INIT证明。完整网表仿真许可缺口和43额外跨域/PCS/复位/IO继续待签核。源检查通过不能代替PNR的真实资源、时序、分配与154条有效命令。
 
 
-### PNR时间策略（2026-10-24 13:19用户更新）
+### PNR 运行管理
 
-当前及后续PNR默认不设总时限和无进展时限。`continue_bank_select_once.py`的`--max-runtime-minutes`默认0；其PNR子进程始终传入`--max-no-progress-minutes 0`，`pnr_from_netlist.py`两个原默认也均为0。历史运行的120/150分钟记录保持原样；正数时限仅用于用户后来明确改变策略的运行。综合和前置检查的限时不变。
-
-`adopt_pnr_deadline.py <build> --no-deadline`对已有PNR先核对PID创建时间、父包装命令及工作目录，然后仅暂停该包装的旧限时循环，保留同一Gowin工具。新监管器将有效时限置0并记录`runtime_override.json`；工具退出后恢复原包装完成采集，不重启工具、不新增PNR或周期任务。当前PNR12已实际接管：工具54424保持、新监管27664、原包装58396有意暂停。实际运行时记录和交接文件优先于启动命令/manifest里的150分钟快照。`--deadline`保留为未来明确授权的有截止运行入口；两种选项互斥。进程交接3项实际回归通过，其中无截止案例超过原包装截止后正常自然退出且原PID保持。
+PNR 默认不设总时限和无进展时限，两个参数均为 0。综合与前置检查使用各自配置。已有运行通过 `adopt_pnr_deadline.py` 调整截止方式；工具运行配置、退出原因和报告随构建目录保存。具体运行历史见[PNR 活动记录](../../docs/4_design/g2_pnr_activity_20261024.md)。

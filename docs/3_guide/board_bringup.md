@@ -1,24 +1,18 @@
 # 上板与实机接入步骤
 
-**2026-10-28当前入口：** 最新受测PNR63/SYN50，SLF128/双串口、实际BSRAM280/340，位流INIT已含前移1000mm固件。PNR61回退版仍需区分1500mm INIT与后装1000mm。最近实板记录hold；IR5断轮和BMI恢复已专项通过，但后退落地失败、受控停止及自主导航未验收。当前操作与准入查[落地指南](ground_debug_and_mapping_20261027.md)、[PNR63核对](../4_design/g2_PNR63_review_20261028.md)，不能按旧独立导航命令直接开车。
+本指南介绍导航台架的构建、外设接入与调试入口。共同轮腿工程使用[落地调试与建图指南](ground_debug_and_mapping_20261027.md)，完整环境安装和故障排查见[硬件手册](hardware_guide.md)。
 
-实物到货后的完整操作步骤（含通过标准与故障排查）见 [hardware_guide.md](hardware_guide.md)；本文件是开发侧的要点记录。
-**2026-10-21适用范围：** 本页旧命令和位流属于独立导航台架，不能直接替换车上控制位流。现有控制占用C18/C19等作为舵机，BMI088为P11-7/8上的I2C；旧SPI1–7计划撤销。当前导航工作区N2g尚未通过联合验收，上车先完成 [G1–G3](../1_plan/system_integration_plan_20261021.md) 和约束核对。
-雷达口 PHY 管理口 MDC R14、MDIO U21。全部引脚与电平见 [pinout.md](../2_interface/pinout.md)。
+## 连接与配置
 
-## 2026-10-23现有控制板接入
+- 导航主机使用板载 CH 串口 L21 / M21，921600 8N1；控制遥测从 P11-40 / A16 输出，230400 8N1。COM 号按当前枚举选择。
+- BMI088 由控制侧 I2C 采集，SDA 为 P11-7 / F18，SCL 为 P11-8 / E18；C18 / C19 在共同工程中用于舵机。
+- 雷达 PHY 管理接口为 MDC R14、MDIO U21。完整连接见[引脚表](../2_interface/pinout.md)。
+- PNR63 使用 SLF128 与双串口，INIT 包含 SLF 窗口前移 1000 mm 的固件；PNR61 回退配置需区分 1500 mm INIT 与后装固件。
+- 下载前核对目标器件、CST、镜像用途和执行器状态。导航独立台架位流用于无底盘台架，与共同轮腿镜像分别管理。
 
-用户已授权必要实机测试，确认整车未供电且控制接线未改。控制组[README接线表](../../control/README.md)、[BMI088专项](../../control/fpga/md/BMI088_OLED.md)与[实际CST](../../control/fpga/src/main.cst)均指定SDA=P11-7/F18、SCL=P11-8/E18；按此核对，不再套用历史SPI或9/10版本。
+独立传感器诊断工具见[integration/g3](../../integration/g3/README.md)，历史实测见[PNR63 报告](../4_design/g2_PNR63_review_20261028.md)与[整车记录](../1_plan/system_integration_plan_20261021.md)。
 
-两个UART不能混用：板载CH9102接L21/M21，是导航寄存器桥的接线；原控制遥测从P11-40/A16输出，指令从P11-39/A15输入。控制主README旧表的115200/50Hz和“RX暂不解析”已被后面的通信章节及main.v取代，现行源码为230400/100Hz、接收CRC速度帧。COM号随插拔重新识别，FT232H的COM口不能直接当控制遥测。
-
-实测JTAG ID0011081B被Programmer列为多个B/C、75/138型号共用，扫描成功不能确认具体版本。UserCode99A6仅与仓库控制位流头相同，不是完整源码或权重身份验证。现有镜像的COM11短时接收和只读桥探测没有应答，不能把无串口数据归因成传感器无电或故障。
-
-随后独立BMI诊断镜像通过50MHz实际时序及10路执行器物理恒低检查，SRAM上板从COM11收到323帧/CRC0。加速度ID1E可读，陀螺最终69地址NACK、完整六轴样本0；不是有效静态六轴数据。供电/接口物理原因尚未确定，不改变原引脚、策略或放宽故障。测试后已重新加载仓库同UserCode99A6控制位流、Flash未改。具体范围和恢复记录见总计划第5节，不能把仅UserCode一致说成原镜像逐位回读验证。
-
-临时BMI诊断和有时限的只读采集入口见[integration/g3](../../integration/g3/README.md)。它只用于独立传感器接入，不是G2或整车通过镜像。
-
-## 0. 历史导航独立台架构建（不是当前整车发布）
+## 0. 导航独立台架构建
 
 `python gowin/syn/syn.py --board --app=nav --ram-kb=128` 综合、布局布线并生成比特流
 `gowin/syn/build_board/impl/pnr/nav_board_top.fs`（50 MHz，0 违例）：软核 + 导航固件 + 雷达口百兆 MAC（自写，不需要 IP）+
