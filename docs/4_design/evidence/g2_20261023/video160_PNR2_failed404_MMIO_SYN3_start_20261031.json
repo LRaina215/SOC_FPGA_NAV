@@ -1,0 +1,205 @@
+{
+  "recorded_at": "2026-10-31T00:29:38.120500+08:00",
+  "PNR2": {
+    "build": "F:\\nav_integration_g2_20261023\\K_video160_20261031_pnr2_p1r0",
+    "runtime": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-31T00:09:53.248748+08:00",
+      "max_runtime_s": 0,
+      "max_no_observable_progress_s": 0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 48816,
+      "elapsed_s": 1073.0620000000345,
+      "no_observable_progress_s": 0.0,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          1676,
+          1793377662997822400
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          1211,
+          1793377662997822400
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          1844808,
+          1793376860334856500
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          10170100,
+          1793376860667614700
+        ],
+        [
+          "impl\\pnr\\g2_top.rpt.txt",
+          103661,
+          1793377661101944300
+        ],
+        [
+          "impl\\pnr\\g2_top.vo",
+          32599373,
+          1793377662997822400
+        ]
+      ],
+      "tool_exit": 1,
+      "ended_at": "2026-10-31T00:27:46.312327+08:00"
+    },
+    "unrouted": 404,
+    "routing_passed": false,
+    "setup": null,
+    "hold": null,
+    "BSRAM": 318,
+    "Logic": 63613,
+    "FF": 33284,
+    "CLS": 44673,
+    "logical_VO_comparison": {
+      "identical_except_time_header": true,
+      "differing_non_header_lines": 0,
+      "lines": 809285,
+      "differences": [
+        {
+          "line": 5,
+          "before": "//Created Time: Sat Oct 31 00:02:58 2026",
+          "after": "//Created Time: Sat Oct 31 00:27:41 2026"
+        }
+      ],
+      "does_not_prove_same_placement_or_routing": true
+    },
+    "meaning": "Only planned place2->1 changed. First routed172setup/1hold, second404unrouted. No validated failed-net identity or unique root cause."
+  },
+  "measured_critical_path": {
+    "source": "u_nav/a_q_12_s0/Q",
+    "destination": "u_nav/bus_rdata_15_s0/D",
+    "slack_ns": -1.136,
+    "data_ns": 21.098,
+    "cell_ns": 3.898,
+    "route_ns": 16.856,
+    "route_percent": 79.892,
+    "C2Q_ns": 0.344
+  },
+  "candidate": {
+    "source": "F:\\nav_integration_g2_20261023\\K_video160_mmio_predecode_prepared2",
+    "read_select_bits": 179,
+    "changed": [
+      "nav/rtl/top/nav_subsystem.v",
+      "nav/rtl/regs/nav_regfile.v",
+      "nav/rtl/regs/nav_subsystem_rf.vh"
+    ],
+    "concept": "Register only address selection at original E0; original E1 live data/ACK and MMIO write/read-pop logic preserved",
+    "source_bit_expression_miter": "UNSAT",
+    "actual_RF_proof": {
+      "passed": true,
+      "source": "F:\\nav_integration_g2_20261023\\K_video160_mmio_predecode_prepared2",
+      "checks": [
+        {
+          "unit": "framebuffer",
+          "summary": "FRAMEBUFFER_PASS checks=76805 full_pixels=76800"
+        },
+        {
+          "unit": "hud",
+          "summary": "HUD_PASS checks=47040 pages=15 vectors=8",
+          "reused_from": "F:\\nav_integration_g2_20261023\\K_video160_units_probe1",
+          "identical_RTL": true
+        },
+        {
+          "unit": "pid",
+          "summary": "PID_PASS checks=82 arming=1 timeout=1 rearm=1",
+          "reused_from": "F:\\nav_integration_g2_20261023\\K_video160_units_probe1",
+          "identical_RTL": true
+        }
+      ],
+      "reused_from": "F:\\nav_integration_g2_20261023\\K_video160_units_probe3",
+      "additional_checks": [
+        {
+          "unit": "actual_register_file",
+          "summary": "MMIO_READ_PREDECODE_PASS checks=18461 all_word_addresses=16384"
+        }
+      ],
+      "scope": "Actual old/new RF at E0 address capture, live RO inputs, RW and read-pop outputs; finite fixture. No wholeG2 or physical timing acceptance."
+    },
+    "actual_RF_probe_controller": {
+      "source": "F:\\nav_integration_g2_20261023\\K_video160_mmio_predecode_prepared2",
+      "controller_pid": 33808,
+      "controller_created_epoch": 1793377589.3201416,
+      "synthesis_output": "F:\\nav_integration_g2_20261023\\K_video160_mmio_predecode_syn3",
+      "automatic_PNR": false,
+      "programmed": false,
+      "phase": "isolated_RTL_passed_starting_one_joint_SYN",
+      "updated_at": "2026-10-31T00:28:11.611510+08:00",
+      "physical": 4713799680,
+      "commit": 8373637120,
+      "summary": "MMIO_READ_PREDECODE_PASS checks=18461 all_word_addresses=16384"
+    }
+  },
+  "joint_SYN3_job": {
+    "source": "F:\\nav_integration_g2_20261023\\K_video160_mmio_predecode_prepared2",
+    "build": "F:\\nav_integration_g2_20261023\\K_video160_mmio_predecode_syn3",
+    "controller_pid": 33808,
+    "controller_created_epoch": 1793377589.3201416,
+    "automatic_PNR": false,
+    "programmed": false,
+    "maximum_SYN_runtime_s": 2400,
+    "minimum_start_physical_bytes": 2147483648,
+    "minimum_start_commit_bytes": 4294967296,
+    "phase": "synthesizing",
+    "updated_at": "2026-10-31T00:29:13.424838+08:00",
+    "physical_available": 4415774720,
+    "commit_available": 7853789184,
+    "effective_options": {
+      "global_freq_mhz": 50.0,
+      "wide_split": 1,
+      "effective_options": "F:\\nav_integration_g2_20261023\\K_video160_mmio_predecode_syn3\\effective_options.tcl",
+      "extra_options": {}
+    },
+    "tool_pid": 19388,
+    "tool_created_epoch": 1793377693.4040172,
+    "tool_command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "actual_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "synthesis_started_at": "2026-10-31T00:28:13.406269+08:00",
+    "elapsed_s": 60.01500000001397
+  },
+  "tool_identity": {
+    "pid": 19388,
+    "created": 1793377693.4040172,
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ]
+  },
+  "automatic_PNR": false,
+  "new_resources_or_timing_proven": false,
+  "programmed": false
+}
