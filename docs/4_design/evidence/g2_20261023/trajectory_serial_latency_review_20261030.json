@@ -1,0 +1,73 @@
+{
+  "date": "2026-10-30",
+  "request": "Review whether46 serial trajectory candidates cause low speed, and what was actually tested before",
+  "scope": {
+    "new_simulation": false,
+    "hardware_access": false,
+    "functional_RTL_or_firmware_changed": false,
+    "comments_corrected": ["fw/nav/local_planner.h parallel claim", "rtl/plan/traj_eval.v stale7-cycle timing comment"],
+    "SHA_validation": false
+  },
+  "selected_source": {
+    "last_reviewed_joint_candidate": "SYN50/PNR63, core50MHz and radar100MHz; last hardware observation is historical, not a live board query",
+    "source_root": "F:/nav_integration_g2_20261023/K_timing_syn50",
+    "local_planner_c": "Repository source matches SYN50 by decoded text comparison",
+    "hal_traj_eval": "Function text matches SYN50; other HAL portions differ",
+    "traj_RTL": "SYN50 adds STAGE2B_BLOCK=1 to the sine/cosine RAMs; FSM matches repository. Synchronous-memory timing remains a condition of the bound. Frozen input unchanged."
+  },
+  "default_candidates": {
+    "velocity_grid": "4*9=36",
+    "creep": 3,
+    "regular_turns": 2,
+    "slow_turns": 2,
+    "reverse": 3,
+    "total": 46,
+    "assumptions": "Default nonholonomic configuration, reverse enabled, no candidate truncation; near-goal code changes velocities without changing nv/nw",
+    "steps": 20,
+    "represented_step_ms": 100,
+    "represented_horizon_ms": 2000,
+    "plan_period_us": 100000
+  },
+  "execution": {
+    "FPGA": "One trajectory at a time through shared sin/cos tables, parallel arithmetic inside a step, and the cost-map read port",
+    "CPU": "Candidate generation, MMIO, final scoring and reranking, motion and wheel-support checks",
+    "HAL_per46_candidate_pass": {"candidate_word_writes": 92, "result_word_reads": 184, "additional": "6 configuration/start writes and DONE polling; caller map checks and other work excluded"},
+    "fallback": "A second hardware pass and repeated CPU scoring may occur. Normal fine-check budget3 plus fallback3 remains."
+  },
+  "conditional_static_core_bound": {
+    "formula": "K*(9*T+9)+2",
+    "K": 46,
+    "T": 20,
+    "cycles": 8696,
+    "clock_MHz": 50,
+    "one_pass_us": 173.92,
+    "two_pass_us": 347.84,
+    "conditions": ["Start accepted while idle", "Clock continues", "No reset during the operation", "Synchronous candidate/LUT/cost RAM read timing contract holds"],
+    "excludes": ["CPU candidate generation and MMIO", "Bus interactions", "CPU scoring and repeat scoring", "Motion/support checks", "Whole application scheduling", "Physical timing faults"],
+    "actual_board_timing_measurement": false
+  },
+  "existing_tests": {
+    "saved_RTL_test_date": "2026-10-21T18:26:51+08:00",
+    "log": "sim/build/tb_traj_eval/xsim_stdout.log",
+    "result": "TEST PASSED",
+    "batches": [{"K":8,"T":16},{"K":64,"T":32},{"K":17,"T":64},{"K":1,"T":5}],
+    "total_trajectories": 90,
+    "meaning": "Per-result-word numeric agreement with the fixed-point model; historical RTL, not current whole-loop performance acceptance",
+    "TB_clock": "always#5 at1ns timescale =100MHz; saved total simulation runtime is not isolated50MHz hardware latency",
+    "previous_static_review": "docs/4_design/evidence/g2_20261023/CPU250_nonpreemptible_segments_prepared_20261026.json",
+    "previous_optional_trajectory_probe_started": false,
+    "previous_actual_hardware_service_measured": false,
+    "current_full46_candidate_chain_WCET": "Not demonstrated"
+  },
+  "other_evidence": {
+    "historical_CPU_subchecks": "docs/4_design/nav_optimization_results.md records wheel-support17.251/21.101/3.131ms and body check up to19.975ms, on target CPU with ideal register responses; these are not current full-loop WCET or proof of the sole bottleneck",
+    "fault_path": "hal_fpga.c waits for DONE without a timeout or yield; abnormal noncompletion can block the main loop regardless of the healthy FSM bound"
+  },
+  "recommended_measurement": [
+    "Bind current candidate and map snapshot; use target cycle counter rather than host wall time",
+    "Measure candidate generation, MMIO write, hardware wait, result read, final scoring, motion/support checks and whole planning tick separately",
+    "Include free, obstacle, unknown, fallback, rejected support and map-change cases plus host heartbeat load",
+    "Use measured dominant components to choose arithmetic reuse, pipelining or limited parallelism; account for map ports and physical resource cost",
+    "Add bounded fault handling to DONE wait with the existing stop contract; preserve normal results and tie order"
+  ]
+}

@@ -4,7 +4,8 @@
 // 结果（每条 4 字）：
 //   w0 [7:0]max_cost [15:8]n_unknown [23:16]coll_step [24]collide [25]left
 //   w1 sum_cost   w2 end_x(Q8)   w3 end_y(Q8)
-// 运算与 model/nav_fixed.py:traj_eval 逐位一致。每步约 7 拍，64×64 约 0.3 ms。
+// 运算与 model/nav_fixed.py:traj_eval 逐位一致。单套数据通路逐条评估；窗口内每步9拍。
+// 健康运行条件下周期上界 K*(9*T+9)+2；不含CPU装载、读回、打分及地形细检。
 module traj_eval #(
     parameter integer LOG2N    = 7,
     parameter integer KMAX_LOG = 6,
