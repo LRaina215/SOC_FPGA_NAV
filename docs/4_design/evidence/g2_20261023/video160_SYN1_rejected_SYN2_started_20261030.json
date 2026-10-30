@@ -1,0 +1,114 @@
+{
+  "recorded_at": "2026-10-30T23:36:54.887975+08:00",
+  "rejected_first_run": "F:\\nav_integration_g2_20261023\\K_video160_20261030_syn1",
+  "first_failure": {
+    "accepted_for_PNR": false,
+    "reason": "Preparation omitted src/mem. Gowin EX3988 warnings confirmed missing bias/ELU,35 packed weight files and IK tables. Tool exit0 is invalid for function/resource acceptance.",
+    "source_preservation_failed": true,
+    "preserve_original_run": true,
+    "programmed": false,
+    "PNR_started": false,
+    "video_BSRAM": 64,
+    "video_bit_width": 1,
+    "source_BSRAM313_not_accepted": true,
+    "split323_not_accepted": true,
+    "next_candidate": "K_video160_20261030_prepared4",
+    "corrections": [
+      "include and byte-compare every selected memory asset before tool launch",
+      "reject EX3988 even if tool exits0",
+      "38 explicit1024x16 frame RAM slices",
+      "register stale at source with threshold-equivalence induction proof"
+    ]
+  },
+  "corrected_build": "F:\\nav_integration_g2_20261023\\K_video160_20261030_syn2",
+  "job": {
+    "source": "F:\\nav_integration_g2_20261023\\K_video160_20261030_prepared4",
+    "build": "F:\\nav_integration_g2_20261023\\K_video160_20261030_syn2",
+    "controller_pid": 59108,
+    "controller_created_epoch": 1793374541.0973325,
+    "automatic_PNR": false,
+    "programmed": false,
+    "maximum_SYN_runtime_s": 2400,
+    "minimum_start_physical_bytes": 2147483648,
+    "minimum_start_commit_bytes": 4294967296,
+    "phase": "synthesizing",
+    "updated_at": "2026-10-30T23:36:43.161101+08:00",
+    "physical_available": 2571857920,
+    "commit_available": 7080476672,
+    "effective_options": {
+      "global_freq_mhz": 50.0,
+      "wide_split": 1,
+      "effective_options": "F:\\nav_integration_g2_20261023\\K_video160_20261030_syn2\\effective_options.tcl",
+      "extra_options": {}
+    },
+    "tool_pid": 49380,
+    "tool_created_epoch": 1793374543.1355867,
+    "tool_command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "actual_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "synthesis_started_at": "2026-10-30T23:35:43.142241+08:00",
+    "elapsed_s": 60.03099999995902
+  },
+  "asset_count": 100,
+  "packed_weight_files": 35,
+  "missing_literal_memories": [],
+  "unit_proof": {
+    "started_at": "2026-10-30T23:35:05.509191+08:00",
+    "source": "F:\\nav_integration_g2_20261023\\K_video160_20261030_prepared4",
+    "checks": [
+      {
+        "unit": "framebuffer",
+        "summary": "FRAMEBUFFER_PASS checks=76805 full_pixels=76800"
+      },
+      {
+        "unit": "hud",
+        "summary": "HUD_PASS checks=47040 pages=15 vectors=8",
+        "reused_from": "F:\\nav_integration_g2_20261023\\K_video160_units_probe1",
+        "identical_RTL": true
+      },
+      {
+        "unit": "pid",
+        "summary": "PID_PASS checks=82 arming=1 timeout=1 rearm=1",
+        "reused_from": "F:\\nav_integration_g2_20261023\\K_video160_units_probe1",
+        "identical_RTL": true
+      }
+    ],
+    "passed": true,
+    "scope": "Finite RTL units only; no physical timing, full camera SCCB/capture, wholeG2 or vehicle acceptance",
+    "finished_at": "2026-10-30T23:35:15.648123+08:00"
+  },
+  "stale_proof": {
+    "passed": true,
+    "result": "unsat",
+    "scope": "Source age/stale invariant and reset, any positive threshold/all reachable ages; not mapped CDC or physical timing",
+    "reset_age_equals_threshold": true,
+    "reset_stale": true,
+    "extra_threshold_latency_cycles": 0
+  },
+  "actual_resource_result_pending": true,
+  "PNR_started": false,
+  "programmed": false
+}

@@ -9,7 +9,7 @@ FEATURE=HERE/'video_20261030'
 BASE=Path('F:/nav_integration_g2_20261023/K_timing_syn50')
 VIV=Path('E:/2026.1/Vivado/bin')
 
-def run(source,out):
+def run(source,out,reuse=None):
     assert not out.exists();out.mkdir(parents=True)
     m=memory_status()
     assert m.avail_phys>=2*1024**3 and m.avail_page>=4*1024**3,'EDA memory admission failed before any tool'
@@ -27,6 +27,14 @@ def run(source,out):
         scope='Finite RTL units only; no physical timing, full camera SCCB/capture, wholeG2 or vehicle acceptance')
     (out/'job.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
     for name,rtl in jobs:
+        if reuse and name in ('hud','pid'):
+            previous=json.loads((reuse/'result.json').read_text(encoding='utf-8'))
+            assert previous['passed']
+            selected=next(c for c in previous['checks']if c['unit']==name)
+            filename='g2_video_hud.v'if name=='hud'else 'motor520_closed_loop.v'
+            assert (frozen/filename).read_bytes()==(reuse/'source'/filename).read_bytes()
+            result['checks'].append(dict(selected,reused_from=str(reuse),identical_RTL=True))
+            print('REUSED '+selected['summary'],flush=True);continue
         d=out/name;d.mkdir();tb=FEATURE/f'tb_{name}.sv'
         commands=[('xvlog',[str(p)for p in rtl]),('xvlog',['-sv',str(tb)]),
                   ('xelab',[f'tb_{name}','-s',name+'_snap']),('xsim',[name+'_snap','-runall'])]
@@ -46,5 +54,5 @@ def run(source,out):
     return result
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--source',type=Path,required=True);p.add_argument('--out',type=Path,required=True)
-    a=p.parse_args();run(a.source,a.out)
+    p=argparse.ArgumentParser();p.add_argument('--source',type=Path,required=True);p.add_argument('--out',type=Path,required=True);p.add_argument('--reuse',type=Path)
+    a=p.parse_args();run(a.source,a.out,a.reuse)

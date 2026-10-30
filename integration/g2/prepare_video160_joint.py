@@ -30,7 +30,7 @@ def prepare(out):
     out.mkdir(parents=True)
     copied=[];assets=[]
     allowed={'.v','.vh','.mem','.hex','.c','.h','.S','.ld','.bin','.elf'}
-    excluded={'impl','configuration_source','host_profile','sim_lease','src'}
+    excluded={'impl','configuration_source','host_profile','sim_lease'}
     for p in sorted(base.rglob('*')):
         rel=p.relative_to(base)
         if not p.is_file() or rel.parts[0] in excluded:continue
@@ -43,6 +43,10 @@ def prepare(out):
             text=q.read_text(encoding='utf-8-sig').replace(base.as_posix(),out.as_posix())
             q.write_text(text,encoding='utf-8',newline='\n')
     assert all((out/Path(p).relative_to(base)).is_file() for _,p in original_files)
+    source_assets={p.relative_to(base).as_posix()for p in base.rglob('*')
+        if p.is_file()and p.suffix in {'.mem','.hex','.bin','.elf'}and p.relative_to(base).parts[0]not in excluded}
+    assert set(assets)==source_assets
+    assert len([a for a in assets if a.startswith('src/mem/weight9_')])==35
     video=out/'video';shutil.copytree(FEATURE/'rtl',video)
     for n in ('oled.v','motor520_closed_loop.v'):
         shutil.copyfile(FEATURE/'reference'/n,out/'control'/n)
@@ -119,10 +123,18 @@ def prepare(out):
     extras=''.join('add_file -type verilog {'+p.as_posix()+'}\n' for p in sorted(video.glob('*.v')))
     tcl=replace_once(tcl,'add_file -type cst',extras+'add_file -type cst')
     (out/'run.tcl').write_text(tcl,encoding='utf-8',newline='\n')
+    missing=[]
+    for kind,path in re.findall(r'add_file -type (\w+) \{([^}]+)\}',tcl):
+        if kind!='verilog':continue
+        for value in re.findall(r'"([^"\r\n]+\.(?:mem|hex))"',Path(path).read_text(encoding='utf-8-sig')):
+            literal=value.replace('\\','/')
+            asset=Path(literal)if Path(literal).is_absolute()else out/literal
+            if not asset.is_file():missing.append(dict(RTL=path,asset=value))
+    assert not missing,missing
     manifest=dict(prepared_at=datetime.now().astimezone().isoformat(),source=str(base),output=str(out),
         source_commit='Chenyudog/fpga@715378a',original_verilog_count=sum(k=='verilog' for k,_ in original_files),
         added_verilog=[p.name for p in sorted(video.glob('*.v'))],copied_files=copied,
-        original_asset_byte_comparisons_passed=assets,original_CPU_bytes=131072,
+        original_asset_byte_comparisons_passed=assets,missing_literal_memory_files=missing,original_CPU_bytes=131072,
         changed_original_RTL=['g2_top.v','control4500_core.v','control/oled.v','control/motor520_closed_loop.v'],
         actual_joint_BSRAM=None,predicted_image_BSRAM=38,baseline_plus_image_prediction=318,
         image_pixels=19200,image_format='RGB565',pixel_RAM_reset=False,telemetry_version=2,

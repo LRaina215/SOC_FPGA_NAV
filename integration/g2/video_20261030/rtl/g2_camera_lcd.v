@@ -38,13 +38,13 @@ module g2_camera_lcd #(
     (* syn_preserve=1 *) reg request_meta,request_sync;
     reg request_previous;
     reg [$clog2(FRESH_CYCLES+1)-1:0] age;
-    wire stale=(age>=FRESH_CYCLES);
+    reg stale;
     always @(posedge clk or negedge reset_n) begin
-        if(!reset_n)begin request_meta<=0;request_sync<=0;request_previous<=0;age<=FRESH_CYCLES;end
+        if(!reset_n)begin request_meta<=0;request_sync<=0;request_previous<=0;age<=FRESH_CYCLES;stale<=1;end
         else begin
             request_meta<=frame_req;request_sync<=request_meta;request_previous<=request_sync;
-            if(request_sync!=request_previous)age<=0;
-            else if(age<FRESH_CYCLES)age<=age+1'b1;
+            if(request_sync!=request_previous)begin age<=0;stale<=0;end
+            else if(age<FRESH_CYCLES)begin age<=age+1'b1;stale<=age>=FRESH_CYCLES-1;end
         end
     end
     (* syn_preserve=1 *) reg stale_meta,stale_sync;

@@ -14,6 +14,12 @@ def run(source,out,proof):
     p=json.loads((proof/'result.json').read_text(encoding='utf-8'))
     assert p['passed'] and Path(p['source']).resolve()==source.resolve()
     assert [c['unit']for c in p['checks']]==['framebuffer','hud','pid']
+    source_manifest=json.loads((source/'video_candidate_manifest.json').read_text(encoding='utf-8'))
+    assert source_manifest.get('missing_literal_memory_files')==[]
+    base=Path(source_manifest['source'])
+    assets=source_manifest['original_asset_byte_comparisons_passed']
+    assert len([a for a in assets if a.startswith('src/mem/weight9_')])==35
+    assert all((source/a).read_bytes()==(base/a).read_bytes()for a in assets)
     # The proof is bound to the actual tested source files; do not silently use
     # an edited RTL file after the probe. These are raw byte comparisons, no hash.
     for rel,probe_file in (
@@ -22,6 +28,7 @@ def run(source,out,proof):
         ('control/motor520_closed_loop.v',proof/'source/motor520_closed_loop.v')):
         assert (source/rel).read_bytes()==probe_file.read_bytes(),rel
     shutil.copytree(source,out)
+    assert all((out/a).read_bytes()==(base/a).read_bytes()for a in assets)
     tcl=(out/'run.tcl').read_text(encoding='utf-8').replace(source.as_posix(),out.as_posix())
     assert [s.strip()for s in tcl.splitlines()if s.strip().startswith('run ')]==['run syn']
     for file in out.rglob('*.v'):
@@ -74,7 +81,7 @@ def run(source,out,proof):
                 status('synthesizing',elapsed_s=elapsed,physical_available=m.avail_phys,commit_available=m.avail_page)
             time.sleep(2)
     text=(out/'gw_sh.log').read_text(encoding='utf-8',errors='replace')
-    errors=re.findall(r'^.*ERROR\s*\(.*$',text,re.M)
+    errors=re.findall(r'^.*(?:ERROR\s*\(|WARN\s*\(EX3988\)).*$',text,re.M)
     if process.returncode or errors:
         status('synthesis_failed',tool_exit=process.returncode,errors=errors);return 1
     status('collecting_actual_synthesis_reports',tool_exit=process.returncode)
