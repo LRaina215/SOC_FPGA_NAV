@@ -26,7 +26,11 @@ class EM:
 def load(path):
     d = json.load(open(path))
     em = EM()
+    ctrl = d['regs']['MAP_CTRL']
+    em.avg, em.avg_shift_max = (ctrl >> 4) & 1, (ctrl >> 5) & 7
     em.zmin = np.array(d['zmin'], dtype=np.int64)
+    if em.avg:
+        em.zmin &= 0xFFFF            # 平均模式：高 16 位是无符号 Q3 平均绝对偏差
     em.zmax = np.array(d['zmax'], dtype=np.int64)
     em.cnt = np.array(d['cnt'], dtype=np.int64)
     em.tag = np.array(d['tag'], dtype=np.int64)
@@ -47,7 +51,7 @@ def cfg_from_regs(r):
                 infl_r=infl & 0xF, infl_disk=(infl >> 4) & 1, age_max=vc & 0xFF, cnt_min=(vc >> 8) & 0xF,
                 keep_r=(vc >> 16) & 0xF, drop_k=drop & 0x1F, drop_slope=(drop >> 8) & 0xFF,
                 fill_min=fill & 0xF, fill_tol=(fill >> 8) & 0xFF, fill_cost=(fill >> 16) & 0xFF,
-                step_high_only=(ctrl >> 3) & 1, slope_b=4)
+                step_high_only=(ctrl >> 3) & 1, avg=(ctrl >> 4) & 1, avg_shift=(ctrl >> 5) & 7, slope_b=4)
 
 
 def window(a, cx, cy):

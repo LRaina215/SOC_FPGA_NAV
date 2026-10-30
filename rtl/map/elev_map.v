@@ -1,7 +1,13 @@
 // N×N槽，每槽53位 {retained_stale,stamp[8],tag[8],cnt[4],zmin[16],zmax[16]}。
 // 更新规则（每点读-改-写，每拍 1 点；读数据先寄存一拍再合并写回，同址连续更新用两级前递解决）：
+// cfg_avg=0（逐帧极值）：
 //   槽空 / 标签不符 / 不是本帧写入的 -> 以该点重新初始化（每帧用最新观测替换，动态障碍可消失）
 //   否则 -> zmax/zmin 取极值，cnt 饱和加 1
+// cfg_avg=1（跨帧平均，与 model/nav_fixed.py ElevMap(avg=1) 逐位一致）：
+//   zmax 位置存 Q3 高度均值 A（点高度先限幅 ±4095 mm），zmin 位置存 Q3 平均绝对偏差 D（无符号），cnt 为累计点数；
+//   槽空 / 标签不符 / 已标记过期 -> A = 该点、D = 0、cnt = 1；
+//   否则 A += (z - A) >>> s，D += (|z - A| - D) >>> s，s 按已有点数 1/2-3/4-7/8-14 取 1/2/3/4，
+//   计满 15 点后取 cfg_avg_shift，且不超过 cfg_avg_shift。切换模式后须清图。
 // 帧尾（s_eof）帧计数 fc 加 1。
 // 扫描口（sweep_*）供可通行性分析在更新空闲时读写（过期清除）；swp_sel=1 时更新输入被阻塞。
 // clear 脉冲：逐槽写 0（N*N 拍），期间阻塞输入。复位后自动清一次。
@@ -12,6 +18,8 @@ module elev_map #(
     input  wire        clk,
     input  wire        rst,
     input  wire        clear,
+    input  wire        cfg_avg,
+    input  wire [2:0]  cfg_avg_shift,
 
     input  wire        s_valid,
     output wire        s_ready,
@@ -56,6 +64,7 @@ module elev_map #(
     reg [AW-1:0] a2;
     reg [2*TAGB-1:0] tag2;
     reg signed [15:0] z2;
+    reg signed [15:0] zq2;                      // 平均模式：限幅后的 Q3 高度
     reg [52:0]   q2;
     // S3：写回（寄存后再写 RAM）
     // 前递：前 1/2/3 个点的新值（它们写入 RAM 的时刻不早于本点读 RAM 的时刻）
@@ -72,10 +81,28 @@ module elev_map #(
     wire [3:0]  o_cnt   = old[35:32];
     wire signed [15:0] o_zmin = old[31:16];
     wire signed [15:0] o_zmax = old[15:0];
-    wire fresh = old[52] || (o_cnt == 4'd0) || (o_tag != tag2) || (o_stamp != fc);
-    wire [52:0] nw = fresh ? {1'b0,fc, tag2, 4'd1, z2, z2}
-                           : {1'b0,fc, tag2, (o_cnt == 4'hF) ? 4'hF : o_cnt + 4'd1,
-                              (z2 < o_zmin) ? z2 : o_zmin, (z2 > o_zmax) ? z2 : o_zmax};
+    wire reset_slot = old[52] || (o_cnt == 4'd0) || (o_tag != tag2);
+    wire fresh = reset_slot || (o_stamp != fc);
+    wire [3:0]  cnt_inc = (o_cnt == 4'hF) ? 4'hF : o_cnt + 4'd1;
+    wire [52:0] nw_ext = fresh ? {1'b0,fc, tag2, 4'd1, z2, z2}
+                               : {1'b0,fc, tag2, cnt_inc,
+                                  (z2 < o_zmin) ? z2 : o_zmin, (z2 > o_zmax) ? z2 : o_zmax};
+    // 平均模式
+    wire signed [15:0] o_a = old[15:0];
+    wire        [15:0] o_d = old[31:16];
+    wire [2:0] s_pts = (o_cnt == 4'd1) ? 3'd1 : (o_cnt <= 4'd3) ? 3'd2 : (o_cnt <= 4'd7) ? 3'd3 : 3'd4;
+    wire [2:0] s_avg = (o_cnt == 4'hF) ? cfg_avg_shift : (s_pts < cfg_avg_shift) ? s_pts : cfg_avg_shift;
+    wire signed [16:0] dif  = {zq2[15], zq2} - {o_a[15], o_a};
+    wire signed [16:0] ndif = {o_a[15], o_a} - {zq2[15], zq2};
+    wire        [15:0] adif = dif[16] ? ndif[15:0] : dif[15:0];          // |z - A| <= 65520
+    wire signed [16:0] dev  = {1'b0, adif} - {1'b0, o_d};
+    wire signed [16:0] dif_s = dif >>> s_avg;
+    wire signed [16:0] dev_s = dev >>> s_avg;
+    wire        [15:0] a_new = o_a + dif_s[15:0];
+    wire        [15:0] d_new = o_d + dev_s[15:0];
+    wire [52:0] nw_avg = reset_slot ? {1'b0, fc, tag2, 4'd1, 16'd0, zq2}
+                                    : {1'b0, fc, tag2, cnt_inc, d_new, a_new};
+    wire [52:0] nw = cfg_avg ? nw_avg : nw_ext;
 
     wire          we_u = v2 & upd2;
     // fw1 即 S3 写口寄存器
@@ -118,6 +145,7 @@ module elev_map #(
             v1 <= acc; upd1 <= s_upd; eof1 <= s_eof;
             a1 <= s_addr; tag1 <= s_tag; z1 <= s_z;
             v2 <= v1; upd2 <= upd1; eof2 <= eof1; a2 <= a1; tag2 <= tag1; z2 <= z1; q2 <= q;
+            zq2 <= ((z1 > 16'sd4095) ? 16'sd4095 : (z1 < -16'sd4095) ? -16'sd4095 : z1) <<< 3;
             m1 <= we_u  && (a2 == a1);
             m2 <= fw1_v && (fw1_a == a1);
             m3 <= fw2_v && (fw2_a == a1);

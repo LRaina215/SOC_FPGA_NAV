@@ -1,7 +1,7 @@
 """Dump every elevation slot plus the hardware cost map (map keeps running; the scene is static).
 Slots are read in pipelined batches over the bus bridge. The frame counter is sampled per row so
 the offline model can age cells the way the hardware does.
-Output JSON: zmin, zmax, cnt, tag, stamp, stale (16384 each), fc_row (128), cost (16384 bytes),
+Output JSON: zmin, zmax (raw signed 16-bit fields; with MAP_CTRL.AVG they hold the Q3 deviation / Q3 mean), cnt, tag, stamp, stale (16384 each), fc_row (128), cost (16384 bytes),
 lat_cx/lat_cy, centre_x/centre_y and the terrain registers.
 Usage: python3 elev_dump.py <out.json>
 """

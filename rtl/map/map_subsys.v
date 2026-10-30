@@ -20,6 +20,8 @@ module map_subsys #(
     input  wire [7:0]  cfg_age_max,
     input  wire [3:0]  cfg_cnt_min,
     input  wire [3:0]  cfg_keep_r,
+    input  wire        cfg_avg,            // 高程图跨帧平均（见 elev_map.v）
+    input  wire [2:0]  cfg_avg_shift,
     input  wire [15:0] cfg_step_max,
     input  wire        cfg_step_high_only,
     input  wire [15:0] cfg_rough_max,
@@ -88,7 +90,7 @@ module map_subsys #(
     wire        eof_acc = s_valid & s_ready & s_eof & cfg_enable;
 
     elev_map #(.LOG2N(LOG2N), .TAGB(TAGB)) u_em (
-        .clk(clk), .rst(rst), .clear(cmd_clear),
+        .clk(clk), .rst(rst), .clear(cmd_clear), .cfg_avg(cfg_avg), .cfg_avg_shift(cfg_avg_shift),
         .s_valid(s_valid & cfg_enable & ~sweep_pend), .s_ready(em_s_ready),
         .s_upd(s_upd), .s_addr(s_addr), .s_tag(s_tag), .s_z(s_z), .s_eof(s_eof),
         .fc(frame_cnt), .frame_done(frame_done), .busy(em_busy),
@@ -101,7 +103,7 @@ module map_subsys #(
 
     trav_v3 #(.LOG2N(LOG2N), .TAGB(TAGB)) u_tv (
         .clk(clk), .rst(rst), .start(tv_start), .cx(sw_cx), .cy(sw_cy), .fc(frame_cnt),
-        .cfg_age_max(cfg_age_max), .cfg_cnt_min(cfg_cnt_min), .cfg_keep_r(cfg_keep_r),
+        .cfg_age_max(cfg_age_max), .cfg_cnt_min(cfg_cnt_min), .cfg_keep_r(cfg_keep_r), .cfg_avg(cfg_avg),
         .cfg_step_max(cfg_step_max), .cfg_step_high_only(cfg_step_high_only), .cfg_rough_max(cfg_rough_max), .cfg_slope_rise(cfg_slope_rise),
         .cfg_jump(cfg_jump), .cfg_drop_k(cfg_drop_k), .cfg_drop_slope(cfg_drop_slope),
         .cfg_k_slope(cfg_k_slope), .cfg_k_step(cfg_k_step), .cfg_k_rough(cfg_k_rough),

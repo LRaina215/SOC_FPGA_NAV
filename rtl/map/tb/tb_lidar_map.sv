@@ -12,7 +12,7 @@ module tb_lidar_map;
     logic [31:0] pose [0:14*8-1];
     logic [39:0] fexp [0:9600*8-1];
     logic [7:0]  cexp [0:NCELL*8-1];
-    logic [15:0] mcfg [0:19];
+    logic [15:0] mcfg [0:21];
     int n_pix, n_flt, n_frm;
 
     logic [143:0] cfg_r;
@@ -70,7 +70,7 @@ module tb_lidar_map;
     map_subsys u_map (
         .clk(clk), .rst(rst), .cfg_enable(1'b1), .cfg_auto_sweep(1'b1), .cmd_sweep(1'b0), .cmd_clear(1'b0),
         .cfg_cx(cfg_cx), .cfg_cy(cfg_cy),
-        .cfg_age_max(mcfg[0][7:0]), .cfg_cnt_min(mcfg[1][3:0]), .cfg_keep_r(mcfg[2][3:0]),
+        .cfg_age_max(mcfg[0][7:0]), .cfg_cnt_min(mcfg[1][3:0]), .cfg_keep_r(mcfg[2][3:0]), .cfg_avg(mcfg[20][0]), .cfg_avg_shift(mcfg[21][2:0]),
         .cfg_step_max(mcfg[3]), .cfg_step_high_only(mcfg[19][0]), .cfg_rough_max(mcfg[4]), .cfg_slope_rise(mcfg[5]), .cfg_jump(mcfg[6][7:0]),
         .cfg_drop_k(mcfg[7][4:0]), .cfg_drop_slope(mcfg[8][7:0]),
         .cfg_k_slope(mcfg[9][7:0]), .cfg_k_step(mcfg[10][7:0]), .cfg_k_rough(mcfg[11][7:0]),

@@ -53,9 +53,46 @@ def pc_filter(p, pv, inv_res, cx, cy, zmin, zmax):
 
 
 # ---------------------------------------------------------------- 高程图
+def _avg_shift(n, shift_max):
+    s = np.where(n == 1, 1, np.where(n <= 3, 2, np.where(n <= 7, 3, 4)))
+    return np.where(n == 15, shift_max, np.minimum(s, shift_max))
+
+
+def _elev_update_avg(em, addr, tag, z):
+    """平均模式：同一槽内按到达顺序逐点更新（第 r 个点在所有槽上一起算），与 ElevMap.update 逐位相同。"""
+    order = np.argsort(addr, kind="stable")
+    a, tg = addr[order], tag[order]
+    zq = np.clip(z[order], -nf.AVG_ZLIM, nf.AVG_ZLIM).astype(np.int64) * 8
+    u, start, cnt = np.unique(a, return_index=True, return_counts=True)
+    ci = np.repeat(np.arange(len(u)), cnt)
+    rank = np.arange(len(a)) - np.repeat(start, cnt)
+    A, D, n = em.zmax[u].astype(np.int64), em.zmin[u].astype(np.int64), em.cnt[u].astype(np.int64)
+    T, S = em.tag[u].astype(np.int64), em.stale[u].copy()
+    by_rank = np.argsort(rank, kind="stable")
+    bounds = np.searchsorted(rank[by_rank], np.arange(int(cnt.max()) + 1))
+    smax = getattr(em, "avg_shift_max", 3)
+    for r in range(int(cnt.max())):
+        p = by_rank[bounds[r]:bounds[r + 1]]
+        c, zr, tr = ci[p], zq[p], tg[p]
+        rs = S[c] | (n[c] == 0) | (T[c] != tr)
+        s = _avg_shift(n[c], smax)
+        diff = zr - A[c]
+        A[c] = np.where(rs, zr, A[c] + (diff >> s))
+        D[c] = np.where(rs, 0, D[c] + ((np.abs(diff) - D[c]) >> s))
+        n[c] = np.where(rs, 1, np.minimum(n[c] + 1, 15))
+        T[c] = tr
+        S[c] = False
+    em.zmax[u], em.zmin[u], em.cnt[u], em.tag[u] = A, D, n, T
+    em.stamp[u] = em.fc
+    em.stale[u] = False
+
+
 def elev_update(em, addr, tag, z):
-    """一帧的全部更新（与 ElevMap.update 对一帧数据的结果相同）：帧内被触及的槽用本帧观测替换。"""
-    if len(addr):
+    """一帧的全部更新（与 ElevMap.update 对一帧数据的结果相同）：帧内被触及的槽用本帧观测替换；
+    em.avg=1 时为跨帧平均（见 nav_fixed.ElevMap）。"""
+    if len(addr) and getattr(em, "avg", 0):
+        _elev_update_avg(em, addr, tag, z)
+    elif len(addr):
         order = np.argsort(addr, kind="stable")
         a, tg, zz = addr[order], tag[order], z[order]
         u, start, cnt = np.unique(a, return_index=True, return_counts=True)
@@ -97,8 +134,13 @@ def window_view(em, cx, cy, cfg, kill=True):
         dead = (cnt != 0) & ~live
         em.cnt[slot[dead]] = 0
     valid = live & (cnt >= cfg["cnt_min"])
-    h = em.zmax[slot].astype(np.int64)
-    rough = (em.zmax[slot] - em.zmin[slot]).astype(np.int64)
+    if cfg.get("avg", 0):
+        # 平均模式：高度 = Q3 均值向下取整到 mm，粗糙度 = Q3 平均绝对偏差向下取整到 mm
+        h = em.zmax[slot].astype(np.int64) >> 3
+        rough = em.zmin[slot].astype(np.int64) >> 3
+    else:
+        h = em.zmax[slot].astype(np.int64)
+        rough = (em.zmax[slot] - em.zmin[slot]).astype(np.int64)
     return slot, valid, h, rough
 
 

@@ -44,6 +44,8 @@ def s32(v):
 def main(out):
     out = Path(out)
     MAPCFG['step_high_only'] = int('--high-only' in sys.argv)
+    MAPCFG['avg'] = int('--avg' in sys.argv)
+    MAPCFG['avg_shift'] = 3
     import robot as rb
     import world as W
     scene = W.scene_terrain()
@@ -54,7 +56,7 @@ def main(out):
     lut = lidar_lut.lut_entries()
     lidar_lut.write_hex(out / "lut.hex", lut)
 
-    em = nf.ElevMap()
+    em = nf.ElevMap(avg=MAPCFG['avg'], avg_shift_max=MAPCFG['avg_shift'])
     pix_lines, pose_lines, flt_lines, cxy_lines, cost_lines = [], [], [], [], []
     for k, (x, y, yaw) in enumerate(TRAJ):
         bot.x, bot.y, bot.yaw = x, y, math.radians(yaw)
@@ -102,7 +104,7 @@ def main(out):
     (out / "frm_cxy.hex").write_text("\n".join(cxy_lines) + "\n")
     (out / "cost_exp.hex").write_text("\n".join(cost_lines) + "\n")
     c = MAPCFG
-    vals = [c[k] for k in CFG_KEYS] + [INV_RES, ZMIN & 0xFFFF, ZMAX & 0xFFFF, c['step_high_only']]
+    vals = [c[k] for k in CFG_KEYS] + [INV_RES, ZMIN & 0xFFFF, ZMAX & 0xFFFF, c['step_high_only'], c['avg'], c['avg_shift']]
     vals[CFG_KEYS.index("infl_r")] |= c.get("infl_disk", 1) << 4          # INFL.DISK
     (out / "mapcfg.hex").write_text("\n".join(f"{v:04x}" for v in vals) + "\n")
     (out / "counts.txt").write_text(f"{len(pix_lines)} {len(flt_lines)} {len(TRAJ)}\n")

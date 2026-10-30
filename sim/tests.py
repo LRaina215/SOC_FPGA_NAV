@@ -24,6 +24,7 @@ LIDAR = ["rtl/lidar/xt_frame_rx.v", "rtl/lidar/pc_project.v", "rtl/lidar/pc_tran
 MAP = ["rtl/map/elev_map.v", "rtl/map/trav_v3.v", "rtl/map/map_subsys.v", "rtl/map/support_coverage.v"]
 TESTS['tb_support_coverage']={'pre':['sim/gen/gen_support_coverage.py'],'src':COMMON+['rtl/map/support_coverage.v','rtl/map/tb/tb_support_coverage.sv'],'top':'tb_support_coverage'}
 TESTS['tb_map_retention'] = {'src':COMMON+MAP+['rtl/map/tb/tb_map_retention.sv'],'top':'tb_map_retention'}
+TESTS['tb_map_retention_avg'] = dict(TESTS['tb_map_retention'], defines=['MAP_AVG_TEST'])
 
 TESTS["tb_lidar_map"] = {
     "pre": ["sim/gen/gen_map.py"],
@@ -31,6 +32,7 @@ TESTS["tb_lidar_map"] = {
     "top": "tb_lidar_map",
 }
 TESTS['tb_lidar_map_high'] = dict(TESTS['tb_lidar_map'],pre=['sim/gen/gen_map.py','--high-only'])
+TESTS['tb_lidar_map_avg'] = dict(TESTS['tb_lidar_map'],pre=['sim/gen/gen_map.py','--high-only','--avg'])
 
 MATCH = ["rtl/match/slf_extract.v", "rtl/match/slf_lf.v", "rtl/match/slf_match.v"]
 

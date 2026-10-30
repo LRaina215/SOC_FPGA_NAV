@@ -351,6 +351,7 @@ module nav_subsystem #(
         .cmd_sweep(p_MAP_CMD & wd_q[0]), .cmd_clear(p_MAP_CMD & wd_q[1]),
         .cfg_cx(r_MAP_CENTER_X), .cfg_cy(r_MAP_CENTER_Y),
         .cfg_age_max(r_MAP_VALID_CFG[7:0]), .cfg_cnt_min(r_MAP_VALID_CFG[11:8]), .cfg_keep_r(r_MAP_VALID_CFG[19:16]),
+        .cfg_avg(r_MAP_CTRL[4]), .cfg_avg_shift(r_MAP_CTRL[7:5]),
         .cfg_step_max(r_MAP_THR0[15:0]), .cfg_step_high_only(r_MAP_CTRL[3]), .cfg_rough_max(r_MAP_THR0[31:16]),
         .cfg_slope_rise(r_MAP_THR1[15:0]), .cfg_jump(r_MAP_THR1[23:16]),
         .cfg_drop_k(r_MAP_DROP[4:0]), .cfg_drop_slope(r_MAP_DROP[15:8]),

@@ -284,12 +284,12 @@ module nav_regfile (
             r_LIDAR_TZ <= 32'h00000000;
             r_LIDAR_ZBAND <= 32'h07D0FC18;
             r_LIDAR_LUT_ADDR <= 32'h00000000;
-            r_MAP_CTRL <= 32'h0000000D;
+            r_MAP_CTRL <= 32'h0000007D;
             r_MAP_INV_RES <= 32'h0000051F;
             r_MAP_CENTER_X <= 32'h00000000;
             r_MAP_CENTER_Y <= 32'h00000000;
-            r_MAP_VALID_CFG <= 32'h000C013C;
-            r_MAP_THR0 <= 32'h00320014;
+            r_MAP_VALID_CFG <= 32'h000C043C;
+            r_MAP_THR0 <= 32'h00280014;
             r_MAP_THR1 <= 32'h00190039;
             r_MAP_WEIGHT <= 32'h002030A0;
             r_MAP_INFL <= 32'h00000014;

@@ -12,6 +12,7 @@ static inline uint32_t nav_rd(uint32_t off) { return *(volatile uint32_t *)(uint
 static inline void nav_wr(uint32_t off, uint32_t v) { *(volatile uint32_t *)(uintptr_t)(NAV_BASE + off) = v; }
 
 #define FIELD(v, reg, f) (((v) & NAV_##reg##_##f##_MASK) >> NAV_##reg##_##f##_SHIFT)
+#define HAL_MAP_NOISE_MAD_MM 12      /* 平均模式下平地格的平均绝对偏差上限（雷达测距噪声底） */
 
 uint32_t hal_time_us(void) { return nav_rd(NAV_SYS_TIME_US); }
 
@@ -313,6 +314,14 @@ bool hal_map_support(int32_t x_mm,int32_t y_mm,hal_support_t *out)
     if (FIELD(q1, MAP_ELEV_Q1, CNT) == 0 || FIELD(q1, MAP_ELEV_Q1, TAG) != tag) return false;
     uint32_t q0 = nav_rd(NAV_MAP_ELEV_Q0);
     int32_t zmax = (int16_t)(q0 & 0xFFFFu), zmin = (int16_t)(q0 >> 16);
+    if (nav_rd(NAV_MAP_CTRL) & NAV_MAP_CTRL_AVG_MASK) {
+        /* 平均模式：低 16 位为 Q3 高度均值，高 16 位为 Q3 平均绝对偏差（无符号）。
+         * 平地上的偏差主要是测距噪声（实测约 8–12 mm），只把超出这一噪声底的部分当作格内起伏区间。 */
+        int32_t mean = zmax >> 3, mad = (int32_t)((q0 >> 19) & 0x1FFFu);
+        int32_t relief = mad > HAL_MAP_NOISE_MAD_MM ? mad - HAL_MAP_NOISE_MAD_MM : 0;
+        zmin = nav_clamp32(mean - relief, -32768, 32767);
+        zmax = nav_clamp32(mean + relief, -32768, 32767);
+    }
     if(!hal_map_info(&after) || before.seq!=after.seq || before.cx!=after.cx ||
        before.cy!=after.cy || before.inv_res!=after.inv_res ||
        fc!=nav_rd(NAV_MAP_FRAME_CNT) || (nav_rd(NAV_MAP_STAT)&NAV_MAP_STAT_BUSY_MASK)) return false;

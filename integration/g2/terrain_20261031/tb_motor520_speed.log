@@ -1,0 +1,59 @@
+#-----------------------------------------------------------
+# xsim v2026.1 (64-bit)
+# SW Build 6511674 on Tue Jun 16 11:02:23 MDT 2026
+# IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+# SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+# Start of session at: Sat Oct 31 06:58:18 2026
+# Process ID         : 33976
+# Current directory  : D:/tools/tmp/sim_enc
+# Command line       : xsim.exe -mode tcl -source {xsim.dir/snap/xsim_script.tcl}
+# Log file           : D:/tools/tmp/sim_enc/xsim.log
+# Journal file       : D:/tools/tmp/sim_enc\xsim.jou
+# Running On         : DESKTOP-4G9JVDL
+# Platform           : Windows 11
+# Operating System   : 26100
+# Processor Detail   : 12th Gen Intel(R) Core(TM) i7-12700H
+# CPU Frequency      : 2688 MHz
+# CPU Physical cores : 14
+# CPU Logical cores  : 20
+# Host memory        : 16849 MB
+# Swap memory        : 17790 MB
+# Total Virtual      : 34639 MB
+# Available Virtual  : 7461 MB
+#-----------------------------------------------------------
+source xsim.dir/snap/xsim_script.tcl
+# xsim {snap} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+gate 0 phase 1: filtered 8 raw 8 true 9 rejected 0
+gate 1 phase 1: filtered 8 raw 8 true 8 rejected 0
+gate 2 phase 1: filtered 8 raw 9 true 9 rejected 0
+gate 3 phase 1: filtered 9 raw 8 true 8 rejected 0
+gate 4 phase 1: filtered 8 raw 8 true 8 rejected 0
+gate 5 phase 2: filtered 8 raw 9 true 9 rejected 0
+gate 6 phase 2: filtered -7 raw -8 true -8 rejected 0
+gate 7 phase 2: filtered -8 raw -8 true -8 rejected 0
+gate 8 phase 2: filtered -8 raw -9 true -9 rejected 0
+gate 9 phase 3: filtered -9 raw -8 true -8 rejected 0
+gate 10 phase 3: filtered 8 raw -12 true 8 rejected 0
+gate 11 phase 3: filtered 8 raw -11 true 9 rejected 0
+gate 12 phase 3: filtered 9 raw 20 true 8 rejected 0
+gate 13 phase 3: filtered 8 raw 28 true 8 rejected 0
+gate 14 phase 3: filtered 8 raw 21 true 9 rejected 0
+gate 15 phase 4: filtered 9 raw -12 true 8 rejected 0
+gate 16 phase 4: filtered 0 raw -436 true 0 rejected 0
+gate 17 phase 4: filtered 0 raw -436 true 0 rejected 0
+gate 18 phase 4: filtered 0 raw -436 true 0 rejected 0
+phase3-4: 未滤波实例最大 |计数| 436 / 闸门，滤波实例与真值相差不超过 1
+gate 19 phase 5: filtered 0 raw -436 true 1 rejected 0
+gate 20 phase 5: filtered 0 raw 50 true 50 rejected 1
+gate 21 phase 5: filtered 0 raw 50 true 50 rejected 2
+gate 22 phase 5: filtered 0 raw 50 true 50 rejected 3
+gate 23 phase 6: filtered 0 raw 50 true 50 rejected 4
+gate 24 phase 6: filtered 9 raw 9 true 8 rejected 4
+gate 25 phase 6: filtered 8 raw 8 true 8 rejected 4
+gate 26 phase 6: filtered 8 raw 8 true 9 rejected 4
+TEST PASSED (27 gates, invalid transitions filtered 0 raw 0)
+$finish called at time : 28001410 ns : File "D:/Desktop/SOC FPGA/nav/integration/g2/terrain_20261031/tb_motor520_speed.sv" Line 106
+exit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 31 06:58:21 2026...

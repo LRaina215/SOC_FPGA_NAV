@@ -240,9 +240,9 @@ blocks:
       - name: CTRL
         off: 0x00
         acc: rw
-        reset: 0x0000000D
-        desc: "控制；STEP_HIGH_ONLY=1时台阶高差只归属高侧，结合完整足迹检查；0保留双侧兼容判据。当前候选默认启用，部署须与已验收配置一致。"
-        fields: {ENABLE: [0,0], AUTO_SWEEP: [2,2], STEP_HIGH_ONLY: [3,3]}
+        reset: 0x0000007D
+        desc: "控制；STEP_HIGH_ONLY=1时台阶高差只归属高侧，结合完整足迹检查；0保留双侧兼容判据。AVG=1：高程图跨帧平均（格内存 Q3 高度均值与平均绝对偏差，累计点数），AVG=0：逐帧极值；切换后须 CLEAR。AVG_SHIFT：计满 15 点后的平均权重 2^-AVG_SHIFT。"
+        fields: {ENABLE: [0,0], AUTO_SWEEP: [2,2], STEP_HIGH_ONLY: [3,3], AVG: [4,4], AVG_SHIFT: [7,5]}
       - name: CMD
         off: 0x04
         acc: w1p
@@ -255,14 +255,14 @@ blocks:
       - name: VALID_CFG
         off: 0x14
         acc: rw
-        reset: 0x000C013C
-        desc: "栅格有效性（默认年龄上限 60 帧、最少 1 点、窗口中心 ±12 格不过期）"
+        reset: 0x000C043C
+        desc: "栅格有效性（默认年龄上限 60 帧、最少 4 点（平均模式下为累计点数）、窗口中心 ±12 格不过期）"
         fields: {AGE_MAX: [7,0], CNT_MIN: [11,8], KEEP_R: [19,16]}
       - name: THR0
         off: 0x18
         acc: rw
-        reset: 0x00320014
-        desc: "致命阈值 mm：台阶20（当前模型能力假设，非实车标定；测量容差不得叠加）、格内粗糙度50"
+        reset: 0x00280014
+        desc: "致命阈值 mm：台阶20（当前模型能力假设，非实车标定；测量容差不得叠加）、格内粗糙度40（平均模式下为平均绝对偏差；逐帧极值模式下为格内高差）"
         fields: {STEP_MAX: [15,0], ROUGH_MAX: [31,16]}
       - name: THR1
         off: 0x1C

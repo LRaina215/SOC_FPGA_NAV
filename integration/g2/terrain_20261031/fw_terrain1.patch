@@ -1,0 +1,137 @@
+diff -ru --strip-trailing-cr -x __pycache__ -x build_rv_k.py -x analyze_stack.py a/fw/app/main.c b/fw/app/main.c
+--- a/fw/app/main.c	2026-10-31 02:15:50.199236700 +0800
++++ b/fw/app/main.c	2026-10-31 07:10:43.418731400 +0800
+@@ -5,7 +5,11 @@
+ 
+ int main(void)
+ {
++#ifdef APP_BENCH_STATIONARY
++    con_printf("\r\nnav fw BENCH (stationary odometry) " __DATE__ " " __TIME__ "  RAM %u KB\r\n", SOC_RAM_SIZE / 1024);
++#else
+     con_printf("\r\nnav fw " __DATE__ " " __TIME__ "  RAM %u KB\r\n", SOC_RAM_SIZE / 1024);
++#endif
+     nav_app_init();
+     uint32_t t_log = hal_time_us(), loops = 0, max_us = 0, t_prev = t_log, n_gen = 0, n_xs = 0, n_xok = 0;
+     for (;;) {
+diff -ru --strip-trailing-cr -x __pycache__ -x build_rv_k.py -x analyze_stack.py a/fw/app/nav_app.c b/fw/app/nav_app.c
+--- a/fw/app/nav_app.c	2026-10-31 02:15:50.199771100 +0800
++++ b/fw/app/nav_app.c	2026-10-31 07:10:43.416485900 +0800
+@@ -268,6 +268,12 @@
+     int16_t vx, vy, wz;
+     uint32_t t;
+     while (hal_odom(&vx, &vy, &wz, &t)) pose_odom(&nt->pose, vx, vy, wz, t);
++#ifdef APP_BENCH_STATIONARY
++    /* Bench build only: the chassis is held still with its controller stopped, which stops
++     * odometry. Zero-velocity samples keep lidar frames posed; real odometry always wins. */
++    if (!nt->pose.have_odo || (uint32_t)(now - nt->pose.last_odo_us) > 20000u)
++        pose_odom(&nt->pose, 0, 0, 0, now);
++#endif
+ 
+     /* 2. IMU 姿态 */
+     uint8_t b;
+diff -ru --strip-trailing-cr -x __pycache__ -x build_rv_k.py -x analyze_stack.py a/fw/drv/hal_fpga.c b/fw/drv/hal_fpga.c
+--- a/fw/drv/hal_fpga.c	2026-10-31 02:15:50.207807700 +0800
++++ b/fw/drv/hal_fpga.c	2026-10-31 07:11:54.740845200 +0800
+@@ -15,6 +15,7 @@
+ static inline void nav_wr(uint32_t off, uint32_t v) { *(volatile uint32_t *)(uintptr_t)(NAV_BASE + off) = v; }
+ 
+ #define FIELD(v, reg, f) (((v) & NAV_##reg##_##f##_MASK) >> NAV_##reg##_##f##_SHIFT)
++#define HAL_MAP_NOISE_MAD_MM 12      /* 平均模式下平地格的平均绝对偏差上限（雷达测距噪声底） */
+ static uint32_t support_last_capture,support_last_now;
+ static bool support_have_capture;
+ static int32_t lf_vehicle_cx,lf_vehicle_cy; // exactly the last commit MAP_CENTER
+@@ -343,6 +344,14 @@
+     if (FIELD(q1, MAP_ELEV_Q1, CNT) == 0 || FIELD(q1, MAP_ELEV_Q1, TAG) != tag) return false;
+     uint32_t q0 = nav_rd(NAV_MAP_ELEV_Q0);
+     int32_t zmax = (int16_t)(q0 & 0xFFFFu), zmin = (int16_t)(q0 >> 16);
++    if (nav_rd(NAV_MAP_CTRL) & NAV_MAP_CTRL_AVG_MASK) {
++        /* 平均模式：低 16 位为 Q3 高度均值，高 16 位为 Q3 平均绝对偏差（无符号）。
++         * 平地上的偏差主要是测距噪声（实测约 8–12 mm），只把超出这一噪声底的部分当作格内起伏区间。 */
++        int32_t mean = zmax >> 3, mad = (int32_t)((q0 >> 19) & 0x1FFFu);
++        int32_t relief = mad > HAL_MAP_NOISE_MAD_MM ? mad - HAL_MAP_NOISE_MAD_MM : 0;
++        zmin = nav_clamp32(mean - relief, -32768, 32767);
++        zmax = nav_clamp32(mean + relief, -32768, 32767);
++    }
+     if(!hal_map_info(&after) || before.seq!=after.seq || before.cx!=after.cx ||
+        before.cy!=after.cy || before.inv_res!=after.inv_res ||
+        fc!=nav_rd(NAV_MAP_FRAME_CNT) || (nav_rd(NAV_MAP_STAT)&NAV_MAP_STAT_BUSY_MASK)) return false;
+@@ -384,6 +393,14 @@
+ void hal_imu_config(uint32_t baud_div)
+ {
+     nav_wr(NAV_IMU_BAUD_DIV, baud_div & 0xFFFFu);
++    /* While the CPU is held in reset (debug-port loads) the byte FIFO overflows but the 32-entry
++     * timestamp FIFO keeps its oldest entries, so every later burst would pop a stale time.
++     * Drain the bytes until the line has been quiet for 1 ms (a gap between bursts), then drain
++     * the timestamps, so byte bursts and timestamps start paired again. */
++    uint32_t t0 = hal_time_us(), quiet = t0;
++    while ((uint32_t)(hal_time_us() - quiet) < 1000u && (uint32_t)(hal_time_us() - t0) < 50000u)
++        if (nav_rd(NAV_IMU_RX_DATA) & NAV_IMU_RX_DATA_VALID_MASK) quiet = hal_time_us();
++    for (int i = 0; i < 64 && nav_rd(NAV_IMU_RX_TS) != 0; i++) {}
+ }
+ 
+ bool hal_imu_byte(uint8_t *b, bool *first, uint32_t *t_us)
+diff -ru --strip-trailing-cr -x __pycache__ -x build_rv_k.py -x analyze_stack.py a/fw/include/nav_regs_map.h b/fw/include/nav_regs_map.h
+--- a/fw/include/nav_regs_map.h	2026-10-31 02:15:50.211840100 +0800
++++ b/fw/include/nav_regs_map.h	2026-10-31 07:10:43.632711500 +0800
+@@ -338,13 +338,17 @@
+ #define NAV_LIDAR_INFO_SEQ_RESET 0x00000000u
+ #define NAV_MAP_BASE 0x3000u
+ #define NAV_MAP_CTRL 0x3000u
+-#define NAV_MAP_CTRL_RESET 0x0000000Du
++#define NAV_MAP_CTRL_RESET 0x0000007Du
+ #define NAV_MAP_CTRL_ENABLE_SHIFT 0
+ #define NAV_MAP_CTRL_ENABLE_MASK 0x00000001u
+ #define NAV_MAP_CTRL_AUTO_SWEEP_SHIFT 2
+ #define NAV_MAP_CTRL_AUTO_SWEEP_MASK 0x00000004u
+ #define NAV_MAP_CTRL_STEP_HIGH_ONLY_SHIFT 3
+ #define NAV_MAP_CTRL_STEP_HIGH_ONLY_MASK 0x00000008u
++#define NAV_MAP_CTRL_AVG_SHIFT 4
++#define NAV_MAP_CTRL_AVG_MASK 0x00000010u
++#define NAV_MAP_CTRL_AVG_SHIFT_SHIFT 5
++#define NAV_MAP_CTRL_AVG_SHIFT_MASK 0x000000E0u
+ #define NAV_MAP_CMD 0x3004u
+ #define NAV_MAP_CMD_RESET 0x00000000u
+ #define NAV_MAP_CMD_SWEEP_SHIFT 0
+@@ -358,7 +362,7 @@
+ #define NAV_MAP_CENTER_Y 0x3010u
+ #define NAV_MAP_CENTER_Y_RESET 0x00000000u
+ #define NAV_MAP_VALID_CFG 0x3014u
+-#define NAV_MAP_VALID_CFG_RESET 0x000C013Cu
++#define NAV_MAP_VALID_CFG_RESET 0x000C043Cu
+ #define NAV_MAP_VALID_CFG_AGE_MAX_SHIFT 0
+ #define NAV_MAP_VALID_CFG_AGE_MAX_MASK 0x000000FFu
+ #define NAV_MAP_VALID_CFG_CNT_MIN_SHIFT 8
+@@ -366,7 +370,7 @@
+ #define NAV_MAP_VALID_CFG_KEEP_R_SHIFT 16
+ #define NAV_MAP_VALID_CFG_KEEP_R_MASK 0x000F0000u
+ #define NAV_MAP_THR0 0x3018u
+-#define NAV_MAP_THR0_RESET 0x00320014u
++#define NAV_MAP_THR0_RESET 0x00280014u
+ #define NAV_MAP_THR0_STEP_MAX_SHIFT 0
+ #define NAV_MAP_THR0_STEP_MAX_MASK 0x0000FFFFu
+ #define NAV_MAP_THR0_ROUGH_MAX_SHIFT 16
+diff -ru --strip-trailing-cr -x __pycache__ -x build_rv_k.py -x analyze_stack.py a/fw/nav/nav_task.c b/fw/nav/nav_task.c
+--- a/fw/nav/nav_task.c	2026-10-31 02:15:50.236230000 +0800
++++ b/fw/nav/nav_task.c	2026-10-31 07:11:12.285804300 +0800
+@@ -49,8 +49,19 @@
+     gmap_default_cfg(&nt->gm.cfg);
+     gmap_init(&nt->gm);
+     explore_default_cfg(&nt->ex_cfg);
+-    /* 雷达安装位姿：实车已改回正常正装、下俯 10°；在轮轴前 123 mm、离地 = 腿长 L0 + 25 mm（L0 = 130） */
+-    pose_init(&nt->pose, ANGLE_FROM_CDEG(1000), 123, 155);
++    /* 雷达安装位姿（10-31 静止地面拟合，雷达相对 IMU）：下俯 2.1°、横滚 -3°，在轮轴前 123 mm、离地 150 mm */
++#ifndef APP_MOUNT_PITCH_CDEG
++#define APP_MOUNT_PITCH_CDEG 210
++#endif
++#ifndef APP_MOUNT_ROLL_CDEG
++#define APP_MOUNT_ROLL_CDEG (-300)
++#endif
++#ifndef APP_MOUNT_Z_MM
++#define APP_MOUNT_Z_MM 150
++#endif
++    pose_init(&nt->pose, ANGLE_FROM_CDEG(APP_MOUNT_PITCH_CDEG), 123, APP_MOUNT_Z_MM);
++    /* Mount roll relative to the IMU body frame (Rx, + = left side down in the map). */
++    fx_rot_zyx(&nt->pose.r_bs, 0, ANGLE_FROM_CDEG(APP_MOUNT_PITCH_CDEG), ANGLE_FROM_CDEG(APP_MOUNT_ROLL_CDEG));
+     target_init(&nt->tgt, 1500000, 700);
+     explore_init(&nt->exp);
+     nt->mode = NAV_MODE_IDLE;

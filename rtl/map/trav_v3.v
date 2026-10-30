@@ -22,6 +22,7 @@ module trav_v3 #(
     input  wire [7:0]  cfg_age_max,
     input  wire [3:0]  cfg_cnt_min,
     input  wire [3:0]  cfg_keep_r,
+    input  wire        cfg_avg,
     input  wire [15:0] cfg_step_max,
     input  wire        cfg_step_high_only,
     input  wire [15:0] cfg_rough_max,
@@ -108,9 +109,11 @@ module trav_v3 #(
     wire        q_live = (q_cnt != 0) && (q_tag == etag1) && ((!q_stale && q_age <= cfg_age_max) || q_keep);
     wire        q_valid = inr1 && q_live && (q_cnt >= cfg_cnt_min);
     wire [16:0] q_rough17 = {q_zmax[15], q_zmax} - {q_zmin[15], q_zmin};
-    wire [15:0] q_rough = q_rough17[16] ? 16'd0 : q_rough17[15:0];     // zmax >= zmin 恒成立
+    // 平均模式（见 elev_map.v）：高度 = Q3 均值 >>> 3，粗糙度 = Q3 平均绝对偏差 >> 3
+    wire signed [15:0] q_h = cfg_avg ? (q_zmax >>> 3) : q_zmax;
+    wire [15:0] q_rough = cfg_avg ? {3'd0, q_zmin[15:3]} : q_rough17[16] ? 16'd0 : q_rough17[15:0];     // zmax >= zmin 恒成立
     wire        q_b = inr1 && bm_q && (ph1 == P_C);
-    wire [CW-1:0] cur = {q_b, q_valid, q_zmax, q_rough};
+    wire [CW-1:0] cur = {q_b, q_valid, q_h, q_rough};
 
     // 行缓存：lbk[c] = 第 r-k 行、第 c 列
     reg [CW-1:0] lb1 [0:LB-1];

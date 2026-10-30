@@ -10,6 +10,12 @@ module tb_map_retention;
  map_subsys #(.LOG2N(4)) dut(
   .clk(clk),.rst(rst),.cfg_enable(1'b1),.cfg_auto_sweep(1'b1),.cmd_sweep(1'b0),.cmd_clear(1'b0),
   .cfg_cx(cx),.cfg_cy(cy),.cfg_age_max(8'd2),.cfg_cnt_min(4'd1),.cfg_keep_r(4'd3),
+`ifdef MAP_AVG_TEST
+  .cfg_avg(1'b1),
+`else
+  .cfg_avg(1'b0),
+`endif
+  .cfg_avg_shift(3'd3),
   .cfg_step_max(16'd20),.cfg_step_high_only(1'b1),.cfg_rough_max(16'd50),
   .cfg_slope_rise(16'd57),.cfg_jump(8'd25),.cfg_drop_k(5'd4),.cfg_drop_slope(8'd4),
   .cfg_k_slope(8'd160),.cfg_k_step(8'd48),.cfg_k_rough(8'd32),
@@ -52,7 +58,12 @@ module tb_map_retention;
   // At fc=2, the old modulo age appears fresh; the latched flag must prevent revival.
   cx=6;cy=6;point(0,1,0,0);finish_frame();check_word(1,0);check_cost(255);
   cx=0;cy=0;point(1,1,0,-12);finish_frame();check_word(0,1);
+`ifdef MAP_AVG_TEST
+  // 平均模式：重新初始化为 A = -12 mm（Q3）、D = 0
+  if(eq[15:0]!==16'hffa0 || eq[31:16]!==16'h0000) $fatal(1,"new sample must replace stale average");
+`else
   if(eq[15:0]!==16'hfff4 || eq[31:16]!==16'hfff4) $fatal(1,"new sample must replace stale interval");
+`endif
   $display("TEST PASSED: retention preserved hazard, blocked wrap revival, fresh observation replaced interval");
   $finish;
  end

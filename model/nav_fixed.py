@@ -80,10 +80,32 @@ def pc_filter(pts, inv_res, cx, cy, zmin, zmax):
 
 
 # ------------------------------------------------------------------ elev_map
-class ElevMap:
-    """每槽: zmax,zmin,cnt4,tag8,stamp8,retained_stale1。"""
+AVG_ZLIM = 4095        # 平均模式：点高度先限幅到 ±4095 mm，再以 Q3（1/8 mm）参与平均
 
-    def __init__(self):
+
+def avg_shift(n, shift_max):
+    """平均模式下第 n+1 个点（n = 已有点数 1..15）的权重 2^-s：前几点近似算术平均，计满 15 点后取 shift_max。"""
+    s = 1 if n == 1 else 2 if n <= 3 else 3 if n <= 7 else 4
+    return shift_max if n == 15 else min(s, shift_max)
+
+
+def avg_point(a, d, n, z, shift_max):
+    """平均模式单点更新：a = Q3 高度均值，d = Q3 平均绝对偏差，n = 已有点数。返回 (a', d')。"""
+    zq = max(-AVG_ZLIM, min(AVG_ZLIM, z)) * 8
+    s = avg_shift(n, shift_max)
+    diff = zq - a
+    e = abs(diff) - d
+    return a + (diff >> s), d + (e >> s)
+
+
+class ElevMap:
+    """每槽: zmax,zmin,cnt4,tag8,stamp8,retained_stale1。
+
+    avg=0（旧模式）：zmax/zmin 是本帧点高度极值（mm），cnt 是本帧点数，每帧第一次观测时重置。
+    avg=1（平均模式）：zmax 位置存 Q3 高度均值（有符号），zmin 位置存 Q3 平均绝对偏差（无符号），
+    cnt 是累计点数（饱和 15）；只有槽空 / 标签不符 / 已标记过期时才重置，跨帧持续平均。"""
+
+    def __init__(self, avg=0, avg_shift_max=3):
         self.zmax = np.zeros(N * N, dtype=np.int64)
         self.zmin = np.zeros(N * N, dtype=np.int64)
         self.cnt = np.zeros(N * N, dtype=np.int64)
@@ -91,12 +113,24 @@ class ElevMap:
         self.stamp = np.zeros(N * N, dtype=np.int64)
         self.stale = np.zeros(N * N, dtype=bool)
         self.fc = 0
+        self.avg = avg
+        self.avg_shift_max = avg_shift_max
 
     def update(self, upds):
         """输入 pc_filter 的输出（一帧或多帧），帧尾 fc 加 1。"""
         for upd, addr, tag, z, eof in upds:
             if upd:
-                if self.stale[addr] or self.cnt[addr] == 0 or self.tag[addr] != tag or self.stamp[addr] != self.fc:
+                reset = self.stale[addr] or self.cnt[addr] == 0 or self.tag[addr] != tag
+                if self.avg:
+                    if reset:
+                        self.zmax[addr] = max(-AVG_ZLIM, min(AVG_ZLIM, z)) * 8
+                        self.zmin[addr] = 0
+                        self.cnt[addr] = 1
+                    else:
+                        self.zmax[addr], self.zmin[addr] = avg_point(int(self.zmax[addr]), int(self.zmin[addr]),
+                                                                     int(self.cnt[addr]), z, self.avg_shift_max)
+                        self.cnt[addr] = min(self.cnt[addr] + 1, 15)
+                elif reset or self.stamp[addr] != self.fc:
                     self.zmax[addr] = z
                     self.zmin[addr] = z
                     self.cnt[addr] = 1

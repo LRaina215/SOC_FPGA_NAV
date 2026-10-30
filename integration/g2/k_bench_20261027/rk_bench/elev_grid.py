@@ -16,14 +16,22 @@ def s16(v):
     return v - 65536 if v & 0x8000 else v
 
 
-def read_cell(b, ix, iy):
+def decode(q0, avg):
+    """-> (lo, hi) mm. Extreme mode: per-frame zmin/zmax. Average mode (MAP_CTRL.AVG): mean -/+ mean abs deviation."""
+    if avg:
+        mean, mad = s16(q0) >> 3, (q0 >> 19) & 0x1FFF
+        return mean - mad, mean + mad
+    return s16(q0 >> 16), s16(q0)
+
+
+def read_cell(b, ix, iy, avg=False):
     b.wr(rm.REGS['MAP_ELEV_ADDR'], ((iy & 127) << 7) | (ix & 127))
     b.wr(rm.REGS['MAP_ELEV_CMD'], 1)
     for _ in range(50):
         q1 = b.rd(rm.REGS['MAP_ELEV_Q1'])
         if q1 >> 31:
             q0 = b.rd(rm.REGS['MAP_ELEV_Q0'])
-            return s16(q0 >> 16), s16(q0), q1 & 0xF
+            return decode(q0, avg) + (q1 & 0xF,)
         time.sleep(0.001)
     return None
 
@@ -45,10 +53,11 @@ def solve3(m, v):
 
 def main():
     b = Bridge()
+    avg = bool(b.rd(rm.REGS['MAP_CTRL']) & 0x10)
     cells = {}
     for ix in range(6, 46):
         for iy in range(-20, 21):
-            c = read_cell(b, ix, iy)
+            c = read_cell(b, ix, iy, avg)
             if c and c[2] > 0:
                 cells[(ix, iy)] = c
     json.dump({'%d,%d' % k: v for k, v in cells.items()}, open(sys.argv[1], 'w'))
