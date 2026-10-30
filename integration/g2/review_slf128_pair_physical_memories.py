@@ -46,7 +46,7 @@ def distributed_review(source,physical,out):
     return result
 
 
-def review(source,physical,out):
+def review(source,physical,out,expected_source_count=269,expected_physical_count=280,expected_BIN_bytes=53572):
     runtime=json.loads((physical/'tool_runtime.json').read_text())
     assert runtime.get('ended_at') and runtime.get('tool_exit') is not None
     assert runtime['cancelled'] is False,'Natural completed result required'
@@ -57,7 +57,7 @@ def review(source,physical,out):
     inputs += [source/f'ram_b{i}.hex' for i in range(4)]
     before=[metadata(p) for p in inputs]
     syn,phys,defaults=extract(source,physical)
-    assert len(syn)==269,('SYN43 bound source count differs',len(syn))
+    assert len(syn)==expected_source_count,('bound source count differs',len(syn),expected_source_count)
     assert set(syn)<=set(phys),('Source leaf missing',sorted(set(syn)-set(phys)))
     rows=[];used=set();split_count=0
     for name,s in syn.items():
@@ -113,7 +113,7 @@ def review(source,physical,out):
     cpucount=sum(n.startswith('u_soc/g_lane[') for n in phys)
     cpu=dict(physical_bitplanes=cpucount,image_bytes=len(phyimage),BIN_bytes=len(binary),
         checks=dict(bitplanes64=cpucount==64,source_equals_physical=synimage==phyimage,
-            selected_53572B_BIN=len(binary)==53572,
+            selected_BIN_length=len(binary)==expected_BIN_bytes,
             BIN_and_zero_tail=phyimage==binary+bytes(131072-len(binary)),
             all_word_hex_equal=phyimage==wordimage,all_lane_hex_equal=phyimage==laneimage))
     report=(physical/'impl/pnr/g2_top.rpt.txt').read_text()
@@ -121,7 +121,7 @@ def review(source,physical,out):
     binding=(physical/'g2_top.vg').read_bytes()==(source/'impl/gwsynthesis/g2_top.vg').read_bytes()
     split='-convert_sdp32_36_to_sdp16_18' in (physical/'impl/pnr/cmd.do').read_text()
     immutable=before==[metadata(p) for p in inputs]
-    counts=(len(syn)+split_count==len(phys)==count==280)
+    counts=(len(syn)+split_count==len(phys)==count==expected_physical_count)
     passed=binding and split and immutable and counts and all(all(x['checks'].values()) for x in rows) and all(cpu['checks'].values())
     dist=distributed_review(source,physical,out)
     passed=passed and dist['passed']

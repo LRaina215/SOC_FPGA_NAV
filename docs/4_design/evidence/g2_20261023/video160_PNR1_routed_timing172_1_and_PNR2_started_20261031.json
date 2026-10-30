@@ -1,0 +1,244 @@
+{
+  "recorded_at": "2026-10-31T00:12:55.303134+08:00",
+  "source": "F:\\nav_integration_g2_20261023\\K_video160_20261030_syn2",
+  "physical": "F:\\nav_integration_g2_20261023\\K_video160_20261030_pnr1_p2r0",
+  "routing_completed": true,
+  "explicit_unrouted_count": null,
+  "physical_BSRAM": 318,
+  "physical_storage_and_CPU_INIT_closed": true,
+  "raw_memory_checker": "F:\\nav_integration_g2_20261023\\video160_pnr1_physical_review2\\memories\\result.json",
+  "physical_wd_replicas_proved": 254,
+  "source_data_bits": 32,
+  "replica_input_closures": [
+    {
+      "memory": "u_nav/u_mbx/u_txs/g_stage2b_block.mem_g_stage2b_block.mem_0_0_s",
+      "issue": "Physical replicated write-data FF names",
+      "all_DI_bits_same_registered_value": true
+    }
+  ],
+  "setup": 172,
+  "hold": 1,
+  "clocks": [
+    {
+      "name": "clk50",
+      "constraint_mhz": 50.0,
+      "actual_fmax_mhz": 47.313,
+      "levels": 12,
+      "entity": "TOP"
+    },
+    {
+      "name": "rgmii_rxc",
+      "constraint_mhz": 100.0,
+      "actual_fmax_mhz": 155.048,
+      "levels": 7,
+      "entity": "TOP"
+    },
+    {
+      "name": "camera_pclk",
+      "constraint_mhz": 50.0,
+      "actual_fmax_mhz": 119.486,
+      "levels": 1,
+      "entity": "TOP"
+    },
+    {
+      "name": "lcd33",
+      "constraint_mhz": 33.0,
+      "actual_fmax_mhz": 66.444,
+      "levels": 11,
+      "entity": "TOP"
+    }
+  ],
+  "per_clock": {
+    "clk50": {
+      "setup": {
+        "tns_ns": -12.862,
+        "violated_endpoints": 45
+      },
+      "hold": {
+        "tns_ns": 0.0,
+        "violated_endpoints": 0
+      }
+    },
+    "rgmii_rxc": {
+      "setup": {
+        "tns_ns": 0.0,
+        "violated_endpoints": 0
+      },
+      "hold": {
+        "tns_ns": 0.0,
+        "violated_endpoints": 0
+      }
+    },
+    "camera_pclk": {
+      "setup": {
+        "tns_ns": 0.0,
+        "violated_endpoints": 0
+      },
+      "hold": {
+        "tns_ns": 0.0,
+        "violated_endpoints": 0
+      }
+    },
+    "lcd33": {
+      "setup": {
+        "tns_ns": 0.0,
+        "violated_endpoints": 0
+      },
+      "hold": {
+        "tns_ns": 0.0,
+        "violated_endpoints": 0
+      }
+    }
+  },
+  "outside_per_clock": {
+    "setup": 127,
+    "hold": 1
+  },
+  "setup_coverage": {
+    "report": "F:\\nav_integration_g2_20261023\\K_video160_20261030_pnr1_p2r0\\impl\\pnr\\g2_top.tr",
+    "summary_setup_violated_endpoints": 172,
+    "listed_setup_path_rows": 5000,
+    "listed_negative_setup_path_rows": 170,
+    "unique_failed_setup_endpoints_in_report_union": 170,
+    "repeated_negative_setup_path_rows": 0,
+    "unlisted_failed_endpoint_count_if_same_vendor_grouping": 2,
+    "coverage_fraction_if_same_vendor_grouping": 0.9883720930232558,
+    "status": "partial_endpoint_coverage",
+    "setup_reports": [
+      {
+        "command": "report_timing -setup -max_paths 5000 -max_common_paths 1",
+        "listed_paths": 5000,
+        "negative_slack_paths": 170,
+        "unique_failed_endpoints": 170,
+        "max_paths": 5000,
+        "max_common_paths": 1,
+        "worst_listed_slack_ns": -2.513
+      }
+    ],
+    "unique_failures_by_latch_clock": {
+      "lcd33:[R]": 123,
+      "clk50:[R]": 46,
+      "camera_pclk:[R]": 1
+    },
+    "interpretation": "Counts use printed (To Clock, To Node). A matching count supports complete endpoint coverage under this grouping; it does not prove timing closure, cover alternate paths, or validate a modified candidate from an older report."
+  },
+  "listed_failed_endpoint_categories": {
+    "video_synchronizer": 5,
+    "NAV_MMIO_read": 8,
+    "observation_scaling": 8,
+    "video_HUD_payload": 120,
+    "CPU_read_data": 5,
+    "wheel_PID": 23,
+    "other": 1
+  },
+  "worst_core_path": {
+    "number": 3,
+    "slack_ns": -1.136,
+    "printed_negative_slack": true,
+    "from_node": "u_nav/a_q_12_s0/Q",
+    "to_node": "u_nav/bus_rdata_15_s0/D",
+    "from_clock": "clk50:[R]",
+    "to_clock": "clk50:[R]"
+  },
+  "hold_paths": [
+    {
+      "slack_ns": -0.184,
+      "source": "u_video/capture/init_done_s0/Q",
+      "destination": "u_video/capture/ready_sync_0_s0/D",
+      "source_clock": "clk50:[R]",
+      "destination_clock": "camera_pclk:[R]",
+      "cross_clock": true
+    }
+  ],
+  "reset_checks": {
+    "recovery": {
+      "available": true,
+      "reported_rows": 25,
+      "worst_slack_ns": -7.164,
+      "negative_reported_rows": 2
+    },
+    "removal": {
+      "available": true,
+      "reported_rows": 25,
+      "worst_slack_ns": 0.25,
+      "negative_reported_rows": 0
+    },
+    "minimum_pulse_width": {
+      "available": true,
+      "reported_rows": 10,
+      "worst_slack_ns": 2.166,
+      "negative_reported_rows": 0
+    }
+  },
+  "camera_PR1014_warning": true,
+  "camera_primary_also_reported": true,
+  "complete_CDC_reset_IO_and_timing_signoff": false,
+  "programmed": false,
+  "deployment_accepted": false,
+  "second_layout": {
+    "build": "F:\\nav_integration_g2_20261023\\K_video160_20261031_pnr2_p1r0",
+    "job": {
+      "controller_pid": 57260,
+      "controller_created_epoch": 1793376591.7648628,
+      "source": "F:\\nav_integration_g2_20261023\\K_video160_20261030_syn2",
+      "output": "F:\\nav_integration_g2_20261023\\K_video160_20261031_pnr2_p1r0",
+      "total_limit_s": 0,
+      "silent_limit_s": 0,
+      "programmed": false,
+      "automatic_retry": false,
+      "phase": "starting_unique_physical_run",
+      "updated_at": "2026-10-31T00:09:53.248748+08:00",
+      "physical_available": 4063531008,
+      "commit_available": 8178339840,
+      "effective_options": {
+        "global_freq_mhz": 50.0,
+        "wide_split": 1,
+        "effective_options": "F:\\nav_integration_g2_20261023\\K_video160_20261031_pnr2_p1r0\\effective_options.tcl",
+        "extra_options": {
+          "replicate_resources": 1,
+          "place_option": 1,
+          "route_option": 0
+        }
+      }
+    },
+    "runtime": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-10-31T00:09:53.248748+08:00",
+      "max_runtime_s": 0,
+      "max_no_observable_progress_s": 0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "system_telemetry_file": "system_telemetry.jsonl",
+      "telemetry_is_progress_evidence": false,
+      "pid": 48816,
+      "elapsed_s": 210.2029999999795,
+      "no_observable_progress_s": 126.125,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          900,
+          1793376675645187900
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          460,
+          1793376675645187900
+        ]
+      ]
+    },
+    "tool_identity": {
+      "pid": 48816,
+      "created_epoch": 1793376593.2529306,
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ]
+    },
+    "only_implementation_option_changed": "place_option2 ->1",
+    "same_VG_CST_SDC_and_device": true
+  }
+}

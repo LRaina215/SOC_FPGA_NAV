@@ -13,7 +13,7 @@ REFERENCE=Path('F:/nav_integration_g2_20261023/K_pnr63_s50p2r0')
 TOOL=Path('D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/bin/gw_sh.exe')
 
 def save(p,v):p.write_text(json.dumps(v,indent=2),encoding='utf-8')
-def run(source,out,review):
+def run(source,out,review,place_option=2):
     assert not out.exists()
     proof=json.loads(review.read_text(encoding='utf-8'))
     assert proof['passed_for_initial_exploratory_PNR']and Path(proof['build']).resolve()==source.resolve()
@@ -29,9 +29,11 @@ def run(source,out,review):
     (out/'g2.sdc').write_text(sdc,encoding='utf-8',newline='\n')
     tcl=(REFERENCE/'run.tcl').read_text(encoding='utf-8').replace(REFERENCE.as_posix(),out.as_posix())
     assert 'set_option -place_option 2'in tcl and 'set_option -route_option 0'in tcl
+    assert place_option in (1,2)
+    tcl=tcl.replace('set_option -place_option 2','set_option -place_option '+str(place_option))
     tcl+='\nexit\n';(out/'run.tcl').write_text(tcl,encoding='utf-8',newline='\n')
     save(out/'manifest.json',dict(source=str(source),source_manifest=json.loads((source/'manifest.json').read_text(encoding='utf-8')),
-        reviewed_netlist=str(review),reused_completed_synthesis=True,place_option=2,route_option=0,
+        reviewed_netlist=str(review),reused_completed_synthesis=True,place_option=place_option,route_option=0,
         original26_hold_only_max_delay_kept=True,new_video_paths_fully_timed=True,
         diagnostic_only=True,programmed=False,deployment_accepted=False))
     me=psutil.Process();me.nice(psutil.NORMAL_PRIORITY_CLASS)
@@ -48,14 +50,17 @@ def run(source,out,review):
             time.sleep(30)
     try:
         wait_memory()
-        state['effective_options']=validate(TOOL,out,[s for s in tcl.splitlines()if s.strip()not in ('run pnr','exit')],50,1,dict(replicate_resources=1,place_option=2,route_option=0))
+        state['effective_options']=validate(TOOL,out,[s for s in tcl.splitlines()if s.strip()not in ('run pnr','exit')],50,1,dict(replicate_resources=1,place_option=place_option,route_option=0))
         assert (out/'g2_top.vg').read_bytes()==(source/'impl/gwsynthesis/g2_top.vg').read_bytes()
         wait_memory();status('starting_unique_physical_run')
         result=run_tool([str(TOOL),'run.tcl'],out,max_runtime_s=0,max_no_progress_s=0,capture_system_telemetry=True)
         status('physical_tool_exited',runtime=result)
         finalize_gate(out)
         tr=out/'impl/pnr/g2_top.tr'
-        if tr.exists():save(out/'setup_endpoint_coverage.json',scan_report(tr))
+        if tr.exists():
+            coverage,endpoints=scan_report(tr)
+            save(out/'setup_endpoint_coverage.json',coverage)
+            save(out/'negative_setup_endpoints.json',endpoints)
         status('physical_complete_requires_actual_review',runtime=result)
         return result['tool_exit']
     except Exception as e:
@@ -63,5 +68,5 @@ def run(source,out,review):
         status('failed_preserved_no_retry',error=str(e),traceback=traceback.format_exc());return 1
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--source',type=Path,required=True);p.add_argument('--out',type=Path,required=True);p.add_argument('--review',type=Path,required=True)
-    a=p.parse_args();raise SystemExit(run(a.source.resolve(),a.out.resolve(),a.review.resolve()))
+    p=argparse.ArgumentParser();p.add_argument('--source',type=Path,required=True);p.add_argument('--out',type=Path,required=True);p.add_argument('--review',type=Path,required=True);p.add_argument('--place-option',type=int,choices=(1,2),default=2)
+    a=p.parse_args();raise SystemExit(run(a.source.resolve(),a.out.resolve(),a.review.resolve(),a.place_option))
