@@ -1,0 +1,28 @@
+--- /f/nav_integration_g2_20261023/K_video160_mmio_predecode_syn3/video/g2_video_hud.v	2026-10-30 23:13:47.434578700 +0800
++++ /f/nav_integration_g2_20261023/K_video_lcd480_prepared1/video/g2_video_hud.v	2026-10-31 02:20:41.908910300 +0800
+@@ -2,7 +2,9 @@
+ // Integration changes: namespaced module;4032 text-page FF bits ->288 packed payload bits.
+ // Text is formatted at 10Hz in the 50MHz domain using one serial divider.
+ // A held-bus toggle handshake transfers a coherent page to LCD at frame boundary.
+-module g2_video_hud # (parameter UPDATE_CYCLES=5000000,parameter PANEL_X=274,parameter PANEL_Y=168)(
++// TEXT_W: drawn text width in pixels (12 per column). 252 draws all 21 columns; 168 (14 columns)
++// still holds every non-blank character of every row.
++module g2_video_hud # (parameter UPDATE_CYCLES=5000000,parameter PANEL_X=274,parameter PANEL_Y=168,parameter TEXT_W=252)(
+  input wire clk,reset_n,lcd_clk,lcd_reset_n,frame_start,
+  input wire [10:0] x,input wire [9:0] y,input wire active,
+  input wire [95:0] imu_values,input wire sample_valid,sensor_ready,sensor_error,
+@@ -148,10 +150,10 @@
+   if(!lcd_reset_n)begin character<=8'h20;gx<=0;gy<=0;panel<=0;border<=0;text_area<=0;end
+   else begin
+    character<=text_row[(20-col)*8 +:8];gx<=cell_x[4:1];gy<=cell_y[4:1];
+-   panel<=active && x>=PANEL_X-4 && x<PANEL_X+256 && y>=PANEL_Y-4 && y<PANEL_Y+148;
+-   text_area<=active && x>=PANEL_X && x<PANEL_X+252 && y>=PANEL_Y && y<PANEL_Y+144;
+-   border<=active && x>=PANEL_X-4 && x<PANEL_X+256 && y>=PANEL_Y-4 && y<PANEL_Y+148 &&
+-       (x<PANEL_X-2 || x>=PANEL_X+254 || y<PANEL_Y-2 || y>=PANEL_Y+146);
++   panel<=active && x>=PANEL_X-4 && x<PANEL_X+TEXT_W+4 && y>=PANEL_Y-4 && y<PANEL_Y+148;
++   text_area<=active && x>=PANEL_X && x<PANEL_X+TEXT_W && y>=PANEL_Y && y<PANEL_Y+144;
++   border<=active && x>=PANEL_X-4 && x<PANEL_X+TEXT_W+4 && y>=PANEL_Y-4 && y<PANEL_Y+148 &&
++       (x<PANEL_X-2 || x>=PANEL_X+TEXT_W+2 || y<PANEL_Y-2 || y>=PANEL_Y+146);
+   end
+  end
+  wire [34:0] glyph=font(character);

@@ -1,0 +1,12 @@
+--- /dev/fd/63	2026-10-31 02:31:54.000000000 +0800
++++ /dev/fd/62	2026-10-31 02:31:54.000000000 +0800
+@@ -57,7 +57,7 @@
+ set_false_path -from [get_pins {u_nav/u_rf/r_NETL_CTRL_4_s0/Q}] -to [get_pins {u_lmac/neg_s_0_s0/D}] -hold
+ set_max_delay -from [get_pins {u_nav/u_rf/r_NETL_CTRL_4_s0/Q}] -to [get_pins {u_lmac/neg_s_0_s0/D}] 18.000
+ 
+-# Video input clock;33MHz LCD clock is derived by the reviewed PLL.
++# Video input clock; the 8.967 MHz LCD clock (4.3" 480x272) is derived by the reviewed PLL.
+ create_clock -name camera_pclk -period 20 [get_ports {CAMERA_PCLK}]
+-create_generated_clock -name lcd33 -source [get_ports {clk50}] -multiply_by 33 -divide_by 50 [get_pins {u_video_pll/u_pll/PLL_inst/CLKOUT1}]
++create_generated_clock -name lcd9 -source [get_ports {clk50}] -multiply_by 33 -divide_by 184 [get_pins {u_video_pll/u_pll/PLL_inst/CLKOUT1}]
+ # No imported video false paths. Review actual new synchronizers/payload after SYN.

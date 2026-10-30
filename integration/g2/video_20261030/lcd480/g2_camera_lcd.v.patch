@@ -1,0 +1,56 @@
+--- /f/nav_integration_g2_20261023/K_video160_mmio_predecode_syn3/video/g2_camera_lcd.v	2026-10-30 23:34:21.646027200 +0800
++++ /f/nav_integration_g2_20261023/K_video_lcd480_prepared1/video/g2_camera_lcd.v	2026-10-31 02:21:11.288302500 +0800
+@@ -1,8 +1,11 @@
+ // Compact integration of the reviewed OV5640 capture and packed numeric HUD.
+ // Full640x480 field of view, one RGB565 sample per4x4 cell,160x120 stored.
++// Xiaomeige 4.3" 480x272 TFT, 9 MHz pixel clock: the 160x120 picture is shown 2x
++// (320x240) at the left, the HUD panel at the right edge.
+ module g2_camera_lcd #(
+-    parameter integer H_ACTIVE=800,H_FRONT=40,H_SYNC=128,H_BACK=88,
+-    parameter integer V_ACTIVE=480,V_FRONT=10,V_SYNC=2,V_BACK=33,
++    parameter integer H_ACTIVE=480,H_FRONT=2,H_SYNC=41,H_BACK=2,
++    parameter integer V_ACTIVE=272,V_FRONT=2,V_SYNC=10,V_BACK=2,
++    parameter integer IMG_Y=16,
+     parameter integer FRESH_CYCLES=12500000
+ )(
+     input wire clk,reset_n,lcd_clk,
+@@ -55,15 +58,14 @@
+     reg [9:0] v;
+     localparam H_TOTAL=H_ACTIVE+H_FRONT+H_SYNC+H_BACK;
+     localparam V_TOTAL=V_ACTIVE+V_FRONT+V_SYNC+V_BACK;
+-    localparam X_START=(H_ACTIVE-640)/2;
+     wire active=(h>=H_SYNC+H_BACK && h<H_SYNC+H_BACK+H_ACTIVE &&
+                  v>=V_SYNC+V_BACK && v<V_SYNC+V_BACK+V_ACTIVE);
+     wire [10:0] x=h-(H_SYNC+H_BACK);
+     wire [9:0] y=v-(V_SYNC+V_BACK);
+-    wire in_image=active && x>=X_START && x<X_START+640 && y<480;
+-    wire [10:0] image_x=x-X_START;
+-    wire [14:0] row={8'd0,y[8:2]};
+-    wire [7:0] column=image_x[9:2];
++    wire in_image=active && x<320 && y>=IMG_Y && y<IMG_Y+240;
++    wire [9:0] image_y=y-IMG_Y;
++    wire [14:0] row={8'd0,image_y[7:1]};
++    wire [7:0] column=x[8:1];
+     wire [14:0] read_addr=(row<<7)+(row<<5)+{7'd0,column};
+     wire frame_start=(h==0 && v==0);
+     g2_video_framebuffer store(
+@@ -73,7 +75,7 @@
+         .frame_start(frame_start),.read_enable(in_image),.read_addr(read_addr),
+         .invalidate(stale_sync),.frame_ack(frame_ack),.display_ready(display_ready),.read_data(ram_q));
+     wire hud_box,hud_ink;
+-    g2_video_hud hud(.clk(clk),.reset_n(reset_n),.lcd_clk(lcd_clk),.lcd_reset_n(lcd_reset_n),
++    g2_video_hud #(.PANEL_X(308),.PANEL_Y(64),.TEXT_W(168)) hud(.clk(clk),.reset_n(reset_n),.lcd_clk(lcd_clk),.lcd_reset_n(lcd_reset_n),
+         .frame_start(frame_start),.x(x),.y(y),.active(active),
+         .imu_values(imu_values),.sample_valid(imu_sample_valid),.sensor_ready(imu_ready),.sensor_error(imu_error),
+         .distance_mm(distance_mm),.distance_valid(distance_valid),.box(hud_box),.ink(hud_ink));
+@@ -91,8 +93,8 @@
+             image_d<=in_image;active_d<=active;ready_d<=display_ready;
+             image_dd<=image_d;active_dd<=active_d;ready_dd<=ready_d;ram_qq<=ram_q;bars_dd<=bars_d;
+             hud_box_d<=hud_box;hud_ink_d<=hud_ink;
+-            bars_d<=x<100 ? 16'hf800 : x<200 ? 16'h07e0 : x<300 ? 16'h001f :
+-                x<400 ? 16'hffe0 : x<500 ? 16'hf81f : x<600 ? 16'h07ff : x<700 ? 16'hffff : 0;
++            bars_d<=x<60 ? 16'hf800 : x<120 ? 16'h07e0 : x<180 ? 16'h001f :
++                x<240 ? 16'hffe0 : x<300 ? 16'hf81f : x<360 ? 16'h07ff : x<420 ? 16'hffff : 0;
+             LCD_DE<=active_dd;
+             rgb<=!active_dd ? 0 : hud_box_d ? (hud_ink_d ? 16'hffff : 0) :
+                 !ready_dd ? bars_dd : image_dd ? ram_qq : 0;

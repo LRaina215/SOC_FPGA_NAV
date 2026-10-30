@@ -1,0 +1,11 @@
+--- /f/nav_integration_g2_20261023/K_video160_mmio_predecode_syn3/video/g2_video_pll.v	2026-10-30 23:13:11.314969200 +0800
++++ /f/nav_integration_g2_20261023/K_video_lcd480_prepared1/video/g2_video_pll.v	2026-10-31 02:21:28.786172600 +0800
+@@ -1,6 +1,7 @@
+ // Source: Chenyudog/fpga@715378a / fpga/src/video_gowin_pll.v
+ // Integration copy: module identifiers only were namespaced; original notices retained.
+-// Reused from board vendor uart_ddr3_tft_hdmi example, 50MHz ->33MHz.
++// Reused from board vendor uart_ddr3_tft_hdmi example. VCO 825 MHz; CLKOUT1 = 825/92 = 8.967 MHz
++// for the 4.3" 480x272 TFT (was 825/25 = 33 MHz for 800x480).
+ module G2Video_PLL(
+     clkin,
+     init_clk,

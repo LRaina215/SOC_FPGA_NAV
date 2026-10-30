@@ -16,8 +16,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from audit_pin_loads import CELLS, PORTS, NETS  # noqa: E402
 
-CLOCKS = {'clk50_d': 'clk50', 'rgmii_rxc_d': 'rgmii_rxc', 'CAMERA_PCLK_d': 'camera_pclk', 'video_clock': 'lcd33'}
-PERIOD = {'clk50': 20.0, 'rgmii_rxc': 10.0, 'camera_pclk': 20.0, 'lcd33': 1000.0 / 33.0}
+CLOCKS = {'clk50_d': 'clk50', 'rgmii_rxc_d': 'rgmii_rxc', 'CAMERA_PCLK_d': 'camera_pclk', 'video_clock': 'lcd'}
+PERIOD = {'clk50': 20.0, 'rgmii_rxc': 10.0, 'camera_pclk': 20.0, 'lcd': 1000.0 * 184 / (50.0 * 33)}
 OUTPUT_PINS = {'Q', 'F', 'O', 'DO', 'DOUT', 'COUT', 'SUM', 'CO', 'Q0', 'Q1'}
 
 
@@ -87,15 +87,15 @@ def sources(cells, driver, start_nets, limit=4000):
 
 def classify(src, dst, sclk, dclk):
     pairs = [
-        ('hud_payload', r'u_video/hud/held_\d+_s\d*', r'u_video/hud/page_\d+_s\d*', 'clk50', 'lcd33'),
-        ('hud_request', r'u_video/hud/req_s\d*', r'u_video/hud/req_meta_s\d*', 'clk50', 'lcd33'),
-        ('hud_ack', r'u_video/hud/ack_s\d*', r'u_video/hud/ack_meta_s\d*', 'lcd33', 'clk50'),
-        ('stale_flag', r'u_video/stale_s\d*', r'u_video/stale_meta_s\d*', 'clk50', 'lcd33'),
+        ('hud_payload', r'u_video/hud/held_\d+_s\d*', r'u_video/hud/page_\d+_s\d*', 'clk50', 'lcd'),
+        ('hud_request', r'u_video/hud/req_s\d*', r'u_video/hud/req_meta_s\d*', 'clk50', 'lcd'),
+        ('hud_ack', r'u_video/hud/ack_s\d*', r'u_video/hud/ack_meta_s\d*', 'lcd', 'clk50'),
+        ('stale_flag', r'u_video/stale_s\d*', r'u_video/stale_meta_s\d*', 'clk50', 'lcd'),
         ('frame_request_core', r'u_video/capture/frame_req_s\d*', r'u_video/request_meta_s\d*', 'camera_pclk', 'clk50'),
-        ('frame_request_lcd', r'u_video/capture/frame_req_s\d*', r'u_video/store/req_meta_s\d*', 'camera_pclk', 'lcd33'),
-        ('frame_ack', r'u_video/store/frame_ack_s\d*', r'u_video/capture/ack_sync_0_s\d*', 'lcd33', 'camera_pclk'),
+        ('frame_request_lcd', r'u_video/capture/frame_req_s\d*', r'u_video/store/req_meta_s\d*', 'camera_pclk', 'lcd'),
+        ('frame_ack', r'u_video/store/frame_ack_s\d*', r'u_video/capture/ack_sync_0_s\d*', 'lcd', 'camera_pclk'),
         ('camera_ready', r'u_video/capture/.*', r'u_video/capture/ready_sync_0_s\d*', 'clk50', 'camera_pclk'),
-        ('lcd_reset', r'.*', r'u_video/lcd_reset_pipe_\d+_s\d*', None, 'lcd33'),
+        ('lcd_reset', r'.*', r'u_video/lcd_reset_pipe_\d+_s\d*', None, 'lcd'),
     ]
     for name, sp, dp, sc, dc in pairs:
         if re.fullmatch(sp, src) and re.fullmatch(dp, dst) and (sc is None or sc == sclk) and dc == dclk:
