@@ -1,0 +1,138 @@
+{
+  "review_date": "2026-10-30",
+  "repository": "https://github.com/Chenyudog/fpga",
+  "baseline_commit": "6443f5678b4de222c22cbf331b8396f7c8df6a41",
+  "reviewed_commit": "715378aa3228d0cdcc382882ab53edc7400ef89c",
+  "commit_time_local": "2026-10-30 21:51:12 +08:00",
+  "diff_summary": {
+    "commits": 1,
+    "files": 31,
+    "model_or_weight_asset_files_changed": false,
+    "default_project_top": "main",
+    "navigation_joint_image": false
+  },
+  "selected_project": {
+    "model": 4500,
+    "model_period_ms": 8,
+    "pid_period_ms": 10,
+    "servo_period_ms": 20,
+    "camera": "OV5640 DVP RGB, not RK USB Astra RGB-D",
+    "lcd": "800x480, PLL33MHz",
+    "ultrasonic": true,
+    "scan_servo": true,
+    "automatic_avoidance": false,
+    "new_trained_model_6525_enabled": false
+  },
+  "historical_physical_report": {
+    "build_time_local": "2026-10-29 15:05:44",
+    "logic": 26986,
+    "ff": 19820,
+    "cls": 18649,
+    "bsram": 229,
+    "bsram_limit": 340,
+    "dsp": 99,
+    "setup_violations": 0,
+    "hold_violations": 0,
+    "clocks_mhz": [
+      50,
+      50,
+      33
+    ],
+    "actual_fmax_mhz": [
+      50.11,
+      85.686,
+      68.514
+    ],
+    "worst_setup_slack_ns": 0.044,
+    "worst_hold_slack_ns": 0.225,
+    "PRIMARY": "8/8",
+    "LW": "8/8",
+    "source": "tools/restore_20261029_1543/historical_fpga.rpt.txt and historical_fpga.tr",
+    "not_joint_NAV_or_new_hardware_acceptance": true
+  },
+  "actual_review": {
+    "diagnostic_exports": [
+      "core_last_fault",
+      "core_detail bits0..6",
+      "core_expected_id",
+      "core_result_id"
+    ],
+    "telemetry": {
+      "default_version": 4,
+      "payload_bytes": 136,
+      "wire_bytes": 142,
+      "rate_hz": 100,
+      "baud": 230400,
+      "wire_load_percent_8n1": 61.632,
+      "index_width_bits": 8,
+      "current_local_and_RK_decoder_formats": [
+        "V1/100",
+        "V2/120"
+      ],
+      "rk_readonly_revision": "047c648",
+      "rk_check_time_local": "2026-10-30 22:20:04",
+      "decoder_probe": [
+        {
+          "version": 2,
+          "current_accepted": 1,
+          "upstream_accepted": 1,
+          "crc_valid": true
+        },
+        {
+          "version": 4,
+          "current_accepted": 0,
+          "upstream_accepted": 1,
+          "crc_valid": true
+        }
+      ],
+      "interpretation": "Prospective incompatibility with new upstream V4; not evidence that current board emits V4 or that V4 caused earlier USB failure."
+    },
+    "pid": {
+      "new": "registered pid_run plus sample_pending retain arming-coincident sample; raw enable/fault/PWM gates remain",
+      "not_in_selected_SYN50": true,
+      "full_joint_or_vehicle_improvement_not_proven": true
+    },
+    "uart_rx": {
+      "new": "shared sequential two24-cycle divide-by1000, 48clocks=0.96us at50MHz after CRC, outputs committed together",
+      "motion_command_expiry_added": false,
+      "ownership": "standalone UART retains last valid speed/yaw to reset; preserve joint lease/host-loss guards and IR override"
+    },
+    "ring_and_action_pipeline": "Upstream mem_policy retains old flat-history interface. Wholesale replacement would remove joint OBS_RING_STORAGE/action-preview integration.",
+    "camera_storage": {
+      "frame_mem_words": 153600,
+      "word_bits": 16,
+      "bytes": 307200,
+      "bsram_bit_capacity_assumed": 18432,
+      "ideal_bsram_minimum": 134,
+      "current_joint_mapping": 280,
+      "direct_overlay_minimum": 414,
+      "limit": 340,
+      "qualification": "Independent capacity lower bound for keeping current joint mapping; not an actual camera+NAV synthesis or proof against storage redesign."
+    },
+    "extra_peripheral_cst": {
+      "signals_checked": 38,
+      "overlap_with_SYN50_g2_cst": 0,
+      "qualification": "Static IO_LOC comparison only, not electrical/clock/board signoff."
+    },
+    "SDC": "Camera clock and LCD auto-generated clock listed, false-path entries Actived. No input/output delay budgets in supplied main.sdc; not complete board IO signoff.",
+    "docs": "README retains stale V2/old-bitstream statements despite current-version V4 manifest; prioritize current_version.json, enabled project and source."
+  },
+  "validation_boundaries": {
+    "upstream_regression_summary_read": true,
+    "claimed_new_test_logs_or_benches_not_found_in_published_tree": true,
+    "upstream_regressions_rerun": false,
+    "hardware_programmed_in_upstream_record": false,
+    "hardware_balance_verified_in_upstream_record": false,
+    "current_review_FPGA_download": false,
+    "current_review_full_build_or_EDA": false,
+    "current_review_SHA_validation": false
+  },
+  "proposed_sequence": [
+    "Keep SYN50/PNR63 as reviewed joint integration base.",
+    "Add backward-compatible V4 telemetry decode and explicit diagnostic display, then export diagnostics through existing joint wrappers.",
+    "Port PID arming sample fix as isolated candidate, verify reset/disable/feedback/zero-balance contracts in actual joint context.",
+    "Keep RK USB RGB-D path; treat FPGA OV5640/LCD as a separate memory and clock redesign if required.",
+    "Perform new physical and vehicle acceptance only on the selected combined candidate; no direct upstream .fs replacement."
+  ],
+  "raw_review_directory": "C:/Users/Li/Documents/ChatGPT/嵌赛FPGA/reports/control_upstream_20261030"
+}
