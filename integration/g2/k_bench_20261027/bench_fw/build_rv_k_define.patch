@@ -1,0 +1,18 @@
+--- /f/nav_integration_g2_20261023/K_timing_syn49/fw/bsp/build_rv_k.py	2026-10-27 03:16:02.541245500 +0800
++++ /f/nav_integration_g2_20261023/K_fw_bench1/fw/bsp/build_rv_k.py	2026-10-31 04:51:46.546680700 +0800
+@@ -24,6 +24,7 @@
+     ap.add_argument("--copy-to", help="把 RAM 初始化文件复制到该目录（xsim 测试用）")
+     ap.add_argument("--output-dir", type=Path, help="诊断构建独立输出，避免覆盖板级镜像")
+     ap.add_argument("--stack-usage", action="store_true", help="保留LTO汇编与静态栈报告")
++    ap.add_argument("--define", action="append", default=[], help="额外的 -D 宏，例如 APP_BENCH_STATIONARY=1")
+     ap.add_argument("--stack-kb",type=int,choices=[6,8],default=None,
+                     help="导航默认6KiB并强制静态界<=3KiB及IRQ关闭；自检默认8KiB")
+     ap.add_argument("--lto", action=argparse.BooleanOptionalAction, default=None,
+@@ -48,6 +49,7 @@
+            f"-Wl,--defsym=RAM_SIZE={a.ram_kb * 1024}",f"-Wl,--defsym=STACK_RESERVE={a.stack_kb*1024}", "-Wl,--gc-sections", f"-Wl,-Map={out / 'nav_fw.map'}",
+            "-T", str(ROOT / "bsp" / "link.ld")] + \
+         [f"-I{ROOT / d}" for d in ("include", "hal", "nav", "app", "bsp")] + srcs + ["-o", str(elf), "-lgcc"]
++    cmd[1:1] = [f"-D{d}" for d in a.define]
+     use_lto = a.lto if a.lto is not None else a.app == "nav"
+     if use_lto:
+         cmd.insert(1, "-flto")
