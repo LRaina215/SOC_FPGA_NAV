@@ -24,7 +24,8 @@ def module_at(modules, hierarchy):
     return modules[kind]
 
 
-def revalidate(before, after, reference, directions, old_definitions, new_definitions):
+def revalidate(before, after, reference, directions, old_definitions, new_definitions,
+               reset_pins=('RESET',)):
     assert reference['passed'] and len(reference['paths']) == 26
     def drivers(cells):
         result = defaultdict(list)
@@ -43,9 +44,14 @@ def revalidate(before, after, reference, directions, old_definitions, new_defini
             assert old and new and old['kind'] == new['kind'], ('CDC register missing/type changed', name)
             differing = {pin for pin in old['ports'].keys() | new['ports'].keys()
                          if old['ports'].get(pin) != new['ports'].get(pin)}
-            assert differing <= {'RESET'}, ('CDC non-reset connection changed', name, differing)
+            assert differing <= set(reset_pins), ('CDC non-reset connection changed', name, differing)
             if not differing:continue
-            old_net, = old['ports']['RESET']; new_net, = new['ports']['RESET']
+            assert len(differing)==1,('multiple changed reset controls',name,differing)
+            reset_pin,=differing
+            assert reset_pin in {'RESET','CLEAR','PRESET'}
+            if reset_pin=='CLEAR':assert old['kind'].startswith('DFFC')
+            if reset_pin=='PRESET':assert old['kind'].startswith('DFFP')
+            old_net, = old['ports'][reset_pin]; new_net, = new['ports'][reset_pin]
             pair = old_net, new_net
             if pair not in aliases:
                 assert len(old_drivers[old_net]) == len(new_drivers[new_net]) == 1, 'reset driver not unique'

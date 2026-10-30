@@ -1,0 +1,254 @@
+{
+  "recorded_at": "2026-10-30T23:52:08.918295+08:00",
+  "synthesis": "F:\\nav_integration_g2_20261023\\K_video160_20261030_syn2",
+  "synthesis_completed_at": "2026-10-30T23:42:00.277749+08:00",
+  "source_BSRAM": 307,
+  "original_RAMS": 269,
+  "video_RAMS": 38,
+  "physical_BSRAM_prediction": 318,
+  "physical_BSRAM_measured": null,
+  "source_LUT": 42019,
+  "source_FF": 31976,
+  "source_ALU": 10127,
+  "actual_review": {
+    "passed_for_initial_exploratory_PNR": true,
+    "recorded_at": "2026-10-30T23:50:41.432924+08:00",
+    "build": "F:\\nav_integration_g2_20261023\\K_video160_20261030_syn2",
+    "asset_count": 100,
+    "all35_packed_weights_and_CPU_assets_byte_equal": true,
+    "memories": [
+      {
+        "module": "u_soc",
+        "original": 68,
+        "new": 68,
+        "all_parameters_and_INIT_multiset_equal": true
+      },
+      {
+        "module": "u_nav",
+        "original": 157,
+        "new": 157,
+        "all_parameters_and_INIT_multiset_equal": true
+      },
+      {
+        "module": "u_control",
+        "original": 44,
+        "new": 44,
+        "all_parameters_and_INIT_multiset_equal": true
+      }
+    ],
+    "image_RAMS": 38,
+    "image_width": 16,
+    "source_BSRAM": 307,
+    "physical_split_prediction": 318,
+    "original26": {
+      "passed": true,
+      "paths": 26,
+      "changed_reset_pin_connections": 36,
+      "proved_reset_aliases": [
+        {
+          "old_net": "r2_104",
+          "new_net": "r2_98",
+          "driver": "u_lrr/r2_s1",
+          "kind": "DFFPE",
+          "all_driver_inputs_identical": true,
+          "module_definition_including_init_identical": true
+        }
+      ],
+      "source_first_second_data_clock_enable_and_single_fanout_rechecked": true,
+      "exception_endpoints_and_budgets_unchanged": true,
+      "scope": "known SYN connectivity and proved reset alias only; no physical/reset-release/MTBF signoff"
+    },
+    "video7": [
+      {
+        "source": "u_video/capture/frame_req_s2",
+        "first": "u_video/request_meta_s0",
+        "second": "u_video/request_sync_s0",
+        "source_clock": "CAMERA_PCLK_d",
+        "target_clock": "clk50_d",
+        "first_only_drives_second_D": true
+      },
+      {
+        "source": "u_video/stale_s1",
+        "first": "u_video/stale_meta_s0",
+        "second": "u_video/stale_sync_s0",
+        "source_clock": "clk50_d",
+        "target_clock": "video_clock",
+        "first_only_drives_second_D": true
+      },
+      {
+        "source": "u_video/capture/init_done_s0",
+        "first": "u_video/capture/ready_sync_0_s0",
+        "second": "u_video/capture/ready_sync_1_s0",
+        "source_clock": "clk50_d",
+        "target_clock": "CAMERA_PCLK_d",
+        "first_only_drives_second_D": true
+      },
+      {
+        "source": "u_video/store/frame_ack_s0",
+        "first": "u_video/capture/ack_sync_0_s0",
+        "second": "u_video/capture/ack_sync_1_s0",
+        "source_clock": "video_clock",
+        "target_clock": "CAMERA_PCLK_d",
+        "first_only_drives_second_D": true
+      },
+      {
+        "source": "u_video/capture/frame_req_s2",
+        "first": "u_video/store/req_meta_s0",
+        "second": "u_video/store/req_sync_s0",
+        "source_clock": "CAMERA_PCLK_d",
+        "target_clock": "video_clock",
+        "first_only_drives_second_D": true
+      },
+      {
+        "source": "u_video/hud/req_s2",
+        "first": "u_video/hud/req_meta_s0",
+        "second": "u_video/hud/req_sync_s0",
+        "source_clock": "clk50_d",
+        "target_clock": "video_clock",
+        "first_only_drives_second_D": true
+      },
+      {
+        "source": "u_video/hud/ack_s0",
+        "first": "u_video/hud/ack_meta_s0",
+        "second": "u_video/hud/ack_sync_s0",
+        "source_clock": "video_clock",
+        "target_clock": "clk50_d",
+        "first_only_drives_second_D": true
+      }
+    ],
+    "clock_FF_loads": {
+      "clk50_d": 31504,
+      "rgmii_rxc_d": 142,
+      "u_lmac/n13_6": 5,
+      "u_lmac/n641_6": 1,
+      "video_clock": 230,
+      "CAMERA_PCLK_d": 94
+    },
+    "original_inverted_clock_branches": {
+      "u_lmac/n13_6": {
+        "source": "rgmii_rxc_d",
+        "driver": "u_lmac/n13_s2",
+        "loads": 5,
+        "unchanged_from_baseline": true
+      },
+      "u_lmac/n641_6": {
+        "source": "clk50_d",
+        "driver": "u_lmac/n641_s2",
+        "loads": 1,
+        "unchanged_from_baseline": true
+      }
+    },
+    "new_video_exceptions_added": false,
+    "scope": "Actual storage/INIT and synchronizer connectivity only. New video crossings stay fully timed; complete mapped datapath equivalence, routed STA/CDC/reset/pulse/IO and board signoff pending.",
+    "programmed": false
+  },
+  "synthesis_timing": {
+    "clocks": [
+      {
+        "name": "clk50",
+        "constraint_mhz": 50.0,
+        "estimated_fmax_mhz": 54.86,
+        "levels": 23,
+        "entity": "TOP"
+      },
+      {
+        "name": "rgmii_rxc",
+        "constraint_mhz": 50.0,
+        "estimated_fmax_mhz": 128.285,
+        "levels": 9,
+        "entity": "TOP"
+      },
+      {
+        "name": "CAMERA_PCLK",
+        "constraint_mhz": 50.0,
+        "estimated_fmax_mhz": 119.587,
+        "levels": 10,
+        "entity": "TOP"
+      },
+      {
+        "name": "u_video_pll/u_pll/PLL_inst/CLKOUT1.default_gen_clk",
+        "constraint_mhz": 33.0,
+        "estimated_fmax_mhz": 62.532,
+        "levels": 19,
+        "entity": "TOP"
+      }
+    ],
+    "first_path": {
+      "Slack": "-0.573",
+      "Data Arrival Time": "940.852",
+      "Data Required Time": "940.279",
+      "From": "u_video/hud/ack_s0",
+      "To": "u_video/hud/ack_meta_s0",
+      "Launch Clk": "u_video_pll/u_pll/PLL_inst/CLKOUT1.default_gen_clk[R]",
+      "Latch Clk": "clk50[R]"
+    },
+    "scope": "synthesis estimate only; actual PNR resource/timing acceptance must come from PNR reports"
+  },
+  "PNR": "F:\\nav_integration_g2_20261023\\K_video160_20261030_pnr1_p2r0",
+  "PNR_runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-10-30T23:51:19.417582+08:00",
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "system_telemetry_file": "system_telemetry.jsonl",
+    "telemetry_is_progress_evidence": false,
+    "pid": 58316,
+    "elapsed_s": 30.03200000000652,
+    "no_observable_progress_s": 26.015999999945052,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        830,
+        1793375482809388100
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        390,
+        1793375482809388100
+      ]
+    ]
+  },
+  "PNR_controller": {
+    "controller_pid": 11572,
+    "controller_created_epoch": 1793375478.025211,
+    "source": "F:\\nav_integration_g2_20261023\\K_video160_20261030_syn2",
+    "output": "F:\\nav_integration_g2_20261023\\K_video160_20261030_pnr1_p2r0",
+    "total_limit_s": 0,
+    "silent_limit_s": 0,
+    "programmed": false,
+    "automatic_retry": false,
+    "phase": "starting_unique_physical_run",
+    "updated_at": "2026-10-30T23:51:19.402894+08:00",
+    "physical_available": 3610750976,
+    "commit_available": 7766810624,
+    "effective_options": {
+      "global_freq_mhz": 50.0,
+      "wide_split": 1,
+      "effective_options": "F:\\nav_integration_g2_20261023\\K_video160_20261030_pnr1_p2r0\\effective_options.tcl",
+      "extra_options": {
+        "replicate_resources": 1,
+        "place_option": 2,
+        "route_option": 0
+      }
+    }
+  },
+  "actual_tool": {
+    "pid": 58316,
+    "created_epoch": 1793375479.4199145,
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ]
+  },
+  "current_stage": "placement",
+  "new_video_crossings_fully_timed": true,
+  "new_timing_exceptions": 0,
+  "programmed": false,
+  "physical_signoff_pending": true
+}
