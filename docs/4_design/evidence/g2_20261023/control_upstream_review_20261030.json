@@ -1,5 +1,17 @@
 {
   "review_date": "2026-10-30",
+  "user_selected_revision": {
+    "camera_path": "OV5640 -> FPGA -> LCD is an existing required function; RK Astra is a separate path, not its replacement.",
+    "accepted_display": "160x120 RGB565, two full-frame banks,4x nearest-neighbor scale to640x480 within800x480 LCD",
+    "image_data_bytes": 76800,
+    "image_bsram_prediction": 38,
+    "prediction_geometry": "two19200x16 memories; each ceil(19200/1024)=19 native blocks",
+    "baseline_plus_image_prediction": 318,
+    "not_actual_joint_resource_or_timing_result": true,
+    "production_telemetry": "Keep current V2 operational telemetry; added V4 debug fields are not included by default. RK V4 decoder upgrade is not a prerequisite for this selection.",
+    "plan": "docs/4_design/g2_camera_compaction_plan_20261030.md",
+    "implementation_started": false
+  },
   "repository": "https://github.com/Chenyudog/fpga",
   "baseline_commit": "6443f5678b4de222c22cbf331b8396f7c8df6a41",
   "reviewed_commit": "715378aa3228d0cdcc382882ab53edc7400ef89c",
@@ -129,9 +141,10 @@
   },
   "proposed_sequence": [
     "Keep SYN50/PNR63 as reviewed joint integration base.",
-    "Add backward-compatible V4 telemetry decode and explicit diagnostic display, then export diagnostics through existing joint wrappers.",
+    "Keep operational V2 telemetry and existing RK consumers; do not add V4 debug snapshots by default.",
+    "Prepare OV5640160x120 RGB565 double-buffer display, preserve full field of view and frame ownership; actual image mapping and four-clock implementation remain to be measured.",
     "Port PID arming sample fix as isolated candidate, verify reset/disable/feedback/zero-balance contracts in actual joint context.",
-    "Keep RK USB RGB-D path; treat FPGA OV5640/LCD as a separate memory and clock redesign if required.",
+    "Retain joint observation ring, action preview, model/CPU/map capacities and all existing command/stop guards; RK USB RGB-D remains a separate function.",
     "Perform new physical and vehicle acceptance only on the selected combined candidate; no direct upstream .fs replacement."
   ],
   "raw_review_directory": "C:/Users/Li/Documents/ChatGPT/嵌赛FPGA/reports/control_upstream_20261030"
