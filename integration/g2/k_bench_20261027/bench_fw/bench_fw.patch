@@ -45,8 +45,8 @@
  
  bool hal_imu_byte(uint8_t *b, bool *first, uint32_t *t_us)
 --- /f/nav_integration_g2_20261023/K_video_lcd480_prepared1/fw/nav/nav_task.c	2026-10-31 02:15:50.236230000 +0800
-+++ /f/nav_integration_g2_20261023/K_fw_bench1/fw/nav/nav_task.c	2026-10-31 05:17:23.479406800 +0800
-@@ -50,7 +50,13 @@
++++ /f/nav_integration_g2_20261023/K_fw_bench1/fw/nav/nav_task.c	2026-10-31 05:33:29.252751800 +0800
+@@ -50,7 +50,17 @@
      gmap_init(&nt->gm);
      explore_default_cfg(&nt->ex_cfg);
      /* 雷达安装位姿：实车已改回正常正装、下俯 10°；在轮轴前 123 mm、离地 = 腿长 L0 + 25 mm（L0 = 130） */
@@ -58,6 +58,10 @@
 +#define APP_MOUNT_Z_MM 155
 +#endif
 +    pose_init(&nt->pose, ANGLE_FROM_CDEG(APP_MOUNT_PITCH_CDEG), 123, APP_MOUNT_Z_MM);
++#ifdef APP_MOUNT_ROLL_CDEG
++    /* Mount roll relative to the IMU body frame (Rx, + = left side down in the map). */
++    fx_rot_zyx(&nt->pose.r_bs, 0, ANGLE_FROM_CDEG(APP_MOUNT_PITCH_CDEG), ANGLE_FROM_CDEG(APP_MOUNT_ROLL_CDEG));
++#endif
      target_init(&nt->tgt, 1500000, 700);
      explore_init(&nt->exp);
      nt->mode = NAV_MODE_IDLE;
