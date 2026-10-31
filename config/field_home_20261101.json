@@ -1,0 +1,25 @@
+{
+  "name": "home_field_20261101",
+  "survey_status": "tape_measured_by_user_20261101",
+  "notes": [
+    "Map frame: origin = lidar optical centre at the start position projected on the floor; x = car heading at start (toward the cardboard rows), y = left, z = up.",
+    "User measurements: lidar->front-row front face 1.60, lidar->left wall 1.15, left wall->front-row left edge 1.06, front-row front face->back row 1.22, left wall->sofa 3.10, field length 3.20, cardboard 0.60 high/wide, front-row depth 0.18.",
+    "Front row is three folded boxes with 0.18 m gaps (narrower than the car); drawn as one continuous block from its left edge to the sofa.",
+    "Back-row panels drawn 0.05 m thick. Area behind the start is open floor (no wall). Only cardboard, the left wall and the sofa are obstacles."
+  ],
+  "units": "m",
+  "bounds": [-0.60, -1.95, 2.87, 1.15],
+  "start_pose_lidar": [0.0, 0.0, 0.0],
+  "surface_spacing": 0.025,
+  "wall_spacing": 0.02,
+  "floor_z": 0.0,
+  "walls": [
+    {"name": "left_wall", "start": [-0.60, 1.15], "end": [2.87, 1.15], "height": 0.6},
+    {"name": "sofa_front", "start": [-0.60, -1.95], "end": [2.87, -1.95], "height": 0.4}
+  ],
+  "boxes": [
+    {"name": "front_row", "center": [1.69, -0.93], "size": [0.18, 2.04, 0.6], "yaw_deg": 0},
+    {"name": "back_row", "center": [2.845, -0.40], "size": [0.05, 3.10, 0.6], "yaw_deg": 0}
+  ],
+  "ramps": []
+}
