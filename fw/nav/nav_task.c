@@ -48,8 +48,19 @@ void nav_task_init(nav_task_t *nt)
     gmap_default_cfg(&nt->gm.cfg);
     gmap_init(&nt->gm);
     explore_default_cfg(&nt->ex_cfg);
-    /* 雷达安装位姿：实车已改回正常正装、下俯 10°；在轮轴前 123 mm、离地 = 腿长 L0 + 25 mm（L0 = 130） */
-    pose_init(&nt->pose, ANGLE_FROM_CDEG(1000), 123, 155);
+    /* 雷达安装位姿（10-31 静止地面拟合，雷达相对 IMU）：下俯 2.1°、横滚 -3°，在轮轴前 123 mm、离地 150 mm */
+#ifndef APP_MOUNT_PITCH_CDEG
+#define APP_MOUNT_PITCH_CDEG 210
+#endif
+#ifndef APP_MOUNT_ROLL_CDEG
+#define APP_MOUNT_ROLL_CDEG (-300)
+#endif
+#ifndef APP_MOUNT_Z_MM
+#define APP_MOUNT_Z_MM 150
+#endif
+    pose_init(&nt->pose, ANGLE_FROM_CDEG(APP_MOUNT_PITCH_CDEG), 123, APP_MOUNT_Z_MM);
+    /* Mount roll relative to the IMU body frame (Rx, + = left side down in the map). */
+    fx_rot_zyx(&nt->pose.r_bs, 0, ANGLE_FROM_CDEG(APP_MOUNT_PITCH_CDEG), ANGLE_FROM_CDEG(APP_MOUNT_ROLL_CDEG));
     target_init(&nt->tgt, 1500000, 700);
     explore_init(&nt->exp);
     nt->mode = NAV_MODE_IDLE;

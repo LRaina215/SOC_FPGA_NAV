@@ -44,7 +44,7 @@ def main():
     ap.add_argument("port", nargs="?", default="")
     ap.add_argument("--clk-mhz", type=float, default=50.0, help="核心时钟 MHz（无 PLL = 50）")
     ap.add_argument("--imu-baud", type=int, default=115200)
-    ap.add_argument("--mount-z", type=int, default=155, help="雷达光心离地高度 mm（= 腿长 L0 + 25，tools/robot_calib.py）")
+    ap.add_argument("--mount-z", type=int, default=150, help="雷达光心离地高度 mm（2026-10-31 静止地面拟合）")
     ap.add_argument("--v-max", type=int, default=300, help="前进速度上限 mm/s（首次上车建议 150–300）")
     ap.add_argument("--vy-max", type=int, default=0, help="横移速度上限 mm/s（两轮车为 0）")
     ap.add_argument("--w-max", type=int, default=800, help="角速度上限 mrad/s")

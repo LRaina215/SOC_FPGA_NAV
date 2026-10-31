@@ -164,7 +164,7 @@ $PY tools/nav_uart.py COM11 load fw/build/rv/nav/nav_fw.bin   # 换固件（不�
 | 结构图槽字 | 18 位 {标签 每轴 1 位, 命中 2 位, 质心 3+3 位（1/8 格）, occ, 法向 5 位, has, gate}；前 3 次命中按格号对称取整平均后冻结 | `model/slf_match.py`、`rtl/match/` |
 | 有图匹配 | 增益 208/256、退化门限 200/千点；对准内点率 >= 40%、第二峰代价差 >= 0.3 | `nav_app_init`、`loc.c` |
 | 雷达 | SDK 缺省内参（fx 78.2、fy 79.1、cx 80.7、cy 26.8、k1 −0.30），有效视场约 111° × 43°（光轴上 19°、下 23°）；方向表 12 位 Q0.11 × 3，四角切除半径 30 像素 | `model/lidar_lut.py`、`fw/nav/lidar_cal.c` |
-| 雷达安装 | **当前实车：正常正装、下俯 10°**、轮轴前 123 mm、离地 L0 + 25 = 155 mm（L0 暂按 130）；原 CAD 20.3° 仅作历史对比 | `pose_init`、`MATCH.MOUNT_Z`、`board_init.py`、`sim_world.MOUNT_*` |
+| 雷达安装 | **当前实车（2026-10-31 地面拟合）：下俯 2.1°、横滚 −3°、离地 150 mm**、轮轴前 123 mm；支架标称 10° 和原 CAD 20.3° 仅作历史对比 | `pose_init`、`MATCH.MOUNT_Z`、`board_init.py`、`sim_world.MOUNT_*` |
 | 车体 | 宽 332 mm、外接圆 209 mm、轮距 270 mm、轮半径 33.65 mm | `world.Robot`、`lp_cfg.caps.radius_mm`、`anchor_hw` |
 
 ## 6. BSRAM 预算（340 块 × 18 Kbit ≈ 765 KB；DSP 另算，用了 67 / 298 = 23%）
