@@ -121,9 +121,36 @@ diff -ru --strip-trailing-cr -x __pycache__ -x build_rv_k.py -x analyze_stack.py
  #define NAV_MAP_THR0_STEP_MAX_SHIFT 0
  #define NAV_MAP_THR0_STEP_MAX_MASK 0x0000FFFFu
  #define NAV_MAP_THR0_ROUGH_MAX_SHIFT 16
+diff -ru --strip-trailing-cr -x __pycache__ -x build_rv_k.py -x analyze_stack.py a/fw/nav/local_planner.c b/fw/nav/local_planner.c
+--- a/fw/nav/local_planner.c	2026-10-31 02:15:50.235659800 +0800
++++ b/fw/nav/local_planner.c	2026-10-31 14:58:40.699219200 +0800
+@@ -16,12 +16,12 @@
+ void lp_default_cfg(lp_cfg_t *c)
+ {
+     c->caps.holonomic = false;
+-    c->caps.vx_max = 600;
++    c->caps.vx_max = 200;                 /* 10-31 地面测试限速 0.2 m/s（平衡余量小） */
+     c->caps.vy_max = 0;
+     c->caps.wz_max = 1500;
+     c->caps.radius_mm = 210;                /* 绕轮轴中点的外接圆（宽 332 mm，tools/robot_calib.py） */
+     c->v_min = 0;
+-    c->v_max = 500;
++    c->v_max = 200;
+     c->w_max = 1200;
+     c->nv = 4;
+     c->nw = 9;
+@@ -33,7 +33,7 @@
+     c->w_cost = 30;
+     c->w_unknown = 20;
+     c->goal_tol_mm = 150;
+-    c->v_back = 150;
++    c->v_back = 0;                        /* 倒车会让车倒（10-28 实测），恢复动作只原地转 */
+     c->w_back = 300;
+     c->w_hyst = 60;
+ }
 diff -ru --strip-trailing-cr -x __pycache__ -x build_rv_k.py -x analyze_stack.py a/fw/nav/nav_task.c b/fw/nav/nav_task.c
 --- a/fw/nav/nav_task.c	2026-10-31 02:15:50.236230000 +0800
-+++ b/fw/nav/nav_task.c	2026-10-31 07:11:12.285804300 +0800
++++ b/fw/nav/nav_task.c	2026-10-31 14:58:40.700202300 +0800
 @@ -49,8 +49,19 @@
      gmap_default_cfg(&nt->gm.cfg);
      gmap_init(&nt->gm);
@@ -146,3 +173,11 @@ diff -ru --strip-trailing-cr -x __pycache__ -x build_rv_k.py -x analyze_stack.py
      target_init(&nt->tgt, 1500000, 700);
      explore_init(&nt->exp);
      nt->mode = NAV_MODE_IDLE;
+@@ -376,6 +387,7 @@
+ {
+     int32_t bx, by;
+     int rx, ry, tx, ty;
++    if (nt->lp_cfg.v_back <= 0) return false;
+     pose_body_to_odom(p, -len_mm, 0, &bx, &by);
+     nav_mm_to_win(&nt->mi, p->x, p->y, &rx, &ry);
+     nav_mm_to_win(&nt->mi, bx, by, &tx, &ty);
