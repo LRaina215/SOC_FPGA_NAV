@@ -15,8 +15,19 @@ diff -ru --strip-trailing-cr -x __pycache__ -x build_rv_k.py -x analyze_stack.py
      for (;;) {
 diff -ru --strip-trailing-cr -x __pycache__ -x build_rv_k.py -x analyze_stack.py a/fw/app/nav_app.c b/fw/app/nav_app.c
 --- a/fw/app/nav_app.c	2026-10-31 02:15:50.199771100 +0800
-+++ b/fw/app/nav_app.c	2026-10-31 07:10:43.416485900 +0800
-@@ -268,6 +268,12 @@
++++ b/fw/app/nav_app.c	2026-10-31 10:48:53.558715100 +0800
+@@ -50,6 +50,10 @@
+     g_app.use_imu_yaw = false;
+     pm_default_cfg(&g_app.pm_cfg);
+     g_app.pm_cfg.enable = true;             /* SLF 匹配定位（硬件打分不可用时 hal_match_eval 返回 false，自动退化为纯航位推算） */
++#if defined(APP_BENCH_STATIONARY) && defined(APP_BENCH_NO_MATCH)
++    /* Bench build only: keep the pose exactly fixed so static map captures are not smeared by matching. */
++    g_app.pm_cfg.enable = false;
++#endif
+     g_app.pm_cfg_prior = g_app.pm_cfg;
+     g_app.pm_cfg_prior.gain_q8 = 208;       /* 先验图是固定的真值，不会"自己拉自己"，可以修得更快 */
+     /* 退化判定门限放低：先验图里沿墙方向的代价是真平的（没有自建图质心跳动的噪声），少量垂直结构
+@@ -268,6 +272,12 @@
      int16_t vx, vy, wz;
      uint32_t t;
      while (hal_odom(&vx, &vy, &wz, &t)) pose_odom(&nt->pose, vx, vy, wz, t);
