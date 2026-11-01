@@ -63,7 +63,16 @@
   "new_eda_runs": 0,
   "board_actions": 0,
   "screenshots": {
-    "01_PNR77_STA_summary.png": "Actual Gowin IDE with original PNR77 timing report open; STA summary reports global setup/hold zero and actual four clock domains."
+    "01_PNR77_STA_summary.png": "Supplementary STA report screenshot; not a placement or routing figure.",
+    "02_PNR77_full_chip_placement.png": "Actual FloorPlanner Show Place View > All Instance, Zoom Fit, showing the full-chip placement density from the original PNR77 post-route g2_top.vo and g2_top.db. Unedited 1707x1019 native screenshot."
   },
-  "physical_view_screenshot_pending_reason": "FloorPlanner launched with actual PNR77 .vo/.db, but window capture failed with no monitor found for window; UI recovery reported coordinate input geometry is unavailable. No old PNR1 placement image has been relabeled as PNR77."
+  "placement_figure_delivered": true,
+  "placement_density_legend": {
+    "light_green": "Up to five instances per displayed location",
+    "green": "Six to ten instances per displayed location",
+    "dark_green": "More than ten instances per displayed location",
+    "source": "Installed SUG1541-1.0E, printed pages 56-57"
+  },
+  "physical_view_screenshot_pending_reason": "Full-chip placement screenshot is now saved and visually verified. Local connection screenshot is still pending: right-clicking an instance in the 91763-primitive list timed out and FloorPlanner became temporarily unresponsive; subsequent fresh window selection and foreground recovery failed with 'failed to activate captured window'. No connection or switch-level routing figure has been claimed or relabeled from an older build.",
+  "figure_scope": "Placement density is not routed wire-segment geometry. The documented Show In-Out Connection feature highlights connected instance positions; a successful export of that feature or a switch-level route view has not yet been obtained."
 }
