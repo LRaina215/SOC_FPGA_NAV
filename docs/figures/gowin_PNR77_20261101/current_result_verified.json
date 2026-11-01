@@ -101,6 +101,33 @@
     "timing_argument": "F:/nav_integration_g2_20261023/K_pnr77_terrain11p2r0/impl/pnr/g2_top.timing_paths",
     "recovery": "Closed only the confirmed windowless document-viewer process 43240 after verifying its creation time and absence of child processes; reopened the same view-only project. No EDA build or board operation was run."
   },
-  "physical_view_screenshot_pending_reason": "Local input/output connectivity capture is now complete. A switch-level routed-wire image is still unavailable: the current FloorPlanner View > Windows and Chip Array context menus expose placement and connected-location highlighting, but no routed-segment or independent Timing Analysis view was found. The original timing_paths argument is present; its presence does not prove a graphical route feature is available. This does not establish that every Gowin version or vendor diagnostic lacks such a feature.",
+  "official_route_view_documentation_review": {
+    "checked_on": "2026-11-01",
+    "confirmed_feature_change": {
+      "document": "SUG1018-1.7E, Arora V Design Physical Constraints User Guide",
+      "url": "https://cdn.gowinsemi.com.cn/SUG1018E.pdf",
+      "section": "Revision History, document revision 1.2E",
+      "change_date": "2023-08-18",
+      "exact_short_quote": "Timing Paths function removed.",
+      "scope": "Arora V FloorPlanner Timing Paths feature; 1.2E is the document revision, not a Gowin software version number"
+    },
+    "old_documented_graphical_path": {
+      "document": "SUG1018-1.0, printed pages 69-71",
+      "url": "https://cdn.gowinsemi.com.cn/SUG1018-1.0_Arora_%E2%85%A4%E8%AE%BE%E8%AE%A1%E7%89%A9%E7%90%86%E7%BA%A6%E6%9D%9F%E7%94%A8%E6%88%B7%E6%8C%87%E5%8D%97.pdf",
+      "entry": "FloorPlanner > Netlist > Timing Paths > select a path > Highlight; Chip Array > Show Place View > All Instance",
+      "meaning": "Critical timing-path signal-flow visualization. The old guide does not establish that this is a complete switch-level routed-wire view."
+    },
+    "current_manual_cross_check": {
+      "installed_manual": "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/doc/EN/SUG1541-1.0E_Gowin Software Physical Constraints User Guide.pdf",
+      "installed_release_notes": "D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/doc/RN100-1.9.12.04E_Gowin Software Release Note.pdf",
+      "official_software_page": "https://www.gowinsemi.com.cn/software/1",
+      "finding": "Current manual describes placement and connected-location highlighting; no Timing Paths restoration or switch-level routing viewer was found in the installed manual or release notes. The official software page lists V1.9.12.04 for Windows."
+    },
+    "confirmed": "The official Arora V revision history explicitly records removal of Timing Paths. Current PNR77 placement and connected-location captures remain valid.",
+    "inference": "This official feature removal is consistent with the missing Timing Paths node in the actual GW5AT-138C V1.9.12.04 viewer, despite an existing timing_paths file.",
+    "not_verified": "Whether GOWIN offers a separate private diagnostic or viewer capable of rendering complete routed wire segments for GW5AT-138C. No such public capability or supported entry was verified.",
+    "next_step_if_switch_level_image_is_required": "Request a device/version-specific supported viewer or diagnostic from GOWIN. No project or device data has been sent as part of this documentation research."
+  },
+  "physical_view_screenshot_pending_reason": "Local input/output connectivity capture is complete. Official SUG1018 revision history explicitly records removal of the Arora V Timing Paths feature in document revision 1.2E dated 2023-08-18. This explains the obsolete Netlist > Timing Paths > Highlight tutorial entry and is consistent with the actual current interface. A complete switch-level routed-wire viewer for GW5AT-138C remains unverified; removal of Timing Paths alone does not prove that no separate vendor diagnostic exists.",
   "figure_scope": "Placement density and connected-location highlighting are verified captures of PNR77. They are not routed wire-segment geometry. No schematic, guessed line, or older-build image has been substituted for a physical routing image."
 }
