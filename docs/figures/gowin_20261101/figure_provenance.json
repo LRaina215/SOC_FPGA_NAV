@@ -1,0 +1,33 @@
+{
+  "captured_on": "2026-11-01",
+  "tool": "Gowin FPGA Designer V1.9.12.04 (64-bit)",
+  "device": "GW5AT-LV138PG484AC1/I0 / GW5AT-138C",
+  "synthesis_source": "F:/nav_integration_g2_20261023/K_video160_20261030_syn2/impl/gwsynthesis/g2_top.vg",
+  "implementation_source": "F:/nav_integration_g2_20261023/K_video160_20261030_pnr1_p2r0/impl/pnr",
+  "viewer_project": "F:/nav_integration_g2_20261023/Gowin_document_figures_20261101/physical_view/g2_top.gprj",
+  "files": {
+    "01_SYN2_video_clock_schematic.png": "Original Gowin GUI screenshot of post-synthesis logical connectivity, u_video_pll. Not a physical route.",
+    "01_SYN2_video_clock_schematic.pdf": "Native Gowin vector export with page rotation corrected. Drawing commands preserved.",
+    "01_SYN2_video_clock_gowin_original.pdf": "Unmodified native Gowin PDF export.",
+    "02_PNR1_placement_loaded_provenance.png": "FloorPlanner placement density and log showing actual PNR1 .vo / .db source paths.",
+    "03_PNR1_full_chip_placement.png": "Actual PNR1 physical placement density: Show Place View > All Instance. Not individual switch-matrix route segments."
+  },
+  "figure_caption_zh": "GW5AT-138C 联合工程实现后的全芯片布局密度图（K_video160 SYN2 / PNR1，Gowin FloorPlanner）。",
+  "status": {
+    "routing_completed": true,
+    "timing_signoff_passed": false,
+    "actual_bsram": 318,
+    "bsram_capacity": 340,
+    "actual_cls": 44704,
+    "cls_capacity": 69120,
+    "setup_violations": 172,
+    "hold_violations": 1
+  },
+  "viewer_notes": [
+    "The hierarchical pre-PNR .vg caused Processing posp file with error. The actual flattened post-PNR .vo paired with the original .db enabled and displayed Show Place View.",
+    "Viewer-only GPRJ and result index were created for existing command-line build artifacts. No synthesis or PNR run was invoked.",
+    "FloorPlanner became temporarily unresponsive while expanding 91961 physical primitives; full placement screenshot was saved before that.",
+    "No board programming, Flash operation, or source RTL modification in this screenshot task.",
+    "Latest SYN3 is a different synthesis candidate and has not been depicted as physically implemented."
+  ]
+}
