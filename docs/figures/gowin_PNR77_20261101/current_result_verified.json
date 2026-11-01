@@ -64,7 +64,10 @@
   "board_actions": 0,
   "screenshots": {
     "01_PNR77_STA_summary.png": "Supplementary STA report screenshot; not a placement or routing figure.",
-    "02_PNR77_full_chip_placement.png": "Actual FloorPlanner Show Place View > All Instance, Zoom Fit, showing the full-chip placement density from the original PNR77 post-route g2_top.vo and g2_top.db. Unedited 1707x1019 native screenshot."
+    "02_PNR77_full_chip_placement.png": "Actual FloorPlanner Show Place View > All Instance, Zoom Fit, showing the full-chip placement density from the original PNR77 post-route g2_top.vo and g2_top.db. Unedited 1707x1019 native screenshot.",
+    "03_PNR77_instance_connectivity.jpg": "Actual PNR77 FloorPlanner Show In-Out Connection view for CFU R24C27. Highlights connected locations, without routed wire segments. Unedited native JPEG, 1707x1019.",
+    "04_PNR77_connectivity_site_details.jpg": "Same connection view with native hover tooltip identifying R24C27, CFU, and the actual instances placed there.",
+    "05_PNR77_available_physical_views.jpg": "Evidence of the current View > Windows menu. No independent Route or Timing Analysis window is listed in this session."
   },
   "placement_figure_delivered": true,
   "placement_density_legend": {
@@ -73,6 +76,31 @@
     "dark_green": "More than ten instances per displayed location",
     "source": "Installed SUG1541-1.0E, printed pages 56-57"
   },
-  "physical_view_screenshot_pending_reason": "Full-chip placement screenshot is now saved and visually verified. Local connection screenshot is still pending: right-clicking an instance in the 91763-primitive list timed out and FloorPlanner became temporarily unresponsive; subsequent fresh window selection and foreground recovery failed with 'failed to activate captured window'. No connection or switch-level routing figure has been claimed or relabeled from an older build.",
-  "figure_scope": "Placement density is not routed wire-segment geometry. The documented Show In-Out Connection feature highlights connected instance positions; a successful export of that feature or a switch-level route view has not yet been obtained."
+  "connection_figure_delivered": true,
+  "connection_selection": {
+    "location": "R24C27",
+    "type": "CFU",
+    "scope": "Connections of the instances at the selected CFU location; not a uniquely selected single primitive",
+    "example_instances_from_native_tooltip": [
+      "u_nav/u_rf/r_LIDAR_CTRL_5_s0",
+      "u_nav/u_rf/r_NETH_MAC_LO_15_s0",
+      "u_nav/u_rf/r_NETL_UDP_PORT_25_s0"
+    ],
+    "colors_verified_by_separate_menu_actions": {
+      "white": "Selected location",
+      "magenta": "Input-connected locations, confirmed with Show In Connection",
+      "yellow": "Output-connected locations, confirmed with Show Out Connection"
+    },
+    "document_caption_zh": "PNR77 导航寄存器簇 R24C27 的局部输入/输出关联位置。白色为所选 CFU，品红色为输入关联位置，黄色为输出关联位置；不表示网络经过的逐段物理走线。"
+  },
+  "viewer_capture_runtime": {
+    "pid": 28404,
+    "created_at_local": "2026-11-01T23:07:51.358959+08:00",
+    "netlist": "F:/nav_integration_g2_20261023/K_pnr77_terrain11p2r0/impl/pnr/g2_top.vo",
+    "posp_argument": "F:/nav_integration_g2_20261023/K_pnr77_terrain11p2r0/impl/pnr/g2_top.db",
+    "timing_argument": "F:/nav_integration_g2_20261023/K_pnr77_terrain11p2r0/impl/pnr/g2_top.timing_paths",
+    "recovery": "Closed only the confirmed windowless document-viewer process 43240 after verifying its creation time and absence of child processes; reopened the same view-only project. No EDA build or board operation was run."
+  },
+  "physical_view_screenshot_pending_reason": "Local input/output connectivity capture is now complete. A switch-level routed-wire image is still unavailable: the current FloorPlanner View > Windows and Chip Array context menus expose placement and connected-location highlighting, but no routed-segment or independent Timing Analysis view was found. The original timing_paths argument is present; its presence does not prove a graphical route feature is available. This does not establish that every Gowin version or vendor diagnostic lacks such a feature.",
+  "figure_scope": "Placement density and connected-location highlighting are verified captures of PNR77. They are not routed wire-segment geometry. No schematic, guessed line, or older-build image has been substituted for a physical routing image."
 }
