@@ -1,0 +1,895 @@
+{
+  "source": "F:\\nav_integration_g2_20261023\\K_pnr77_terrain11p2r0\\g2_top.vg",
+  "source_size": 18075397,
+  "build": "PNR77 terrain11p2r0",
+  "viewer": "Gowin 1.9.12.04 Post-Synthesis Netlist Viewer",
+  "figure_kind": "logical_netlist_schematic",
+  "physical_routing": false,
+  "native_export_content": "Entire Schematic after Select All Modules + Filter; module and inter-module connections, excluding unselected loose primitives",
+  "complete_individual_module_capture": false,
+  "captured_overview_modules": [
+    "g2_top",
+    "nav_subsystem",
+    "control4500_core",
+    "g2_camera_lcd"
+  ],
+  "captures": [
+    {
+      "file": "00_top_modules_native.pdf",
+      "bytes": 56069,
+      "pages": 1,
+      "text_characters": 9174,
+      "first_labels": "u_command_units\nnav_command_units u_rsnav_rst_sync\nu_ubuart_bus_bridge\nu_arb\nnav_bus_arb\nu_control\ncontrol4500_core\nu_command_lease\ncommand_lease_guard\nu_video\ng2_camera_lcd\nu_vide"
+    },
+    {
+      "file": "01_navigation_modules_native.pdf",
+      "bytes": 61554,
+      "pages": 1,
+      "text_characters": 11958,
+      "first_labels": "u_nethnet_port_0 u_imuimu_uart\nu_rf\nnav_regfile\ng_support.u_support\nsupport_coverage\nu_mbxhost_mbx\nu_netl\nnet_port\nu_pp\npc_project\nu_trtraj_eval\nu_match\nslf_matchu_map\nmap_subsys\nu"
+    },
+    {
+      "file": "02_control_modules_native.pdf",
+      "bytes": 44702,
+      "pages": 1,
+      "text_characters": 9931,
+      "first_labels": "remote_threadir_remote_control\nservo_threadservo_driver\nsensorbmi088\nwheel_left\nmotor520_speed\nwheel_right\nmotor520_speed_0\nmodel_thread\nmem_policy\ntelemetry_thread\nuart_telemetry\n"
+    },
+    {
+      "file": "03_camera_lcd_modules_native.pdf",
+      "bytes": 19933,
+      "pages": 1,
+      "text_characters": 1186,
+      "first_labels": "store\ng2_video_framebuffer\ncapture\ng2_ov5640_camera\nhud\ng2_video_hud\n video_clock frame_req_Z n349_6 CAMERA_PCLK_d in_image n616_48 n617_46 write_bank_Z n353_9 pixel_valid_Z stale_"
+    }
+  ],
+  "hierarchy": {
+    "nav_rst_sync": [],
+    "nav_sync2": [],
+    "uart_bus_bridge": [
+      {
+        "instance": "u_s",
+        "module": "nav_sync2"
+      }
+    ],
+    "picorv32_pcpi_fast_mul": [],
+    "picorv32_pcpi_div": [],
+    "picorv32": [
+      {
+        "instance": "pcpi_mul",
+        "module": "picorv32_pcpi_fast_mul"
+      },
+      {
+        "instance": "pcpi_div",
+        "module": "picorv32_pcpi_div"
+      }
+    ],
+    "nav_ram_sp": [],
+    "nav_ram_sp_0": [],
+    "nav_ram_sp_1": [],
+    "nav_ram_sp_2": [],
+    "nav_ram_sdp": [],
+    "nav_ram_sdp_0": [],
+    "nav_ram_sdp_1": [],
+    "nav_ram_sdp_2": [],
+    "nav_soc": [
+      {
+        "instance": "u_cpu",
+        "module": "picorv32"
+      },
+      {
+        "instance": "\\g_lane[0].u_ram",
+        "module": "nav_ram_sp"
+      },
+      {
+        "instance": "\\g_lane[1].u_ram",
+        "module": "nav_ram_sp_0"
+      },
+      {
+        "instance": "\\g_lane[2].u_ram",
+        "module": "nav_ram_sp_1"
+      },
+      {
+        "instance": "\\g_lane[3].u_ram",
+        "module": "nav_ram_sp_2"
+      },
+      {
+        "instance": "\\g_con[0].u_con",
+        "module": "nav_ram_sdp"
+      },
+      {
+        "instance": "\\g_con[1].u_con",
+        "module": "nav_ram_sdp_0"
+      },
+      {
+        "instance": "\\g_con[2].u_con",
+        "module": "nav_ram_sdp_1"
+      },
+      {
+        "instance": "\\g_con[3].u_con",
+        "module": "nav_ram_sdp_2"
+      }
+    ],
+    "nav_bus_arb": [],
+    "rgmii_mac100": [],
+    "nav_rst_sync_0": [],
+    "nav_rst_sync_1": [],
+    "nav_rst_sync_2": [],
+    "nav_command_units": [],
+    "command_lease_guard": [],
+    "g2_range_servo": [],
+    "G2Video_PLL_MOD": [],
+    "G2Video_PLL_INIT": [],
+    "G2Video_PLL": [
+      {
+        "instance": "u_pll",
+        "module": "G2Video_PLL_MOD"
+      },
+      {
+        "instance": "u_pll_init",
+        "module": "G2Video_PLL_INIT"
+      }
+    ],
+    "g2_ov5640_camera": [],
+    "g2_video_framebuffer": [],
+    "g2_video_hud": [],
+    "g2_camera_lcd": [
+      {
+        "instance": "capture",
+        "module": "g2_ov5640_camera"
+      },
+      {
+        "instance": "store",
+        "module": "g2_video_framebuffer"
+      },
+      {
+        "instance": "hud",
+        "module": "g2_video_hud"
+      }
+    ],
+    "ir_remote_control": [],
+    "uart_speed_rx": [],
+    "servo_driver": [],
+    "iic": [],
+    "iic_0": [],
+    "iic_1": [],
+    "bmi088": [
+      {
+        "instance": "u_read1",
+        "module": "iic"
+      },
+      {
+        "instance": "u_read6",
+        "module": "iic_0"
+      },
+      {
+        "instance": "u_write",
+        "module": "iic_1"
+      }
+    ],
+    "motor520_speed": [],
+    "motor520_speed_0": [],
+    "motor520_velocity_pid": [],
+    "motor520_velocity_pid_0": [],
+    "motor520_pwm": [],
+    "motor520_pwm_0": [],
+    "motor520_closed_loop": [
+      {
+        "instance": "left_control",
+        "module": "motor520_velocity_pid"
+      },
+      {
+        "instance": "right_control",
+        "module": "motor520_velocity_pid_0"
+      },
+      {
+        "instance": "left_pwm",
+        "module": "motor520_pwm"
+      },
+      {
+        "instance": "right_pwm",
+        "module": "motor520_pwm_0"
+      }
+    ],
+    "imu_isqrt": [],
+    "imu_recip": [],
+    "imu_div100_3": [],
+    "imu_div100_3_0": [],
+    "imu_fusion": [
+      {
+        "instance": "u_sqrt",
+        "module": "imu_isqrt"
+      },
+      {
+        "instance": "u_recip",
+        "module": "imu_recip"
+      },
+      {
+        "instance": "bias_divider",
+        "module": "imu_div100_3"
+      },
+      {
+        "instance": "divider",
+        "module": "imu_div100_3_0"
+      }
+    ],
+    "rl_observation_v5": [],
+    "fixed4500_weight_rom": [],
+    "fc_v4_round_sat": [],
+    "fc_v4_top": [
+      {
+        "instance": "weights",
+        "module": "fixed4500_weight_rom"
+      },
+      {
+        "instance": "normalizer",
+        "module": "fc_v4_round_sat"
+      }
+    ],
+    "rl_policy_tick_v5": [
+      {
+        "instance": "core",
+        "module": "fc_v4_top"
+      }
+    ],
+    "leg_ik_ff": [],
+    "policy_action_map": [],
+    "mem_policy": [
+      {
+        "instance": "fusion",
+        "module": "imu_fusion"
+      },
+      {
+        "instance": "observation",
+        "module": "rl_observation_v5"
+      },
+      {
+        "instance": "policy",
+        "module": "rl_policy_tick_v5"
+      },
+      {
+        "instance": "ik",
+        "module": "leg_ik_ff"
+      },
+      {
+        "instance": "actuator_map",
+        "module": "policy_action_map"
+      }
+    ],
+    "board_uart_tx": [],
+    "uart_telemetry": [
+      {
+        "instance": "transmitter",
+        "module": "board_uart_tx"
+      }
+    ],
+    "oled_front": [],
+    "iic_2": [],
+    "oled_driver": [
+      {
+        "instance": "font",
+        "module": "oled_front"
+      },
+      {
+        "instance": "bus",
+        "module": "iic_2"
+      }
+    ],
+    "oled_axes_thread": [
+      {
+        "instance": "driver",
+        "module": "oled_driver"
+      }
+    ],
+    "oled": [
+      {
+        "instance": "\\axes_display.thread",
+        "module": "oled_axes_thread"
+      }
+    ],
+    "control4500_core": [
+      {
+        "instance": "remote_thread",
+        "module": "ir_remote_control"
+      },
+      {
+        "instance": "speed_command_rx",
+        "module": "uart_speed_rx"
+      },
+      {
+        "instance": "servo_thread",
+        "module": "servo_driver"
+      },
+      {
+        "instance": "sensor",
+        "module": "bmi088"
+      },
+      {
+        "instance": "wheel_left",
+        "module": "motor520_speed"
+      },
+      {
+        "instance": "wheel_right",
+        "module": "motor520_speed_0"
+      },
+      {
+        "instance": "wheel_control",
+        "module": "motor520_closed_loop"
+      },
+      {
+        "instance": "model_thread",
+        "module": "mem_policy"
+      },
+      {
+        "instance": "telemetry_thread",
+        "module": "uart_telemetry"
+      },
+      {
+        "instance": "display",
+        "module": "oled"
+      }
+    ],
+    "bmi_att_uart": [],
+    "nav_timebase": [],
+    "nav_regfile": [],
+    "nav_fifo_ob_async_assert": [],
+    "nav_async_fifo": [
+      {
+        "instance": "u_ob",
+        "module": "nav_fifo_ob_async_assert"
+      }
+    ],
+    "udp_rx": [],
+    "nav_ram_sdp_3": [],
+    "nav_ram_sdp_4": [],
+    "raw_cap": [
+      {
+        "instance": "u_buf",
+        "module": "nav_ram_sdp_4"
+      }
+    ],
+    "nav_ram_sdp_5": [],
+    "nav_fifo_ob": [],
+    "nav_fifo": [
+      {
+        "instance": "u_ram",
+        "module": "nav_ram_sdp_5"
+      },
+      {
+        "instance": "u_ob_0",
+        "module": "nav_fifo_ob"
+      }
+    ],
+    "udp_tx": [
+      {
+        "instance": "u_ob",
+        "module": "nav_fifo"
+      }
+    ],
+    "nav_fifo_ob_async_assert_0": [],
+    "nav_async_fifo_0": [
+      {
+        "instance": "u_ob",
+        "module": "nav_fifo_ob_async_assert_0"
+      }
+    ],
+    "nav_sync2_0": [],
+    "nav_pulse_sync": [
+      {
+        "instance": "u_s",
+        "module": "nav_sync2_0"
+      }
+    ],
+    "net_port": [
+      {
+        "instance": "u_rxf",
+        "module": "nav_async_fifo"
+      },
+      {
+        "instance": "u_rx",
+        "module": "udp_rx"
+      },
+      {
+        "instance": "\\g_raw.u_rtx",
+        "module": "nav_ram_sdp_3"
+      },
+      {
+        "instance": "\\g_raw.u_rcap",
+        "module": "raw_cap"
+      },
+      {
+        "instance": "u_tx",
+        "module": "udp_tx"
+      },
+      {
+        "instance": "u_txf",
+        "module": "nav_async_fifo_0"
+      },
+      {
+        "instance": "u_fs",
+        "module": "nav_pulse_sync"
+      }
+    ],
+    "nav_fifo_ob_async_assert_1": [],
+    "nav_async_fifo_1": [
+      {
+        "instance": "u_ob",
+        "module": "nav_fifo_ob_async_assert_1"
+      }
+    ],
+    "udp_rx_0": [],
+    "nav_ram_sdp_6": [],
+    "nav_fifo_ob_0": [],
+    "nav_fifo_0": [
+      {
+        "instance": "u_ram",
+        "module": "nav_ram_sdp_6"
+      },
+      {
+        "instance": "u_ob_0",
+        "module": "nav_fifo_ob_0"
+      }
+    ],
+    "udp_tx_0": [
+      {
+        "instance": "u_ob",
+        "module": "nav_fifo_0"
+      }
+    ],
+    "nav_fifo_ob_async_assert_2": [],
+    "nav_async_fifo_2": [
+      {
+        "instance": "u_ob",
+        "module": "nav_fifo_ob_async_assert_2"
+      }
+    ],
+    "nav_sync2_1": [],
+    "nav_pulse_sync_0": [
+      {
+        "instance": "u_s",
+        "module": "nav_sync2_1"
+      }
+    ],
+    "net_port_0": [
+      {
+        "instance": "u_rxf",
+        "module": "nav_async_fifo_1"
+      },
+      {
+        "instance": "u_rx",
+        "module": "udp_rx_0"
+      },
+      {
+        "instance": "u_tx",
+        "module": "udp_tx_0"
+      },
+      {
+        "instance": "u_txf",
+        "module": "nav_async_fifo_2"
+      },
+      {
+        "instance": "u_fs",
+        "module": "nav_pulse_sync_0"
+      }
+    ],
+    "nav_ram_sdp_7": [],
+    "nav_ram_sdp_8": [],
+    "nav_fifo_ob_1": [],
+    "nav_fifo_1": [
+      {
+        "instance": "u_ram",
+        "module": "nav_ram_sdp_8"
+      },
+      {
+        "instance": "u_ob",
+        "module": "nav_fifo_ob_1"
+      }
+    ],
+    "nav_ram_sdp_9": [],
+    "nav_ram_sdp_10": [],
+    "host_mbx": [
+      {
+        "instance": "u_injb",
+        "module": "nav_ram_sdp_7"
+      },
+      {
+        "instance": "u_dq",
+        "module": "nav_fifo_1"
+      },
+      {
+        "instance": "u_rxb",
+        "module": "nav_ram_sdp_9"
+      },
+      {
+        "instance": "u_txs",
+        "module": "nav_ram_sdp_10"
+      }
+    ],
+    "nav_ram_banked": [],
+    "nav_fifo_ob_2": [],
+    "xt_frame_rx": [
+      {
+        "instance": "u_fb",
+        "module": "nav_ram_banked"
+      },
+      {
+        "instance": "u_ob",
+        "module": "nav_fifo_ob_2"
+      }
+    ],
+    "nav_ram_banked_0": [],
+    "pc_project": [
+      {
+        "instance": "u_lut",
+        "module": "nav_ram_banked_0"
+      }
+    ],
+    "pc_transform": [],
+    "pc_filter": [],
+    "nav_skid": [],
+    "nav_ram_sdp_11": [],
+    "elev_map": [
+      {
+        "instance": "u_ram",
+        "module": "nav_ram_sdp_11"
+      }
+    ],
+    "nav_ram_sdp_12": [],
+    "nav_ram_sdp_13": [],
+    "trav_v3": [
+      {
+        "instance": "u_bm",
+        "module": "nav_ram_sdp_12"
+      },
+      {
+        "instance": "u_ct",
+        "module": "nav_ram_sdp_13"
+      }
+    ],
+    "nav_ram_sdp_14": [],
+    "nav_ram_sdp_15": [],
+    "map_subsys": [
+      {
+        "instance": "u_em",
+        "module": "elev_map"
+      },
+      {
+        "instance": "u_tv",
+        "module": "trav_v3"
+      },
+      {
+        "instance": "u_cm0",
+        "module": "nav_ram_sdp_14"
+      },
+      {
+        "instance": "u_cm1",
+        "module": "nav_ram_sdp_15"
+      }
+    ],
+    "nav_ram_sdp_16": [],
+    "support_coverage": [
+      {
+        "instance": "u_ram",
+        "module": "nav_ram_sdp_16"
+      }
+    ],
+    "nav_ram_sdp_17": [],
+    "slf_extract": [
+      {
+        "instance": "u_rb",
+        "module": "nav_ram_sdp_17"
+      }
+    ],
+    "nav_ram_sdp_18": [],
+    "nav_ram_sdp_19": [],
+    "slf_lf": [],
+    "nav_ram_sdp_20": [],
+    "nav_ram_sdp_21": [],
+    "nav_ram_sdp_22": [],
+    "nav_ram_sdp_23": [],
+    "nav_ram_sdp_24": [],
+    "nav_ram_sdp_25": [],
+    "slf_match": [
+      {
+        "instance": "u_ex",
+        "module": "slf_extract"
+      },
+      {
+        "instance": "u_pb",
+        "module": "nav_ram_sdp_18"
+      },
+      {
+        "instance": "u_sm",
+        "module": "nav_ram_sdp_19"
+      },
+      {
+        "instance": "u_lf",
+        "module": "slf_lf"
+      },
+      {
+        "instance": "u_touch",
+        "module": "nav_ram_sdp_20"
+      },
+      {
+        "instance": "u_slist",
+        "module": "nav_ram_sdp_21"
+      },
+      {
+        "instance": "u_acc",
+        "module": "nav_ram_sdp_22"
+      },
+      {
+        "instance": "u_cand",
+        "module": "nav_ram_sdp_23"
+      },
+      {
+        "instance": "u_res",
+        "module": "nav_ram_sdp_24"
+      },
+      {
+        "instance": "u_cos",
+        "module": "nav_ram_sdp_25"
+      }
+    ],
+    "nav_ram_sdp_26": [],
+    "nav_ram_sdp_27": [],
+    "nav_ram_sdp_28": [],
+    "traj_eval": [
+      {
+        "instance": "u_cand",
+        "module": "nav_ram_sdp_26"
+      },
+      {
+        "instance": "u_res",
+        "module": "nav_ram_sdp_27"
+      },
+      {
+        "instance": "u_cos",
+        "module": "nav_ram_sdp_28"
+      }
+    ],
+    "safety_guard": [],
+    "nav_sync2_2": [],
+    "nav_ram_sdp_29": [],
+    "nav_fifo_ob_3": [],
+    "nav_fifo_2": [
+      {
+        "instance": "u_ram",
+        "module": "nav_ram_sdp_29"
+      },
+      {
+        "instance": "u_ob",
+        "module": "nav_fifo_ob_3"
+      }
+    ],
+    "nav_ram_sdp_30": [],
+    "nav_fifo_ob_4": [],
+    "nav_fifo_3": [
+      {
+        "instance": "u_ram",
+        "module": "nav_ram_sdp_30"
+      },
+      {
+        "instance": "u_ob",
+        "module": "nav_fifo_ob_4"
+      }
+    ],
+    "nav_fifo_ob_5": [],
+    "nav_fifo_4": [
+      {
+        "instance": "u_ob",
+        "module": "nav_fifo_ob_5"
+      }
+    ],
+    "imu_uart": [
+      {
+        "instance": "u_s",
+        "module": "nav_sync2_2"
+      },
+      {
+        "instance": "u_rf",
+        "module": "nav_fifo_2"
+      },
+      {
+        "instance": "u_tf",
+        "module": "nav_fifo_3"
+      },
+      {
+        "instance": "u_txf",
+        "module": "nav_fifo_4"
+      }
+    ],
+    "nav_subsystem": [
+      {
+        "instance": "u_time",
+        "module": "nav_timebase"
+      },
+      {
+        "instance": "u_rf",
+        "module": "nav_regfile"
+      },
+      {
+        "instance": "u_netl",
+        "module": "net_port"
+      },
+      {
+        "instance": "u_neth",
+        "module": "net_port_0"
+      },
+      {
+        "instance": "u_mbx",
+        "module": "host_mbx"
+      },
+      {
+        "instance": "u_xt",
+        "module": "xt_frame_rx"
+      },
+      {
+        "instance": "u_pp",
+        "module": "pc_project"
+      },
+      {
+        "instance": "u_pt",
+        "module": "pc_transform"
+      },
+      {
+        "instance": "u_pf",
+        "module": "pc_filter"
+      },
+      {
+        "instance": "u_pf_skid",
+        "module": "nav_skid"
+      },
+      {
+        "instance": "u_map",
+        "module": "map_subsys"
+      },
+      {
+        "instance": "\\g_support.u_support",
+        "module": "support_coverage"
+      },
+      {
+        "instance": "u_match",
+        "module": "slf_match"
+      },
+      {
+        "instance": "u_tr",
+        "module": "traj_eval"
+      },
+      {
+        "instance": "u_sg",
+        "module": "safety_guard"
+      },
+      {
+        "instance": "u_imu",
+        "module": "imu_uart"
+      }
+    ],
+    "g2_top": [
+      {
+        "instance": "u_rs",
+        "module": "nav_rst_sync"
+      },
+      {
+        "instance": "u_ub",
+        "module": "uart_bus_bridge"
+      },
+      {
+        "instance": "u_soc",
+        "module": "nav_soc"
+      },
+      {
+        "instance": "u_arb",
+        "module": "nav_bus_arb"
+      },
+      {
+        "instance": "u_lmac",
+        "module": "rgmii_mac100"
+      },
+      {
+        "instance": "u_lrr",
+        "module": "nav_rst_sync_0"
+      },
+      {
+        "instance": "u_ltr",
+        "module": "nav_rst_sync_1"
+      },
+      {
+        "instance": "u_htr",
+        "module": "nav_rst_sync_2"
+      },
+      {
+        "instance": "u_command_units",
+        "module": "nav_command_units"
+      },
+      {
+        "instance": "u_command_lease",
+        "module": "command_lease_guard"
+      },
+      {
+        "instance": "u_range",
+        "module": "g2_range_servo"
+      },
+      {
+        "instance": "u_video_pll",
+        "module": "G2Video_PLL"
+      },
+      {
+        "instance": "u_video",
+        "module": "g2_camera_lcd"
+      },
+      {
+        "instance": "u_control",
+        "module": "control4500_core"
+      },
+      {
+        "instance": "u_att_uart",
+        "module": "bmi_att_uart"
+      },
+      {
+        "instance": "u_nav",
+        "module": "nav_subsystem"
+      }
+    ]
+  },
+  "notes": [
+    "Large overviews require substantial zoom to read labels; overview JPGs are not suitable as full-page readable implementation figures.",
+    "Individual child schematics have not all been exported.",
+    "RTL hierarchy optimized away by synthesis and protected IP interiors may not be separately available.",
+    "No synthesis, place-and-route or board programming was run for figure export."
+  ],
+  "workflow_zh": [
+    "打开对应成功版本的层次综合网表 .vg；不要使用已展开的物理 .vo 代替。",
+    "Tools > Schematic Viewer > Post-Synthesis Netlist Viewer。",
+    "在 Modules 层级选择实例，右键 Push 进入；Pop 返回上级。",
+    "Zoom Fit 适配整图，Zoom Fit Selected 聚焦选中对象。大模块按更小功能层级拆图。",
+    "需要功能连接总览时，用 Select All Modules 后 Filter；此视图不是包含全部散落原语的完整逻辑锥。",
+    "空白画布右键 Save as PDF File > Entire Schematic 保存原生矢量图，再按需要导出局部高分辨率图片。"
+  ],
+  "raster_detail": {
+    "file": "03_camera_lcd_modules_detail.png",
+    "source": "03_camera_lcd_modules_native.pdf",
+    "method": "PDFium raster render, scale 8, crop (left=0,bottom=510,right=0,top=0) PDF points; white lower page margin omitted; diagram unchanged",
+    "pixels": [
+      4760,
+      2656
+    ]
+  },
+  "individual_submodules_not_yet_captured": {
+    "nav_subsystem": [
+      "u_time",
+      "u_rf",
+      "u_netl",
+      "u_neth",
+      "u_mbx",
+      "u_xt",
+      "u_pp",
+      "u_pt",
+      "u_pf",
+      "u_pf_skid",
+      "u_map",
+      "\\g_support.u_support",
+      "u_match",
+      "u_tr",
+      "u_sg",
+      "u_imu"
+    ],
+    "control4500_core": [
+      "remote_thread",
+      "speed_command_rx",
+      "servo_thread",
+      "sensor",
+      "wheel_left",
+      "wheel_right",
+      "wheel_control",
+      "model_thread",
+      "telemetry_thread",
+      "display"
+    ],
+    "g2_camera_lcd": [
+      "capture",
+      "store",
+      "hud"
+    ]
+  }
+}
