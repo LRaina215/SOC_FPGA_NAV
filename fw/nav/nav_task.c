@@ -48,12 +48,12 @@ void nav_task_init(nav_task_t *nt)
     gmap_default_cfg(&nt->gm.cfg);
     gmap_init(&nt->gm);
     explore_default_cfg(&nt->ex_cfg);
-    /* 雷达安装位姿（10-31 静止地面拟合，雷达相对 IMU）：下俯 2.1°、横滚 -3°，在轮轴前 123 mm、离地 150 mm */
+    /* 雷达安装位姿（10-31 静止地面拟合，雷达相对 IMU）：下俯 2.1°、横滚 3°（11-01 左右镜像修正后反号），在轮轴前 123 mm、离地 150 mm */
 #ifndef APP_MOUNT_PITCH_CDEG
 #define APP_MOUNT_PITCH_CDEG 210
 #endif
 #ifndef APP_MOUNT_ROLL_CDEG
-#define APP_MOUNT_ROLL_CDEG (-300)
+#define APP_MOUNT_ROLL_CDEG 300
 #endif
 #ifndef APP_MOUNT_Z_MM
 #define APP_MOUNT_Z_MM 150

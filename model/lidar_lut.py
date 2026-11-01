@@ -6,7 +6,7 @@
   · 去畸变为 Brown-Conrady 模型（同 OpenCV undistortPoints），内参顺序 fx fy cx cy k1 k2 k3 p1 p2。
     每帧帧尾 FrameInfo 带着这台雷达的内参；读不到时 SDK 用下面的 M60_DEFAULT。
   · 厂家上位机对 M60 默认切四角（cut_corner=120，M60 取 1/4 即半径 30 像素的倒角），这些像素方向置零 = 无效。
-坐标：标定坐标系按 OpenCV 约定（x 右、y 下、z 前），换到本体系 X=z、Y=-x、Z=-y。左右正负待实物核对（docs/2_interface/icd.md）。
+坐标：标定坐标系按 OpenCV 约定（x 右、y 下、z 前），换到本体系 X=z、Y=x、Z=-y。列号翻转后 x 即向左，与厂家 SDK 相同；2026-11-01 实车核对（原 Y=-x 左右镜像：左墙被当成右侧沙发）。
 
 定点：每分量 12 位有符号 Q0.11（值/2048，饱和到 ±2047），36 位字 {rz, ry, rx}。
 板上由固件 fw/nav/lidar_cal.c 按雷达自带内参生成同一张表（与本文件相差不超过 1 LSB，见 fw/test）。
@@ -90,7 +90,7 @@ def rays(intr=None, flip_u=True, flip_v=False, cut=CUT_R, w=W, h=H):
     xd = (us - p["cx"]) / p["fx"]
     yd = (vs - p["cy"]) / p["fy"]
     xn, yn = undistort(xd, yd, p["k1"], p["k2"], p["k3"], p["p1"], p["p2"])
-    d = np.stack([np.ones_like(xn), -xn, -yn], axis=-1)
+    d = np.stack([np.ones_like(xn), xn, -yn], axis=-1)
     d /= np.linalg.norm(d, axis=-1, keepdims=True)
     if cut:
         d[corner_mask(cut, w, h)[vs, us]] = 0.0

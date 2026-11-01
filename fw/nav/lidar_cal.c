@@ -137,7 +137,7 @@ void lidar_cal_pixel(const lidar_cal_t *lc, int idx, int16_t out[3])
     if (g < ONE / 4) g = ONE / 4;
     for (int it = 0; it < 5; it++) g = qmul(g, 3 * ONE - qmul(s, qmul(g, g))) >> 1;
     out[0] = to_q11(g);                       /* 前 */
-    out[1] = to_q11(-qmul(x, g));             /* 左：标定坐标 x 向右 */
+    out[1] = to_q11(qmul(x, g));              /* 左：列号翻转后标定坐标 x 即向左，与厂家 SDK 相同（2026-11-01 实车核对） */
     out[2] = to_q11(-qmul(y, g));             /* 上：标定坐标 y 向下 */
 }
 
