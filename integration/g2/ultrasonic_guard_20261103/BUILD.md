@@ -1,5 +1,11 @@
 # 超声波联合实现（2026-11-03）
 
+## 21:04 当前实际接续
+
+最小版SYN3已完整结束，实际网表审阅通过；PNR88于21:04:23实际启动Gowin53508，父监管仍为53020，工具日志已进入placement。新增保护实际643 LUT、183 FF、0 DSP（原PNR86源保护1734 LUT、271 FF、2 DSP）；LED为组合连线。307源BSRAM全部参数及显式INIT保持，原617个SDC引脚引用全部解析，新增触发器均为clk50_d。318物理RAM仍待本轮报告实测。
+
+PNR88总时限0、静默时限0，不追加测试，不改变板上PNR85。实际未布通数和setup/hold尚未出；不能把综合资源减少当作布通或时序结论。机器证据见 `evidence/minimal_SYN3_PNR88_start.json`。
+
 **当前优先：用户要求删除新增防御性设计。** 旧compact综合Gowin12208已核对身份后撤下，只停止本会话这一旧SYN，没有中断PNR或其他会话。新最小版 `K_ultrasonic_minimal_syn3` 于20:59:16启动Gowin39688，监管53020；完成实际网表审阅后接唯一 `K_pnr88_ultrasonic_minimalp2r0`。实时job位于 `ultrasonic_minimal_joint_one_shot/job.json`。当前接口/行为以本目录README和冻结新源为准，下文旧PI超时/故障状态描述仅属于PNR86历史。
 
 PNR86已20:30自然失败：1043未布通、318RAM、Logic65525/FF33798/CLS45493/DSP180，无TR。对PNR85分别+1426Logic/+341FF/+702CLS/+2DSP，RAM不变。新增保护SYN模块1734LUT/271FF/2DSP；全局分配同时变化，不把所有1043失败网络直接归因于该模块。旧失败现场完整保留，不原样重跑。

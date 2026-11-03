@@ -29,13 +29,13 @@ Echo两级同步、65ms测量间隔、12µs Trig和30ms回波超时沿用原驱�
 
 ## 执行状态
 
-20:59:16已启动Gowin39688，入口：
+20:59:16启动的SYN3已完整结束，实际网表审阅通过；PNR88已于21:04:23启动Gowin53508，进入布局。新增保护实际643 LUT、183 FF、0 DSP，RAM初值和原617个SDC引用保持。一次性入口：
 
 ```powershell
 & 'D:/tools/venv_qhxd/Scripts/python.exe' integration/g2/ultrasonic_guard_20261103/run_joint_build.py --launch --profile minimal
 ```
 
-这是一次性入口，已有当前任务时不要重复执行。综合完成后读取实际网表/存储/时钟与资源，接PNR88；PNR总时限0、静默时限0。新结果未出，不能称布通或时序通过；不改变板上PNR85。
+这是一次性入口，已有当前任务时不要重复执行。PNR总时限0、静默时限0。布线/时序结果尚未出，不能称布通或时序通过；不改变板上PNR85。
 
 ## 历史证据边界
 
