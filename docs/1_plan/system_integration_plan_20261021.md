@@ -4,6 +4,8 @@
 
 ## 当前状态
 
+**2026-11-04 04:50 PNR94 SRAM下载完成。** 用户确认开发板主供电和JTAG连接后，识别ID `0x0011081B`，官方Programmer SRAM Program（操作2）9.62秒完成、退出0；独立JTAG再读UserCode `0x000026F0`、StatusCode `0x00026230`，与PNR94 FS头标识一致。Flash未改，当前SRAM为PNR94，超声波模式默认关闭，遥控0键切换、LED7指示。RK SSH连接仍超时，未修改ACTIVE、未确认其当前导航固件自动重载，没有下发运动或把下载成功当成超声波/实车功能通过。详见[下载实测](../../integration/g2/ultrasonic_guard_20261103/evidence/PNR94_SRAM_20261104/result.json)。下方只读复核及PNR85板上状态保留各自时点。
+
 **2026-11-04 PNR94独立复核。** 超声波候选`K_pnr94_ultrasonic_noresetp2r0`已01:54:58完成布线，四个目标钟50/100/50/8.967MHz的setup/hold端点违例与TNS均0，Fmax为50.446/145.427/102.676/62.931MHz；最差已列setup/hold裕量+0.177/+0.160ns。实际318BSRAM/64616Logic/33657FF/44816CLS/178DSP；全部RAM几何和显式INIT与PNR85一致，CST/SDC及实际实现选项保持。SYN5对SYN3仅保护模块数据通路去异步复位并保留上电初值，模式仍复位关闭；热复位后旧测距数据保留到下次有效样本，不等同重新配置。319条SDC命令全Actived，但该SDC没有外部IO时序窗口；相机PR1014普通路由段告警保留。此次成功支持复位减载方向，不能写成所有旧失败的唯一根因。只读审阅，没有新仿真/构建/哈希/下载或板上版本读回；下一步是此镜像的SRAM功能验证。详见[PNR94审阅](../../integration/g2/ultrasonic_guard_20261103/PNR94_REVIEW.md)。
 
 **2026-11-01 最新报告复核：PNR77 已完成布线，全部报告时钟域 setup/hold 均为 0。** 本次只读核对 `F:/nav_integration_g2_20261023/K_pnr77_terrain11p2r0` 的真实日志、资源与时序报告：20:07:19 完成，BSRAM318/340、Logic63383、FF33320、CLS44467/69120、DSP178。核心50MHz、雷达100MHz、相机50MHz、LCD8.967MHz 四域及全局 setup/hold 违例均为0；实际 Fmax 分别50.063/138.010/107.176/74.573MHz。已列最差 setup/hold/recovery/removal/最小脉宽裕量分别为+0.025/+0.164/+4.003/+0.273/+2.166ns。此前截图任务沿用 SYN2/PNR1，将其172setup/1hold历史状态误写为当前，现明确更正；旧图片标记为历史，不用于当前实现说明。最新指定 Zcode 会话记录已进入 bal4 固件实车导航调试，定位重新对准与速度中断仍在分析；本次没有重新读取板上镜像、运行构建或操作车辆。报告来源、会话读取边界及最新展示工程见[本次核对](../figures/gowin_PNR77_20261101/current_result_verified.json)。下方00:28与PNR1/PNR2等段落保留原时点，不再代表最新实现状态。

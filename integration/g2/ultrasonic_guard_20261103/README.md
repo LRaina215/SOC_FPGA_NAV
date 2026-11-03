@@ -1,6 +1,6 @@
 # 超声波遥控避障：当前最小实现
 
-当前候选是 `K_ultrasonic_noreset_syn5` → `K_pnr94_ultrasonic_noresetp2r0`，已布通，四个报告时钟域setup/hold均0。11月4日独立核对及复位行为、外部IO签核边界见 [PNR94_REVIEW.md](PNR94_REVIEW.md)；本轮未烧录。下方PNR88路径属于历史，不再代表最新进度。按用户要求不追加仿真测试。
+当前镜像是 `K_ultrasonic_noreset_syn5` → `K_pnr94_ultrasonic_noresetp2r0`，已布通，四个报告时钟域setup/hold均0。11月4日04:50已实际下载SRAM，独立JTAG读回UserCode `0x000026F0`、StatusCode `0x00026230`；Flash未改。RK SSH超时，当前导航固件自动重载及超声波实物效果未验证。[下载证据](evidence/PNR94_SRAM_20261104/result.json)、[独立审阅](PNR94_REVIEW.md)。下方PNR88路径及旧“未烧录”描述保留原时点，按用户要求不追加仿真测试。
 
 ## 保留的功能
 

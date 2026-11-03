@@ -1,5 +1,9 @@
 # 超声波联合实现（2026-11-03）
 
+## 11-04 04:50 PNR94已下载SRAM
+
+用户接通开发板主供电后，USB位置36重新扫描识别器件ID `0x0011081B`。执行官方Programmer的 `--device GW5AT-138C --run 2 --fsFile D:/tools/g2_ultrasonic_noreset_pnr94_20261104.fs --location 36`，9.62秒完成，退出0。之后独立Read Device Codes读回ID `0x0011081B`、UserCode `0x000026F0`、StatusCode `0x00026230`，UserCode与FS头一致。只写SRAM，Flash未改，没有新仿真/构建/哈希或运动命令。RK SSH持续超时，未改ACTIVE、未验证导航固件自动重载、传感器或实车保护；模式默认关闭，遥控0键切换、LED7表示开启。日志与机器证据见 `evidence/PNR94_SRAM_20261104/`，下文未烧录是当时状态。
+
 ## 21:18 PNR88终局
 
 PNR88于21:18:14自然退出1，cancelled=false、总时限0/静默时限0；厂商PR0004报告478条未布通，未生成TR或位流，setup/hold均未知。工具53508及监管53020已退出。相对PNR86的1043条减少565条，仍不满足布线门槛，不能推断时序改善。
