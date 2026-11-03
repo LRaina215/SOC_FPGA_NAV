@@ -1,0 +1,127 @@
+{
+  "at": "2026-11-03T18:28:23.835975+08:00",
+  "passed": true,
+  "scope": "finite_RTL_simulation",
+  "candidate": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_prepared4",
+  "source": "F:\\nav_integration_g2_20261023\\K_terrain19_follow1",
+  "verilog_input_count": 75,
+  "tested_modules_reused_without_repeating_same_test": [
+    {
+      "source": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_prepared1\\ultrasonic_drive_guard.v",
+      "final": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_prepared4\\ultrasonic_drive_guard.v",
+      "byte_identical": true
+    },
+    {
+      "source": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_prepared2\\g2_range_servo.v",
+      "final": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_prepared4\\g2_range_servo.v",
+      "byte_identical": true
+    },
+    {
+      "source": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_prepared3\\control4500_core.v",
+      "final": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_prepared4\\control4500_core.v",
+      "byte_identical": true
+    }
+  ],
+  "profiles": [
+    {
+      "name": "guard",
+      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_sim1\\guard",
+      "passed": true,
+      "marker": "TEST PASSED GUARD checks=2034"
+    },
+    {
+      "name": "range",
+      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_sim2\\range",
+      "passed": true,
+      "marker": "TEST PASSED RANGE checks=1030014 samples=23 settle_us=319998"
+    },
+    {
+      "name": "nec",
+      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_sim2\\nec",
+      "passed": true,
+      "marker": "TEST PASSED NEC checks=18 repeats=3"
+    },
+    {
+      "name": "sensor_guard",
+      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_sensor_sim1\\sensor_guard",
+      "passed": true,
+      "marker": "TEST PASSED SENSOR_GUARD checks=14 samples=25"
+    },
+    {
+      "name": "policy",
+      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_sim3\\policy",
+      "passed": true,
+      "marker": "TEST PASSED POLICY checks=21 publications=20 positive_frames=6 stopped_frames=3 cycles=83534"
+    },
+    {
+      "name": "led",
+      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_led_sim2\\led",
+      "passed": true,
+      "marker": "TEST PASSED LED checks=820"
+    },
+    {
+      "name": "core",
+      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_core_iverilog1",
+      "passed": true,
+      "marker": "TEST PASSED CORE checks=11"
+    }
+  ],
+  "board_programmed": false,
+  "joint_synthesis_started": false,
+  "PNR_started": false,
+  "LED": {
+    "name": "LED7",
+    "ball": "N17",
+    "signal": "led_cpu[3]",
+    "off": "disabled",
+    "blink": "enabled but settling/invalid/stale ranging",
+    "on": "enabled and fresh valid ranging",
+    "blink_hz": 2,
+    "resettable_independent_counter": true,
+    "review_change": "Existing top hb has no RTL initial/reset; final LED uses its own resettable phase",
+    "replaced": "firmware LED counter high bit only; remaining indicators retained"
+  },
+  "preserved_failures": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_sim1",
+      "reason": "range/NEC unsized watchdog overflow in fixture; corrected to explicit SV ms literal"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_sim2",
+      "reason": "legacy OLED late declarations rejected by XSim; earlier policy input monitor unreachable; fixed monitor and repeated policy test"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_sim3",
+      "reason": "legacy core diagnostic late declaration rejected"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_core_sim1",
+      "reason": "XSim elaboration access violation after declaration-only simulation copies"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_core_sim2",
+      "reason": "same elaboration exception after also ordering original constants"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_core_AE1",
+      "reason": "Tcl include path escaping in launcher"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_core_AE2",
+      "reason": "original late localparams rejected by ModelSim"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_core_AE3",
+      "reason": "all compilation passed; installed license rejected Verilog simulation; no license bypass"
+    }
+  ],
+  "simulator_fallback": "Icarus10.3 installed from existing Ubuntu20.04 package repository (1.859MB download); unmodified source elaboration and run passed",
+  "limitations": [
+    "No full-vehicle dynamics or physical stopping-distance acceptance",
+    "No new mapped resource or timing acceptance",
+    "Sensor center/mounting offset and physical remote0 code not verified on board",
+    "Real4500 test uses synthetic100Hz stationary IMU and BIAS_SAMPLES4, not a closed loop",
+    "Legacy bias/ELU read-width warnings retained; model assets unchanged",
+    "NAV commands intentionally bypass this manual-only protection"
+  ]
+}
