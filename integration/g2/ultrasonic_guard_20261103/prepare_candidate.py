@@ -35,6 +35,7 @@ def prepare(source,out):
         .requested_forward_q12(requested_forward_q12),.requested_yaw_q12(requested_yaw_q12),
         .sample_strobe(range_sample_strobe),.sample_valid(range_distance_valid),
         .forward_ready(range_forward_ready),.distance_mm(range_distance_mm),
+        .feedback_valid(feedback_valid),.feedback_forward_mmps(feedback_vx_mmps),
         .enabled(range_hold_forward),.forward_q12(command_forward_q12),.yaw_q12(command_yaw_q12),
         .sample_healthy(range_protection_ready),.braking(),.stop_latched(),.sample_age_ms(),.range_target_q12());
 '''+core[start:]
