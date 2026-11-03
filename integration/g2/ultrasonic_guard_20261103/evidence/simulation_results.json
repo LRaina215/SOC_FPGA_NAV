@@ -1,55 +1,55 @@
 {
-  "at": "2026-11-03T18:28:23.835975+08:00",
+  "at": "2026-11-03T19:28:26.297978+08:00",
   "passed": true,
   "scope": "finite_RTL_simulation",
-  "candidate": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_prepared4",
+  "candidate": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_fixed600_prepared3",
   "source": "F:\\nav_integration_g2_20261023\\K_terrain19_follow1",
   "verilog_input_count": 75,
   "tested_modules_reused_without_repeating_same_test": [
     {
-      "source": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_prepared1\\ultrasonic_drive_guard.v",
-      "final": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_prepared4\\ultrasonic_drive_guard.v",
+      "source": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_fixed600_prepared1\\ultrasonic_drive_guard.v",
+      "final": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_fixed600_prepared3\\ultrasonic_drive_guard.v",
       "byte_identical": true
     },
     {
-      "source": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_prepared2\\g2_range_servo.v",
-      "final": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_prepared4\\g2_range_servo.v",
+      "source": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_prepared4\\ultrasonic_mode_led.v",
+      "final": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_fixed600_prepared3\\ultrasonic_mode_led.v",
       "byte_identical": true
     },
     {
-      "source": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_prepared3\\control4500_core.v",
-      "final": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_prepared4\\control4500_core.v",
+      "source": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_fixed600_prepared2\\control4500_core.v",
+      "final": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_fixed600_prepared3\\control4500_core.v",
       "byte_identical": true
     }
   ],
   "profiles": [
     {
       "name": "guard",
-      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_sim1\\guard",
+      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_fixed600_sim1\\guard",
       "passed": true,
       "marker": "TEST PASSED GUARD checks=2034"
     },
     {
       "name": "range",
-      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_sim2\\range",
+      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_fixed600_sim3\\range",
       "passed": true,
-      "marker": "TEST PASSED RANGE checks=1030014 samples=23 settle_us=319998"
+      "marker": "TEST PASSED RANGE checks=138 samples=24 settle_us=300000 pwm_frames=97"
     },
     {
       "name": "nec",
-      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_sim2\\nec",
+      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_fixed600_sim3\\nec",
       "passed": true,
       "marker": "TEST PASSED NEC checks=18 repeats=3"
     },
     {
       "name": "sensor_guard",
-      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_sensor_sim1\\sensor_guard",
+      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_fixed600_sim3\\sensor_guard",
       "passed": true,
       "marker": "TEST PASSED SENSOR_GUARD checks=14 samples=25"
     },
     {
       "name": "policy",
-      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_sim3\\policy",
+      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_fixed600_sim3\\policy",
       "passed": true,
       "marker": "TEST PASSED POLICY checks=21 publications=20 positive_frames=6 stopped_frames=3 cycles=83534"
     },
@@ -61,7 +61,7 @@
     },
     {
       "name": "core",
-      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_core_iverilog1",
+      "output": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_fixed600_core1",
       "passed": true,
       "marker": "TEST PASSED CORE checks=11"
     }
@@ -69,6 +69,15 @@
   "board_programmed": false,
   "joint_synthesis_started": false,
   "PNR_started": false,
+  "configuration": {
+    "SLOW_MM": 600,
+    "STOP_MM": 250,
+    "RELEASE_MM": 350,
+    "SG90_scan": false,
+    "SG90_PWM_us": 1500,
+    "trigger_interval_ms": 65,
+    "trigger_width_us": 12
+  },
   "LED": {
     "name": "LED7",
     "ball": "N17",
@@ -82,6 +91,14 @@
     "replaced": "firmware LED counter high bit only; remaining indicators retained"
   },
   "preserved_failures": [
+    {
+      "path": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_fixed600_sim1",
+      "reason": "startup settle was half a parameterized clock short; ready now latches after next complete frame boundary"
+    },
+    {
+      "path": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_fixed600_sim2",
+      "reason": "mode toggle during Trig could reaccept same in-flight transaction at Trig end; added discard-until-next-trigger guard"
+    },
     {
       "path": "F:\\nav_integration_g2_20261023\\ultrasonic_manual_guard_sim1",
       "reason": "range/NEC unsized watchdog overflow in fixture; corrected to explicit SV ms literal"

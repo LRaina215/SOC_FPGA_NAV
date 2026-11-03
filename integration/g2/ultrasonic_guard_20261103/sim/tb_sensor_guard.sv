@@ -33,12 +33,12 @@ initial begin
  check(!enabled && v==1229,"disabled original manual path");
  key=8'h16;key_active=1;key_event=1;@(negedge clk);key_event=0;
  repeat(5)@(negedge clk);check(enabled && v==0,"arming stops positive setpoint");
- #(300ms);check(!healthy && v==0,"side/settling echoes cannot start forward");
+ #(299ms);check(!healthy && v==0,"boot settling cannot start forward");
  wait(healthy);check(position==1 && ready,"front stream qualified");
  #(650ms);check(v==1229,"full-speed forward after fresh readings and ramp");
- obstacle_mm=700;#(200ms);check(v>=918 && v<=922,"700mm limits speed near 0.225m/s");
- obstacle_mm=550;#(200ms);check(v>=611 && v<=615,"550mm limits speed near 0.15m/s");
- obstacle_mm=400;#(200ms);check(v>=304 && v<=308,"400mm limits speed near 0.075m/s");
+ obstacle_mm=500;#(200ms);check(v>=874 && v<=878,"500mm limits speed near 0.214m/s");
+ obstacle_mm=400;#(200ms);check(v>=523 && v<=527,"400mm limits speed near 0.128m/s");
+ obstacle_mm=300;#(200ms);check(v>=172 && v<=176,"300mm limits speed near 0.043m/s");
  obstacle_mm=250;wait(stop_latched);repeat(4)@(negedge clk);check(v==0,"actual Echo chain stops at 250mm");
  obstacle_mm=1200;#(180ms);check(v==0 && stop_latched,"clear echoes cannot relaunch held command");
  manual=0;req=777;yaw=-456;repeat(6)@(negedge clk);

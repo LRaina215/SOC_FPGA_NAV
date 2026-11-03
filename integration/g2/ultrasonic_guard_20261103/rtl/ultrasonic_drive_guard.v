@@ -5,7 +5,7 @@ module ultrasonic_drive_guard #(
     parameter [7:0] MODE_KEY=8'h16, // candidate NEC code for remote 0
     parameter integer STOP_MM=250,
     parameter integer RELEASE_MM=350,
-    parameter integer SLOW_MM=850,
+    parameter integer SLOW_MM=600,
     parameter integer MAX_FORWARD_Q12=1229,
     parameter integer STALE_MS=150,
     parameter integer ACCEL_STEP_Q12=2, // per ms: approximately 0.488 m/s^2

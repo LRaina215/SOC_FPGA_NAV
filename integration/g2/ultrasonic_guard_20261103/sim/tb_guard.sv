@@ -49,9 +49,9 @@ initial begin
  ping(1,1000);wait_ms(5,0);check(out_v==0 && !healthy,"old side sample must not arm");
  center=1;ping(1,1000);check(!healthy,"first forward sample insufficient");ping(1,1000);check(healthy,"second forward sample arms");
  phase=2;previous=out_v;wait_ms(650,1);check(out_v==1229,"far steady speed");
- phase=3;ping(1,650);previous=out_v;wait_ms(120,1);check(out_v==819,"650mm expected linear target");
- ping(1,500);previous=out_v;wait_ms(100,1);check(out_v==512,"500mm expected linear target");
- ping(1,300);previous=out_v;wait_ms(120,1);check(out_v==102,"300mm expected linear target");
+ phase=3;ping(1,500);previous=out_v;wait_ms(120,1);check(out_v==877,"500mm expected linear target");
+ ping(1,400);previous=out_v;wait_ms(100,1);check(out_v==526,"400mm expected linear target");
+ ping(1,300);previous=out_v;wait_ms(120,1);check(out_v==175,"300mm expected linear target");
  phase=4;ping(1,250);check(out_v==0 && stopped,"stop boundary");
  ping(1,1000);ping(1,1000);wait_ms(10,1);check(out_v==0 && stopped,"held forward must not restart");
  req=0;manual=0;repeat(5)@(negedge clk);check(!stopped,"clear distance and release rearm");

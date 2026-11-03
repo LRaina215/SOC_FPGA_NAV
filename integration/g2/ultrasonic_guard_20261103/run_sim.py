@@ -28,10 +28,7 @@ def run(candidate,out,profiles):
             if profile=='guard': files=[guard,str(HERE/'sim/tb_guard.sv')]
             elif profile=='led': files=[str(candidate/'ultrasonic_mode_led.v'),str(HERE/'sim/tb_led.sv')]
             elif profile=='range':
-                original=(source/'video/g2_range_servo.v').read_text(encoding='utf8')
-                original=original.replace('module g2_range_servo #(','module g2_range_servo_reference #(',1)
-                (folder/'range_reference.v').write_text(original,encoding='utf8')
-                files=[str(candidate/'g2_range_servo.v'),str(folder/'range_reference.v'),str(HERE/'sim/tb_range.sv')]
+                files=[str(candidate/'g2_range_servo.v'),str(HERE/'sim/tb_range.sv')]
             elif profile=='nec': files=[guard,str(source/'control/ir_remote_control.v'),str(HERE/'sim/tb_nec.sv')]
             elif profile=='sensor_guard': files=[guard,str(candidate/'g2_range_servo.v'),str(HERE/'sim/tb_sensor_guard.sv')]
             elif profile=='policy':
