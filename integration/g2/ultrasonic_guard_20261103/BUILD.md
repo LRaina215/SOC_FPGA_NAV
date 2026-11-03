@@ -1,5 +1,9 @@
 # 超声波联合实现（2026-11-03）
 
+**当前优先：用户要求删除新增防御性设计。** 旧compact综合Gowin12208已核对身份后撤下，只停止本会话这一旧SYN，没有中断PNR或其他会话。新最小版 `K_ultrasonic_minimal_syn3` 于20:59:16启动Gowin39688，监管53020；完成实际网表审阅后接唯一 `K_pnr88_ultrasonic_minimalp2r0`。实时job位于 `ultrasonic_minimal_joint_one_shot/job.json`。当前接口/行为以本目录README和冻结新源为准，下文旧PI超时/故障状态描述仅属于PNR86历史。
+
+PNR86已20:30自然失败：1043未布通、318RAM、Logic65525/FF33798/CLS45493/DSP180，无TR。对PNR85分别+1426Logic/+341FF/+702CLS/+2DSP，RAM不变。新增保护SYN模块1734LUT/271FF/2DSP；全局分配同时变化，不把所有1043失败网络直接归因于该模块。旧失败现场完整保留，不原样重跑。
+
 用户已要求立即开始联合综合与布线。本轮从实际PNR85的冻结源`K_terrain19_follow1`派生，**不是**把MuJoCo报告作为硬件时序通过结论。
 
 - SYN：`F:/nav_integration_g2_20261023/K_ultrasonic_manual_hold_syn1`，20:06:12实际启动Gowin54796。

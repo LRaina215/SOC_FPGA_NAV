@@ -17,8 +17,8 @@ def prepare(source,out):
     core=(source/'control4500_core.v').read_text(encoding='utf8')
     core=replace_once(core,'    input wire range_distance_valid,',
         '    input wire range_distance_valid,\n'
-        '    input wire range_sample_strobe,range_forward_ready,\n'
-        '    output wire range_hold_forward,range_protection_ready,')
+        '    input wire range_sample_strobe,\n'
+        '    output wire ultrasonic_enabled,')
     core=replace_once(core,'wire signed [23:0] command_forward_q12=',
                             'wire signed [23:0] requested_forward_q12=')
     core=replace_once(core,'wire signed [23:0] command_yaw_q12=',
@@ -34,28 +34,24 @@ def prepare(source,out):
         .hard_stop(command_emergency_stop),
         .requested_forward_q12(requested_forward_q12),.requested_yaw_q12(requested_yaw_q12),
         .sample_strobe(range_sample_strobe),.sample_valid(range_distance_valid),
-        .forward_ready(range_forward_ready),.distance_mm(range_distance_mm),
+        .distance_mm(range_distance_mm),
         .feedback_valid(feedback_valid),.feedback_forward_mmps(feedback_vx_mmps),
-        .enabled(range_hold_forward),.forward_q12(command_forward_q12),.yaw_q12(command_yaw_q12),
-        .sample_healthy(range_protection_ready),.braking(),.stop_latched(),.sample_age_ms(),.range_target_q12());
+        .enabled(ultrasonic_enabled),.forward_q12(command_forward_q12),.yaw_q12(command_yaw_q12));
 '''+core[start:]
     top=(source/'g2_top.v').read_text(encoding='utf8')
     top=replace_once(top,'wire range_distance_valid,range_timeout;',
         'wire range_distance_valid,range_timeout;\n'
-        '    wire range_hold_forward,range_sample_strobe,range_forward_ready,range_protection_ready;')
+        '    wire range_sample_strobe,ultrasonic_enabled;')
     top=replace_once(top,'.reset_n(~rst),.echo(HCSR04_ECHO),',
-        '.reset_n(~rst),.echo(HCSR04_ECHO),.hold_forward(range_hold_forward),\n'
-        '        .sample_strobe(range_sample_strobe),.forward_ready(range_forward_ready),')
+        '.reset_n(~rst),.echo(HCSR04_ECHO),.sample_strobe(range_sample_strobe),')
     top=replace_once(top,'.range_distance_mm(range_distance_mm),.range_distance_valid(range_distance_valid),',
         '.range_distance_mm(range_distance_mm),.range_distance_valid(range_distance_valid),\n'
-        '        .range_sample_strobe(range_sample_strobe),.range_forward_ready(range_forward_ready),\n'
-        '        .range_hold_forward(range_hold_forward),.range_protection_ready(range_protection_ready),')
+        '        .range_sample_strobe(range_sample_strobe),.ultrasonic_enabled(ultrasonic_enabled),')
     top=replace_once(top,'    nav_soc #(', '    wire [3:0] soc_led;\n    nav_soc #(')
     top=replace_once(top,'.led(led_cpu), .trap(led_trap)', '.led(soc_led), .trap(led_trap)')
     top=replace_once(top,'    assign led = {ch_wdog, ch_stop, irq, hb[25]};',
         '    assign led = {ch_wdog, ch_stop, irq, hb[25]};\n'
-        '    ultrasonic_mode_led u_sonar_led(.clk(clk),.reset_n(~rst),.enabled(range_hold_forward),\n'
-        '        .sample_healthy(range_protection_ready),\n'
+        '    ultrasonic_mode_led u_sonar_led(.enabled(ultrasonic_enabled),\n'
         '        .cpu_leds(soc_led),.board_cpu_leds(led_cpu));')
     (out/'control4500_core.v').write_text(core,encoding='utf8')
     (out/'g2_top.v').write_text(top,encoding='utf8')

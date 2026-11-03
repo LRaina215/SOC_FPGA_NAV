@@ -25,6 +25,7 @@ BASE=Path('F:/nav_integration_g2_20261023')
 SOURCE=BASE/'K_terrain19_follow1';ANCHOR=BASE/'K_pnr85_terrain19p2r0'
 SYN=BASE/'K_ultrasonic_manual_hold_syn1';PNR=BASE/'K_pnr86_ultrasonicp2r0'
 OUT=BASE/'ultrasonic_joint_one_shot'
+COMPACT_PROFILE=False
 GW=Path('D:/Gowin2/Gowin_V1.9.12.04_x64/IDE/bin/gw_sh.exe')
 GIB=1024**3
 
@@ -91,15 +92,22 @@ def review_syn():
                (n.startswith('u_control/u_ultrasonic_guard/') or n.startswith('u_sonar_led/'))}
     clocks={n:c[2] for n,c in new_flops.items()}
     wrong_clock={n:c for n,c in clocks.items() if c!=['clk50_d']}
+    guard_cells={n:c for n,c in cells.items() if n.startswith('u_control/u_ultrasonic_guard/')}
+    guard_luts=sum(c[0].startswith('LUT') for c in guard_cells.values())
+    guard_dsps={n:c[0] for n,c in guard_cells.items() if 'MULT' in c[0]}
     review=dict(passed=not differences and not unresolved and not wrong_clock and bool(new_flops),
         old_BSRAM_source=old['expanded_bsram_count'],new_BSRAM_source=new['expanded_bsram_count'],
         predicted_BSRAM_with_wide_split=new['predicted_split_bsram'],
         all_memory_geometry_and_explicit_INIT_differences=differences,
         unresolved_original_SDC_pins=unresolved,new_guard_LED_flops=len(new_flops),wrong_new_clocks=wrong_clock,
         primitive_resources=new['primitive_types'],
+        guard_LUT_count=guard_luts,guard_DSP_cells=guard_dsps,
         firmware_and_model_assets='byte-preserved source snapshot; review original full RAM INIT parameters',
         scope='SYN netlist admission, not physical timing or hardware acceptance')
     review['passed'] &= new['predicted_split_bsram']<=336
+    if COMPACT_PROFILE:
+        review['compact_mapping_target_met']=guard_luts<1000 and not guard_dsps
+        review['passed'] &= review['compact_mapping_target_met']
     write(OUT/'pre_pnr_review.json',review)
     if not review['passed']:raise RuntimeError('Actual SYN review blocked PNR; read pre_pnr_review.json')
     return review
@@ -136,14 +144,22 @@ def final_review():
     write(OUT/'final_review.json',result);return result
 
 def main():
+    global SYN,PNR,OUT,COMPACT_PROFILE
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--launch',action='store_true');p.add_argument('--start',action='store_true')
     p.add_argument('--launch-review-continuation',action='store_true')
-    p.add_argument('--review-continuation',action='store_true');a=p.parse_args()
+    p.add_argument('--review-continuation',action='store_true')
+    p.add_argument('--profile',choices=['original','compact','minimal'],default='original');a=p.parse_args()
+    if a.profile=='compact':
+        COMPACT_PROFILE=True
+        SYN=BASE/'K_ultrasonic_compact_syn2';PNR=BASE/'K_pnr87_ultrasonic_compactp2r0';OUT=BASE/'ultrasonic_compact_joint_one_shot'
+    if a.profile=='minimal':
+        COMPACT_PROFILE=True
+        SYN=BASE/'K_ultrasonic_minimal_syn3';PNR=BASE/'K_pnr88_ultrasonic_minimalp2r0';OUT=BASE/'ultrasonic_minimal_joint_one_shot'
     if a.launch_review_continuation:
         assert (OUT/'job.json').exists() and not (OUT/'review_continuation_launch.json').exists()
         with (OUT/'review_continuation.log').open('w') as log:
-            child=subprocess.Popen([sys.executable,str(Path(__file__).resolve()),'--review-continuation'],
+            child=subprocess.Popen([sys.executable,str(Path(__file__).resolve()),'--review-continuation','--profile',a.profile],
                 stdout=log,stderr=subprocess.STDOUT,creationflags=subprocess.CREATE_NO_WINDOW|subprocess.CREATE_NEW_PROCESS_GROUP)
         data=dict(pid=child.pid,created_epoch=psutil.Process(child.pid).create_time(),
                   scope='wait existing SYN supervisor; only repair its rejected flat-netlist reader; never repeat SYN')
@@ -189,7 +205,7 @@ def main():
     if a.launch:
         OUT.mkdir(exist_ok=False)
         with (OUT/'controller.log').open('w') as log:
-            child=subprocess.Popen([sys.executable,str(Path(__file__).resolve()),'--start'],stdout=log,stderr=subprocess.STDOUT,
+            child=subprocess.Popen([sys.executable,str(Path(__file__).resolve()),'--start','--profile',a.profile],stdout=log,stderr=subprocess.STDOUT,
                 creationflags=subprocess.CREATE_NO_WINDOW|subprocess.CREATE_NEW_PROCESS_GROUP)
         launched=dict(controller_pid=child.pid,controller_created_epoch=psutil.Process(child.pid).create_time(),
                       output=str(OUT),syn=str(SYN),pnr=str(PNR),programmed=False)
@@ -224,6 +240,8 @@ def main():
             added_RTL=['ultrasonic_drive_guard.v','ultrasonic_mode_led.v'],
             unchanged='all other hardware, full firmware, weights and assets; PNR85 CST/SDC and PNR recipe',
             remote_forward_q12=1229,SG90_scan=False,slow_mm=600,stop_mm=250,parking_hold=True,
+            profile=a.profile,compact_mapping_target='guard DSP0 and LUT<1000' if COMPACT_PROFILE else None,
+            added_fault_timeouts=False if a.profile=='minimal' else True,
             SYN_runtime_limit_seconds=2400,PNR_total_limit_seconds=0,PNR_silent_limit_seconds=0))
         admit('SYN')
         with (SYN/'gw_sh.log').open('w') as log:
