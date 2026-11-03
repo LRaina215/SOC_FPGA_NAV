@@ -1,6 +1,6 @@
 # 超声波遥控避障：当前最小实现
 
-按用户最新要求，删除新增防御性逻辑，改完直接联合综合/布线，不追加仿真测试。当前实际构建是 `K_ultrasonic_minimal_syn3` → `K_pnr88_ultrasonic_minimalp2r0`；实时状态见 `F:/nav_integration_g2_20261023/ultrasonic_minimal_joint_one_shot/job.json`。
+当前候选是 `K_ultrasonic_noreset_syn5` → `K_pnr94_ultrasonic_noresetp2r0`，已布通，四个报告时钟域setup/hold均0。11月4日独立核对及复位行为、外部IO签核边界见 [PNR94_REVIEW.md](PNR94_REVIEW.md)；本轮未烧录。下方PNR88路径属于历史，不再代表最新进度。按用户要求不追加仿真测试。
 
 ## 保留的功能
 

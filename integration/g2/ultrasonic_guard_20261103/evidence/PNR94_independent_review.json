@@ -1,0 +1,183 @@
+{
+  "reviewed_at": "2026-11-04T04:17:35.369733+08:00",
+  "build": "F:\\nav_integration_g2_20261023\\K_pnr94_ultrasonic_noresetp2r0",
+  "SYN": "F:\\nav_integration_g2_20261023\\K_ultrasonic_noreset_syn5",
+  "route_completed": true,
+  "PR0004": false,
+  "DesRoute_failed": false,
+  "unrouted": 0,
+  "unrouted_basis": "successful completed routing plus complete physical/STA outputs, no PR0004",
+  "four_clocks": [
+    {
+      "clock": "clk50",
+      "target_MHz": 50.0,
+      "Fmax_MHz": 50.446
+    },
+    {
+      "clock": "rgmii_rxc",
+      "target_MHz": 100.0,
+      "Fmax_MHz": 145.427
+    },
+    {
+      "clock": "camera_pclk",
+      "target_MHz": 50.0,
+      "Fmax_MHz": 102.676
+    },
+    {
+      "clock": "lcd9",
+      "target_MHz": 8.967,
+      "Fmax_MHz": 62.931
+    }
+  ],
+  "domain_TNS": [
+    {
+      "clock": "clk50",
+      "type": "setup",
+      "tns_ns": 0.0,
+      "violations": 0
+    },
+    {
+      "clock": "clk50",
+      "type": "hold",
+      "tns_ns": 0.0,
+      "violations": 0
+    },
+    {
+      "clock": "rgmii_rxc",
+      "type": "setup",
+      "tns_ns": 0.0,
+      "violations": 0
+    },
+    {
+      "clock": "rgmii_rxc",
+      "type": "hold",
+      "tns_ns": 0.0,
+      "violations": 0
+    },
+    {
+      "clock": "camera_pclk",
+      "type": "setup",
+      "tns_ns": 0.0,
+      "violations": 0
+    },
+    {
+      "clock": "camera_pclk",
+      "type": "hold",
+      "tns_ns": 0.0,
+      "violations": 0
+    },
+    {
+      "clock": "lcd9",
+      "type": "setup",
+      "tns_ns": 0.0,
+      "violations": 0
+    },
+    {
+      "clock": "lcd9",
+      "type": "hold",
+      "tns_ns": 0.0,
+      "violations": 0
+    }
+  ],
+  "global_setup_violations": 0,
+  "global_hold_violations": 0,
+  "listed_path_tables": {
+    "setup": {
+      "listed": 5000,
+      "minimum_ns": 0.177,
+      "listed_negative": 0,
+      "guard_listed": 79,
+      "guard_minimum_listed_ns": 2.916
+    },
+    "hold": {
+      "listed": 5000,
+      "minimum_ns": 0.16,
+      "listed_negative": 0,
+      "guard_listed": 32,
+      "guard_minimum_listed_ns": 0.248
+    },
+    "recovery": {
+      "listed": 5000,
+      "minimum_ns": 5.04,
+      "listed_negative": 0,
+      "guard_listed": 2,
+      "guard_minimum_listed_ns": 10.911
+    },
+    "removal": {
+      "listed": 5000,
+      "minimum_ns": 0.25,
+      "listed_negative": 0,
+      "guard_listed": 2,
+      "guard_minimum_listed_ns": 3.138
+    },
+    "pulse_width": {
+      "listed": 5000,
+      "minimum_ns": 2.123,
+      "listed_negative": 0,
+      "guard_listed": 0,
+      "guard_minimum_listed_ns": null
+    }
+  },
+  "constraint_states": {
+    "Actived": 319
+  },
+  "constraint_types": {
+    "TC_CLOCK": 3,
+    "TC_GENERATED_CLOCK": 1,
+    "TC_FALSE_PATH": 157,
+    "TC_MAX_DELAY": 153,
+    "TC_REPORT_TIMING": 4,
+    "TC_REPORT_MIN_PULSE_WIDTH": 1
+  },
+  "external_IO_window_commands": [],
+  "physical_resources": {
+    "Logic": 64616,
+    "Register": 33657,
+    "CLS": 44816,
+    "BSRAM": 318,
+    "DSP": 178
+  },
+  "BSRAM_leaves": 318,
+  "all_BSRAM_geometry_and_explicit_INIT_differences": [],
+  "VG_matches_completed_SYN": true,
+  "CST_matches85": true,
+  "SDC_matches85": true,
+  "implementation_options_match85_after_path_normalization": true,
+  "selected_RTL_count": 75,
+  "changed_RTL_from_SYN3": [
+    "ultrasonic_drive_guard.v"
+  ],
+  "actual_guard_FF": 185,
+  "actual_guard_clock_nets": [
+    [
+      "clk50_d"
+    ]
+  ],
+  "actual_guard_async_control_connections": [
+    {
+      "cell": "u_control/u_ultrasonic_guard/mode_key_held_s1",
+      "pin": "CLEAR",
+      "net": [
+        "u_control/n1886_7"
+      ]
+    },
+    {
+      "cell": "u_control/u_ultrasonic_guard/enabled_s2",
+      "pin": "CLEAR",
+      "net": [
+        "u_control/n1886_7"
+      ]
+    }
+  ],
+  "bitstream": "F:\\nav_integration_g2_20261023\\K_pnr94_ultrasonic_noresetp2r0\\impl\\pnr\\g2_top.fs",
+  "release_copy": "D:/tools/g2_ultrasonic_noreset_pnr94_20261104.fs",
+  "release_copy_matches_actual": true,
+  "PR1014": [
+    "WARN  (PR1014) : Generic routing resource will be used to clock signal 'CAMERA_PCLK_d' by the specified constraint. And then it may lead to the excessive delay or skew"
+  ],
+  "scope": "Read-only report/source/netlist review. No new simulation, synthesis, PNR, hashes, board probe or programming.",
+  "hot_reset_semantics": "mode resets OFF; data range/near state retained until next valid sample; parking clears while bypassed",
+  "root_cause_scope": "Strong evidence for reducing added async reset load in this candidate, not a unique root cause of all historical failures",
+  "external_IO_signoff_complete": false,
+  "hardware_ultrasonic_function_verified_by_this_review": false
+}
