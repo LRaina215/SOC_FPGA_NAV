@@ -29,13 +29,13 @@ Echo两级同步、65ms测量间隔、12µs Trig和30ms回波超时沿用原驱�
 
 ## 执行状态
 
-20:59:16启动的SYN3已完整结束，实际网表审阅通过；PNR88已于21:04:23启动Gowin53508，进入布局。新增保护实际643 LUT、183 FF、0 DSP，RAM初值和原617个SDC引用保持。一次性入口：
+20:59:16启动的SYN3已完整结束，实际网表审阅通过；PNR88于21:04:23启动、21:18:14自然失败，**478条未布通，无时序报告**。新增保护实际643 LUT、183 FF、0 DSP；物理RAM318、DSP178，RAM全部几何/显式INIT与85保持。一次性入口（已执行，不可重复）：
 
 ```powershell
 & 'D:/tools/venv_qhxd/Scripts/python.exe' integration/g2/ultrasonic_guard_20261103/run_joint_build.py --launch --profile minimal
 ```
 
-这是一次性入口，已有当前任务时不要重复执行。PNR总时限0、静默时限0。布线/时序结果尚未出，不能称布通或时序通过；不改变板上PNR85。
+这是一次性入口，已有现场不能重复执行。PNR总时限0、静默时限0。PNR88未通过布线，setup/hold均未知；不改变板上PNR85。终局机器证据见 `evidence/PNR88_final.json`。
 
 ## 历史证据边界
 
