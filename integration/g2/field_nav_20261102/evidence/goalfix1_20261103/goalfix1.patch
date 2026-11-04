@@ -1,0 +1,293 @@
+--- a/nav/explore.c
++++ b/nav/explore.c
+@@ -24,12 +24,14 @@
+     c->cam_fov = 12743;             /* 70° */
+     c->cam_range_mm = EXP_CAM_RANGE_MM;
+     c->clear_cells = 0;
++    c->goal_radius_mm = 215;
+ }
+ 
+ void explore_init(explore_t *e)
+ {
+     for (int i = 0; i < EXP_VIS_N * EXP_VIS_N; i++) e->visited[i] = 0;
+     e->best = -1;
++    e->bl_n = e->bl_i = 0;
+     explore_seen_reset(e);
+ }
+ 
+@@ -42,6 +44,21 @@
+ 
+ /* 可被搜索的格：先验/观测已知且可走 */
+ static bool searchable(uint8_t v) { return v <= NP_COST_FREE_MAX; }
++
++bool explore_goal_clear(const gmap_t *gm, const hal_map_info_t *mi,
++                        int32_t x, int32_t y, int32_t radius_mm)
++{
++    int x0,y0,x1,y1;
++    gmap_mm_to_cell(gm,mi,x-radius_mm,y-radius_mm,&x0,&y0);
++    gmap_mm_to_cell(gm,mi,x+radius_mm,y+radius_mm,&x1,&y1);
++    if(x0<0 || y0<0 || x1>=GM_N || y1>=GM_N) return false;
++    /* 外接圆的包围方形：宁可少选贴墙点，不把墙外/未下载区当空地。 */
++    for(int yy=y0;yy<=y1;yy++) for(int xx=x0;xx<=x1;xx++) {
++        int i=yy*GM_N+xx;
++        if(!searchable(gm->prior[i]) || gm->grid[i]>=GM_COST_BLOCKED) return false;
++    }
++    return true;
++}
+ 
+ void explore_seen_mark(explore_t *e, const explore_cfg_t *c, const gmap_t *gm, const hal_map_info_t *mi,
+                        const nav_pose_t *pose)
+@@ -175,7 +192,9 @@
+             int x=i%GM_N,y=i/GM_N,r=c->clear_cells-1;
+             for(int yy=y-r;r>0 && yy<=y+r && s_bd[i]==0xFFFF;yy++)
+                 for(int xx=x-r;xx<=x+r;xx++)
+-                    if(xx>=0 && yy>=0 && xx<GM_N && yy<GM_N && gm->grid[yy*GM_N+xx]==NP_COST_LETHAL) {s_bd[i]=0xFFFE;break;}
++                    if(xx<0 || yy<0 || xx>=GM_N || yy>=GM_N ? seen_mode :
++                       (seen_mode ? gm->prior[yy*GM_N+xx]>NP_COST_FREE_MAX || gm->grid[yy*GM_N+xx]>=GM_COST_BLOCKED :
++                        gm->grid[yy*GM_N+xx]==NP_COST_LETHAL)) {s_bd[i]=0xFFFE;break;}
+         }
+         if(!nav_app_search_checkpoint()) return false;
+     }
+@@ -202,13 +221,13 @@
+                 if (searchable(v) && !explore_seen_get(e,ny * GM_N + nx)) frontier = true;
+                 if (v == 255) continue;
+             } else if (v == 255) { frontier = true; continue; }
+-            if (v >= NP_COST_LETHAL) continue;
++            if (v >= GM_COST_BLOCKED || (seen_mode && !searchable(gm->prior[ny * GM_N + nx]))) continue;
+             /* 车贴墙起步时前几格也在近墙带里，允许从起点走出 2 格 */
+             if (s_bd[ny * GM_N + nx] != 0xFFFF && !(s_bd[ny * GM_N + nx] == 0xFFFE && d < 2)) continue;
+             s_bd[ny * GM_N + nx] = (uint16_t)(d + 1);
+             s_bq[qt++] = (uint16_t)(ny * GM_N + nx);
+         }
+-        if (!frontier || d < min_cells) continue;
++        if ((!frontier && !seen_mode) || d < min_cells) continue;
+         /* 紧挨致命格的边界（平台/坡道侧沿外被遮挡的一侧）多半下不去，不选；
+          * 有图搜索的边界来自相机视场而不是遮挡，墙边的边界正常，不做这项过滤 */
+         bool near_leth = false;
+@@ -218,7 +237,7 @@
+                     near_leth = true; break;
+                 }
+         if (near_leth) continue;
+-        e->n_frontier++;
++        if(frontier) e->n_frontier++;
+         int32_t fx, fy;
+         gmap_cell_to_mm(gm, mi, x, y, &fx, &fy);
+         if (fx_dist(fx - pose->x, fy - pose->y) < c->frontier_min_mm) continue;   /* 直线距离也要够远（否则一选就"到达"） */
+@@ -226,8 +245,12 @@
+         for (int b = 0; b < e->bl_n; b++)
+             if (blacklist_within_1000(fx,fy,e->bl_x[b],e->bl_y[b])) { bl = true; break; }
+         if (bl) continue;
+-        int32_t cost = (int32_t)d * 10 + c->w_visited * e->visited[vis_idx(fx, fy)];
+-        if (cost < best_cost) { best_cost = cost; best = i; }
++        /* 小场地可能全在相机视场内：仍可去已知可达区换观察位置，
++         * 但必须沿本次 BFS 可达区选格，不能回退无图射线。真正未看过的边界优先。 */
++        int32_t cost = (frontier ? 0 : 100000) + (int32_t)d * 10 + c->w_visited * e->visited[vis_idx(fx, fy)];
++        if (cost < best_cost && (!seen_mode || explore_goal_clear(gm,mi,fx,fy,c->goal_radius_mm))) {
++            best_cost = cost; best = i;
++        }
+     }
+     if(!nav_app_search_checkpoint()) return false;
+     if (best < 0) return false;
+--- a/nav/explore.h
++++ b/nav/explore.h
+@@ -2,14 +2,14 @@
+  * 边界探索（默认，explore_frontier）：在全局记忆栅格上，从机器人所在格对"已知可走格"做广度优先搜索，
+  *   边界格 = 已知可走且 4 邻域有未知格；代价 = 路程（格）+ W_VISITED·访问热度，取最小者（离机器人 >= min_goal）。
+  *   去过但没到达的目标进黑名单（最近 EXP_BL 个），避免反复选同一个够不着的边界。
+- * 方向打分（局部图，explore_pick，边界探索找不到目标时退回）：在机器人周围 16 个方向打分，选出下一个探索目标点。
++ * 方向打分（局部图，explore_pick，仅无先验图时允许回退）：在机器人周围 16 个方向打分，选出下一个探索目标点。
+  *   Score = W_CLEAR·可通行距离 + W_UNKNOWN·方向末端未知格数 + W_TRAV·(200-平均代价)
+  *           - W_SLOPE·最大代价 - W_VISITED·访问热度
+  * 访问热度：里程计系 0.5 m 粗格的计数（环形哈希表，64×64 覆盖 32 m）。
+  * 有图搜索（explore_seen_mark + explore_frontier(seen)）：地图已知，"未知"改为"摄像头还没看过"——
+  *   按相机视场（缺省 70°、4 m）沿射线标记已看过的格（被先验/观测致命格挡住为止），
+  *   在"看过的可走格"与"没看过的可走格"之间找边界，同样按路程 + 访问热度选最近的，走过去让相机看。
+- *   全部看过后清空重来（目标可能在移动）。
++ *   优先未看过的边界；没有边界时只在地图内的可达、净空足够区选择新观察点。
+  * 得到的目标点交给局部规划器。
+  */
+ #ifndef NAV_EXPLORE_H
+@@ -33,6 +33,7 @@
+     int32_t cam_fov;               /* 有图搜索：相机水平视场（angle） */
+     int32_t cam_range_mm;          /* 有图搜索：认为能看清目标的距离 */
+     uint8_t clear_cells;           /* 边界搜索只走离致命格 >= 这么多格的格（与 A* hard_cells 一致；0 = 不限） */
++    uint16_t goal_radius_mm;       /* 目标处车体净空，与局部规划器足迹一致 */
+ } explore_cfg_t;
+ 
+ typedef struct {
+@@ -66,5 +67,8 @@
+ void explore_seen_reset(explore_t *e);
+ /* 把没到达的目标加入黑名单 */
+ void explore_blacklist(explore_t *e, int32_t x, int32_t y);
++/* 有图目标必须让整个车体足迹落在先验可走区内，并避开实时禁行格。 */
++bool explore_goal_clear(const gmap_t *gm, const hal_map_info_t *mi,
++                        int32_t x, int32_t y, int32_t radius_mm);
+ 
+ #endif
+--- a/nav/nav_task.c
++++ b/nav/nav_task.c
+@@ -83,6 +83,7 @@
+     gmap_default_cfg(&nt->gm.cfg);
+     gmap_init(&nt->gm);
+     explore_default_cfg(&nt->ex_cfg);
++    nt->ex_cfg.goal_radius_mm = nt->lp_cfg.caps.radius_mm;
+     nt->ex_cfg.clear_cells = APP_FLAT_GROUND ? 3 : 0;   /* 与 as_cfg_g.hard_cells 一致：选的边界点车要能开到 */
+     /* 雷达安装位姿（10-31 静止地面拟合，雷达相对 IMU）：下俯 2.1°、横滚 -3°，在轮轴前 123 mm、离地 150 mm */
+ #ifndef APP_MOUNT_PITCH_CDEG
+@@ -112,6 +113,9 @@
+ 
+ void nav_task_set_mode(nav_task_t *nt, nav_mode_t mode)
+ {
++    /* 新一轮找物/跟随从空白覆盖开始；同一任务 TRACK/SEARCH 切换保留记录。 */
++    if((mode==NAV_MODE_SEARCH || mode==NAV_MODE_TRACK) &&
++       nt->mode!=NAV_MODE_SEARCH && nt->mode!=NAV_MODE_TRACK) explore_init(&nt->exp);
+     astar_cancel();nt->bg_done=false;
+     nt->mode = mode;
+     if(mode!=NAV_MODE_SEARCH && mode!=NAV_MODE_TRACK)nt->recheck_phase=0;
+@@ -587,6 +591,7 @@
+     if (fx_dist(p->x - nt->prog_x, p->y - nt->prog_y) > progress && real_progress>progress*1000LL) {
+         nt->progress_travel_um=nt->pose.travel_um;
+         nt->prog_x = p->x; nt->prog_y = p->y; nt->prog_t_us = now;
++        if(nt->mode==NAV_MODE_SEARCH) nt->search_t_us=now;
+     } else if (!nt->recovering && (uint32_t)(now - nt->prog_t_us) > nt->cfg.stall_us) {
+         /* 近目标卡住先零速/报告受阻；下一周期仍可重新规划受检查的动作。
+          * 永不重置计时会让此分支持续提前返回，连新图上的可行接入也无法尝试。 */
+@@ -712,13 +717,16 @@
+         if (nt->have_map && !nt->async_gmap) gmap_update(&nt->gm, nt->map, &nt->mi, nt->pose.cur.x, nt->pose.cur.y);
+         else if(!nt->have_map) nt->path_valid = false;
+     }
+-    explore_mark(&nt->exp, &nt->pose.cur);
+-    if (nt->use_gmap && nt->gm.has_prior && nt->have_map && !nt->hold) explore_seen_mark(&nt->exp, &nt->ex_cfg, &nt->gm, &nt->mi, &nt->pose.cur);
++    if(nt->mode==NAV_MODE_SEARCH || nt->mode==NAV_MODE_TRACK) {
++        explore_mark(&nt->exp, &nt->pose.cur);
++        if (nt->use_gmap && nt->gm.has_prior && nt->have_map && !nt->hold) explore_seen_mark(&nt->exp, &nt->ex_cfg, &nt->gm, &nt->mi, &nt->pose.cur);
++    }
+     const nav_pose_t *p = &nt->pose.cur;
+ 
+     if ((!nt->have_map || nt->hold) && nt->mode != NAV_MODE_ESTOP) {
+         nt->settling = false;
+         nt->prog_t_us = now;             /* 保持期间不算卡住 */
++        nt->search_t_us = now;
+         nt->last_ok_us = now;
+         nt->cmd = (nav_cmd_t){0, 0, nt->hold ? nt->hold_wz : 0, 0};
+         nt->cmd_source = CMD_HOLD;
+@@ -898,8 +906,12 @@
+     case NAV_MODE_SEARCH:
+         if(nt->revisit_goal && (int32_t)(now-nt->revisit_until_us)>=0) {nt->revisit_goal=false;nt->search_goal_valid=false;}
+         if (target_alive(&nt->tgt, now)) { nav_task_set_mode(nt, NAV_MODE_TRACK); break; }
++        if(nt->search_goal_valid && nt->gm.has_prior &&
++           !explore_goal_clear(&nt->gm,&nt->mi,nt->goal_x,nt->goal_y,nt->lp_cfg.caps.radius_mm)) {
++            nt->search_goal_valid=false;
++        }
+         if (nt->search_goal_valid && (uint32_t)(now - nt->search_t_us) > nt->cfg.search_repick_us) {
+-            /* 超时没到：这个目标够不着，拉黑后重选 */
++            /* 连续无实际进展才拉黑；正常行进在 drive_to 内续时，不按选点时刻强制切点。 */
+             explore_blacklist(&nt->exp, nt->goal_x, nt->goal_y);
+             nt->search_goal_valid = false;
+         }
+@@ -917,7 +929,7 @@
+                     explore_frontier(&nt->exp, &nt->ex_cfg, &nt->gm, &nt->mi, p, true, &nt->goal_x, &nt->goal_y);
+             }
+             if(g_nav_search_interrupted) {nt->cmd=(nav_cmd_t){0};goto send_checked;}
+-            if (!nt->search_goal_valid)
++            if (!nt->search_goal_valid && !nt->gm.has_prior)
+                 nt->search_goal_valid = explore_pick(&nt->exp, &nt->ex_cfg, nt->map, &nt->mi, p, &nt->goal_x, &nt->goal_y);
+             nt->search_t_us = now;
+             nt->path_valid=false;
+@@ -926,13 +938,13 @@
+         if (!nt->search_goal_valid) {
+             nt->cmd = (nav_cmd_t){0, 0, (int16_t)(nt->lp_cfg.w_max / 2), 0};     /* 原地转一圈找路 */
+             nt->cmd_source = CMD_SEARCH;
+-        } else if (drive_to(nt, now, nt->goal_x, nt->goal_y, nt->revisit_goal?150:700)) {     /* 边界点：走近到能看清即可 */
++        } else if (drive_to(nt, now, nt->goal_x, nt->goal_y, 150)) {
+             if(nt->revisit_goal) {
+                 int32_t da=fx_angle_diff(p->yaw,fx_atan2(nt->tgt.y-p->y,nt->tgt.x-p->x));
+                 nt->cmd=(nav_cmd_t){0,0,(int16_t)nav_clamp32(da*2/3,-350,350),0};nt->cmd_source=CMD_SEARCH;
+             } else nt->search_goal_valid = false;
+         }
+-        nt->state = ST_SEARCHING;
++        nt->state = nt->search_goal_valid ? ST_SEARCHING : ST_BLOCKED;
+         break;
+     }
+ send_checked:
+@@ -1119,6 +1131,8 @@
+     s->goal_x = nt->goal_x; s->goal_y = nt->goal_y;
+     s->vx = nt->cmd.vx; s->wz = nt->cmd.wz;
+     s->flags = (target_fresh(&nt->tgt, now_us) ? STF_TARGET_VALID : 0) | (nt->have_map ? STF_LIDAR_OK : 0) |
+-               (nt->pose.have_odo ? STF_ODOM_OK : 0);
++               (nt->pose.have_odo ? STF_ODOM_OK : 0) | STF_GOAL_VALID_KNOWN |
++               ((nt->mode==NAV_MODE_GOTO || (nt->mode==NAV_MODE_TRACK && nt->track_goal_valid) ||
++                 (nt->mode==NAV_MODE_SEARCH && nt->search_goal_valid)) ? STF_GOAL_VALID : 0);
+     s->t_us = now_us;
+ }
+--- a/nav/nav_task.h
++++ b/nav/nav_task.h
+@@ -27,7 +27,7 @@
+     int32_t  lookahead_mm;       /* 路径前视距离 */
+     uint32_t replan_us;          /* A* 最短重规划间隔 */
+     uint32_t blocked_us;         /* 持续无可行候选多久判为受阻 */
+-    uint32_t search_repick_us;   /* 探索点最长保持时间 */
++    uint32_t search_repick_us;   /* 探索点无实际行进进展这么久才重选 */
+     int32_t  track_hold_mm;      /* 跟踪：到达站位点后原地保持的容差 */
+     int32_t  wp_tol_mm;          /* 中间路径点的到达容差（比终点宽：只是途经） */
+     uint32_t stall_us;           /* 这么久位移不到 stall_mm 视为卡住，执行脱困动作 */
+--- a/nav/proto.h
++++ b/nav/proto.h
+@@ -43,6 +43,8 @@
+ #define STF_MAP_STALE    0x0002
+ #define STF_LIDAR_OK     0x0004
+ #define STF_ODOM_OK      0x0008
++#define STF_GOAL_VALID   0x0010  /* goal_x/y 是当前有效导航目标 */
++#define STF_GOAL_VALID_KNOWN 0x0020 /* 支持 GOAL_VALID；兼容旧固件的 flags */
+ 
+ typedef struct {
+     uint8_t type;
+--- a/app/main.c
++++ b/app/main.c
+@@ -20,15 +20,21 @@
+         if (d > max_us) max_us = d;
+         loops++;
+         SOC_STATUS = loops;
++#if !APP_COMPACT_TELEMETRY
+         if (g_app.lcal.n_gen != n_gen) {
+             n_gen = g_app.lcal.n_gen;
+             con_printf("lidar LUT ready (%s lens), %u ms\r\n", g_app.lcal.from_dev ? "device" : "M60 default",
+                        g_app.lcal.gen_us / 1000u);
+         }
++#endif
+         if (g_app.xl.n_start != n_xs) {
+             n_xs = g_app.xl.n_start;
++#if APP_COMPACT_TELEMETRY
++            con_printf("lidar start #%u\r\n", n_xs);
++#else
+             con_printf("lidar start #%u (tcp -> %u.%u.%u.%u:7787)\r\n", n_xs, g_app.xl.net.lidar_ip >> 24,
+                        (g_app.xl.net.lidar_ip >> 16) & 255u, (g_app.xl.net.lidar_ip >> 8) & 255u, g_app.xl.net.lidar_ip & 255u);
++#endif
+         }
+         if (g_app.xl.n_ok != n_xok) {
+             n_xok = g_app.xl.n_ok;
+@@ -51,8 +57,16 @@
+                        (int)support_scan_needed(), nt->pose.have_odo ? (int)((now - nt->pose.last_odo_us) / 1000u) : -1,
+                        (int)nt->pose.odo_vx, (int)nt->pose.odo_wz);
+ #endif
++#if !APP_COMPACT_TELEMETRY
+             con_printf("  loc q %d ema %d pts %u skip %u tskip %u\r\n", g_app.loc.q_last, (int)(g_app.loc.q_ema / 256),
+                        (unsigned)g_app.loc.n_pts, (unsigned)g_app.n_skip, (unsigned)g_app.n_time_skip);
++#endif
++#if APP_COMPACT_TELEMETRY
++            con_printf("  match valid %u in %u cost %u\r\n",
++                       (unsigned)g_app.pm.n_valid, (unsigned)g_app.pm.n_in_best, (unsigned)g_app.pm.cost_best);
++            con_printf("  imu ok %u bad %u att %d\r\n",
++                       (unsigned)g_app.imu.n_ok, (unsigned)g_app.imu.n_bad, (int)nt->pose.have_att);
++#else
+             con_printf("  match valid %u in %u cost %u align %u fail %u strong %u\r\n",
+                        (unsigned)g_app.pm.n_valid, (unsigned)g_app.pm.n_in_best, (unsigned)g_app.pm.cost_best,
+                        (unsigned)g_app.loc.n_align, (unsigned)g_app.loc.n_align_fail, (unsigned)g_app.dr_strong);
+@@ -60,6 +74,7 @@
+                        (unsigned)g_app.imu.n_ok, (unsigned)g_app.imu.n_bad, (int)nt->pose.have_att,
+                        (int)((int32_t)(int16_t)nt->pose.cur.pitch * 18000 / 32768),
+                        (int)((int32_t)(int16_t)nt->pose.cur.roll * 18000 / 32768));
++#endif
+ #if !APP_COMPACT_TELEMETRY
+             con_printf("  tmax step %u look %u chk %u frm %u mt %u host %u map %u ms\r\n",
+                        (unsigned)(g_app.tmax_step / 1000u), (unsigned)(nt->t_look_max / 1000u),

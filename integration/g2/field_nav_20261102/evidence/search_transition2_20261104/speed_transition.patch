@@ -1,0 +1,93 @@
+--- before/app/main.c
++++ after/app/main.c
+@@ -47,8 +47,9 @@
+             const nav_task_t *nt = &g_app.nt;
+ #if APP_COMPACT_TELEMETRY
+             con_printf("t=%u s mode %d state %d loc %d\r\n",now/1000000u,nt->mode,nt->state,g_app.loc.st);
+-            con_printf("nav %d/%d/%d src%d motion%d cmd%d,%d\r\n",
+-                       nt->have_map,nt->stale,nt->path_valid,nt->cmd_source,nt->motion_result,nt->cmd.vx,nt->cmd.wz);
++            con_printf("nav %d/%d/%d src%d motion%d cmd%d,%d yaw%u p%d,%d look%d,%d\r\n",
++                       nt->have_map,nt->stale,nt->path_valid,nt->cmd_source,nt->motion_result,nt->cmd.vx,nt->cmd.wz,
++                       nt->pose.cur.yaw,nt->pose.cur.x,nt->pose.cur.y,nt->look_x,nt->look_y);
+ #else
+             con_printf("t=%u s  loop %u/s max %u us  frames %u msgs %u  mode %d state %d  loc %d  pose %d,%d mm  lut %d\r\n",
+                        now / 1000000u, loops, max_us, g_app.n_frames, g_app.n_msgs, nt->mode, nt->state,
+--- before/nav/nav_task.c
++++ after/nav/nav_task.c
+@@ -703,10 +703,10 @@
+     return false;
+ }
+ 
+-/* Three recorded SEARCH failures showed fore/aft oscillation after the
+- * commanded speed reached zero. A command is not measured standstill.
+- * Only condition the velocity reference; goals, paths, balance/PID and the
+- * final collision veto remain outside this helper. */
++/* Condition SEARCH references only. Wheel/fore-aft oscillation is not a
++ * prerequisite for starting motion: requiring it to vanish stranded this
++ * balancing chassis. Retain fresh feedback, yaw ramp-out before translation,
++ * large-tilt suppression, and the independent final collision veto. */
+ void nav_task_speed_reference(nav_task_t *nt,uint32_t now)
+ {
+     if(nt->mode!=NAV_MODE_SEARCH) {nt->speed_phase=nt->speed_quiet=0;return;}
+@@ -717,27 +717,16 @@
+     }
+     bool fresh=nt->pose.have_odo && (uint32_t)(now-nt->pose.last_odo_us)<100000 &&
+                nt->pose.have_gyro && (uint32_t)(now-nt->pose.gyro_t_us)<100000;
+-    int pr=nav_abs32(nt->pose.gyro_pr); /* angle*16/20ms;1200 ~=0.36rad/s */
+-    bool quiet=fresh && att && nav_abs32(nt->pose.odo_vx)<=50 &&
+-               pitch<=ANGLE_FROM_CDEG(1000) && pr<=1200;
++    bool feedback=fresh && att;
+     int16_t wanted_v=nt->cmd.vx,wanted_w=nt->cmd.wz,previous_w=nt->speed_w_prev;
+     bool turn=wanted_v==0 && nav_abs32(wanted_w)>APP_STRAIGHT_WMAX;
+     if(turn) {
+-        if(nt->speed_phase==2 && (!fresh || !att || pitch>ANGLE_FROM_CDEG(1200) || pr>2700)) {
+-            nt->speed_phase=1;nt->speed_quiet=0;
+-        }
+-        if(nt->speed_phase!=2) {
+-            if(nt->speed_phase!=1) nt->speed_quiet=0;
+-            nt->speed_phase=1;
+-            if(quiet && nav_abs32(previous_w)<=80) nt->speed_quiet++;
+-            else nt->speed_quiet=0;
+-            if(nt->speed_quiet>=2) nt->speed_phase=2;
+-            else wanted_w=0;
+-        }
++        nt->speed_phase=feedback?2:1;nt->speed_quiet=0;
++        if(!feedback) wanted_w=0;
+     } else if(wanted_v>0 && (nt->speed_phase || nav_abs32(previous_w)>APP_STRAIGHT_WMAX)) {
+         if(nt->speed_phase!=3) nt->speed_quiet=0;
+         nt->speed_phase=3;
+-        if(quiet && nav_abs32(nt->pose.odo_wz)<=150 && nav_abs32(previous_w)<=80) nt->speed_quiet++;
++        if(feedback && nav_abs32(nt->pose.odo_wz)<=150 && nav_abs32(previous_w)<=80) nt->speed_quiet++;
+         else nt->speed_quiet=0;
+         if(nt->speed_quiet>=2) nt->speed_phase=nt->speed_quiet=0;
+         else {wanted_v=0;wanted_w=0;}
+@@ -745,10 +734,14 @@
+         wanted_w=0;nt->speed_quiet=0;
+         nt->speed_phase=previous_w?3:0;
+     }
+-    /* 80mrad/s each100ms: SEARCH cap1rad/s; retain the transition ramp.
+-     * Rate limit only turn/turn-exit, not normal straight heading correction. */
+-    if(turn || nt->speed_phase || nav_abs32(previous_w)>APP_STRAIGHT_WMAX)
+-        wanted_w=(int16_t)nav_clamp32(wanted_w,previous_w-80,previous_w+80);
++    /* Acceleration0.8rad/s^2, braking2rad/s^2. At the old symmetric ramp,
++     * 1->0.4 consumed about30deg, exhausting the30deg fine-turn interval.
++     * Brake through zero before ramping up in the opposite direction. */
++    if(turn || nt->speed_phase || nav_abs32(previous_w)>APP_STRAIGHT_WMAX) {
++        if((int32_t)wanted_w*previous_w<0) wanted_w=0;
++        int step=nav_abs32(wanted_w)<nav_abs32(previous_w)?200:80;
++        wanted_w=(int16_t)nav_clamp32(wanted_w,previous_w-step,previous_w+step);
++    }
+     nt->cmd.vx=wanted_v;nt->cmd.wz=(int16_t)nav_clamp32(wanted_w,-APP_TURN_W,APP_TURN_W);
+ }
+ 
+--- before/nav/nav_task.h
++++ after/nav/nav_task.h
+@@ -128,7 +128,7 @@
+     bool revisit_goal;
+     uint32_t revisit_until_us;
+     uint8_t        last_mfail;       /* 最近一次足迹检查不过的结果码 */
+-    uint8_t speed_phase, speed_quiet; /* SEARCH速度切换：0行进1待转2转向3待行4倾角超限 */
++    uint8_t speed_phase, speed_quiet; /* SEARCH速度切换：0行进1待数据2转向3待角速度回落4倾角超限 */
+     int16_t speed_w_prev; /* 上次最终下发角速度；规划器自己的prev_wz可能已被覆盖 */
+ } nav_task_t;
+ 

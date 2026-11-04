@@ -1,7 +1,7 @@
 # 云拓 · FPGA 自主导航与轮腿运动控制
 
 目标板：小梅哥 ACX750（高云 GW5AT-LV138PG484AC1/I0；导航历史工程记录版本B，控制工程记录C，统一构建前核对实物）。架构依据《嵌赛-FPGA-选题3.pdf》第 13–14 页：
-感知、定位、规划、避障与轮腿控制都在这一块 FPGA 上完成（RTL + 软核），RK3588 只提供视觉目标与任务，**导航不依赖 RK3588**。
+感知、定位、规划、避障与轮腿控制都在这一块 FPGA 上完成（RTL + 软核），RK3588 只提供视觉目标与任务，**导航与平衡计算在FPGA片内完成，RK负责应用任务、地图加载与主机保活**。
 
 ```text
 XT-M60 --UDP--> 帧接收 -> 深度转点云 -> 坐标变换 -> 滤波/栅格化 -> 滚动高程图 -> 可通行性分析 v3(代价图)
@@ -15,7 +15,7 @@ RK3588 / PC --板载CH导航串口；P11-40独立控制遥测--> 邮箱 -> 软�
 
 工程采用 RTL 与 PicoRV32 软核协同实现导航，在同一片 FPGA 中集成原 4500 轮腿运动控制。导航源码位于 `rtl/` 与 `fw/`，控制源码位于 `control/`，联合构建与板级适配位于 `integration/`。系统分工见[总体设计](docs/system_architecture.md)。
 
-开发进度见[整车总计划](docs/1_plan/system_integration_plan_20261021.md)，构建和实测结果见[PNR63 报告](docs/4_design/g2_PNR63_review_20261028.md)。
+2026-11-04阶段交付：PNR100共同工程已写入Flash，136KiB软核、322/340块BSRAM，50/100/50/8.967MHz四域setup/hold均0。最后保存的RK应用为地图2演示radius35（13:21:29）；Flash内置swingunlock与RK ACTIVE分开管理。版本、启动、局域网网页、离线模型展示、超声波操作和保留问题见[阶段收尾与交接](docs/3_guide/project_handover_20261104.md)，唯一后续状态入口为[整车总计划](docs/1_plan/system_integration_plan_20261021.md)。历史实现与实测结论按各自版本保留。
 
 两种模式（选题 3 方案），局部高程图 / 可通行性分析 / 局部规划共用：
 
@@ -62,7 +62,7 @@ RK3588 / PC --板载CH导航串口；P11-40独立控制遥测--> 邮箱 -> 软�
 | `sim/` | xsim 回归（`run.py`、`tests.py` 文件清单、激励生成 `gen/`）；`closed_loop/` 闭环仿真（场景 + 虚拟雷达 + FPGA 感知模型 + 固件动态库 + 机器人误差模型） |
 | `tools/` | `nav_host.py` 主机工具、`map_tool.py` 点云 → 地图包、`nav_uart.py` 串口寄存器调试、`board_init.py` 上电初始化、`robot_calib.py` 整车标定、`fake_lidar.py` 伪雷达、`xt_config.py` 雷达 TCP 配置、`xt_reboot_test.py` 经板子远程重启雷达做冷启动回归 |
 
-## 常用命令（Python 用 `D:\Anaconda\python.exe`）
+## 导航独立工程命令（当前共同工程见交接文档；Python 用 `D:\Anaconda\python.exe`）
 
 ```bash
 python tools/gen_config.py          # 由 yaml 生成 .vh/.h/.py/.md、寄存器文件、正弦表
@@ -85,4 +85,4 @@ python tools/nav_host.py --link uart:COM5 map field.nvmp    # PC 下发地图；
 | RTL 与定点模型 | 雷达、点云、地图、匹配、轨迹评估、网络和软核 | `sim/run.py`、`model/` |
 | 固件与导航闭环 | 协议、位姿、路径、探索、目标跟踪与虚拟场景 | `fw/test/build.py`、`sim/closed_loop/` |
 | 地形动力学 | 原 4500 在坡道、台阶和沟槽中的运动、接触与地图判断 | [地形可行性分析](docs/4_design/local_map_terrain_feasibility_report_20261021.md) |
-| 联合实现与实板 | 片上资源、时序、通信、传感器与轮腿执行 | [联合资源记录](docs/4_design/g2_joint_resources_20261022.md)、[PNR63 报告](docs/4_design/g2_PNR63_review_20261028.md) |
+| 联合实现与实板 | 片上资源、时序、通信、传感器与轮腿执行 | [PNR100交付](docs/3_guide/project_handover_20261104.md)、[联合资源历史](docs/4_design/g2_joint_resources_20261022.md) |

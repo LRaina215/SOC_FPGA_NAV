@@ -1,0 +1,148 @@
+{
+  "recorded_at": "2026-11-04T16:52:08.432203+08:00",
+  "scope": "Phase documentation closeout; no device mutation, tests, builds or hashes",
+  "hardware": {
+    "name": "PNR100",
+    "SYN": "F:/nav_integration_g2_20261023/K_swingunlock_syn11_20261104",
+    "PNR": "F:\\nav_integration_g2_20261023\\K_pnr100_swingunlock_ultrasonicp2r0",
+    "release_FS": "D:\\tools\\g2_swingunlock_ultrasonic_pnr100_20261104.fs",
+    "RAM_KiB": 136,
+    "resources": {
+      "Logic": 65003,
+      "Register": 33821,
+      "CLS": 45117,
+      "BSRAM": 322,
+      "DSP": 178
+    },
+    "frequencies": [
+      {
+        "clock": "clk50",
+        "target_MHz": 50.0,
+        "Fmax_MHz": 50.145
+      },
+      {
+        "clock": "rgmii_rxc",
+        "target_MHz": 100.0,
+        "Fmax_MHz": 157.374
+      },
+      {
+        "clock": "camera_pclk",
+        "target_MHz": 50.0,
+        "Fmax_MHz": 120.892
+      },
+      {
+        "clock": "lcd9",
+        "target_MHz": 8.967,
+        "Fmax_MHz": 66.875
+      }
+    ],
+    "setup": 0,
+    "hold": 0,
+    "deployment_completed_at": "2026-11-04T09:20:09.999858+08:00",
+    "Flash_written": true,
+    "flash_verified": true,
+    "default_firmware": {
+      "path": "D:\\tools\\swing_unlock_20261104\\nav_fw_swingunlock_yaw3_20261104.bin",
+      "banner": "Nov  4 2026 08:41:55",
+      "bytes": 58688,
+      "ram_kib": 136,
+      "bss_bytes": 70712,
+      "stack_kib": 6
+    }
+  },
+  "RK_last_saved": {
+    "ACTIVE": "nav_fw_map2demo_radius35_yaw3_20261104.bin",
+    "banner": "Nov  4 2026 13:21:29",
+    "bytes": 61712,
+    "loaded_at": "2026-11-04T13:22:59.900908+08:00",
+    "post": {
+      "active": "nav_fw_map2demo_radius35_yaw3_20261104.bin",
+      "banner": "Nov  4 2026 13:21:29",
+      "services": [
+        "active",
+        "active"
+      ],
+      "status": {
+        "updated_at": "2026-11-04T05:23:03.310330+00:00",
+        "nav_link": "online",
+        "control_link": "online",
+        "map_loaded": true,
+        "loc_state": "mapless",
+        "fpga_mode": "idle",
+        "cmd_vx_mps": 0.0,
+        "cmd_wz_radps": 0.0,
+        "control_faults": [
+          "policy_fault:1",
+          "bmi088_error:4",
+          "bmi088_stale"
+        ]
+      }
+    },
+    "source": "D:/tools/demo_radius_20261104/fw"
+  },
+  "map": {
+    "selected": "field_home2",
+    "NVMP_bytes": 9880,
+    "geometry": "config/field_home2_20261102.json",
+    "demo_search_passage_radius_mm": 350,
+    "search_route_mm": [
+      [
+        -110,
+        -1220
+      ],
+      [
+        830,
+        580
+      ],
+      [
+        2290,
+        550
+      ],
+      [
+        2300,
+        -930
+      ],
+      [
+        1150,
+        -930
+      ]
+    ],
+    "applies_to": "specific map2 SEARCH demo only; not generic GOTO tolerance"
+  },
+  "ultrasonic": {
+    "default_enabled": false,
+    "remote_key": "0 / NEC0x16",
+    "LED": "LED7 / N17",
+    "manual_forward_mps": 0.3,
+    "slow_start_mm": 600,
+    "parking_mm": 250,
+    "SG90_scan": false,
+    "NAV_bypass": true
+  },
+  "remaining": [
+    "real obstacle clearing did not resume sustained forward progress in12:06 run",
+    "latest demo full-route and stable stop not independently accepted",
+    "ultrasound real stopping distance not verified by this closeout",
+    "external IO timing windows absent; camera PR1014 retained",
+    "production frozen workspaces extend beyond root fw/build script; no claim of clean-checkout reproduction",
+    "new mobile build phone playback/release status remains separately tracked"
+  ],
+  "repositories": [
+    {
+      "name": "SOC_FPGA_NAV",
+      "branch": "main"
+    },
+    {
+      "name": "QHXD_Web",
+      "branch": "yuntuo-fpga"
+    },
+    {
+      "name": "QHXD_Miniprogram",
+      "branch": "yuntuo"
+    },
+    {
+      "name": "Yuntuo",
+      "branch": "main"
+    }
+  ]
+}

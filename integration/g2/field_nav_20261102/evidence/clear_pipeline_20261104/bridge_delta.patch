@@ -1,0 +1,105 @@
+--- before/yuntuo/bridge/tasks.py
++++ after/yuntuo/bridge/tasks.py
+@@ -70,6 +70,9 @@
+     leg_start_m: float | None = None
+     remaining_m: float | None = None
+     blocked_since: float | None = None
++    clearing_since: float | None = None
++    clearing_until: float | None = None
++    clearing_grace_used: float = 0.0  # bounded to35s per continuous blockage
+     lost_since: float | None = None
+     near_since: float | None = None
+     near_track: int | None = None
+@@ -292,6 +295,8 @@
+         t.sent_goal, t.sent_at, t.confirmed = (gx, gy), now, False
+         t.near_since = t.arrival_wait_since = None
+         t.leg_start_m, t.blocked_since = None, None
++        t.clearing_since = t.clearing_until = None
++        t.clearing_grace_used = 0.0
+         t.state = "pending" if not t.started_emitted else "running"
+         t.phase, t.detail = "sending_goal", f"正在前往{p.name}。"
+ 
+@@ -458,6 +463,31 @@
+             t.last_verify_emit = now
+             self._emit("progress", detail)
+ 
++    def _goto_clearing_wait(self, s: nv.NavStatus, now: float) -> bool:
++        """Exclude actual bounded observation time from the ordinary25s timer.
++
++        This never sends/replaces a goal. Freshness, cancellation, estop and
++        target ownership are checked by the caller before observation credit.
++        A stuck flag or repeated observations cannot renew this grace forever.
++        """
++        t = self.task
++        if s.clearing_active and t.clearing_grace_used < 35.0:
++            if t.clearing_since is None:
++                t.clearing_since = now
++                t.clearing_until = now + min(s.clearing_ms / 1000, 35.0-t.clearing_grace_used)
++                t.phase = "clearing"
++                self._emit("progress", "前方受阻，FPGA 正在换位重扫；保留原目标，清障后继续。")
++            if now < t.clearing_until:
++                return True
++        if t.clearing_since is not None:
++            used = max(0.0, min(now, t.clearing_until)-t.clearing_since)
++            t.blocked_since += used
++            t.clearing_grace_used += used
++            t.clearing_since = t.clearing_until = None
++            t.phase = "blocked"
++            self._emit("progress", "重扫结束，FPGA 正在复核原目标路径；尚未确认通行。")
++        return False
++
+     def _tick_goto(self, sv: StatusView, now: float) -> None:
+         t, s = self.task, sv.status
+         if t.dwell_until is not None:
+@@ -511,7 +541,9 @@
+                 t.blocked_since = now
+                 t.phase = "blocked"
+                 self._emit("blocked", "前方受阻，FPGA 正在重新规划。")
+-            elif now - t.blocked_since > self.cfg.blocked_fail_s:
++            if self._goto_clearing_wait(s, now):
++                return
++            if now - t.blocked_since > self.cfg.blocked_fail_s:
+                 self.fail(f"受阻超过 {self.cfg.blocked_fail_s:.0f} s，无法到达{point.name}。")
+         elif s.mode != 1:
+             self.fail(f"FPGA 当前任务被外部改变（模式 {s.mode_name}，状态 {s.state_name}）。", stop=False)
+@@ -519,6 +551,8 @@
+             t.near_since = t.arrival_wait_since = None
+             if t.blocked_since is not None:
+                 t.blocked_since, t.phase = None, "navigating"
++                t.clearing_since = t.clearing_until = None
++                t.clearing_grace_used = 0.0
+             self._update_progress(s.distance_to_goal_mm() / 1000, now)
+ 
+     def _update_progress(self, remaining_m: float, now: float) -> None:
+--- before/yuntuo/fpga_link/nv_proto.py
++++ after/yuntuo/fpga_link/nv_proto.py
+@@ -158,6 +158,11 @@
+     t_us: int
+     loc_state: int | None = None
+     loc_quality: int | None = None
++    clearing_ms: int = 0  # STATUS reserved word; zero for older firmware
++
++    @property
++    def clearing_active(self) -> bool:
++        return self.flags & 0xC0 == 0xC0 and 0 < self.clearing_ms <= 35000
+ 
+     @property
+     def mode_name(self) -> str:
+@@ -230,7 +235,7 @@
+         loc_state = b[40] if len(b) >= 42 else None
+         loc_quality = b[41] if len(b) >= 42 else None
+         m, st, seq, x, y, yaw, gx, gy, vx, wz, flags, _rsv, t_us = fields
+-        return NavStatus(m, st, seq, x, y, yaw, gx, gy, vx, wz, flags, t_us, loc_state, loc_quality)
++        return NavStatus(m, st, seq, x, y, yaw, gx, gy, vx, wz, flags, t_us, loc_state, loc_quality, _rsv)
+     if t == MAP_ACK and len(b) >= 9:
+         nxt, st = struct.unpack_from("<IB", b, 4)
+         return MapAck(nxt, st)
+@@ -245,7 +250,7 @@
+ def encode_status(s: NavStatus) -> bytes:
+     body = _STATUS_BODY.pack(s.mode, s.state, s.map_seq & 0xFFFF, s.x_mm, s.y_mm, s.yaw_cdeg, s.goal_x_mm,
+                              s.goal_y_mm, _clamp(s.vx_mmps, -32768, 32767), _clamp(s.wz_mradps, -32768, 32767),
+-                             s.flags & 0xFFFF, 0, s.t_us & 0xFFFFFFFF)
++                             s.flags & 0xFFFF, _clamp(s.clearing_ms, 0, 65535), s.t_us & 0xFFFFFFFF)
+     tail = bytes((s.loc_state or 0, s.loc_quality or 0, 0, 0))
+     return header(STATUS) + body + tail
+ 

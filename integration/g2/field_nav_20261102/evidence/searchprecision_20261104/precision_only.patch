@@ -1,0 +1,49 @@
+--- before/app/main.c
++++ after/app/main.c
+@@ -47,7 +47,7 @@
+             const nav_task_t *nt = &g_app.nt;
+ #if APP_COMPACT_TELEMETRY
+             con_printf("t=%u s mode %d state %d loc %d\r\n",now/1000000u,nt->mode,nt->state,g_app.loc.st);
+-            con_printf("  nav %d/%d/%d src %d motion %d cmd %d,%d\r\n",
++            con_printf("nav %d/%d/%d src%d motion%d cmd%d,%d\r\n",
+                        nt->have_map,nt->stale,nt->path_valid,nt->cmd_source,nt->motion_result,nt->cmd.vx,nt->cmd.wz);
+ #else
+             con_printf("t=%u s  loop %u/s max %u us  frames %u msgs %u  mode %d state %d  loc %d  pose %d,%d mm  lut %d\r\n",
+@@ -70,7 +70,7 @@
+                        (unsigned)g_app.loc.n_pts, (unsigned)g_app.n_skip, (unsigned)g_app.n_time_skip);
+ #endif
+ #if APP_COMPACT_TELEMETRY
+-            con_printf("  spd %u odo %d p %d pr %d age %u\r\n",
++            con_printf("spd%u odo%d p%d pr%d age%u\r\n",
+                        nt->speed_phase,nt->pose.odo_vx,ANGLE_TO_CDEG(nt->pose.cur.pitch),
+                        nt->pose.gyro_pr,(unsigned)((now-nt->pose.imu_t_us)/1000u));
+ #else
+@@ -105,7 +105,7 @@
+                        (int)((int32_t)g_app.loc.res_da * 18000 / 32768), (unsigned)g_app.n_unsettled);
+ #endif
+ #if APP_COMPACT_TELEMETRY
+-            con_printf("  obs %u/%u/%u mfail %u/%u\r\n",nt->observe_completed,nt->observe_started,nt->recheck_phase,nt->n_mfail,nt->last_mfail);
++            con_printf("obs%u/%u/%u mfail%u/%u\r\n",nt->observe_completed,nt->observe_started,nt->recheck_phase,nt->n_mfail,nt->last_mfail);
+ #else
+             con_printf("  inv mfail %u(%u) pbusy %u stall %u dr %d  lidar acc %u rej %u(q %u) edge %u  live %u%s\r\n",
+                        nt->n_mfail, nt->last_mfail, nt->n_pbusy, nt->n_stall, (int)g_app.dead_reckon, g_app.n_dr_acc,
+--- before/nav/nav_task.c
++++ after/nav/nav_task.c
+@@ -721,8 +721,6 @@
+     bool quiet=fresh && att && nav_abs32(nt->pose.odo_vx)<=50 &&
+                pitch<=ANGLE_FROM_CDEG(1000) && pr<=1200;
+     int16_t wanted_v=nt->cmd.vx,wanted_w=nt->cmd.wz,previous_w=nt->speed_w_prev;
+-    /* SEARCH原地转向按实测稳定的1rad/s请求，不保留低速转向巡航段。 */
+-    if(wanted_v==0 && wanted_w) wanted_w=wanted_w>0?APP_TURN_W:-APP_TURN_W;
+     bool turn=wanted_v==0 && nav_abs32(wanted_w)>APP_STRAIGHT_WMAX;
+     if(turn) {
+         if(nt->speed_phase==2 && (!fresh || !att || pitch>ANGLE_FROM_CDEG(1200) || pr>2700)) {
+@@ -1032,7 +1030,7 @@
+             }
+         } else spin = false;
+     }
+-    /* TRACK仍限0.4；SEARCH的原地转向统一请求1.0，起停仍经速度出口斜坡。 */
++    /* TRACK仍限0.4；SEARCH大角度1.0、末段0.4，起停仍经速度出口斜坡。 */
+     bool target_task=nt->mode==NAV_MODE_TRACK || nt->mode==NAV_MODE_SEARCH;
+     if(nt->mode==NAV_MODE_TRACK) nt->cmd.wz=(int16_t)nav_clamp32(nt->cmd.wz,-APP_TRACK_TURN_W,APP_TRACK_TURN_W);
+ #if APP_FLAT_GROUND

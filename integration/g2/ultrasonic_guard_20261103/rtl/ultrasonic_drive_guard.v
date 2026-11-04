@@ -73,11 +73,15 @@ module ultrasonic_drive_guard #(
             if(remote_key_event && remote_key==MODE_KEY && !mode_key_held)begin enabled<=!enabled;mode_key_held<=1;end
         end
     end
-    always @(posedge clk or negedge reset_n)begin
-        if(!reset_n)begin
-            ms_count<=0;near_obstacle<=0;speed_q12<=1229;range_cap_q12<=1229;
-            cap_busy<=0;cap_bit<=0;cap_dividend<=0;cap_quotient<=0;cap_remainder<=0;
-        end else begin
+    //Datapath registers use power-up values only; enabled is reset, so the guard is bypassed after reset.
+    initial begin
+        ms_count=0;near_obstacle=0;speed_q12=1229;range_cap_q12=1229;
+        cap_busy=0;cap_bit=0;cap_dividend=0;cap_quotient=0;cap_remainder=0;
+        parking_q12=0;parking_sum=0;parking_error=0;parking_negative=0;
+        parking_phase=0;parking_bit=0;parking_dividend=0;parking_quotient=0;parking_remainder=0;
+    end
+    always @(posedge clk)begin
+        begin
             ms_count<=ms_tick ? 0 : ms_count+1'b1;
             if(cap_busy)begin
                 cap_dividend<={cap_dividend[17:0],1'b0};cap_remainder<=cap_take ? cap_trial-350 : cap_trial;
@@ -101,10 +105,8 @@ module ultrasonic_drive_guard #(
             end
         end
     end
-    always @(posedge clk or negedge reset_n)begin
-        if(!reset_n)begin parking_q12<=0;parking_sum<=0;parking_error<=0;parking_negative<=0;
-            parking_phase<=0;parking_bit<=0;parking_dividend<=0;parking_quotient<=0;parking_remainder<=0;end
-        else if(!parking_active || hard_stop)begin parking_q12<=0;parking_sum<=0;parking_error<=0;
+    always @(posedge clk)begin
+        if(!parking_active || hard_stop)begin parking_q12<=0;parking_sum<=0;parking_error<=0;
             parking_negative<=0;parking_phase<=0;parking_bit<=0;parking_dividend<=0;parking_quotient<=0;parking_remainder<=0;end
         else case(parking_phase)
             0:if(feedback_valid)begin parking_sum<=sum_limited[14:0];

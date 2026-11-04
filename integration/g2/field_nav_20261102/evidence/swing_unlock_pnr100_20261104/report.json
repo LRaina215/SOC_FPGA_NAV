@@ -1,0 +1,441 @@
+{
+  "stage": "complete",
+  "build": {
+    "SYN": "F:\\nav_integration_g2_20261023\\K_swingunlock_syn11_20261104",
+    "PNR": "F:\\nav_integration_g2_20261023\\K_pnr100_swingunlock_ultrasonicp2r0",
+    "baseline_SYN": "F:\\nav_integration_g2_20261023\\K_clear_pipeline_syn10",
+    "baseline_PNR": "F:\\nav_integration_g2_20261023\\K_pnr99_clear_ultrasonic_edgep2r0",
+    "pid": 22344,
+    "firmware": "nav_fw_swingunlock_yaw3_20261104.bin",
+    "programmed": false,
+    "stage": "timing_passed_not_programmed",
+    "started_at": "2026-11-04T09:00:28.776000+08:00",
+    "synthesis_runtime": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-11-04T09:00:28.776000+08:00",
+      "max_runtime_s": 2400,
+      "max_no_observable_progress_s": 0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "pid": 39752,
+      "elapsed_s": 322.2970000000205,
+      "no_observable_progress_s": 4.0,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          277573,
+          1793754345003509000
+        ]
+      ],
+      "tool_exit": 0,
+      "ended_at": "2026-11-04T09:05:51.068084+08:00"
+    },
+    "release_bitstream": "D:\\tools\\g2_swingunlock_ultrasonic_pnr100_20261104.fs",
+    "pnr_runtime": {
+      "command": [
+        "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+        "run.tcl"
+      ],
+      "started_at": "2026-11-04T09:05:52.535056+08:00",
+      "max_runtime_s": 0,
+      "max_no_observable_progress_s": 0,
+      "cancelled": false,
+      "programmed": false,
+      "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+      "pid": 20404,
+      "elapsed_s": 622.3589999999967,
+      "no_observable_progress_s": 0.0,
+      "observed_files": [
+        [
+          "gw_sh.log",
+          2411,
+          1793754972187617500
+        ],
+        [
+          "impl\\pnr\\g2_top.log",
+          1953,
+          1793754972187617500
+        ],
+        [
+          "impl\\pnr\\g2_top.db",
+          1885172,
+          1793754736261561800
+        ],
+        [
+          "impl\\pnr\\g2_top.p",
+          10382701,
+          1793754736567898400
+        ],
+        [
+          "impl\\pnr\\g2_top.pr",
+          214649238,
+          1793754913078301200
+        ],
+        [
+          "impl\\pnr\\g2_top.tr",
+          82057759,
+          1793754972104809600
+        ],
+        [
+          "impl\\pnr\\g2_top.rpt.txt",
+          103431,
+          1793754932756560800
+        ],
+        [
+          "impl\\pnr\\g2_top.vo",
+          33378859,
+          1793754934381218000
+        ]
+      ],
+      "tool_exit": 0,
+      "ended_at": "2026-11-04T09:16:14.903656+08:00"
+    },
+    "final": {
+      "BSRAM": 322,
+      "unrouted_log_matches": [],
+      "PR0004": false,
+      "setup": 0,
+      "hold": 0,
+      "deployment_accepted": false,
+      "tool_exit": 0,
+      "cancelled": false,
+      "bitstream_exists": true,
+      "frequencies": [
+        {
+          "clock": "clk50",
+          "target_MHz": 50.0,
+          "Fmax_MHz": 50.145
+        },
+        {
+          "clock": "rgmii_rxc",
+          "target_MHz": 100.0,
+          "Fmax_MHz": 157.374
+        },
+        {
+          "clock": "camera_pclk",
+          "target_MHz": 50.0,
+          "Fmax_MHz": 120.892
+        },
+        {
+          "clock": "lcd9",
+          "target_MHz": 8.967,
+          "Fmax_MHz": 66.875
+        }
+      ],
+      "domain_TNS": [
+        {
+          "clock": "clk50",
+          "type": "setup",
+          "tns_ns": 0.0,
+          "violations": 0
+        },
+        {
+          "clock": "clk50",
+          "type": "hold",
+          "tns_ns": 0.0,
+          "violations": 0
+        },
+        {
+          "clock": "rgmii_rxc",
+          "type": "setup",
+          "tns_ns": 0.0,
+          "violations": 0
+        },
+        {
+          "clock": "rgmii_rxc",
+          "type": "hold",
+          "tns_ns": 0.0,
+          "violations": 0
+        },
+        {
+          "clock": "camera_pclk",
+          "type": "setup",
+          "tns_ns": 0.0,
+          "violations": 0
+        },
+        {
+          "clock": "camera_pclk",
+          "type": "hold",
+          "tns_ns": 0.0,
+          "violations": 0
+        },
+        {
+          "clock": "lcd9",
+          "type": "setup",
+          "tns_ns": 0.0,
+          "violations": 0
+        },
+        {
+          "clock": "lcd9",
+          "type": "hold",
+          "tns_ns": 0.0,
+          "violations": 0
+        }
+      ],
+      "report_timing_gate": true
+    }
+  },
+  "baseline_hardware": "PNR99 / K_clear_pipeline_syn10, including no-async-reset ultrasonic guard and136KiB RAM",
+  "changes": "Only CPU RAM initialization contains the already-deployed swingunlock firmware; original hardware RTL and constraints preserved",
+  "firmware": {
+    "path": "D:\\tools\\swing_unlock_20261104\\nav_fw_swingunlock_yaw3_20261104.bin",
+    "banner": "Nov  4 2026 08:41:55",
+    "bytes": 58688,
+    "ram_kib": 136,
+    "bss_bytes": 70712,
+    "stack_kib": 6
+  },
+  "extra_navigation_tests_run": false,
+  "hash_checks_run": false,
+  "restart_facts": "08:59 RK restart: ACTIVE remained swingunlock; keeper loaded14672words with0readback errors and saw08:41:55 banner; field_home2 mapready08:59:27. Not a rollback to old nav firmware.",
+  "programmed": true,
+  "deployment": {
+    "stage": "complete",
+    "started_at": "2026-11-04T09:16:58.587975+08:00",
+    "bitstream": "D:\\tools\\g2_swingunlock_ultrasonic_pnr100_20261104.fs",
+    "physical_supported_confirmed": true,
+    "motor_drive_off_confirmed": true,
+    "firmware": "nav_fw_swingunlock_yaw3_20261104.bin",
+    "banner": "Nov  4 2026 08:41:55",
+    "cable_location": 35,
+    "Flash_written": true,
+    "ACTIVE_changed": false,
+    "bridge_code_changed": false,
+    "motion_goal_sent": false,
+    "prepare": {
+      "status": {
+        "source": "fpga_bridge",
+        "updated_at": "2026-11-04T01:16:58.606651+00:00",
+        "nav_link": "online",
+        "nav_link_kind": "uart:/dev/ttyACM0",
+        "fpga_mode": "idle",
+        "fpga_state": "idle",
+        "loc_state": "mapless",
+        "loc_quality": null,
+        "map_loaded": true,
+        "target_valid": false,
+        "lidar_ok": true,
+        "odom_ok": false,
+        "cmd_vx_mps": 0.0,
+        "cmd_wz_radps": 0.0,
+        "fpga_uptime_s": 1065.24689,
+        "status_rate_hz": 5.02,
+        "control_link": "online",
+        "policy_active": false,
+        "control_estop": false,
+        "control_faults": [
+          "bmi088_error:4",
+          "bmi088_stale"
+        ],
+        "wheel_left_mps": 0.0,
+        "wheel_right_mps": 0.0,
+        "roll_deg": null,
+        "pitch_deg": null,
+        "yaw_rate_radps": 0.0,
+        "height_cmd_m": 0.130615234375,
+        "telemetry_rate_hz": 101.5,
+        "control_telemetry": {
+          "transport": "legacy_telemetry",
+          "source": "fpga",
+          "version": 2,
+          "fresh": true,
+          "receive_age_ms": 31.8,
+          "measurement_age_ms": null,
+          "raw": {
+            "timestamp_ms": 1065329,
+            "sequence": 40996,
+            "status": 10,
+            "policy_fault": 0,
+            "sensor_error": 4,
+            "left_fault": 0,
+            "right_fault": 0,
+            "fusion_flags": 1,
+            "ax_raw": 0,
+            "ay_raw": 0,
+            "az_raw": 0,
+            "gx_raw": 0,
+            "gy_raw": 0,
+            "gz_raw": 0,
+            "wx_q12": 0,
+            "wy_q12": 0,
+            "wz_q12": 0,
+            "gravity_x_q12": 0,
+            "gravity_y_q12": 0,
+            "gravity_z_q12": -4096,
+            "forward_q12": 0,
+            "yaw_q12": 0,
+            "height_q12": 535,
+            "left_target_mmps": 0,
+            "right_target_mmps": 0,
+            "left_cms": 0,
+            "right_cms": 0,
+            "left_duty": 0,
+            "right_duty": 0,
+            "lh_us": 1500,
+            "lk_us": 1500,
+            "rh_us": 1500,
+            "rk_us": 1500,
+            "completed_frames": 0,
+            "inference_cycles": 0,
+            "left_delta": 0,
+            "right_delta": 0,
+            "left_reference_mmps": 0,
+            "right_reference_mmps": 0,
+            "left_error_mmps": 0,
+            "right_error_mmps": 0,
+            "left_control_sequence": 0,
+            "right_control_sequence": 0
+          }
+        }
+      },
+      "task": {
+        "task_id": "fpga-idle",
+        "task_type": "placeholder",
+        "state": "idle",
+        "progress": 0,
+        "source": "fpga_bridge",
+        "phase": "idle",
+        "current_waypoint_id": null,
+        "waypoint_index": null,
+        "waypoint_count": null,
+        "detail": "等待任务。",
+        "updated_at": "2026-11-04T01:16:58.606897+00:00"
+      },
+      "services_paused": true
+    },
+    "flash_started_at": "2026-11-04T09:17:17.624539+08:00",
+    "programmer_pid": 37328,
+    "flash_exit": 0,
+    "flash_verified": true,
+    "flash_finished_at": "2026-11-04T09:19:19.329853+08:00",
+    "reprogram_exit": 0,
+    "finish": {
+      "embedded_flash_banner": "Nov  4 2026 08:41:55",
+      "no_host_firmware_RAM_upload": true,
+      "nav_CPU_restart_for_banner": true,
+      "SOC_INFO": "0x880001",
+      "RCV1": "0x52435631",
+      "active": "nav_fw_swingunlock_yaw3_20261104.bin",
+      "services": [
+        "active",
+        "active"
+      ],
+      "map_ready": true,
+      "map_upload": {
+        "id": "88b09bfccd1e4c2cbc675fbf08198370",
+        "filename": "field_home2.nvmp",
+        "map_id": "field_home2",
+        "state": "ready",
+        "sent_bytes": 9880,
+        "total_bytes": 9880,
+        "progress": 100,
+        "detail": "先验地图已加载（9880 B，1.1 s）；地图目标需给定初始位姿，雷达在后台辅助纠偏",
+        "started_at": "2026-11-04T01:20:07.152490+00:00",
+        "completed_at": "2026-11-04T01:20:08.405982+00:00"
+      },
+      "post_status": {
+        "source": "fpga_bridge",
+        "updated_at": "2026-11-04T01:20:08.756051+00:00",
+        "nav_link": "online",
+        "nav_link_kind": "uart:/dev/ttyACM0",
+        "fpga_mode": "idle",
+        "fpga_state": "idle",
+        "loc_state": "mapless",
+        "loc_quality": null,
+        "map_loaded": true,
+        "target_valid": false,
+        "lidar_ok": false,
+        "odom_ok": false,
+        "cmd_vx_mps": 0.0,
+        "cmd_wz_radps": 0.0,
+        "fpga_uptime_s": 33.05826,
+        "status_rate_hz": 2.8,
+        "control_link": "online",
+        "policy_active": false,
+        "control_estop": false,
+        "control_faults": [
+          "bmi088_error:4",
+          "bmi088_stale"
+        ],
+        "wheel_left_mps": 0.0,
+        "wheel_right_mps": 0.0,
+        "roll_deg": null,
+        "pitch_deg": null,
+        "yaw_rate_radps": 0.0,
+        "height_cmd_m": 0.130615234375,
+        "telemetry_rate_hz": 101.2,
+        "control_telemetry": {
+          "transport": "legacy_telemetry",
+          "source": "fpga",
+          "version": 2,
+          "fresh": true,
+          "receive_age_ms": 7.5,
+          "measurement_age_ms": null,
+          "raw": {
+            "timestamp_ms": 33129,
+            "sequence": 3312,
+            "status": 10,
+            "policy_fault": 0,
+            "sensor_error": 4,
+            "left_fault": 0,
+            "right_fault": 0,
+            "fusion_flags": 1,
+            "ax_raw": 0,
+            "ay_raw": 0,
+            "az_raw": 0,
+            "gx_raw": 0,
+            "gy_raw": 0,
+            "gz_raw": 0,
+            "wx_q12": 0,
+            "wy_q12": 0,
+            "wz_q12": 0,
+            "gravity_x_q12": 0,
+            "gravity_y_q12": 0,
+            "gravity_z_q12": -4096,
+            "forward_q12": 0,
+            "yaw_q12": 0,
+            "height_q12": 535,
+            "left_target_mmps": 0,
+            "right_target_mmps": 0,
+            "left_cms": 0,
+            "right_cms": 0,
+            "left_duty": 0,
+            "right_duty": 0,
+            "lh_us": 1500,
+            "lk_us": 1500,
+            "rh_us": 1500,
+            "rk_us": 1500,
+            "completed_frames": 0,
+            "inference_cycles": 0,
+            "left_delta": 0,
+            "right_delta": 0,
+            "left_reference_mmps": 0,
+            "right_reference_mmps": 0,
+            "left_error_mmps": 0,
+            "right_error_mmps": 0,
+            "left_control_sequence": 0,
+            "right_control_sequence": 0
+          }
+        }
+      },
+      "post_task": {
+        "task_id": "fpga-idle",
+        "task_type": "placeholder",
+        "state": "idle",
+        "progress": 0,
+        "source": "fpga_bridge",
+        "phase": "idle",
+        "current_waypoint_id": null,
+        "waypoint_index": null,
+        "waypoint_count": null,
+        "detail": "等待任务。",
+        "updated_at": "2026-11-04T01:20:08.756427+00:00"
+      }
+    },
+    "completed_at": "2026-11-04T09:20:09.999858+08:00"
+  }
+}

@@ -1,0 +1,46 @@
+--- locfix2/nav/motion_guard.c
+
++++ gototransition/nav/motion_guard.c
+
+@@ -1,6 +1,7 @@
+
+ #include "motion_guard.h"
+ #include "fixmath.h"
++int32_t motion_evidence[8];
+ 
+ bool motion_map_same(const hal_map_info_t *a, const hal_map_info_t *b)
+ {
+     return a->seq == b->seq && a->cx == b->cx && a->cy == b->cy && a->inv_res == b->inv_res;
+@@ -113,9 +114,14 @@
+
+                         int32_t ux=(int32_t)((int64_t)cmd->vx*cs-(int64_t)cmd->vy*sn);
+                         int32_t uy=(int32_t)((int64_t)cmd->vx*sn+(int64_t)cmd->vy*cs);
+                         if (max_projection(cx,cy,qx,qy,ux,uy) <= 0) continue;
+                     }
+-                    return MOTION_HAZARD;
++                    {
++        motion_evidence[0]++;motion_evidence[1]=end?2:1;
++        motion_evidence[2]=mi->cx-NP_MAP_N/2+cx;motion_evidence[3]=mi->cy-NP_MAP_N/2+cy;
++        motion_evidence[4]=mi->seq;motion_evidence[5]=hal_time_us();
++        motion_evidence[6]=cx;motion_evidence[7]=cy;return MOTION_HAZARD;
++    }
+                 }
+                 if (c == NP_COST_UNKNOWN && (end || s <= 4)) {
+                     if(!contained(cx,cy,qx,qy,rr0)) {
+                         int32_t ux,uy;
+@@ -205,8 +211,13 @@
+
+                 int64_t a=(int64_t)x*256*dy,b=(int64_t)(x+1)*256*dy;
+                 if(xn>=(a<b?a:b) && xn<=(a>b?a:b)) hit=true;
+             }
+         }
+-        if(hit) {if(c==NP_COST_LETHAL) return MOTION_HAZARD; unknown=true;}
++        if(hit) {if(c==NP_COST_LETHAL) {
++        motion_evidence[0]++;motion_evidence[1]=2;
++        motion_evidence[2]=mi->cx-NP_MAP_N/2+x;motion_evidence[3]=mi->cy-NP_MAP_N/2+y;
++        motion_evidence[4]=mi->seq;motion_evidence[5]=hal_time_us();
++        motion_evidence[6]=x;motion_evidence[7]=y;return MOTION_HAZARD;
++    } unknown=true;}
+     }
+     return unknown?MOTION_UNKNOWN:MOTION_OK;
+ }

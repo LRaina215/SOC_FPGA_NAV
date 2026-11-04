@@ -1,0 +1,15 @@
+--- goalfix1/app/nav_app.c
++++ searchmap_s2/app/nav_app.c
+@@ -405,9 +405,9 @@
+ {
+     const bool relative = nt->mode == NAV_MODE_TRACK || nt->mode == NAV_MODE_SEARCH;
+     /* IMU+encoders are the frontend. A declared map pose is sufficient for a
+-     * map goal; lidar alignment/quality is an auxiliary observation. Relative
+-     * target tasks use live local costs and never an unregistered static map. */
+-    nt->use_gmap = !relative;
++     * map goal; lidar alignment/quality is an auxiliary observation.
++     * TRACK keeps live local costs; SEARCH uses an available prior. */
++    nt->use_gmap = !relative || (nt->mode == NAV_MODE_SEARCH && prior);
+     nt->hold = prior && !g_app.pose_seeded && !relative;
+     nt->slow = prior && g_app.pose_seeded && g_app.loc.st != LOC_OK && !relative;
+     g_app.dead_reckon = prior && g_app.pose_seeded && g_app.loc.st != LOC_OK;

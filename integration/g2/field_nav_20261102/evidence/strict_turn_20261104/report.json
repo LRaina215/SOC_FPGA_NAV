@@ -1,0 +1,64 @@
+{
+  "stage": "loaded_banner_verified_map_ready",
+  "baseline": "PNR99 / clearpipeline 05:02:41 / ultrasonic included",
+  "firmware": {
+    "name": "nav_fw_strictturn_yaw3_20261104.bin",
+    "banner": "Nov  4 2026 08:25:52",
+    "bytes": 58808,
+    "ram_kib": 136,
+    "motor_off_and_supported_confirmed": true
+  },
+  "deployment": {
+    "active": "nav_fw_strictturn_yaw3_20261104.bin",
+    "old_active": "nav_fw_clearpipeline_yaw3_20261104.bin",
+    "banner": "Nov  4 2026 08:25:52",
+    "bytes": 58808,
+    "active_backup": "/home/robomaster/fpga_bench/fw/ACTIVE.before_strictturn_20261104_083004",
+    "loaded_at": "2026-11-04T08:30:11.294091+08:00",
+    "flash_changed": false,
+    "motion_goal_sent": false
+  },
+  "source": "D:\\tools\\strict_turn_20261104\\fw",
+  "changed_files": [
+    "nav/nav_task.c",
+    "nav/nav_task.h"
+  ],
+  "changes": [
+    "GOTO/SEARCH path-following straight reference yaw is zero; shared final outlet also covers SEARCH-to-TRACK.",
+    "All task motion outlets emit nonnegative vx and zero vy, and do not emit positive vx together with nonzero wz.",
+    "Turn reference cap400mrad/s; heading-proportional slowdown; per100ms yaw increase40/decrease60mrad/s; reverse yaw brakes through zero.",
+    "Entry/exit requires fresh actual odometry and attitude, with two good samples; no exact fore-aft stillness requirement.",
+    "Three consecutive100ms actual body vx below-100mm/s during commanded motion, or fresh pitch beyond20deg, latches task stopped until explicit task reset; automatic SEARCH/TRACK change does not clear it.",
+    "Independent final collision veto and latest ultrasonic hardware remain; balance policy/motor PID were not modified."
+  ],
+  "compile": {
+    "binary_bytes": 58808,
+    "bss_bytes": 70712,
+    "RAM_KiB": 136,
+    "stack_reserved": 6144,
+    "static_stack_bound": 1504,
+    "unresolved_indirect": []
+  },
+  "tests_run": [],
+  "simulation_skipped_by_user": true,
+  "physical_motion_test": false,
+  "post": {
+    "nav_link": "online",
+    "control_link": "online",
+    "fpga_mode": "idle",
+    "fpga_state": "idle",
+    "cmd_vx_mps": 0.0,
+    "cmd_wz_radps": 0.0,
+    "map_loaded": true,
+    "policy_active": false,
+    "control_faults": [
+      "policy_fault:1",
+      "bmi088_error:4",
+      "bmi088_stale"
+    ]
+  },
+  "limitations": [
+    "Command mutual exclusion and abnormal reverse latching are implemented; physical zero reverse or fall prevention has not been validated.",
+    "Fresh post-load status reports BMI088 error4/stale; successful firmware loading is not sensor or motion readiness."
+  ]
+}

@@ -1,0 +1,258 @@
+--- a/fw/app/main.c
++++ b/fw/app/main.c
+@@ -113,6 +113,7 @@
+                 nt->observe_hi,nt->observe_age,nt->observe_count,nt->goal_x,nt->goal_y);
+             uint32_t rc[12];map_revalidate_diagnostics(rc);
+             con_printf("ray frames%u proof%u drop%u race%u recon%u frame_max%u us\r\n",rc[0],rc[2],rc[3],rc[7],nt->observe_reconciled,g_app.tmax_frame);
++            con_printf("flat z%d lo%d foot%u race%u veto%u/%u/%u\r\n",nt->pose.cur.z,nt->observe_lo,nt->footprint_cleared,nt->footprint_races,rc[4],rc[5],rc[6]);
+ #else
+             con_printf("  inv mfail %u(%u) pbusy %u stall %u dr %d  lidar acc %u rej %u(q %u) edge %u  live %u%s\r\n",
+                        nt->n_mfail, nt->last_mfail, nt->n_pbusy, nt->n_stall, (int)g_app.dead_reckon, g_app.n_dr_acc,
+--- a/fw/drv/map_revalidate_fpga.c
++++ b/fw/drv/map_revalidate_fpga.c
+@@ -33,9 +33,13 @@
+  uint8_t tag=(uint8_t)((((uint32_t)(gy>>7)&15)<<4)|((uint32_t)(gx>>7)&15));
+  *out=(rc_cell_t){gx,gy,s.lo,s.hi,tag,(uint8_t)(fc-s.age),s.count,s.age};return true;
+ }
+-bool hal_clear_drop(const rc_cell_t *c){
+- if(rd(0xD20C)!=capture)return false;
++bool hal_clear_footprint_drop(const rc_cell_t *c){
++ if(rd(0xD200)!=0x52435631u)return false;
+  wr(0xD210,((uint32_t)c->stamp<<12)|((uint32_t)c->tag<<4)|c->count);
+  wr(0xD214,(((uint32_t)c->gy&127)<<7)|((uint32_t)c->gx&127));
+  wr(0xD218,1);return (rd(0xD218)&0x80000001u)==0x80000001u;
+ }
++bool hal_clear_drop(const rc_cell_t *c){
++ if(rd(0xD20C)!=capture)return false;
++ return hal_clear_footprint_drop(c);
++}
+--- a/fw/nav/gmap.c
++++ b/fw/nav/gmap.c
+@@ -114,20 +114,31 @@
+     g->n_shift++;                   /* 路径失效，重规划 */
+ }
+ 
+-void gmap_confirm_ground(gmap_t *g,int x,int y,uint8_t cost)
++static void confirm_unoccupied(gmap_t *g,int x,int y,uint8_t cost)
+ {
+     if(x<0 || y<0 || x>=GM_N || y>=GM_N || cost>=GM_COST_BLOCKED)return;
+     int i=y*GM_N+x;
+     if(g->has_prior && g->prior[i]>=GM_COST_BLOCKED)return;
+     g->occ[i]=g->cfg.occ_min;g->cost[i]=cost;
+     /* A virtual block is a retry hint, not measured occupancy. Retire only
+-     * hints overlapping the cell whose full fine footprint was reobserved;
++     * hints overlapping a complete cell supported by fresh ground or physical
++     * body-footprint evidence;
+      * compose still retains all prior and neighbouring measured obstacles. */
+     for(int k=0;k<GM_VBLK;k++) {
+         int dx=x+g->ox-g->vblk[k].gx,dy=y+g->oy-g->vblk[k].gy,r=g->vblk[k].r;
+         if(g->vblk[k].ttl && dx*dx+dy*dy<=r*r+1)g->vblk[k].ttl=0;
+     }
+     compose(g);g->n_shift++;
++}
++
++void gmap_confirm_ground(gmap_t *g,int x,int y,uint8_t cost)
++{
++    confirm_unoccupied(g,x,y,cost);
++}
++
++void gmap_confirm_footprint(gmap_t *g,int x,int y)
++{
++    confirm_unoccupied(g,x,y,0);
+ }
+ 
+ void gmap_clear_obs(gmap_t *g)
+--- a/fw/nav/gmap.h
++++ b/fw/nav/gmap.h
+@@ -74,6 +74,8 @@
+ void gmap_clear_obs(gmap_t *g);
+ /* Called only after fresh ground confirmation of every fine cell in this coarse cell. */
+ void gmap_confirm_ground(gmap_t*,int,int,uint8_t);
++/* Only when the complete coarse cell is inside the physical body footprint. */
++void gmap_confirm_footprint(gmap_t*,int,int);
+ /* 坐标换算：mm <-> 栅格坐标（mi 提供分辨率） */
+ void gmap_mm_to_cell(const gmap_t *g, const hal_map_info_t *mi, int32_t x, int32_t y, int *gx, int *gy);
+ void gmap_cell_to_mm(const gmap_t *g, const hal_map_info_t *mi, int gx, int gy, int32_t *x, int32_t *y);
+--- a/fw/nav/map_revalidate.h
++++ b/fw/nav/map_revalidate.h
+@@ -7,6 +7,9 @@
+ uint16_t hal_clear_depth_pixel(int u,int v);
+ bool hal_clear_read(int32_t gx,int32_t gy,rc_cell_t*);
+ bool hal_clear_drop(const rc_cell_t*);
++/* Physical-footprint evidence, independent of a retained depth capture.
++ * Still compares tag/stamp/count atomically before invalidating elevation. */
++bool hal_clear_footprint_drop(const rc_cell_t*);
+ void map_revalidate_reset(void);
+ void map_revalidate_before_fuse(nav_task_t*,const lidar_cal_t*,const int32_t r[3][3],const int32_t t[3],uint32_t capture_us);
+ void map_revalidate_diagnostics(uint32_t*);
+--- a/fw/nav/nav_task.c
++++ b/fw/nav/nav_task.c
+@@ -759,6 +759,7 @@
+     if (fresh) nt->stale = false;
+     if (fresh && (!nt->have_map || mi.seq != nt->mi.seq)) {
+         nt->have_map = hal_map_copy(nt->map, &nt->mi) != 0;
++        if(nt->have_map)obstacle_clear_footprint(nt,now);
+         if (nt->have_map && !nt->async_gmap) gmap_update(&nt->gm, nt->map, &nt->mi, nt->pose.cur.x, nt->pose.cur.y);
+         else if(!nt->have_map) nt->path_valid = false;
+     }
+@@ -782,10 +783,11 @@
+         goto send_checked; /* 首张记忆图完成后再规划，避免发布全未知初图路线。 */
+     }
+     if(nt->recheck_phase && (nt->mode==NAV_MODE_SEARCH || nt->mode==NAV_MODE_TRACK || nt->mode==NAV_MODE_GOTO)) {
+-        bool ground=obstacle_observe_ground(nt);
+-        if(ground || (int32_t)(now-nt->recheck_until_us)>=0) {
+-            if(ground)nt->observe_completed++;else nt->observe_timeouts++;
+-            nt->observe_outcome=ground?2:3;
++        bool ground=obstacle_observe_ground(nt),body=nt->observe_footprint_cleared;
++        if(ground || body || (int32_t)(now-nt->recheck_until_us)>=0) {
++            if(ground || body)nt->observe_completed++;else nt->observe_timeouts++;
++            nt->observe_outcome=body?4:ground?2:3;
++            nt->observe_footprint_cleared=false;
+             nt->recheck_phase=0;nt->observe_cooldown=now+5000000u;
+             nt->path_valid=false;nt->path.n=0;nt->recovering=false;astar_cancel();nt->bg_done=false;
+             /* The task goal/waypoint and SEARCH goal validity survive observation. */
+@@ -796,12 +798,22 @@
+             if(nt->recheck_phase==1 && fx_dist(nt->observe_x-p->x,nt->observe_y-p->y)>90) {
+                 drive_to(nt,now,nt->observe_x,nt->observe_y,80);
+             } else {
+-                nt->recheck_phase=2;
+-                int32_t hx,hy;
+-                nav_win_to_mm(&nt->mi,nt->observe_gx-nt->mi.cx+N/2,nt->observe_gy-nt->mi.cy+N/2,&hx,&hy);
+-                int32_t da=fx_angle_diff(p->yaw,fx_atan2(hy-p->y,hx-p->x));
+-                nt->cmd=(nav_cmd_t){0,0,(int16_t)nav_clamp32(da*2/3,-350,350),0};
+-                if(nav_abs32(da)<700)nt->cmd.wz=0;
++                if(nt->recheck_phase==1) {
++                    int32_t hx,hy;
++                    nav_win_to_mm(&nt->mi,nt->observe_gx-nt->mi.cx+N/2,nt->observe_gy-nt->mi.cy+N/2,&hx,&hy);
++                    nt->recheck_yaw=fx_atan2(hy-p->y,hx-p->x);
++                    nt->recheck_since_us=now;nt->recheck_phase=2;
++                }
++                /* Face the latched heading once. A balance vehicle drifts at
++                 * zero command: chasing a nearby world point's new bearing
++                 * can otherwise generate repeated full turns and starve fusion. */
++                int32_t da=fx_angle_diff(p->yaw,nt->recheck_yaw);
++                nt->cmd=(nav_cmd_t){0};
++                if(nt->recheck_phase==2) {
++                    if(nav_abs32(da)<=APP_TURN_EXIT || (uint32_t)(now-nt->recheck_since_us)>=10000000u)
++                        nt->recheck_phase=3;
++                    else nt->cmd.wz=(da<0?-1:1)*(nav_abs32(da)>APP_TURN_SLOW_AT?APP_TURN_W:APP_TURN_W_SLOW);
++                }
+                 nt->cmd_source=CMD_RECOVERY;
+             }
+             goto send_checked;
+--- a/fw/nav/nav_task.h
++++ b/fw/nav/nav_task.h
+@@ -125,8 +125,10 @@
+     int32_t observe_x,observe_y,observe_gx,observe_gy;
+     uint32_t observe_cooldown;
+     uint16_t observe_started,observe_completed,observe_timeouts;
+-    uint8_t observe_reason,observe_outcome; /* reason:1 final,2 route,3 global reconcile; outcome:1 active,2 ground,3 timeout */
+-    int16_t observe_hi; uint8_t observe_age,observe_count;
++    uint8_t observe_reason,observe_outcome; /* reason:1 final,2 route,3 global reconcile; outcome:1 active,2 ground,3 timeout,4 body footprint */
++    int16_t observe_hi,observe_lo; uint8_t observe_age,observe_count;
++    uint16_t footprint_cleared,footprint_races;
++    bool observe_footprint_cleared;
+     bool revisit_goal;
+     uint32_t revisit_until_us;
+     uint8_t        last_mfail;       /* 最近一次足迹检查不过的结果码 */
+@@ -152,6 +154,7 @@
+ bool obstacle_observe_start(nav_task_t*,uint32_t,int32_t,int32_t,uint8_t);
+ void obstacle_observe_path(nav_task_t*,uint32_t);
+ bool obstacle_observe_ground(nav_task_t*);
++void obstacle_clear_footprint(nav_task_t*,uint32_t);
+ 
+ /* 坐标换算工具 */
+ void nav_mm_to_win(const hal_map_info_t *mi, int32_t x, int32_t y, int *wx, int *wy);
+--- a/fw/nav/obstacle_recovery.c
++++ b/fw/nav/obstacle_recovery.c
+@@ -27,7 +27,8 @@
+     int32_t dx=x-nt->pose.cur.x,dy=y-nt->pose.cur.y,d=nav_max32(1,fx_dist(dx,dy));
+     nt->observe_x=nt->pose.cur.x-(int32_t)((int64_t)dx*250/d);
+     nt->observe_y=nt->pose.cur.y-(int32_t)((int64_t)dy*250/d);
+-    nt->observe_gx=gx;nt->observe_gy=gy;nt->observe_hi=c.hi;nt->observe_age=c.age;nt->observe_count=c.count;
++    nt->observe_gx=gx;nt->observe_gy=gy;nt->observe_hi=c.hi;nt->observe_lo=c.lo;nt->observe_age=c.age;nt->observe_count=c.count;
++    nt->observe_footprint_cleared=false;
+     nt->observe_reason=reason;nt->observe_outcome=1;nt->recheck_phase=1;
+     nt->recheck_until_us=now+35000000u;nt->observe_started++;
+     nt->path_valid=false;astar_cancel();nt->bg_done=false;nt->state=ST_BLOCKED;
+@@ -117,3 +118,70 @@
+ {
+     return confirmed_ground(nt,nt->observe_gx,nt->observe_gy);
+ }
++
++/* Actual top view:270mm long,330mm wide. Use an interior rectangle with
++ * 10mm inset; below10deg pitch/roll it remains inside the projected body.
++ * Every corner of a cell must fit. Never use the215mm safety circle here. */
++static bool inside_body(const nav_task_t *nt,int32_t gx,int32_t gy,int span)
++{
++    int32_t c=fx_cos(nt->pose.cur.yaw),s=fx_sin(nt->pose.cur.yaw);
++    for(int k=0;k<4;k++) {
++        int32_t x=(int32_t)((int64_t)(gx+((k&1)?span:0))*65536/nt->mi.inv_res)-nt->pose.cur.x;
++        int32_t y=(int32_t)((int64_t)(gy+((k&2)?span:0))*65536/nt->mi.inv_res)-nt->pose.cur.y;
++        int32_t bx=(int32_t)(((int64_t)x*c+(int64_t)y*s)/16384);
++        int32_t by=(int32_t)((-(int64_t)x*s+(int64_t)y*c)/16384);
++        if(nav_abs32(bx)>125 || nav_abs32(by)>155)return false;
++    }
++    return true;
++}
++
++void obstacle_clear_footprint(nav_task_t *nt,uint32_t now)
++{
++#if APP_FLAT_GROUND
++    if(!nt->have_map || nt->stale || nt->hold || !nt->gm.has_prior || !nt->mi.inv_res ||
++       (nt->mode!=NAV_MODE_GOTO && nt->mode!=NAV_MODE_SEARCH && nt->mode!=NAV_MODE_TRACK) ||
++       !nt->pose.have_odo || !nt->pose.have_att ||
++       (uint32_t)(now-nt->pose.last_odo_us)>100000u || (uint32_t)(now-nt->pose.imu_t_us)>100000u ||
++       nav_abs32((int16_t)nt->pose.cur.pitch)>1820 || nav_abs32((int16_t)nt->pose.cur.roll)>1820)return;
++    int px,py;nav_mm_to_win(&nt->mi,nt->pose.cur.x,nt->pose.cur.y,&px,&py);
++    for(int y=nav_max32(0,py-5);y<=nav_min32(NP_MAP_N-1,py+5);y++)
++        for(int x=nav_max32(0,px-5);x<=nav_min32(NP_MAP_N-1,px+5);x++) {
++            if(nt->map[y*NP_MAP_N+x]!=NP_COST_LETHAL)continue;
++            int32_t gx=x+nt->mi.cx-NP_MAP_N/2,gy=y+nt->mi.cy-NP_MAP_N/2;
++            if(!inside_body(nt,gx,gy,1))continue;
++            int32_t mx,my;int cx,cy;nav_win_to_mm(&nt->mi,x,y,&mx,&my);
++            gmap_mm_to_cell(&nt->gm,&nt->mi,mx,my,&cx,&cy);
++            if(cx<0 || cy<0 || cx>=GM_N || cy>=GM_N || nt->gm.prior[cy*GM_N+cx]>=GM_COST_BLOCKED)continue;
++            rc_cell_t cell;
++            if(!hal_clear_read(gx,gy,&cell))continue;
++            if(!hal_clear_footprint_drop(&cell)){nt->footprint_races++;continue;}
++            nt->map[y*NP_MAP_N+x]=NP_COST_UNKNOWN;nt->footprint_cleared++;
++            if(nt->recheck_phase && gx==nt->observe_gx && gy==nt->observe_gy)
++                nt->observe_footprint_cleared=true;
++        }
++    /* A coarse cell may be released only if its complete footprint fits too,
++     * and no failed compare/write or neighbouring fine obstacle remains. */
++    for(int y=nav_max32(0,py-5);y<=nav_min32(NP_MAP_N-1,py+5);y++)
++        for(int x=nav_max32(0,px-5);x<=nav_min32(NP_MAP_N-1,px+5);x++) {
++            int32_t gx=x+nt->mi.cx-NP_MAP_N/2,gy=y+nt->mi.cy-NP_MAP_N/2;
++            if(gx%GM_DS || gy%GM_DS || x+GM_DS>NP_MAP_N || y+GM_DS>NP_MAP_N || !inside_body(nt,gx,gy,GM_DS))continue;
++            bool clear=true;
++            for(int dy=0;dy<GM_DS;dy++)for(int dx=0;dx<GM_DS;dx++) {
++                uint8_t v=nt->map[(y+dy)*NP_MAP_N+x+dx];
++                if(v!=NP_COST_UNKNOWN && v>=GM_COST_BLOCKED)clear=false;
++            }
++            if(!clear)continue;
++            int cx=gx/GM_DS-nt->gm.ox,cy=gy/GM_DS-nt->gm.oy;
++            if(cx<0 || cy<0 || cx>=GM_N || cy>=GM_N || nt->gm.prior[cy*GM_N+cx]>=GM_COST_BLOCKED)continue;
++            int i=cy*GM_N+cx;bool hint=false;
++            for(int k=0;k<GM_VBLK;k++) {
++                int dx=cx+nt->gm.ox-nt->gm.vblk[k].gx,dy=cy+nt->gm.oy-nt->gm.vblk[k].gy,r=nt->gm.vblk[k].r;
++                if(nt->gm.vblk[k].ttl && dx*dx+dy*dy<=r*r+1)hint=true;
++            }
++            if(nt->gm.occ[i]>0 || nt->gm.cost[i]>=GM_COST_BLOCKED || hint)
++                gmap_confirm_footprint(&nt->gm,cx,cy);
++        }
++#else
++    (void)nt;(void)now;
++#endif
++}
+--- a/fw/test/map_revalidate_py.c
++++ b/fw/test/map_revalidate_py.c
+@@ -21,6 +21,7 @@
+  *out=(rc_cell_t){gx,gy,(int16_t)v[0],(int16_t)v[1],(uint8_t)v[2],(uint8_t)v[3],(uint8_t)v[4],(uint8_t)v[5]};return true;
+ }
+ bool hal_clear_drop(const rc_cell_t *c){return drop_cb && drop_cb(c->gx,c->gy,c->tag,c->stamp,c->count);}
++bool hal_clear_footprint_drop(const rc_cell_t *c){return hal_clear_drop(c);}
+ static uint16_t probe_depth(void *ctx,int u,int v){(void)ctx;return hal_clear_depth_pixel(u,v);}
+ static void probe_ray(void *ctx,int u,int v,int16_t out[3]){lidar_cal_pixel((const lidar_cal_t*)ctx,v*160+u,out);}
+ EXPORT void py_clear_probe(const uint32_t *lens,const int32_t *tf,const int32_t *cell,int32_t *out){

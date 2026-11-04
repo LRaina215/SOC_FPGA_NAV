@@ -1,0 +1,53 @@
+{
+  "recorded_at": "2026-11-03T22:44:09.327886+08:00",
+  "stage": "read_only_live_audit_recovery_files_prepared_not_applied",
+  "confirmed_timeline": [
+    {
+      "at": "22:36:13",
+      "event": "FPGA reset; map false; balance active"
+    },
+    {
+      "at": "22:36:23",
+      "event": "Bridge transmits MODE search despite no prior"
+    },
+    {
+      "at": "22:36:24",
+      "event": "FPGA reports SEARCHING; loc mapless; map false; balance active"
+    },
+    {
+      "at": "22:38:46",
+      "event": "Balance false, idle; deferred ACTIVE firmware reload starts"
+    },
+    {
+      "at": "22:38:57",
+      "event": "field_home2 9880 bytes terminal READY"
+    }
+  ],
+  "root_causes": [
+    "keeper defers pending ACTIVE firmware reload while balance/task active, and continue bypasses map upload too",
+    "Target-task preflight explicitly bypasses map/localization conditions, allowing startup search before map readiness",
+    "locfix3 apply_pose_policy forces use_gmap=false for SEARCH/TRACK even with prior; inherited by reobserve1 and goalfix1",
+    "goalfix1 prohibits prior-present local fallback but did not correct use_gmap policy: mapped SEARCH has no valid frontier path"
+  ],
+  "correction_to_previous_diagnosis": "The immediate mapped-to-local fallback is explained by the app-layer use_gmap=false, not merely seen-mask coverage. Earlier native checks bypassed nav_app_poll and did not validate this integration.",
+  "keeper_changed_in_goalfix1": false,
+  "midday_recorded_baseline": {
+    "firmware": "nav_fw_follow1_yaw3_20261103.bin",
+    "banner": "Nov  3 2026 13:50:16",
+    "deployment_at": "2026-11-03T14:00:12.512428+08:00",
+    "flash": "PNR85",
+    "source": "F:\\nav_integration_g2_20261023\\K_fw_terrain1\\fw_follow1_20261103",
+    "recovery_files": "D:\\tools\\goal_select_fix_20261103\\recovery_follow1",
+    "qualification": "This is the documented 14:00 deployment; no independent claim that every prior physical behavior passed."
+  },
+  "recovery_constraints": [
+    "No live ACTIVE, Flash, bridge, keeper or map changes in this audit",
+    "Do not just point ACTIVE at follow1 and assume the startup map wait disappears: the per-boot loader guard still exists",
+    "If using the recorded PNR85 Flash baseline, disabling the ACTIVE override by backing it up avoids deferred RAM reload; this is a proposed recovery action, not performed",
+    "Return to the recorded baseline for policy/startup behavior before isolating active obstacle re-observation changes",
+    "Do not ask for vehicle power or more movement testing in this turn"
+  ],
+  "local_firmware_built_this_turn": false,
+  "physical_motion_command_sent": false,
+  "live_files_modified": false
+}

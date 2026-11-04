@@ -1,0 +1,614 @@
+--- app\main.c
++++ app\main.c
+@@ -45,10 +45,12 @@
+                        (int)nt->have_map, (int)nt->stale, (int)nt->path_valid, (int)nt->cmd_source,
+                        (int)nt->motion_result, (int)nt->lp.cmd.vx, (int)nt->lp.cmd.wz, (int)nt->cmd.vx, (int)nt->cmd.wz,
+                        (int)nt->recovering);
++#if !APP_COMPACT_TELEMETRY
+             con_printf("  scan act %d exit %d settle %d fail %d need %d odo_age %d ms odo vx %d wz %d\r\n",
+                        (int)nt->scan_active, (int)nt->scan_exit_valid, (int)nt->scan_settling, (int)nt->scan_failed,
+                        (int)support_scan_needed(), nt->pose.have_odo ? (int)((now - nt->pose.last_odo_us) / 1000u) : -1,
+                        (int)nt->pose.odo_vx, (int)nt->pose.odo_wz);
++#endif
+             con_printf("  loc q %d ema %d pts %u skip %u tskip %u\r\n", g_app.loc.q_last, (int)(g_app.loc.q_ema / 256),
+                        (unsigned)g_app.loc.n_pts, (unsigned)g_app.n_skip, (unsigned)g_app.n_time_skip);
+             con_printf("  match valid %u in %u cost %u align %u fail %u strong %u\r\n",
+@@ -58,22 +60,29 @@
+                        (unsigned)g_app.imu.n_ok, (unsigned)g_app.imu.n_bad, (int)nt->pose.have_att,
+                        (int)((int32_t)(int16_t)nt->pose.cur.pitch * 18000 / 32768),
+                        (int)((int32_t)(int16_t)nt->pose.cur.roll * 18000 / 32768));
++#if !APP_COMPACT_TELEMETRY
+             con_printf("  tmax step %u look %u chk %u frm %u mt %u host %u map %u ms\r\n",
+                        (unsigned)(g_app.tmax_step / 1000u), (unsigned)(nt->t_look_max / 1000u),
+                        (unsigned)(nt->t_chk_max / 1000u), (unsigned)(g_app.tmax_frame / 1000u),
+                        (unsigned)(g_app.tmax_match / 1000u), (unsigned)(g_app.tmax_host / 1000u),
+                        (unsigned)(g_app.tmax_map / 1000u));
++#endif
+             con_printf("  tq odo %u att %u turn %u  ovf %u rs %u lag %d ms  bias %d yaw %d cdeg\r\n",
+                        (unsigned)g_app.n_tq_odo, (unsigned)g_app.n_tq_att, (unsigned)g_app.n_turn_skip,
+                        (unsigned)g_app.imu_ovf, (unsigned)g_app.n_imu_resync,
+                        nt->pose.have_att ? (int)((int32_t)(now - nt->pose.imu_t_us) / 1000) : -1,
+                        (int)(nt->pose.wz_bias_q8 / 256),
+                        (int)((int32_t)(int16_t)nt->pose.cur.yaw * 18000 / 32768));
++#if !APP_COMPACT_TELEMETRY
+             con_printf("  look %d,%d i %d/%d goal %d,%d hold %d,%d  align q %d amb %d da %d  uns %u\r\n",
+                        (int)nt->look_x, (int)nt->look_y, (int)nt->look_i, nt->path.n,
+                        (int)nt->goal_x, (int)nt->goal_y, nt->hold_ref ? (int)nt->hold_x : 0,
+                        nt->hold_ref ? (int)nt->hold_y : 0, g_app.loc.res_q, g_app.loc.res_q2,
+                        (int)((int32_t)g_app.loc.res_da * 18000 / 32768), (unsigned)g_app.n_unsettled);
++#endif
++#if APP_COMPACT_TELEMETRY
++            con_printf("  obs %u/%u phase %u\r\n",nt->observe_completed,nt->observe_started,nt->recheck_phase);
++#endif
+             con_printf("  inv mfail %u(%u) pbusy %u stall %u dr %d  lidar acc %u rej %u(q %u) edge %u  live %u%s\r\n",
+                        nt->n_mfail, nt->last_mfail, nt->n_pbusy, nt->n_stall, (int)g_app.dead_reckon, g_app.n_dr_acc,
+                        g_app.n_dr_rej, g_app.n_dr_lowq, g_app.n_dr_edge, nt->gm.n_live, nt->gm.live_on ? " on" : "");
+--- app\nav_app.c
++++ app\nav_app.c
+@@ -1,3 +1,4 @@
++#include "map_revalidate.h"
+ #include "nav_search_checkpoint.h"
+ #include "nav_app.h"
+ #include "hal.h"
+@@ -84,6 +85,7 @@
+ static void frame_jumped(nav_task_t *nt)
+ {
+     astar_cancel();
++    map_revalidate_reset();nt->recheck_phase=0;
+     support_frame_jump();
+     nt->scan_active=nt->scan_settling=nt->scan_failed=false;
+     nt->scan_exit_valid=false;
+@@ -128,6 +130,7 @@
+     hal_map_info_t mi; hal_map_info(&mi);
+     uint16_t inv = mi.inv_res ? mi.inv_res : 1311;
+     int32_t cx = (int32_t)(((int64_t)at.x*inv)>>16), cy = (int32_t)(((int64_t)at.y*inv)>>16);
++    if(valid) map_revalidate_before_fuse(&g_app.nt,&g_app.lcal,r,t,at.t_us);
+     hal_lidar_stage(HAL_LIDAR_FUSE_ONLY);
+     if (valid) wait_anchor();
+     hal_lidar_commit(r, t, cx, cy, valid ? at.z+g_app.zband_lo : 1, valid ? at.z+g_app.zband_hi : 0,at.t_us);
+--- bsp\build_rv_k.py
++++ bsp\build_rv_k.py
+@@ -36,7 +36,7 @@
+     bsp = [str(ROOT / "bsp" / "console.c"), str(ROOT / "bsp" / "start.S")]
+     if a.app == "nav":
+         srcs = sorted(str(p) for p in (ROOT / "nav").glob("*.c")) + [
+-            str(ROOT / "app" / "nav_app.c"), str(ROOT / "app" / "main.c"), str(ROOT / "drv" / "hal_fpga.c")] + bsp
++            str(ROOT / "app" / "nav_app.c"), str(ROOT / "app" / "main.c"), str(ROOT / "drv" / "hal_fpga.c"), str(ROOT / "drv" / "map_revalidate_fpga.c")] + bsp
+     else:
+         srcs = [str(ROOT / "bsp" / "selftest.c")] + bsp
+     out = a.output_dir.resolve() if a.output_dir else OUT / a.app
+@@ -56,7 +56,7 @@
+     if a.stack_usage:
+         cmd[1:1] = ["-fstack-usage", "-save-temps=obj"]
+     print(f"构建 app={a.app}, -O{a.O}, LTO={'on' if use_lto else 'off'}", flush=True)
+-    r = subprocess.run(cmd, capture_output=True, text=True)
++    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
+     if r.returncode != 0:
+         print(r.stdout + r.stderr)
+         return 1
+@@ -79,8 +79,8 @@
+     if warn:
+         print("\n".join(warn[:20]))
+     subprocess.run([PREFIX + "objcopy", "-O", "binary", str(elf), str(out / "nav_fw.bin")], check=True)
+-    sz = subprocess.run([PREFIX + "size", "-A", str(elf)], capture_output=True, text=True).stdout
+-    print(subprocess.run([PREFIX + "size", str(elf)], capture_output=True, text=True).stdout.strip())
++    sz = subprocess.run([PREFIX + "size", "-A", str(elf)], capture_output=True, text=True, encoding="utf-8", errors="replace").stdout
++    print(subprocess.run([PREFIX + "size", str(elf)], capture_output=True, text=True, encoding="utf-8", errors="replace").stdout.strip())
+     img = (out / "nav_fw.bin").read_bytes()
+     nw = a.ram_kb * 256
+     img = img + bytes(4 * nw - len(img))
+--- drv\map_revalidate_fpga.c
++++ drv\map_revalidate_fpga.c
+@@ -0,0 +1,35 @@
++/* Board HAL for the staged RCV1 window; old bitstreams fail closed. */
++#include "map_revalidate.h"
++#include "hal.h"
++#include "nav_regs_map.h"
++#ifndef NAV_BASE
++#define NAV_BASE 0x40000000u
++#endif
++static inline uint32_t rd(uint32_t off){return *(volatile uint32_t *)(uintptr_t)(NAV_BASE+off);}
++static inline void wr(uint32_t off,uint32_t v){*(volatile uint32_t *)(uintptr_t)(NAV_BASE+off)=v;}
++static uint32_t capture;
++bool hal_clear_depth_begin(uint32_t cap){
++ if(rd(0xD200)!=0x52435631u || !(rd(NAV_LIDAR_POSE_STAT)&NAV_LIDAR_POSE_STAT_WAITING_MASK) || rd(0xD20C)!=cap)return false;
++ capture=cap;return true;
++}
++uint16_t hal_clear_depth_pixel(int u,int v){
++ if(u<0 || u>=160 || v<0 || v>=60 || rd(0xD20C)!=capture)return 0;
++ wr(0xD204,(uint32_t)(v*160+u));uint32_t q=rd(0xD208);
++ return q&0x10000u?(uint16_t)q:0;
++}
++bool hal_clear_read(int32_t gx,int32_t gy,rc_cell_t *out){
++ hal_map_info_t a,b;hal_support_t s;
++ if(!hal_map_info(&a) || !a.inv_res)return false;
++ int32_t x,y;nav_win_to_mm(&a,gx-a.cx+NP_MAP_N/2,gy-a.cy+NP_MAP_N/2,&x,&y);
++ if(!hal_map_support(x,y,&s))return false;
++ uint8_t fc=(uint8_t)rd(NAV_MAP_FRAME_CNT);
++ if(!hal_map_info(&b) || a.seq!=b.seq || a.cx!=b.cx || a.cy!=b.cy)return false;
++ uint8_t tag=(uint8_t)((((uint32_t)(gy>>7)&15)<<4)|((uint32_t)(gx>>7)&15));
++ *out=(rc_cell_t){gx,gy,s.lo,s.hi,tag,(uint8_t)(fc-s.age),s.count,s.age};return true;
++}
++bool hal_clear_drop(const rc_cell_t *c){
++ if(rd(0xD20C)!=capture)return false;
++ wr(0xD210,((uint32_t)c->stamp<<12)|((uint32_t)c->tag<<4)|c->count);
++ wr(0xD214,(((uint32_t)c->gy&127)<<7)|((uint32_t)c->gx&127));
++ wr(0xD218,1);return (rd(0xD218)&0x80000001u)==0x80000001u;
++}
+--- nav\map_ray_clear.c
++++ nav\map_ray_clear.c
+@@ -0,0 +1,110 @@
++/* Navigation CPU reference/implementation. No simulator or geometry truth.
++ * An entire old height prism must project inside a valid raw-depth patch,
++ * whose every return is at least 100mm beyond its farthest corner, in three
++ * distinct accepted capture epochs. Missing/foreground rays veto deletion.
++ * Compare-and-invalidate prevents deleting a cell updated after validation.
++ */
++#include "map_ray_clear.h"
++#include "fixmath.h"
++#include <string.h>
++#include <limits.h>
++#define B 20
++#define ONE (1<<B)
++static int32_t qm(int32_t a,int32_t b){return (int32_t)(((int64_t)a*b)>>B);}
++static int32_t f32q(uint32_t v){
++ int e=(int)((v>>23)&255);if(!e)return 0;
++ if(e==255)return 0;
++ int64_t m=(v&0x7fffff)|0x800000;int shift=e-150+B;
++ int64_t q=shift>=0?(shift<36?m<<shift:INT32_MAX):shift>-40?(m+((int64_t)1<<(-shift-1)))>>-shift:0;
++ if(q>INT32_MAX)q=INT32_MAX;return v>>31?-(int32_t)q:(int32_t)q;
++}
++void rc_init(rc_state_t *s){memset(s,0,sizeof(*s));}
++void rc_lens(rc_state_t *s,const uint32_t bits[9]){for(int i=0;i<9;i++)s->lens[i]=f32q(bits[i]);}
++static int floorq(int32_t x){return x>=0?x/ONE:-((int64_t)-x+ONE-1)/ONE;}
++static int ceilq(int32_t x){return -floorq(-x);}
++static bool project(const rc_state_t *s,const int32_t p[3],int32_t *u,int32_t *v){
++ if(p[0]<20)return false;
++ int32_t x=(int32_t)(((int64_t)p[1]*ONE)/p[0]),y=(int32_t)((-(int64_t)p[2]*ONE)/p[0]);
++ if(x>2*ONE || x<-2*ONE || y>ONE || y<-ONE)return false;
++ int32_t xx=qm(x,x),yy=qm(y,y),xy=qm(x,y),r=xx+yy;
++ int32_t rad=ONE+qm(r,s->lens[4]+qm(r,s->lens[5]+qm(r,s->lens[6])));
++ int32_t xd=qm(x,rad)+2*qm(s->lens[7],xy)+qm(s->lens[8],r+2*xx);
++ int32_t yd=qm(y,rad)+qm(s->lens[7],r+2*yy)+2*qm(s->lens[8],xy);
++ *u=159*ONE-(qm(s->lens[0],xd)+s->lens[2]);*v=qm(s->lens[1],yd)+s->lens[3];
++ return true;
++}
++static bool corner_cut(int u,int v){
++ int x=159-u,y=v;
++ return (x<30 && ((y<30 && (30-x)*(30-x)+(30-y)*(30-y)>900) ||
++                  (y>30 && (30-x)*(30-x)+(y-30)*(y-30)>900))) ||
++        (x>130 && ((y<30 && (x-130)*(x-130)+(30-y)*(30-y)>900) ||
++                   (y>30 && (x-130)*(x-130)+(y-30)*(y-30)>900)));
++}
++static uint16_t filtered(rc_depth_t get,void *ctx,int u,int v){
++ if(corner_cut(u,v))return 0;
++ uint16_t c=get(ctx,u,v),p=get(ctx,u-1,v),n=get(ctx,u+1,v);
++ int th=50+(c>>4),a=(int)c-p,b=(int)c-n;
++ if(a<0)a=-a;if(b<0)b=-b;
++ return c && p && n && a>th && b>th?0:c;
++}
++static bool proof(rc_state_t *s,const rc_cell_t *c,const int32_t r[3][3],const int32_t t[3],uint16_t inv,
++                  rc_depth_t get,rc_ray_t ray,void *ctx,int *budget){
++ int32_t umin=INT32_MAX,umax=INT32_MIN,vmin=INT32_MAX,vmax=INT32_MIN;uint32_t far=0;
++ int32_t x0=(int32_t)(((int64_t)c->gx*65536)/inv),x1=(int32_t)(((int64_t)(c->gx+1)*65536)/inv);
++ int32_t y0=(int32_t)(((int64_t)c->gy*65536)/inv),y1=(int32_t)(((int64_t)(c->gy+1)*65536)/inv);
++ int32_t lo[3]={x0,y0,c->lo-20},hi[3]={x1,y1,c->hi+20};
++ for(int i=0;i<8;i++){
++  int32_t w[3]={(i&1?x1:x0)-t[0],(i&2?y1:y0)-t[1],(i&4?hi[2]:lo[2])-t[2]},p[3];
++  for(int j=0;j<3;j++)p[j]=(int32_t)(((int64_t)r[0][j]*w[0]+(int64_t)r[1][j]*w[1]+(int64_t)r[2][j]*w[2])>>14);
++  int32_t u,v;if(!project(s,p,&u,&v)){s->diag[4]++;return false;}
++  if(u<umin)umin=u;if(u>umax)umax=u;if(v<vmin)vmin=v;if(v>vmax)vmax=v;
++  uint32_t dist=fx_isqrt((uint64_t)((int64_t)p[0]*p[0]+(int64_t)p[1]*p[1]+(int64_t)p[2]*p[2]));if(dist>far)far=dist;
++ }
++ int u0=floorq(umin)-1,u1=ceilq(umax)+1,v0=floorq(vmin)-1,v1=ceilq(vmax)+1;
++ s->diag[10]=(uint32_t)(u1-u0+1);s->diag[11]=(uint32_t)(v1-v0+1);
++ if(u0<1 || u1>158 || v0<1 || v1>58 || (u1-u0+1)*(v1-v0+1)>1024){s->diag[4]++;return false;}
++ (void)ray;
++ for(int v=v0;v<=v1;v++)for(int u=u0;u<=u1;u++){
++  if(!*budget){s->diag[9]++;return false;}(*budget)--;
++  /* Entire expanded bounding patch, including rays outside the prism, must
++   * be free. This is conservative and avoids a per-pixel inverse-lens solve
++   * on the soft CPU. No missing/foreground sample can become free evidence. */
++  uint16_t d=filtered(get,ctx,u,v);s->diag[8]++;
++  if(d<100 || d>20000){s->diag[5]++;return false;}
++  if(d<=far+100){s->diag[6]++;return false;}
++ }
++ s->diag[2]++;return true;
++}
++bool rc_probe(rc_state_t *s,const rc_cell_t *c,const int32_t r[3][3],const int32_t t[3],uint16_t inv,rc_depth_t get,rc_ray_t ray,void *ctx){
++ int budget=8192;return proof(s,c,r,t,inv,get,ray,ctx,&budget);
++}
++void rc_frame(rc_state_t *s,const int32_t r[3][3],const int32_t t[3],uint32_t capture_us,int32_t ground_z,
++              const uint8_t *cost,int32_t cx,int32_t cy,uint16_t inv,
++              rc_read_t read,rc_depth_t get,rc_ray_t ray,rc_drop_t drop,void *ctx){
++ if(!inv || !s->lens[0] || (s->last_frame && (int32_t)(capture_us-s->last_frame)<=0))return;
++ s->last_frame=capture_us;s->diag[0]++;
++ /* Nearest eligible stale/sparse lethal cells first; all selection uses the
++  * firmware cost map and old height, not a simulator's false-obstacle mask. */
++ rc_cell_t cells[RC_N];uint32_t dist[RC_N];int nc=0;
++ for(int y=0;y<128;y++)for(int x=0;x<128;x++){
++  if(cost[y*128+x]!=254)continue;
++  int32_t gx=cx-64+x,gy=cy-64+y;
++  int32_t dx=(int32_t)(((int64_t)gx*65536+32768)/inv)-t[0],dy=(int32_t)(((int64_t)gy*65536+32768)/inv)-t[1];
++  uint32_t d=(uint32_t)((int64_t)dx*dx+(int64_t)dy*dy);if(d>1300u*1300u)continue;
++  rc_cell_t c;if(!read(ctx,gx,gy,&c) || c.count<4 || c.age<3 || c.hi-ground_z<40 || c.hi-c.lo>180)continue;
++  int k=nc;if(k==RC_N){if(d>=dist[k-1])continue;k--;}
++  while(k>0 && d<dist[k-1]){if(k<RC_N){cells[k]=cells[k-1];dist[k]=dist[k-1];}k--;}
++  cells[k]=c;dist[k]=d;if(nc<RC_N)nc++;
++ }
++ rc_pending_t next[RC_N];memset(next,0,sizeof next);int budget=1024;
++ for(int j=0;j<nc;j++){
++  rc_cell_t *c=&cells[j];s->diag[1]++;
++  rc_pending_t old={0};for(int k=0;k<RC_N;k++)if(s->cell[k].used && s->cell[k].gx==c->gx && s->cell[k].gy==c->gy){old=s->cell[k];break;}
++  bool same=old.used && old.tag==c->tag && old.stamp==c->stamp && (uint32_t)(capture_us-old.last_us)<=350000;
++  if(!proof(s,c,r,t,inv,get,ray,ctx,&budget))continue;
++  uint8_t n=same?(uint8_t)(old.n+1):1;
++  if(n>=3){if(drop(ctx,c))s->diag[3]++;else s->diag[7]++;}
++  else next[j]=(rc_pending_t){c->gx,c->gy,capture_us,c->tag,c->stamp,n,1};
++ }
++ memcpy(s->cell,next,sizeof next);
++}
+--- nav\map_ray_clear.h
++++ nav\map_ray_clear.h
+@@ -0,0 +1,19 @@
++#ifndef MAP_RAY_CLEAR_H
++#define MAP_RAY_CLEAR_H
++#include <stdint.h>
++#include <stdbool.h>
++#define RC_N 16
++typedef struct { int32_t gx,gy; int16_t lo,hi; uint8_t tag,stamp,count,age; } rc_cell_t;
++typedef struct {int32_t gx,gy;uint32_t last_us;uint8_t tag,stamp,n,used;} rc_pending_t;
++typedef struct {rc_pending_t cell[RC_N];uint32_t last_frame;uint32_t diag[12];int32_t lens[9];} rc_state_t;
++typedef bool (*rc_read_t)(void*,int32_t,int32_t,rc_cell_t*);
++typedef uint16_t (*rc_depth_t)(void*,int,int);
++typedef void (*rc_ray_t)(void*,int,int,int16_t[3]);
++typedef bool (*rc_drop_t)(void*,const rc_cell_t*);
++void rc_init(rc_state_t*);
++void rc_lens(rc_state_t*,const uint32_t bits[9]);
++bool rc_probe(rc_state_t*,const rc_cell_t*,const int32_t[3][3],const int32_t[3],uint16_t,rc_depth_t,rc_ray_t,void*);
++void rc_frame(rc_state_t*,const int32_t r[3][3],const int32_t t[3],uint32_t capture_us,int32_t ground_z,
++              const uint8_t *cost,int32_t cx,int32_t cy,uint16_t inv_res,
++              rc_read_t,rc_depth_t,rc_ray_t,rc_drop_t,void*);
++#endif
+--- nav\map_revalidate.c
++++ nav\map_revalidate.c
+@@ -0,0 +1,24 @@
++#include "map_revalidate.h"
++#ifndef APP_RAY_CLEAR_ENABLE
++#define APP_RAY_CLEAR_ENABLE 0
++#endif
++#if APP_RAY_CLEAR_ENABLE
++static rc_state_t state;
++static bool rd(void *ctx,int32_t x,int32_t y,rc_cell_t *v){(void)ctx;return hal_clear_read(x,y,v);}
++static uint16_t pixel(void *ctx,int u,int v){(void)ctx;return hal_clear_depth_pixel(u,v);}
++static void ray(void *ctx,int u,int v,int16_t out[3]){lidar_cal_pixel((const lidar_cal_t*)ctx,v*160+u,out);}
++static bool drop(void *ctx,const rc_cell_t *v){(void)ctx;return hal_clear_drop(v);}
++void map_revalidate_reset(void){rc_init(&state);}
++void map_revalidate_diagnostics(uint32_t *v){for(int i=0;i<12;i++)v[i]=state.diag[i];}
++void map_revalidate_before_fuse(nav_task_t *nt,const lidar_cal_t *cal,const int32_t r[3][3],const int32_t t[3],uint32_t capture_us){
++ if(!nt->have_map || !hal_clear_depth_begin(capture_us))return;
++ rc_lens(&state,cal->lens);
++ rc_frame(&state,r,t,capture_us,nt->pose.cur.z,nt->map,nt->mi.cx,nt->mi.cy,nt->mi.inv_res,rd,pixel,ray,drop,(void*)cal);
++}
++#else
++void map_revalidate_reset(void){}
++void map_revalidate_diagnostics(uint32_t *v){for(int i=0;i<12;i++)v[i]=0;}
++void map_revalidate_before_fuse(nav_task_t *nt,const lidar_cal_t *cal,const int32_t r[3][3],const int32_t t[3],uint32_t cap){
++ (void)nt;(void)cal;(void)r;(void)t;(void)cap;
++}
++#endif
+--- nav\map_revalidate.h
++++ nav\map_revalidate.h
+@@ -0,0 +1,13 @@
++#ifndef MAP_REVALIDATE_H
++#define MAP_REVALIDATE_H
++#include "map_ray_clear.h"
++#include "nav_task.h"
++#include "lidar_cal.h"
++bool hal_clear_depth_begin(uint32_t capture_us);
++uint16_t hal_clear_depth_pixel(int u,int v);
++bool hal_clear_read(int32_t gx,int32_t gy,rc_cell_t*);
++bool hal_clear_drop(const rc_cell_t*);
++void map_revalidate_reset(void);
++void map_revalidate_before_fuse(nav_task_t*,const lidar_cal_t*,const int32_t r[3][3],const int32_t t[3],uint32_t capture_us);
++void map_revalidate_diagnostics(uint32_t*);
++#endif
+--- nav\motion_guard.c
++++ nav\motion_guard.c
+@@ -1,5 +1,6 @@
+ #include "motion_guard.h"
+ #include "fixmath.h"
++int32_t motion_evidence[8];
+ 
+ bool motion_map_same(const hal_map_info_t *a, const hal_map_info_t *b)
+ {
+@@ -114,7 +115,12 @@
+                         int32_t uy=(int32_t)((int64_t)cmd->vx*sn+(int64_t)cmd->vy*cs);
+                         if (max_projection(cx,cy,qx,qy,ux,uy) <= 0) continue;
+                     }
+-                    return MOTION_HAZARD;
++                    {
++        motion_evidence[0]++;motion_evidence[1]=end?2:1;
++        motion_evidence[2]=mi->cx-NP_MAP_N/2+cx;motion_evidence[3]=mi->cy-NP_MAP_N/2+cy;
++        motion_evidence[4]=mi->seq;motion_evidence[5]=hal_time_us();
++        motion_evidence[6]=cx;motion_evidence[7]=cy;return MOTION_HAZARD;
++    }
+                 }
+                 if (c == NP_COST_UNKNOWN && (end || s <= 4)) {
+                     if(!contained(cx,cy,qx,qy,rr0)) {
+@@ -206,7 +212,12 @@
+                 if(xn>=(a<b?a:b) && xn<=(a>b?a:b)) hit=true;
+             }
+         }
+-        if(hit) {if(c==NP_COST_LETHAL) return MOTION_HAZARD; unknown=true;}
++        if(hit) {if(c==NP_COST_LETHAL) {
++        motion_evidence[0]++;motion_evidence[1]=2;
++        motion_evidence[2]=mi->cx-NP_MAP_N/2+x;motion_evidence[3]=mi->cy-NP_MAP_N/2+y;
++        motion_evidence[4]=mi->seq;motion_evidence[5]=hal_time_us();
++        motion_evidence[6]=x;motion_evidence[7]=y;return MOTION_HAZARD;
++    } unknown=true;}
+     }
+     return unknown?MOTION_UNKNOWN:MOTION_OK;
+ }
+--- nav\nav_task.c
++++ nav\nav_task.c
+@@ -1,3 +1,5 @@
++#include "map_revalidate.h"
++extern int32_t motion_evidence[8];
+ #include "nav_search_checkpoint.h"
+ #include "nav_task.h"
+ #include "fixmath.h"
+@@ -41,7 +43,7 @@
+     *wy = iy - (mi->cy - N / 2);
+ }
+ 
+-void nav_win_to_mm(const hal_map_info_t *mi, int wx, int wy, int32_t *x, int32_t *y)
++__attribute__((noinline)) void nav_win_to_mm(const hal_map_info_t *mi, int wx, int wy, int32_t *x, int32_t *y)
+ {
+     int32_t ix = wx + (mi->cx - N / 2), iy = wy + (mi->cy - N / 2);
+     *x = (int32_t)(((int64_t)ix * 65536 + 32768) / mi->inv_res);
+@@ -112,6 +114,7 @@
+ {
+     astar_cancel();nt->bg_done=false;
+     nt->mode = mode;
++    if(mode!=NAV_MODE_SEARCH && mode!=NAV_MODE_TRACK)nt->recheck_phase=0;
+     nt->track_holding = true;
+     nt->track_goal_valid = false;
+     if(mode==NAV_MODE_IDLE || mode==NAV_MODE_ESTOP) {
+@@ -144,6 +147,7 @@
+ 
+ void nav_task_set_goal(nav_task_t *nt, int32_t x, int32_t y)
+ {
++    nt->recheck_phase=0;nt->observe_cooldown=0;
+     nt->scan_active=nt->scan_settling=nt->scan_failed=false;nt->scan_exit_valid=false;
+     nt->goal_x = x;
+     nt->goal_y = y;
+@@ -174,6 +178,7 @@
+         if (m->u.target.found && target_fresh(&nt->tgt, rx_us) && nt->mode == NAV_MODE_SEARCH) nav_task_set_mode(nt, NAV_MODE_TRACK);
+         break;
+     case MSG_MODE:
++        nt->recheck_phase=0;nt->observe_cooldown=0;
+         if (m->u.mode.mode <= NAV_MODE_ESTOP) nav_task_set_mode(nt, (nav_mode_t)m->u.mode.mode);
+         break;
+     default:
+@@ -577,7 +582,10 @@
+     if(speed>0) progress=nav_min32(progress,nav_max32(5,(int32_t)((int64_t)speed*nt->cfg.stall_us/2000000)));
+     /* 有意低速接入不能要求6s内仍前进150mm；用半个停滞窗口的
+      * 已下发速度计算门槛。零速/纯转向仍用原门槛，不能靠定位抖动保活。 */
+-    if (fx_dist(p->x - nt->prog_x, p->y - nt->prog_y) > progress) {
++    int64_t real_progress=nt->pose.travel_um-nt->progress_travel_um;
++    if(real_progress<0)real_progress=-real_progress;
++    if (fx_dist(p->x - nt->prog_x, p->y - nt->prog_y) > progress && real_progress>progress*1000LL) {
++        nt->progress_travel_um=nt->pose.travel_um;
+         nt->prog_x = p->x; nt->prog_y = p->y; nt->prog_t_us = now;
+     } else if (!nt->recovering && (uint32_t)(now - nt->prog_t_us) > nt->cfg.stall_us) {
+         /* 近目标卡住先零速/报告受阻；下一周期仍可重新规划受检查的动作。
+@@ -603,7 +611,7 @@
+         nt->recovering = true;
+         nt->n_stall++;
+         nt->recover_until_us = now + nt->cfg.recover_us;
+-        nt->recover_dir = (int8_t)(back_clear(nt, p, 400) ? 1 : 0);
++        nt->recover_dir = 0; /* forward-only active observation */
+         nt->path_valid = false;
+         nt->turning = false;
+         nt->n_recover++;
+@@ -720,8 +728,39 @@
+         nt->prog_t_us=now;nt->last_ok_us=now;nt->cmd_source=CMD_HOLD;
+         goto send_checked; /* 首张记忆图完成后再规划，避免发布全未知初图路线。 */
+     }
++    if(nt->recheck_phase && (nt->mode==NAV_MODE_SEARCH || nt->mode==NAV_MODE_TRACK || nt->mode==NAV_MODE_GOTO)) {
++        rc_cell_t evidence;
++        bool ground=hal_clear_read(nt->observe_gx,nt->observe_gy,&evidence) && evidence.count>=4 && evidence.age<=2 &&
++                    evidence.hi-p->z<30 && evidence.lo-p->z> -30;
++        if(ground || (int32_t)(now-nt->recheck_until_us)>=0) {
++            if(ground)nt->observe_completed++;
++            nt->recheck_phase=0;nt->observe_cooldown=now+5000000u;
++            nt->path_valid=false;nt->recovering=false;astar_cancel();nt->bg_done=false;
++            nt->track_goal_valid=false;nt->search_goal_valid=false;
++        } else {
++            nt->state=ST_BLOCKED;nt->recovering=false;
++            if(nt->recheck_phase==1 && fx_dist(nt->observe_x-p->x,nt->observe_y-p->y)>90) {
++                drive_to(nt,now,nt->observe_x,nt->observe_y,80);
++            } else {
++                nt->recheck_phase=2;
++                int32_t hx,hy;
++                nav_win_to_mm(&nt->mi,nt->observe_gx-nt->mi.cx+N/2,nt->observe_gy-nt->mi.cy+N/2,&hx,&hy);
++                int32_t da=fx_angle_diff(p->yaw,fx_atan2(hy-p->y,hx-p->x));
++                nt->cmd=(nav_cmd_t){0,0,(int16_t)nav_clamp32(da*2/3,-350,350),0};
++                if(nav_abs32(da)<700)nt->cmd.wz=0;
++                nt->cmd_source=CMD_RECOVERY;
++            }
++            goto send_checked;
++        }
++    }
+     if(nt->mode==NAV_MODE_TRACK && !target_alive(&nt->tgt,now)) {
+-        nav_task_set_mode(nt,NAV_MODE_SEARCH);goto send_checked;
++        bool revisit=nt->tgt.valid && (nt->tgt.cls==39 || nt->tgt.cls==41) && (uint32_t)(now-nt->tgt.t_us)<60000000u;
++        nav_task_set_mode(nt,NAV_MODE_SEARCH);
++        if(revisit) {
++            target_approach_goal(&nt->tgt,p,&nt->goal_x,&nt->goal_y);
++            nt->search_goal_valid=true;nt->search_t_us=now;nt->revisit_goal=true;nt->revisit_until_us=now+20000000u;
++        }
++        goto send_checked;
+     }
+     int32_t scan_gx=nt->mode==NAV_MODE_TRACK?nt->tgt.x:nt->goal_x;
+     int32_t scan_gy=nt->mode==NAV_MODE_TRACK?nt->tgt.y:nt->goal_y;
+@@ -857,6 +896,7 @@
+     }
+ 
+     case NAV_MODE_SEARCH:
++        if(nt->revisit_goal && (int32_t)(now-nt->revisit_until_us)>=0) {nt->revisit_goal=false;nt->search_goal_valid=false;}
+         if (target_alive(&nt->tgt, now)) { nav_task_set_mode(nt, NAV_MODE_TRACK); break; }
+         if (nt->search_goal_valid && (uint32_t)(now - nt->search_t_us) > nt->cfg.search_repick_us) {
+             /* 超时没到：这个目标够不着，拉黑后重选 */
+@@ -864,6 +904,7 @@
+             nt->search_goal_valid = false;
+         }
+         if (!nt->search_goal_valid) {
++            nt->revisit_goal=false;
+             const bool seen_mode = nt->use_gmap && nt->gm.has_prior;
+             nt->search_goal_valid = nt->use_gmap &&
+                 explore_frontier(&nt->exp, &nt->ex_cfg, &nt->gm, &nt->mi, p, seen_mode, &nt->goal_x, &nt->goal_y);
+@@ -885,8 +926,11 @@
+         if (!nt->search_goal_valid) {
+             nt->cmd = (nav_cmd_t){0, 0, (int16_t)(nt->lp_cfg.w_max / 2), 0};     /* 原地转一圈找路 */
+             nt->cmd_source = CMD_SEARCH;
+-        } else if (drive_to(nt, now, nt->goal_x, nt->goal_y, 700)) {     /* 边界点：走近到能看清即可 */
+-            nt->search_goal_valid = false;
++        } else if (drive_to(nt, now, nt->goal_x, nt->goal_y, nt->revisit_goal?150:700)) {     /* 边界点：走近到能看清即可 */
++            if(nt->revisit_goal) {
++                int32_t da=fx_angle_diff(p->yaw,fx_atan2(nt->tgt.y-p->y,nt->tgt.x-p->x));
++                nt->cmd=(nav_cmd_t){0,0,(int16_t)nav_clamp32(da*2/3,-350,350),0};nt->cmd_source=CMD_SEARCH;
++            } else nt->search_goal_valid = false;
+         }
+         nt->state = ST_SEARCHING;
+         break;
+@@ -994,7 +1038,22 @@
+             /* 切图丢弃本次速度，世界坐标路线保留到下周期重新复核。 */
+             if(nt->motion_result!=MOTION_MAP_CHANGED || (!nt->use_gmap && !nt->path_fine)) nt->path_valid=false;
+             nt->last_ok_us = now - nt->cfg.blocked_us - 1u;
+-            if (nt->mode == NAV_MODE_GOTO) nt->state = ST_BLOCKED;
++            if (nt->mode == NAV_MODE_GOTO || nt->mode==NAV_MODE_SEARCH) nt->state = ST_BLOCKED;
++            if(!nt->recheck_phase && !nt->hold && nt->motion_result==MOTION_HAZARD &&
++               (int32_t)(now-nt->observe_cooldown)>=0 && motion_evidence[4]==nt->mi.seq) {
++                rc_cell_t old;
++                int32_t hx=motion_evidence[2],hy=motion_evidence[3];
++                if(hal_clear_read(hx,hy,&old) && old.age>=3 && old.hi-p->z>40) {
++                    int32_t x,y;
++                    nav_win_to_mm(&nt->mi,hx-nt->mi.cx+N/2,hy-nt->mi.cy+N/2,&x,&y);
++                    int32_t dx=x-p->x,dy=y-p->y,d=nav_max32(1,fx_dist(dx,dy));
++                    nt->observe_x=p->x-(int32_t)((int64_t)dx*250/d);
++                    nt->observe_y=p->y-(int32_t)((int64_t)dy*250/d);
++                    nt->observe_gx=hx;nt->observe_gy=hy;
++                    nt->recheck_phase=1;nt->recheck_until_us=now+35000000u;nt->observe_started++;
++                    nt->path_valid=false;astar_cancel();nt->bg_done=false;
++                }
++            }
+         }
+     }
+     t_chk = hal_time_us() - t_chk;
+--- nav\nav_task.h
++++ nav\nav_task.h
+@@ -117,6 +117,16 @@
+     uint32_t       look_path_t;      /* look_i 所属路径的生成时刻（path_t_us） */
+     int16_t        v_prev;           /* 上一周期实际下发的前进速度（斜坡起点） */
+     uint16_t       n_mfail, n_pbusy, n_stall; /* 诊断：最终足迹检查不过 / 重规划期间没有可用路径 / 卡住恢复 */
++    int64_t progress_travel_um;
++    uint32_t recheck_since_us,recheck_until_us;
++    uint16_t recheck_rejects;
++    uint8_t recheck_phase;
++    angle_t recheck_yaw;
++    int32_t observe_x,observe_y,observe_gx,observe_gy;
++    uint32_t observe_cooldown;
++    uint16_t observe_started,observe_completed;
++    bool revisit_goal;
++    uint32_t revisit_until_us;
+     uint8_t        last_mfail;       /* 最近一次足迹检查不过的结果码 */
+ } nav_task_t;
+ 
+--- nav\pose.c
++++ nav\pose.c
+@@ -65,6 +65,7 @@
+     int64_t dx_um = (vh * c - (int64_t)vy * s) * dt / Q14 / 1000;
+     int64_t dy_um = (vh * s + (int64_t)vy * c) * dt / Q14 / 1000;
+     int64_t dz_um = -(int64_t)vx * sp * dt / Q14 / 1000;
++    p->travel_um+=(int64_t)vx*dt/1000;
+     p->x_um += dx_um;
+     p->y_um += dy_um;
+     p->z_um += dz_um;
+--- nav\pose.h
++++ nav\pose.h
+@@ -26,6 +26,7 @@
+     nav_pose_t cur;
+     /* 亚毫米累计，避免积分截断误差 */
+     int64_t    x_um, y_um, z_um;
++    int64_t travel_um;
+     int64_t    yaw_rem;        /* 陀螺积分除法余数，避免每个高频样本都丢失小角度 */
+     /* 控制核已扣启动零偏；这里仅按可靠地图匹配估残余，零导航指令不代表静止 */
+     int32_t    wz_bias_q8;      /* mrad/s × 256 */
+--- test\hal_py.c
++++ test\hal_py.c
+@@ -263,7 +263,7 @@
+ EXPORT void py_set_mount(int pitch_cdeg, int x_mm, int z_mm)
+ {
+     pose_est_t *p = &g_app.nt.pose;
+-    fx_rot_zyx(&p->r_bs, 0, ANGLE_FROM_CDEG(pitch_cdeg), 0);
++    (void)pitch_cdeg; /* keep real nav_task_init mount rotation */
+     p->t_bs[0] = x_mm;
+     p->t_bs[2] = z_mm;
+ }
+@@ -472,3 +472,19 @@
+     s_hout_n++;
+     return true;
+ }
++
++EXPORT int py_get_imu_protocol(void) { return g_app.imu.proto; }
++EXPORT void py_get_imu_evidence(int32_t *v) {
++    v[0]=g_app.imu.proto;v[1]=g_app.imu.n_ok;v[2]=g_app.imu.n_bad;
++    v[3]=g_app.nt.pose.cur.pitch;v[4]=g_app.nt.pose.cur.roll;
++    v[5]=g_app.nt.pose.imu_t_us;v[6]=g_app.imu.bmi_seq;
++}
++
++extern int32_t motion_evidence[8];
++EXPORT void py_get_motion_evidence(int32_t *v) {memcpy(v,motion_evidence,8*sizeof(int32_t));}
++EXPORT void py_guard_hit(int32_t *v) {v[0]=motion_evidence[0]?motion_evidence[6]:-1;v[1]=motion_evidence[0]?motion_evidence[7]:-1;}
++
++EXPORT void py_observe_diag(int32_t *v) {
++ const nav_task_t *n=&g_app.nt;v[0]=n->recheck_phase;v[1]=n->observe_started;v[2]=n->observe_completed;
++ v[3]=n->observe_gx;v[4]=n->observe_gy;v[5]=n->observe_x;v[6]=n->observe_y;
++}
+--- test\map_revalidate_py.c
++++ test\map_revalidate_py.c
+@@ -0,0 +1,32 @@
++/* Host HAL only: actual CPU algorithm calls the same operations that the
++ * hardware HAL supplies via the retained-depth and compare/invalidate ports. */
++#include "map_ray_clear.h"
++#include "map_revalidate.h"
++#include <string.h>
++#if defined(_WIN32)
++#define EXPORT __declspec(dllexport)
++#else
++#define EXPORT __attribute__((visibility("default")))
++#endif
++typedef int (*read_cb_t)(int32_t,int32_t,int32_t*);
++typedef int (*drop_cb_t)(int32_t,int32_t,int32_t,int32_t,int32_t);
++static uint16_t depth[9600];static uint32_t stamp;static read_cb_t read_cb;static drop_cb_t drop_cb;
++EXPORT void py_clear_set_callbacks(read_cb_t r,drop_cb_t d){read_cb=r;drop_cb=d;}
++EXPORT void py_clear_depth(const uint16_t *data,uint32_t cap){memcpy(depth,data,sizeof depth);stamp=cap;}
++EXPORT void py_clear_diag(uint32_t *v){map_revalidate_diagnostics(v);}
++bool hal_clear_depth_begin(uint32_t cap){return cap==stamp;}
++uint16_t hal_clear_depth_pixel(int u,int v){return u>=0 && u<160 && v>=0 && v<60?depth[v*160+u]:0;}
++bool hal_clear_read(int32_t gx,int32_t gy,rc_cell_t *out){
++ int32_t v[7];if(!read_cb || !read_cb(gx,gy,v))return false;
++ *out=(rc_cell_t){gx,gy,(int16_t)v[0],(int16_t)v[1],(uint8_t)v[2],(uint8_t)v[3],(uint8_t)v[4],(uint8_t)v[5]};return true;
++}
++bool hal_clear_drop(const rc_cell_t *c){return drop_cb && drop_cb(c->gx,c->gy,c->tag,c->stamp,c->count);}
++static uint16_t probe_depth(void *ctx,int u,int v){(void)ctx;return hal_clear_depth_pixel(u,v);}
++static void probe_ray(void *ctx,int u,int v,int16_t out[3]){lidar_cal_pixel((const lidar_cal_t*)ctx,v*160+u,out);}
++EXPORT void py_clear_probe(const uint32_t *lens,const int32_t *tf,const int32_t *cell,int32_t *out){
++ lidar_cal_t cal;lidar_cal_init(&cal);lidar_cal_start(&cal,lens,true);
++ rc_state_t state;rc_init(&state);rc_lens(&state,lens);
++ rc_cell_t c={cell[0],cell[1],cell[2],cell[3],0,0,15,10};
++ out[0]=rc_probe(&state,&c,(const int32_t(*)[3])tf,tf+9,1311,probe_depth,probe_ray,&cal);
++ for(int i=0;i<12;i++)out[i+1]=(int32_t)state.diag[i];
++}

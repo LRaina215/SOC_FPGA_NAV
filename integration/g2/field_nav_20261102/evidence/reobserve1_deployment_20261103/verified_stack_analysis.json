@@ -1,0 +1,101 @@
+{
+  "complete": true,
+  "static_bound_bytes": 1392,
+  "direct_call_bound_bytes": 1392,
+  "path": [
+    "main",
+    "nav_app_poll",
+    "task_step_local.constprop.0",
+    "explore_frontier.constprop.0",
+    "nav_app_search_checkpoint",
+    "apply_host_link_lock.isra.0",
+    "nav_task_set_mode.constprop.0",
+    "local_frame_point",
+    "rotate.lto_priv.0",
+    "guard_sin"
+  ],
+  "resolved_switches": [
+    {
+      "function": "drain_host_messages.lto_priv.0",
+      "table": ".L1585",
+      "targets": [
+        ".L1588",
+        ".L1587",
+        ".L1586",
+        ".L1584"
+      ]
+    },
+    {
+      "function": "xt_link_poll.constprop.0",
+      "table": ".L1072",
+      "targets": [
+        ".L1076",
+        ".L1075",
+        ".L1074",
+        ".L1073",
+        ".L1071"
+      ]
+    }
+  ],
+  "unresolved_indirect": [],
+  "nonstatic_frames": [],
+  "unresolved_sp_writes": [],
+  "irq_disabled": true,
+  "stack_reserved_bytes": 6144,
+  "largest_frames": [
+    [
+      "nav_app_poll",
+      416
+    ],
+    [
+      "drain_host_messages.lto_priv.0",
+      400
+    ],
+    [
+      "task_step_local.constprop.0",
+      320
+    ],
+    [
+      "nav_app_search_checkpoint",
+      288
+    ],
+    [
+      "waypoint_visible.constprop.0",
+      240
+    ],
+    [
+      "xt_link_poll.constprop.0",
+      240
+    ],
+    [
+      "send_tcp.constprop.0",
+      224
+    ],
+    [
+      "fx_rot_zyx",
+      192
+    ]
+  ],
+  "scope": "linked image, no IRQ/recursion/heap; tail calls conservatively nested; board watermark still pending",
+  "irq_source": "F:\\nav_integration_g2_20261023\\K_terrain19_follow1\\nav\\rtl\\soc\\nav_soc.v",
+  "additional_switch_proof": {
+    "function": "drain_host_messages.lto_priv.0",
+    "table": ".L1585",
+    "targets": [
+      ".L1588",
+      ".L1587",
+      ".L1586",
+      ".L1584"
+    ],
+    "base_register": "s4",
+    "base_constant_before_jump": [
+      "lui s4,%hi(.L1585)",
+      "addi s4,s4,%lo(.L1585)"
+    ],
+    "bounded_index_max": 3
+  },
+  "source_assembly_files": [
+    "D:\\tools\\motion_repair_20261103\\delivery_candidate\\rv32_delivery\\nav_fw.elf.ltrans0.ltrans.s",
+    "D:\\tools\\motion_repair_20261103\\delivery_candidate\\rv32_delivery\\nav_fw.elf.ltrans1.ltrans.s"
+  ]
+}

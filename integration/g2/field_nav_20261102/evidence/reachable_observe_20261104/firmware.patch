@@ -1,0 +1,369 @@
+--- a/fw/app/nav_app.c
++++ b/fw/app/nav_app.c
+@@ -85,7 +85,7 @@
+ static void frame_jumped(nav_task_t *nt)
+ {
+     astar_cancel();
+-    map_revalidate_reset();nt->recheck_phase=0;
++    map_revalidate_reset();obstacle_observe_reset(nt);
+     support_frame_jump();
+     nt->scan_active=nt->scan_settling=nt->scan_failed=false;
+     nt->scan_exit_valid=false;
+@@ -170,6 +170,7 @@
+         hal_host_send(reply,n);break;
+     }
+     case MSG_MAP_BEGIN:
++        obstacle_observe_reset(nt);
+         g_app.pose_seeded = false;
+         g_app.dr_agree = g_app.dr_strong = 0;
+         g_app.have_fix = false;
+@@ -189,6 +190,7 @@
+         send_ack();
+         break;
+     case MSG_MAP_CLEAR:
++        obstacle_observe_reset(nt);
+         g_app.pose_seeded = false;
+         g_app.dr_agree = g_app.dr_strong = 0;
+         prior_rx_clear(&g_app.prx, &nt->gm);
+--- a/fw/nav/motion_guard.c
++++ b/fw/nav/motion_guard.c
+@@ -163,8 +163,8 @@
+                      const nav_pose_t *pose, const lp_cfg_t *cfg, const nav_cmd_t *cmd)
+ { return check(map, mi, pose, cfg, cmd, 0); }
+ 
+-uint8_t motion_segment(const uint8_t *map, const hal_map_info_t *mi,
+-                       const nav_pose_t *pose, const lp_cfg_t *cfg, int32_t gx, int32_t gy)
++static uint8_t segment(const uint8_t *map, const hal_map_info_t *mi,
++                       const nav_pose_t *pose, const lp_cfg_t *cfg, int32_t gx, int32_t gy, bool record)
+ {
+     if (!mi->inv_res) return MOTION_NO_MAP;
+     int32_t r = (int32_t)(((int64_t)cfg->caps.radius_mm * mi->inv_res + 255) >> 8);
+@@ -213,6 +213,7 @@
+             }
+         }
+         if(hit) {if(c==NP_COST_LETHAL) {
++        if (!record) return MOTION_HAZARD;
+         motion_evidence[0]++;motion_evidence[1]=2;
+         motion_evidence[2]=mi->cx-NP_MAP_N/2+x;motion_evidence[3]=mi->cy-NP_MAP_N/2+y;
+         motion_evidence[4]=mi->seq;motion_evidence[5]=hal_time_us();
+@@ -221,3 +222,15 @@
+     }
+     return unknown?MOTION_UNKNOWN:MOTION_OK;
+ }
++
++uint8_t motion_segment(const uint8_t *map, const hal_map_info_t *mi,
++                       const nav_pose_t *pose, const lp_cfg_t *cfg, int32_t gx, int32_t gy)
++{
++    return segment(map, mi, pose, cfg, gx, gy, true);
++}
++
++uint8_t motion_segment_probe(const uint8_t *map, const hal_map_info_t *mi,
++                             const nav_pose_t *pose, const lp_cfg_t *cfg, int32_t gx, int32_t gy)
++{
++    return segment(map, mi, pose, cfg, gx, gy, false);
++}
+--- a/fw/nav/motion_guard.h
++++ b/fw/nav/motion_guard.h
+@@ -19,4 +19,7 @@
+ /* 前视线段的连续圆形扫掠；逐格检查胶囊与方格，不使用253作半径代理。 */
+ uint8_t motion_segment(const uint8_t *map, const hal_map_info_t *mi,
+                        const nav_pose_t *pose, const lp_cfg_t *cfg, int32_t gx, int32_t gy);
++/* A hypothetical observation route must not overwrite the last real motion veto. */
++uint8_t motion_segment_probe(const uint8_t *map, const hal_map_info_t *mi,
++                             const nav_pose_t *pose, const lp_cfg_t *cfg, int32_t gx, int32_t gy);
+ #endif
+--- a/fw/nav/nav_task.c
++++ b/fw/nav/nav_task.c
+@@ -790,32 +790,8 @@
+         nt->prog_t_us=now;nt->last_ok_us=now;nt->cmd_source=CMD_HOLD;
+         goto send_checked; /* 首张记忆图完成后再规划，避免发布全未知初图路线。 */
+     }
+-    if(nt->recheck_phase && (nt->mode==NAV_MODE_SEARCH || nt->mode==NAV_MODE_TRACK || nt->mode==NAV_MODE_GOTO)) {
+-        bool ground=obstacle_observe_ground(nt);
+-        if(ground || (int32_t)(now-nt->recheck_until_us)>=0) {
+-            if(ground)nt->observe_completed++;else nt->observe_timeouts++;
+-            nt->observe_outcome=ground?2:3;
+-            nt->recheck_phase=0;nt->observe_cooldown=now+5000000u;
+-            nt->path_valid=false;nt->path.n=0;nt->recovering=false;astar_cancel();nt->bg_done=false;
+-            /* The task goal/waypoint and SEARCH goal validity survive observation. */
+-            nt->prog_t_us=nt->search_t_us=nt->last_ok_us=now;
+-            nt->prog_x=p->x;nt->prog_y=p->y;nt->progress_travel_um=nt->pose.travel_um;
+-        } else {
+-            nt->state=ST_BLOCKED;nt->recovering=false;
+-            if(nt->recheck_phase==1 && fx_dist(nt->observe_x-p->x,nt->observe_y-p->y)>90) {
+-                drive_to(nt,now,nt->observe_x,nt->observe_y,80);
+-            } else {
+-                nt->recheck_phase=2;
+-                int32_t hx,hy;
+-                nav_win_to_mm(&nt->mi,nt->observe_gx-nt->mi.cx+N/2,nt->observe_gy-nt->mi.cy+N/2,&hx,&hy);
+-                int32_t da=fx_angle_diff(p->yaw,fx_atan2(hy-p->y,hx-p->x));
+-                nt->cmd=(nav_cmd_t){0,0,(int16_t)nav_clamp32(da*2/3,-350,350),0};
+-                if(nav_abs32(da)<700)nt->cmd.wz=0;
+-                nt->cmd_source=CMD_RECOVERY;
+-            }
+-            goto send_checked;
+-        }
+-    }
++    if (nt->recheck_phase && (nt->mode==NAV_MODE_SEARCH || nt->mode==NAV_MODE_TRACK || nt->mode==NAV_MODE_GOTO) &&
++        obstacle_observe_step(nt, now)) goto send_checked;
+     if(nt->mode==NAV_MODE_TRACK && !target_alive(&nt->tgt,now)) {
+         bool revisit=nt->tgt.valid && (nt->tgt.cls==39 || nt->tgt.cls==41) && (uint32_t)(now-nt->tgt.t_us)<60000000u;
+         nav_task_set_mode(nt,NAV_MODE_SEARCH);
+--- a/fw/nav/nav_task.h
++++ b/fw/nav/nav_task.h
+@@ -37,6 +37,13 @@
+     int32_t  goal_pose_margin_mm; /* 物理到达要求中预留的定位误差预算，离线假设、待实测 */
+     uint32_t recover_us;         /* 脱困动作时长 */
+ } nav_task_cfg_t;
++
++/* Only actual writes to a fine cell permit a second observation attempt. */
++typedef struct {
++    int32_t gx, gy;
++    int16_t hi, lo;
++    uint8_t count, stamp;
++} observe_attempt_t;
+ 
+ typedef struct {
+     nav_task_cfg_t cfg;
+@@ -121,11 +128,13 @@
+     uint32_t recheck_since_us,recheck_until_us;
+     uint16_t observe_reconciled;
+     uint8_t recheck_phase;
+-    angle_t recheck_yaw;
++    int32_t observe_best;
++    observe_attempt_t observed[24];
++    uint8_t observed_n;
+     int32_t observe_x,observe_y,observe_gx,observe_gy;
+     uint32_t observe_cooldown;
+     uint16_t observe_started,observe_completed,observe_timeouts;
+-    uint8_t observe_reason,observe_outcome; /* reason:1 final,2 route,3 global reconcile; outcome:1 active,2 ground,3 timeout */
++    uint8_t observe_reason,observe_outcome; /* reason:1 final,2 route,3 global reconcile; outcome:1 active,2 ground,3 timeout,4 detour */
+     int16_t observe_hi; uint8_t observe_age,observe_count;
+     bool revisit_goal;
+     uint32_t revisit_until_us;
+@@ -149,7 +158,10 @@
+ void nav_task_status(const nav_task_t *nt, proto_status_t *s, uint32_t now_us);
+ /* 整形SEARCH/GOTO速度参考，必须先于最终足迹检查。 */
+ void nav_task_speed_reference(nav_task_t *nt, uint32_t now_us);
+-bool obstacle_observe_start(nav_task_t*,uint32_t,int32_t,int32_t,uint8_t);
++enum { OBS_IGNORE, OBS_STARTED, OBS_DETOUR };
++int obstacle_observe_start(nav_task_t*,uint32_t,int32_t,int32_t,uint8_t);
++bool obstacle_observe_step(nav_task_t*,uint32_t);
++void obstacle_observe_reset(nav_task_t*);
+ void obstacle_observe_path(nav_task_t*,uint32_t);
+ bool obstacle_observe_ground(nav_task_t*);
+ 
+--- a/fw/nav/obstacle_recovery.c
++++ b/fw/nav/obstacle_recovery.c
+@@ -17,20 +17,204 @@
+     return hal_clear_read(gx,gy,c) && c->count>=4 && c->age>=3 && c->hi-nt->pose.cur.z>40;
+ }
+ 
+-bool obstacle_observe_start(nav_task_t *nt,uint32_t now,int32_t gx,int32_t gy,uint8_t reason)
++/* The observation move is short. Prove one continuous straight approach and
++ * follow that exact point. A partial/clipped A* path is not reachability. */
++static bool approach_clear(const nav_task_t *nt, int32_t x, int32_t y)
++{
++    const nav_pose_t *p = &nt->pose.cur;
++    if (!nt->have_map || nt->stale || !nt->mi.inv_res) return false;
++    if (nt->gm.has_prior) {
++        int32_t dx = x - p->x, dy = y - p->y;
++        /* Four overlapping footprint boxes cover the entire segment on the
++         * prior. Each midpoint includes half a sub-step on either axis. */
++        int32_t radius = nt->lp_cfg.caps.radius_mm + (nav_max32(nav_abs32(dx), nav_abs32(dy)) + 7) / 8 + 1;
++        for (int i = 1; i < 8; i += 2)
++            if (!explore_goal_clear(&nt->gm, &nt->mi, p->x + dx*i/8, p->y + dy*i/8, radius))
++                return false;
++    }
++    uint8_t result = motion_segment_probe(nt->map, &nt->mi, p, &nt->lp_cfg, x, y);
++    return result == MOTION_OK || (result == MOTION_UNKNOWN && nt->gm.has_prior);
++}
++
++static bool select_view(nav_task_t *nt, int32_t cell_x, int32_t cell_y)
++{
++    const nav_pose_t *p = &nt->pose.cur;
++    angle_t away = fx_atan2(p->y - cell_y, p->x - cell_x);
++    int best = INT32_MAX;
++    /* Away, diagonally away, or sideways. Prefer the least turn to a
++     * reachable view. The vehicle always drives forward after aligning. */
++    static const int16_t offset[] = {0, 8192, -8192, 16384, -16384};
++    for (unsigned i = 0; i < sizeof(offset)/sizeof(offset[0]); i++) {
++        angle_t dir = (angle_t)(away + offset[i]);
++        int turn = nav_abs32(fx_angle_diff(p->yaw, dir));
++        if (turn >= best) continue;
++        int32_t x = p->x + 250 * fx_cos(dir) / Q14, y = p->y + 250 * fx_sin(dir) / Q14;
++        if (approach_clear(nt, x, y)) {
++            best = turn;
++            nt->observe_x = x;
++            nt->observe_y = y;
++        }
++    }
++    return best != INT32_MAX;
++}
++
++static bool same_observation(const observe_attempt_t *a, const rc_cell_t *c)
++{
++    /* age and map sequence advance even when this cell receives no returns. */
++    return a->stamp == c->stamp && a->count == c->count && a->hi == c->hi && a->lo == c->lo;
++}
++
++static int attempt_slot(nav_task_t *nt, int32_t gx, int32_t gy)
++{
++    for (int i = 0; i < nt->observed_n; i++)
++        if (nt->observed[i].gx == gx && nt->observed[i].gy == gy) return i;
++    return -1;
++}
++
++static void remember(observe_attempt_t *a, const rc_cell_t *c)
++{
++    *a = (observe_attempt_t){.gx=c->gx, .gy=c->gy, .hi=c->hi, .lo=c->lo, .count=c->count, .stamp=c->stamp};
++}
++
++static int new_slot(nav_task_t *nt)
++{
++    if (nt->observed_n < sizeof(nt->observed)/sizeof(nt->observed[0])) return nt->observed_n++;
++    /* Reuse only an entry whose recorded obstacle is no longer present or has
++     * new returns. If all are unchanged, detour instead of evicting one. */
++    for (int i = 0; i < nt->observed_n; i++) {
++        observe_attempt_t *a = &nt->observed[i];
++        int x = a->gx - nt->mi.cx + NP_MAP_N/2, y = a->gy - nt->mi.cy + NP_MAP_N/2;
++        rc_cell_t current;
++        if (x >= 0 && y >= 0 && x < NP_MAP_N && y < NP_MAP_N &&
++            hal_clear_read(a->gx, a->gy, &current) && !same_observation(a, &current)) return i;
++    }
++    return -1;
++}
++
++static void forget_path(nav_task_t *nt)
++{
++    nt->path_valid = false;
++    nt->path.n = 0;
++    nt->recovering = false;
++    astar_cancel();
++    nt->bg_done = false;
++}
++
++static void detour(nav_task_t *nt, int32_t gx, int32_t gy)
++{
++    if (!nt->use_gmap) return; /* Fine planning already sees the lethal cell. */
++    int32_t x, y;
++    int cx, cy;
++    nav_win_to_mm(&nt->mi, gx-nt->mi.cx+NP_MAP_N/2, gy-nt->mi.cy+NP_MAP_N/2, &x, &y);
++    gmap_mm_to_cell(&nt->gm, &nt->mi, x, y, &cx, &cy);
++    if (cx < 0 || cy < 0 || cx >= GM_N || cy >= GM_N ||
++        nt->gm.grid[cy*GM_N+cx] == NP_COST_LETHAL) return;
++    /* Only mark the rejected cell. The mission planner supplies its ordinary
++     * body clearance. A matching hint or live obstacle needs no refresh. */
++    gmap_block_add(&nt->gm, &nt->mi, x, y, 0, 300);
++    forget_path(nt);
++}
++
++void obstacle_observe_reset(nav_task_t *nt)
++{
++    nt->recheck_phase = 0;
++    nt->observe_cooldown = 0;
++    nt->observed_n = 0;
++    /* The map/frame reset recomposes the grid. Only single-cell observation
++     * detours belong to this cache; leave other recovery hints alone. */
++    for (int i = 0; i < GM_VBLK; i++)
++        if (!nt->gm.vblk[i].r) nt->gm.vblk[i].ttl = 0;
++}
++
++int obstacle_observe_start(nav_task_t *nt,uint32_t now,int32_t gx,int32_t gy,uint8_t reason)
+ {
+     if(nt->recheck_phase || nt->hold || !nt->have_map || nt->stale ||
+        (nt->mode!=NAV_MODE_GOTO && nt->mode!=NAV_MODE_SEARCH && nt->mode!=NAV_MODE_TRACK) ||
+-       (int32_t)(now-nt->observe_cooldown)<0)return false;
+-    rc_cell_t c;if(!eligible(nt,gx,gy,&c))return false;
++       (int32_t)(now-nt->observe_cooldown)<0)return OBS_IGNORE;
++    rc_cell_t c;if(!eligible(nt,gx,gy,&c))return OBS_IGNORE;
+     int32_t x,y;nav_win_to_mm(&nt->mi,gx-nt->mi.cx+NP_MAP_N/2,gy-nt->mi.cy+NP_MAP_N/2,&x,&y);
+-    int32_t dx=x-nt->pose.cur.x,dy=y-nt->pose.cur.y,d=nav_max32(1,fx_dist(dx,dy));
+-    nt->observe_x=nt->pose.cur.x-(int32_t)((int64_t)dx*250/d);
+-    nt->observe_y=nt->pose.cur.y-(int32_t)((int64_t)dy*250/d);
++    int slot = attempt_slot(nt, gx, gy);
++    if (slot >= 0 && same_observation(&nt->observed[slot], &c)) {
++        detour(nt, gx, gy);
++        return OBS_DETOUR;
++    }
++    if (slot < 0) slot = new_slot(nt);
++    if (slot < 0) {
++        detour(nt, gx, gy);
++        return OBS_DETOUR;
++    }
++    remember(&nt->observed[slot], &c);
+     nt->observe_gx=gx;nt->observe_gy=gy;nt->observe_hi=c.hi;nt->observe_age=c.age;nt->observe_count=c.count;
++    if (!select_view(nt, x, y)) {
++        nt->observe_reason = reason;
++        nt->observe_outcome = 4; /* No reachable view; keep the original goal. */
++        detour(nt, gx, gy);
++        forget_path(nt);
++        nt->search_t_us = nt->prog_t_us = now;
++        return OBS_DETOUR;
++    }
+     nt->observe_reason=reason;nt->observe_outcome=1;nt->recheck_phase=1;
++    nt->observe_best=fx_dist(nt->observe_x-nt->pose.cur.x,nt->observe_y-nt->pose.cur.y);
++    nt->recheck_since_us=now;
+     nt->recheck_until_us=now+35000000u;nt->observe_started++;
+-    nt->path_valid=false;astar_cancel();nt->bg_done=false;nt->state=ST_BLOCKED;
++    forget_path(nt);nt->state=ST_BLOCKED;
++    return OBS_STARTED;
++}
++
++/* True only while clearing owns this control cycle. On exit task_step runs
++ * the original mission in the same cycle, with an invalidated temporary path. */
++bool obstacle_observe_step(nav_task_t *nt, uint32_t now)
++{
++    const nav_pose_t *p = &nt->pose.cur;
++    bool ground = obstacle_observe_ground(nt);
++    int32_t distance = fx_dist(nt->observe_x-p->x, nt->observe_y-p->y);
++    int32_t x, y;
++    nav_win_to_mm(&nt->mi, nt->observe_gx-nt->mi.cx+NP_MAP_N/2,
++                  nt->observe_gy-nt->mi.cy+NP_MAP_N/2, &x, &y);
++    int32_t heading = fx_angle_diff(p->yaw, fx_atan2(y-p->y, x-p->x));
++    if (nt->recheck_phase == 1 && distance <= 90) {
++        nt->recheck_phase = 2;
++        nt->observe_best = nav_abs32(heading);
++        nt->recheck_since_us = now;
++    }
++    bool moving = nt->recheck_phase == 1;
++    int32_t error = moving ? distance : nav_abs32(heading);
++    if (nt->observe_best - error >= (moving ? 30 : 910)) {
++        nt->observe_best = error;
++        nt->recheck_since_us = now;
++    }
++    bool timeout = (int32_t)(now-nt->recheck_until_us) >= 0 ||
++                   (uint32_t)(now-nt->recheck_since_us) >= nt->cfg.stall_us;
++    bool invalid = moving ? (!ground && !approach_clear(nt, nt->observe_x, nt->observe_y)) : distance > 130;
++    if (ground || timeout || invalid) {
++        if (ground) {
++            nt->observe_completed++;
++            nt->observe_outcome = 2;
++        } else {
++            rc_cell_t latest;
++            int slot = attempt_slot(nt, nt->observe_gx, nt->observe_gy);
++            if (slot >= 0 && hal_clear_read(nt->observe_gx, nt->observe_gy, &latest))
++                remember(&nt->observed[slot], &latest);
++            if (timeout) nt->observe_timeouts++;
++            nt->observe_outcome = timeout ? 3 : 4;
++            detour(nt, nt->observe_gx, nt->observe_gy);
++        }
++        nt->recheck_phase = 0;
++        nt->observe_cooldown = now + 5000000u;
++        forget_path(nt);
++        nt->prog_t_us = nt->search_t_us = nt->last_ok_us = now;
++        nt->prog_x = p->x; nt->prog_y = p->y; nt->progress_travel_um = nt->pose.travel_um;
++        return false;
++    }
++    nt->state = ST_BLOCKED;
++    if (moving) {
++        nt->look_x = nt->observe_x; nt->look_y = nt->observe_y;
++        nt->cmd = (nav_cmd_t){nt->lp_cfg.v_max, 0, 0, 0};
++        nt->cmd_source = CMD_LOCAL; /* Existing turn/straight separation and final footprint veto. */
++    } else {
++        nt->cmd = (nav_cmd_t){0, 0, nav_abs32(heading)<700 ? 0 : nav_clamp32(heading*2/3,-350,350), 0};
++        nt->cmd_source = CMD_RECOVERY;
++    }
+     return true;
+ }
+ 

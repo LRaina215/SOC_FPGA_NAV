@@ -1,0 +1,31 @@
+{
+  "mode": "read_only_diagnosis_no_deployment_no_motion_goal",
+  "active": "nav_fw_strictturn_yaw3_20261104.bin",
+  "banner": "Nov  4 2026 08:25:52",
+  "latest_complete_session": "20261104_083345",
+  "facts": [
+    "Firmware36s / wall08:34:28: state3, speed_phase5, cmd0,0, valid path1, observer started0, mfail3/2 unchanged",
+    "Through firmware87s / wall08:35:19: phase5 persists, sampled commands remain zero, path valid except63s; estimated pose(-96,-942) -> (1119,-135)mm, displacement1.459m; degraded localization limits this metric",
+    "Control timestamps38..87s:4900samples, forward_q12=0 and yaw_q12=0 throughout; mean body wheel speed0.0323m/s, signed wheel odometry integral1.583m (not ground-truth displacement)",
+    "HAZARD counter does not increase during this locked interval, observer never starts; this interval cannot be explained by obstacle clearing",
+    "Explicit cancellation near08:35:20 is followed by return-home; the later return-home blocked state has speed_phase0/path0 and is a different branch"
+  ],
+  "state_semantics": {
+    "ST_BLOCKED": "Overloaded task state; not a measurement of zero physical velocity",
+    "causes": [
+      "final motion veto",
+      "GOTO no accepted motion for>3s",
+      "SEARCH no valid target",
+      "active obstacle observation",
+      "strictturn motion fault latch"
+    ],
+    "speed_phase5": "Fresh pitch>20deg OR3consecutive task steps with bodyvx<-100mm/s while motion had been commanded. Latches zero navigation command; no automatic release when pose moves/tilt recovers; balance policy remains separate."
+  },
+  "inference": "Around35.0..35.2s wheel body velocity averages about-126,-193,-154mm/s while positive forward command ramps up. Gravity-derived pitch stays below10deg. This matches reverse-motion latch better than tilt trigger, but no explicit latch-reason field exists, so exact trigger is not independently logged.",
+  "conclusion": "Current UI calls a motion-abnormality navigation latch blocked and bridge says replanning. It does not mean the chassis is stopped; the zero-command latch fails to arrest the observed drift.",
+  "source": "D:\\tools\\strict_turn_20261104\\fw\\nav\\nav_task.c:725-731",
+  "firmware_changed": false,
+  "bridge_changed": false,
+  "speed_or_safety_thresholds_changed": false,
+  "candidate_warning": "The earlier flatbody candidate was based on clearpipeline, not the newer strictturn deployment. Do not overwrite current ACTIVE with it without reconciling the separate changes."
+}

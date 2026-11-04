@@ -1,8 +1,52 @@
 # 超声波联合实现（2026-11-03）
 
+## 11-04阶段交付更新
+
+PNR100已继承PNR94超声波RTL并固化Flash；CPU扩展136KiB、实际322BSRAM，四域STA通过。保护逻辑、0键/LED7、0.3m/s和固定SG90保持。当前应用选择与实物证据见[交接](../../../docs/3_guide/project_handover_20261104.md)，下文PNR94“当前SRAM”和未烧录描述按各自时点解释。
+
 ## 11-04 04:50 PNR94已下载SRAM
 
 用户接通开发板主供电后，USB位置36重新扫描识别器件ID `0x0011081B`。执行官方Programmer的 `--device GW5AT-138C --run 2 --fsFile D:/tools/g2_ultrasonic_noreset_pnr94_20261104.fs --location 36`，9.62秒完成，退出0。之后独立Read Device Codes读回ID `0x0011081B`、UserCode `0x000026F0`、StatusCode `0x00026230`，UserCode与FS头一致。只写SRAM，Flash未改，没有新仿真/构建/哈希或运动命令。RK SSH持续超时，未改ACTIVE、未验证导航固件自动重载、传感器或实车保护；模式默认关闭，遥控0键切换、LED7表示开启。日志与机器证据见 `evidence/PNR94_SRAM_20261104/`，下文未烧录是当时状态。
+
+## 11-04 01:53 PNR94 布通，时序通过（未烧录）
+
+**当次排查依据。** 同族失败日志出现`DesRoute failed`，但该消息不提供失败网络身份，不能单凭它认定全局/专用走线阶段或排除面积、打包及局部拥塞影响。以下是指导复位减载的历史对照：
+
+- PNR92 把行缓存改成块 RAM 以后，CLS 降到 64%，比 PNR85 还低，照样失败。
+- 历史上 27 次 DesRoute 失败，没有一次布通。
+
+当时关注控制核的异步复位根（LW）新增负载。下表保留当时脚本口径，不能与厂商STA扇出5258或后来直接引脚统计混用；该相关性不等于所有历史失败的唯一根因：
+
+| 版本 | 复位网负载 | 结果 |
+| --- | --- | --- |
+| PNR66–85（只改导航侧） | 5232–5236 | 全部布通 |
+| PNR86 | 5511 | 失败 |
+| PNR88 | 5414 | 失败 |
+
+保护模块的 183 个触发器全部接在这个异步复位上。
+
+**改法。** `rtl/ultrasonic_drive_guard.v` 的数据通路寄存器去掉异步复位，改为上电初值。只有 `enabled`/`mode_key_held` 保留复位：复位后模式关闭，保护整体旁路。功能和阈值都不变。
+
+**结果。**
+
+- 构建：SYN5 `K_ultrasonic_noreset_syn5` → `K_pnr94_ultrasonic_noresetp2r0`，place2/route0，CST 和 SDC 与 PNR88 相同。
+- 布线：0 条未布通，出现 PR1014（布通时都会有这条）。复位网负载降到 5239。
+- 时序：clk50 50.446 MHz，rgmii 145.4 MHz，camera 102.7 MHz，lcd9 62.9 MHz。四个时钟的 setup 和 hold TNS 都是 0，recovery 和 removal 没有负 slack。
+- 资源：Logic 64616，FF 33657，CLS 44816（65%），BSRAM 318，DSP 178。
+- 内置固件：布线后网表的全部 BSRAM INIT 与 PNR85 一致，仍是 follow1+3°。
+- 位流：`D:\tools\g2_ultrasonic_noreset_pnr94_20261104.fs`，md5 d8965d92…。按要求没有追加 RTL 仿真，也没有烧录。
+
+**同一晚的其他尝试，都已排除：**
+
+| 版本 | 改了什么 | 结果 |
+| --- | --- | --- |
+| PNR89 | PNR88 网表加 `CLOCK_LOC` 锁全局线 | 约束被静默忽略，581 条未布通 |
+| PNR90 | place1 | 布通，但 clk50 只有 41.08 MHz，592 个 setup 端点违例，不可用 |
+| PNR91 | place3 | 357 条未布通 |
+| PNR92 | `slf_extract` 行缓存改成块 RAM（`STAGE2B_BLOCK=1`） | 579 条未布通，此改动不保留 |
+| PNR93 | `-clock_route_order 1` | 与 PNR88 完全相同，478 条未布通 |
+
+**后续适用范围：** 已有上电初值或先写后读保证的数据通路可避免新增高扇出异步复位负载；模式、有效性和协议控制状态仍按各自语义处理。不能推广成所有新增控制寄存器都禁止复位。
 
 ## 21:18 PNR88终局
 

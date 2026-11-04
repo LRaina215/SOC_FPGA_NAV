@@ -1,0 +1,58 @@
+--- a/fw/nav/nav_task.c
++++ b/fw/nav/nav_task.c
+@@ -9,12 +9,8 @@
+ 
+ /* 11-01 用户要求：按遥控实测稳定的速度、转向与前进分开做（不走弧线）：
+  * 前视点方向偏差 > APP_TURN_ENTER 时原地转向，< APP_TURN_EXIT 后以 APP_FWD_V 直行。 */
+-/* 11-01 22:41 实测：0.15 m/s 时车本身前后晃 ±27 cm/s，轮子一会儿前一会儿后，内八的车轮来回换向就晃大、最后倒；
+- * 用户遥控持续 0.3 m/s 从来不倒。直行用 0.3 m/s，起步/停车按加减速度斜坡走，不再从 0 一步跳到巡航速度；
+- * 0.3 m/s 一步停车会滑出 1 m 以上，所以到点前按剩余距离提前减速。 */
+-#ifndef APP_FWD_V
+-#define APP_FWD_V 300       /* mm/s 巡航 */
+-#endif
++/* 11-04: user selected0.20m/s after the latest falls. APP_FWD_V is shared
++ * with the planner. Existing acceleration/deceleration and arrival stay as-is. */
+ #define APP_V_NEAR 150      /* 到点前最低速度（再往下由到达判定停车） */
+ #define APP_ACCEL_STEP 30   /* 每 100 ms 规划周期最多加速 30 mm/s（0.3 m/s²） */
+ #define APP_TRACK_DECEL_STEP 30 /* 跟踪/搜索：0.3 m/s²；最终仍检查实际减速指令 */
+@@ -722,7 +718,7 @@
+         nt->speed_phase=1;nt->speed_quiet=0;nt->cmd=(nav_cmd_t){0};return;
+     }
+     bool calm=pitch<=ANGLE_FROM_CDEG(1000) && nav_abs32(nt->pose.gyro_pr)<=2000;
+-    int16_t wanted_v=(int16_t)nav_max32(0,nt->cmd.vx);
++    int16_t wanted_v=(int16_t)nav_clamp32(nt->cmd.vx,0,APP_FWD_V);
+     int16_t wanted_w=wanted_v ? 0 : (int16_t)nav_clamp32(nt->cmd.wz,-400,400);
+     int16_t previous_w=nt->speed_w_prev;
+     if(wanted_w && nt->v_prev>0) {
+--- a/fw/nav/local_planner.c
++++ b/fw/nav/local_planner.c
+@@ -16,12 +16,12 @@
+ void lp_default_cfg(lp_cfg_t *c)
+ {
+     c->caps.holonomic = false;
+-    c->caps.vx_max = 300;                 /* 11-01 用户实测遥控 0.3 m/s、转向 1 rad/s 稳定 */
++    c->caps.vx_max = APP_FWD_V;
+     c->caps.vy_max = 0;
+     c->caps.wz_max = 1500;
+     c->caps.radius_mm = 215;                /* 11-02 用户实测整车俯视前后 27 cm、左右 33 cm：外接圆（原地转的扫掠）213 mm */
+     c->v_min = 0;
+-    c->v_max = 300;
++    c->v_max = APP_FWD_V;
+     c->w_max = 1000;
+     c->nv = 4;
+     c->nw = 9;
+--- a/fw/nav/local_planner.h
++++ b/fw/nav/local_planner.h
+@@ -12,6 +12,12 @@
+ 
+ #include "nav_types.h"
+ #include "hal.h"
++
++/* 11-04 user-selected navigation forward-command cap; balance wheel targets
++ * remain independent so their corrective motion is not clipped here. */
++#ifndef APP_FWD_V
++#define APP_FWD_V 200
++#endif
+ 
+ #define LP_MAX_CAND 64
+ 

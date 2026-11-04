@@ -1,0 +1,1350 @@
+{
+  "stage": "deployed_banner_verified_map_ready",
+  "source": "F:\\nav_integration_g2_20261023\\K_fw_terrain1\\fw_searchtransition2_20261104",
+  "candidate_source": "D:\\tools\\search_transition2_20261104\\fw",
+  "recording": "20261104_002845",
+  "recording_range": "2026-11-04 00:28:45--00:32:54 Asia/Shanghai",
+  "raw_recording": "D:\\tools\\search_wait_review_20261104\\rec\\20261104_002845",
+  "download_manifest": "D:\\tools\\search_wait_review_20261104\\download_manifest.json",
+  "confirmed_waiting": {
+    "samples": 24334,
+    "normal_fresh_search_blocks": 201,
+    "normal_zero_command_blocks": 83,
+    "normal_gate1_or3_zero_blocks": 70,
+    "normal_phase_counts": {
+      "1": 55,
+      "2": 44,
+      "3": 30,
+      "0": 72
+    },
+    "quiet_fail_in_gated_samples": {
+      "quiet_v_fail": 54,
+      "quiet_pitch_fail": 4,
+      "quiet_rate_fail": 26
+    },
+    "forward_starts": [
+      {
+        "board_s": 17.879,
+        "from_mps": 0.0,
+        "first_mps": 0.016,
+        "pitch_deg": 7.4,
+        "actual_mps": 0.07
+      },
+      {
+        "board_s": 32.099,
+        "from_mps": 0.0,
+        "first_mps": 0.01,
+        "pitch_deg": 9.5,
+        "actual_mps": 0.125
+      },
+      {
+        "board_s": 51.669,
+        "from_mps": 0.0,
+        "first_mps": 0.006,
+        "pitch_deg": 3.5,
+        "actual_mps": -0.01
+      },
+      {
+        "board_s": 62.069,
+        "from_mps": 0.0,
+        "first_mps": 0.014,
+        "pitch_deg": 6.6,
+        "actual_mps": 0.055
+      },
+      {
+        "board_s": 71.249,
+        "from_mps": 0.0,
+        "first_mps": 0.006,
+        "pitch_deg": 4.1,
+        "actual_mps": 0.0
+      },
+      {
+        "board_s": 78.469,
+        "from_mps": 0.0,
+        "first_mps": 0.012,
+        "pitch_deg": 5.1,
+        "actual_mps": 0.035
+      },
+      {
+        "board_s": 80.869,
+        "from_mps": 0.0,
+        "first_mps": 0.016,
+        "pitch_deg": 2.9,
+        "actual_mps": 0.21
+      },
+      {
+        "board_s": 94.769,
+        "from_mps": 0.0,
+        "first_mps": 0.008,
+        "pitch_deg": 1.9,
+        "actual_mps": -0.05
+      },
+      {
+        "board_s": 104.349,
+        "from_mps": 0.0,
+        "first_mps": 0.01,
+        "pitch_deg": 6.4,
+        "actual_mps": 0.065
+      },
+      {
+        "board_s": 148.169,
+        "from_mps": 0.0,
+        "first_mps": 0.012,
+        "pitch_deg": 2.2,
+        "actual_mps": 0.0
+      },
+      {
+        "board_s": 169.669,
+        "from_mps": 0.0,
+        "first_mps": 0.01,
+        "pitch_deg": 1.2,
+        "actual_mps": -0.035
+      },
+      {
+        "board_s": 197.799,
+        "from_mps": 0.0,
+        "first_mps": 0.014,
+        "pitch_deg": 1.9,
+        "actual_mps": 0.32
+      },
+      {
+        "board_s": 208.069,
+        "from_mps": 0.0,
+        "first_mps": 0.006,
+        "pitch_deg": 4.4,
+        "actual_mps": -0.01
+      },
+      {
+        "board_s": 213.919,
+        "from_mps": 0.0,
+        "first_mps": 0.02,
+        "pitch_deg": 1.4,
+        "actual_mps": 0.515
+      },
+      {
+        "board_s": 214.209,
+        "from_mps": 0.004,
+        "first_mps": 0.024,
+        "pitch_deg": -2.6,
+        "actual_mps": -0.065
+      }
+    ],
+    "active_zero_ref_fraction": 0.495689116581282
+  },
+  "interpretation": [
+    "83 zero-output snapshots among201 fresh non-large-tilt SEARCH snapshots;70 are conditioner phase1/3.54 of those70 fail the instantaneous abs fore/aft wheel-odometry<=50mm/s gate. This is snapshot sampling, not an exact time budget.",
+    "The linear reference starts at about0.006--0.024m/s in the recorded100Hz downstream samples, not a direct0->0.3m/s jump. C acceleration step remains30mm/s each100ms.",
+    "The angular reference ramp was symmetric0.8rad/s^2: nominal1->0.4 stopping angle0.525rad (about30deg), before completing the turn. This consumes the existing30deg fine-heading interval.",
+    "No desired heading/lookahead in the old compact log. Do not assert every observed second turn is the same-goal overshoot or exclude localisation/goal-direction changes."
+  ],
+  "fixes": [
+    "SEARCH no longer requires instantaneous fore/aft wheel speed<=50mm/s, pitch<=10deg and low pitch rate before turn/restart; no12deg/pitch-rate pause mid-turn. Fresh transition feedback remains required.",
+    "Keep measured yaw<=0.15rad/s for2 cycles and reference yaw ramped down before forward restart; do not require static fore/aft balance.",
+    "Angular acceleration remains0.8rad/s^2, braking becomes2rad/s^2; opposite-direction requests brake through zero before accelerating the other way.",
+    "Keep coarse1rad/s, fine0.4rad/s,30deg fine interval,5deg turn exit, cruise0.3m/s and original linear ramp.",
+    "Compact console now also records yaw,position and lookahead to distinguish braking overshoot from path/pose direction updates."
+  ],
+  "unchanged": [
+    "map",
+    "search goal selection",
+    "obstacle clearing",
+    "localisation",
+    "TRACK/GOTO",
+    "keeper",
+    "bridge",
+    "RTL",
+    "balance controller",
+    "wheel PID",
+    "large20deg tilt suppression",
+    "final collision veto"
+  ],
+  "build": {
+    "bin_bytes": 54488,
+    "bss_bytes": 70348,
+    "stack_reserved_bytes": 6144,
+    "stack_bound_bytes": 1408,
+    "static_remaining_bytes": 92
+  },
+  "checks": {
+    "before": {
+      "swaying_turn": [
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ]
+      ],
+      "coarse_to_fine": [
+        [
+          0,
+          -920,
+          2,
+          1
+        ],
+        [
+          0,
+          -840,
+          2,
+          1
+        ],
+        [
+          0,
+          -760,
+          2,
+          1
+        ],
+        [
+          0,
+          -680,
+          2,
+          1
+        ],
+        [
+          0,
+          -600,
+          2,
+          1
+        ],
+        [
+          0,
+          -520,
+          2,
+          1
+        ],
+        [
+          0,
+          -440,
+          2,
+          1
+        ],
+        [
+          0,
+          -400,
+          2,
+          1
+        ]
+      ],
+      "residual_yaw": [
+        [
+          0,
+          -320,
+          3,
+          1
+        ],
+        [
+          0,
+          -240,
+          3,
+          1
+        ],
+        [
+          0,
+          -160,
+          3,
+          1
+        ],
+        [
+          0,
+          -80,
+          3,
+          1
+        ],
+        [
+          0,
+          0,
+          3,
+          0
+        ],
+        [
+          0,
+          0,
+          3,
+          0
+        ]
+      ],
+      "restart_while_foreaft_swaying": [
+        [
+          0,
+          0,
+          3,
+          0
+        ],
+        [
+          0,
+          0,
+          3,
+          0
+        ],
+        [
+          0,
+          0,
+          3,
+          0
+        ],
+        [
+          0,
+          0,
+          3,
+          0
+        ],
+        [
+          0,
+          0,
+          3,
+          0
+        ],
+        [
+          0,
+          0,
+          3,
+          0
+        ]
+      ],
+      "stale_turn": [
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ]
+      ],
+      "tilted": [
+        0,
+        0,
+        4,
+        0
+      ],
+      "steady": {
+        "search_far": [
+          0,
+          -1000,
+          2,
+          1
+        ],
+        "search_fine": [
+          0,
+          -400,
+          2,
+          1
+        ],
+        "search_near_goal": [
+          300,
+          0,
+          0,
+          1
+        ],
+        "goto": [
+          0,
+          -1000,
+          0,
+          1
+        ],
+        "track": [
+          0,
+          -400,
+          0,
+          1
+        ]
+      }
+    },
+    "after": {
+      "swaying_turn": [
+        [
+          0,
+          -80,
+          2,
+          1
+        ],
+        [
+          0,
+          -160,
+          2,
+          1
+        ],
+        [
+          0,
+          -240,
+          2,
+          1
+        ],
+        [
+          0,
+          -320,
+          2,
+          1
+        ],
+        [
+          0,
+          -400,
+          2,
+          1
+        ],
+        [
+          0,
+          -480,
+          2,
+          1
+        ],
+        [
+          0,
+          -560,
+          2,
+          1
+        ],
+        [
+          0,
+          -640,
+          2,
+          1
+        ],
+        [
+          0,
+          -720,
+          2,
+          1
+        ],
+        [
+          0,
+          -800,
+          2,
+          1
+        ],
+        [
+          0,
+          -880,
+          2,
+          1
+        ],
+        [
+          0,
+          -960,
+          2,
+          1
+        ],
+        [
+          0,
+          -1000,
+          2,
+          1
+        ],
+        [
+          0,
+          -1000,
+          2,
+          1
+        ],
+        [
+          0,
+          -1000,
+          2,
+          1
+        ],
+        [
+          0,
+          -1000,
+          2,
+          1
+        ],
+        [
+          0,
+          -1000,
+          2,
+          1
+        ],
+        [
+          0,
+          -1000,
+          2,
+          1
+        ],
+        [
+          0,
+          -1000,
+          2,
+          1
+        ],
+        [
+          0,
+          -1000,
+          2,
+          1
+        ]
+      ],
+      "coarse_to_fine": [
+        [
+          0,
+          -800,
+          2,
+          1
+        ],
+        [
+          0,
+          -600,
+          2,
+          1
+        ],
+        [
+          0,
+          -400,
+          2,
+          1
+        ],
+        [
+          0,
+          -400,
+          2,
+          1
+        ],
+        [
+          0,
+          -400,
+          2,
+          1
+        ],
+        [
+          0,
+          -400,
+          2,
+          1
+        ],
+        [
+          0,
+          -400,
+          2,
+          1
+        ],
+        [
+          0,
+          -400,
+          2,
+          1
+        ]
+      ],
+      "residual_yaw": [
+        [
+          0,
+          -200,
+          3,
+          1
+        ],
+        [
+          0,
+          0,
+          3,
+          0
+        ],
+        [
+          0,
+          0,
+          3,
+          0
+        ],
+        [
+          0,
+          0,
+          3,
+          0
+        ],
+        [
+          0,
+          0,
+          3,
+          0
+        ],
+        [
+          0,
+          0,
+          3,
+          0
+        ]
+      ],
+      "restart_while_foreaft_swaying": [
+        [
+          0,
+          0,
+          3,
+          0
+        ],
+        [
+          30,
+          0,
+          0,
+          1
+        ],
+        [
+          60,
+          0,
+          0,
+          1
+        ],
+        [
+          90,
+          0,
+          0,
+          1
+        ],
+        [
+          120,
+          0,
+          0,
+          1
+        ],
+        [
+          150,
+          0,
+          0,
+          1
+        ]
+      ],
+      "stale_turn": [
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ]
+      ],
+      "tilted": [
+        0,
+        0,
+        4,
+        0
+      ],
+      "steady": {
+        "search_far": [
+          0,
+          -1000,
+          2,
+          1
+        ],
+        "search_fine": [
+          0,
+          -400,
+          2,
+          1
+        ],
+        "search_near_goal": [
+          300,
+          0,
+          0,
+          1
+        ],
+        "goto": [
+          0,
+          -1000,
+          0,
+          1
+        ],
+        "track": [
+          0,
+          -400,
+          0,
+          1
+        ]
+      }
+    },
+    "interpretation": {
+      "reproduced": "Fresh measured fore/aft velocity-130mm/s and pitch-rate1400 blocked the old reference indefinitely; revised turn and restart are allowed.",
+      "braking": "1->0.4rad/s now takes3 planner steps instead of8; acceleration unchanged.",
+      "retained": "Residual actual yaw blocks translation; stale transition feedback and large tilt still inhibit; existing final collision check is downstream.",
+      "physical_validation": false
+    }
+  },
+  "changed_firmware_files": [
+    "app/main.c",
+    "nav/nav_task.c",
+    "nav/nav_task.h"
+  ],
+  "physical_validation": false,
+  "motion_commands_sent": false,
+  "runtime_changes": true,
+  "sha_checks": false,
+  "selection": {
+    "stage": "loaded_banner_verified_waiting_map",
+    "active": "nav_fw_searchtransition2_yaw3_20261104.bin",
+    "old_active": "nav_fw_searchprecision_yaw3_20261104.bin",
+    "banner": "Nov  4 2026 00:39:09",
+    "bytes": 54488,
+    "physical_ready_confirmed": true,
+    "motor_drive_off_confirmed": true,
+    "software_policy_active_before": false,
+    "precheck": {
+      "status": {
+        "source": "fpga_bridge",
+        "updated_at": "2026-11-03T16:41:48.867350+00:00",
+        "nav_link": "online",
+        "nav_link_kind": "uart:/dev/ttyACM0",
+        "fpga_mode": "idle",
+        "fpga_state": "idle",
+        "loc_state": "mapless",
+        "loc_quality": null,
+        "map_loaded": true,
+        "target_valid": false,
+        "lidar_ok": true,
+        "odom_ok": true,
+        "cmd_vx_mps": 0.0,
+        "cmd_wz_radps": 0.0,
+        "fpga_uptime_s": 81.114818,
+        "status_rate_hz": 5.0,
+        "control_link": "online",
+        "policy_active": false,
+        "control_estop": true,
+        "control_faults": [
+          "policy_fault:1",
+          "bmi088_error:4",
+          "bmi088_stale"
+        ],
+        "wheel_left_mps": 0.0,
+        "wheel_right_mps": 0.0,
+        "roll_deg": null,
+        "pitch_deg": null,
+        "yaw_rate_radps": 0.32470703125,
+        "height_cmd_m": 0.130615234375,
+        "telemetry_rate_hz": 101.5,
+        "control_telemetry": {
+          "transport": "legacy_telemetry",
+          "source": "fpga",
+          "version": 2,
+          "fresh": true,
+          "receive_age_ms": 37.5,
+          "measurement_age_ms": null,
+          "raw": {
+            "timestamp_ms": 81149,
+            "sequence": 8114,
+            "status": 88,
+            "policy_fault": 1,
+            "sensor_error": 4,
+            "left_fault": 0,
+            "right_fault": 0,
+            "fusion_flags": 0,
+            "ax_raw": 484,
+            "ay_raw": -2610,
+            "az_raw": 10211,
+            "gx_raw": -167,
+            "gy_raw": 105,
+            "gz_raw": 305,
+            "wx_q12": -633,
+            "wy_q12": 466,
+            "wz_q12": 1330,
+            "gravity_x_q12": 142,
+            "gravity_y_q12": 631,
+            "gravity_z_q12": -4045,
+            "forward_q12": 0,
+            "yaw_q12": 0,
+            "height_q12": 535,
+            "left_target_mmps": 0,
+            "right_target_mmps": 0,
+            "left_cms": 0,
+            "right_cms": 0,
+            "left_duty": 0,
+            "right_duty": 0,
+            "lh_us": 1514,
+            "lk_us": 1502,
+            "rh_us": 1477,
+            "rk_us": 1506,
+            "completed_frames": 7624,
+            "inference_cycles": 83534,
+            "left_delta": 0,
+            "right_delta": 0,
+            "left_reference_mmps": 600,
+            "right_reference_mmps": 588,
+            "left_error_mmps": 180,
+            "right_error_mmps": 198,
+            "left_control_sequence": 6074,
+            "right_control_sequence": 6070
+          }
+        }
+      },
+      "task": {
+        "task_id": "fpga-idle",
+        "task_type": "placeholder",
+        "state": "idle",
+        "progress": 0,
+        "source": "fpga_bridge",
+        "phase": "idle",
+        "current_waypoint_id": null,
+        "waypoint_index": null,
+        "waypoint_count": null,
+        "detail": "等待任务。",
+        "updated_at": "2026-11-03T16:41:48.867896+00:00"
+      }
+    },
+    "active_backup": "/home/robomaster/fpga_bench/fw/ACTIVE.before_searchtransition2_20261104_004149",
+    "keeper_code_changed": false,
+    "bridge_code_changed": false,
+    "flash_changed": false,
+    "motion_goal_sent": false,
+    "pre_commit": {
+      "status": {
+        "source": "fpga_bridge",
+        "updated_at": "2026-11-03T16:41:48.867350+00:00",
+        "nav_link": "online",
+        "nav_link_kind": "uart:/dev/ttyACM0",
+        "fpga_mode": "idle",
+        "fpga_state": "idle",
+        "loc_state": "mapless",
+        "loc_quality": null,
+        "map_loaded": true,
+        "target_valid": false,
+        "lidar_ok": true,
+        "odom_ok": true,
+        "cmd_vx_mps": 0.0,
+        "cmd_wz_radps": 0.0,
+        "fpga_uptime_s": 81.114818,
+        "status_rate_hz": 5.0,
+        "control_link": "online",
+        "policy_active": false,
+        "control_estop": true,
+        "control_faults": [
+          "policy_fault:1",
+          "bmi088_error:4",
+          "bmi088_stale"
+        ],
+        "wheel_left_mps": 0.0,
+        "wheel_right_mps": 0.0,
+        "roll_deg": null,
+        "pitch_deg": null,
+        "yaw_rate_radps": 0.32470703125,
+        "height_cmd_m": 0.130615234375,
+        "telemetry_rate_hz": 101.5,
+        "control_telemetry": {
+          "transport": "legacy_telemetry",
+          "source": "fpga",
+          "version": 2,
+          "fresh": true,
+          "receive_age_ms": 37.5,
+          "measurement_age_ms": null,
+          "raw": {
+            "timestamp_ms": 81149,
+            "sequence": 8114,
+            "status": 88,
+            "policy_fault": 1,
+            "sensor_error": 4,
+            "left_fault": 0,
+            "right_fault": 0,
+            "fusion_flags": 0,
+            "ax_raw": 484,
+            "ay_raw": -2610,
+            "az_raw": 10211,
+            "gx_raw": -167,
+            "gy_raw": 105,
+            "gz_raw": 305,
+            "wx_q12": -633,
+            "wy_q12": 466,
+            "wz_q12": 1330,
+            "gravity_x_q12": 142,
+            "gravity_y_q12": 631,
+            "gravity_z_q12": -4045,
+            "forward_q12": 0,
+            "yaw_q12": 0,
+            "height_q12": 535,
+            "left_target_mmps": 0,
+            "right_target_mmps": 0,
+            "left_cms": 0,
+            "right_cms": 0,
+            "left_duty": 0,
+            "right_duty": 0,
+            "lh_us": 1514,
+            "lk_us": 1502,
+            "rh_us": 1477,
+            "rk_us": 1506,
+            "completed_frames": 7624,
+            "inference_cycles": 83534,
+            "left_delta": 0,
+            "right_delta": 0,
+            "left_reference_mmps": 600,
+            "right_reference_mmps": 588,
+            "left_error_mmps": 180,
+            "right_error_mmps": 198,
+            "left_control_sequence": 6074,
+            "right_control_sequence": 6070
+          }
+        }
+      },
+      "task": {
+        "task_id": "fpga-idle",
+        "task_type": "placeholder",
+        "state": "idle",
+        "progress": 0,
+        "source": "fpga_bridge",
+        "phase": "idle",
+        "current_waypoint_id": null,
+        "waypoint_index": null,
+        "waypoint_count": null,
+        "detail": "等待任务。",
+        "updated_at": "2026-11-03T16:41:48.867896+00:00"
+      }
+    },
+    "post_load": {
+      "source": "fpga_bridge",
+      "updated_at": "2026-11-03T16:41:55.812570+00:00",
+      "nav_link": "online",
+      "nav_link_kind": "uart:/dev/ttyACM0",
+      "fpga_mode": "idle",
+      "fpga_state": "idle",
+      "loc_state": "mapless",
+      "loc_quality": null,
+      "map_loaded": false,
+      "target_valid": false,
+      "lidar_ok": true,
+      "odom_ok": true,
+      "cmd_vx_mps": 0.0,
+      "cmd_wz_radps": 0.0,
+      "fpga_uptime_s": 88.116934,
+      "status_rate_hz": 4.89,
+      "control_link": "online",
+      "policy_active": false,
+      "control_estop": true,
+      "control_faults": [
+        "policy_fault:1",
+        "bmi088_error:4",
+        "bmi088_stale"
+      ],
+      "wheel_left_mps": 0.0,
+      "wheel_right_mps": 0.0,
+      "roll_deg": null,
+      "pitch_deg": null,
+      "yaw_rate_radps": 0.32470703125,
+      "height_cmd_m": 0.130615234375,
+      "telemetry_rate_hz": 105.4,
+      "control_telemetry": {
+        "transport": "legacy_telemetry",
+        "source": "fpga",
+        "version": 2,
+        "fresh": true,
+        "receive_age_ms": 8.1,
+        "measurement_age_ms": null,
+        "raw": {
+          "timestamp_ms": 88119,
+          "sequence": 8811,
+          "status": 88,
+          "policy_fault": 1,
+          "sensor_error": 4,
+          "left_fault": 0,
+          "right_fault": 0,
+          "fusion_flags": 0,
+          "ax_raw": 484,
+          "ay_raw": -2610,
+          "az_raw": 10211,
+          "gx_raw": -167,
+          "gy_raw": 105,
+          "gz_raw": 305,
+          "wx_q12": -633,
+          "wy_q12": 466,
+          "wz_q12": 1330,
+          "gravity_x_q12": 142,
+          "gravity_y_q12": 631,
+          "gravity_z_q12": -4045,
+          "forward_q12": 0,
+          "yaw_q12": 0,
+          "height_q12": 535,
+          "left_target_mmps": 0,
+          "right_target_mmps": 0,
+          "left_cms": 0,
+          "right_cms": 0,
+          "left_duty": 0,
+          "right_duty": 0,
+          "lh_us": 1514,
+          "lk_us": 1502,
+          "rh_us": 1477,
+          "rk_us": 1506,
+          "completed_frames": 7624,
+          "inference_cycles": 83534,
+          "left_delta": 0,
+          "right_delta": 0,
+          "left_reference_mmps": 600,
+          "right_reference_mmps": 588,
+          "left_error_mmps": 180,
+          "right_error_mmps": 198,
+          "left_control_sequence": 6074,
+          "right_control_sequence": 6070
+        }
+      }
+    },
+    "loaded_at": "2026-11-04T00:41:56.127681+08:00"
+  },
+  "final_inventory": {
+    "status": {
+      "success": true,
+      "data": {
+        "source": "fpga_bridge",
+        "updated_at": "2026-11-03T16:42:18.588479+00:00",
+        "nav_link": "online",
+        "nav_link_kind": "uart:/dev/ttyACM0",
+        "fpga_mode": "idle",
+        "fpga_state": "idle",
+        "loc_state": "mapless",
+        "loc_quality": null,
+        "map_loaded": true,
+        "target_valid": false,
+        "lidar_ok": true,
+        "odom_ok": true,
+        "cmd_vx_mps": 0.0,
+        "cmd_wz_radps": 0.0,
+        "fpga_uptime_s": 110.730487,
+        "status_rate_hz": 5.01,
+        "control_link": "online",
+        "policy_active": false,
+        "control_estop": true,
+        "control_faults": [
+          "policy_fault:1",
+          "bmi088_error:4",
+          "bmi088_stale"
+        ],
+        "wheel_left_mps": 0.0,
+        "wheel_right_mps": 0.0,
+        "roll_deg": null,
+        "pitch_deg": null,
+        "yaw_rate_radps": 0.32470703125,
+        "height_cmd_m": 0.130615234375,
+        "telemetry_rate_hz": 101.5,
+        "control_telemetry": {
+          "transport": "legacy_telemetry",
+          "source": "fpga",
+          "version": 2,
+          "fresh": true,
+          "receive_age_ms": 27.2,
+          "measurement_age_ms": null,
+          "raw": {
+            "timestamp_ms": 110879,
+            "sequence": 11087,
+            "status": 88,
+            "policy_fault": 1,
+            "sensor_error": 4,
+            "left_fault": 0,
+            "right_fault": 0,
+            "fusion_flags": 0,
+            "ax_raw": 484,
+            "ay_raw": -2610,
+            "az_raw": 10211,
+            "gx_raw": -167,
+            "gy_raw": 105,
+            "gz_raw": 305,
+            "wx_q12": -633,
+            "wy_q12": 466,
+            "wz_q12": 1330,
+            "gravity_x_q12": 142,
+            "gravity_y_q12": 631,
+            "gravity_z_q12": -4045,
+            "forward_q12": 0,
+            "yaw_q12": 0,
+            "height_q12": 535,
+            "left_target_mmps": 0,
+            "right_target_mmps": 0,
+            "left_cms": 0,
+            "right_cms": 0,
+            "left_duty": 0,
+            "right_duty": 0,
+            "lh_us": 1514,
+            "lk_us": 1502,
+            "rh_us": 1477,
+            "rk_us": 1506,
+            "completed_frames": 7624,
+            "inference_cycles": 83534,
+            "left_delta": 0,
+            "right_delta": 0,
+            "left_reference_mmps": 600,
+            "right_reference_mmps": 588,
+            "left_error_mmps": 180,
+            "right_error_mmps": 198,
+            "left_control_sequence": 6074,
+            "right_control_sequence": 6070
+          }
+        }
+      }
+    },
+    "health": {
+      "status": "ok",
+      "service": "yuntuo-fpga-bridge",
+      "link": "uart:/dev/ttyACM0",
+      "link_open": true,
+      "link_error": null,
+      "status_age_s": 0.17,
+      "map": "先验地图已加载（9880 B，1.0 s）；地图目标需给定初始位姿，雷达在后台辅助纠偏",
+      "map_upload": {
+        "id": "5022a92b2b3844ceacf7069106cfa0a6",
+        "filename": "field_home2.nvmp",
+        "map_id": "field_home2",
+        "state": "ready",
+        "sent_bytes": 9880,
+        "total_bytes": 9880,
+        "progress": 100,
+        "detail": "先验地图已加载（9880 B，1.0 s）；地图目标需给定初始位姿，雷达在后台辅助纠偏",
+        "started_at": "2026-11-03T16:42:02.419380+00:00",
+        "completed_at": "2026-11-03T16:42:03.463436+00:00"
+      },
+      "task": {
+        "task_id": "fpga-idle",
+        "task_type": "placeholder",
+        "state": "idle",
+        "progress": 0,
+        "source": "fpga_bridge",
+        "phase": "idle",
+        "current_waypoint_id": null,
+        "waypoint_index": null,
+        "waypoint_count": null,
+        "detail": "等待任务。",
+        "updated_at": "2026-11-03T16:42:18.589168+00:00"
+      },
+      "platform": {
+        "source": "fpga_bridge",
+        "updated_at": "2026-11-03T16:42:18.588479+00:00",
+        "nav_link": "online",
+        "nav_link_kind": "uart:/dev/ttyACM0",
+        "fpga_mode": "idle",
+        "fpga_state": "idle",
+        "loc_state": "mapless",
+        "loc_quality": null,
+        "map_loaded": true,
+        "target_valid": false,
+        "lidar_ok": true,
+        "odom_ok": true,
+        "cmd_vx_mps": 0.0,
+        "cmd_wz_radps": 0.0,
+        "fpga_uptime_s": 110.730487,
+        "status_rate_hz": 5.01,
+        "control_link": "online",
+        "policy_active": false,
+        "control_estop": true,
+        "control_faults": [
+          "policy_fault:1",
+          "bmi088_error:4",
+          "bmi088_stale"
+        ],
+        "wheel_left_mps": 0.0,
+        "wheel_right_mps": 0.0,
+        "roll_deg": null,
+        "pitch_deg": null,
+        "yaw_rate_radps": 0.32470703125,
+        "height_cmd_m": 0.130615234375,
+        "telemetry_rate_hz": 101.5,
+        "control_telemetry": {
+          "transport": "legacy_telemetry",
+          "source": "fpga",
+          "version": 2,
+          "fresh": true,
+          "receive_age_ms": 27.2,
+          "measurement_age_ms": null,
+          "raw": {
+            "timestamp_ms": 110879,
+            "sequence": 11087,
+            "status": 88,
+            "policy_fault": 1,
+            "sensor_error": 4,
+            "left_fault": 0,
+            "right_fault": 0,
+            "fusion_flags": 0,
+            "ax_raw": 484,
+            "ay_raw": -2610,
+            "az_raw": 10211,
+            "gx_raw": -167,
+            "gy_raw": 105,
+            "gz_raw": 305,
+            "wx_q12": -633,
+            "wy_q12": 466,
+            "wz_q12": 1330,
+            "gravity_x_q12": 142,
+            "gravity_y_q12": 631,
+            "gravity_z_q12": -4045,
+            "forward_q12": 0,
+            "yaw_q12": 0,
+            "height_q12": 535,
+            "left_target_mmps": 0,
+            "right_target_mmps": 0,
+            "left_cms": 0,
+            "right_cms": 0,
+            "left_duty": 0,
+            "right_duty": 0,
+            "lh_us": 1514,
+            "lk_us": 1502,
+            "rh_us": 1477,
+            "rk_us": 1506,
+            "completed_frames": 7624,
+            "inference_cycles": 83534,
+            "left_delta": 0,
+            "right_delta": 0,
+            "left_reference_mmps": 600,
+            "right_reference_mmps": 588,
+            "left_error_mmps": 180,
+            "right_error_mmps": 198,
+            "left_control_sequence": 6074,
+            "right_control_sequence": 6070
+          }
+        }
+      },
+      "updated_at": "2026-11-03T16:42:18.589205+00:00",
+      "telemetry_decoder": {
+        "frames": 2352,
+        "bad_crc": 0,
+        "skipped": 0
+      }
+    },
+    "fw/ACTIVE": "nav_fw_searchtransition2_yaw3_20261104.bin\n",
+    "fw/loaded.json": "{\"banner\": \"Nov  4 2026 00:39:09\", \"boot\": 1793724028}",
+    "services": "active\nactive\n",
+    "keeper_tail": "00:42:04 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 96.727233, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:05 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 97.327341, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:05 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 97.927435, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:06 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 98.327466, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:06 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 98.927636, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:07 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 99.527737, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:08 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 99.927882, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:08 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 100.528065, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:09 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 100.928089, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:09 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 101.528197, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:10 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 102.128384, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:10 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 102.528525, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:11 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 103.128638, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:11 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 103.528732, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:12 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 104.128815, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:12 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 104.728985, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:13 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 105.129098, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:13 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 105.729238, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:14 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 106.129275, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:14 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 106.729445, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:15 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 107.129558, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:15 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 107.729728, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:16 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 108.329881, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:16 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 108.729981, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:17 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 109.330088, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:17 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 109.730234, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:18 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 110.330341, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}\n00:42:18 {\"fpga_state\": \"idle\", \"fpga_mode\": \"idle\", \"loc_state\": \"mapless\", \"loc_quality\": null, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": false, \"control_faults\": [\"policy_fault:1\", \"bmi088_error:4\", \"bmi088_stale\"], \"fpga_uptime_s\": 110.730487, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": 0, \"right_target_mmps\": 0, \"left_cms\": 0, \"right_cms\": 0, \"gz_raw\": 305}}"
+  }
+}

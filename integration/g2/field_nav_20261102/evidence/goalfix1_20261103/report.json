@@ -1,0 +1,63 @@
+{
+  "created_at": "2026-11-03T22:14:30.878249+08:00",
+  "stage": "loaded_runtime_verified",
+  "baseline_source": "F:\\nav_integration_g2_20261023\\K_fw_terrain1\\fw_reobserve1_20261103",
+  "candidate_source": "D:\\tools\\goal_select_fix_20261103\\fw",
+  "binary": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\field_nav_20261102\\evidence\\goalfix1_20261103\\nav_fw_goalfix1_yaw3_20261103.bin",
+  "banner": "Nov  3 2026 22:16:31",
+  "binary_bytes": 54544,
+  "bss_bytes": 70348,
+  "stack_reserved_bytes": 6144,
+  "static_unused_ram_bytes": 36,
+  "verified_stack_bound_bytes": 1392,
+  "checks": {
+    "fresh_task_clears_seen_heat_and_blacklist": "pass",
+    "idle_map_does_not_accumulate_search_coverage": "pass",
+    "same_task_track_search_transition_preserves_coverage": "pass",
+    "reject_four_actual_wall_and_outside_goals": "pass",
+    "all_seen_map_selects_reachable_known_goal": [
+      2049,
+      1049
+    ],
+    "no_safe_mapped_goal_does_not_use_local_free_space": "pass",
+    "500mm_away_is_not_arrived": "pass",
+    "within_150mm_is_arrived_and_clears_marker": "pass",
+    "14_seconds_with_encoder_and_pose_progress_keeps_goal": "pass",
+    "13_seconds_without_progress_blacklists_goal": "pass"
+  },
+  "bridge_targeted_pytest": "1 passed",
+  "changes": [
+    "Mapped search cannot fall back to local ray goals",
+    "Prefer reachable unseen frontiers; otherwise choose known reachable observation cells within prior",
+    "Reject prior wall, unknown/padding, blocked grid and insufficient 215mm footprint clearance",
+    "Arrival tolerance 150mm instead of 700mm",
+    "12s repick requires no pose AND net encoder progress; hold pauses clock",
+    "STATUS goal-valid capability; bridge hides expired goal with old-firmware compatibility",
+    "Idle/GOTO no longer accumulate search coverage or heat",
+    "Fresh search/track task resets seen, visit heat and blacklist; TRACK/SEARCH switching within a task preserves them"
+  ],
+  "diagnostic_compaction": "Compact console omits duplicate LUT-ready line, loc EMA/skip line, match align counters and IMU pitch/roll details. STATUS, localization, navigation and motor behavior unchanged by this compaction.",
+  "history_evidence": "N1c archive reference/nav_n1c_20261021/fw/nav/nav_task.c lines 398-425 is tracked in commit cd9b816 dated 2026-10-22; same fallback, 12s lifetime and 700mm arrival present.",
+  "limitations": [
+    "No real vehicle navigation validation",
+    "Static RAM headroom is small; 6KiB stack preserved",
+    "Existing active-reobservation behavior may abandon a blocked goal after recovery; no promise to reach an actually obstructed point",
+    "Old telemetry does not identify each individual frontier-rejection cause"
+  ],
+  "physical_actions": [
+    "User confirmed stable support and motor drive off; loaded navigation RAM through keeper"
+  ],
+  "flash_changed": false,
+  "active_changed": true,
+  "bridge_service_changed": true,
+  "bridge_files": [
+    "QHXD_Web/yuntuo/fpga_link/nv_proto.py",
+    "QHXD_Web/yuntuo/bridge/core.py",
+    "QHXD_Web/yuntuo/tests/test_goal_validity.py"
+  ],
+  "startup_evidence": "Prior view marking ran before goal selection even in IDLE; fresh SEARCH did not clear it. Console 21:51:43-21:51:59 shows IDLE with lidar frames and mapped localization before search. Individual seen bits were not recorded.",
+  "deployment_record": "deployment.json",
+  "deployed_at": "2026-11-03T22:26:27.664756+08:00",
+  "acceptance": "rejected_after_real_run_integration_audit",
+  "integration_regression_record": "../startup_map_regression_20261103/report.json"
+}

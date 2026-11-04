@@ -1,0 +1,94 @@
+{
+  "stage": "routing_exact_path_margin",
+  "SYN": "F:\\nav_integration_g2_20261023\\K_clear_pipeline_syn8",
+  "PNR": "F:\\nav_integration_g2_20261023\\K_pnr98_clear_ultrasonic_exactp2r0",
+  "programmed": false,
+  "pid": 18452,
+  "ultrasonic_base": "F:\\nav_integration_g2_20261023\\K_ultrasonic_noreset_syn5",
+  "same_routed_logic_as_PNR95": true,
+  "SYN9_equivalent_logic_attempt_adopted": false,
+  "original_SDC_retained_as_prefix": true,
+  "clock_period_ns": 20.0,
+  "exact_pair_budget_ns": 19.8,
+  "paths": [
+    {
+      "number": 1,
+      "slack_ns": -0.11,
+      "from": "u_nav/u_ef/c_d_4_s0/Q",
+      "to": "u_nav/u_pp/n311_s/A[12]"
+    },
+    {
+      "number": 2,
+      "slack_ns": -0.064,
+      "from": "u_nav/u_ef/c_d_4_s0/Q",
+      "to": "u_nav/u_pp/n311_s/A[14]"
+    },
+    {
+      "number": 3,
+      "slack_ns": -0.044,
+      "from": "u_control/model_thread/actuator_map/right_mmps_20_s1/Q",
+      "to": "u_control/wheel_control/right_control/opposite_count_8_s0/CE"
+    },
+    {
+      "number": 4,
+      "slack_ns": -0.043,
+      "from": "u_nav/u_ef/c_d_4_s0/Q",
+      "to": "u_nav/u_pp/n311_s/A[9]"
+    },
+    {
+      "number": 5,
+      "slack_ns": -0.036,
+      "from": "u_nav/u_xt/data_len_3_s0/Q",
+      "to": "u_nav/u_xt/stat_bad_4_s1/CE"
+    },
+    {
+      "number": 6,
+      "slack_ns": -0.036,
+      "from": "u_nav/u_xt/data_len_3_s0/Q",
+      "to": "u_nav/u_xt/stat_bad_7_s1/CE"
+    },
+    {
+      "number": 7,
+      "slack_ns": -0.036,
+      "from": "u_nav/u_xt/data_len_3_s0/Q",
+      "to": "u_nav/u_xt/stat_bad_18_s1/CE"
+    },
+    {
+      "number": 8,
+      "slack_ns": -0.011,
+      "from": "u_control/model_thread/actuator_map/left_mmps_8_s1/Q",
+      "to": "u_control/wheel_control/left_control/ramped_target_mmps_19_s0/CE"
+    },
+    {
+      "number": 9,
+      "slack_ns": -0.011,
+      "from": "u_control/model_thread/actuator_map/left_mmps_8_s1/Q",
+      "to": "u_control/wheel_control/left_control/ramped_target_mmps_25_s0/CE"
+    },
+    {
+      "number": 10,
+      "slack_ns": -0.011,
+      "from": "u_control/model_thread/actuator_map/left_mmps_8_s1/Q",
+      "to": "u_control/wheel_control/left_control/ramped_target_mmps_26_s0/CE"
+    },
+    {
+      "number": 11,
+      "slack_ns": -0.0,
+      "from": "u_control/model_thread/actuator_map/left_mmps_8_s1/Q",
+      "to": "u_control/wheel_control/left_control/derivative_q8_17_s0/CE"
+    }
+  ],
+  "commands": [
+    "set_max_delay -from [get_pins {u_nav/u_ef/c_d_4_s0/Q}] -to [get_pins {u_nav/u_pp/n311_s/A[12]}] 19.800",
+    "set_max_delay -from [get_pins {u_nav/u_ef/c_d_4_s0/Q}] -to [get_pins {u_nav/u_pp/n311_s/A[14]}] 19.800",
+    "set_max_delay -from [get_pins {u_control/model_thread/actuator_map/right_mmps_20_s1/Q}] -to [get_pins {u_control/wheel_control/right_control/opposite_count_8_s0/CE}] 19.800",
+    "set_max_delay -from [get_pins {u_nav/u_ef/c_d_4_s0/Q}] -to [get_pins {u_nav/u_pp/n311_s/A[9]}] 19.800",
+    "set_max_delay -from [get_pins {u_nav/u_xt/data_len_3_s0/Q}] -to [get_pins {u_nav/u_xt/stat_bad_4_s1/CE}] 19.800",
+    "set_max_delay -from [get_pins {u_nav/u_xt/data_len_3_s0/Q}] -to [get_pins {u_nav/u_xt/stat_bad_7_s1/CE}] 19.800",
+    "set_max_delay -from [get_pins {u_nav/u_xt/data_len_3_s0/Q}] -to [get_pins {u_nav/u_xt/stat_bad_18_s1/CE}] 19.800",
+    "set_max_delay -from [get_pins {u_control/model_thread/actuator_map/left_mmps_8_s1/Q}] -to [get_pins {u_control/wheel_control/left_control/ramped_target_mmps_19_s0/CE}] 19.800",
+    "set_max_delay -from [get_pins {u_control/model_thread/actuator_map/left_mmps_8_s1/Q}] -to [get_pins {u_control/wheel_control/left_control/ramped_target_mmps_25_s0/CE}] 19.800",
+    "set_max_delay -from [get_pins {u_control/model_thread/actuator_map/left_mmps_8_s1/Q}] -to [get_pins {u_control/wheel_control/left_control/ramped_target_mmps_26_s0/CE}] 19.800",
+    "set_max_delay -from [get_pins {u_control/model_thread/actuator_map/left_mmps_8_s1/Q}] -to [get_pins {u_control/wheel_control/left_control/derivative_q8_17_s0/CE}] 19.800"
+  ]
+}

@@ -1,0 +1,219 @@
+--- locfix3/app/nav_app.c
++++ reobserve1/app/nav_app.c
+@@ -1,3 +1,4 @@
++#include "map_revalidate.h"
+ #include "nav_search_checkpoint.h"
+ #include "nav_app.h"
+ #include "hal.h"
+@@ -84,6 +85,7 @@
+ static void frame_jumped(nav_task_t *nt)
+ {
+     astar_cancel();
++    map_revalidate_reset();nt->recheck_phase=0;
+     support_frame_jump();
+     nt->scan_active=nt->scan_settling=nt->scan_failed=false;
+     nt->scan_exit_valid=false;
+@@ -128,6 +130,7 @@
+     hal_map_info_t mi; hal_map_info(&mi);
+     uint16_t inv = mi.inv_res ? mi.inv_res : 1311;
+     int32_t cx = (int32_t)(((int64_t)at.x*inv)>>16), cy = (int32_t)(((int64_t)at.y*inv)>>16);
++    if(valid) map_revalidate_before_fuse(&g_app.nt,&g_app.lcal,r,t,at.t_us);
+     hal_lidar_stage(HAL_LIDAR_FUSE_ONLY);
+     if (valid) wait_anchor();
+     hal_lidar_commit(r, t, cx, cy, valid ? at.z+g_app.zband_lo : 1, valid ? at.z+g_app.zband_hi : 0,at.t_us);
+--- locfix3/nav/nav_task.c
++++ reobserve1/nav/nav_task.c
+@@ -1,3 +1,5 @@
++#include "map_revalidate.h"
++extern int32_t motion_evidence[8];
+ #include "nav_search_checkpoint.h"
+ #include "nav_task.h"
+ #include "fixmath.h"
+@@ -41,7 +43,7 @@
+     *wy = iy - (mi->cy - N / 2);
+ }
+ 
+-void nav_win_to_mm(const hal_map_info_t *mi, int wx, int wy, int32_t *x, int32_t *y)
++__attribute__((noinline)) void nav_win_to_mm(const hal_map_info_t *mi, int wx, int wy, int32_t *x, int32_t *y)
+ {
+     int32_t ix = wx + (mi->cx - N / 2), iy = wy + (mi->cy - N / 2);
+     *x = (int32_t)(((int64_t)ix * 65536 + 32768) / mi->inv_res);
+@@ -112,6 +114,7 @@
+ {
+     astar_cancel();nt->bg_done=false;
+     nt->mode = mode;
++    if(mode!=NAV_MODE_SEARCH && mode!=NAV_MODE_TRACK)nt->recheck_phase=0;
+     nt->track_holding = true;
+     nt->track_goal_valid = false;
+     if(mode==NAV_MODE_IDLE || mode==NAV_MODE_ESTOP) {
+@@ -144,6 +147,7 @@
+ 
+ void nav_task_set_goal(nav_task_t *nt, int32_t x, int32_t y)
+ {
++    nt->recheck_phase=0;nt->observe_cooldown=0;
+     nt->scan_active=nt->scan_settling=nt->scan_failed=false;nt->scan_exit_valid=false;
+     nt->goal_x = x;
+     nt->goal_y = y;
+@@ -174,6 +178,7 @@
+         if (m->u.target.found && target_fresh(&nt->tgt, rx_us) && nt->mode == NAV_MODE_SEARCH) nav_task_set_mode(nt, NAV_MODE_TRACK);
+         break;
+     case MSG_MODE:
++        nt->recheck_phase=0;nt->observe_cooldown=0;
+         if (m->u.mode.mode <= NAV_MODE_ESTOP) nav_task_set_mode(nt, (nav_mode_t)m->u.mode.mode);
+         break;
+     default:
+@@ -577,7 +582,10 @@
+     if(speed>0) progress=nav_min32(progress,nav_max32(5,(int32_t)((int64_t)speed*nt->cfg.stall_us/2000000)));
+     /* 有意低速接入不能要求6s内仍前进150mm；用半个停滞窗口的
+      * 已下发速度计算门槛。零速/纯转向仍用原门槛，不能靠定位抖动保活。 */
+-    if (fx_dist(p->x - nt->prog_x, p->y - nt->prog_y) > progress) {
++    int64_t real_progress=nt->pose.travel_um-nt->progress_travel_um;
++    if(real_progress<0)real_progress=-real_progress;
++    if (fx_dist(p->x - nt->prog_x, p->y - nt->prog_y) > progress && real_progress>progress*1000LL) {
++        nt->progress_travel_um=nt->pose.travel_um;
+         nt->prog_x = p->x; nt->prog_y = p->y; nt->prog_t_us = now;
+     } else if (!nt->recovering && (uint32_t)(now - nt->prog_t_us) > nt->cfg.stall_us) {
+         /* 近目标卡住先零速/报告受阻；下一周期仍可重新规划受检查的动作。
+@@ -603,7 +611,7 @@
+         nt->recovering = true;
+         nt->n_stall++;
+         nt->recover_until_us = now + nt->cfg.recover_us;
+-        nt->recover_dir = (int8_t)(back_clear(nt, p, 400) ? 1 : 0);
++        nt->recover_dir = 0; /* forward-only active observation */
+         nt->path_valid = false;
+         nt->turning = false;
+         nt->n_recover++;
+@@ -720,8 +728,39 @@
+         nt->prog_t_us=now;nt->last_ok_us=now;nt->cmd_source=CMD_HOLD;
+         goto send_checked; /* 首张记忆图完成后再规划，避免发布全未知初图路线。 */
+     }
++    if(nt->recheck_phase && (nt->mode==NAV_MODE_SEARCH || nt->mode==NAV_MODE_TRACK || nt->mode==NAV_MODE_GOTO)) {
++        rc_cell_t evidence;
++        bool ground=hal_clear_read(nt->observe_gx,nt->observe_gy,&evidence) && evidence.count>=4 && evidence.age<=2 &&
++                    evidence.hi-p->z<30 && evidence.lo-p->z> -30;
++        if(ground || (int32_t)(now-nt->recheck_until_us)>=0) {
++            if(ground)nt->observe_completed++;
++            nt->recheck_phase=0;nt->observe_cooldown=now+5000000u;
++            nt->path_valid=false;nt->recovering=false;astar_cancel();nt->bg_done=false;
++            nt->track_goal_valid=false;nt->search_goal_valid=false;
++        } else {
++            nt->state=ST_BLOCKED;nt->recovering=false;
++            if(nt->recheck_phase==1 && fx_dist(nt->observe_x-p->x,nt->observe_y-p->y)>90) {
++                drive_to(nt,now,nt->observe_x,nt->observe_y,80);
++            } else {
++                nt->recheck_phase=2;
++                int32_t hx,hy;
++                nav_win_to_mm(&nt->mi,nt->observe_gx-nt->mi.cx+N/2,nt->observe_gy-nt->mi.cy+N/2,&hx,&hy);
++                int32_t da=fx_angle_diff(p->yaw,fx_atan2(hy-p->y,hx-p->x));
++                nt->cmd=(nav_cmd_t){0,0,(int16_t)nav_clamp32(da*2/3,-350,350),0};
++                if(nav_abs32(da)<700)nt->cmd.wz=0;
++                nt->cmd_source=CMD_RECOVERY;
++            }
++            goto send_checked;
++        }
++    }
+     if(nt->mode==NAV_MODE_TRACK && !target_alive(&nt->tgt,now)) {
+-        nav_task_set_mode(nt,NAV_MODE_SEARCH);goto send_checked;
++        bool revisit=nt->tgt.valid && (nt->tgt.cls==39 || nt->tgt.cls==41) && (uint32_t)(now-nt->tgt.t_us)<60000000u;
++        nav_task_set_mode(nt,NAV_MODE_SEARCH);
++        if(revisit) {
++            target_approach_goal(&nt->tgt,p,&nt->goal_x,&nt->goal_y);
++            nt->search_goal_valid=true;nt->search_t_us=now;nt->revisit_goal=true;nt->revisit_until_us=now+20000000u;
++        }
++        goto send_checked;
+     }
+     int32_t scan_gx=nt->mode==NAV_MODE_TRACK?nt->tgt.x:nt->goal_x;
+     int32_t scan_gy=nt->mode==NAV_MODE_TRACK?nt->tgt.y:nt->goal_y;
+@@ -857,6 +896,7 @@
+     }
+ 
+     case NAV_MODE_SEARCH:
++        if(nt->revisit_goal && (int32_t)(now-nt->revisit_until_us)>=0) {nt->revisit_goal=false;nt->search_goal_valid=false;}
+         if (target_alive(&nt->tgt, now)) { nav_task_set_mode(nt, NAV_MODE_TRACK); break; }
+         if (nt->search_goal_valid && (uint32_t)(now - nt->search_t_us) > nt->cfg.search_repick_us) {
+             /* 超时没到：这个目标够不着，拉黑后重选 */
+@@ -864,6 +904,7 @@
+             nt->search_goal_valid = false;
+         }
+         if (!nt->search_goal_valid) {
++            nt->revisit_goal=false;
+             const bool seen_mode = nt->use_gmap && nt->gm.has_prior;
+             nt->search_goal_valid = nt->use_gmap &&
+                 explore_frontier(&nt->exp, &nt->ex_cfg, &nt->gm, &nt->mi, p, seen_mode, &nt->goal_x, &nt->goal_y);
+@@ -885,8 +926,11 @@
+         if (!nt->search_goal_valid) {
+             nt->cmd = (nav_cmd_t){0, 0, (int16_t)(nt->lp_cfg.w_max / 2), 0};     /* 原地转一圈找路 */
+             nt->cmd_source = CMD_SEARCH;
+-        } else if (drive_to(nt, now, nt->goal_x, nt->goal_y, 700)) {     /* 边界点：走近到能看清即可 */
+-            nt->search_goal_valid = false;
++        } else if (drive_to(nt, now, nt->goal_x, nt->goal_y, nt->revisit_goal?150:700)) {     /* 边界点：走近到能看清即可 */
++            if(nt->revisit_goal) {
++                int32_t da=fx_angle_diff(p->yaw,fx_atan2(nt->tgt.y-p->y,nt->tgt.x-p->x));
++                nt->cmd=(nav_cmd_t){0,0,(int16_t)nav_clamp32(da*2/3,-350,350),0};nt->cmd_source=CMD_SEARCH;
++            } else nt->search_goal_valid = false;
+         }
+         nt->state = ST_SEARCHING;
+         break;
+@@ -994,7 +1038,22 @@
+             /* 切图丢弃本次速度，世界坐标路线保留到下周期重新复核。 */
+             if(nt->motion_result!=MOTION_MAP_CHANGED || (!nt->use_gmap && !nt->path_fine)) nt->path_valid=false;
+             nt->last_ok_us = now - nt->cfg.blocked_us - 1u;
+-            if (nt->mode == NAV_MODE_GOTO) nt->state = ST_BLOCKED;
++            if (nt->mode == NAV_MODE_GOTO || nt->mode==NAV_MODE_SEARCH) nt->state = ST_BLOCKED;
++            if(!nt->recheck_phase && !nt->hold && nt->motion_result==MOTION_HAZARD &&
++               (int32_t)(now-nt->observe_cooldown)>=0 && motion_evidence[4]==nt->mi.seq) {
++                rc_cell_t old;
++                int32_t hx=motion_evidence[2],hy=motion_evidence[3];
++                if(hal_clear_read(hx,hy,&old) && old.age>=3 && old.hi-p->z>40) {
++                    int32_t x,y;
++                    nav_win_to_mm(&nt->mi,hx-nt->mi.cx+N/2,hy-nt->mi.cy+N/2,&x,&y);
++                    int32_t dx=x-p->x,dy=y-p->y,d=nav_max32(1,fx_dist(dx,dy));
++                    nt->observe_x=p->x-(int32_t)((int64_t)dx*250/d);
++                    nt->observe_y=p->y-(int32_t)((int64_t)dy*250/d);
++                    nt->observe_gx=hx;nt->observe_gy=hy;
++                    nt->recheck_phase=1;nt->recheck_until_us=now+35000000u;nt->observe_started++;
++                    nt->path_valid=false;astar_cancel();nt->bg_done=false;
++                }
++            }
+         }
+     }
+     t_chk = hal_time_us() - t_chk;
+--- locfix3/nav/nav_task.h
++++ reobserve1/nav/nav_task.h
+@@ -117,6 +117,16 @@
+     uint32_t       look_path_t;      /* look_i 所属路径的生成时刻（path_t_us） */
+     int16_t        v_prev;           /* 上一周期实际下发的前进速度（斜坡起点） */
+     uint16_t       n_mfail, n_pbusy, n_stall; /* 诊断：最终足迹检查不过 / 重规划期间没有可用路径 / 卡住恢复 */
++    int64_t progress_travel_um;
++    uint32_t recheck_since_us,recheck_until_us;
++    uint16_t recheck_rejects;
++    uint8_t recheck_phase;
++    angle_t recheck_yaw;
++    int32_t observe_x,observe_y,observe_gx,observe_gy;
++    uint32_t observe_cooldown;
++    uint16_t observe_started,observe_completed;
++    bool revisit_goal;
++    uint32_t revisit_until_us;
+     uint8_t        last_mfail;       /* 最近一次足迹检查不过的结果码 */
+ } nav_task_t;
+ 
+--- locfix3/nav/pose.c
++++ reobserve1/nav/pose.c
+@@ -65,6 +65,7 @@
+     int64_t dx_um = (vh * c - (int64_t)vy * s) * dt / Q14 / 1000;
+     int64_t dy_um = (vh * s + (int64_t)vy * c) * dt / Q14 / 1000;
+     int64_t dz_um = -(int64_t)vx * sp * dt / Q14 / 1000;
++    p->travel_um+=(int64_t)vx*dt/1000;
+     p->x_um += dx_um;
+     p->y_um += dy_um;
+     p->z_um += dz_um;
+--- locfix3/nav/pose.h
++++ reobserve1/nav/pose.h
+@@ -26,6 +26,7 @@
+     nav_pose_t cur;
+     /* 亚毫米累计，避免积分截断误差 */
+     int64_t    x_um, y_um, z_um;
++    int64_t travel_um;
+     int64_t    yaw_rem;        /* 陀螺积分除法余数，避免每个高频样本都丢失小角度 */
+     /* 控制核已扣启动零偏；这里仅按可靠地图匹配估残余，零导航指令不代表静止 */
+     int32_t    wz_bias_q8;      /* mrad/s × 256 */

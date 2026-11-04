@@ -1,0 +1,224 @@
+{
+  "before": {
+    "frames": [
+      {
+        "t": 6.541,
+        "fixture_lethal": 6,
+        "fixture_unknown": 0,
+        "near_phantom": 6,
+        "clear_counter": 0,
+        "last_hit_window_cell": [
+          -1,
+          -1
+        ]
+      },
+      {
+        "t": 6.741,
+        "fixture_lethal": 6,
+        "fixture_unknown": 0,
+        "near_phantom": 6,
+        "clear_counter": 0,
+        "last_hit_window_cell": [
+          -1,
+          -1
+        ]
+      },
+      {
+        "t": 8.041,
+        "fixture_lethal": 4,
+        "fixture_unknown": 0,
+        "near_phantom": 4,
+        "clear_counter": 0,
+        "last_hit_window_cell": [
+          -1,
+          -1
+        ]
+      },
+      {
+        "t": 10.041,
+        "fixture_lethal": 4,
+        "fixture_unknown": 0,
+        "near_phantom": 4,
+        "clear_counter": 0,
+        "last_hit_window_cell": [
+          -1,
+          -1
+        ]
+      },
+      {
+        "t": 15.041,
+        "fixture_lethal": 4,
+        "fixture_unknown": 0,
+        "near_phantom": 4,
+        "clear_counter": 0,
+        "last_hit_window_cell": [
+          -1,
+          -1
+        ]
+      },
+      {
+        "t": 20.042,
+        "fixture_lethal": 0,
+        "fixture_unknown": 15,
+        "near_phantom": 0,
+        "clear_counter": 0,
+        "last_hit_window_cell": [
+          -1,
+          -1
+        ]
+      },
+      {
+        "t": 26.042,
+        "fixture_lethal": 0,
+        "fixture_unknown": 15,
+        "near_phantom": 0,
+        "clear_counter": 0,
+        "last_hit_window_cell": [
+          -1,
+          -1
+        ]
+      },
+      {
+        "t": 31.042,
+        "fixture_lethal": 0,
+        "fixture_unknown": 15,
+        "near_phantom": 0,
+        "clear_counter": 0,
+        "last_hit_window_cell": [
+          -1,
+          -1
+        ]
+      },
+      {
+        "t": 59.951,
+        "fixture_lethal": 0,
+        "fixture_unknown": 15,
+        "near_phantom": 0,
+        "clear_counter": 0,
+        "last_hit_window_cell": [
+          -1,
+          -1
+        ]
+      }
+    ],
+    "final_rejections": 0,
+    "hazard_command_times": [],
+    "final_clear_counter": 0
+  },
+  "after": {
+    "frames": [
+      {
+        "t": 6.541,
+        "fixture_lethal": 10,
+        "fixture_unknown": 0,
+        "near_phantom": 10,
+        "clear_counter": 0,
+        "last_hit_window_cell": [
+          -1,
+          -1
+        ]
+      },
+      {
+        "t": 6.741,
+        "fixture_lethal": 6,
+        "fixture_unknown": 3,
+        "near_phantom": 6,
+        "clear_counter": 3,
+        "last_hit_window_cell": [
+          -1,
+          -1
+        ]
+      },
+      {
+        "t": 8.041,
+        "fixture_lethal": 4,
+        "fixture_unknown": 0,
+        "near_phantom": 4,
+        "clear_counter": 3,
+        "last_hit_window_cell": [
+          -1,
+          -1
+        ]
+      },
+      {
+        "t": 10.041,
+        "fixture_lethal": 4,
+        "fixture_unknown": 0,
+        "near_phantom": 4,
+        "clear_counter": 3,
+        "last_hit_window_cell": [
+          -1,
+          -1
+        ]
+      },
+      {
+        "t": 15.041,
+        "fixture_lethal": 4,
+        "fixture_unknown": 0,
+        "near_phantom": 4,
+        "clear_counter": 3,
+        "last_hit_window_cell": [
+          69,
+          62
+        ]
+      },
+      {
+        "t": 20.042,
+        "fixture_lethal": 4,
+        "fixture_unknown": 0,
+        "near_phantom": 4,
+        "clear_counter": 3,
+        "last_hit_window_cell": [
+          69,
+          62
+        ]
+      },
+      {
+        "t": 26.042,
+        "fixture_lethal": 0,
+        "fixture_unknown": 15,
+        "near_phantom": 0,
+        "clear_counter": 3,
+        "last_hit_window_cell": [
+          69,
+          62
+        ]
+      },
+      {
+        "t": 31.042,
+        "fixture_lethal": 0,
+        "fixture_unknown": 15,
+        "near_phantom": 0,
+        "clear_counter": 3,
+        "last_hit_window_cell": [
+          69,
+          62
+        ]
+      },
+      {
+        "t": 31.642,
+        "fixture_lethal": 0,
+        "fixture_unknown": 15,
+        "near_phantom": 0,
+        "clear_counter": 3,
+        "last_hit_window_cell": [
+          69,
+          62
+        ]
+      }
+    ],
+    "final_rejections": 1,
+    "hazard_command_times": [
+      12.72
+    ],
+    "final_clear_counter": 3
+  },
+  "interpretation": {
+    "hit_cell_role": "diagnostic only; coordinates are not consumed by clearing or route selection",
+    "hit_display_limitation": "last hit is retained in old window coordinates; not a current collision flag and not transformed when map centre changes",
+    "clearing_not_passed": "after still has 4 lethal injected cells at 10s and 20s",
+    "unknown_not_free": "all 15 injected cells later become unknown on both versions; original logs cannot attribute each transition to an explicit clearing cause",
+    "causal_limit": "task completion is confounded by threshold, speed and task/recovery changes; no same-candidate clear-on/off ablation was run",
+    "missing_evidence": "per-cell clearing identities and veto reasons were not saved"
+  }
+}

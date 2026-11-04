@@ -1,0 +1,288 @@
+{
+  "created_at": "2026-11-04T04:28:06.529652+08:00",
+  "scope": "Read-only audit. Saved field logs and frozen actual-build source; no robot test or live changes.",
+  "remote_attempt": {
+    "error": "100.113.173.115: TimeoutError; 10.214.67.244: TimeoutError",
+    "read_time": "2026-11-04T04:25:46.697447+08:00"
+  },
+  "baseline": {
+    "name": "locfix2",
+    "banner": "Nov  3 2026 16:06:10",
+    "recording": "D:\\tools\\search_stall_20261103\\rec\\20261103_162012",
+    "source": "F:\\nav_integration_g2_20261023\\K_fw_terrain1\\fw_locfix2_20261103"
+  },
+  "last_observed_on_vehicle": {
+    "name": "gototransition",
+    "banner": "Nov  4 2026 00:54:35",
+    "source": "D:\\tools\\goto_transition_20261104\\fw",
+    "live_now_verified": false
+  },
+  "old_zero_command_interval": {
+    "start_wall": "16:21:23",
+    "last_zero_wall": "16:21:40",
+    "zero_sample_span_s": 16.12249,
+    "samples": 33,
+    "first_line": 590,
+    "last_line": 622,
+    "policy_active_all": true,
+    "control_faults_all_empty": true
+  },
+  "current_sessions": [
+    {
+      "recording": "20261104_030937",
+      "start": "2026-11-04T03:09:37",
+      "end": "2026-11-04T03:12:00",
+      "fresh_goto_snapshots": 80,
+      "fresh_blocked_snapshots": 25,
+      "blocked_classification": {
+        "no_executable_path_proposal": 25
+      },
+      "final_counters_by_boot": {
+        "0": {
+          "mfail": 2,
+          "last_mfail": 2,
+          "started": 0,
+          "done": 0,
+          "obs_phase": 0
+        }
+      }
+    },
+    {
+      "recording": "20261104_032223",
+      "start": "2026-11-04T03:22:23",
+      "end": "2026-11-04T03:23:45",
+      "fresh_goto_snapshots": 29,
+      "fresh_blocked_snapshots": 0,
+      "blocked_classification": {},
+      "final_counters_by_boot": {
+        "0": {
+          "mfail": 0,
+          "last_mfail": 0,
+          "started": 0,
+          "done": 0,
+          "obs_phase": 0
+        }
+      }
+    },
+    {
+      "recording": "20261104_032355",
+      "start": "2026-11-04T03:23:55",
+      "end": "2026-11-04T03:26:05",
+      "fresh_goto_snapshots": 36,
+      "fresh_blocked_snapshots": 30,
+      "blocked_classification": {
+        "active_reobservation": 26,
+        "no_executable_path_proposal": 3,
+        "final_collision_reject": 1
+      },
+      "final_counters_by_boot": {
+        "2": {
+          "mfail": 15,
+          "last_mfail": 4,
+          "started": 2,
+          "done": 1,
+          "obs_phase": 2
+        }
+      }
+    },
+    {
+      "recording": "20261104_032612",
+      "start": "2026-11-04T03:26:12",
+      "end": "2026-11-04T03:26:59",
+      "fresh_goto_snapshots": 27,
+      "fresh_blocked_snapshots": 18,
+      "blocked_classification": {
+        "active_reobservation": 15,
+        "local_map_or_pose_hold": 3
+      },
+      "final_counters_by_boot": {
+        "1": {
+          "mfail": 7,
+          "last_mfail": 4,
+          "started": 1,
+          "done": 0,
+          "obs_phase": 2
+        }
+      }
+    }
+  ],
+  "source_comparison": {
+    "nav/support_guard.c": {
+      "identical": true
+    },
+    "nav/local_planner.c": {
+      "identical": true
+    },
+    "nav/gmap.c": {
+      "identical": true
+    },
+    "nav/astar.c": {
+      "identical": true
+    },
+    "nav/motion_guard.c": {
+      "identical": false,
+      "diff": "D:\\tools\\obstacle_compare_20261104\\nav_motion_guard.c.diff"
+    }
+  },
+  "ray_module_compiled_noop": true,
+  "confirmed": [
+    "Cannot accept a claim that the new release is better overall from these logs. The deployed clearing workflow has reproducible integration gaps.",
+    "The older recorded search also stopped issuing motion for about16s; it is not an obstacle-recovery success baseline for this particular run.",
+    "Current GOTO03:25:28 reports one fresh-ground re-observation completion and resumes motion, but repeated blockage follows. This is a local success, not end-to-end arrival.",
+    "Second observation begins by03:25:33 and is still in phase2 at03:25:57; bridge cancels the original task at03:25:58 on25s blocked timeout, before its35s firmware observation budget expires.",
+    "A path-level refusal that produces no nonzero final motion cannot trigger the existing final-HAZARD-only observation entry. This pattern occurs in03:09;03:22 has zero final rejection and zero observations.",
+    "The active direct-ray invalidation module is compiled as no-op. Existing re-observation relies on fresh ground fusion, not enabled ray deletion.",
+    "support_guard,local_planner,gmap,astar are identical between frozen locfix2 and current. motion_guard changes only record rejected-cell evidence; hazard acceptance criteria are unchanged."
+  ],
+  "not_established": [
+    "Obstacle false-positive/false-negative rates: rejected cells and time-matched ground truth were not saved.",
+    "Whether each later-ground cell was a false/stale obstacle or a person/cardboard that moved.",
+    "A new-vs-old success-rate or latency improvement under matched motion, pose, target, scene and observation streams. Old SEARCH and recent GOTO are different tasks.",
+    "Unchanged guard/fusion source does not imply equal runtime maps: localization policy, actual trajectory and observation age differ.",
+    "A larger blocked/mfail count is not a count of unique false obstacles; reporting of blocked in SEARCH changed between releases."
+  ],
+  "decision": "Treat clearing as incomplete; fix trigger/timeout/resume integration first and retain existing safety thresholds. No blanket rollback and no live change during this audit.",
+  "raw_evidence": [
+    {
+      "file": "D:\\tools\\search_stall_20261103\\rec\\20261103_162012\\prior_keeper.log",
+      "matches": [
+        {
+          "line": 590,
+          "text": "16:21:23 {\"fpga_state\": \"searching\", \"loc_state\": \"degraded\", \"loc_quality\": 32, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": true, \"control_faults\": [], \"fpga_uptime_s\": 79.364683, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 0, \"left_target_mmps\": -120, \"right_target_mmps\": -109, \"left_cms\": -9, \"right_cms\": -8, \"gz_raw\": 116}}"
+        },
+        {
+          "line": 622,
+          "text": "16:21:40 {\"fpga_state\": \"searching\", \"loc_state\": \"degraded\", \"loc_quality\": 40, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.0, \"policy_active\": true, \"control_faults\": [], \"fpga_uptime_s\": 95.487173, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 504, \"left_target_mmps\": -172, \"right_target_mmps\": -109, \"left_cms\": -6, \"right_cms\": -8, \"gz_raw\": -30}}"
+        },
+        {
+          "line": 623,
+          "text": "16:21:40 {\"fpga_state\": \"searching\", \"loc_state\": \"degraded\", \"loc_quality\": 41, \"map_loaded\": true, \"lidar_ok\": true, \"cmd_vx_mps\": 0.0, \"cmd_wz_radps\": 0.4, \"policy_active\": true, \"control_faults\": [], \"fpga_uptime_s\": 95.887251, \"ctl\": {\"forward_q12\": 0, \"yaw_q12\": 1638, \"left_target_mmps\": 23, \"right_target_mmps\": 162, \"left_cms\": -2, \"right_cms\": 12, \"gz_raw\": 457}}"
+        }
+      ]
+    },
+    {
+      "file": "D:\\tools\\goto_block_review_20261104\\rec\\20261104_032355\\nav_console.log",
+      "matches": [
+        {
+          "line": 948,
+          "text": "03:25:27 t=54 s mode 1 state 3 loc 1"
+        },
+        {
+          "line": 949,
+          "text": "03:25:27 nav 1/0/1 src1 motion1 cmd0,80 yaw1894 p247,74 look-62,81"
+        },
+        {
+          "line": 950,
+          "text": "03:25:27 spd2 odo460 p-142 pr-3374 age2"
+        },
+        {
+          "line": 951,
+          "text": "03:25:27 obs0/1/1 mfail1/4"
+        },
+        {
+          "line": 952,
+          "text": "03:25:28 t=55 s mode 1 state 1 loc 1"
+        },
+        {
+          "line": 953,
+          "text": "03:25:28 nav 1/0/1 src1 motion1 cmd90,-25 yaw3183 p304,87 look2049,649"
+        },
+        {
+          "line": 954,
+          "text": "03:25:28 spd0 odo120 p185 pr-643 age12"
+        },
+        {
+          "line": 955,
+          "text": "03:25:28 obs1/1/0 mfail1/4"
+        },
+        {
+          "line": 972,
+          "text": "03:25:33 t=60 s mode 1 state 3 loc 1"
+        },
+        {
+          "line": 973,
+          "text": "03:25:33 nav 1/0/1 src1 motion1 cmd0,-480 yaw2707 p366,106 look203,-33"
+        },
+        {
+          "line": 974,
+          "text": "03:25:33 spd2 odo-100 p623 pr910 age2"
+        },
+        {
+          "line": 975,
+          "text": "03:25:33 obs1/2/1 mfail14/4"
+        },
+        {
+          "line": 1068,
+          "text": "03:25:57 t=84 s mode 1 state 3 loc 1"
+        },
+        {
+          "line": 1069,
+          "text": "03:25:57 nav 1/0/0 src2 motion1 cmd0,240 yaw9301 p23,-757 look203,-33"
+        },
+        {
+          "line": 1070,
+          "text": "03:25:57 spd2 odo55 p269 pr-551 age4"
+        },
+        {
+          "line": 1071,
+          "text": "03:25:57 obs1/2/2 mfail15/4"
+        }
+      ]
+    },
+    {
+      "file": "D:\\tools\\goto_block_review_20261104\\rec\\20261104_032355\\bridge.log",
+      "matches": [
+        {
+          "line": 14,
+          "text": "Nov 04 03:25:58.000143 hky yuntuo-fpga-bridge[3902]: 2026-11-04 03:25:57,999 INFO fpga_bridge: 任务 fpga-go-to-waypoint-afbe73d032 failed：受阻超过 25 s，无法到达地图2 · 分叉尽头。 已请求 FPGA 停止，停止尚未确认。"
+        }
+      ]
+    },
+    {
+      "file": "D:\\tools\\goto_transition_20261104\\fw\\nav\\nav_task.c",
+      "matches": [
+        {
+          "line": 787,
+          "text": "        if(ground || (int32_t)(now-nt->recheck_until_us)>=0) {"
+        },
+        {
+          "line": 788,
+          "text": "            if(ground)nt->observe_completed++;"
+        },
+        {
+          "line": 793,
+          "text": "            nt->state=ST_BLOCKED;nt->recovering=false;"
+        },
+        {
+          "line": 1101,
+          "text": "            if(!nt->recheck_phase && !nt->hold && nt->motion_result==MOTION_HAZARD &&"
+        },
+        {
+          "line": 1112,
+          "text": "                    nt->recheck_phase=1;nt->recheck_until_us=now+35000000u;nt->observe_started++;"
+        }
+      ]
+    },
+    {
+      "file": "D:\\tools\\goto_transition_20261104\\fw\\nav\\map_revalidate.c",
+      "matches": [
+        {
+          "line": 2,
+          "text": "#ifndef APP_RAY_CLEAR_ENABLE"
+        },
+        {
+          "line": 3,
+          "text": "#define APP_RAY_CLEAR_ENABLE 0"
+        },
+        {
+          "line": 5,
+          "text": "#if APP_RAY_CLEAR_ENABLE"
+        },
+        {
+          "line": 19,
+          "text": "void map_revalidate_reset(void){}"
+        }
+      ]
+    }
+  ]
+}

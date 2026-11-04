@@ -1,0 +1,269 @@
+--- a/fw/app/nav_app.c
++++ b/fw/app/nav_app.c
+@@ -170,6 +170,7 @@
+         hal_host_send(reply,n);break;
+     }
+     case MSG_MAP_BEGIN:
++        nt->demo_map=false; nt->demo_index=0;
+         obstacle_observe_reset(nt);
+         g_app.pose_seeded = false;
+         g_app.dr_agree = g_app.dr_strong = 0;
+@@ -185,11 +186,17 @@
+         send_ack();
+         break;
+     case MSG_MAP_END:
+-        if (prior_rx_end(&g_app.prx, &nt->gm) == PRIOR_READY) hal_match_zband(APP_ZLO_PRIOR, g_app.match_zhi);
++        if (prior_rx_end(&g_app.prx, &nt->gm) == PRIOR_READY) {
++            /* Only the verified field_home2 payload owns this demo route. */
++            nt->demo_map=g_app.prx.crc_exp==0xd9a34e4au && g_app.prx.gox==-8 && g_app.prx.goy==-21 &&
++                         g_app.prx.gnx==38 && g_app.prx.gny==34;
++            hal_match_zband(APP_ZLO_PRIOR, g_app.match_zhi);
++        }
+         loc_init(&g_app.loc);                        /* 等 SET_POSE */
+         send_ack();
+         break;
+     case MSG_MAP_CLEAR:
++        nt->demo_map=false; nt->demo_index=0;
+         obstacle_observe_reset(nt);
+         g_app.pose_seeded = false;
+         g_app.dr_agree = g_app.dr_strong = 0;
+--- a/fw/nav/motion_guard.c
++++ b/fw/nav/motion_guard.c
+@@ -164,7 +164,7 @@
+ { return check(map, mi, pose, cfg, cmd, 0); }
+ 
+ static uint8_t segment(const uint8_t *map, const hal_map_info_t *mi,
+-                       const nav_pose_t *pose, const lp_cfg_t *cfg, int32_t gx, int32_t gy, bool record)
++                       const nav_pose_t *pose, const lp_cfg_t *cfg, int32_t gx, int32_t gy, int probe)
+ {
+     if (!mi->inv_res) return MOTION_NO_MAP;
+     int32_t r = (int32_t)(((int64_t)cfg->caps.radius_mm * mi->inv_res + 255) >> 8);
+@@ -189,6 +189,10 @@
+         if(c!=NP_COST_LETHAL && c!=NP_COST_UNKNOWN) continue;
+         int32_t ax=axis_gap(x0,x),ay=axis_gap(y0,y);
+         bool start=(int64_t)ax*ax+(int64_t)ay*ay<=rr;
++        /* Only for a trapped-start connection: use the same departing-side
++         * exception as the final motion guard. No new lethal area is swept. */
++        if (probe==2 && c==NP_COST_LETHAL && (int64_t)ax*ax+(int64_t)ay*ay<=(int64_t)(r-4)*(r-4) &&
++            max_projection(x,y,qx,qy,gx-pose->x,gy-pose->y)<0) continue;
+         if(c==NP_COST_UNKNOWN && start &&
+            ((!dx && !dy) || contained(x,y,qx,qy,rr0) ||
+             max_projection(x,y,qx,qy,gx-pose->x,gy-pose->y)<=0)) continue;
+@@ -213,7 +217,7 @@
+             }
+         }
+         if(hit) {if(c==NP_COST_LETHAL) {
+-        if (!record) return MOTION_HAZARD;
++        if (probe!=1) return MOTION_HAZARD;
+         motion_evidence[0]++;motion_evidence[1]=2;
+         motion_evidence[2]=mi->cx-NP_MAP_N/2+x;motion_evidence[3]=mi->cy-NP_MAP_N/2+y;
+         motion_evidence[4]=mi->seq;motion_evidence[5]=hal_time_us();
+@@ -234,3 +238,9 @@
+ {
+     return segment(map, mi, pose, cfg, gx, gy, false);
+ }
++
++uint8_t motion_entry_probe(const uint8_t *map,const hal_map_info_t *mi,const nav_pose_t *p,
++                           const lp_cfg_t *cfg,int32_t x,int32_t y)
++{
++    return segment(map,mi,p,cfg,x,y,2);
++}
+--- a/fw/nav/motion_guard.h
++++ b/fw/nav/motion_guard.h
+@@ -22,4 +22,5 @@
+ /* A hypothetical observation route must not overwrite the last real motion veto. */
+ uint8_t motion_segment_probe(const uint8_t *map, const hal_map_info_t *mi,
+                              const nav_pose_t *pose, const lp_cfg_t *cfg, int32_t gx, int32_t gy);
++uint8_t motion_entry_probe(const uint8_t*,const hal_map_info_t*,const nav_pose_t*,const lp_cfg_t*,int32_t,int32_t);
+ #endif
+--- /dev/null
++++ b/fw/nav/nav_entry.c
+@@ -0,0 +1,64 @@
++#include "nav_task.h"
++#include "fixmath.h"
++
++/* A short connection from the actual pose to a normal A* cell outside the
++ * clearance margin. Both the prior and the current fine map must allow it. */
++bool nav_entry_clear(const nav_task_t *nt,int32_t x,int32_t y)
++{
++    const nav_pose_t *p=&nt->pose.cur;
++    const gmap_t *g=&nt->gm;
++    if (!g->has_prior || !nt->have_map || nt->stale || !nt->mi.inv_res) return false;
++    int dx=x-p->x,dy=y-p->y,r=nt->lp_cfg.caps.radius_mm;
++    if (nav_abs32(dx)>500 || nav_abs32(dy)>500 || dx*dx+dy*dy>500*500) return false;
++    int half=(GM_DS*65536+2*nt->mi.inv_res-1)/(2*nt->mi.inv_res)+1;
++    int ax,ay,bx,by;
++    gmap_mm_to_cell(g,&nt->mi,nav_min32(x,p->x)-r-2,nav_min32(y,p->y)-r-2,&ax,&ay);
++    gmap_mm_to_cell(g,&nt->mi,nav_max32(x,p->x)+r+2,nav_max32(y,p->y)+r+2,&bx,&by);
++    if (ax<0 || ay<0 || bx>=GM_N || by>=GM_N) return false;
++    /* Eight midpoint discs cover the swept body; inflate by half a substep
++     * and the coordinate rounding margin. An initially overlapping known
++     * coarse obstacle may only be left if the ENTIRE cell lies behind motion. */
++    int cover=r+(nav_abs32(dx)+nav_abs32(dy)+15)/16+2;
++    for (int j=ay;j<=by;j++) for (int i=ax;i<=bx;i++) {
++        int idx=j*GM_N+i;
++        if (g->prior[idx]<=NP_COST_FREE_MAX && g->grid[idx]<GM_COST_BLOCKED) continue;
++        int32_t cx,cy;
++        gmap_cell_to_mm(g,&nt->mi,i,j,&cx,&cy);
++        int hx=cx-p->x,hy=cy-p->y;
++        int sx=nav_max32(0,nav_abs32(hx)-half),sy=nav_max32(0,nav_abs32(hy)-half);
++        if (g->prior[idx]!=NP_COST_UNKNOWN && g->grid[idx]!=NP_COST_UNKNOWN &&
++            (sx || sy) &&
++            hx*dx+hy*dy+half*(nav_abs32(dx)+nav_abs32(dy))<0) continue;
++        for (int k=1;k<16;k+=2) {
++            sx=nav_max32(0,nav_abs32(hx-dx*k/16)-half);
++            sy=nav_max32(0,nav_abs32(hy-dy*k/16)-half);
++            if (sx*sx+sy*sy<=cover*cover) return false;
++        }
++    }
++    uint8_t result=motion_entry_probe(nt->map,&nt->mi,p,&nt->lp_cfg,x,y);
++    return result==MOTION_OK || result==MOTION_UNKNOWN; /* prior covers the entire sweep */
++}
++
++bool nav_entry_select(nav_task_t *nt,int *rx,int *ry)
++{
++    int sx,sy;
++    gmap_mm_to_cell(&nt->gm,&nt->mi,nt->pose.cur.x,nt->pose.cur.y,&sx,&sy);
++    if (sx<0 || sy<0 || sx>=GM_N || sy>=GM_N || nt->gm.prior[sy*GM_N+sx]>NP_COST_FREE_MAX) return false;
++    int cell=(GM_DS*65536+nt->mi.inv_res/2)/nt->mi.inv_res;
++    for (int i=0;i<81;i++) {
++        int k=(40+nt->entry_cursor+i)%81,dx=k%9-4,dy=k/9-4;
++        if (dx*dx+dy*dy>16 || (!dx && !dy)) continue;
++        int32_t x,y;
++        gmap_cell_to_mm(&nt->gm,&nt->mi,sx+dx,sy+dy,&x,&y);
++        if (!explore_goal_clear(&nt->gm,&nt->mi,x,y,(nt->as_cfg_g.hard_cells-1)*cell)) continue;
++        /* Do not introduce lateral motion just to hit a cell centre when the
++         * way out is directly away from a nearby wall. Still the same A* seed. */
++        if (!dx) x=nt->pose.cur.x;
++        if (!dy) y=nt->pose.cur.y;
++        if (!nav_entry_clear(nt,x,y)) continue;
++        nt->entry_cursor=(nt->entry_cursor+i+1)%81;
++        nt->entry_x=x;nt->entry_y=y;*rx=sx+dx;*ry=sy+dy;
++        return true;
++    }
++    return false;
++}
+--- a/fw/nav/nav_task.c
++++ b/fw/nav/nav_task.c
+@@ -117,6 +117,11 @@
+     if((mode==NAV_MODE_SEARCH || mode==NAV_MODE_TRACK) &&
+        nt->mode!=NAV_MODE_SEARCH && nt->mode!=NAV_MODE_TRACK) explore_init(&nt->exp);
+     astar_cancel();nt->bg_done=false;
++    nt->entry_active=false;nt->entry_cursor=0;
++    if (mode==NAV_MODE_SEARCH && nt->mode!=NAV_MODE_TRACK && nt->mode!=NAV_MODE_SEARCH) {
++        nt->demo_index=0;
++        if (nt->demo_map) nt->tgt.valid=false;
++    }
+     nt->mode = mode;
+     nt->recheck_phase=0;nt->observe_outcome=0;
+     nt->track_holding = true;
+@@ -183,6 +188,9 @@
+         if (m->u.target.found && target_fresh(&nt->tgt, rx_us) && nt->mode == NAV_MODE_SEARCH) nav_task_set_mode(nt, NAV_MODE_TRACK);
+         break;
+     case MSG_MODE:
++        if (m->u.mode.mode==NAV_MODE_SEARCH && nt->demo_map) {
++            nt->demo_index=0;nt->tgt.valid=false;nt->revisit_goal=false;
++        }
+         nt->recheck_phase=0;nt->observe_cooldown=0;
+         if (m->u.mode.mode <= NAV_MODE_ESTOP) nav_task_set_mode(nt, (nav_mode_t)m->u.mode.mode);
+         break;
+@@ -244,6 +252,7 @@
+ 
+ static int plan_coarse(nav_task_t *nt,const nav_pose_t *p,int32_t gx,int32_t gy)
+ {
++    nt->entry_active=false;
+     nt->search_work_done=true;
+     nt->search_fine=false;
+     /* 平地有图：栅格坐标固定（先验图原点），栅格内容变了旧路线的格坐标仍然有效。重搜期间沿旧路线走，
+@@ -285,6 +294,14 @@
+         astar_complete_only(true);
+         nt->bg_done=false;
+         int rc = astar_grid_bounded(&nt->as_cfg_g, nt->gm.grid, GM_N, rx, ry, tx, ty, &nt->path,128);
++        /* A trapped start may attach only to a reachable seed with a full
++         * path onward. Never use the ordinary clipped/partial route fallback. */
++        if ((rc<0 || (rc==1 && nt->path.n<=1)) && !clipped && nt->gm.has_prior &&
++            (nt->mode==NAV_MODE_GOTO || nt->mode==NAV_MODE_SEARCH) && nav_entry_select(nt,&rx,&ry)) {
++            nt->entry_active=true;nt->search_keep_route=false;nt->path_valid=false;nt->path.n=0;
++            astar_complete_only(true);
++            rc=astar_grid_bounded(&nt->as_cfg_g,nt->gm.grid,GM_N,rx,ry,tx,ty,&nt->path,128);
++        }
+         nt->path_target_is_goal=!clipped;
+         if(rc!=2) {
+             nt->path_fine=false;nt->path_shift=nt->search_shift;
+@@ -454,6 +471,16 @@
+         if (!nt->path_valid) { nt->n_pbusy++; return false; }
+     }
+ #if APP_FLAT_GROUND
++    if (nt->entry_active) {
++        int cx,cy;
++        gmap_mm_to_cell(&nt->gm,&nt->mi,p->x,p->y,&cx,&cy);
++        if (!nt->path_complete || !nt->path.n || nt->path_fine ||
++            (cx==nt->path.wx[0] && cy==nt->path.wy[0]) || !nav_entry_clear(nt,nt->entry_x,nt->entry_y)) {
++            nt->entry_active=false;nt->path_valid=false;nt->path.n=0;
++            return false;
++        }
++        *lx=nt->entry_x;*ly=nt->entry_y;return true;
++    }
+     /* 平衡车先转后走：前视点取"从车现在的位置能直线走到"的最远路径点（记忆栅格视线检查，先验墙体不会被穿过），
+      * 车对准它直行，到拐角再转。A* 的 8 邻接折线（例如先直上再直右）不再变成多余的原地转向。 */
+     if (nt->use_gmap && !nt->path_fine && nt->path.n > 0) {
+@@ -771,7 +798,7 @@
+         if (nt->have_map && !nt->async_gmap) gmap_update(&nt->gm, nt->map, &nt->mi, nt->pose.cur.x, nt->pose.cur.y);
+         else if(!nt->have_map) nt->path_valid = false;
+     }
+-    if(nt->mode==NAV_MODE_SEARCH || nt->mode==NAV_MODE_TRACK) {
++    if(!nt->demo_map && (nt->mode==NAV_MODE_SEARCH || nt->mode==NAV_MODE_TRACK)) {
+         explore_mark(&nt->exp, &nt->pose.cur);
+         if (nt->use_gmap && nt->gm.has_prior && nt->have_map && !nt->hold) explore_seen_mark(&nt->exp, &nt->ex_cfg, &nt->gm, &nt->mi, &nt->pose.cur);
+     }
+@@ -793,7 +820,7 @@
+     if (nt->recheck_phase && (nt->mode==NAV_MODE_SEARCH || nt->mode==NAV_MODE_TRACK || nt->mode==NAV_MODE_GOTO) &&
+         obstacle_observe_step(nt, now)) goto send_checked;
+     if(nt->mode==NAV_MODE_TRACK && !target_alive(&nt->tgt,now)) {
+-        bool revisit=nt->tgt.valid && (nt->tgt.cls==39 || nt->tgt.cls==41) && (uint32_t)(now-nt->tgt.t_us)<60000000u;
++        bool revisit=!nt->demo_map && nt->tgt.valid && (nt->tgt.cls==39 || nt->tgt.cls==41) && (uint32_t)(now-nt->tgt.t_us)<60000000u;
+         nav_task_set_mode(nt,NAV_MODE_SEARCH);
+         if(revisit) {
+             target_approach_goal(&nt->tgt,p,&nt->goal_x,&nt->goal_y);
+@@ -935,6 +962,20 @@
+     }
+ 
+     case NAV_MODE_SEARCH:
++        if (nt->demo_map && nt->gm.has_prior) {
++            /* Screen annotations 1..5, in field_home2 map coordinates (mm). */
++            static const int16_t route[][2]={{-110,-1220},{830,580},{2290,550},{2300,-930},{1150,-930}};
++            if (target_fresh(&nt->tgt,now)) {nav_task_set_mode(nt,NAV_MODE_TRACK);break;}
++            nt->goal_x=route[nt->demo_index][0];nt->goal_y=route[nt->demo_index][1];
++            nt->search_goal_valid=true;
++            nt->state=ST_SEARCHING;
++            if (drive_to(nt,now,nt->goal_x,nt->goal_y,150)) {
++                nt->demo_index=(nt->demo_index+1)%(sizeof(route)/sizeof(route[0]));
++                nt->search_goal_valid=false;nt->path_valid=false;nt->path.n=0;
++                astar_cancel();nt->bg_done=false;
++            } else if ((uint32_t)(now-nt->last_ok_us)>nt->cfg.blocked_us) nt->state=ST_BLOCKED;
++            break;
++        }
+         if(nt->revisit_goal && (int32_t)(now-nt->revisit_until_us)>=0) {nt->revisit_goal=false;nt->search_goal_valid=false;}
+         if (target_alive(&nt->tgt, now)) { nav_task_set_mode(nt, NAV_MODE_TRACK); break; }
+         if(nt->search_goal_valid && nt->gm.has_prior &&
+--- a/fw/nav/nav_task.h
++++ b/fw/nav/nav_task.h
+@@ -102,6 +102,9 @@
+     uint32_t       last_ok_us;       /* 最近一次找到可行候选 */
+     uint32_t       search_t_us;
+     bool           search_goal_valid;
++    bool           demo_map, entry_active;
++    uint8_t        demo_index, entry_cursor;
++    int32_t        entry_x, entry_y;
+     int32_t        look_x, look_y;   /* 当前前视点（调试/显示） */
+     bool           turning;          /* 原地转向对准前视点中 */
+     int32_t        prog_x, prog_y;   /* 卡住检测参考点 */
+@@ -144,6 +147,8 @@
+ } nav_task_t;
+ 
+ void nav_task_init(nav_task_t *nt);
++bool nav_entry_select(nav_task_t*,int*,int*);
++bool nav_entry_clear(const nav_task_t*,int32_t,int32_t);
+ /* 处理一条主机报文（rx_us 为到达时间） */
+ void nav_task_on_msg(nav_task_t *nt, const proto_msg_t *m, uint32_t rx_us);
+ /* 设置模式 / 目标（本地调用接口，报文处理也走这里） */

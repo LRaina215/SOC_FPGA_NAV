@@ -1,0 +1,75 @@
+--- a/fw/nav/nav_task.c
++++ b/fw/nav/nav_task.c
+@@ -113,9 +113,6 @@
+ 
+ void nav_task_set_mode(nav_task_t *nt, nav_mode_t mode)
+ {
+-    bool keep_speed_fault=nt->speed_phase==5 &&
+-        (nt->mode==NAV_MODE_SEARCH || nt->mode==NAV_MODE_TRACK) &&
+-        (mode==NAV_MODE_SEARCH || mode==NAV_MODE_TRACK);
+     /* 新一轮找物/跟随从空白覆盖开始；同一任务 TRACK/SEARCH 切换保留记录。 */
+     if((mode==NAV_MODE_SEARCH || mode==NAV_MODE_TRACK) &&
+        nt->mode!=NAV_MODE_SEARCH && nt->mode!=NAV_MODE_TRACK) explore_init(&nt->exp);
+@@ -124,8 +121,7 @@
+     nt->recheck_phase=0;nt->observe_outcome=0;
+     nt->track_holding = true;
+     nt->track_goal_valid = false;
+-    nt->speed_phase=nt->speed_quiet=nt->speed_reverse=0;
+-    if(keep_speed_fault) nt->speed_phase=5;
++    nt->speed_phase=nt->speed_quiet=0;
+     if(mode==NAV_MODE_IDLE || mode==NAV_MODE_ESTOP) {
+         nt->tgt.valid = false;
+         nt->scan_active=nt->scan_settling=nt->scan_failed=false;nt->scan_exit_valid=false;
+@@ -188,7 +184,6 @@
+         break;
+     case MSG_MODE:
+         nt->recheck_phase=0;nt->observe_cooldown=0;
+-        nt->speed_phase=0; /* explicit new/cancel task, not automatic SEARCH/TRACK */
+         if (m->u.mode.mode <= NAV_MODE_ESTOP) nav_task_set_mode(nt, (nav_mode_t)m->u.mode.mode);
+         break;
+     default:
+@@ -709,27 +704,20 @@
+     return false;
+ }
+ 
+-/* SEARCH/GOTO have one mutually exclusive translation/turn outlet. A nonzero
+- * yaw proposal is never added to forward travel. Balance control stays enabled;
+- * persistent physical reverse/large tilt latches this navigation task stopped. */
++/* Tasks share one mutually exclusive translation/turn outlet. Body velocity
++ * can reverse during normal balance corrections; it is not an obstacle or a
++ * persistent navigation fault. Data/attitude handover below is non-latching.
++ * Collision veto and explicit emergency-stop handling remain independent. */
+ void nav_task_speed_reference(nav_task_t *nt,uint32_t now)
+ {
+     if(nt->mode!=NAV_MODE_SEARCH && nt->mode!=NAV_MODE_GOTO && nt->mode!=NAV_MODE_TRACK) {
+-        nt->speed_phase=nt->speed_quiet=nt->speed_reverse=0;return;
++        nt->speed_phase=nt->speed_quiet=0;return;
+     }
+     bool fresh=nt->pose.have_att && nt->pose.have_odo && nt->pose.have_gyro &&
+         (uint32_t)(now-nt->pose.imu_t_us)<100000 &&
+         (uint32_t)(now-nt->pose.last_odo_us)<100000 &&
+         (uint32_t)(now-nt->pose.gyro_t_us)<100000;
+     int pitch=nav_abs32((int16_t)nt->pose.cur.pitch);
+-    if(fresh && pitch>ANGLE_FROM_CDEG(2000)) nt->speed_phase=5;
+-    if(fresh && (nt->v_prev>0 || nt->speed_w_prev) && nt->pose.odo_vx < -100) {
+-        if(nt->speed_reverse<3) nt->speed_reverse++;
+-        if(nt->speed_reverse>=3) nt->speed_phase=5;
+-    } else nt->speed_reverse=0;
+-    if(nt->speed_phase==5) {
+-        nt->state=ST_BLOCKED;nt->cmd=(nav_cmd_t){0};return;
+-    }
+     if(!fresh) {
+         nt->speed_phase=1;nt->speed_quiet=0;nt->cmd=(nav_cmd_t){0};return;
+     }
+--- a/fw/nav/nav_task.h
++++ b/fw/nav/nav_task.h
+@@ -130,8 +130,7 @@
+     bool revisit_goal;
+     uint32_t revisit_until_us;
+     uint8_t        last_mfail;       /* 最近一次足迹检查不过的结果码 */
+-    uint8_t speed_phase, speed_quiet; /* 0直行1待数据/制动2转向3收尾5异常后退/倾角锁停 */
+-    uint8_t speed_reverse;           /* 连续实测后退，不用导航参考冒充实际轮速 */
++    uint8_t speed_phase, speed_quiet; /* 0直行1待数据/制动2转向3收尾；均可随新鲜反馈恢复，不锁存故障/写受阻 */
+     int16_t speed_w_prev; /* 上次最终下发角速度；规划器自己的prev_wz可能已被覆盖 */
+ } nav_task_t;
+ 

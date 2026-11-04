@@ -1,0 +1,10 @@
+PASS route-layer observation trigger without final-HAZARD
+PASS fresh fine ground reconciles stale global obstacle and resumes original route
+PASS fresh ground releases implicated virtual block; unrelated retry hint retained
+PASS final-command footprint HAZARD still triggers observation
+PASS3-frame ray invalidate -> unknown wait -> fresh ground -> same goal resumed/arrived
+PASS missing ray / real foreground / compare-write race never clear
+PASS prior wall / no map /35s timeout / new goal / estop / SEARCH goal retained / target transition
+PASS actual08:00:26 pose/cell: physical-body false obstacle cleared; original goal resumes
+PASS body clear preserves outside obstacles/prior walls/race/stale/hold; coarse memory and implicated hint agree
+PASS actual57..86s drift replay: one fixed heading, bounded turn, no bearing chase/reacquisition; original goal retained

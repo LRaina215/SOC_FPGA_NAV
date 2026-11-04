@@ -1,0 +1,324 @@
+--- follow1/app/nav_app.c
++++ locfix3/app/nav_app.c
+@@ -139,12 +139,16 @@
+     switch (m->type) {
+     case MSG_SET_POSE:
+         g_app.have_fix = false;
++        g_app.pose_seeded = nav_app_have_prior();
++        g_app.dr_agree = g_app.dr_strong = 0;
++        loc_init(&g_app.loc);          /* 新起点不能继承上一地点的质量/歧义/重试状态 */
++        g_app.turning = false;
+         pose_set(&nt->pose, m->u.pose.x, m->u.pose.y, ANGLE_FROM_CDEG(m->u.pose.yaw_cdeg));
+         frame_jumped(nt);
+         if (g_app.pm_pend || g_app.pm_run) g_app.pm_stale = true;
+         if (nav_app_have_prior() && (m->u.pose.flags & 1))   /* 搜索范围限制在 ±0.4 m / ±8°：大范围搜索会跳到相似结构上 */
+-            loc_start_align(&g_app.loc, nav_clamp32(m->u.pose.range_mm, 0, 400),
+-                            nav_clamp32(m->u.pose.range_cdeg, 0, 800) * 182 / 100);
++            loc_start_align(&g_app.loc, nav_clamp32(m->u.pose.range_mm > 0 ? m->u.pose.range_mm : 300, 1, 400),
++                            nav_clamp32(m->u.pose.range_cdeg > 0 ? m->u.pose.range_cdeg : 600, 1, 800) * 182 / 100);
+         else if (nav_app_have_prior())
+             g_app.loc.st = LOC_OK;                   /* 主机保证位姿准确：直接跟踪 */
+         break;
+@@ -163,6 +167,8 @@
+         hal_host_send(reply,n);break;
+     }
+     case MSG_MAP_BEGIN:
++        g_app.pose_seeded = false;
++        g_app.dr_agree = g_app.dr_strong = 0;
+         g_app.have_fix = false;
+         prior_rx_begin_profile(&g_app.prx, &nt->gm, m->u.map_begin.total,(int16_t)g_app.match_zhi);
+         hal_match_zband(APP_ZLO_ODOM, g_app.match_zhi);
+@@ -180,6 +186,8 @@
+         send_ack();
+         break;
+     case MSG_MAP_CLEAR:
++        g_app.pose_seeded = false;
++        g_app.dr_agree = g_app.dr_strong = 0;
+         prior_rx_clear(&g_app.prx, &nt->gm);
+         hal_match_zband(APP_ZLO_ODOM, g_app.match_zhi);
+         loc_init(&g_app.loc);
+@@ -322,11 +330,20 @@
+ static bool dr_gate(bool ok, const hal_match_res_t *res)
+ {
+     pm_stat_t *m = &g_app.pm;
++    uint32_t now = hal_time_us();
++    if ((uint32_t)(now - g_app.t_dr_frame) > 500000u)
++        g_app.dr_agree = g_app.dr_strong = 0;
++    g_app.t_dr_frame = now;
+     uint32_t np = res ? res[0].n_pts : 0;
+     int q = (ok && np >= (uint32_t)g_app.loc.cfg.min_pts) ? (int)(m->n_in_best * 100 / np) : 0;
+     bool good = ok && q >= APP_DR_Q;
++    bool strong = good && q >= g_app.loc.cfg.q_ok && !m->at_edge;
+     if (ok && m->at_edge) g_app.n_dr_edge++;
+     g_app.dr_agree = good ? (uint8_t)nav_min32(g_app.dr_agree + 1, 255) : 0;
++    bool coherent = nav_abs32(m->dx - g_app.dr_dx) <= 25 && nav_abs32(m->dy - g_app.dr_dy) <= 25 &&
++                    nav_abs32(m->dyaw - g_app.dr_da) <= 128;
++    g_app.dr_strong = strong ? (coherent ? (uint8_t)nav_min32(g_app.dr_strong + 1, 255) : 1) : 0;
++    g_app.dr_dx = (int16_t)m->dx; g_app.dr_dy = (int16_t)m->dy; g_app.dr_da = (int16_t)m->dyaw;
+     if (!good || g_app.dr_agree < APP_DR_AGREE) {
+         if (ok) {
+             g_app.n_dr_rej++;
+@@ -334,9 +351,20 @@
+         }
+         return false;
+     }
+-    uint32_t now = hal_time_us(), dt = now - g_app.t_dr_last;
++    uint32_t dt = now - g_app.t_dr_last;
+     if (dt > 200000u) dt = 200000u;
+     g_app.t_dr_last = now;
++    /* Before the dead-reckoning-only policy, well-constrained lidar matches
++     * used the solver's normal gain. Retain that path after three strong
++     * frames, with bounded per-frame changes. A permanently tiny trim cannot
++     * recover prediction error even when the match has become reliable. */
++    if (g_app.dr_strong >= APP_DR_AGREE) {
++        m->dx = nav_clamp32(m->dx, -50, 50);
++        m->dy = nav_clamp32(m->dy, -50, 50);
++        m->dyaw = nav_clamp32(m->dyaw, -182, 182);
++        g_app.n_dr_acc++;
++        return true;
++    }
+     int32_t cmm = 1 + (int32_t)(APP_DR_RATE_MM * dt / 1000000u), cang = 1 + (int32_t)(APP_DR_RATE_ANG * dt / 1000000u);
+     m->dx = nav_clamp32(m->dx / 2, -cmm, cmm);
+     m->dy = nav_clamp32(m->dy / 2, -cmm, cmm);
+@@ -345,7 +373,51 @@
+     return true;
+ }
+ 
++static bool recover_idle_match(nav_task_t *nt, loc_t *lc, uint32_t now)
++{
++    if (nt->mode == NAV_MODE_IDLE && nt->cmd.vx == 0 && nt->cmd.wz == 0) {
++        /* Manual view changes need local reacquisition, not an indefinite
++         * degraded state in the tiny tracking window. No motion is issued. */
++        loc_start_align(lc, lc->cfg.reloc_mm, lc->cfg.reloc_ang);
++        g_app.have_fix = g_app.dead_reckon = false;
++        g_app.dr_agree = g_app.dr_strong = 0;
++        return true;
++    }
++    lc->st = LOC_DEGRADED;
++    lc->degr_since = now;
++    return false;
++}
++
+ /* 转向后头几帧放宽跟踪角度窗到 ±2.8°（2 × 1.4°），接住陀螺在转向中积累的航向误差 */
++static void limit_aux_correction(pm_stat_t *c)
++{
++    /* A declared starting pose is the frontend reference. Even a successful
++     * auxiliary search must not replace it with an abrupt multi-decimetre jump. */
++    c->dx = nav_clamp32(c->dx, -25, 25);
++    c->dy = nav_clamp32(c->dy, -25, 25);
++    c->dyaw = nav_clamp32(c->dyaw, -182, 182);
++}
++
++static void apply_pose_policy(nav_task_t *nt, bool prior)
++{
++    const bool relative = nt->mode == NAV_MODE_TRACK || nt->mode == NAV_MODE_SEARCH;
++    /* IMU+encoders are the frontend. A declared map pose is sufficient for a
++     * map goal; lidar alignment/quality is an auxiliary observation. Relative
++     * target tasks use live local costs and never an unregistered static map. */
++    nt->use_gmap = !relative;
++    nt->hold = prior && !g_app.pose_seeded && !relative;
++    nt->slow = prior && g_app.pose_seeded && g_app.loc.st != LOC_OK && !relative;
++    g_app.dead_reckon = prior && g_app.pose_seeded && g_app.loc.st != LOC_OK;
++}
++
++static uint8_t reported_loc_state(bool prior)
++{
++    if (!prior) return LOC_ODOM;
++    if (g_app.pose_seeded && (g_app.loc.st == LOC_ALIGN || g_app.loc.st == LOC_LOST))
++        return LOC_DEGRADED; /* known initial frame; background lidar recovery */
++    return (uint8_t)g_app.loc.st;
++}
++
+ static const pm_cfg_t *track_cfg(const pm_cfg_t *pc)
+ {
+     static pm_cfg_t wide;
+@@ -503,6 +575,7 @@
+                 bool jumped = loc_align_finish(lc, now);
+                 if (jumped) {
+                     pm_stat_t correction = {.dx=lc->res_dx, .dy=lc->res_dy, .dyaw=lc->res_da};
++                    if (g_app.pose_seeded) limit_aux_correction(&correction);
+                     pose_match_commit(&nt->pose, g_app.pm_at.x, g_app.pm_at.y, &correction);
+                     frame_jumped(nt);
+                 }
+@@ -515,8 +588,9 @@
+             bool ok = pose_match_solve(track_cfg(pc), g_app.pm_work.res, g_app.pm_k, &g_app.pm);
+             bool lost = prior && loc_track(lc, &g_app.pm, g_app.pm_work.res, ok, now);
+ #if APP_DR_PRIMARY
+-            /* 位置以编码器 + 陀螺推算为准，不因为匹配差就自动大范围重新对准（那会跳到相似结构上）；只降为退化 */
+-            if (lost) { lc->st = LOC_DEGRADED; lc->degr_since = now; }
++            /* During an active task retain conservative tracking. In IDLE,
++             * restore the bounded recovery path instead of sticking at q=0. */
++            if (lost && recover_idle_match(nt, lc, now)) ok = false;
+             if (prior) ok = dr_gate(ok, g_app.pm_work.res);
+ #else
+             if (lost) {
+@@ -549,13 +623,11 @@
+         lc->st = LOC_DEGRADED;
+         lc->degr_since = now;
+     }
+-    /* 对准失败（视野里结构不足或只有平行结构）：原地转约 35° 换视角，稳定后用新帧再对准 */
+-    if (lc->want_turn) {
+-        lc->want_turn = false;
+-        g_app.turning = true;
+-        g_app.turn_until = now + 1500000;
+-    }
+-    if (g_app.turning && (int32_t)(now - g_app.turn_until) > 300000) g_app.turning = false;
++    /* Automatic turning was disabled on 11-01. Do not leave its 1.8 s
++     * synthetic turning flag active: that suppresses fresh alignment frames
++     * while the robot is actually holding still. */
++    lc->want_turn = false;
++    g_app.turning = false;
+     nt->hold_wz = 0; /* 11-01 用户要求：对准失败不转向，原地等下一帧重试 */
+     /* 丢失（对准重试用尽）：每 3 s 再试一次 */
+     if (prior && lc->st == LOC_LOST && (uint32_t)(now - g_app.t_lost) > 3000000)
+@@ -567,19 +639,8 @@
+     tmax(&g_app.tmax_host, t_host);
+ 
+     apply_host_link_lock(hal_time_us());
+-    /* 5. 规划：有图模式下定位未就绪（等初始位姿 / 对准中 / 丢失）时原地保持，定位退化时限速 */
+-    nt->hold = prior && lc->st != LOC_OK && lc->st != LOC_DEGRADED;
+-#if APP_FLAT_GROUND
+-    /* 定位丢了也接着走：位姿由编码器 + 陀螺推算，后台继续对准；离上次可靠定位推算超过 2.5 m 或 30 s 才停下等对准。
+-     * 开机后第一次对准完成前没有可靠定位，照旧原地等。 */
+-    if (prior && (lc->st == LOC_OK || lc->st == LOC_DEGRADED)) {
+-        g_app.have_fix = true; g_app.t_fix = now; g_app.fix_x = nt->pose.cur.x; g_app.fix_y = nt->pose.cur.y;
+-    }
+-    g_app.dead_reckon = nt->hold && g_app.have_fix && (uint32_t)(now - g_app.t_fix) < APP_DR_MAX_US &&
+-                        fx_dist(nt->pose.cur.x - g_app.fix_x, nt->pose.cur.y - g_app.fix_y) < APP_DR_MAX_MM;
+-    if (g_app.dead_reckon) nt->hold = false;
+-#endif
+-    nt->slow = prior && lc->st == LOC_DEGRADED;
++    /* 5. Separate the initial coordinate reference from lidar confidence. */
++    apply_pose_policy(nt, prior);
+     if ((uint32_t)(now - g_app.t_plan) >= APP_PLAN_PERIOD_US) {
+         g_app.t_plan += APP_PLAN_PERIOD_US;
+         if ((uint32_t)(now - g_app.t_plan) >= APP_PLAN_PERIOD_US) g_app.t_plan = now;   /* 落后太多：重新对齐 */
+@@ -607,7 +668,7 @@
+         g_app.t_status = now;
+         proto_status_t s;
+         nav_task_status(nt, &s, now);
+-        s.loc_state = prior ? (uint8_t)lc->st : (uint8_t)LOC_ODOM;
++        s.loc_state = reported_loc_state(prior);
+         s.loc_quality = (uint8_t)(prior ? loc_quality(lc) : 0);
+         int n = proto_build_status(host_rx_buf, &s);
+         hal_host_send(host_rx_buf, n);
+--- follow1/app/nav_app.h
++++ locfix3/app/nav_app.h
+@@ -70,7 +70,11 @@
+     uint32_t     n_turn_skip;           /* 原地转向中及刚停时不匹配的帧 */
+     uint32_t     n_unsettled;           /* 匹配了但因姿态突变没写进高程图的帧 */
+     bool         have_fix, dead_reckon; /* 有过可靠定位 / 定位丢失中靠推算继续走 */
++    bool         pose_seeded;          /* 初始地图位姿已给定；不等同于雷达匹配成功 */
+     uint8_t      dr_agree;              /* 连续合格的匹配帧数 */
++    uint8_t      dr_strong;             /* 连续高质量且不在搜索边界的帧数 */
++    int16_t      dr_dx, dr_dy, dr_da;    /* 前一帧提案，用于高质量连续性检查 */
++    uint32_t     t_dr_frame;
+     uint16_t     n_dr_acc, n_dr_rej;    /* 采纳 / 丢弃的雷达修正帧数 */
+     uint16_t     n_dr_edge, n_dr_lowq;  /* 解在搜索窗边上的帧数（照样可采纳） / 因内点率不够丢弃的帧数 */
+     uint32_t     t_dr_last;             /* 上次采纳雷达修正的时刻（限速用） */
+--- follow1/nav/nav_task.c
++++ locfix3/nav/nav_task.c
+@@ -705,7 +705,7 @@
+         else if(!nt->have_map) nt->path_valid = false;
+     }
+     explore_mark(&nt->exp, &nt->pose.cur);
+-    if (nt->gm.has_prior && nt->have_map && !nt->hold) explore_seen_mark(&nt->exp, &nt->ex_cfg, &nt->gm, &nt->mi, &nt->pose.cur);
++    if (nt->use_gmap && nt->gm.has_prior && nt->have_map && !nt->hold) explore_seen_mark(&nt->exp, &nt->ex_cfg, &nt->gm, &nt->mi, &nt->pose.cur);
+     const nav_pose_t *p = &nt->pose.cur;
+ 
+     if ((!nt->have_map || nt->hold) && nt->mode != NAV_MODE_ESTOP) {
+@@ -864,7 +864,7 @@
+             nt->search_goal_valid = false;
+         }
+         if (!nt->search_goal_valid) {
+-            const bool seen_mode = nt->gm.has_prior;
++            const bool seen_mode = nt->use_gmap && nt->gm.has_prior;
+             nt->search_goal_valid = nt->use_gmap &&
+                 explore_frontier(&nt->exp, &nt->ex_cfg, &nt->gm, &nt->mi, p, seen_mode, &nt->goal_x, &nt->goal_y);
+             if(g_nav_search_interrupted) {nt->cmd=(nav_cmd_t){0};goto send_checked;}
+--- follow1/nav/pose.c
++++ locfix3/nav/pose.c
+@@ -39,34 +39,23 @@
+     p->last_odo_us = t_us;
+     if (dt <= 0 || dt > 200000) {           /* 回传中断过久：不积分这一段 */
+         p->cur.t_us = t_us;
++        p->yaw_rem = 0;
+         p->hist_n = p->hist_head = 0;       /* 不能在未知运动的缺口内插出虚假的连续轨迹 */
+         hist_push(p);
+         return;
+     }
+-    /* 零偏：平衡车站着时轮子一直前后蹭、车头也在晃，等不到"轮速为零"。指令为零期间按 POSE_BIAS_WIN_US 窗口平均：
+-     * 窗口平均车速 < 30 mm/s、平均角速度 < 40 mrad/s（不是在转）时，平均角速度当作零偏的一次观测，每窗按 1/4 跟踪，
+-     * 总量限 ±POSE_BIAS_MAX。站立时车头来回摆（实测陀螺 ±50 mrad/s，周期秒级），窗口不是整周期时平均值里残留摆动：
+-     * 原来 2 s 窗、首窗全权重，3D 仿真里一窗就把零偏估成 -31（真值 +5），航向每秒漂 2°，雷达拉不回来。 */
+-    if (p->cmd_still) {
+-        p->zw_sum += wz; p->zv_sum += vx; p->zw_n++;
+-        p->still_us += (uint32_t)dt;
+-        if (p->still_us >= POSE_BIAS_WIN_US) {
+-            int32_t mw = p->zw_sum / (int32_t)p->zw_n, mv = p->zv_sum / (int32_t)p->zw_n;
+-            if (mv > -30 && mv < 30 && mw > -40 && mw < 40) {
+-                if (p->bias_n < 255) p->bias_n++;
+-                p->wz_bias_q8 += (mw * 256 - p->wz_bias_q8) / 4;
+-                p->wz_bias_q8 = nav_clamp32(p->wz_bias_q8, -POSE_BIAS_MAX * 256, POSE_BIAS_MAX * 256);
+-                p->bias_valid = true;
+-            }
+-            p->zw_sum = p->zv_sum = 0; p->zw_n = 0; p->still_us = 0;
+-        }
+-    } else {
+-        p->zw_sum = p->zv_sum = 0; p->zw_n = 0; p->still_us = 0;
+-    }
++    /* Zero navigation command does not establish physical rest: manual
++     * yawing/rocking and differential wheel motion are permitted in IDLE.
++     * The controller already removes startup gyro bias. Without an independent
++     * rest observation, a ten-second mean of real rotation is not another bias
++     * measurement. Retain only map-referenced pose_bias_feedback() updates. */
++    p->zw_sum = p->zv_sum = 0; p->zw_n = 0; p->still_us = 0;
+     int32_t wzc = (int32_t)wz - (p->wz_bias_q8 + (p->wz_bias_q8 >= 0 ? 128 : -128)) / 256;
+     /* 航向：没有 IMU 航向时用 wz 积分（mrad/s -> angle：65536 / (2pi*1000)） */
+     if (!p->imu_att_valid || (uint32_t)(t_us - p->imu_t_us) > 100000) {
+-        int64_t dth = (int64_t)wzc * dt * 65536 / 6283185 / 1000;
++        int64_t numerator = (int64_t)wzc * dt * 65536 + p->yaw_rem;
++        int64_t dth = numerator / 6283185000LL;
++        p->yaw_rem = numerator % 6283185000LL;
+         p->cur.yaw = (angle_t)(p->cur.yaw + (int32_t)dth);
+     }
+     /* 机身速度按俯仰分解：水平分量 vx·cos(pitch)，高度 -vx·sin(pitch)（pitch>0 为低头），um 精度累加 */
+@@ -89,7 +78,7 @@
+ void pose_imu_att(pose_est_t *p, angle_t yaw, angle_t pitch, angle_t roll, bool yaw_valid, uint32_t t_us)
+ {
+     if (p->have_att && (int32_t)(t_us - p->imu_t_us) <= 0) return;
+-    if (yaw_valid) p->cur.yaw = yaw;
++    if (yaw_valid) { p->cur.yaw = yaw; p->yaw_rem = 0; }
+     /* 俯仰/横滚 α-β 滤波（α=1/4，β=1/32，按 50 Hz 采样）：姿态噪声会让整帧点云整体倾斜，远处地面高度逐帧跳动，
+      * 在高程图里形成假台阶；但一阶低通有滞后——原地转向时车体姿态以 10–20°/s 变化，0.16 s 的滞后就是 2–3°，
+      * 4 m 外的地面高差 15–20 cm（闭环仿真中理想传感器下误报率也到 12%）。α-β 同时估计角速度，匀速变化时无稳态滞后。 */
+@@ -252,7 +241,7 @@
+         if ((uint32_t)future > POSE_PREDICT_US) return POSE_FUTURE;
+         *out = p->cur;
+         int32_t wz = (int32_t)p->odo_wz - (p->wz_bias_q8 + (p->wz_bias_q8 >= 0 ? 128 : -128)) / 256;
+-        int32_t da = p->imu_att_valid ? 0 : (int32_t)((int64_t)wz * future * 65536 / 6283185000LL);
++        int32_t da = p->imu_att_valid ? 0 : (int32_t)(((int64_t)wz * future * 65536 + p->yaw_rem) / 6283185000LL);
+         angle_t mid = (angle_t)(out->yaw + da / 2);
+         int32_t vh = p->decomp_pitch ? p->odo_vx * fx_cos(out->pitch) / Q14 : p->odo_vx;
+         out->x += (int32_t)(((int64_t)vh * fx_cos(mid) - (int64_t)p->odo_vy * fx_sin(mid)) * future / Q14 / 1000000);
+--- follow1/nav/pose.h
++++ locfix3/nav/pose.h
+@@ -26,7 +26,8 @@
+     nav_pose_t cur;
+     /* 亚毫米累计，避免积分截断误差 */
+     int64_t    x_um, y_um, z_um;
+-    /* 陀螺零偏：静止（轮速为零）持续 ZUPT_US 后，用角速度读数估计零偏并从此扣除 */
++    int64_t    yaw_rem;        /* 陀螺积分除法余数，避免每个高频样本都丢失小角度 */
++    /* 控制核已扣启动零偏；这里仅按可靠地图匹配估残余，零导航指令不代表静止 */
+     int32_t    wz_bias_q8;      /* mrad/s × 256 */
+     uint32_t   still_us;       /* 当前零偏窗口已累计的时间 */
+     bool       bias_valid;
+@@ -55,7 +56,7 @@
+     /* 雷达安装外参：机身系 */
+     fx_mat3_t  r_bs;
+     int32_t    t_bs[3];
+-    /* 零偏估计窗口（指令为零期间的角速度、车速累计）与雷达航向修正累计 */
++    /* 旧零指令窗口字段保留；当前不从它估零偏。另存可靠雷达航向修正累计。 */
+     int32_t    zw_sum, zv_sum;
+     uint32_t   zw_n;
+     int32_t    fb_sum;

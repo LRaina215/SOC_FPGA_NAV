@@ -1,0 +1,139 @@
+{
+  "date": "2026-11-03",
+  "task_id": "fpga-search-target-283d53d6a7",
+  "firmware": {
+    "active": "nav_fw_locfix2_yaw3_20261103.bin",
+    "loaded": {
+      "banner": "Nov  3 2026 16:06:10",
+      "boot": 1793694005
+    },
+    "source": "F:\\nav_integration_g2_20261023\\K_fw_terrain1\\fw_locfix2_20261103"
+  },
+  "session": "20261103_162012",
+  "recording": {
+    "start": "2026-11-03T16:20:12",
+    "end": "2026-11-03T16:22:00",
+    "end_reason": "stopped balancing",
+    "samples": 10740,
+    "seq_gaps": 0,
+    "console_lines": 1555,
+    "keeper_lines": 662,
+    "fields": [
+      "timestamp_ms",
+      "sequence",
+      "status",
+      "policy_fault",
+      "sensor_error",
+      "gx_raw",
+      "gy_raw",
+      "gz_raw",
+      "ax_raw",
+      "ay_raw",
+      "az_raw",
+      "wx_q12",
+      "wy_q12",
+      "wz_q12",
+      "gravity_x_q12",
+      "gravity_y_q12",
+      "gravity_z_q12",
+      "forward_q12",
+      "yaw_q12",
+      "left_target_mmps",
+      "right_target_mmps",
+      "left_cms",
+      "right_cms",
+      "left_duty",
+      "right_duty"
+    ],
+    "note": "wx/wy/wz_q12: control body frame X right, Y forward, Z up; gravity_*_q12 unit vector x4096; left/right_cms wheel speed cm/s"
+  },
+  "confirmed": {
+    "search_stall": {
+      "start_wall": "16:21:23",
+      "last_zero_wall": "16:21:40",
+      "next_nonzero_or_state_wall": "16:21:40",
+      "zero_sample_span_s": 16.12249,
+      "until_next_sample_s": 16.522568000000007,
+      "samples": 33
+    },
+    "local_guard_rejection": {
+      "motion_result": 4,
+      "meaning": "MOTION_HAZARD: checked footprint intersects a lethal cell",
+      "console_counter_context": [
+        71,
+        206
+      ],
+      "unique_obstacles_count": null,
+      "note": "Counters count rejected proposals; console output is buffered/spliced and its read timestamps are not exact control-cycle timestamps."
+    },
+    "search_goals_changed_m": [
+      [
+        2.249,
+        -0.849
+      ],
+      [
+        1.249,
+        -0.849
+      ],
+      [
+        2.149,
+        0.849
+      ]
+    ],
+    "final_control_failure": {
+      "wall_first_seen": "16:21:55",
+      "sensor_error_transition": [
+        1,
+        4
+      ],
+      "policy_active": false,
+      "faults": [
+        "policy_fault:1",
+        "bmi088_error:4",
+        "bmi088_stale"
+      ],
+      "last_pose_matches_screenshot": [
+        2.372,
+        -0.826,
+        -147.33
+      ]
+    },
+    "task_timeout_wall": "16:23:28",
+    "task_timeout_seconds": 180
+  },
+  "code_gaps": [
+    {
+      "source": "nav/nav_task.c:991-997",
+      "finding": "Rejected motion clears the route, but only GOTO changes to ST_BLOCKED. SEARCH remains ST_SEARCHING."
+    },
+    {
+      "source": "nav/nav_task.c:859-891",
+      "finding": "SEARCH changes goals after 12 seconds; no rejection-driven immediate alternative route/goal handling. Goal changes did occur in this run."
+    },
+    {
+      "source": "nav/nav_task.c:580-608",
+      "finding": "Stall recovery depends on measured displacement; zero-command drift / pose corrections can keep resetting progress. n_stall remains zero in this run; this mechanism is plausible, not uniquely proved."
+    },
+    {
+      "source": "QHXD_Web/yuntuo/bridge/tasks.py:348-374,514-560",
+      "finding": "Active target tasks do not immediately terminate/report control sensor faults or inactive balance. Later target-loss is described as continuing exploration despite control being inactive."
+    }
+  ],
+  "not_determined": [
+    "Which local lethal cells caused the rejection: no historical local grid / rejected-cell coordinates were saved.",
+    "Whether those cells were true cardboard/support obstacles, erroneous lidar cells, or a swept-command/corner constraint.",
+    "Why BMI088 failed electrically, or whether it followed a user power/stop action."
+  ],
+  "recommended_changes": [
+    "Preserve footprint collision rejection; feed its blocked segment/cell into replan and select another reachable exploration goal after a bounded wait.",
+    "Report blocked in SEARCH and show the reason and retry state in the bridge/UI.",
+    "On fresh control feedback reporting IMU failure / stop latch / balance inactive, stop issuing search motion and report the control fault promptly.",
+    "Store a bounded snapshot of the first rejected footprint/cells and pose for future attribution without additional vehicle trials."
+  ],
+  "actions": {
+    "read_only_robot_access": true,
+    "motion_commands_sent": false,
+    "firmware_modified": false,
+    "new_vehicle_tests": false
+  }
+}

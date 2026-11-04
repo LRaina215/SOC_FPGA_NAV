@@ -1,0 +1,94 @@
+{
+  "complete": true,
+  "static_bound_bytes": 1664,
+  "direct_call_bound_bytes": 1664,
+  "path": [
+    "main",
+    "nav_app_poll",
+    "task_step_local.constprop.0",
+    "drive_to.constprop.0",
+    "plan_path.constprop.0",
+    "nav_entry_clear.constprop.0",
+    "segment.constprop.0",
+    "axis_gap"
+  ],
+  "resolved_switches": [
+    {
+      "function": "drain_host_messages",
+      "table": ".L1310",
+      "targets": [
+        ".L1313",
+        ".L1312",
+        ".L1311",
+        ".L1309"
+      ]
+    },
+    {
+      "function": "nav_app_poll",
+      "table": ".L2481",
+      "targets": [
+        ".L2485",
+        ".L2484",
+        ".L2483",
+        ".L2482",
+        ".L2480"
+      ]
+    }
+  ],
+  "unresolved_indirect": [],
+  "nonstatic_frames": [],
+  "unresolved_sp_writes": [],
+  "irq_disabled": true,
+  "stack_reserved_bytes": 6144,
+  "largest_frames": [
+    [
+      "nav_app_poll",
+      448
+    ],
+    [
+      "drain_host_messages",
+      384
+    ],
+    [
+      "finish_fusion",
+      336
+    ],
+    [
+      "task_step_local.constprop.0",
+      320
+    ],
+    [
+      "nav_app_search_checkpoint",
+      288
+    ],
+    [
+      "segment.constprop.0",
+      256
+    ],
+    [
+      "send_tcp.constprop.0",
+      224
+    ],
+    [
+      "fx_rot_zyx",
+      192
+    ]
+  ],
+  "scope": "linked image, no IRQ/recursion/heap; tail calls conservatively nested; board watermark still pending",
+  "irq_source": "F:\\nav_integration_g2_20261023\\K_swingunlock_syn11_20261104\\nav\\rtl\\soc\\nav_soc.v",
+  "additional_switch_proof": {
+    "function": "drain_host_messages",
+    "table": ".L1310",
+    "base_register": "s3",
+    "index_bound": [
+      0,
+      3
+    ],
+    "targets": [
+      ".L1313",
+      ".L1312",
+      ".L1311",
+      ".L1309"
+    ]
+  }
+}

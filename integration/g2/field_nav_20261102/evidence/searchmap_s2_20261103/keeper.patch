@@ -1,0 +1,56 @@
+--- before/prior_keeper.py
++++ after/prior_keeper.py
+@@ -9,6 +9,7 @@
+ If fw/ACTIVE names a firmware image in fw/, that image is loaded into the nav soft core through the
+ debug port once per FPGA boot (and again whenever ACTIVE changes) before the map is sent, so firmware
+ changes do not need a new bitstream. Delete fw/ACTIVE to keep the Flash firmware.
++Firmware reload deferral must not defer restoring the prior after S2 reset.
+ Never sends goals or motion. Status (incl. commanded vx/wz) is logged every 0.5 s.
+ """
+ import json
+@@ -144,7 +145,9 @@
+                 continue
+             if up + 1 < last_up:
+                 log('FPGA reset detected (uptime %.0f -> %.0f s)' % (last_up, up))
+-                pose_boot = map_boot = None
++                pose_boot = map_boot = unlock_boot = None
++                map_try = 0.0
++                first = False
+                 task_seen = False
+             last_up = up
+             boot = round(time.time() - up)
+@@ -168,12 +171,10 @@
+             path, want = fw_target()
+             st = fw_state()
+             if path and online and (st.get('banner') != want or abs(boot - st.get('boot', 0)) > 5):
+-                # Do not fall through into map/pose/unlock while an update is
+-                # pending. A delayed update must not interrupt a task later.
+-                if not maintenance_safe(d, current_task()):
+-                    time.sleep(0.5)
+-                    continue
+-                if fw_fail < 3 and time.monotonic() - fw_try > 30:
++                # Reload only while safe. Map restore after S2 is independent:
++                # a balancing car can receive MAP_* without a CPU reload.
++                if (maintenance_safe(d, current_task()) and
++                        fw_fail < 3 and time.monotonic() - fw_try > 30):
+                     fw_try = time.monotonic()
+                     if load_fw(path, want):
+                         fw_fail = 0
+@@ -185,8 +186,6 @@
+                     last_up = 0.0
+                     time.sleep(3)
+                     continue
+-                time.sleep(0.5)
+-                continue
+             if first and d.get('loc_state') not in (None, 'mapless'):
+                 pose_boot = map_boot = unlock_boot = boot   # keeper restart only: FPGA already set up, leave it alone
+             first = False
+@@ -197,7 +196,7 @@
+                 unlock_boot = boot
+                 time.sleep(1)
+                 continue
+-            if online and (not d.get('map_loaded') or (new_boot and d.get('loc_state') == 'mapless')):
++            if online and (not d.get('map_loaded') or new_boot):
+                 if time.monotonic() - map_try > 5:
+                     r = call('map', {'path': MAP, 'map_id': 'field_home2'})
+                     log('map re-sent: %s' % r['data'].get('detail'))

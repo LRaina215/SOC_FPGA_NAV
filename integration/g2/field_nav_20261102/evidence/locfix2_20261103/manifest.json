@@ -1,0 +1,60 @@
+{
+  "binary": "D:\\tools\\nav_fw_locfix2_yaw3_20261103.bin",
+  "bytes": 53348,
+  "banner": "Nov  3 2026 16:06:10",
+  "frozen_source": "F:\\nav_integration_g2_20261023\\K_fw_terrain1\\fw_locfix2_20261103",
+  "active_updated": true,
+  "runtime_verified": true,
+  "flash_updated": false,
+  "prior_map_changed": false,
+  "case": "20261103_155212",
+  "fixes": [
+    "zero navigation command no longer permits gyro bias learning",
+    "fractional gyro yaw integration retained",
+    "bounded local re-alignment on idle tracking loss"
+  ],
+  "validation": "actual C recorded healthy odometry replay + known-rate yaw counterexample + two low-rate sign checks + idle/active recovery guards; not a complete lidar or physical navigation replay",
+  "deployment": {
+    "active": "nav_fw_locfix2_yaw3_20261103.bin",
+    "backup": "/home/robomaster/fpga_bench/fw/ACTIVE.before_locfix2_20261103_160850",
+    "loaded": {
+      "banner": "Nov  3 2026 16:06:10",
+      "boot": 1793693204
+    },
+    "map_upload": {
+      "id": "43afc943761043fe8cf4053ea0d05c08",
+      "filename": "field_home2.nvmp",
+      "map_id": "field_home2",
+      "state": "ready",
+      "sent_bytes": 9880,
+      "total_bytes": 9880,
+      "progress": 100,
+      "detail": "先验地图已加载（9880 B，1.3 s），请下发初始位姿对准",
+      "started_at": "2026-11-03T08:08:56.409866+00:00",
+      "completed_at": "2026-11-03T08:08:57.794820+00:00"
+    },
+    "platform": {
+      "fpga_state": "idle",
+      "loc_state": "mapless",
+      "map_loaded": true,
+      "cmd_vx_mps": 0.0,
+      "cmd_wz_radps": 0.0,
+      "policy_active": false,
+      "lidar_ok": true,
+      "odom_ok": true
+    },
+    "task": {
+      "task_id": "fpga-idle",
+      "task_type": "placeholder",
+      "state": "idle",
+      "progress": 0,
+      "source": "fpga_bridge",
+      "phase": "idle",
+      "current_waypoint_id": null,
+      "waypoint_index": null,
+      "waypoint_count": null,
+      "detail": "等待任务。",
+      "updated_at": "2026-11-03T08:08:59.151402+00:00"
+    }
+  }
+}

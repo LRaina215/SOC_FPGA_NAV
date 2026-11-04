@@ -1,0 +1,134 @@
+{
+  "name": "home_field2_20261102",
+  "survey_status": "draft_20261102: map-1 tape measurements + user change of 11-02 (channel width/depth given by the user, wall positions derived)",
+  "notes": [
+    "Same map frame and start as home_field_20261101: origin = lidar optical centre at the start projected on the floor; x = car heading at start (toward the cardboard rows), y = left, z = up.",
+    "User 11-02: the leftmost and rightmost front-row boxes did not move. The middle box was moved back toward the start. Where it stood, the front row now has a 0.94 m opening: the entrance of a new channel, reached from the lane behind the front row. The channel runs 1.20 m toward the start and only its 0.94 m end is closed (dead end).",
+    "Front row in map 1 spanned y 0.09 -> -1.95 (2.04 m). With the 0.94 m opening the two remaining boxes are 0.55 m each: left y 0.09 -> -0.46, right y -1.40 -> -1.95, x 1.60-1.78.",
+    "Channel inner faces at y -0.46 and y -1.40, from the front row (x 1.60) to the closed end at x 0.40. Side panels drawn 0.05 m thick outside the channel.",
+    "Closed end: a 0.05 m panel at x 0.35-0.40 across the channel width only (y -1.45 to -0.41, joining both side panels). The strip between the channel's right panel and the sofa stays open toward the start.",
+    "Back-row panels drawn 0.05 m thick. Area behind the start is open floor (no wall). Only cardboard, the left wall and the sofa are obstacles."
+  ],
+  "units": "m",
+  "bounds": [
+    -0.6,
+    -1.95,
+    2.87,
+    1.15
+  ],
+  "start_pose_lidar": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "surface_spacing": 0.025,
+  "wall_spacing": 0.02,
+  "floor_z": 0.0,
+  "walls": [
+    {
+      "name": "left_wall",
+      "start": [
+        -0.6,
+        1.15
+      ],
+      "end": [
+        2.87,
+        1.15
+      ],
+      "height": 0.6
+    },
+    {
+      "name": "sofa_front",
+      "start": [
+        -0.6,
+        -1.95
+      ],
+      "end": [
+        2.87,
+        -1.95
+      ],
+      "height": 0.4
+    }
+  ],
+  "boxes": [
+    {
+      "name": "front_left",
+      "center": [
+        1.69,
+        -0.185
+      ],
+      "size": [
+        0.18,
+        0.55,
+        0.6
+      ],
+      "yaw_deg": 0
+    },
+    {
+      "name": "front_right",
+      "center": [
+        1.69,
+        -1.675
+      ],
+      "size": [
+        0.18,
+        0.55,
+        0.6
+      ],
+      "yaw_deg": 0
+    },
+    {
+      "name": "back_row",
+      "center": [
+        2.845,
+        -0.4
+      ],
+      "size": [
+        0.05,
+        3.1,
+        0.6
+      ],
+      "yaw_deg": 0
+    },
+    {
+      "name": "channel_left_panel",
+      "center": [
+        1.0,
+        -0.435
+      ],
+      "size": [
+        1.2,
+        0.05,
+        0.6
+      ],
+      "yaw_deg": 0
+    },
+    {
+      "name": "channel_right_panel",
+      "center": [
+        1.0,
+        -1.425
+      ],
+      "size": [
+        1.2,
+        0.05,
+        0.6
+      ],
+      "yaw_deg": 0
+    },
+    {
+      "name": "channel_end_panel",
+      "center": [
+        0.375,
+        -0.93
+      ],
+      "size": [
+        0.05,
+        1.04,
+        0.6
+      ],
+      "yaw_deg": 0
+    }
+  ],
+  "ramps": []
+}

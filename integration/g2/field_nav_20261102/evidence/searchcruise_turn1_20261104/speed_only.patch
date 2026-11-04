@@ -1,0 +1,56 @@
+--- before/nav/nav_task.c
++++ after/nav/nav_task.c
+@@ -18,7 +18,7 @@
+ #define APP_V_NEAR 150      /* 到点前最低速度（再往下由到达判定停车） */
+ #define APP_ACCEL_STEP 30   /* 每 100 ms 规划周期最多加速 30 mm/s（0.3 m/s²） */
+ #define APP_TRACK_DECEL_STEP 30 /* 跟踪/搜索：0.3 m/s²；最终仍检查实际减速指令 */
+-#define APP_TRACK_TURN_W 400   /* 跟踪/搜索转向上限 mrad/s */
++#define APP_TRACK_TURN_W 400   /* 跟踪转向上限 mrad/s；SEARCH用APP_TURN_W */
+ #define APP_TRACK_REPLAN_MM 300
+ #define APP_TRACK_START_MM 350
+ #define APP_DECEL_STEP 50   /* 每周期最多减速 50 mm/s（0.5 m/s²） */
+@@ -721,6 +721,8 @@
+     bool quiet=fresh && att && nav_abs32(nt->pose.odo_vx)<=50 &&
+                pitch<=ANGLE_FROM_CDEG(1000) && pr<=1200;
+     int16_t wanted_v=nt->cmd.vx,wanted_w=nt->cmd.wz,previous_w=nt->speed_w_prev;
++    /* SEARCH原地转向按实测稳定的1rad/s请求，不保留低速转向巡航段。 */
++    if(wanted_v==0 && wanted_w) wanted_w=wanted_w>0?APP_TURN_W:-APP_TURN_W;
+     bool turn=wanted_v==0 && nav_abs32(wanted_w)>APP_STRAIGHT_WMAX;
+     if(turn) {
+         if(nt->speed_phase==2 && (!fresh || !att || pitch>ANGLE_FROM_CDEG(1200) || pr>2700)) {
+@@ -745,11 +747,11 @@
+         wanted_w=0;nt->speed_quiet=0;
+         nt->speed_phase=previous_w?3:0;
+     }
+-    /* 80mrad/s each100ms: keep the existing0.4rad/s cap, soften its edges.
++    /* 80mrad/s each100ms: SEARCH cap1rad/s; retain the transition ramp.
+      * Rate limit only turn/turn-exit, not normal straight heading correction. */
+     if(turn || nt->speed_phase || nav_abs32(previous_w)>APP_STRAIGHT_WMAX)
+         wanted_w=(int16_t)nav_clamp32(wanted_w,previous_w-80,previous_w+80);
+-    nt->cmd.vx=wanted_v;nt->cmd.wz=(int16_t)nav_clamp32(wanted_w,-APP_TRACK_TURN_W,APP_TRACK_TURN_W);
++    nt->cmd.vx=wanted_v;nt->cmd.wz=(int16_t)nav_clamp32(wanted_w,-APP_TURN_W,APP_TURN_W);
+ }
+ 
+ static void task_step_local(nav_task_t *nt, uint32_t now)
+@@ -1021,7 +1023,8 @@
+                 int32_t dlook = fx_dist(nt->look_x - p->x, nt->look_y - p->y);
+                 /* 剩 0.5 m 起减速：到终点，或到前视点（视线内最远的路径点；直路上它一直在远处，离得近说明前面是拐角，
+                  * 到了要原地转）。拐角前不减速时，足迹检查按 0.3 m/s 往前看 36 cm 会先撞上拐角的墙，车在拐角前反复受阻 */
+-                int32_t vt = nav_clamp32(nav_min32(dgoal, dlook) * 6 / 10, APP_V_NEAR, APP_FWD_V);
++                int32_t vt = nt->mode==NAV_MODE_SEARCH ? APP_FWD_V :
++                    nav_clamp32(nav_min32(dgoal, dlook) * 6 / 10, APP_V_NEAR, APP_FWD_V);
+                 int32_t v = nt->v_prev + nav_clamp32(vt - nt->v_prev, -APP_DECEL_STEP, APP_ACCEL_STEP);
+                 int32_t wz = nav_clamp32((int32_t)((int64_t)dh_f * APP_STRAIGHT_K / 65536),
+                                          -APP_STRAIGHT_WMAX, APP_STRAIGHT_WMAX);
+@@ -1029,9 +1032,9 @@
+             }
+         } else spin = false;
+     }
+-    /* 目标任务的所有来源都限转速，包括SEARCH找路和TRACK_FACE；定点导航保持原参数。 */
++    /* TRACK仍限0.4；SEARCH的原地转向统一请求1.0，起停仍经速度出口斜坡。 */
+     bool target_task=nt->mode==NAV_MODE_TRACK || nt->mode==NAV_MODE_SEARCH;
+-    if(target_task) nt->cmd.wz=(int16_t)nav_clamp32(nt->cmd.wz,-APP_TRACK_TURN_W,APP_TRACK_TURN_W);
++    if(nt->mode==NAV_MODE_TRACK) nt->cmd.wz=(int16_t)nav_clamp32(nt->cmd.wz,-APP_TRACK_TURN_W,APP_TRACK_TURN_W);
+ #if APP_FLAT_GROUND
+     /* 平衡车不能急停：前进中一步把速度切到 0，车会前后猛晃（11-01 bal5 在 0.15→0 后 1 s 倒）。
+      * 到点、重规划或暂停的停车提议先按斜坡减速，每步最多 APP_DECEL_STEP，再对实际下发值做足迹检查。

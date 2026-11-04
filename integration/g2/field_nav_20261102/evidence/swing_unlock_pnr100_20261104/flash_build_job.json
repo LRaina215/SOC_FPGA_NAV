@@ -1,0 +1,179 @@
+{
+  "SYN": "F:\\nav_integration_g2_20261023\\K_swingunlock_syn11_20261104",
+  "PNR": "F:\\nav_integration_g2_20261023\\K_pnr100_swingunlock_ultrasonicp2r0",
+  "baseline_SYN": "F:\\nav_integration_g2_20261023\\K_clear_pipeline_syn10",
+  "baseline_PNR": "F:\\nav_integration_g2_20261023\\K_pnr99_clear_ultrasonic_edgep2r0",
+  "pid": 22344,
+  "firmware": "nav_fw_swingunlock_yaw3_20261104.bin",
+  "programmed": false,
+  "stage": "timing_passed_not_programmed",
+  "started_at": "2026-11-04T09:00:28.776000+08:00",
+  "synthesis_runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-11-04T09:00:28.776000+08:00",
+    "max_runtime_s": 2400,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "pid": 39752,
+    "elapsed_s": 322.2970000000205,
+    "no_observable_progress_s": 4.0,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        277573,
+        1793754345003509000
+      ]
+    ],
+    "tool_exit": 0,
+    "ended_at": "2026-11-04T09:05:51.068084+08:00"
+  },
+  "release_bitstream": "D:\\tools\\g2_swingunlock_ultrasonic_pnr100_20261104.fs",
+  "pnr_runtime": {
+    "command": [
+      "D:\\Gowin2\\Gowin_V1.9.12.04_x64\\IDE\\bin\\gw_sh.exe",
+      "run.tcl"
+    ],
+    "started_at": "2026-11-04T09:05:52.535056+08:00",
+    "max_runtime_s": 0,
+    "max_no_observable_progress_s": 0,
+    "cancelled": false,
+    "programmed": false,
+    "scope": "process runtime/file-progress budget, not proof of algorithm deadlock or hardware acceptance",
+    "pid": 20404,
+    "elapsed_s": 622.3589999999967,
+    "no_observable_progress_s": 0.0,
+    "observed_files": [
+      [
+        "gw_sh.log",
+        2411,
+        1793754972187617500
+      ],
+      [
+        "impl\\pnr\\g2_top.log",
+        1953,
+        1793754972187617500
+      ],
+      [
+        "impl\\pnr\\g2_top.db",
+        1885172,
+        1793754736261561800
+      ],
+      [
+        "impl\\pnr\\g2_top.p",
+        10382701,
+        1793754736567898400
+      ],
+      [
+        "impl\\pnr\\g2_top.pr",
+        214649238,
+        1793754913078301200
+      ],
+      [
+        "impl\\pnr\\g2_top.tr",
+        82057759,
+        1793754972104809600
+      ],
+      [
+        "impl\\pnr\\g2_top.rpt.txt",
+        103431,
+        1793754932756560800
+      ],
+      [
+        "impl\\pnr\\g2_top.vo",
+        33378859,
+        1793754934381218000
+      ]
+    ],
+    "tool_exit": 0,
+    "ended_at": "2026-11-04T09:16:14.903656+08:00"
+  },
+  "final": {
+    "BSRAM": 322,
+    "unrouted_log_matches": [],
+    "PR0004": false,
+    "setup": 0,
+    "hold": 0,
+    "deployment_accepted": false,
+    "tool_exit": 0,
+    "cancelled": false,
+    "bitstream_exists": true,
+    "frequencies": [
+      {
+        "clock": "clk50",
+        "target_MHz": 50.0,
+        "Fmax_MHz": 50.145
+      },
+      {
+        "clock": "rgmii_rxc",
+        "target_MHz": 100.0,
+        "Fmax_MHz": 157.374
+      },
+      {
+        "clock": "camera_pclk",
+        "target_MHz": 50.0,
+        "Fmax_MHz": 120.892
+      },
+      {
+        "clock": "lcd9",
+        "target_MHz": 8.967,
+        "Fmax_MHz": 66.875
+      }
+    ],
+    "domain_TNS": [
+      {
+        "clock": "clk50",
+        "type": "setup",
+        "tns_ns": 0.0,
+        "violations": 0
+      },
+      {
+        "clock": "clk50",
+        "type": "hold",
+        "tns_ns": 0.0,
+        "violations": 0
+      },
+      {
+        "clock": "rgmii_rxc",
+        "type": "setup",
+        "tns_ns": 0.0,
+        "violations": 0
+      },
+      {
+        "clock": "rgmii_rxc",
+        "type": "hold",
+        "tns_ns": 0.0,
+        "violations": 0
+      },
+      {
+        "clock": "camera_pclk",
+        "type": "setup",
+        "tns_ns": 0.0,
+        "violations": 0
+      },
+      {
+        "clock": "camera_pclk",
+        "type": "hold",
+        "tns_ns": 0.0,
+        "violations": 0
+      },
+      {
+        "clock": "lcd9",
+        "type": "setup",
+        "tns_ns": 0.0,
+        "violations": 0
+      },
+      {
+        "clock": "lcd9",
+        "type": "hold",
+        "tns_ns": 0.0,
+        "violations": 0
+      }
+    ],
+    "report_timing_gate": true
+  }
+}

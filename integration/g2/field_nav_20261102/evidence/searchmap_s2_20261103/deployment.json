@@ -1,0 +1,991 @@
+{
+  "stage": "deployed_map_ready_after_actual_S2",
+  "verified_at": "2026-11-03T23:05:01.231858+08:00",
+  "active": "nav_fw_searchmap_s2_yaw3_20261103.bin",
+  "banner": "Nov  3 2026 22:59:05",
+  "binary_bytes": 54544,
+  "source": "D:\\tools\\search_map_s2_fix_20261103\\fw",
+  "frozen_source": "F:\\nav_integration_g2_20261023\\K_fw_terrain1\\fw_searchmap_s2_20261103",
+  "baseline": "D:\\tools\\goal_select_fix_20261103\\fw",
+  "firmware_changed_files": [
+    "app\\nav_app.c"
+  ],
+  "firmware_change": "Only use_gmap selection: SEARCH with prior uses global map; existing TRACK/GOTO/mapless policy, hold/slow, goal tolerance and speed logic unchanged",
+  "keeper_changes": [
+    "Firmware reload deferral no longer skips map recovery",
+    "Detected S2 reset clears per-boot map/pose/unlock markers and map retry delay",
+    "A new boot triggers map re-send even if host cached map_loaded/loc_state still looks initialized"
+  ],
+  "obstacle_reobservation_code_unchanged": true,
+  "app_main_loop_checks": {
+    "deployed_goalfix1": {
+      "mapped_search": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0
+      ],
+      "mapless_search": [
+        0,
+        1,
+        2599,
+        1000,
+        0,
+        0,
+        5,
+        0
+      ],
+      "mapped_tracking": [
+        0,
+        0,
+        1000,
+        1000,
+        0,
+        0,
+        4,
+        0
+      ],
+      "mapped_goto": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "search_map_fix": {
+      "mapped_search": [
+        1,
+        1,
+        1049,
+        2049,
+        0,
+        0,
+        5,
+        0
+      ],
+      "mapless_search": [
+        0,
+        1,
+        2599,
+        1000,
+        0,
+        0,
+        5,
+        0
+      ],
+      "mapped_tracking": [
+        0,
+        0,
+        1000,
+        1000,
+        0,
+        0,
+        4,
+        0
+      ],
+      "mapped_goto": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    }
+  },
+  "keeper_replay_checks": {
+    "two_S2_resets_with_balance_active": [
+      [
+        1001,
+        "estop",
+        {
+          "engage": false
+        }
+      ],
+      [
+        1002,
+        "map",
+        {
+          "path": "/home/robomaster/fpga_bench/maps/field_home2.nvmp",
+          "map_id": "field_home2"
+        }
+      ],
+      [
+        1003,
+        "set_pose",
+        {
+          "x": -0.123,
+          "y": 0.0,
+          "yaw": 0.0,
+          "align": false,
+          "range_m": 0.3,
+          "range_deg": 6.0
+        }
+      ],
+      [
+        1004,
+        "estop",
+        {
+          "engage": false
+        }
+      ],
+      [
+        1005,
+        "map",
+        {
+          "path": "/home/robomaster/fpga_bench/maps/field_home2.nvmp",
+          "map_id": "field_home2"
+        }
+      ],
+      [
+        1006,
+        "set_pose",
+        {
+          "x": -0.123,
+          "y": 0.0,
+          "yaw": 0.0,
+          "align": false,
+          "range_m": 0.3,
+          "range_deg": 6.0
+        }
+      ]
+    ],
+    "queued_map_without_READY_retries": [
+      [
+        1001,
+        "estop",
+        {
+          "engage": false
+        }
+      ],
+      [
+        1002,
+        "map",
+        {
+          "path": "/home/robomaster/fpga_bench/maps/field_home2.nvmp",
+          "map_id": "field_home2"
+        }
+      ],
+      [
+        1008,
+        "map",
+        {
+          "path": "/home/robomaster/fpga_bench/maps/field_home2.nvmp",
+          "map_id": "field_home2"
+        }
+      ]
+    ],
+    "safe_reload_unchanged": [
+      [
+        1000,
+        "firmware_load",
+        null
+      ]
+    ]
+  },
+  "stack_verified": {
+    "complete": true,
+    "static_bound_bytes": 1392,
+    "direct_call_bound_bytes": 1392,
+    "path": [
+      "main",
+      "nav_app_poll",
+      "task_step_local.constprop.0",
+      "explore_frontier.constprop.0",
+      "nav_app_search_checkpoint",
+      "apply_host_link_lock.isra.0",
+      "nav_task_set_mode.constprop.0",
+      "local_frame_point",
+      "rotate.lto_priv.0",
+      "guard_sin"
+    ],
+    "resolved_switches": [
+      {
+        "function": "drain_host_messages.lto_priv.0",
+        "table": ".L1632",
+        "targets": [
+          ".L1635",
+          ".L1634",
+          ".L1633",
+          ".L1631"
+        ]
+      },
+      {
+        "function": "xt_link_poll.constprop.0",
+        "table": ".L1087",
+        "targets": [
+          ".L1091",
+          ".L1090",
+          ".L1089",
+          ".L1088",
+          ".L1086"
+        ]
+      }
+    ],
+    "unresolved_indirect": [],
+    "nonstatic_frames": [],
+    "unresolved_sp_writes": [],
+    "irq_disabled": true,
+    "stack_reserved_bytes": 6144,
+    "largest_frames": [
+      [
+        "nav_app_poll",
+        416
+      ],
+      [
+        "drain_host_messages.lto_priv.0",
+        400
+      ],
+      [
+        "task_step_local.constprop.0",
+        320
+      ],
+      [
+        "nav_app_search_checkpoint",
+        288
+      ],
+      [
+        "waypoint_visible.constprop.0",
+        240
+      ],
+      [
+        "xt_link_poll.constprop.0",
+        240
+      ],
+      [
+        "send_tcp.constprop.0",
+        224
+      ],
+      [
+        "fx_rot_zyx",
+        192
+      ]
+    ],
+    "scope": "linked image, no IRQ/recursion/heap; tail calls conservatively nested; board watermark still pending",
+    "irq_source": "F:\\nav_integration_g2_20261023\\K_terrain19_follow1\\nav\\rtl\\soc\\nav_soc.v",
+    "additional_switch_proof": {
+      "function": "drain_host_messages.lto_priv.0",
+      "table": ".L1632",
+      "base_register": "s4",
+      "index_bound": [
+        0,
+        3
+      ],
+      "targets": [
+        ".L1635",
+        ".L1634",
+        ".L1633",
+        ".L1631"
+      ]
+    }
+  },
+  "selection": {
+    "stage": "selected_waiting_keeper_load",
+    "active": "nav_fw_searchmap_s2_yaw3_20261103.bin",
+    "old_active": "nav_fw_goalfix1_yaw3_20261103.bin",
+    "banner": "Nov  3 2026 22:59:05",
+    "bytes": 54544,
+    "selected_at": "2026-11-03T23:01:51.620209+08:00",
+    "keeper_backup": "/home/robomaster/fpga_bench/prior_keeper.py.before_searchmap_s2_20261103_230151",
+    "active_backup": "/home/robomaster/fpga_bench/fw/ACTIVE.before_searchmap_s2_20261103_230151",
+    "precheck": {
+      "status": {
+        "source": "fpga_bridge",
+        "updated_at": "2026-11-03T15:01:51.238612+00:00",
+        "nav_link": "online",
+        "nav_link_kind": "uart:/dev/ttyACM0",
+        "fpga_mode": "idle",
+        "fpga_state": "idle",
+        "loc_state": "mapless",
+        "loc_quality": null,
+        "map_loaded": true,
+        "target_valid": false,
+        "lidar_ok": true,
+        "odom_ok": true,
+        "cmd_vx_mps": 0.0,
+        "cmd_wz_radps": 0.0,
+        "fpga_uptime_s": 1319.860385,
+        "status_rate_hz": 5.01,
+        "control_link": "online",
+        "policy_active": false,
+        "control_estop": true,
+        "control_faults": [
+          "policy_fault:1",
+          "bmi088_error:4",
+          "bmi088_stale"
+        ],
+        "wheel_left_mps": 0.0,
+        "wheel_right_mps": 0.0,
+        "roll_deg": null,
+        "pitch_deg": null,
+        "yaw_rate_radps": -0.01171875,
+        "height_cmd_m": 0.130615234375,
+        "telemetry_rate_hz": 101.6,
+        "control_telemetry": {
+          "transport": "legacy_telemetry",
+          "source": "fpga",
+          "version": 2,
+          "fresh": true,
+          "receive_age_ms": 10.4,
+          "measurement_age_ms": null,
+          "raw": {
+            "timestamp_ms": 1319859,
+            "sequence": 913,
+            "status": 88,
+            "policy_fault": 1,
+            "sensor_error": 4,
+            "left_fault": 0,
+            "right_fault": 0,
+            "fusion_flags": 0,
+            "ax_raw": 8,
+            "ay_raw": -1257,
+            "az_raw": 10893,
+            "gx_raw": -82,
+            "gy_raw": 3,
+            "gz_raw": -11,
+            "wx_q12": -227,
+            "wy_q12": 17,
+            "wz_q12": -48,
+            "gravity_x_q12": -19,
+            "gravity_y_q12": 360,
+            "gravity_z_q12": -4081,
+            "forward_q12": 0,
+            "yaw_q12": 0,
+            "height_q12": 535,
+            "left_target_mmps": 0,
+            "right_target_mmps": 0,
+            "left_cms": 0,
+            "right_cms": 0,
+            "left_duty": 0,
+            "right_duty": 0,
+            "lh_us": 1514,
+            "lk_us": 1502,
+            "rh_us": 1456,
+            "rk_us": 1498,
+            "completed_frames": 8022,
+            "inference_cycles": 83534,
+            "left_delta": 0,
+            "right_delta": 0,
+            "left_reference_mmps": 46,
+            "right_reference_mmps": 48,
+            "left_error_mmps": 66,
+            "right_error_mmps": 68,
+            "left_control_sequence": 6278,
+            "right_control_sequence": 6180
+          }
+        }
+      },
+      "task": {
+        "task_id": "fpga-idle",
+        "task_type": "placeholder",
+        "state": "idle",
+        "progress": 0,
+        "source": "fpga_bridge",
+        "phase": "idle",
+        "current_waypoint_id": null,
+        "waypoint_index": null,
+        "waypoint_count": null,
+        "detail": "等待任务。",
+        "updated_at": "2026-11-03T15:01:51.239001+00:00"
+      }
+    },
+    "pre_commit": {
+      "status": {
+        "source": "fpga_bridge",
+        "updated_at": "2026-11-03T15:01:51.238612+00:00",
+        "nav_link": "online",
+        "nav_link_kind": "uart:/dev/ttyACM0",
+        "fpga_mode": "idle",
+        "fpga_state": "idle",
+        "loc_state": "mapless",
+        "loc_quality": null,
+        "map_loaded": true,
+        "target_valid": false,
+        "lidar_ok": true,
+        "odom_ok": true,
+        "cmd_vx_mps": 0.0,
+        "cmd_wz_radps": 0.0,
+        "fpga_uptime_s": 1319.860385,
+        "status_rate_hz": 5.01,
+        "control_link": "online",
+        "policy_active": false,
+        "control_estop": true,
+        "control_faults": [
+          "policy_fault:1",
+          "bmi088_error:4",
+          "bmi088_stale"
+        ],
+        "wheel_left_mps": 0.0,
+        "wheel_right_mps": 0.0,
+        "roll_deg": null,
+        "pitch_deg": null,
+        "yaw_rate_radps": -0.01171875,
+        "height_cmd_m": 0.130615234375,
+        "telemetry_rate_hz": 101.6,
+        "control_telemetry": {
+          "transport": "legacy_telemetry",
+          "source": "fpga",
+          "version": 2,
+          "fresh": true,
+          "receive_age_ms": 10.4,
+          "measurement_age_ms": null,
+          "raw": {
+            "timestamp_ms": 1319859,
+            "sequence": 913,
+            "status": 88,
+            "policy_fault": 1,
+            "sensor_error": 4,
+            "left_fault": 0,
+            "right_fault": 0,
+            "fusion_flags": 0,
+            "ax_raw": 8,
+            "ay_raw": -1257,
+            "az_raw": 10893,
+            "gx_raw": -82,
+            "gy_raw": 3,
+            "gz_raw": -11,
+            "wx_q12": -227,
+            "wy_q12": 17,
+            "wz_q12": -48,
+            "gravity_x_q12": -19,
+            "gravity_y_q12": 360,
+            "gravity_z_q12": -4081,
+            "forward_q12": 0,
+            "yaw_q12": 0,
+            "height_q12": 535,
+            "left_target_mmps": 0,
+            "right_target_mmps": 0,
+            "left_cms": 0,
+            "right_cms": 0,
+            "left_duty": 0,
+            "right_duty": 0,
+            "lh_us": 1514,
+            "lk_us": 1502,
+            "rh_us": 1456,
+            "rk_us": 1498,
+            "completed_frames": 8022,
+            "inference_cycles": 83534,
+            "left_delta": 0,
+            "right_delta": 0,
+            "left_reference_mmps": 46,
+            "right_reference_mmps": 48,
+            "left_error_mmps": 66,
+            "right_error_mmps": 68,
+            "left_control_sequence": 6278,
+            "right_control_sequence": 6180
+          }
+        }
+      },
+      "task": {
+        "task_id": "fpga-idle",
+        "task_type": "placeholder",
+        "state": "idle",
+        "progress": 0,
+        "source": "fpga_bridge",
+        "phase": "idle",
+        "current_waypoint_id": null,
+        "waypoint_index": null,
+        "waypoint_count": null,
+        "detail": "等待任务。",
+        "updated_at": "2026-11-03T15:01:51.239001+00:00"
+      }
+    },
+    "physical_ready_confirmed": true,
+    "bridge_code_changed": false,
+    "flash_changed": false,
+    "map_file_changed": false,
+    "pose_parameters_changed": false,
+    "motion_goal_sent": false
+  },
+  "runtime": {
+    "active": "nav_fw_searchmap_s2_yaw3_20261103.bin",
+    "loaded": {
+      "banner": "Nov  3 2026 22:59:05",
+      "boot": 1793716792
+    },
+    "status": {
+      "success": true,
+      "data": {
+        "source": "fpga_bridge",
+        "updated_at": "2026-11-03T15:02:28.425304+00:00",
+        "nav_link": "online",
+        "nav_link_kind": "uart:/dev/ttyACM0",
+        "fpga_mode": "idle",
+        "fpga_state": "idle",
+        "loc_state": "mapless",
+        "loc_quality": null,
+        "map_loaded": true,
+        "target_valid": false,
+        "lidar_ok": true,
+        "odom_ok": true,
+        "cmd_vx_mps": 0.0,
+        "cmd_wz_radps": 0.0,
+        "fpga_uptime_s": 1356.891238,
+        "status_rate_hz": 5.0,
+        "control_link": "online",
+        "policy_active": false,
+        "control_estop": true,
+        "control_faults": [
+          "policy_fault:1",
+          "bmi088_error:4",
+          "bmi088_stale"
+        ],
+        "wheel_left_mps": 0.0,
+        "wheel_right_mps": 0.0,
+        "roll_deg": null,
+        "pitch_deg": null,
+        "yaw_rate_radps": -0.01171875,
+        "height_cmd_m": 0.130615234375,
+        "telemetry_rate_hz": 101.5,
+        "control_telemetry": {
+          "transport": "legacy_telemetry",
+          "source": "fpga",
+          "version": 2,
+          "fresh": true,
+          "receive_age_ms": 27.4,
+          "measurement_age_ms": null,
+          "raw": {
+            "timestamp_ms": 1357029,
+            "sequence": 4630,
+            "status": 88,
+            "policy_fault": 1,
+            "sensor_error": 4,
+            "left_fault": 0,
+            "right_fault": 0,
+            "fusion_flags": 0,
+            "ax_raw": 8,
+            "ay_raw": -1257,
+            "az_raw": 10893,
+            "gx_raw": -82,
+            "gy_raw": 3,
+            "gz_raw": -11,
+            "wx_q12": -227,
+            "wy_q12": 17,
+            "wz_q12": -48,
+            "gravity_x_q12": -19,
+            "gravity_y_q12": 360,
+            "gravity_z_q12": -4081,
+            "forward_q12": 0,
+            "yaw_q12": 0,
+            "height_q12": 535,
+            "left_target_mmps": 0,
+            "right_target_mmps": 0,
+            "left_cms": 0,
+            "right_cms": 0,
+            "left_duty": 0,
+            "right_duty": 0,
+            "lh_us": 1514,
+            "lk_us": 1502,
+            "rh_us": 1456,
+            "rk_us": 1498,
+            "completed_frames": 8022,
+            "inference_cycles": 83534,
+            "left_delta": 0,
+            "right_delta": 0,
+            "left_reference_mmps": 46,
+            "right_reference_mmps": 48,
+            "left_error_mmps": 66,
+            "right_error_mmps": 68,
+            "left_control_sequence": 6278,
+            "right_control_sequence": 6180
+          }
+        }
+      }
+    },
+    "health": {
+      "status": "ok",
+      "service": "yuntuo-fpga-bridge",
+      "link": "uart:/dev/ttyACM0",
+      "link_open": true,
+      "link_error": null,
+      "status_age_s": 0.16,
+      "map": "先验地图已加载（9880 B，1.5 s）；地图目标需给定初始位姿，雷达在后台辅助纠偏",
+      "map_upload": {
+        "id": "081e1ab2e2054b08ae1ed1daa7e8119a",
+        "filename": "field_home2.nvmp",
+        "map_id": "field_home2",
+        "state": "ready",
+        "sent_bytes": 9880,
+        "total_bytes": 9880,
+        "progress": 100,
+        "detail": "先验地图已加载（9880 B，1.5 s）；地图目标需给定初始位姿，雷达在后台辅助纠偏",
+        "started_at": "2026-11-03T15:02:01.492882+00:00",
+        "completed_at": "2026-11-03T15:02:02.965360+00:00"
+      },
+      "task": {
+        "task_id": "fpga-idle",
+        "task_type": "placeholder",
+        "state": "idle",
+        "progress": 0,
+        "source": "fpga_bridge",
+        "phase": "idle",
+        "current_waypoint_id": null,
+        "waypoint_index": null,
+        "waypoint_count": null,
+        "detail": "等待任务。",
+        "updated_at": "2026-11-03T15:02:28.425555+00:00"
+      },
+      "platform": {
+        "source": "fpga_bridge",
+        "updated_at": "2026-11-03T15:02:28.425304+00:00",
+        "nav_link": "online",
+        "nav_link_kind": "uart:/dev/ttyACM0",
+        "fpga_mode": "idle",
+        "fpga_state": "idle",
+        "loc_state": "mapless",
+        "loc_quality": null,
+        "map_loaded": true,
+        "target_valid": false,
+        "lidar_ok": true,
+        "odom_ok": true,
+        "cmd_vx_mps": 0.0,
+        "cmd_wz_radps": 0.0,
+        "fpga_uptime_s": 1356.891238,
+        "status_rate_hz": 5.0,
+        "control_link": "online",
+        "policy_active": false,
+        "control_estop": true,
+        "control_faults": [
+          "policy_fault:1",
+          "bmi088_error:4",
+          "bmi088_stale"
+        ],
+        "wheel_left_mps": 0.0,
+        "wheel_right_mps": 0.0,
+        "roll_deg": null,
+        "pitch_deg": null,
+        "yaw_rate_radps": -0.01171875,
+        "height_cmd_m": 0.130615234375,
+        "telemetry_rate_hz": 101.5,
+        "control_telemetry": {
+          "transport": "legacy_telemetry",
+          "source": "fpga",
+          "version": 2,
+          "fresh": true,
+          "receive_age_ms": 27.4,
+          "measurement_age_ms": null,
+          "raw": {
+            "timestamp_ms": 1357029,
+            "sequence": 4630,
+            "status": 88,
+            "policy_fault": 1,
+            "sensor_error": 4,
+            "left_fault": 0,
+            "right_fault": 0,
+            "fusion_flags": 0,
+            "ax_raw": 8,
+            "ay_raw": -1257,
+            "az_raw": 10893,
+            "gx_raw": -82,
+            "gy_raw": 3,
+            "gz_raw": -11,
+            "wx_q12": -227,
+            "wy_q12": 17,
+            "wz_q12": -48,
+            "gravity_x_q12": -19,
+            "gravity_y_q12": 360,
+            "gravity_z_q12": -4081,
+            "forward_q12": 0,
+            "yaw_q12": 0,
+            "height_q12": 535,
+            "left_target_mmps": 0,
+            "right_target_mmps": 0,
+            "left_cms": 0,
+            "right_cms": 0,
+            "left_duty": 0,
+            "right_duty": 0,
+            "lh_us": 1514,
+            "lk_us": 1502,
+            "rh_us": 1456,
+            "rk_us": 1498,
+            "completed_frames": 8022,
+            "inference_cycles": 83534,
+            "left_delta": 0,
+            "right_delta": 0,
+            "left_reference_mmps": 46,
+            "right_reference_mmps": 48,
+            "left_error_mmps": 66,
+            "right_error_mmps": 68,
+            "left_control_sequence": 6278,
+            "right_control_sequence": 6180
+          }
+        }
+      },
+      "updated_at": "2026-11-03T15:02:28.425577+00:00",
+      "telemetry_decoder": {
+        "frames": 3124,
+        "bad_crc": 0,
+        "skipped": 0
+      }
+    },
+    "actions": [
+      "23:01:51 keeper start",
+      "23:01:51 fw load start: nav_fw_searchmap_s2_yaw3_20261103.bin (Nov  3 2026 22:59:05)",
+      "23:01:55 fw load: rc 0 写入 13636 字（54544 字节），2.9 s，抽查回读错误 0",
+      "23:01:57 fw banner seen",
+      "23:02:00 power-on lock released: 已请求解除运行急停；旧任务不会自动恢复。",
+      "23:02:01 map re-sent: 地图包校验通过（9880 B），开始下发。"
+    ],
+    "services": "MainPID=31094\nId=yuntuo-prior-keeper.service\nActiveState=active\nSubState=running\n\nMainPID=31104\nId=yuntuo-fpga-bridge.service\nActiveState=active\nSubState=running\n",
+    "read_at": "2026-11-03T23:02:28.880458+08:00"
+  },
+  "actual_S2_verification": {
+    "status": {
+      "success": true,
+      "data": {
+        "source": "fpga_bridge",
+        "updated_at": "2026-11-03T15:04:06.580224+00:00",
+        "nav_link": "online",
+        "nav_link_kind": "uart:/dev/ttyACM0",
+        "fpga_mode": "idle",
+        "fpga_state": "idle",
+        "loc_state": "degraded",
+        "loc_quality": 0,
+        "map_loaded": true,
+        "target_valid": false,
+        "lidar_ok": false,
+        "odom_ok": true,
+        "cmd_vx_mps": 0.0,
+        "cmd_wz_radps": 0.0,
+        "fpga_uptime_s": 37.454249,
+        "status_rate_hz": 5.02,
+        "control_link": "online",
+        "policy_active": true,
+        "control_estop": false,
+        "control_faults": [],
+        "wheel_left_mps": 0.0,
+        "wheel_right_mps": 0.03,
+        "roll_deg": -0.1683514631478851,
+        "pitch_deg": 4.563864620543598,
+        "yaw_rate_radps": 0.07861328125,
+        "height_cmd_m": 0.130615234375,
+        "telemetry_rate_hz": 101.4,
+        "control_telemetry": {
+          "transport": "legacy_telemetry",
+          "source": "fpga",
+          "version": 2,
+          "fresh": true,
+          "receive_age_ms": 27.0,
+          "measurement_age_ms": null,
+          "raw": {
+            "timestamp_ms": 37539,
+            "sequence": 3753,
+            "status": 129,
+            "policy_fault": 0,
+            "sensor_error": 0,
+            "left_fault": 0,
+            "right_fault": 0,
+            "fusion_flags": 0,
+            "ax_raw": -301,
+            "ay_raw": -650,
+            "az_raw": 10796,
+            "gx_raw": -75,
+            "gy_raw": -65,
+            "gz_raw": 71,
+            "wx_q12": -349,
+            "wy_q12": -284,
+            "wz_q12": 322,
+            "gravity_x_q12": -12,
+            "gravity_y_q12": 326,
+            "gravity_z_q12": -4084,
+            "forward_q12": 0,
+            "yaw_q12": 0,
+            "height_q12": 535,
+            "left_target_mmps": 70,
+            "right_target_mmps": 77,
+            "left_cms": 0,
+            "right_cms": 3,
+            "left_duty": 582,
+            "right_duty": 829,
+            "lh_us": 1514,
+            "lk_us": 1502,
+            "rh_us": 1456,
+            "rk_us": 1498,
+            "completed_frames": 4425,
+            "inference_cycles": 83534,
+            "left_delta": 0,
+            "right_delta": -2,
+            "left_reference_mmps": 70,
+            "right_reference_mmps": 79,
+            "left_error_mmps": 70,
+            "right_error_mmps": 49,
+            "left_control_sequence": 3520,
+            "right_control_sequence": 3523
+          }
+        }
+      }
+    },
+    "health": {
+      "status": "ok",
+      "service": "yuntuo-fpga-bridge",
+      "link": "uart:/dev/ttyACM0",
+      "link_open": true,
+      "link_error": null,
+      "status_age_s": 0.11,
+      "map": "先验地图已加载（9880 B，1.7 s）；地图目标需给定初始位姿，雷达在后台辅助纠偏",
+      "map_upload": {
+        "id": "406e2cc2c9624b209170231aaa9ae5d0",
+        "filename": "field_home2.nvmp",
+        "map_id": "field_home2",
+        "state": "ready",
+        "sent_bytes": 9880,
+        "total_bytes": 9880,
+        "progress": 100,
+        "detail": "先验地图已加载（9880 B，1.7 s）；地图目标需给定初始位姿，雷达在后台辅助纠偏",
+        "started_at": "2026-11-03T15:03:32.465541+00:00",
+        "completed_at": "2026-11-03T15:03:34.199557+00:00"
+      },
+      "task": {
+        "task_id": "fpga-idle",
+        "task_type": "placeholder",
+        "state": "idle",
+        "progress": 0,
+        "source": "fpga_bridge",
+        "phase": "idle",
+        "current_waypoint_id": null,
+        "waypoint_index": null,
+        "waypoint_count": null,
+        "detail": "等待任务。",
+        "updated_at": "2026-11-03T15:04:06.580768+00:00"
+      },
+      "platform": {
+        "source": "fpga_bridge",
+        "updated_at": "2026-11-03T15:04:06.580224+00:00",
+        "nav_link": "online",
+        "nav_link_kind": "uart:/dev/ttyACM0",
+        "fpga_mode": "idle",
+        "fpga_state": "idle",
+        "loc_state": "degraded",
+        "loc_quality": 0,
+        "map_loaded": true,
+        "target_valid": false,
+        "lidar_ok": false,
+        "odom_ok": true,
+        "cmd_vx_mps": 0.0,
+        "cmd_wz_radps": 0.0,
+        "fpga_uptime_s": 37.454249,
+        "status_rate_hz": 5.02,
+        "control_link": "online",
+        "policy_active": true,
+        "control_estop": false,
+        "control_faults": [],
+        "wheel_left_mps": 0.0,
+        "wheel_right_mps": 0.03,
+        "roll_deg": -0.1683514631478851,
+        "pitch_deg": 4.563864620543598,
+        "yaw_rate_radps": 0.07861328125,
+        "height_cmd_m": 0.130615234375,
+        "telemetry_rate_hz": 101.4,
+        "control_telemetry": {
+          "transport": "legacy_telemetry",
+          "source": "fpga",
+          "version": 2,
+          "fresh": true,
+          "receive_age_ms": 27.0,
+          "measurement_age_ms": null,
+          "raw": {
+            "timestamp_ms": 37539,
+            "sequence": 3753,
+            "status": 129,
+            "policy_fault": 0,
+            "sensor_error": 0,
+            "left_fault": 0,
+            "right_fault": 0,
+            "fusion_flags": 0,
+            "ax_raw": -301,
+            "ay_raw": -650,
+            "az_raw": 10796,
+            "gx_raw": -75,
+            "gy_raw": -65,
+            "gz_raw": 71,
+            "wx_q12": -349,
+            "wy_q12": -284,
+            "wz_q12": 322,
+            "gravity_x_q12": -12,
+            "gravity_y_q12": 326,
+            "gravity_z_q12": -4084,
+            "forward_q12": 0,
+            "yaw_q12": 0,
+            "height_q12": 535,
+            "left_target_mmps": 70,
+            "right_target_mmps": 77,
+            "left_cms": 0,
+            "right_cms": 3,
+            "left_duty": 582,
+            "right_duty": 829,
+            "lh_us": 1514,
+            "lk_us": 1502,
+            "rh_us": 1456,
+            "rk_us": 1498,
+            "completed_frames": 4425,
+            "inference_cycles": 83534,
+            "left_delta": 0,
+            "right_delta": -2,
+            "left_reference_mmps": 70,
+            "right_reference_mmps": 79,
+            "left_error_mmps": 70,
+            "right_error_mmps": 49,
+            "left_control_sequence": 3520,
+            "right_control_sequence": 3523
+          }
+        }
+      },
+      "updated_at": "2026-11-03T15:04:06.580796+00:00",
+      "telemetry_decoder": {
+        "frames": 12660,
+        "bad_crc": 1,
+        "skipped": 223
+      }
+    },
+    "actions": [
+      "23:02:59 FPGA reset detected (uptime 1385 -> 2 s)",
+      "23:02:59 power-on lock released: 已请求解除运行急停；旧任务不会自动恢复。",
+      "23:03:00 map re-sent: 地图包校验通过（9880 B），开始下发。",
+      "23:03:03 pose sent: 已下发初始位姿 (-0.12, 0.00, 0°)。",
+      "23:03:14 FPGA reset detected (uptime 15 -> 2 s)",
+      "23:03:14 power-on lock released: 已请求解除运行急停；旧任务不会自动恢复。",
+      "23:03:15 map re-sent: 地图包校验通过（9880 B），开始下发。",
+      "23:03:17 pose sent: 已下发初始位姿 (-0.12, 0.00, 0°)。",
+      "23:03:22 FPGA reset detected (uptime 8 -> 2 s)",
+      "23:03:22 power-on lock released: 已请求解除运行急停；旧任务不会自动恢复。",
+      "23:03:23 map re-sent: 地图包校验通过（9880 B），开始下发。",
+      "23:03:25 pose sent: 已下发初始位姿 (-0.12, 0.00, 0°)。",
+      "23:03:31 FPGA reset detected (uptime 9 -> 2 s)",
+      "23:03:31 power-on lock released: 已请求解除运行急停；旧任务不会自动恢复。",
+      "23:03:32 map re-sent: 地图包校验通过（9880 B），开始下发。",
+      "23:03:34 pose sent: 已下发初始位姿 (-0.12, 0.00, 0°)。"
+    ],
+    "read_at": "2026-11-03T23:04:07.038070+08:00"
+  },
+  "S2_map_confirmed": {
+    "upload_id": "406e2cc2c9624b209170231aaa9ae5d0",
+    "filename": "field_home2.nvmp",
+    "bytes": 9880,
+    "state": "ready",
+    "completed_at": "2026-11-03T15:03:34.199557+00:00",
+    "balance_active_at_verification": true
+  },
+  "physical_navigation_tested": false,
+  "motion_goal_sent": false,
+  "bridge_business_logic_changed": false,
+  "camera_changed": false,
+  "pose_parameters_changed": false,
+  "motor_parameters_changed": false,
+  "flash_changed": false,
+  "map_file_changed": false,
+  "limitations": [
+    "Application-loop host checks validate this policy change; no new physical navigation/obstacle-clearing trial",
+    "S2 observation confirmed automatic retransmission and final application READY; rapid subsequent resets can invalidate an in-flight upload and require retry",
+    "Full power-on FPGA RAM initialization remains distinct from S2 logic reset; firmware maintenance guard is retained"
+  ]
+}

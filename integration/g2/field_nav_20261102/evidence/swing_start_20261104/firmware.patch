@@ -1,0 +1,13 @@
+--- a/fw/nav/nav_task.c
++++ b/fw/nav/nav_task.c
+@@ -740,8 +740,8 @@
+     } else if(wanted_v>0 && (nt->v_prev==0 || nt->speed_phase || previous_w)) {
+         if(nt->speed_phase!=3) nt->speed_quiet=0;
+         nt->speed_phase=3;
+-        if(calm && nav_abs32(nt->pose.odo_wz)<=80 && previous_w==0 &&
+-           nt->pose.odo_vx>=-30 && nt->pose.odo_vx<=150) nt->speed_quiet++;
++        /* 前后摆速是平衡动作。转向已收住即可接直行斜坡。 */
++        if(calm && nav_abs32(nt->pose.odo_wz)<=80 && previous_w==0) nt->speed_quiet++;
+         else nt->speed_quiet=0;
+         if(nt->speed_quiet>=2) {nt->speed_phase=0;nt->speed_quiet=0;}
+         else wanted_v=0;

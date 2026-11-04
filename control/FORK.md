@@ -1,5 +1,7 @@
 # 本仓库内的控制副本
 
+11-04交付适配：PNR100冻结工程沿用原4500/全部权重/125Hz，包含联合环形观测、无损存储排布、OV5640本地显示和超声波遥控保护。生产源码仍有F:/冻结工作区，不把此control来源目录等同完整生产快照。实现、版本和来源边界见[阶段交接](../docs/3_guide/project_handover_20261104.md)。
+
 共同工程由 `integration/g2/` 进行适配。SYN50 / PNR63 的命令授权、红外覆盖、BMI088 总线恢复及 CPU INIT 补丁保存在 [syn50](../integration/g2/k_bench_20261027/syn50/command_lease_guard.v)，冻结构建输入为 `F:/nav_integration_g2_20261023/K_timing_syn50`。复现时使用对应冻结输入与补丁；根构建器生成的候选按自身选项管理。版本和测试记录见[PNR63 报告](../docs/4_design/g2_PNR63_review_20261028.md)。
 
 此目录是原4500控制仓库的完整受跟踪文件副本，来源为

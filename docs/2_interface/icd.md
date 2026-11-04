@@ -1,5 +1,9 @@
 # 导航子系统接口定义（ICD）
 
+**11-04当前实现对接：** PNR99/100共同工程软核RAM为136KiB；CH串口负责命令/地图，P11-40只回传控制V2，P11-39保持关闭。STATUS原保留16位承载`clearing_ms`，`flags & 0xC0 == 0xC0`且剩余时间1..35000ms表示清障正在进行；旧固件此字为0。长度保持原协议。RK观察宽限单段最多35s，不取消停止/链路和任务身份规则。
+
+PNR99起冻结硬件另有D200..D21F保留深度/条件作废窗口：D200读RCV1=0x52435631，D204写像素索引，D208读valid+depth，D20C读帧时刻，D210/D214写预期版本/槽地址，D218请求条件作废并读完成/成功位，D21C读保留帧Q8单位和格式标志。这是冻结生产树的扩展，尚不能因本段说明宣称根`config/regmap.yaml`已自动同步；字段/时序原文见[硬件差异](../../integration/g2/field_nav_20261102/evidence/clear_pipeline_20261104/hardware.patch)。当前配套与能力边界见[交接](../3_guide/project_handover_20261104.md)。
+
 本文件定义导航子系统与外部（雷达、RK3588、底盘 RL 控制、IMU、软核）的全部接口。寄存器级细节见 [regmap.md](regmap.md)（由 `config/regmap.yaml` 生成）。
 引脚与电平见 [pinout.md](pinout.md)。其他文档只能引用本文件，不能另立定义。
 

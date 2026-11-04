@@ -1,0 +1,279 @@
+{
+  "stage": "deployed_banner_verified_map_ready_physical_motion_unvalidated",
+  "running_firmware_unchanged": false,
+  "raw_logs": "D:\\tools\\speed_fall_review_20261103\\rec",
+  "complete_download_manifest": "D:\\tools\\speed_fall_review_20261103\\download_manifest.json",
+  "alignment": "board timestamp_ms and console t=NN s; console receive wall time is buffered and not a reliable subsecond alignment",
+  "events": [
+    {
+      "recording": "20261103_231031",
+      "board_s": 72.889,
+      "pitch_deg": -26.3,
+      "forward_ref_mps": 0.24,
+      "yaw_ref_radps": 0.15,
+      "wheel_targets_mmps": [
+        -600.0,
+        -600.0
+      ],
+      "actual_wheel_cms": [
+        -9.0,
+        -23.0
+      ],
+      "sensor_errors_in_preceding4s": [
+        0
+      ],
+      "policy_faults_in_preceding4s": [
+        0
+      ]
+    },
+    {
+      "recording": "20261103_231256",
+      "board_s": 45.319,
+      "pitch_deg": 25.7,
+      "forward_ref_mps": 0.0,
+      "yaw_ref_radps": -0.4,
+      "wheel_targets_mmps": [
+        515.0,
+        244.0
+      ],
+      "actual_wheel_cms": [
+        36.0,
+        31.0
+      ],
+      "sensor_errors_in_preceding4s": [
+        0
+      ],
+      "policy_faults_in_preceding4s": [
+        0
+      ]
+    },
+    {
+      "recording": "20261103_231418",
+      "board_s": 36.329,
+      "pitch_deg": 26.8,
+      "forward_ref_mps": 0.0,
+      "yaw_ref_radps": 0.4,
+      "wheel_targets_mmps": [
+        150.0,
+        233.0
+      ],
+      "actual_wheel_cms": [
+        36.0,
+        40.0
+      ],
+      "sensor_errors_in_preceding4s": [
+        0
+      ],
+      "policy_faults_in_preceding4s": [
+        0
+      ]
+    }
+  ],
+  "confirmed": [
+    "All three forward references nonnegative; maximum 0.3m/s; absolute yaw reference at most0.4rad/s.",
+    "Fore/aft wheel correction oscillation grows around braking/zero-linear-speed turning; wheel targets saturate at +/-600mm/s before or during large pitch excursion.",
+    "Second and third fall while forward reference is already0 and yaw is +/-0.4; first resumes forward before oscillation settles and continues after large tilt.",
+    "Latest first-run hard forward drop occurs after pitch is already about-42.5deg, so that drop is not the initiating cause.",
+    "Console obs0/0 phase0 around all three falls; mfail0 for first and third, second has earlier NO_MAP rejection. These falls do not establish obstacle hard-stop causality.",
+    "No sensor-error or policy-fault code before the observed tilt excursion in the available4s samples; recording gaps occur later and do not prove continuous healthy operation."
+  ],
+  "uncertainty": [
+    "Logs establish the observed loss-of-balance chain, not the sole physical source of the zero-speed oscillation. Policy model, mechanism, power/actuator response are not independently identified.",
+    "A navigation reference adjustment cannot prove or guarantee static balance. Frozen-feedback replay is not closed-loop physical validation."
+  ],
+  "source_corrections": [
+    "C angular proposal has no explicit ramp, but downstream safety_guard also ramps commands before command_lease_guard. Previous30ms estimate for the lease alone is not a full-pipeline braking-time measurement.",
+    "Previously suspected repeated final collision zeros are not the direct initiating event of these three observed falls."
+  ],
+  "candidate_source": "D:\\tools\\speed_transition_fix_20261103\\fw",
+  "changed_firmware_files": [
+    "app\\main.c",
+    "nav\\nav_task.c",
+    "nav\\nav_task.h"
+  ],
+  "changes": [
+    "SEARCH only: require fresh feedback, abs measured forward<=50mm/s, abs pitch<=10deg and abs pitch rate<=about0.36rad/s for2 planner cycles before entering a turn.",
+    "SEARCH turn slew80mrad/s per100ms, existing400mrad/s cap retained. Growing pitch>12deg or pitch rate>about0.81rad/s ramps yaw toward0.",
+    "After turning, wait for measured yaw<=150mrad/s and the same quiet criteria before forward restart; existing30mm/s acceleration step retained.",
+    "Fresh abs pitch>20deg suppresses navigation reference without disabling the balance controller or changing the task goal.",
+    "Save final delivered yaw separately: local planner scratch prev_wz can be overwritten before shaping.",
+    "Compact console fields reduced to fit original128KiB memory; binary telemetry/protocol unchanged; full6KiB stack retained."
+  ],
+  "unchanged": [
+    "global search/map",
+    "goal selection",
+    "obstacle clearing",
+    "localisation",
+    "keeper S2 map resend",
+    "bridge",
+    "RTL",
+    "balance policy",
+    "wheel PID",
+    "cruise/deceleration constants",
+    "GOTO/TRACK behaviour"
+  ],
+  "runtime_changes": true,
+  "motion_commands_sent": false,
+  "sha_checks": false,
+  "verification": {
+    "checks": [
+      "turn waits despite zero command when measured speed is -130mm/s",
+      "two quiet feedback cycles then angular slew 80mrad/s per100ms",
+      "no forward restart while turn has residual actual yaw; quiet exit releases",
+      "signed pitch handled symmetrically; large tilt suppresses nav reference",
+      "stale feedback cannot enter turn; growing pitch ramps out of turn",
+      "helper leaves IDLE/GOTO/TRACK/ESTOP references untouched",
+      "reference conditioner precedes existing final collision veto; saved yaw is final output"
+    ],
+    "replay": [
+      {
+        "name": "20261103_231031",
+        "samples": 743,
+        "phase_counts": {
+          "0": 315,
+          "1": 77,
+          "2": 200,
+          "3": 132,
+          "4": 19
+        },
+        "tilted_samples_with_positive_output": 0,
+        "note": "Frozen measured feedback. Outputs differ; subsequent physical motion is unknown."
+      },
+      {
+        "name": "20261103_231256",
+        "samples": 397,
+        "phase_counts": {
+          "0": 156,
+          "1": 27,
+          "2": 116,
+          "3": 89,
+          "4": 9
+        },
+        "tilted_samples_with_positive_output": 0,
+        "note": "Frozen measured feedback. Outputs differ; subsequent physical motion is unknown."
+      },
+      {
+        "name": "20261103_231418",
+        "samples": 362,
+        "phase_counts": {
+          "0": 176,
+          "1": 48,
+          "2": 83,
+          "3": 52,
+          "4": 3
+        },
+        "tilted_samples_with_positive_output": 0,
+        "note": "Frozen measured feedback. Outputs differ; subsequent physical motion is unknown."
+      }
+    ],
+    "physical_validation": false
+  },
+  "stack": {
+    "complete": true,
+    "static_bound_bytes": 1376,
+    "direct_call_bound_bytes": 1376,
+    "path": [
+      "main",
+      "nav_app_poll",
+      "task_step_local.constprop.0",
+      "explore_frontier.constprop.0",
+      "nav_app_search_checkpoint",
+      "apply_host_link_lock.isra.0",
+      "nav_task_set_mode.constprop.0",
+      "local_frame_point",
+      "rotate.lto_priv.0",
+      "guard_sin"
+    ],
+    "resolved_switches": [
+      {
+        "function": "drain_host_messages.lto_priv.0",
+        "table": ".L1699",
+        "targets": [
+          ".L1702",
+          ".L1701",
+          ".L1700",
+          ".L1698"
+        ]
+      },
+      {
+        "function": "xt_link_poll.constprop.0",
+        "table": ".L1087",
+        "targets": [
+          ".L1091",
+          ".L1090",
+          ".L1089",
+          ".L1088",
+          ".L1086"
+        ]
+      }
+    ],
+    "unresolved_indirect": [],
+    "nonstatic_frames": [],
+    "unresolved_sp_writes": [],
+    "irq_disabled": true,
+    "stack_reserved_bytes": 6144,
+    "largest_frames": [
+      [
+        "nav_app_poll",
+        416
+      ],
+      [
+        "drain_host_messages.lto_priv.0",
+        400
+      ],
+      [
+        "task_step_local.constprop.0",
+        320
+      ],
+      [
+        "nav_app_search_checkpoint",
+        288
+      ],
+      [
+        "waypoint_visible.constprop.0",
+        240
+      ],
+      [
+        "xt_link_poll.constprop.0",
+        240
+      ],
+      [
+        "send_tcp.constprop.0",
+        224
+      ],
+      [
+        "fx_rot_zyx",
+        192
+      ]
+    ],
+    "scope": "linked image, no IRQ/recursion/heap; tail calls conservatively nested; board watermark still pending",
+    "irq_source": "F:\\nav_integration_g2_20261023\\K_terrain19_follow1\\nav\\rtl\\soc\\nav_soc.v",
+    "additional_switch_proof": {
+      "function": "drain_host_messages.lto_priv.0",
+      "table": ".L1699",
+      "base_register": "s4",
+      "index_bound": [
+        0,
+        3
+      ],
+      "targets": [
+        ".L1702",
+        ".L1701",
+        ".L1700",
+        ".L1698"
+      ]
+    }
+  },
+  "build": {
+    "bin_bytes": 54560,
+    "bss_bytes": 70348,
+    "stack_reserved_bytes": 6144,
+    "static_remaining_bytes": 20,
+    "stack_bound_bytes": 1376,
+    "unresolved_indirect": []
+  },
+  "candidate_binary": "D:\\tools\\speed_transition_fix_20261103\\nav_fw_searchspeed_yaw3_20261103.bin",
+  "running_firmware": "nav_fw_searchspeed_yaw3_20261103.bin",
+  "deployment": "deployment.json",
+  "frozen_source": "F:\\nav_integration_g2_20261023\\K_fw_terrain1\\fw_searchspeed_20261103"
+}

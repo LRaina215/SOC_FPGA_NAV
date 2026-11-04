@@ -1,0 +1,56 @@
+--- before/yuntuo/bridge/core.py
++++ after/yuntuo/bridge/core.py
+@@ -160,7 +160,8 @@
+         clock_ok = fresh and (not self.nv_control_seen or age is not None and -10000 <= age <= FEEDBACK_MAX_AGE_S*1e6)
+         if not self.nv_control_seen and getattr(self.telemetry, "disconnected", False):
+             clock_ok = False
+-        return StatusView(self.status, self.status_at, fresh, self.stop_evidence.view(now, clock_ok=clock_ok))
++        return StatusView(self.status, self.status_at, fresh, self.stop_evidence.view(now, clock_ok=clock_ok),
++                          map_loaded=self.prior_map is not None)
+ 
+     def _control_age_us(self, frame: ControlFrame | None, now: float) -> int | None:
+         if frame is None or self.status is None:
+@@ -388,7 +389,7 @@
+                 if not all(math.isfinite(v) for v in (x, y, yaw, range_m, range_deg)) or min(range_m, range_deg) < 0:
+                     raise ValueError('invalid pose or search range')
+                 message = nv.encode_set_pose(nv.m_to_mm(x), nv.m_to_mm(y), nv.rad_to_cdeg(yaw),
+-                                             align=bool(p.get("align", True)),
++                                             align=bool(p.get("align", False)),
+                                              range_mm=int(range_m * 1000), range_cdeg=int(range_deg * 100))
+             except (KeyError, TypeError, ValueError, OverflowError):
+                 return {"success": False, "data": {"accepted": False, "detail": "位姿或搜索范围无效，请提供有限数值及非负搜索范围。"}}
+@@ -472,7 +473,7 @@
+         finally:
+             self.uploading_map = False
+         ok = ack.map_state == 2 and ack.next_offset == len(pkg)
+-        self.map_detail = (f"先验地图已加载（{prior.size} B，{self.clock() - t0:.1f} s），请下发初始位姿对准"
++        self.map_detail = (f"先验地图已加载（{prior.size} B，{self.clock() - t0:.1f} s）；地图目标需给定初始位姿，雷达在后台辅助纠偏"
+                            if ok else f"地图下发后板上状态：{ack.map_state_name if ack else '无应答'}")
+         log.info(self.map_detail)
+         if ok:
+--- before/yuntuo/bridge/tasks.py
++++ after/yuntuo/bridge/tasks.py
+@@ -40,6 +40,7 @@
+     received_at: float          # 本机单调时钟
+     fresh: bool
+     motion: MotionView = field(default_factory=MotionView)
++    map_loaded: bool = False
+ 
+ 
+ @dataclass
+@@ -225,10 +226,14 @@
+         if s.state == 6 or s.mode == 4:
+             return "FPGA 导航处于急停，请先解除急停。"
+         loc = s.loc_state or 0
++        if not is_goto:
++            return None  # 相对目标任务不以先验地图配准为前置条件。
++        if loc == 0 and sv.map_loaded and self.cfg.require_localization:
++            return "地图目标尚未给定初始位姿；请设置位置和朝向，不要求雷达配准成功。"
+         if loc == 0 and is_goto and not self.cfg.allow_mapless_goto:
+             return "FPGA 未加载先验地图，地图坐标点位不可用。"
+         if loc in (1, 4) and self.cfg.require_localization:
+-            return f"有图定位未就绪（{nv.LOC_LABELS.get(loc)}），请先下发初始位姿完成对准。"
++            return "地图目标的初始位姿尚未就绪；请设置位置和朝向，不以雷达匹配分数作为启动条件。"
+         return None
+ 
+     def _start_goto(self, command: str, args: dict, source: str, now: float) -> tuple[bool, str]:

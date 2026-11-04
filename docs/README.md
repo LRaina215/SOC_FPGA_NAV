@@ -1,5 +1,7 @@
 # 文档目录
 
+**2026-11-04阶段收尾入口：** [交付组合、演示和维护说明](3_guide/project_handover_20261104.md)汇总PNR100/136KiB、地图2最新ACTIVE、四域时序、Flash与热加载区别，以及尚未闭合的实车问题；后续状态仍只更新总计划。
+
 先读[项目总体设计](system_architecture.md)，了解FPGA、RK3588边缘多模态任务引擎、Web与微信小程序的完整架构。当前状态和执行顺序只查[当前总计划](1_plan/system_integration_plan_20261021.md)；控制来源见[控制仓库审阅](5_teams/control_repo_review_20261021.md)，历史进度见[roadmap](1_plan/roadmap.md)，要改代码先读[3_guide/dev_guide.md](3_guide/dev_guide.md)。
 
 文档按设计、接口、操作指南和开发记录组织。总体设计从[系统架构](system_architecture.md)开始，专项测试结果在对应报告中查阅。
@@ -17,7 +19,8 @@
 | `2_interface/` 接口（唯一真值） | [icd.md](2_interface/icd.md) | 雷达、主机报文、底盘、IMU、软核总线的接口定义 |
 | | [regmap.md](2_interface/regmap.md) | 寄存器表（由 `config/regmap.yaml` 生成，勿手改） |
 | | [pinout.md](2_interface/pinout.md) | 引脚、电平、P11 分配、BMI088 小板接线、安全电平 |
-| `3_guide/` 操作手册 | [hardware_guide.md](3_guide/hardware_guide.md) | 实机搭建与测试：环境、烧录、初始化、逐个外设接入、实地测试、排障 |
+| `3_guide/` 操作手册 | [project_handover_20261104.md](3_guide/project_handover_20261104.md) | 当前阶段交付、版本/启动/地图/本地演示/回退及证据边界 |
+| | [hardware_guide.md](3_guide/hardware_guide.md) | 实机搭建与测试：环境、烧录、初始化、逐个外设接入、实地测试、排障 |
 | | [board_bringup.md](3_guide/board_bringup.md) | 开发侧上板要点、IP 生成、有图模式与 PC 单独操作 |
 | | [dev_guide.md](3_guide/dev_guide.md) | 开发规范：唯一真值、改动后必跑、新模块接入、地址空间、协作 |
 | `4_design/` 设计与参数 | [algorithms.md](4_design/algorithms.md) | 闭环仿真平台、算法改进记录、批量评测结果 |

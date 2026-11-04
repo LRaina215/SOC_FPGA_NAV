@@ -1,0 +1,53 @@
+{
+  "checks": [
+    "turn waits despite zero command when measured speed is -130mm/s",
+    "two quiet feedback cycles then angular slew 80mrad/s per100ms",
+    "no forward restart while turn has residual actual yaw; quiet exit releases",
+    "signed pitch handled symmetrically; large tilt suppresses nav reference",
+    "stale feedback cannot enter turn; growing pitch ramps out of turn",
+    "helper leaves IDLE/GOTO/TRACK/ESTOP references untouched",
+    "reference conditioner precedes existing final collision veto; saved yaw is final output"
+  ],
+  "replay": [
+    {
+      "name": "20261103_231031",
+      "samples": 743,
+      "phase_counts": {
+        "0": 315,
+        "1": 77,
+        "2": 200,
+        "3": 132,
+        "4": 19
+      },
+      "tilted_samples_with_positive_output": 0,
+      "note": "Frozen measured feedback. Outputs differ; subsequent physical motion is unknown."
+    },
+    {
+      "name": "20261103_231256",
+      "samples": 397,
+      "phase_counts": {
+        "0": 156,
+        "1": 27,
+        "2": 116,
+        "3": 89,
+        "4": 9
+      },
+      "tilted_samples_with_positive_output": 0,
+      "note": "Frozen measured feedback. Outputs differ; subsequent physical motion is unknown."
+    },
+    {
+      "name": "20261103_231418",
+      "samples": 362,
+      "phase_counts": {
+        "0": 176,
+        "1": 48,
+        "2": 83,
+        "3": 52,
+        "4": 3
+      },
+      "tilted_samples_with_positive_output": 0,
+      "note": "Frozen measured feedback. Outputs differ; subsequent physical motion is unknown."
+    }
+  ],
+  "physical_validation": false
+}

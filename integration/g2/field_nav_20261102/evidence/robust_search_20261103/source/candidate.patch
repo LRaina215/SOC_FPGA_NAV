@@ -1,0 +1,218 @@
+--- drv\hal_fpga.c
++++ drv\hal_fpga.c
+@@ -398,7 +398,7 @@
+ 
+ void hal_map_flat_ground(void)
+ {
+-    nav_wr(NAV_MAP_THR0, (150u << NAV_MAP_THR0_ROUGH_MAX_SHIFT) | 100u);
++    nav_wr(NAV_MAP_THR0, (150u << NAV_MAP_THR0_ROUGH_MAX_SHIFT) | 20u);
+     nav_wr(NAV_MAP_THR1, (nav_rd(NAV_MAP_THR1) & NAV_MAP_THR1_JUMP_MASK) | 200u);
+     nav_wr(NAV_MAP_CMD, 2u);
+     nav_wr(NAV_SAFE_WD_US, 500000u); /* 规划一步偶尔 >100 ms：200 ms 指令看门狗会误触发 */
+--- nav\nav_task.c
++++ nav\nav_task.c
+@@ -121,7 +121,7 @@
+     nt->path_valid = false;
+     nt->path.n=0;
+     nt->refine_path = nt->path_fine = false;
+-    nt->search_goal_valid = false;
++    nt->search_goal_valid = false;nt->revisit_goal=false;
+     nt->last_ok_us = hal_time_us();
+     nt->prog_t_us = hal_time_us();
+     nt->prog_x = nt->pose.cur.x; nt->prog_y = nt->pose.cur.y;
+@@ -169,7 +169,7 @@
+         nav_task_set_mode(nt, NAV_MODE_GOTO);
+         break;
+     case MSG_TARGET:
+-        target_update(&nt->tgt, &nt->pose, m->u.target.found, m->u.target.x, m->u.target.y,
++        target_update(&nt->tgt, &nt->pose, m->u.target.found, m->u.target.x, m->u.target.y, m->u.target.z,
+                       m->u.target.latency_ms, m->u.target.track_id, m->u.target.cls, rx_us);
+         if (m->u.target.found && target_fresh(&nt->tgt, rx_us) && nt->mode == NAV_MODE_SEARCH) nav_task_set_mode(nt, NAV_MODE_TRACK);
+         break;
+@@ -577,7 +577,13 @@
+     if(speed>0) progress=nav_min32(progress,nav_max32(5,(int32_t)((int64_t)speed*nt->cfg.stall_us/2000000)));
+     /* 有意低速接入不能要求6s内仍前进150mm；用半个停滞窗口的
+      * 已下发速度计算门槛。零速/纯转向仍用原门槛，不能靠定位抖动保活。 */
+-    if (fx_dist(p->x - nt->prog_x, p->y - nt->prog_y) > progress) {
++    uint32_t odt = now - nt->progress_odo_us;
++    nt->progress_odo_us = now;
++    if(odt <= 200000 && nt->pose.have_odo && (uint32_t)(now-nt->pose.last_odo_us)<100000)
++        nt->progress_odo_mm += (int32_t)((int64_t)nt->pose.odo_vx*odt/1000000);
++    if (fx_dist(p->x - nt->prog_x, p->y - nt->prog_y) > progress &&
++        nav_abs32(nt->progress_odo_mm) > progress) {
++        nt->progress_odo_mm=0;
+         nt->prog_x = p->x; nt->prog_y = p->y; nt->prog_t_us = now;
+     } else if (!nt->recovering && (uint32_t)(now - nt->prog_t_us) > nt->cfg.stall_us) {
+         /* 近目标卡住先零速/报告受阻；下一周期仍可重新规划受检查的动作。
+@@ -603,7 +609,7 @@
+         nt->recovering = true;
+         nt->n_stall++;
+         nt->recover_until_us = now + nt->cfg.recover_us;
+-        nt->recover_dir = (int8_t)(back_clear(nt, p, 400) ? 1 : 0);
++        nt->recover_dir = 0; /* Wheel-leg vehicle: no reverse recovery. */
+         nt->path_valid = false;
+         nt->turning = false;
+         nt->n_recover++;
+@@ -822,7 +828,15 @@
+ 
+     case NAV_MODE_TRACK: {
+         if (!target_alive(&nt->tgt, now)) {
++            /* One bounded revisit for normally static objects. No stale TARGET
++             * retransmission, no arrival declaration without a fresh detection. */
++            bool revisit=nt->tgt.valid && (nt->tgt.cls==39 || nt->tgt.cls==41) &&
++                (uint32_t)(now-nt->tgt.t_us)<20000000u;
+             nav_task_set_mode(nt, NAV_MODE_SEARCH);
++            if(revisit) {
++                target_approach_goal(&nt->tgt,p,&nt->goal_x,&nt->goal_y);
++                nt->search_goal_valid=true;nt->search_t_us=now;nt->revisit_goal=true;
++            }
+             break;
+         }
+         if (!target_fresh(&nt->tgt, now)) {
+@@ -857,6 +871,19 @@
+     }
+ 
+     case NAV_MODE_SEARCH:
++        /* Transient blocked goals expire, instead of poisoning exploration forever. */
++        if(nt->bl_expire_us && (int32_t)(now-nt->bl_expire_us)>=0) {
++            nt->exp.bl_n=nt->exp.bl_i=0;nt->bl_expire_us=0;
++        }
++        if(nt->guard_retry_us && (int32_t)(now-nt->guard_retry_us)>=0) {
++            nt->guard_retry_us=0;nt->guard_since_us=0;nt->guard_streak=0;
++            if(nt->search_goal_valid) {
++                explore_blacklist(&nt->exp,nt->goal_x,nt->goal_y);
++                nt->bl_expire_us=now+15000000u;
++            }
++            nt->search_goal_valid=false;nt->path_valid=false;
++            astar_cancel();nt->bg_done=false;nt->turning=false;
++        }
+         if (target_alive(&nt->tgt, now)) { nav_task_set_mode(nt, NAV_MODE_TRACK); break; }
+         if (nt->search_goal_valid && (uint32_t)(now - nt->search_t_us) > nt->cfg.search_repick_us) {
+             /* 超时没到：这个目标够不着，拉黑后重选 */
+@@ -864,6 +891,7 @@
+             nt->search_goal_valid = false;
+         }
+         if (!nt->search_goal_valid) {
++            nt->revisit_goal=false;
+             const bool seen_mode = nt->use_gmap && nt->gm.has_prior;
+             nt->search_goal_valid = nt->use_gmap &&
+                 explore_frontier(&nt->exp, &nt->ex_cfg, &nt->gm, &nt->mi, p, seen_mode, &nt->goal_x, &nt->goal_y);
+@@ -885,8 +913,13 @@
+         if (!nt->search_goal_valid) {
+             nt->cmd = (nav_cmd_t){0, 0, (int16_t)(nt->lp_cfg.w_max / 2), 0};     /* 原地转一圈找路 */
+             nt->cmd_source = CMD_SEARCH;
+-        } else if (drive_to(nt, now, nt->goal_x, nt->goal_y, 700)) {     /* 边界点：走近到能看清即可 */
+-            nt->search_goal_valid = false;
++        } else if (drive_to(nt, now, nt->goal_x, nt->goal_y, nt->revisit_goal?200:700)) {     /* 边界点：走近到能看清即可 */
++            if(nt->revisit_goal) {
++                int32_t dh=fx_angle_diff(p->yaw,fx_atan2(nt->tgt.y-p->y,nt->tgt.x-p->x));
++                nt->cmd.wz=(int16_t)nav_clamp32(dh*2/3,-400,400);
++                if(nav_abs32(dh)<900) nt->cmd.wz=0;
++                nt->cmd_source=CMD_SEARCH;
++            } else nt->search_goal_valid = false;
+         }
+         nt->state = ST_SEARCHING;
+         break;
+@@ -934,6 +967,9 @@
+     if (nt->v_prev > 0 && nt->cmd.vx < nt->v_prev - decel_step && nt->mode != NAV_MODE_ESTOP)
+         nt->cmd = (nav_cmd_t){(int16_t)(nt->v_prev - decel_step), 0, 0, nt->cmd.mode};
+ #endif
++    if(nt->motion_result==MOTION_OK || nt->motion_result==MOTION_UNKNOWN) {
++        nt->guard_since_us=0;nt->guard_streak=0;
++    }
+     nt->pose.cmd_still = (nt->cmd.vx == 0 && nt->cmd.vy == 0 && nt->cmd.wz == 0);
+ #ifndef APP_POS_HOLD
+ #define APP_POS_HOLD 0
+@@ -970,6 +1006,10 @@
+         else if (!APP_FLAT_GROUND && (!hal_map_info(&check) || !motion_map_same(&check, &nt->mi))) nt->motion_result = MOTION_MAP_CHANGED;
+         else {
+             nt->motion_result = motion_check(nt->map, &nt->mi, p, &nt->lp_cfg, &nt->cmd);
++            if(nt->motion_result==MOTION_UNKNOWN && nt->cmd.vx>60 && nt->cmd.vy==0) {
++                nt->cmd.vx=60; /* Unknown is not observed free. Recheck the actual slower command. */
++                nt->motion_result=motion_check(nt->map,&nt->mi,p,&nt->lp_cfg,&nt->cmd);
++            }
+             if(nt->motion_result==MOTION_OK || nt->motion_result==MOTION_UNKNOWN) {
+                 /* 同一次无IRQ调用内，局部规划已核对同一最终命令/同代地图；
+                  * 复用轮支撑结论。其它来源或改动过的命令仍在此完整查询。 */
+@@ -986,7 +1026,7 @@
+         /* 圆形包络下任意曲线200ms中心路程仍<=12mm；轮胎旋转扫掠单独检查。
+          * UNKNOWN标志保留。实际延迟/刹停并未由这条名义上界覆盖。 */
+         bool uncertain_creep = nt->motion_result == MOTION_UNKNOWN && nt->as_cfg.allow_unknown &&
+-                               nt->cmd.vx>=0 && nt->cmd.vx<=(APP_FLAT_GROUND ? nt->lp_cfg.v_max : 60) && nt->cmd.vy==0;
++                               nt->cmd.vx>=0 && nt->cmd.vx<=60 && nt->cmd.vy==0;
+         if (nt->motion_result != MOTION_OK && !uncertain_creep) {
+             nt->n_mfail++;
+             nt->last_mfail = nt->motion_result;
+@@ -994,11 +1034,20 @@
+             /* 切图丢弃本次速度，世界坐标路线保留到下周期重新复核。 */
+             if(nt->motion_result!=MOTION_MAP_CHANGED || (!nt->use_gmap && !nt->path_fine)) nt->path_valid=false;
+             nt->last_ok_us = now - nt->cfg.blocked_us - 1u;
+-            if (nt->mode == NAV_MODE_GOTO) nt->state = ST_BLOCKED;
++            if (nt->mode == NAV_MODE_GOTO || nt->mode == NAV_MODE_SEARCH) nt->state = ST_BLOCKED;
++            if(nt->mode==NAV_MODE_SEARCH && nt->motion_result==MOTION_HAZARD) {
++                if(!nt->guard_streak++) nt->guard_since_us=now;
++                /* Allow a new observation/replan, then replace a repeatedly rejected goal. */
++                if(!nt->guard_retry_us && now-nt->guard_since_us>=800000u)
++                    nt->guard_retry_us=now+100000u;
++            }
+         }
+     }
+     t_chk = hal_time_us() - t_chk;
+     if (t_chk > nt->t_chk_max) nt->t_chk_max = t_chk;
++    if(nt->motion_result==MOTION_OK || nt->motion_result==MOTION_UNKNOWN) {
++        nt->guard_since_us=0;nt->guard_streak=0;
++    }
+     nt->pose.cmd_still = (nt->cmd.vx == 0 && nt->cmd.vy == 0 && nt->cmd.wz == 0);
+     nt->v_prev = nav_max32(0, nt->cmd.vx);
+     nt->progress_speed=(int16_t)(nav_abs32(nt->cmd.vx)+nav_abs32(nt->cmd.vy));
+--- nav\nav_task.h
++++ nav\nav_task.h
+@@ -117,6 +117,11 @@
+     uint32_t       look_path_t;      /* look_i 所属路径的生成时刻（path_t_us） */
+     int16_t        v_prev;           /* 上一周期实际下发的前进速度（斜坡起点） */
+     uint16_t       n_mfail, n_pbusy, n_stall; /* 诊断：最终足迹检查不过 / 重规划期间没有可用路径 / 卡住恢复 */
++    uint32_t guard_since_us, guard_retry_us, bl_expire_us;
++    int32_t progress_odo_mm;
++    uint32_t progress_odo_us;
++    uint16_t guard_streak;
++    bool revisit_goal;
+     uint8_t        last_mfail;       /* 最近一次足迹检查不过的结果码 */
+ } nav_task_t;
+ 
+--- nav\target.c
++++ nav\target.c
+@@ -8,16 +8,20 @@
+     t->standoff_mm = standoff_mm;
+ }
+ 
+-void target_update(target_t *t, const pose_est_t *pe, bool found, int32_t bx, int32_t by,
++void target_update(target_t *t, const pose_est_t *pe, bool found, int32_t bx, int32_t by, int32_t bz,
+                    uint16_t latency_ms, uint16_t id, uint8_t cls, uint32_t rx_us)
+ {
+     if (!found) return;          /* 未找到：保持旧值，交给超时判断 */
+     uint32_t cap = rx_us - (uint32_t)latency_ms * 1000u;
+     if (t->valid && (int32_t)(cap - t->t_us) < 0) return;
+     nav_pose_t at;
+-    if (!pose_query_valid(pose_xy_at(pe, cap, &at))) return;
++    if (!pose_query_valid(pose_at(pe, cap, &at))) return;
+     int32_t x, y;
+-    pose_body_to_odom(&at, bx, by, &x, &y);
++    fx_mat3_t r;
++    fx_rot_zyx(&r, at.yaw, at.pitch, at.roll);
++    int32_t v[3] = {bx, by, bz}, w[3];
++    fx_mat_vec(w, &r, v);
++    x = at.x + w[0]; y = at.y + w[1];
+     uint32_t dt = cap - t->t_us;
+     if (t->valid && dt == 0) return;  /* 同一采图时刻不能反复拉动滤波位置 */
+     if (t->valid && t->id == id && t->cls == cls && dt < t->timeout_us) {
+--- nav\target.h
++++ nav\target.h
+@@ -24,7 +24,7 @@
+ } target_t;
+ 
+ void target_init(target_t *t, uint32_t timeout_us, int32_t standoff_mm);
+-void target_update(target_t *t, const pose_est_t *pe, bool found, int32_t bx, int32_t by,
++void target_update(target_t *t, const pose_est_t *pe, bool found, int32_t bx, int32_t by, int32_t bz,
+                    uint16_t latency_ms, uint16_t id, uint8_t cls, uint32_t rx_us);
+ bool target_alive(const target_t *t, uint32_t now_us);
+ /* 仍记得目标不代表可以继续开：短时缺帧保留TRACK，过新鲜期先受检查地减速等待。 */

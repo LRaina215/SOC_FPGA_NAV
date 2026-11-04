@@ -1,0 +1,35 @@
+{
+  "original_board_source": "F:\\nav_integration_g2_20261023\\K_fw_terrain1\\fw_locfix3_20261103",
+  "validated_candidate": "D:\\tools\\motion_repair_20261103\\delivery_candidate",
+  "raw_runs": {
+    "before": "D:\\tools\\motion_repair_20261103\\final_before",
+    "after": "D:\\tools\\motion_repair_20261103\\delivery_after",
+    "barrier": "D:\\tools\\motion_repair_20261103\\true_barrier_after"
+  },
+  "unchanged_algorithm_prefix_s": 13.501,
+  "changed_files": [
+    "app\\main.c",
+    "app\\nav_app.c",
+    "bsp\\build_rv_k.py",
+    "drv\\map_revalidate_fpga.c",
+    "nav\\map_ray_clear.c",
+    "nav\\map_ray_clear.h",
+    "nav\\map_revalidate.c",
+    "nav\\map_revalidate.h",
+    "nav\\motion_guard.c",
+    "nav\\nav_task.c",
+    "nav\\nav_task.h",
+    "nav\\pose.c",
+    "nav\\pose.h",
+    "test\\hal_py.c",
+    "test\\map_revalidate_py.c"
+  ],
+  "ray_deletion_enabled": false,
+  "required_new_rtl": false,
+  "build": "python fw/bsp/build_rv_k.py --define APP_COMPACT_TELEMETRY=1",
+  "stack_reserve_bytes": 6144,
+  "stack_analysis_complete": false,
+  "remaining_static_ram_bytes": 132,
+  "unresolved_stack_indirect": "drain_host_messages jr a5",
+  "physical_deployment": false
+}

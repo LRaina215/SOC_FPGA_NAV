@@ -1,0 +1,357 @@
+{
+  "status": "NOT PASSED: real-world navigation defect remains unresolved",
+  "component_checks": {
+    "bmi_fusion": {
+      "samples": 240,
+      "exact": true,
+      "rtl_source": "F:\\nav_integration_g2_20261023\\K_terrain19_follow1\\control\\imu_fusion.v",
+      "scope": "integer filter arithmetic; calibrated state, scaled clock; not startup or synthesis timing"
+    },
+    "perception": {
+      "exact": true,
+      "frames": 8,
+      "filter_outputs": 35238,
+      "cost_cells": 131072,
+      "details": [
+        {
+          "capture_s": 9.0,
+          "commit_s": 9.058,
+          "tilt_error_deg": 4.153940924953012,
+          "accepted": false,
+          "updates": 0
+        },
+        {
+          "capture_s": 9.1,
+          "commit_s": 9.163,
+          "tilt_error_deg": 4.291697815232724,
+          "accepted": true,
+          "updates": 8819
+        },
+        {
+          "capture_s": 9.200000000000001,
+          "commit_s": 9.268,
+          "tilt_error_deg": 5.2537777536908346,
+          "accepted": true,
+          "updates": 8819
+        },
+        {
+          "capture_s": 9.3,
+          "commit_s": 9.379,
+          "tilt_error_deg": 5.360155296761801,
+          "accepted": true,
+          "updates": 8819
+        },
+        {
+          "capture_s": 9.4,
+          "commit_s": 9.484,
+          "tilt_error_deg": 6.248612725249347,
+          "accepted": true,
+          "updates": 8773
+        },
+        {
+          "capture_s": 9.5,
+          "commit_s": 9.583,
+          "tilt_error_deg": 1.3856355084572896,
+          "accepted": false,
+          "updates": 0
+        },
+        {
+          "capture_s": 9.6,
+          "commit_s": 9.663,
+          "tilt_error_deg": 4.560286173295444,
+          "accepted": false,
+          "updates": 0
+        },
+        {
+          "capture_s": 9.700000000000001,
+          "commit_s": 9.796,
+          "tilt_error_deg": 9.275623836005442,
+          "accepted": false,
+          "updates": 0
+        }
+      ],
+      "rtl_source": "F:\\nav_integration_g2_20261023\\K_terrain19_follow1\\nav\\rtl",
+      "scope": "actual board edge filter/projector/filter/EMA/trav_v3; recorded radial depth + C transform; empty-map subsequence; not full navigation CPU timing"
+    }
+  },
+  "actual_lidar_lens": {
+    "intrinsics": {
+      "fx": 79.94421365384105,
+      "fy": 82.73125450486427,
+      "cx": 79.88151549559977,
+      "cy": 26.92245292638637,
+      "k1": -0.3021684212318175,
+      "k2": 0.095768088085297,
+      "k3": -0.014227649803305173,
+      "p1": 0.00034988626661834566,
+      "p2": -0.0005644778991083628
+    },
+    "device": "XTM60B20250324000234",
+    "organized_clouds": 20,
+    "pixel_directions": 8818,
+    "reprojection_rms_px": 2.8915051876769907e-06,
+    "max_abs_component_px": 1.9213827928335082e-05,
+    "source": "D:\\tools\\prior_map_lidar_baseline_20261101\\sensor_survey_20261031_235157\\bag",
+    "method": "Fit SDK normalized pixel rays, not map geometry; independently cross-check fx against vendor config log",
+    "sdk_message_age_ms": {
+      "median": 74.85818800000001,
+      "min": 74.44780650000001,
+      "max": 87.0389495
+    },
+    "latency_limitation": "SDK complete-cloud age includes that software path; not a measurement of FPGA SOF-versus-exposure delay"
+  },
+  "runs": [
+    {
+      "name": "device_lag0",
+      "source": "D:\\tools\\motion_input_audit_20261103\\device_lag0",
+      "audit": {
+        "imu_model": "fusion",
+        "board_profile": {
+          "age_max": 60,
+          "cnt_min": 4,
+          "keep_r": 12,
+          "avg": 1,
+          "avg_shift_max": 3,
+          "step_high_only": 1,
+          "step_max": 100,
+          "rough_max": 150,
+          "slope_rise": 200,
+          "jump": 25,
+          "k_slope": 160,
+          "k_step": 48,
+          "k_rough": 32,
+          "fill_min": 5,
+          "fill_tol": 30,
+          "fill_cost": 40,
+          "drop_k": 16,
+          "drop_slope": 4,
+          "infl_r": 4,
+          "infl_disk": 1
+        },
+        "navigation_source": "F:\\nav_integration_g2_20261023\\K_fw_terrain1\\fw_locfix3_20261103",
+        "navigation_algorithm_changed": false,
+        "imu_protocol": 1,
+        "artificial_map_fault": false,
+        "extra_clear_pass": false,
+        "raw_frames": 350,
+        "accepted_height_frames": 240,
+        "peak_near_false_lethal": 0,
+        "false_cell_ids": 0,
+        "max_false_lifetime_observed_s": 0,
+        "imu_tilt_error_rms_deg": 1.8199221456776944,
+        "imu_tilt_error_max_deg": 3.9710309893971076,
+        "command_profile": "D:\\tools\\robust_search_20261103_review\\measured_commands.json",
+        "force_n": 1.5,
+        "physics": "native training actuator; not a real-vehicle balance certification",
+        "lidar_lens_source": "D:\\tools\\motion_input_audit_20261103\\recorded_device_lens.json",
+        "lidar_intrinsics": {
+          "fx": 79.94421365384105,
+          "fy": 82.73125450486427,
+          "cx": 79.88151549559977,
+          "cy": 26.92245292638637,
+          "k1": -0.3021684212318175,
+          "k2": 0.095768088085297,
+          "k3": -0.014227649803305173,
+          "p1": 0.00034988626661834566,
+          "p2": -0.0005644778991083628
+        },
+        "lidar_exposure_to_sof_sensitivity_ms": 0.0,
+        "latency_measured_on_fpga": false,
+        "edge_filter_threshold_mm": 50,
+        "hal_ema_support_decode": "board mean/MAD in mm",
+        "imu_site": "wheel reference point in CAD body; physical BMI lever arm unmeasured",
+        "raw_noise_assumptions": {
+          "accel_std_lsb": 65,
+          "gyro_std_lsb": 2,
+          "depth_std_mm": 12
+        },
+        "source_geometry": "current field2 draft with triangular supports; not a new surveyed ground truth"
+      },
+      "task_end": [
+        33.62,
+        "completed",
+        "已找到「红色水瓶」，反馈已满足停稳条件。"
+      ],
+      "collision": 0,
+      "physical_failure": false,
+      "near_false_cell_observations": 0,
+      "retained_stale_false_cell_observations": 0,
+      "max_consecutive_near_false_observations": 0,
+      "final_command_hazard_events": 1,
+      "path_visibility_hazard_events": 22,
+      "pitch_rms_deg": 6.253339639473087,
+      "pitch_abs_max_deg": 12.345616464152826
+    },
+    {
+      "name": "device_lag80",
+      "source": "D:\\tools\\motion_input_audit_20261103\\device_lag80",
+      "audit": {
+        "imu_model": "fusion",
+        "board_profile": {
+          "age_max": 60,
+          "cnt_min": 4,
+          "keep_r": 12,
+          "avg": 1,
+          "avg_shift_max": 3,
+          "step_high_only": 1,
+          "step_max": 100,
+          "rough_max": 150,
+          "slope_rise": 200,
+          "jump": 25,
+          "k_slope": 160,
+          "k_step": 48,
+          "k_rough": 32,
+          "fill_min": 5,
+          "fill_tol": 30,
+          "fill_cost": 40,
+          "drop_k": 16,
+          "drop_slope": 4,
+          "infl_r": 4,
+          "infl_disk": 1
+        },
+        "navigation_source": "F:\\nav_integration_g2_20261023\\K_fw_terrain1\\fw_locfix3_20261103",
+        "navigation_algorithm_changed": false,
+        "imu_protocol": 1,
+        "artificial_map_fault": false,
+        "extra_clear_pass": false,
+        "raw_frames": 350,
+        "accepted_height_frames": 232,
+        "peak_near_false_lethal": 1,
+        "false_cell_ids": 1,
+        "max_false_lifetime_observed_s": 4.393999999999998,
+        "imu_tilt_error_rms_deg": 1.8529680725714195,
+        "imu_tilt_error_max_deg": 3.753343722681757,
+        "command_profile": "D:\\tools\\robust_search_20261103_review\\measured_commands.json",
+        "force_n": 1.5,
+        "physics": "native training actuator; not a real-vehicle balance certification",
+        "lidar_lens_source": "D:\\tools\\motion_input_audit_20261103\\recorded_device_lens.json",
+        "lidar_intrinsics": {
+          "fx": 79.94421365384105,
+          "fy": 82.73125450486427,
+          "cx": 79.88151549559977,
+          "cy": 26.92245292638637,
+          "k1": -0.3021684212318175,
+          "k2": 0.095768088085297,
+          "k3": -0.014227649803305173,
+          "p1": 0.00034988626661834566,
+          "p2": -0.0005644778991083628
+        },
+        "lidar_exposure_to_sof_sensitivity_ms": 80.0,
+        "latency_measured_on_fpga": false,
+        "edge_filter_threshold_mm": 50,
+        "hal_ema_support_decode": "board mean/MAD in mm",
+        "imu_site": "wheel reference point in CAD body; physical BMI lever arm unmeasured",
+        "raw_noise_assumptions": {
+          "accel_std_lsb": 65,
+          "gyro_std_lsb": 2,
+          "depth_std_mm": 12
+        },
+        "source_geometry": "current field2 draft with triangular supports; not a new surveyed ground truth"
+      },
+      "task_end": [
+        27.01,
+        "completed",
+        "已找到「红色水瓶」，反馈已满足停稳条件。"
+      ],
+      "collision": 0,
+      "physical_failure": false,
+      "near_false_cell_observations": 18,
+      "retained_stale_false_cell_observations": 0,
+      "max_consecutive_near_false_observations": 6,
+      "final_command_hazard_events": 0,
+      "path_visibility_hazard_events": 42,
+      "pitch_rms_deg": 6.2608087101475105,
+      "pitch_abs_max_deg": 12.089151528677764
+    },
+    {
+      "name": "device_lag80_compensated",
+      "source": "D:\\tools\\motion_input_audit_20261103\\device_lag80_compensated",
+      "audit": {
+        "imu_model": "fusion",
+        "board_profile": {
+          "age_max": 60,
+          "cnt_min": 4,
+          "keep_r": 12,
+          "avg": 1,
+          "avg_shift_max": 3,
+          "step_high_only": 1,
+          "step_max": 100,
+          "rough_max": 150,
+          "slope_rise": 200,
+          "jump": 25,
+          "k_slope": 160,
+          "k_step": 48,
+          "k_rough": 32,
+          "fill_min": 5,
+          "fill_tol": 30,
+          "fill_cost": 40,
+          "drop_k": 16,
+          "drop_slope": 4,
+          "infl_r": 4,
+          "infl_disk": 1
+        },
+        "navigation_source": "F:\\nav_integration_g2_20261023\\K_fw_terrain1\\fw_locfix3_20261103",
+        "navigation_algorithm_changed": true,
+        "firmware_override": "D:\\tools\\motion_input_audit_20261103\\timing_candidate\\nav_fw.dll",
+        "imu_protocol": 1,
+        "artificial_map_fault": false,
+        "extra_clear_pass": false,
+        "raw_frames": 350,
+        "accepted_height_frames": 225,
+        "peak_near_false_lethal": 1,
+        "false_cell_ids": 2,
+        "max_false_lifetime_observed_s": 18.117,
+        "imu_tilt_error_rms_deg": 1.9595604962537152,
+        "imu_tilt_error_max_deg": 4.634142453730266,
+        "command_profile": "D:\\tools\\robust_search_20261103_review\\measured_commands.json",
+        "force_n": 1.5,
+        "physics": "native training actuator; not a real-vehicle balance certification",
+        "lidar_lens_source": "D:\\tools\\motion_input_audit_20261103\\recorded_device_lens.json",
+        "lidar_intrinsics": {
+          "fx": 79.94421365384105,
+          "fy": 82.73125450486427,
+          "cx": 79.88151549559977,
+          "cy": 26.92245292638637,
+          "k1": -0.3021684212318175,
+          "k2": 0.095768088085297,
+          "k3": -0.014227649803305173,
+          "p1": 0.00034988626661834566,
+          "p2": -0.0005644778991083628
+        },
+        "lidar_exposure_to_sof_sensitivity_ms": 80.0,
+        "latency_measured_on_fpga": false,
+        "edge_filter_threshold_mm": 50,
+        "hal_ema_support_decode": "board mean/MAD in mm",
+        "imu_site": "wheel reference point in CAD body; physical BMI lever arm unmeasured",
+        "raw_noise_assumptions": {
+          "accel_std_lsb": 65,
+          "gyro_std_lsb": 2,
+          "depth_std_mm": 12
+        },
+        "source_geometry": "current field2 draft with triangular supports; not a new surveyed ground truth"
+      },
+      "task_end": null,
+      "collision": 0,
+      "physical_failure": false,
+      "near_false_cell_observations": 28,
+      "retained_stale_false_cell_observations": 8,
+      "max_consecutive_near_false_observations": 10,
+      "final_command_hazard_events": 0,
+      "path_visibility_hazard_events": 3,
+      "pitch_rms_deg": 6.145568950503199,
+      "pitch_abs_max_deg": 14.509376374750367
+    }
+  ],
+  "physical_deployment": false,
+  "sha_checks": false,
+  "original_sustained_final_guard_stall_reproduced": false,
+  "clearing_change_tested": false,
+  "timing_candidate_accepted": false,
+  "cautions": [
+    "80ms is declared sensitivity, not measured FPGA exposure latency",
+    "Closed-loop paths differ; task time is not clearing efficacy",
+    "First-false-to-first-nonlethal interval is not continuous near-field false lifetime",
+    "Native actuator/policy model is not deployed fixed-point balance execution",
+    "Old six-scene suite has invalid board input assumptions and cannot certify the vehicle fix"
+  ]
+}

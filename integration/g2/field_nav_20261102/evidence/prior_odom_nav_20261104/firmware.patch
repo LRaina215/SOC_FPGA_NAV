@@ -1,0 +1,295 @@
+--- a/fw/app/main.c
++++ b/fw/app/main.c
+@@ -13,6 +13,7 @@
+     con_printf("\r\nnav fw " __DATE__ " " __TIME__ "  RAM %u KB\r\n", SOC_RAM_SIZE / 1024);
+ #endif
+     nav_app_init();
++    if(APP_PRIOR_ODOM_ONLY)con_printf("prior+IMU/encoder mode; live obstacles, lidar correction and reobservation OFF\r\n");
+     uint32_t t_log = hal_time_us(), loops = 0, max_us = 0, t_prev = t_log, n_gen = 0, n_xs = 0, n_xok = 0;
+     for (;;) {
+         nav_app_poll();
+--- a/fw/app/nav_app.c
++++ b/fw/app/nav_app.c
+@@ -44,7 +44,7 @@
+ {
+     nav_task_init(&g_app.nt);
+     host_link_guard_init(&g_host_link_guard,hal_time_us());
+-    g_app.nt.async_gmap=true;
++    g_app.nt.async_gmap=!APP_PRIOR_ODOM_ONLY;
+     hal_map_flat_ground(); /* 11-01 平地测试：放宽台阶/粗糙度阈值，只把真障碍判为致命 */
+     support_reset(0); support_enable(false); /* 10-31 用户要求：关掉轮下支撑检查与原地转圈，直接按代价图导航 */
+     imu_parser_init(&g_app.imu, (imu_proto_t)APP_IMU_PROTO);
+@@ -54,7 +54,7 @@
+     g_app.t_status = now;
+     g_app.use_imu_yaw = false;
+     pm_default_cfg(&g_app.pm_cfg);
+-    g_app.pm_cfg.enable = true;             /* SLF 匹配定位（硬件打分不可用时 hal_match_eval 返回 false，自动退化为纯航位推算） */
++    g_app.pm_cfg.enable = !APP_PRIOR_ODOM_ONLY;
+ #if defined(APP_BENCH_STATIONARY) && defined(APP_BENCH_NO_MATCH)
+     /* Bench build only: keep the pose exactly fixed so static map captures are not smeared by matching. */
+     g_app.pm_cfg.enable = false;
+@@ -68,7 +68,7 @@
+     g_app.match_zhi = APP_ZHI;
+     g_app.zband_lo = -600;
+     g_app.zband_hi = 1200;
+-    g_app.anchor_gain = 64;
++    g_app.anchor_gain = APP_PRIOR_ODOM_ONLY?0:64;
+     g_app.anchor_hl = 60;                   /* 足迹采样点：轮子着地处前后 ±60 mm */
+     g_app.anchor_hw = 135;                  /* 轮距 270 mm（胎面中心，tools/robot_calib.py） */
+     prior_rx_init(&g_app.prx);
+@@ -149,7 +149,8 @@
+         pose_set(&nt->pose, m->u.pose.x, m->u.pose.y, ANGLE_FROM_CDEG(m->u.pose.yaw_cdeg));
+         frame_jumped(nt);
+         if (g_app.pm_pend || g_app.pm_run) g_app.pm_stale = true;
+-        if (nav_app_have_prior() && (m->u.pose.flags & 1))   /* 搜索范围限制在 ±0.4 m / ±8°：大范围搜索会跳到相似结构上 */
++        if(APP_PRIOR_ODOM_ONLY)g_app.loc.st=g_app.pose_seeded?LOC_DEGRADED:LOC_ODOM;
++        else if (nav_app_have_prior() && (m->u.pose.flags & 1))   /* 搜索范围限制在 ±0.4 m / ±8°：大范围搜索会跳到相似结构上 */
+             loc_start_align(&g_app.loc, nav_clamp32(m->u.pose.range_mm > 0 ? m->u.pose.range_mm : 300, 1, 400),
+                             nav_clamp32(m->u.pose.range_cdeg > 0 ? m->u.pose.range_cdeg : 600, 1, 800) * 182 / 100);
+         else if (nav_app_have_prior())
+@@ -403,6 +404,11 @@
+ 
+ static void apply_pose_policy(nav_task_t *nt, bool prior)
+ {
++    if(APP_PRIOR_ODOM_ONLY) {
++        nt->use_gmap=true;nt->hold=!prior || !g_app.pose_seeded;
++        nt->slow=false;g_app.dead_reckon=prior && g_app.pose_seeded;
++        return;
++    }
+     const bool relative = nt->mode == NAV_MODE_TRACK || nt->mode == NAV_MODE_SEARCH;
+     /* IMU+encoders are the frontend. A declared map pose is sufficient for a
+      * map goal; lidar alignment/quality is an auxiliary observation.
+@@ -415,6 +421,7 @@
+ 
+ static uint8_t reported_loc_state(bool prior)
+ {
++    if(APP_PRIOR_ODOM_ONLY)return prior && g_app.pose_seeded?LOC_DEGRADED:LOC_ODOM;
+     if (!prior) return LOC_ODOM;
+     if (g_app.pose_seeded && (g_app.loc.st == LOC_ALIGN || g_app.loc.st == LOC_LOST))
+         return LOC_DEGRADED; /* known initial frame; background lidar recovery */
+@@ -458,6 +465,7 @@
+ 
+     /* 2. IMU 姿态 */
+     imu_pump();
++#if !APP_PRIOR_ODOM_ONLY
+     /* 原地转向：指令是原地转，或陀螺读数超过 0.5 rad/s（静止平衡时偏航摆动约 ±0.15 rad/s） */
+     bool turn_now = (nt->cmd.vx == 0 && nav_abs32(nt->cmd.wz) >= 300) || nav_abs32(nt->pose.odo_wz) > 500;
+     if (turn_now) { g_app.t_turn_end = now; g_app.was_turn = true; pose_bias_feedback_reset(&nt->pose); }
+@@ -635,6 +643,20 @@
+     /* 丢失（对准重试用尽）：每 3 s 再试一次 */
+     if (prior && lc->st == LOC_LOST && (uint32_t)(now - g_app.t_lost) > 3000000)
+         loc_start_align(lc, lc->cfg.reloc_mm, lc->cfg.reloc_ang);
++#else
++    /* Consume incoming lidar frames with an empty height band. Neither live
++     * elevations nor matching corrections may enter prior+odometry navigation. */
++    uint32_t ft;
++    if(hal_lidar_waiting(&ft)) {
++        int32_t r[3][3],tt[3];pose_lidar_tf(&nt->pose,&nt->pose.cur,r,tt);
++        int32_t cx=(int32_t)((int64_t)nt->pose.cur.x*1311>>16);
++        int32_t cy=(int32_t)((int64_t)nt->pose.cur.y*1311>>16);
++        hal_lidar_stage(HAL_LIDAR_FUSE_ONLY);
++        hal_lidar_commit(r,tt,cx,cy,1,0,ft);
++    }
++    g_app.pm_pend=g_app.pm_run=g_app.fuse_held=g_app.anchor_wait=false;
++    g_app.turning=false;nt->hold_wz=0;
++#endif
+ 
+     /* 4. 主机报文（包括已取消搜索保留的原报文）。 */
+     uint32_t t_host = hal_time_us();
+@@ -649,7 +671,7 @@
+         if ((uint32_t)(now - g_app.t_plan) >= APP_PLAN_PERIOD_US) g_app.t_plan = now;   /* 落后太多：重新对齐 */
+         g_nav_search_interrupted=false;
+         imu_pump();
+-        gmap_set_live(&nt->gm, g_app.n_dr_acc && now - g_app.t_dr_last < APP_LIVE_US);
++        gmap_set_live(&nt->gm, !APP_PRIOR_ODOM_ONLY && g_app.n_dr_acc && now - g_app.t_dr_last < APP_LIVE_US);
+         uint32_t t_step = hal_time_us();
+         nav_task_step(nt, now);
+         tmax(&g_app.tmax_step, t_step);
+@@ -672,7 +694,7 @@
+         proto_status_t s;
+         nav_task_status(nt, &s, now);
+         s.loc_state = reported_loc_state(prior);
+-        s.loc_quality = (uint8_t)(prior ? loc_quality(lc) : 0);
++        s.loc_quality = (uint8_t)(prior && !APP_PRIOR_ODOM_ONLY ? loc_quality(lc) : 0);
+         int n = proto_build_status(host_rx_buf, &s);
+         hal_host_send(host_rx_buf, n);
+     }
+--- a/fw/nav/gmap.c
++++ b/fw/nav/gmap.c
+@@ -66,7 +66,8 @@
+         int o = g->occ[i];
+         uint8_t obs = (o == UNSEEN) ? 255 : (o >= c->occ_thr) ? NP_COST_LETHAL : g->cost[i];
+         uint8_t pr = g->has_prior ? g->prior[i] : 255;
+-        if (GM_PRIOR_LIVE && g->has_prior)
++        if (APP_PRIOR_ODOM_ONLY) g->grid[i] = pr;
++        else if (GM_PRIOR_LIVE && g->has_prior)
+             g->grid[i] = (g->live_on && pr != NP_COST_LETHAL && o != UNSEEN && o >= GM_LIVE_THR && !near_prior_wall(g, i)) ?
+                          NP_COST_LETHAL : pr;
+         else if (GM_PRIOR_ONLY && g->has_prior) g->grid[i] = pr;
+@@ -75,6 +76,7 @@
+         else if (pr == NP_COST_LETHAL && obs != NP_COST_LETHAL && o > c->occ_min + 1) g->grid[i] = pr;
+         else g->grid[i] = obs;
+     }
++    if(APP_PRIOR_ODOM_ONLY)return; /* No synthetic retry obstacles in this mode. */
+     for (int k = 0; k < GM_VBLK; k++) {
+         if (!g->vblk[k].ttl) continue;
+         int r = g->vblk[k].r, bx = g->vblk[k].gx - g->ox, by = g->vblk[k].gy - g->oy;
+@@ -103,6 +105,7 @@
+ 
+ void gmap_block_add(gmap_t *g, const hal_map_info_t *mi, int32_t x, int32_t y, int r, int ttl)
+ {
++    if(APP_PRIOR_ODOM_ONLY)return;
+     int gx, gy;
+     gmap_mm_to_cell(g, mi, x, y, &gx, &gy);
+     int k = 0;
+--- a/fw/nav/gmap.h
++++ b/fw/nav/gmap.h
+@@ -16,6 +16,10 @@
+ 
+ #include "nav_types.h"
+ #include "hal.h"
++
++#ifndef APP_PRIOR_ODOM_ONLY
++#define APP_PRIOR_ODOM_ONLY 0
++#endif
+ 
+ #ifndef GM_N
+ #define GM_N 64
+--- a/fw/nav/local_planner.h
++++ b/fw/nav/local_planner.h
+@@ -16,7 +16,7 @@
+ /* 11-04 user-selected navigation forward-command cap; balance wheel targets
+  * remain independent so their corrective motion is not clipped here. */
+ #ifndef APP_FWD_V
+-#define APP_FWD_V 200
++#define APP_FWD_V 300
+ #endif
+ 
+ #define LP_MAX_CAND 64
+--- a/fw/nav/nav_task.c
++++ b/fw/nav/nav_task.c
+@@ -9,7 +9,7 @@
+ 
+ /* 11-01 用户要求：按遥控实测稳定的速度、转向与前进分开做（不走弧线）：
+  * 前视点方向偏差 > APP_TURN_ENTER 时原地转向，< APP_TURN_EXIT 后以 APP_FWD_V 直行。 */
+-/* 11-04: user selected0.20m/s after the latest falls. APP_FWD_V is shared
++/* 11-04: user restored0.30m/s for prior+IMU/encoder navigation. APP_FWD_V is shared
+  * with the planner. Existing acceleration/deceleration and arrival stay as-is. */
+ #define APP_V_NEAR 150      /* 到点前最低速度（再往下由到达判定停车） */
+ #define APP_ACCEL_STEP 30   /* 每 100 ms 规划周期最多加速 30 mm/s（0.3 m/s²） */
+@@ -65,6 +65,7 @@
+     lp_default_cfg(&nt->lp_cfg);
+     astar_default_cfg(&nt->as_cfg);
+     astar_default_cfg(&nt->as_cfg_g);
++    if(APP_PRIOR_ODOM_ONLY)nt->as_cfg.allow_unknown=nt->as_cfg_g.allow_unknown=false;
+     /* 记忆粗格：整格受限为253，部分受限为252高代价。
+      * 细图LOS与最终210mm足迹仍执行硬约束。 */
+     nt->as_cfg_g.clear_cells = APP_FLAT_GROUND ? 5 : 4;   /* 平地：0.9 m 宽通道里走中线，离两侧都 0.45 m */
+@@ -752,6 +753,27 @@
+     nt->cmd.vx=wanted_v;nt->cmd.vy=0;nt->cmd.wz=wanted_w;
+ }
+ 
++/* Expand the fixed prior into the same5cm coordinates used by the existing
++ * full-footprint checker. No lidar frame, live height or hardware map sequence
++ * is consulted. Outside/unknown prior cells remain impassable. */
++static bool prior_fine_view(nav_task_t *nt)
++{
++    if(!nt->gm.has_prior) {nt->have_map=false;return false;}
++    if(!nt->have_map || nt->stale || nt->prior_view_shift!=nt->gm.n_shift) {
++        nt->mi.cx=nt->gm.ox*GM_DS+N/2;
++        nt->mi.cy=nt->gm.oy*GM_DS+N/2;
++        nt->mi.inv_res=1311;nt->mi.res_mm=50;
++        nt->mi.seq++;if(!nt->mi.seq)nt->mi.seq=1;
++        for(int y=0;y<N;y++)for(int x=0;x<N;x++) {
++            int gx=x/GM_DS,gy=y/GM_DS;
++            uint8_t v=gx<GM_N && gy<GM_N?nt->gm.prior[gy*GM_N+gx]:NP_COST_UNKNOWN;
++            nt->map[y*N+x]=v==NP_COST_UNKNOWN?NP_COST_LETHAL:v;
++        }
++        nt->prior_view_shift=nt->gm.n_shift;nt->have_map=true;
++    }
++    nt->stale=false;return true;
++}
++
+ static void task_step_local(nav_task_t *nt, uint32_t now)
+ {
+     nt->search_work_done=false;
+@@ -759,14 +781,19 @@
+     nt->motion_result = MOTION_ZERO;
+     nt->cmd = (nav_cmd_t){0};
+     /* 刷新代价图 */
++    bool fresh;
++#if APP_PRIOR_ODOM_ONLY
++    fresh=prior_fine_view(nt);
++#else
+     hal_map_info_t mi;
+-    bool fresh = hal_map_info(&mi) && !(nt->stale && mi.seq == nt->stale_seq);
++    fresh = hal_map_info(&mi) && !(nt->stale && mi.seq == nt->stale_seq);
+     if (fresh) nt->stale = false;
+     if (fresh && (!nt->have_map || mi.seq != nt->mi.seq)) {
+         nt->have_map = hal_map_copy(nt->map, &nt->mi) != 0;
+         if (nt->have_map && !nt->async_gmap) gmap_update(&nt->gm, nt->map, &nt->mi, nt->pose.cur.x, nt->pose.cur.y);
+         else if(!nt->have_map) nt->path_valid = false;
+     }
++#endif
+     if(nt->mode==NAV_MODE_SEARCH || nt->mode==NAV_MODE_TRACK) {
+         explore_mark(&nt->exp, &nt->pose.cur);
+         if (nt->use_gmap && nt->gm.has_prior && nt->have_map && !nt->hold) explore_seen_mark(&nt->exp, &nt->ex_cfg, &nt->gm, &nt->mi, &nt->pose.cur);
+@@ -1137,6 +1164,7 @@
+ 
+ void nav_task_map_work(nav_task_t *nt,int rows)
+ {
++    if(APP_PRIOR_ODOM_ONLY)return;
+     if(!nt->async_gmap || !nt->have_map || nt->stale) return;
+     nav_pose_t p=nt->pose.cur;
+     if(!nt->gm.has_prior) local_frame_pose(&nt->terrain_frame,&nt->pose.cur,&p);
+@@ -1174,10 +1202,11 @@
+     s->yaw_cdeg = ANGLE_TO_CDEG(p->yaw);
+     s->goal_x = nt->goal_x; s->goal_y = nt->goal_y;
+     s->vx = nt->cmd.vx; s->wz = nt->cmd.wz;
+-    s->flags = (target_fresh(&nt->tgt, now_us) ? STF_TARGET_VALID : 0) | (nt->have_map ? STF_LIDAR_OK : 0) |
++    s->flags = (target_fresh(&nt->tgt, now_us) ? STF_TARGET_VALID : 0) | (nt->have_map && !APP_PRIOR_ODOM_ONLY ? STF_LIDAR_OK : 0) |
+                (nt->pose.have_odo ? STF_ODOM_OK : 0) | STF_GOAL_VALID_KNOWN |
+                ((nt->mode==NAV_MODE_GOTO || (nt->mode==NAV_MODE_TRACK && nt->track_goal_valid) ||
+                  (nt->mode==NAV_MODE_SEARCH && nt->search_goal_valid)) ? STF_GOAL_VALID : 0);
++    if(APP_PRIOR_ODOM_ONLY)s->flags|=STF_PRIOR_ODOM;
+     s->flags |= STF_CLEAR_KNOWN | (nt->recheck_phase?STF_CLEAR_ACTIVE:0) |
+         (nt->observe_outcome==2?STF_CLEAR_GROUND:0) | (nt->observe_outcome==3?STF_CLEAR_TIMEOUT:0);
+     int32_t left=(int32_t)(nt->recheck_until_us-now_us);
+--- a/fw/nav/nav_task.h
++++ b/fw/nav/nav_task.h
+@@ -70,6 +70,7 @@
+ 
+     uint8_t        map[NP_MAP_N * NP_MAP_N];
+     hal_map_info_t mi;
++    uint32_t prior_view_shift;       /* cached fine view of the static prior */
+     bool           have_map;
+     gmap_t         gm;
+     astar_path_t   path;             /* use_gmap：gmap 栅格坐标；否则局部图窗口坐标 */
+--- a/fw/nav/obstacle_recovery.c
++++ b/fw/nav/obstacle_recovery.c
+@@ -19,6 +19,7 @@
+ 
+ bool obstacle_observe_start(nav_task_t *nt,uint32_t now,int32_t gx,int32_t gy,uint8_t reason)
+ {
++    if(APP_PRIOR_ODOM_ONLY)return false;
+     if(nt->recheck_phase || nt->hold || !nt->have_map || nt->stale ||
+        (nt->mode!=NAV_MODE_GOTO && nt->mode!=NAV_MODE_SEARCH && nt->mode!=NAV_MODE_TRACK) ||
+        (int32_t)(now-nt->observe_cooldown)<0)return false;
+@@ -36,6 +37,7 @@
+ 
+ void obstacle_observe_path(nav_task_t *nt,uint32_t now)
+ {
++    if(APP_PRIOR_ODOM_ONLY)return;
+     if(nt->recheck_phase || nt->hold || !nt->have_map || nt->stale ||
+        (int32_t)(now-nt->observe_cooldown)<0)return;
+     /* Local route-access checks already identify the exact rejected cell. */
+--- a/fw/nav/proto.h
++++ b/fw/nav/proto.h
+@@ -37,6 +37,7 @@
+ };
+ 
+ enum { STF_CLEAR_ACTIVE=0x40, STF_CLEAR_KNOWN=0x80, STF_CLEAR_GROUND=0x100, STF_CLEAR_TIMEOUT=0x200 };
++#define STF_PRIOR_ODOM 0x0400 /* explicit prior+IMU/encoder mode, no live obstacle layer */
+ 
+ /* STATUS.state */
+ enum { ST_IDLE = 0, ST_MOVING = 1, ST_ARRIVED = 2, ST_BLOCKED = 3, ST_TRACKING = 4, ST_SEARCHING = 5, ST_ESTOP = 6 };

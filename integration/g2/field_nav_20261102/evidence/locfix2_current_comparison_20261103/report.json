@@ -1,0 +1,138 @@
+{
+  "created_at": "2026-11-03T22:53:15.844906+08:00",
+  "stage": "comparison_only_no_rollback_or_new_build",
+  "baseline": {
+    "active": "nav_fw_locfix2_yaw3_20261103.bin",
+    "banner": "Nov  3 2026 16:06:10",
+    "installed_at": "2026-11-03 16:08",
+    "actual_recording": "20261103_162012",
+    "source": "F:\\nav_integration_g2_20261023\\K_fw_terrain1\\fw_locfix2_20261103",
+    "map_record": "field_home2.nvmp 9880 B; application READY at16:20:17.722+08:00"
+  },
+  "current": {
+    "active": "nav_fw_goalfix1_yaw3_20261103.bin",
+    "source": "D:\\tools\\goal_select_fix_20261103\\fw",
+    "banner": "Nov  3 2026 22:16:31"
+  },
+  "functional_differences": [
+    {
+      "area": "Search global map policy",
+      "locfix2": "use_gmap initialized true; mapped search uses prior frontier",
+      "introduced": "locfix3 deployed16:26",
+      "current": "app policy forces SEARCH/TRACK use_gmap=false",
+      "consequence": "reobserve1 always falls back to local rays in SEARCH, even with prior; goalfix1 forbids that fallback but still cannot enter global selection"
+    },
+    {
+      "area": "Localization frontend and startup pose",
+      "locfix2": "loc state gates; bounded dead reckoning after a prior successful fix; lidar alignment for initial pose",
+      "introduced": "locfix3 deployed16:26",
+      "current": "explicit pose_seeded state; declared pose treated as reference; correction limited25mm and~1deg; target modes bypass this hold policy"
+    },
+    {
+      "area": "Bridge target preflight",
+      "locfix2": "alignment/lost-state checks apply to target tasks; true mapless target tasks were already permitted",
+      "introduced": "locfix3 deployed16:26",
+      "current": "target tasks return before localization checks",
+      "scope": "do not misstate mapless target permission as entirely newly introduced"
+    },
+    {
+      "area": "Obstacle recovery",
+      "locfix2": "footprint rejects hazard and replans; no bounded active re-observation",
+      "introduced": "reobserve1",
+      "current": "bounded turn/forward viewpoint re-observation, physical-progress checks, static-target revisit; direct ray clearing disabled"
+    },
+    {
+      "area": "Search goal geometry and lifetime",
+      "locfix2": "700mm arrival;12s from selection; no prior-bound validation on local fallback",
+      "introduced": "goalfix1",
+      "current": "150mm arrival;12s without verified progress; prior footprint constraints; seen/heat reset; valid-goal flags",
+      "scope": "these are separate behavioral changes beyond obstacle recovery and must not be silently bundled"
+    },
+    {
+      "area": "Keeper firmware-load safety branch",
+      "locfix2": "already present since15:12 locfix1",
+      "current": "same pending firmware branch can bypass map setup while balance active",
+      "scope": "latent startup defect exposed by boot state/timing, not a new post16:20 rule; blanket rollback does not eliminate it"
+    }
+  ],
+  "baseline_fixes_to_preserve": [
+    "zero navigation command no longer permits gyro bias learning",
+    "fractional gyro yaw integration retained",
+    "bounded local re-alignment on idle tracking loss"
+  ],
+  "source_diff_files": [
+    {
+      "path": "app/main.c",
+      "added_file": false
+    },
+    {
+      "path": "app/nav_app.c",
+      "added_file": false
+    },
+    {
+      "path": "app/nav_app.h",
+      "added_file": false
+    },
+    {
+      "path": "nav/explore.c",
+      "added_file": false
+    },
+    {
+      "path": "nav/explore.h",
+      "added_file": false
+    },
+    {
+      "path": "nav/map_ray_clear.c",
+      "added_file": true
+    },
+    {
+      "path": "nav/map_ray_clear.h",
+      "added_file": true
+    },
+    {
+      "path": "nav/map_revalidate.c",
+      "added_file": true
+    },
+    {
+      "path": "nav/map_revalidate.h",
+      "added_file": true
+    },
+    {
+      "path": "nav/motion_guard.c",
+      "added_file": false
+    },
+    {
+      "path": "nav/nav_task.c",
+      "added_file": false
+    },
+    {
+      "path": "nav/nav_task.h",
+      "added_file": false
+    },
+    {
+      "path": "nav/pose.c",
+      "added_file": false
+    },
+    {
+      "path": "nav/pose.h",
+      "added_file": false
+    },
+    {
+      "path": "nav/proto.h",
+      "added_file": false
+    },
+    {
+      "path": "drv/map_revalidate_fpga.c",
+      "added_file": true
+    }
+  ],
+  "decision": "Use documented16:20 locfix2 behavior as comparison baseline, not blanket14:00 follow1 rollback. Isolate post16:26 policy conflicts from active-obstacle-reobservation changes.",
+  "not_proven": [
+    "Exact raw lidar cells that caused16:21 hazard rejection were not recorded; cannot label every rejected cell false from existing logs alone",
+    "The16:20 recording is the specifically identified four-o-clock run; other unlogged successful runs are not assigned a version by assumption"
+  ],
+  "live_files_modified": false,
+  "active_changed": false,
+  "new_tests": false,
+  "new_firmware_built": false
+}

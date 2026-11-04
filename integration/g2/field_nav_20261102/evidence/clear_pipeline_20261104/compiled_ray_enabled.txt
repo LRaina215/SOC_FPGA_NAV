@@ -1,0 +1,31 @@
+# 2 "D:\\tools\\clear_pipeline_20261104\\fw\\nav\\map_revalidate.c" 2
+
+
+
+
+static rc_state_t state;
+static 
+# 7 "D:\\tools\\clear_pipeline_20261104\\fw\\nav\\map_revalidate.c" 3 4
+      _Bool 
+# 7 "D:\\tools\\clear_pipeline_20261104\\fw\\nav\\map_revalidate.c"
+           rd(void *ctx,int32_t x,int32_t y,rc_cell_t *v){(void)ctx;return hal_clear_read(x,y,v);}
+static uint16_t pixel(void *ctx,int u,int v){(void)ctx;return hal_clear_depth_pixel(u,v);}
+static void ray(void *ctx,int u,int v,int16_t out[3]){lidar_cal_pixel((const lidar_cal_t*)ctx,v*160+u,out);}
+static 
+# 10 "D:\\tools\\clear_pipeline_20261104\\fw\\nav\\map_revalidate.c" 3 4
+      _Bool 
+# 10 "D:\\tools\\clear_pipeline_20261104\\fw\\nav\\map_revalidate.c"
+           drop(void *ctx,const rc_cell_t *v){(void)ctx;return hal_clear_drop(v);}
+void map_revalidate_reset(void){rc_init(&state);}
+void map_revalidate_diagnostics(uint32_t *v){for(int i=0;i<12;i++)v[i]=state.diag[i];}
+void map_revalidate_before_fuse(nav_task_t *nt,const lidar_cal_t *cal,const int32_t r[3][3],const int32_t t[3],uint32_t capture_us){
+ if(!nt->recheck_phase || !nt->have_map || nt->stale || !hal_clear_depth_begin(capture_us))return;
+ rc_lens(&state,cal->lens);
+ rc_cell_t cell;
+ 
+# 17 "D:\\tools\\clear_pipeline_20261104\\fw\\nav\\map_revalidate.c" 3 4
+_Bool 
+# 17 "D:\\tools\\clear_pipeline_20261104\\fw\\nav\\map_revalidate.c"
+     have=hal_clear_read(nt->observe_gx,nt->observe_gy,&cell);
+ rc_observe_cell(&state,have?&cell:0,r,t,capture_us,nt->pose.cur.z,nt->mi.inv_res,pixel,ray,drop,(void*)cal);
+}

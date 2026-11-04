@@ -1,0 +1,122 @@
+--- before/nav/pose.c
++++ after/nav/pose.c
+@@ -39,34 +39,23 @@
+     p->last_odo_us = t_us;
+     if (dt <= 0 || dt > 200000) {           /* 回传中断过久：不积分这一段 */
+         p->cur.t_us = t_us;
++        p->yaw_rem = 0;
+         p->hist_n = p->hist_head = 0;       /* 不能在未知运动的缺口内插出虚假的连续轨迹 */
+         hist_push(p);
+         return;
+     }
+-    /* 零偏：平衡车站着时轮子一直前后蹭、车头也在晃，等不到"轮速为零"。指令为零期间按 POSE_BIAS_WIN_US 窗口平均：
+-     * 窗口平均车速 < 30 mm/s、平均角速度 < 40 mrad/s（不是在转）时，平均角速度当作零偏的一次观测，每窗按 1/4 跟踪，
+-     * 总量限 ±POSE_BIAS_MAX。站立时车头来回摆（实测陀螺 ±50 mrad/s，周期秒级），窗口不是整周期时平均值里残留摆动：
+-     * 原来 2 s 窗、首窗全权重，3D 仿真里一窗就把零偏估成 -31（真值 +5），航向每秒漂 2°，雷达拉不回来。 */
+-    if (p->cmd_still) {
+-        p->zw_sum += wz; p->zv_sum += vx; p->zw_n++;
+-        p->still_us += (uint32_t)dt;
+-        if (p->still_us >= POSE_BIAS_WIN_US) {
+-            int32_t mw = p->zw_sum / (int32_t)p->zw_n, mv = p->zv_sum / (int32_t)p->zw_n;
+-            if (mv > -30 && mv < 30 && mw > -40 && mw < 40) {
+-                if (p->bias_n < 255) p->bias_n++;
+-                p->wz_bias_q8 += (mw * 256 - p->wz_bias_q8) / 4;
+-                p->wz_bias_q8 = nav_clamp32(p->wz_bias_q8, -POSE_BIAS_MAX * 256, POSE_BIAS_MAX * 256);
+-                p->bias_valid = true;
+-            }
+-            p->zw_sum = p->zv_sum = 0; p->zw_n = 0; p->still_us = 0;
+-        }
+-    } else {
+-        p->zw_sum = p->zv_sum = 0; p->zw_n = 0; p->still_us = 0;
+-    }
++    /* Zero navigation command does not establish physical rest: manual
++     * yawing/rocking and differential wheel motion are permitted in IDLE.
++     * The controller already removes startup gyro bias. Without an independent
++     * rest observation, a ten-second mean of real rotation is not another bias
++     * measurement. Retain only map-referenced pose_bias_feedback() updates. */
++    p->zw_sum = p->zv_sum = 0; p->zw_n = 0; p->still_us = 0;
+     int32_t wzc = (int32_t)wz - (p->wz_bias_q8 + (p->wz_bias_q8 >= 0 ? 128 : -128)) / 256;
+     /* 航向：没有 IMU 航向时用 wz 积分（mrad/s -> angle：65536 / (2pi*1000)） */
+     if (!p->imu_att_valid || (uint32_t)(t_us - p->imu_t_us) > 100000) {
+-        int64_t dth = (int64_t)wzc * dt * 65536 / 6283185 / 1000;
++        int64_t numerator = (int64_t)wzc * dt * 65536 + p->yaw_rem;
++        int64_t dth = numerator / 6283185000LL;
++        p->yaw_rem = numerator % 6283185000LL;
+         p->cur.yaw = (angle_t)(p->cur.yaw + (int32_t)dth);
+     }
+     /* 机身速度按俯仰分解：水平分量 vx·cos(pitch)，高度 -vx·sin(pitch)（pitch>0 为低头），um 精度累加 */
+@@ -89,7 +78,7 @@
+ void pose_imu_att(pose_est_t *p, angle_t yaw, angle_t pitch, angle_t roll, bool yaw_valid, uint32_t t_us)
+ {
+     if (p->have_att && (int32_t)(t_us - p->imu_t_us) <= 0) return;
+-    if (yaw_valid) p->cur.yaw = yaw;
++    if (yaw_valid) { p->cur.yaw = yaw; p->yaw_rem = 0; }
+     /* 俯仰/横滚 α-β 滤波（α=1/4，β=1/32，按 50 Hz 采样）：姿态噪声会让整帧点云整体倾斜，远处地面高度逐帧跳动，
+      * 在高程图里形成假台阶；但一阶低通有滞后——原地转向时车体姿态以 10–20°/s 变化，0.16 s 的滞后就是 2–3°，
+      * 4 m 外的地面高差 15–20 cm（闭环仿真中理想传感器下误报率也到 12%）。α-β 同时估计角速度，匀速变化时无稳态滞后。 */
+@@ -252,7 +241,7 @@
+         if ((uint32_t)future > POSE_PREDICT_US) return POSE_FUTURE;
+         *out = p->cur;
+         int32_t wz = (int32_t)p->odo_wz - (p->wz_bias_q8 + (p->wz_bias_q8 >= 0 ? 128 : -128)) / 256;
+-        int32_t da = p->imu_att_valid ? 0 : (int32_t)((int64_t)wz * future * 65536 / 6283185000LL);
++        int32_t da = p->imu_att_valid ? 0 : (int32_t)(((int64_t)wz * future * 65536 + p->yaw_rem) / 6283185000LL);
+         angle_t mid = (angle_t)(out->yaw + da / 2);
+         int32_t vh = p->decomp_pitch ? p->odo_vx * fx_cos(out->pitch) / Q14 : p->odo_vx;
+         out->x += (int32_t)(((int64_t)vh * fx_cos(mid) - (int64_t)p->odo_vy * fx_sin(mid)) * future / Q14 / 1000000);
+--- before/nav/pose.h
++++ after/nav/pose.h
+@@ -26,7 +26,8 @@
+     nav_pose_t cur;
+     /* 亚毫米累计，避免积分截断误差 */
+     int64_t    x_um, y_um, z_um;
+-    /* 陀螺零偏：静止（轮速为零）持续 ZUPT_US 后，用角速度读数估计零偏并从此扣除 */
++    int64_t    yaw_rem;        /* 陀螺积分除法余数，避免每个高频样本都丢失小角度 */
++    /* 控制核已扣启动零偏；这里仅按可靠地图匹配估残余，零导航指令不代表静止 */
+     int32_t    wz_bias_q8;      /* mrad/s × 256 */
+     uint32_t   still_us;       /* 当前零偏窗口已累计的时间 */
+     bool       bias_valid;
+@@ -55,7 +56,7 @@
+     /* 雷达安装外参：机身系 */
+     fx_mat3_t  r_bs;
+     int32_t    t_bs[3];
+-    /* 零偏估计窗口（指令为零期间的角速度、车速累计）与雷达航向修正累计 */
++    /* 旧零指令窗口字段保留；当前不从它估零偏。另存可靠雷达航向修正累计。 */
+     int32_t    zw_sum, zv_sum;
+     uint32_t   zw_n;
+     int32_t    fb_sum;
+--- before/app/nav_app.c
++++ after/app/nav_app.c
+@@ -370,6 +370,21 @@
+     return true;
+ }
+ 
++static bool recover_idle_match(nav_task_t *nt, loc_t *lc, uint32_t now)
++{
++    if (nt->mode == NAV_MODE_IDLE && nt->cmd.vx == 0 && nt->cmd.wz == 0) {
++        /* Manual view changes need local reacquisition, not an indefinite
++         * degraded state in the tiny tracking window. No motion is issued. */
++        loc_start_align(lc, lc->cfg.reloc_mm, lc->cfg.reloc_ang);
++        g_app.have_fix = g_app.dead_reckon = false;
++        g_app.dr_agree = g_app.dr_strong = 0;
++        return true;
++    }
++    lc->st = LOC_DEGRADED;
++    lc->degr_since = now;
++    return false;
++}
++
+ /* 转向后头几帧放宽跟踪角度窗到 ±2.8°（2 × 1.4°），接住陀螺在转向中积累的航向误差 */
+ static const pm_cfg_t *track_cfg(const pm_cfg_t *pc)
+ {
+@@ -540,8 +555,9 @@
+             bool ok = pose_match_solve(track_cfg(pc), g_app.pm_work.res, g_app.pm_k, &g_app.pm);
+             bool lost = prior && loc_track(lc, &g_app.pm, g_app.pm_work.res, ok, now);
+ #if APP_DR_PRIMARY
+-            /* 位置以编码器 + 陀螺推算为准，不因为匹配差就自动大范围重新对准（那会跳到相似结构上）；只降为退化 */
+-            if (lost) { lc->st = LOC_DEGRADED; lc->degr_since = now; }
++            /* During an active task retain conservative tracking. In IDLE,
++             * restore the bounded recovery path instead of sticking at q=0. */
++            if (lost && recover_idle_match(nt, lc, now)) ok = false;
+             if (prior) ok = dr_gate(ok, g_app.pm_work.res);
+ #else
+             if (lost) {

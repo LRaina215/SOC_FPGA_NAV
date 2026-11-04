@@ -1,0 +1,16 @@
+    hal_clear_read(int32_t gx,int32_t gy,rc_cell_t*);
+
+# 9 "D:\\tools\\goto_transition_20261104\\fw\\nav\\map_revalidate.h" 3 4
+_Bool 
+# 9 "D:\\tools\\goto_transition_20261104\\fw\\nav\\map_revalidate.h"
+    hal_clear_drop(const rc_cell_t*);
+void map_revalidate_reset(void);
+void map_revalidate_before_fuse(nav_task_t*,const lidar_cal_t*,const int32_t r[3][3],const int32_t t[3],uint32_t capture_us);
+void map_revalidate_diagnostics(uint32_t*);
+# 2 "D:\\tools\\goto_transition_20261104\\fw\\nav\\map_revalidate.c" 2
+# 19 "D:\\tools\\goto_transition_20261104\\fw\\nav\\map_revalidate.c"
+void map_revalidate_reset(void){}
+void map_revalidate_diagnostics(uint32_t *v){for(int i=0;i<12;i++)v[i]=0;}
+void map_revalidate_before_fuse(nav_task_t *nt,const lidar_cal_t *cal,const int32_t r[3][3],const int32_t t[3],uint32_t cap){
+ (void)nt;(void)cal;(void)r;(void)t;(void)cap;
+}

@@ -1,0 +1,380 @@
+--- PNR94_source/g2_top.v
++++ clear_candidate/g2_top.v
+@@ -11,7 +11,7 @@
+ //       地址 0xE000–0xFFFF 转到软核调试口（装载程序、读控制台）。
+ // 软核：nav_soc（PicoRV32，片上 RAM 128 KB，上电运行 fw/build/rv/nav 的镜像），经 nav_bus_arb m0 访问导航子系统。
+ // IP 生成方法见 docs/3_guide/board_bringup.md。
+-`define NAV_SOC_RAM_KB 128
++`define NAV_SOC_RAM_KB 136
+ `define G2_COVERAGE 1          // 构建脚本生成：`define NAV_SOC_RAM_KB（片上 RAM 大小）
+ module g2_top #(parameter integer SLF_LOG2N = 7) (
+     input  wire       clk50,          // W19
+@@ -95,7 +95,7 @@
+     wire [15:0] c_addr;
+     wire [31:0] c_wdata, c_rdata;
+     wire [3:0] soc_led;
+-    nav_soc #(.RAM_KB(`NAV_SOC_RAM_KB), .INIT_B0("ram_b0.hex"), .INIT_B1("ram_b1.hex"), .INIT_B2("ram_b2.hex"), .INIT_B3("ram_b3.hex")) u_soc (
++    nav_soc #(.RAM_KB(`NAV_SOC_RAM_KB), .INIT_B0("ram_b0.hex"), .INIT_B1("ram_b1.hex"), .INIT_B2("ram_b2.hex"), .INIT_B3("ram_b3.hex"),.INIT_T0("ram_t0.hex"),.INIT_T1("ram_t1.hex"),.INIT_T2("ram_t2.hex"),.INIT_T3("ram_t3.hex")) u_soc (
+         .clk(clk), .rst(rst),
+         .m_req(c_req), .m_we(c_we), .m_addr(c_addr), .m_wdata(c_wdata), .m_ack(c_ack), .m_rdata(c_rdata),
+         .d_req(u_req & u_dbg), .d_we(u_we), .d_addr(u_addr), .d_wdata(u_wdata), .d_ack(d_ack), .d_rdata(d_rdata),
+--- PNR94_source/nav/rtl/common/nav_ram_sp.v
++++ clear_candidate/nav/rtl/common/nav_ram_sp.v
+@@ -1,16 +1,39 @@
+-// Full CPU SRAM, unchanged single-port normal-write / read-hold semantics.
++// Single-port read-hold semantics. Keep the128KiB base geometry; pack the
++// optional tail separately so a136KiB CPU does not round to192KiB of RAM.
+ module nav_ram_sp #(
+- parameter integer DW=8,AW=10,DEPTH=(1<<AW),parameter INIT_FILE=""
++ parameter integer DW=8,AW=10,DEPTH=(1<<AW),parameter INIT_FILE="",TAIL_INIT_FILE=""
+ )(input wire clk,we,input wire [AW-1:0] addr,input wire [DW-1:0] wdata,
+- output reg [DW-1:0] rdata);
+- (* syn_ramstyle="block_ram" *)reg [DW-1:0] mem[0:DEPTH-1];integer i;
+- initial begin
+-   if(INIT_FILE!="")$readmemh(INIT_FILE,mem);
+-   else for(i=0;i<DEPTH;i=i+1)mem[i]=0;
+-   rdata=0;
+- end
+- always @(posedge clk)begin
+-   if(we)mem[addr]<=wdata;
+-   else rdata<=mem[addr];
+- end
++ output wire [DW-1:0] rdata);
++ generate if(DW==8 && DEPTH>32768)begin:g_expand
++   localparam integer TAIL=DEPTH-32768,TAW=$clog2(TAIL);
++   (* syn_ramstyle="block_ram" *)reg [7:0] base_mem[0:32767];
++   (* syn_ramstyle="block_ram" *)reg [7:0] tail_mem[0:TAIL-1];
++   reg [7:0] base_q=0,tail_q=0;reg selected=0;integer i;
++   initial begin
++     if(INIT_FILE!="")$readmemh(INIT_FILE,base_mem);
++     else for(i=0;i<32768;i=i+1)base_mem[i]=0;
++     if(TAIL_INIT_FILE!="")$readmemh(TAIL_INIT_FILE,tail_mem);
++     else for(i=0;i<TAIL;i=i+1)tail_mem[i]=0;
++   end
++   always @(posedge clk)begin
++     if(we)begin
++       if(!addr[15])base_mem[addr[14:0]]<=wdata;
++       else if(addr<DEPTH)tail_mem[addr[TAW-1:0]]<=wdata;
++     end else begin
++       selected<=addr[15];
++       if(!addr[15])base_q<=base_mem[addr[14:0]];
++       else if(addr<DEPTH)tail_q<=tail_mem[addr[TAW-1:0]];
++     end
++   end
++   assign rdata=selected?tail_q:base_q;
++ end else begin:g_original
++   (* syn_ramstyle="block_ram" *)reg [DW-1:0] mem[0:DEPTH-1];reg [DW-1:0] q;integer i;
++   initial begin
++     if(INIT_FILE!="")$readmemh(INIT_FILE,mem);
++     else for(i=0;i<DEPTH;i=i+1)mem[i]=0;
++     q=0;
++   end
++   always @(posedge clk)begin if(we)mem[addr]<=wdata;else q<=mem[addr];end
++   assign rdata=q;
++ end endgenerate
+ endmodule
+--- PNR94_source/nav/rtl/lidar/pc_edge_filter.v
++++ clear_candidate/nav/rtl/lidar/pc_edge_filter.v
+@@ -39,8 +39,13 @@
+     function far;                       // |a - b| > t
+         input [15:0] a, b;
+         input [16:0] t;
++        reg [16:0] ab, ba;
+         begin
+-            far = ((a > b) ? ({1'b0, a} - {1'b0, b}) : ({1'b0, b} - {1'b0, a})) > t;
++            // A negative 16-bit depth difference has bit16 set. Test both
++            // directions directly, removing the compare/absolute-value mux.
++            ab = {1'b0, a} - {1'b0, b};
++            ba = {1'b0, b} - {1'b0, a};
++            far = (!ab[16] && ab > t) || (!ba[16] && ba > t);
+         end
+     endfunction
+ 
+--- PNR94_source/nav/rtl/lidar/xt_frame_rx.v
++++ clear_candidate/nav/rtl/lidar/xt_frame_rx.v
+@@ -9,6 +9,7 @@
+ // 输出：逐像素 (u, v, 原始深度)，深度 0 表示无效（原始值 0、>= RAW_INV、幅值 < AMP_MIN 或 >= RAW_INV）。
+ //       整帧校验通过后才开始输出；帧尾 FrameInfo（206 字节，V3）中的内参、深度单位、ROI、合并方式随帧锁存。
+ module xt_frame_rx #(
++    parameter integer CPU_TAP = 0,
+     parameter integer MAX_W      = 160,
+     parameter integer MAX_H      = 60,
+     parameter integer CLK_HZ     = 100000000,
+@@ -32,6 +33,12 @@
+     output wire        frame_accept,   // combinational: accepted raw-pass start at this edge
+     input  wire        pose_commit,    // 单拍
+     input  wire        cfg_retain,     // 本遍结束保留帧，等待修正位姿后重读
++
++    input wire tap_req,
++    input wire [13:0] tap_index,
++    output reg tap_ack=0,
++    output reg tap_valid=0,
++    output reg [15:0] tap_depth=0,
+ 
+     // UDP 负载输入（不反压）
+     input  wire        s_valid,
+@@ -444,10 +451,21 @@
+         end
+     end
+ 
++    reg tap_pending=0,tap_good=0;
++    wire tap_go = CPU_TAP && tap_req && rd_wait && !frame_accept && tap_index<rnpix;
++    always @(posedge clk) begin
++        tap_ack<=0;
++        if(rst)begin tap_pending<=0;tap_good<=0;tap_valid<=0;end
++        else begin
++            tap_pending<=CPU_TAP && tap_req;tap_good<=tap_go;
++            if(tap_pending)begin tap_ack<=1;tap_valid<=tap_good;tap_depth<=tap_good?fb_q:0;end
++        end
++    end
++    wire [AW-1:0] tap_address=(rb?NPIX[AW-1:0]:{AW{1'b0}})+tap_index;
+     wire [AW-1:0] rd_addr = (rb ? NPIX[AW-1:0] : {AW{1'b0}}) + rp;
+     nav_ram_banked #(.DW(16), .DEPTH(2 * NPIX)) u_fb (
+         .clk(clk), .we(fb_we), .waddr(fb_wa), .wdata(fb_wd),
+-        .re(rd_issue), .raddr(rd_addr), .rdata(fb_q)
++        .re(rd_issue|tap_go), .raddr(tap_go?tap_address:rd_addr), .rdata(fb_q)
+     );
+ 
+     wire [33:0] ob_q;
+--- PNR94_source/nav/rtl/map/elev_map.v
++++ clear_candidate/nav/rtl/map/elev_map.v
+@@ -12,6 +12,7 @@
+ // 扫描口（sweep_*）供可通行性分析在更新空闲时读写（过期清除）；swp_sel=1 时更新输入被阻塞。
+ // clear 脉冲：逐槽写 0（N*N 拍），期间阻塞输入。复位后自动清一次。
+ module elev_map #(
++    parameter integer CPU_INVALIDATE = 0,
+     parameter integer LOG2N = 7,
+     parameter integer TAGB  = 4
+ ) (
+@@ -42,18 +43,24 @@
+     input  wire [52:0] swp_wdata,
+ 
+     // 软核读口：读口空闲（无扫描、本拍无点更新、非清除）时服务；req 保持到 ack，ack 拍 swp_rdata 即数据
++    input wire inv_req,
++    input wire [2*LOG2N-1:0] inv_addr,
++    input wire [19:0] inv_expected,
++    output reg inv_ack=0,
++    output reg inv_ok=0,
+     input  wire        cpu_req,
+     input  wire [2*LOG2N-1:0] cpu_raddr,
+     output reg         cpu_ack
+ );
+     localparam integer AW = 2 * LOG2N;
++    reg [1:0] inv_state=0;
+ 
+     reg          clr_act;
+     reg [AW-1:0] clr_a;
+ 
+     // S0：发读
+     wire acc = s_valid & s_ready;
+-    assign s_ready = ~clr_act & ~swp_sel;
++    assign s_ready = ~clr_act & ~swp_sel & ~(CPU_INVALIDATE && (inv_req || inv_state!=0));
+ 
+     // S1：RAM 数据返回并寄存；S2：合并并写回
+     reg          v1, upd1, eof1;
+@@ -104,22 +111,41 @@
+                                     : {1'b0, fc, tag2, cnt_inc, d_new, a_new};
+     wire [52:0] nw = cfg_avg ? nw_avg : nw_ext;
+ 
++    reg           cpu_pend;
++    wire          cpu_go    = cpu_req & ~cpu_pend & ~cpu_ack & ~swp_sel & ~acc & ~clr_act & ~(CPU_INVALIDATE && (inv_req || inv_state!=0));
++    reg [AW-1:0] inv_slot;
++    reg [19:0] inv_version;
++    reg [52:0] inv_word;
++    reg inv_match;
++    wire inv_start=CPU_INVALIDATE && inv_req && !inv_ack && inv_state==0 && !clr_act && !swp_sel &&
++                   !v1 && !v2 && !fw1_v && !cpu_req && !cpu_pend && !cpu_ack;
++    wire inv_write=inv_state==2 && inv_match;
++    always @(posedge clk)begin
++        inv_ack<=0;inv_ok<=0;
++        if(rst)inv_state<=0;
++        else case(inv_state)
++        0:if(inv_start)begin inv_slot<=inv_addr;inv_version<=inv_expected;inv_state<=1;end
++        1:begin
++            inv_match<=q[51:32]==inv_version && q[35:32]!=0;
++            inv_word<={1'b1,q[51:36],4'd0,q[31:0]};inv_state<=2;
++        end
++        2:begin inv_ack<=1;inv_ok<=inv_match && !clr_act && !swp_sel;inv_state<=0;end
++        endcase
++    end
+     wire          we_u = v2 & upd2;
+     // fw1 即 S3 写口寄存器
+-    wire          ram_we    = clr_act ? 1'b1 : swp_sel ? swp_we : fw1_v;
+-    wire [AW-1:0] ram_waddr = clr_act ? clr_a : swp_sel ? swp_waddr : fw1_a;
+-    wire [52:0]   ram_wdata = clr_act ? 53'd0 : swp_sel ? swp_wdata : fw1_d;
+-    reg           cpu_pend;
+-    wire          cpu_go    = cpu_req & ~cpu_pend & ~cpu_ack & ~swp_sel & ~acc & ~clr_act;
+-    wire          ram_re    = swp_sel ? swp_re : (acc | cpu_go);
+-    wire [AW-1:0] ram_raddr = swp_sel ? swp_raddr : acc ? s_addr : cpu_raddr;
++    wire          ram_we    = clr_act ? 1'b1 : swp_sel ? swp_we : inv_write ? 1'b1 : fw1_v;
++    wire [AW-1:0] ram_waddr = clr_act ? clr_a : swp_sel ? swp_waddr : inv_write ? inv_slot : fw1_a;
++    wire [52:0]   ram_wdata = clr_act ? 53'd0 : swp_sel ? swp_wdata : inv_write ? inv_word : fw1_d;
++    wire          ram_re    = swp_sel ? swp_re : (inv_start | acc | cpu_go);
++    wire [AW-1:0] ram_raddr = swp_sel ? swp_raddr : inv_start?inv_addr:acc ? s_addr : cpu_raddr;
+ 
+     nav_ram_sdp #(.DW(53), .AW(AW)) u_ram (
+         .clk(clk), .we(ram_we), .waddr(ram_waddr), .wdata(ram_wdata),
+         .re(ram_re), .raddr(ram_raddr), .rdata(q)
+     );
+     assign swp_rdata = q;
+-    assign busy = clr_act | v1 | v2 | fw1_v;
++    assign busy = clr_act | v1 | v2 | fw1_v | (CPU_INVALIDATE && (inv_req || inv_state!=0));
+ 
+     always @(posedge clk) begin
+         cpu_ack <= 1'b0;
+--- PNR94_source/nav/rtl/map/map_subsys.v
++++ clear_candidate/nav/rtl/map/map_subsys.v
+@@ -5,6 +5,7 @@
+ //   A 口（轨迹评估，组合地址，下一拍出数，始终优先）
+ //   B 口（软核总线，req 保持到 ack；A 口空闲时服务）
+ module map_subsys #(
++    parameter integer CPU_INVALIDATE = 0,
+     parameter integer LOG2N = 7,
+     parameter integer TAGB  = 4
+ ) (
+@@ -58,6 +59,10 @@
+     input  wire [2*LOG2N-1:0] b_addr,
+     output reg         b_ack,
+     output reg  [7:0]  b_q,
++    input wire inv_req,
++    input wire [2*LOG2N-1:0] inv_addr,
++    input wire [19:0] inv_expected,
++    output wire inv_ack,inv_ok,
+     // 高程图读口（软核）：req 保持到 ack
+     input  wire        e_req,
+     input  wire [2*LOG2N-1:0] e_addr,
+@@ -89,13 +94,14 @@
+     reg         started;
+     wire        eof_acc = s_valid & s_ready & s_eof & cfg_enable;
+ 
+-    elev_map #(.LOG2N(LOG2N), .TAGB(TAGB)) u_em (
++    elev_map #(.CPU_INVALIDATE(CPU_INVALIDATE),.LOG2N(LOG2N), .TAGB(TAGB)) u_em (
+         .clk(clk), .rst(rst), .clear(cmd_clear), .cfg_avg(cfg_avg), .cfg_avg_shift(cfg_avg_shift),
+         .s_valid(s_valid & cfg_enable & ~sweep_pend), .s_ready(em_s_ready),
+         .s_upd(s_upd), .s_addr(s_addr), .s_tag(s_tag), .s_z(s_z), .s_eof(s_eof),
+         .fc(frame_cnt), .frame_done(frame_done), .busy(em_busy),
+         .swp_sel(swp_busy), .swp_re(em_re), .swp_raddr(em_raddr), .swp_rdata(em_q),
+         .swp_we(em_we), .swp_waddr(em_waddr), .swp_wdata(em_wdata),
++        .inv_req(inv_req),.inv_addr(inv_addr),.inv_expected(inv_expected),.inv_ack(inv_ack),.inv_ok(inv_ok),
+         .cpu_req(e_req), .cpu_raddr(e_addr), .cpu_ack(e_ack)
+     );
+     assign e_q = em_q;
+--- PNR94_source/nav/rtl/soc/nav_soc.v
++++ clear_candidate/nav/rtl/soc/nav_soc.v
+@@ -17,7 +17,8 @@
+     parameter INIT_B0 = "",
+     parameter INIT_B1 = "",
+     parameter INIT_B2 = "",
+-    parameter INIT_B3 = ""
++    parameter INIT_B3 = "",
++    parameter INIT_T0="",INIT_T1="",INIT_T2="",INIT_T3=""
+ ) (
+     input  wire        clk,
+     input  wire        rst,
+@@ -89,7 +90,8 @@
+             wire we = hold ? dbg_ram_we : (req && sel_ram && mem_wstrb[b]);
+             wire [7:0] wd = hold ? dbg_ram_wd[8*b +: 8] : mem_wdata[8*b +: 8];
+             nav_ram_sp #(.DW(8), .AW(AW), .DEPTH(WORDS),
+-                         .INIT_FILE(b == 0 ? INIT_B0 : b == 1 ? INIT_B1 : b == 2 ? INIT_B2 : INIT_B3)) u_ram (
++                         .INIT_FILE(b == 0 ? INIT_B0 : b == 1 ? INIT_B1 : b == 2 ? INIT_B2 : INIT_B3),
++                         .TAIL_INIT_FILE(b == 0 ? INIT_T0 : b == 1 ? INIT_T1 : b == 2 ? INIT_T2 : INIT_T3)) u_ram (
+                 .clk(clk), .we(we), .addr(ram_a), .wdata(wd), .rdata(ram_q[8*b +: 8])
+             );
+         end
+--- PNR94_source/nav/rtl/top/nav_subsystem.v
++++ clear_candidate/nav/rtl/top/nav_subsystem.v
+@@ -211,7 +211,13 @@
+     wire        frm_iok;
+     wire [31:0] frm_ts, xs_frames, xs_bad, xs_drop, xs_skip;
+     wire [287:0] inf_lens;
+-    xt_frame_rx #(.CLK_HZ(CLK_HZ)) u_xt (
++    reg rv_tap_req=0,rv_inv_req=0;
++    reg [13:0] rv_tap_index=0,rv_inv_addr=0;
++    reg [19:0] rv_inv_expected=0;
++    wire rv_tap_ack,rv_tap_valid,rv_inv_ack,rv_inv_ok;
++    wire [15:0] rv_tap_depth;
++    reg [31:0] rv_last_result=0;
++    xt_frame_rx #(.CPU_TAP(1),.CLK_HZ(CLK_HZ)) u_xt (
+         .clk(clk), .rst(rst), .time_us(time_us),
+         .cfg_enable(r_LIDAR_CTRL[0]), .cfg_hdr_le(r_LIDAR_CTRL[1]), .cfg_pix_le(r_LIDAR_CTRL[2]),
+         .cfg_subhdr(r_LIDAR_SUBHDR[7:0]), .cfg_amp_min(r_LIDAR_VALID_CFG[15:0]),
+@@ -220,6 +226,7 @@
+         .cfg_retain(r_LIDAR_CTRL[3] && r_LIDAR_CTRL[5] && !r_LIDAR_CTRL[6]),
+         .s_valid(lu_valid), .s_data(lu_data), .s_last(lu_last), .s_err(lu_err),
+         .m_valid(x_valid), .m_ready(x_ready), .m_u(x_u), .m_v(x_v), .m_depth(x_depth), .m_sof(x_sof), .m_eof(x_eof),
++        .tap_req(rv_tap_req),.tap_index(rv_tap_index),.tap_ack(rv_tap_ack),.tap_valid(rv_tap_valid),.tap_depth(rv_tap_depth),
+         .frm_sn(frm_sn), .frm_w(frm_w), .frm_h(frm_h), .frm_ts(frm_ts), .frm_devstate(frm_ds), .frm_proto(frm_pv),
+         .frm_iok(frm_iok), .frm_unit(frm_unit), .frm_bin(frm_bin), .frm_roix(frm_roix), .frm_roiy(frm_roiy),
+         .pose_waiting(pose_wait), .frame_start(frm_start), .frame_ready(frm_ready),
+@@ -364,7 +371,7 @@
+     reg  [52:0] el_word;
+     wire        el_ack;
+     wire [52:0] el_q;
+-    map_subsys u_map (
++    map_subsys #(.CPU_INVALIDATE(1)) u_map (
+         .clk(clk), .rst(rst), .cfg_enable(r_MAP_CTRL[0]), .cfg_auto_sweep(r_MAP_CTRL[2]),
+         .cmd_sweep(map_sweep_predecoded_q), .cmd_clear(map_clear_predecoded_q),
+         .cfg_cx(r_MAP_CENTER_X), .cfg_cy(r_MAP_CENTER_Y),
+@@ -380,6 +387,7 @@
+         .s_eof(pf_eof), .s_cx(pf_cx), .s_cy(pf_cy),
+         .a_re(cm_a_re), .a_addr(cm_a_addr), .a_q(cm_a_q),
+         .b_req(cm_b_req), .b_addr(cm_b_addr), .b_ack(cm_b_ack), .b_q(cm_b_q),
++        .inv_req(rv_inv_req),.inv_addr(rv_inv_addr),.inv_expected(rv_inv_expected),.inv_ack(rv_inv_ack),.inv_ok(rv_inv_ok),
+         .e_req(el_req & !el_got), .e_addr(r_MAP_ELEV_ADDR[13:0]), .e_ack(el_ack), .e_q(el_q),
+         .busy(map_busy), .front(map_front), .seq(map_seq), .lat_cx(map_lcx), .lat_cy(map_lcy),
+         .frame_cnt(map_fc), .map_ready(map_ready)
+@@ -562,7 +570,7 @@
+ 
+     // ================================================================ 总线状态机
+     localparam [3:0] B_IDLE = 4'd0, B_RF = 4'd1, B_CM = 4'd2, B_TRR = 4'd3, B_MBX = 4'd4, B_END = 4'd5, B_TRR2 = 4'd6,
+-                     B_MRR = 4'd7, B_MRR2 = 4'd8, B_LRR = 4'd9, B_LRR2 = 4'd10;
++                     B_MRR = 4'd7, B_MRR2 = 4'd8, B_LRR = 4'd9, B_LRR2 = 4'd10,B_RV_DEPTH=4'd11,B_RV_INV=4'd12;
+     reg [3:0] bs;
+     // Demand read at acceptance E0; original B_RF consumes/ACKs at E1.
+     // TX_DATA writes originate from the separate B_RF phase, never E0.
+@@ -589,9 +597,9 @@
+         match_clear_predecoded_q <= 1'b0; pose_commit_predecoded_q <= 1'b0;
+         map_sweep_predecoded_q <= 1'b0; map_clear_predecoded_q <= 1'b0;
+         bus_ack <= 1'b0; rf_wr <= 1'b0; rf_rd <= 1'b0; tr_res_re <= 1'b0; tr_cand_we <= 1'b0; mb_rd <= 1'b0;
+-        mt_res_re <= 1'b0; mt_cand_we <= 1'b0; lr_tx_we <= 1'b0;
++        mt_res_re <= 1'b0; mt_cand_we <= 1'b0; lr_tx_we <= 1'b0;rv_tap_req<=0;
+         if (rst) begin
+-            bs <= B_IDLE; cm_b_req <= 1'b0;
++            bs <= B_IDLE; cm_b_req <= 1'b0;rv_inv_req<=0;rv_last_result<=0;
+         end else begin
+             case (bs)
+             B_IDLE: if (bus_req) begin
+@@ -780,7 +788,21 @@
+                 default: ;
+                 endcase
+ 
+-                if (in_cm) begin
++                if(bus_addr[15:5]==11'h690)begin // D200..D21F: ray revalidation window
++                    bus_rdata<=0;bus_ack<=1;bs<=B_END;
++                    case(bus_addr[4:2])
++                    0:bus_rdata<=32'h52435631;
++                    1:if(bus_we)rv_tap_index<=bus_wdata[13:0];
++                    2:if(!bus_we)begin rv_tap_req<=1;bus_ack<=0;bs<=B_RV_DEPTH;end
++                    3:bus_rdata<=frm_ts;
++                    4:if(bus_we)rv_inv_expected<=bus_wdata[19:0];
++                    5:if(bus_we)rv_inv_addr<=bus_wdata[13:0];
++                    6:if(bus_we && bus_wdata[0])begin rv_inv_req<=1;bus_ack<=0;bs<=B_RV_INV;end else bus_rdata<=rv_last_result;
++                    // Retained-frame units and pixel layout; never newest arriving metadata.
++                    7:bus_rdata<={1'b1,14'd0,(frm_w==16'd160 && frm_h==16'd60 &&
++                        pp_roix==0 && pp_roiy==0 && pp_bin==0),pp_dmul};
++                    endcase
++                end else if (in_cm) begin
+                     if (bus_we) begin bus_ack <= 1'b1; bus_rdata <= 32'd0; bs <= B_END; end
+                     else begin
+                         cm_i <= 0; cm_b_req <= 1'b1;
+@@ -838,6 +860,10 @@
+             B_MBX: if (mb_rd_ack) begin bus_rdata <= mb_word; bus_ack <= 1'b1; bs <= B_END; end
+             B_LRR: bs <= B_LRR2;
+             B_LRR2: begin bus_rdata <= lr_rx_q; bus_ack <= 1'b1; bs <= B_END; end
++            B_RV_DEPTH:if(rv_tap_ack)begin bus_rdata<={15'd0,rv_tap_valid,rv_tap_depth};bus_ack<=1;bs<=B_END;end
++            B_RV_INV:if(rv_inv_ack)begin
++                rv_inv_req<=0;rv_last_result<={1'b1,30'd0,rv_inv_ok};bus_rdata<={1'b1,30'd0,rv_inv_ok};bus_ack<=1;bs<=B_END;
++            end
+             B_END: bs <= B_IDLE;       // 给主机撤销 req 的一拍
+             default: bs <= B_IDLE;
+             endcase

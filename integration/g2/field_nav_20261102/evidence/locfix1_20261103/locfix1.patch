@@ -1,0 +1,275 @@
+--- before/nav/loc.c
++++ after/nav/loc.c
+@@ -39,6 +39,7 @@
+     l->k_next = 0;
+     l->ntop = 0;
+     l->n_pts = 0;
++    l->refine_idx = l->fine_next = l->batch_start = 0;
+ }
+ 
+ void loc_start_align(loc_t *l, int32_t range_mm, int32_t range_ang)
+@@ -65,6 +66,7 @@
+ 
+ int loc_align_next(loc_t *l, hal_match_cand_t *cand, int kmax)
+ {
++    if (kmax <= 0 || kmax > PM_MAX_CAND) return 0;
+     int k = 0;
+     if (l->phase == 0) {
+         const int hxy = l->nxy / 2, ha = l->na / 2;
+@@ -80,20 +82,33 @@
+         if (k > 0) return k;
+         if (l->ntop == 0) { l->phase = 3; return 0; }
+         l->phase = 1;
+-        l->fine = l->top[0];
++        l->fine = l->fine_seed = l->top[0];
++    }
++    /* Every retained coarse peak receives the same refinement before comparing
++     * ambiguity. Coarse grid quantisation is not evidence that two fine peaks
++     * are equally good. Preserve the seed across partial hardware batches. */
++    if ((l->phase == 1 || l->phase == 2) && l->fine_next == 245) {
++        l->fine_next = 0;
++        if (l->phase == 1) l->phase = 2;
++        else {
++            l->top[l->refine_idx] = l->fine;
++            if (++l->refine_idx == l->ntop) { l->phase = 3; return 0; }
++            l->phase = 1;
++            l->fine = l->top[l->refine_idx];
++        }
++        l->fine_seed = l->fine;
+     }
+     if (l->phase == 1 || l->phase == 2) {
+         const int32_t sm = l->phase == 1 ? 25 : 10, sa = l->phase == 1 ? 128 : 64;
+-        const loc_cand_t c0 = l->fine;
+-        for (int ia = -2; ia <= 2; ia++)
+-            for (int iy = -3; iy <= 3; iy++)
+-                for (int ix = -3; ix <= 3; ix++) {
+-                    cand[k].dx = c0.dx + ix * sm;
+-                    cand[k].dy = c0.dy + iy * sm;
+-                    cand[k].dyaw = c0.da + ia * sa;
+-                    k++;
+-                }
+-        l->phase++;
++        const loc_cand_t c0 = l->fine_seed;
++        l->batch_start = l->fine_next;
++        while (k < kmax && l->fine_next < 245) {
++            int i = l->fine_next++;
++            cand[k].dx = c0.dx + (i % 7 - 3) * sm;
++            cand[k].dy = c0.dy + ((i / 7) % 7 - 3) * sm;
++            cand[k].dyaw = c0.da + (i / 49 - 2) * sa;
++            k++;
++        }
+         return k;
+     }
+     return 0;
+@@ -126,8 +141,8 @@
+ 
+ void loc_align_feed(loc_t *l, const hal_match_cand_t *cand, const hal_match_res_t *res, int k)
+ {
+-    /* feed 在 next 之后调用：phase 已前进一步，按"刚生成的那一轮"处理 */
+     for (int i = 0; i < k; i++) {
++        if (res[i].n_valid < l->cfg.min_pts) continue;
+         loc_cand_t c = {cand[i].dx, cand[i].dy, cand[i].dyaw, res[i].cost, res[i].n_in};
+         if (res[i].n_pts > l->n_pts) l->n_pts = res[i].n_pts;
+         if (l->phase == 0) top_insert(l, c);
+@@ -137,9 +152,11 @@
+ 
+ void loc_align_feed_generated(loc_t *l,const hal_match_res_t *res,int k)
+ {
+-    /* 与刚返回的next批次同序；fine必须固定批次种子，不能随最优点更新。 */
+-    const loc_cand_t seed=l->fine;
++    /* Results overwrite the candidate union; reconstruct the exact submitted
++     * batch using the immutable refinement seed, not the evolving winner. */
++    const loc_cand_t seed=l->fine_seed;
+     for(int j=0;j<k;j++) {
++        if(res[j].n_valid<l->cfg.min_pts) continue;
+         int32_t dx,dy,da;
+         if(l->phase==0) {
+             uint32_t i=l->k_next-(uint32_t)k+(uint32_t)j;
+@@ -148,8 +165,9 @@
+             dx=(ix-l->nxy/2)*l->cfg.step_mm;dy=(iy-l->nxy/2)*l->cfg.step_mm;
+             da=(ia-l->na/2)*l->cfg.step_ang;
+         } else {
+-            int sm=l->phase==2?25:10,sa=l->phase==2?128:64;
+-            dx=seed.dx+(j%7-3)*sm;dy=seed.dy+((j/7)%7-3)*sm;da=seed.da+(j/49-2)*sa;
++            int sm=l->phase==1?25:10,sa=l->phase==1?128:64;
++            int i=l->batch_start+j;
++            dx=seed.dx+(i%7-3)*sm;dy=seed.dy+((i/7)%7-3)*sm;da=seed.da+(i/49-2)*sa;
+         }
+         loc_cand_t c={dx,dy,da,res[j].cost,res[j].n_in};
+         if(res[j].n_pts>l->n_pts) l->n_pts=res[j].n_pts;
+@@ -161,9 +179,16 @@
+ bool loc_align_finish(loc_t *l, uint32_t now)
+ {
+     bool ok = false;
+-    if (l->ntop > 0 && l->n_pts >= l->cfg.min_pts) {
++    if (l->phase == 3 && l->k_next == l->k_total && l->ntop > 0 && l->n_pts >= l->cfg.min_pts) {
++        int best = 0, second = -1;
++        for (int i = 1; i < l->ntop; i++)
++            if (l->top[i].cost < l->top[best].cost) best = i;
++        l->fine = l->top[best];
++        for (int i = 0; i < l->ntop; i++)
++            if (i != best && !near_c(&l->fine, l->top[i].dx, l->top[i].dy, l->top[i].da) &&
++                (second < 0 || l->top[i].cost < l->top[second].cost)) second = i;
+         l->res_q = (int)(l->fine.n_in * 100 / l->n_pts);
+-        l->res_q2 = l->ntop > 1 ? (int)(((int64_t)l->top[1].cost - l->top[0].cost) * 100 / l->n_pts) : 9999;
++        l->res_q2 = second >= 0 ? (int)(((int64_t)l->top[second].cost - l->fine.cost) * 100 / l->n_pts) : 9999;
+         ok = l->res_q >= l->cfg.accept_q && l->res_q2 >= l->cfg.amb_d100;
+     } else {
+         l->res_q = l->res_q2 = 0;
+@@ -172,6 +197,7 @@
+         l->res_dx = l->fine.dx; l->res_dy = l->fine.dy; l->res_da = l->fine.da;
+         l->st = LOC_OK;
+         l->q_ema = l->res_q * 256;
++        l->q_last = l->res_q;
+         l->low = false;
+         l->edge_cnt = 0;
+         l->t_info = now;
+--- before/nav/loc.h
++++ after/nav/loc.h
+@@ -4,10 +4,11 @@
+  *   对准（SET_POSE 之后、丢失之后）：机器人原地保持，同一帧结构点上连续打多批候选——
+  *     粗搜索：±range 平移（50 mm 步长）× ±range_ang 航向（1° 步长）全枚举，不做门控；
+  *       同时保留若干个互相分开（> 150 mm 或 > 3°）的最优峰，用于判断歧义；
+- *     细化两轮：最优峰周围 7×7×5 网格，步长 25 mm / 0.7°，再 10 mm / 0.35°。
++ *     每个保留峰都细化两轮：7×7×5 网格，步长 25 mm / 0.7°，再 10 mm / 0.35°；
++ *       细化后合并同一峰，比较互相分开的最优与次优结果，避免粗网格量化伪歧义。
+  *     接受条件：内点率（残差 <= T_IN 的点 / 结构点）够高，且第二峰的平均代价明显更高
+  *     （仿真统计：错误对准的第二峰代价差 < 0.15、正确对准多在 0.3 以上，门限 0.3）；
+- *     否则原地转 ~35° 换个视角再试（单帧视野里只有平行结构时沿结构方向不可观）。
++ *     单帧只有平行结构时沿墙方向不可观，拒绝歧义；当前应用不自动转车。
+  *   跟踪：每帧 245 候选 + Hessian 退化判定（pose_match），先验图固定不并图；
+  *     质量 = 最优候选的近邻命中点 / 本帧结构点（门控打开：先验图里没有的物体不算命中）。
+  *     质量的指数平均低于门限 -> 退化（限速）；长时间很低或最优候选连续落在搜索边界 -> 丢失，
+@@ -50,7 +51,9 @@
+     uint32_t k_total, k_next;
+     loc_cand_t top[LOC_TOPN];
+     int      ntop;
+-    loc_cand_t fine;                     /* 细化轮的最优 */
++    loc_cand_t fine;                     /* 当前峰细化轮的最优 */
++    loc_cand_t fine_seed;                /* 固定整轮种子；分批返回不能随最优变化 */
++    int refine_idx, fine_next, batch_start;
+     uint32_t n_pts;
+     int      retry;
+     int32_t  res_dx, res_dy, res_da;     /* 对准结果（相对该帧提交位姿） */
+--- before/app/nav_app.c
++++ after/app/nav_app.c
+@@ -139,12 +139,15 @@
+     switch (m->type) {
+     case MSG_SET_POSE:
+         g_app.have_fix = false;
++        g_app.dr_agree = g_app.dr_strong = 0;
++        loc_init(&g_app.loc);          /* 新起点不能继承上一地点的质量/歧义/重试状态 */
++        g_app.turning = false;
+         pose_set(&nt->pose, m->u.pose.x, m->u.pose.y, ANGLE_FROM_CDEG(m->u.pose.yaw_cdeg));
+         frame_jumped(nt);
+         if (g_app.pm_pend || g_app.pm_run) g_app.pm_stale = true;
+         if (nav_app_have_prior() && (m->u.pose.flags & 1))   /* 搜索范围限制在 ±0.4 m / ±8°：大范围搜索会跳到相似结构上 */
+-            loc_start_align(&g_app.loc, nav_clamp32(m->u.pose.range_mm, 0, 400),
+-                            nav_clamp32(m->u.pose.range_cdeg, 0, 800) * 182 / 100);
++            loc_start_align(&g_app.loc, nav_clamp32(m->u.pose.range_mm > 0 ? m->u.pose.range_mm : 300, 1, 400),
++                            nav_clamp32(m->u.pose.range_cdeg > 0 ? m->u.pose.range_cdeg : 600, 1, 800) * 182 / 100);
+         else if (nav_app_have_prior())
+             g_app.loc.st = LOC_OK;                   /* 主机保证位姿准确：直接跟踪 */
+         break;
+@@ -163,6 +166,7 @@
+         hal_host_send(reply,n);break;
+     }
+     case MSG_MAP_BEGIN:
++        g_app.dr_agree = g_app.dr_strong = 0;
+         g_app.have_fix = false;
+         prior_rx_begin_profile(&g_app.prx, &nt->gm, m->u.map_begin.total,(int16_t)g_app.match_zhi);
+         hal_match_zband(APP_ZLO_ODOM, g_app.match_zhi);
+@@ -180,6 +184,7 @@
+         send_ack();
+         break;
+     case MSG_MAP_CLEAR:
++        g_app.dr_agree = g_app.dr_strong = 0;
+         prior_rx_clear(&g_app.prx, &nt->gm);
+         hal_match_zband(APP_ZLO_ODOM, g_app.match_zhi);
+         loc_init(&g_app.loc);
+@@ -322,11 +327,20 @@
+ static bool dr_gate(bool ok, const hal_match_res_t *res)
+ {
+     pm_stat_t *m = &g_app.pm;
++    uint32_t now = hal_time_us();
++    if ((uint32_t)(now - g_app.t_dr_frame) > 500000u)
++        g_app.dr_agree = g_app.dr_strong = 0;
++    g_app.t_dr_frame = now;
+     uint32_t np = res ? res[0].n_pts : 0;
+     int q = (ok && np >= (uint32_t)g_app.loc.cfg.min_pts) ? (int)(m->n_in_best * 100 / np) : 0;
+     bool good = ok && q >= APP_DR_Q;
++    bool strong = good && q >= g_app.loc.cfg.q_ok && !m->at_edge;
+     if (ok && m->at_edge) g_app.n_dr_edge++;
+     g_app.dr_agree = good ? (uint8_t)nav_min32(g_app.dr_agree + 1, 255) : 0;
++    bool coherent = nav_abs32(m->dx - g_app.dr_dx) <= 25 && nav_abs32(m->dy - g_app.dr_dy) <= 25 &&
++                    nav_abs32(m->dyaw - g_app.dr_da) <= 128;
++    g_app.dr_strong = strong ? (coherent ? (uint8_t)nav_min32(g_app.dr_strong + 1, 255) : 1) : 0;
++    g_app.dr_dx = (int16_t)m->dx; g_app.dr_dy = (int16_t)m->dy; g_app.dr_da = (int16_t)m->dyaw;
+     if (!good || g_app.dr_agree < APP_DR_AGREE) {
+         if (ok) {
+             g_app.n_dr_rej++;
+@@ -334,9 +348,20 @@
+         }
+         return false;
+     }
+-    uint32_t now = hal_time_us(), dt = now - g_app.t_dr_last;
++    uint32_t dt = now - g_app.t_dr_last;
+     if (dt > 200000u) dt = 200000u;
+     g_app.t_dr_last = now;
++    /* Before the dead-reckoning-only policy, well-constrained lidar matches
++     * used the solver's normal gain. Retain that path after three strong
++     * frames, with bounded per-frame changes. A permanently tiny trim cannot
++     * recover prediction error even when the match has become reliable. */
++    if (g_app.dr_strong >= APP_DR_AGREE) {
++        m->dx = nav_clamp32(m->dx, -50, 50);
++        m->dy = nav_clamp32(m->dy, -50, 50);
++        m->dyaw = nav_clamp32(m->dyaw, -182, 182);
++        g_app.n_dr_acc++;
++        return true;
++    }
+     int32_t cmm = 1 + (int32_t)(APP_DR_RATE_MM * dt / 1000000u), cang = 1 + (int32_t)(APP_DR_RATE_ANG * dt / 1000000u);
+     m->dx = nav_clamp32(m->dx / 2, -cmm, cmm);
+     m->dy = nav_clamp32(m->dy / 2, -cmm, cmm);
+@@ -549,13 +574,11 @@
+         lc->st = LOC_DEGRADED;
+         lc->degr_since = now;
+     }
+-    /* 对准失败（视野里结构不足或只有平行结构）：原地转约 35° 换视角，稳定后用新帧再对准 */
+-    if (lc->want_turn) {
+-        lc->want_turn = false;
+-        g_app.turning = true;
+-        g_app.turn_until = now + 1500000;
+-    }
+-    if (g_app.turning && (int32_t)(now - g_app.turn_until) > 300000) g_app.turning = false;
++    /* Automatic turning was disabled on 11-01. Do not leave its 1.8 s
++     * synthetic turning flag active: that suppresses fresh alignment frames
++     * while the robot is actually holding still. */
++    lc->want_turn = false;
++    g_app.turning = false;
+     nt->hold_wz = 0; /* 11-01 用户要求：对准失败不转向，原地等下一帧重试 */
+     /* 丢失（对准重试用尽）：每 3 s 再试一次 */
+     if (prior && lc->st == LOC_LOST && (uint32_t)(now - g_app.t_lost) > 3000000)
+--- before/app/nav_app.h
++++ after/app/nav_app.h
+@@ -71,6 +71,9 @@
+     uint32_t     n_unsettled;           /* 匹配了但因姿态突变没写进高程图的帧 */
+     bool         have_fix, dead_reckon; /* 有过可靠定位 / 定位丢失中靠推算继续走 */
+     uint8_t      dr_agree;              /* 连续合格的匹配帧数 */
++    uint8_t      dr_strong;             /* 连续高质量且不在搜索边界的帧数 */
++    int16_t      dr_dx, dr_dy, dr_da;    /* 前一帧提案，用于高质量连续性检查 */
++    uint32_t     t_dr_frame;
+     uint16_t     n_dr_acc, n_dr_rej;    /* 采纳 / 丢弃的雷达修正帧数 */
+     uint16_t     n_dr_edge, n_dr_lowq;  /* 解在搜索窗边上的帧数（照样可采纳） / 因内点率不够丢弃的帧数 */
+     uint32_t     t_dr_last;             /* 上次采纳雷达修正的时刻（限速用） */
+--- before/app/main.c
++++ after/app/main.c
+@@ -51,6 +51,9 @@
+                        (int)nt->pose.odo_vx, (int)nt->pose.odo_wz);
+             con_printf("  loc q %d ema %d pts %u skip %u tskip %u\r\n", g_app.loc.q_last, (int)(g_app.loc.q_ema / 256),
+                        (unsigned)g_app.loc.n_pts, (unsigned)g_app.n_skip, (unsigned)g_app.n_time_skip);
++            con_printf("  match valid %u in %u cost %u align %u fail %u strong %u\r\n",
++                       (unsigned)g_app.pm.n_valid, (unsigned)g_app.pm.n_in_best, (unsigned)g_app.pm.cost_best,
++                       (unsigned)g_app.loc.n_align, (unsigned)g_app.loc.n_align_fail, (unsigned)g_app.dr_strong);
+             con_printf("  imu ok %u bad %u att %d pitch %d roll %d cdeg\r\n",
+                        (unsigned)g_app.imu.n_ok, (unsigned)g_app.imu.n_bad, (int)nt->pose.have_att,
+                        (int)((int32_t)(int16_t)nt->pose.cur.pitch * 18000 / 32768),

@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "source": "F:\\nav_integration_g2_20261023\\K_clear_pipeline_syn8",
+  "staged": "F:\\nav_integration_g2_20261023\\K_clear_pipeline_syn9",
+  "proofs": [
+    {
+      "expression": "edge filter unsigned absolute difference > threshold",
+      "all_input_patterns_equivalent": true,
+      "result": "unsat"
+    },
+    {
+      "expression": "signed wheel input clamp, actual limit2000",
+      "all_input_patterns_equivalent": true,
+      "result": "unsat"
+    }
+  ],
+  "changed_RTL": [
+    "nav\\rtl\\lidar\\pc_edge_filter.v",
+    "control\\motor520_closed_loop.v"
+  ],
+  "all_registers_and_clocked_blocks_unchanged": true,
+  "filter_thresholds_PID_gains_speed_settings_and_limits_unchanged": true,
+  "original_SDC_and_CST_restored": true,
+  "ultrasonic_unchanged": true
+}

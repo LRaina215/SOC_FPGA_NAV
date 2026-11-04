@@ -1,0 +1,122 @@
+{
+  "stage": "loaded_banner_verified_ACTIVE_synced_map_ready",
+  "firmware": {
+    "path": "D:\\tools\\prior_odom_nav_20261104\\nav_fw_priorodom030_yaw3_20261104.bin",
+    "banner": "Nov  4 2026 11:40:20",
+    "bytes": 37692,
+    "ram_kib": 136,
+    "bss_bytes": 70192,
+    "stack_kib": 6
+  },
+  "build_defines": [
+    "APP_PRIOR_ODOM_ONLY=1",
+    "APP_RAY_CLEAR_ENABLE=0",
+    "APP_COMPACT_TELEMETRY=1"
+  ],
+  "baseline": "forward020 on PNR100; user now explicitly restored forward command0.30m/s",
+  "changed_source_files": [
+    "app/main.c",
+    "app/nav_app.c",
+    "nav/gmap.c",
+    "nav/gmap.h",
+    "nav/local_planner.h",
+    "nav/nav_task.c",
+    "nav/nav_task.h",
+    "nav/obstacle_recovery.c",
+    "nav/proto.h"
+  ],
+  "navigation_forward_command_cap_mps": 0.3,
+  "latest_failure": {
+    "session": "20261104_112951",
+    "first_observer_wall_time": "11:30:18-19",
+    "cell": [
+      31,
+      4
+    ],
+    "recorded_raw_hi": 239,
+    "age": 41,
+    "count": 15,
+    "mfail_result": 4,
+    "cause": 1,
+    "observer_started": 1,
+    "proof": 0,
+    "deletion": 0,
+    "limits": "The high value is program elevation, not proof of a239mm physical step. This run actually triggered live-footprint HAZARD and reobservation, unlike the earlier motion-latch run. Exact physical cause remains unknown."
+  },
+  "mode": {
+    "path_map": "static prior only",
+    "final_footprint_map": "cached5cm expansion of the same static prior; prior unknown/outside remain impassable",
+    "pose": "declared initial pose plus existing IMU/encoder integration; no lidar matching/correction or height anchoring",
+    "live_costs": false,
+    "virtual_retry_obstacles": false,
+    "reobservation": false,
+    "ray_clearing": false,
+    "lidar_map_required": false,
+    "initial_pose_required": true,
+    "status": "STF_PRIOR_ODOM0x0400. Lidar flag off. After pose seed existing protocol reports DEGRADED/quality0, honestly reflecting no lidar confidence; bridge already accepts seeded degraded navigation."
+  },
+  "ultrasonic": "Existing RTL is manual_owner only; navigation already bypasses it. No RTL change required.",
+  "unchanged": [
+    "turning and acceleration/deceleration",
+    "static-prior walls and map boundaries",
+    "explicit emergency stop and host heartbeat watchdog",
+    "fresh IMU/odometry requirement",
+    "balance/PID and actuator wheel targets",
+    "map files",
+    "bridge/frontend/keeper code",
+    "PNR100 Flash"
+  ],
+  "validation": "Two focused actual-C checks: absent/all-lethal hardware live map does not stop static-prior navigation; prior wall remains rejected and no-prior stops. Compile/link. No MuJoCo, broad matrix, physical motion or hashes.",
+  "limitations": [
+    "Pure odometry accumulates yaw/position drift; initial position and heading must be set accurately",
+    "A person or new obstacle absent from the prior will not be avoided",
+    "No claim of balance stability or arrival accuracy from these code checks"
+  ],
+  "deployed": true,
+  "Flash_changed": false,
+  "ACTIVE_changed": true,
+  "loaded_at": "2026-11-04T11:43:50.740824+08:00",
+  "active_backup": "/home/robomaster/fpga_bench/fw/ACTIVE.before_priorodom030_20261104_114344",
+  "post_status": {
+    "nav_link": "online",
+    "control_link": "online",
+    "fpga_mode": "idle",
+    "fpga_state": "idle",
+    "map_loaded": true,
+    "lidar_ok": false,
+    "loc_state": "mapless",
+    "loc_quality": null,
+    "cmd_vx_mps": 0.0,
+    "cmd_wz_radps": 0.0,
+    "control_faults": [
+      "policy_fault:1",
+      "left_motor_fault:2"
+    ]
+  },
+  "post_task": {
+    "task_id": "fpga-idle",
+    "task_type": "placeholder",
+    "state": "idle",
+    "progress": 0,
+    "source": "fpga_bridge",
+    "phase": "idle",
+    "current_waypoint_id": null,
+    "waypoint_index": null,
+    "waypoint_count": null,
+    "detail": "等待任务。",
+    "updated_at": "2026-11-04T03:44:42.489968+00:00"
+  },
+  "map_upload": {
+    "id": "df74bae53f5a4ef3a31eecd4329f8420",
+    "filename": "field_home2.nvmp",
+    "map_id": "field_home2",
+    "state": "ready",
+    "sent_bytes": 9880,
+    "total_bytes": 9880,
+    "progress": 100,
+    "detail": "先验地图已加载（9880 B，1.5 s）；地图目标需给定初始位姿，雷达在后台辅助纠偏",
+    "started_at": "2026-11-04T03:43:51.994771+00:00",
+    "completed_at": "2026-11-04T03:43:53.448710+00:00"
+  },
+  "services": "active\nactive\n"
+}

@@ -1,0 +1,160 @@
+--- a/nav/nav_task.c
++++ b/nav/nav_task.c
+@@ -113,6 +113,9 @@
+ 
+ void nav_task_set_mode(nav_task_t *nt, nav_mode_t mode)
+ {
++    bool keep_speed_fault=nt->speed_phase==5 &&
++        (nt->mode==NAV_MODE_SEARCH || nt->mode==NAV_MODE_TRACK) &&
++        (mode==NAV_MODE_SEARCH || mode==NAV_MODE_TRACK);
+     /* 新一轮找物/跟随从空白覆盖开始；同一任务 TRACK/SEARCH 切换保留记录。 */
+     if((mode==NAV_MODE_SEARCH || mode==NAV_MODE_TRACK) &&
+        nt->mode!=NAV_MODE_SEARCH && nt->mode!=NAV_MODE_TRACK) explore_init(&nt->exp);
+@@ -121,7 +124,8 @@
+     nt->recheck_phase=0;nt->observe_outcome=0;
+     nt->track_holding = true;
+     nt->track_goal_valid = false;
+-    nt->speed_phase=nt->speed_quiet=0;
++    nt->speed_phase=nt->speed_quiet=nt->speed_reverse=0;
++    if(keep_speed_fault) nt->speed_phase=5;
+     if(mode==NAV_MODE_IDLE || mode==NAV_MODE_ESTOP) {
+         nt->tgt.valid = false;
+         nt->scan_active=nt->scan_settling=nt->scan_failed=false;nt->scan_exit_valid=false;
+@@ -184,6 +188,7 @@
+         break;
+     case MSG_MODE:
+         nt->recheck_phase=0;nt->observe_cooldown=0;
++        nt->speed_phase=0; /* explicit new/cancel task, not automatic SEARCH/TRACK */
+         if (m->u.mode.mode <= NAV_MODE_ESTOP) nav_task_set_mode(nt, (nav_mode_t)m->u.mode.mode);
+         break;
+     default:
+@@ -704,47 +709,63 @@
+     return false;
+ }
+ 
+-/* Condition SEARCH/GOTO turn transitions. Wheel/fore-aft oscillation is not a
+- * prerequisite for starting motion: requiring it to vanish stranded this
+- * balancing chassis. Retain fresh feedback, yaw ramp-out before translation,
+- * large-tilt suppression, and the independent final collision veto. */
++/* SEARCH/GOTO have one mutually exclusive translation/turn outlet. A nonzero
++ * yaw proposal is never added to forward travel. Balance control stays enabled;
++ * persistent physical reverse/large tilt latches this navigation task stopped. */
+ void nav_task_speed_reference(nav_task_t *nt,uint32_t now)
+ {
+-    bool search=nt->mode==NAV_MODE_SEARCH;
+-    if(!search && nt->mode!=NAV_MODE_GOTO) {nt->speed_phase=nt->speed_quiet=0;return;}
+-    bool att=nt->pose.have_att && (uint32_t)(now-nt->pose.imu_t_us)<100000;
++    if(nt->mode!=NAV_MODE_SEARCH && nt->mode!=NAV_MODE_GOTO && nt->mode!=NAV_MODE_TRACK) {
++        nt->speed_phase=nt->speed_quiet=nt->speed_reverse=0;return;
++    }
++    bool fresh=nt->pose.have_att && nt->pose.have_odo && nt->pose.have_gyro &&
++        (uint32_t)(now-nt->pose.imu_t_us)<100000 &&
++        (uint32_t)(now-nt->pose.last_odo_us)<100000 &&
++        (uint32_t)(now-nt->pose.gyro_t_us)<100000;
+     int pitch=nav_abs32((int16_t)nt->pose.cur.pitch);
+-    if(search && att && pitch>ANGLE_FROM_CDEG(2000)) {
+-        nt->speed_phase=4;nt->speed_quiet=0;nt->cmd=(nav_cmd_t){0};return;
+-    }
+-    bool fresh=nt->pose.have_odo && (uint32_t)(now-nt->pose.last_odo_us)<100000 &&
+-               nt->pose.have_gyro && (uint32_t)(now-nt->pose.gyro_t_us)<100000;
+-    bool feedback=fresh && att;
+-    int16_t wanted_v=nt->cmd.vx,wanted_w=nt->cmd.wz,previous_w=nt->speed_w_prev;
+-    bool turn=wanted_v==0 && nav_abs32(wanted_w)>APP_STRAIGHT_WMAX;
+-    if(turn) {
+-        nt->speed_phase=feedback?2:1;nt->speed_quiet=0;
+-        if(!feedback) wanted_w=0;
+-    } else if(wanted_v>0 && (nt->speed_phase || nav_abs32(previous_w)>APP_STRAIGHT_WMAX)) {
++    if(fresh && pitch>ANGLE_FROM_CDEG(2000)) nt->speed_phase=5;
++    if(fresh && (nt->v_prev>0 || nt->speed_w_prev) && nt->pose.odo_vx < -100) {
++        if(nt->speed_reverse<3) nt->speed_reverse++;
++        if(nt->speed_reverse>=3) nt->speed_phase=5;
++    } else nt->speed_reverse=0;
++    if(nt->speed_phase==5) {
++        nt->state=ST_BLOCKED;nt->cmd=(nav_cmd_t){0};return;
++    }
++    if(!fresh) {
++        nt->speed_phase=1;nt->speed_quiet=0;nt->cmd=(nav_cmd_t){0};return;
++    }
++    bool calm=pitch<=ANGLE_FROM_CDEG(1000) && nav_abs32(nt->pose.gyro_pr)<=2000;
++    int16_t wanted_v=(int16_t)nav_max32(0,nt->cmd.vx);
++    int16_t wanted_w=wanted_v ? 0 : (int16_t)nav_clamp32(nt->cmd.wz,-400,400);
++    int16_t previous_w=nt->speed_w_prev;
++    if(wanted_w && nt->v_prev>0) {
++        wanted_v=(int16_t)nav_max32(0,nt->v_prev-APP_TRACK_DECEL_STEP);
++        wanted_w=0;nt->speed_phase=1;nt->speed_quiet=0;
++    } else if(wanted_w) {
++        if(nt->speed_phase!=2) {
++            if(calm && nav_abs32(nt->pose.odo_vx)<=150 &&
++               nav_abs32(nt->pose.odo_wz)<=100 && previous_w==0) nt->speed_quiet++;
++            else nt->speed_quiet=0;
++            if(nt->speed_quiet>=2) {nt->speed_phase=2;nt->speed_quiet=0;}
++            else {nt->speed_phase=1;wanted_w=0;}
++        }
++        if(!calm) wanted_w=0;
++    } else if(wanted_v>0 && (nt->v_prev==0 || nt->speed_phase || previous_w)) {
+         if(nt->speed_phase!=3) nt->speed_quiet=0;
+         nt->speed_phase=3;
+-        if(feedback && nav_abs32(nt->pose.odo_wz)<=150 && nav_abs32(previous_w)<=80) nt->speed_quiet++;
++        if(calm && nav_abs32(nt->pose.odo_wz)<=80 && previous_w==0 &&
++           nt->pose.odo_vx>=-30 && nt->pose.odo_vx<=150) nt->speed_quiet++;
+         else nt->speed_quiet=0;
+-        if(nt->speed_quiet>=2) nt->speed_phase=nt->speed_quiet=0;
+-        else {wanted_v=0;wanted_w=0;}
++        if(nt->speed_quiet>=2) {nt->speed_phase=0;nt->speed_quiet=0;}
++        else wanted_v=0;
+     } else if(wanted_v==0) {
+-        wanted_w=0;nt->speed_quiet=0;
+-        nt->speed_phase=previous_w?3:0;
+-    }
+-    /* Acceleration0.8rad/s^2, braking2rad/s^2. At the old symmetric ramp,
+-     * 1->0.4 consumed about30deg, exhausting the30deg fine-turn interval.
+-     * Brake through zero before ramping up in the opposite direction. */
+-    if(turn || nt->speed_phase || nav_abs32(previous_w)>APP_STRAIGHT_WMAX) {
+-        if((int32_t)wanted_w*previous_w<0) wanted_w=0;
+-        int step=nav_abs32(wanted_w)<nav_abs32(previous_w)?200:80;
+-        wanted_w=(int16_t)nav_clamp32(wanted_w,previous_w-step,previous_w+step);
+-    }
+-    nt->cmd.vx=wanted_v;nt->cmd.wz=(int16_t)nav_clamp32(wanted_w,-APP_TURN_W,APP_TURN_W);
++        nt->speed_quiet=0;nt->speed_phase=previous_w?3:0;
++    }
++    /* Both ends of a turn ramp. No instant reversal or 1->0 yaw brake. */
++    if((int32_t)wanted_w*previous_w<0) wanted_w=0;
++    int step=nav_abs32(wanted_w)<nav_abs32(previous_w)?60:40;
++    wanted_w=(int16_t)nav_clamp32(wanted_w,previous_w-step,previous_w+step);
++    if(wanted_w) wanted_v=0;
++    nt->cmd.vx=wanted_v;nt->cmd.vy=0;nt->cmd.wz=wanted_w;
+ }
+ 
+ static void task_step_local(nav_task_t *nt, uint32_t now)
+@@ -1010,8 +1031,9 @@
+                 /* 要原地转但车还在走：先按斜坡减速到零，不急停 */
+                 nt->cmd = (nav_cmd_t){(int16_t)nav_max32(0, nt->v_prev - ((nt->mode==NAV_MODE_TRACK || nt->mode==NAV_MODE_SEARCH)?APP_TRACK_DECEL_STEP:APP_DECEL_STEP)), 0, 0, nt->cmd.mode};
+             } else if (spin) {
+-                int16_t w = nav_abs32(dh) > APP_TURN_SLOW_AT ? APP_TURN_W : APP_TURN_W_SLOW;
+-                nt->cmd = (nav_cmd_t){0, 0, (int16_t)(dh > 0 ? w : -w), nt->cmd.mode};
++                /* Reduce turn rate before the exit angle, not after crossing it. */
++                int32_t w=(int32_t)((int64_t)dh*7540/65536);
++                nt->cmd=(nav_cmd_t){0,0,(int16_t)nav_clamp32(w,-400,400),nt->cmd.mode};
+             } else {
+                 int32_t dgoal = fx_dist(nt->goal_x - p->x, nt->goal_y - p->y);
+                 int32_t dlook = fx_dist(nt->look_x - p->x, nt->look_y - p->y);
+@@ -1022,6 +1044,7 @@
+                 int32_t v = nt->v_prev + nav_clamp32(vt - nt->v_prev, -APP_DECEL_STEP, APP_ACCEL_STEP);
+                 int32_t wz = nav_clamp32((int32_t)((int64_t)dh_f * APP_STRAIGHT_K / 65536),
+                                          -APP_STRAIGHT_WMAX, APP_STRAIGHT_WMAX);
++                wz=0;
+                 nt->cmd = (nav_cmd_t){(int16_t)v, 0, (int16_t)wz, nt->cmd.mode};
+             }
+         } else spin = false;
+--- a/nav/nav_task.h
++++ b/nav/nav_task.h
+@@ -130,7 +130,8 @@
+     bool revisit_goal;
+     uint32_t revisit_until_us;
+     uint8_t        last_mfail;       /* 最近一次足迹检查不过的结果码 */
+-    uint8_t speed_phase, speed_quiet; /* SEARCH/GOTO切换：0行进1待数据2转向3待角速度回落4SEARCH倾角超限 */
++    uint8_t speed_phase, speed_quiet; /* 0直行1待数据/制动2转向3收尾5异常后退/倾角锁停 */
++    uint8_t speed_reverse;           /* 连续实测后退，不用导航参考冒充实际轮速 */
+     int16_t speed_w_prev; /* 上次最终下发角速度；规划器自己的prev_wz可能已被覆盖 */
+ } nav_task_t;
+ 

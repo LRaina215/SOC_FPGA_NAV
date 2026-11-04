@@ -1,0 +1,207 @@
+{
+  "host_support_snapshot": {
+    "enabled": false,
+    "verify": false,
+    "queries": 0,
+    "mismatches": 0
+  },
+  "scene": "measured_home_mujoco",
+  "trav": "v3",
+  "match": "on",
+  "seed": 7,
+  "slip": 0.03,
+  "arrived": false,
+  "time_s": 8.5,
+  "evaluation": "nav-opt-v2",
+  "firmware_arrived": false,
+  "completion_candidate": false,
+  "outcome": "collision",
+  "terminal": {
+    "criteria": {
+      "position_m": 0.15,
+      "speed_mps": 0.02,
+      "yaw_rate_rps": 0.05,
+      "dwell_s": 0.5,
+      "observe_s": 2.0
+    },
+    "declared_s": null,
+    "declared_error_m": null,
+    "final_error_m": null,
+    "max_error_m": null,
+    "max_drift_m": null,
+    "observation_complete": false,
+    "valid": false,
+    "outcome": "timeout"
+  },
+  "simulation_end_s": 8.514,
+  "raw_frames_dropped": 0,
+  "terrain": {
+    "unit": "cell_observations",
+    "counts": {
+      "total": 109231,
+      "boundary": 5681,
+      "free": 95693,
+      "hazard": 7857,
+      "unknown_free": 61692,
+      "unknown_hazard": 5061,
+      "map_unknown_free": 59816,
+      "map_unknown_hazard": 5061,
+      "raw_tp": 1223,
+      "raw_fn": 1573,
+      "raw_fp": 5,
+      "raw_tn": 33996,
+      "post_tp": 2111,
+      "post_fn": 685,
+      "post_fp": 2630,
+      "post_tn": 33247,
+      "inflation_free": 2625,
+      "inflation_masks_raw_miss": 888,
+      "filled_free": 1876,
+      "filled_hazard": 0,
+      "boundary_observed": 1282,
+      "boundary_raw_lethal": 12,
+      "boundary_blocked": 858
+    },
+    "raw_recall_observed": 0.43741058655221743,
+    "raw_false_positive_observed": 0.00014705449839710598,
+    "post_block_recall_known": 0.7550071530758226,
+    "post_block_false_positive_known": 0.07330601778298074,
+    "unknown_free_fraction": 0.6446866541962317,
+    "unknown_hazard_fraction": 0.6441389843451699,
+    "map_unknown_free_fraction": 0.6250822944206995,
+    "map_unknown_hazard_fraction": 0.6441389843451699
+  },
+  "loc_valid_fraction": 1.0,
+  "loc_samples": 85,
+  "loc_valid_samples": 85,
+  "loc_err_xy_full_rms_m": 0.028,
+  "found_s": null,
+  "collisions": 1,
+  "coll_first": [
+    [
+      8.513,
+      [
+        "RightWheel_link_collision0/scene_2_real_low_box"
+      ]
+    ]
+  ],
+  "final_true": [
+    0.51,
+    0.282
+  ],
+  "goal_err_m": null,
+  "loc_err_xy_rms_m": 0.028,
+  "loc_err_xy_final_m": 0.041,
+  "loc_err_xy_max_m": 0.045,
+  "loc_err_z_max_m": 0.013,
+  "loc_err_yaw_final_deg": 0.22,
+  "match_applied": 82,
+  "prior": false,
+  "align_s": null,
+  "loc_final": 0,
+  "n_align": 0,
+  "n_align_fail": 0,
+  "n_lost": 0,
+  "align_q": [
+    0,
+    0
+  ],
+  "t_degraded_s": 0.0,
+  "t_lost_s": 0,
+  "trav_lethal_recall": 0.755,
+  "trav_false_lethal_rate": 0.0001,
+  "trav_cells": {
+    "tp": 2111,
+    "fn": 685,
+    "fp": 5,
+    "tn": 35872
+  },
+  "wall_s": 26.3,
+  "astar_heap_max": 126,
+  "physics_backend": {
+    "backend": "mujoco-original4500-measured-home",
+    "mujoco": "3.2.7",
+    "policy_inference": "Torch float32 original weights; not FPGA F12 inference",
+    "physics_dt_s": 0.002,
+    "policy_dt_s": 0.008,
+    "safe_dt_s": 0.001,
+    "wheel_feedback_hz": 100,
+    "actuators": "training-equivalent-native-affine",
+    "command_bias_mps": 0.0,
+    "physical_calibration": false,
+    "auto_reset": false,
+    "initial_runtime_reset_advance_s": 0.008,
+    "closed_chain": false,
+    "failed": true,
+    "failure_reason": "physical_contact",
+    "simulated_s": 8.514,
+    "wall_s": 26.4908165,
+    "real_time_factor": 0.32139439718666274,
+    "safe_startup": {
+      "enabled": true,
+      "vmax": 500,
+      "wmax": 1200,
+      "dv": 2,
+      "dw": 3,
+      "watchdog_us": 200000
+    },
+    "sensor_transport": "WIT adapter for BMI088-equivalent attitude/gyro samples",
+    "lidar_height": "physical base heave + nominal mount offset",
+    "unsupported": [
+      "ramps",
+      "negative obstacles",
+      "deployed digital execution",
+      "FPGA fixed-point inference",
+      "physical calibration"
+    ],
+    "execution_profile": "native",
+    "wheel_pid": "native training actuator",
+    "ray_backend": "mujoco_mj_ray_batch_v2",
+    "ray_geometry_checks": [
+      {
+        "expected_m": 0.57,
+        "observed_m": 0.57
+      }
+    ],
+    "measured_envelope_m": [
+      0.27,
+      0.33
+    ],
+    "first_failure_s": 8.514,
+    "root_trajectory_injected": false,
+    "mass_kg": 2.171117111228,
+    "sensitivity": {
+      "field_config": "D:\\tools\\robust_search_20261103_final\\paired\\real\\before\\field_home2.json",
+      "dz_min": 10,
+      "force_n": 0.0,
+      "yaw_torque_nm": 0.0,
+      "wobble_hz": 0.3,
+      "map_error_cm": 0.0,
+      "gyro_bias_mrad": 0.0,
+      "speed_cap_mmps": 300,
+      "new_obstacle": "none",
+      "lidar_outage": "",
+      "web_stop_at": 0.0,
+      "stop_force_n": null,
+      "command_mode": "native",
+      "command_profile": "",
+      "command_timebase": "uptime",
+      "command_gap_ms": 650.0,
+      "interruption_force_n": null
+    },
+    "limitations": [
+      "unidentified physical friction, load, motor dynamics",
+      "original4500 float32/open-chain model, not deployed fixed-point controller",
+      "native training-equivalent actuators, not measured FPGA wheel PID plant",
+      "forces and frequencies are sensitivity assumptions, not fitted 100 Hz data",
+      "virtual ToF has depth noise/occlusion; material multipath and real flying pixels not calibrated",
+      "C navigation + integer perception model, not full CPU/RTL cycle simulation"
+    ]
+  },
+  "speed_cap_check": {
+    "requested_mmps": 300,
+    "observed_command_max_mmps": 300,
+    "valid": true
+  },
+  "search_mission_outcome": "physical_failure"
+}

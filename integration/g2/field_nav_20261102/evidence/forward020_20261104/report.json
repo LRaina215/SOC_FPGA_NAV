@@ -1,0 +1,83 @@
+{
+  "stage": "loaded_banner_verified_ACTIVE_synced_map_ready",
+  "baseline": "PNR100/swingunlock08:41:55",
+  "firmware": {
+    "path": "D:\\tools\\forward020_20261104\\nav_fw_forward020_yaw3_20261104.bin",
+    "banner": "Nov  4 2026 09:31:54",
+    "bytes": 58680,
+    "ram_kib": 136,
+    "bss_bytes": 70712,
+    "stack_kib": 6
+  },
+  "navigation_forward_command_cap_mps": 0.2,
+  "changes": [
+    "Shared APP_FWD_V200 for planner cap/candidates and path reference",
+    "Final navigation speed outlet clamps requested forward velocity to0..200mm/s before unchanged collision checking"
+  ],
+  "unchanged": [
+    "acceleration/deceleration ramps",
+    "turning",
+    "goal and path selection",
+    "obstacle checks and clearing",
+    "removed motion fault latch remains removed",
+    "balance/PID and their wheel target limits",
+    "ultrasonic",
+    "map/keeper/bridge/web",
+    "PNR100 Flash"
+  ],
+  "tests": "Compile/link only; no extra motion, simulation, replay or hash tests",
+  "deployed": true,
+  "Flash_changed": false,
+  "scope": "Navigation reference cap is not an actual wheel-speed limiter; balance corrective wheel motion can exceed0.20m/s.",
+  "ACTIVE_changed": true,
+  "loaded_at": "2026-11-04T09:33:51.768217+08:00",
+  "active_backup": "/home/robomaster/fpga_bench/fw/ACTIVE.before_forward020_20261104_093344",
+  "post_status": {
+    "nav_link": "online",
+    "control_link": "online",
+    "fpga_mode": "idle",
+    "fpga_state": "idle",
+    "map_loaded": true,
+    "cmd_vx_mps": 0.0,
+    "cmd_wz_radps": 0.0,
+    "control_faults": [
+      "policy_fault:1",
+      "bmi088_error:4",
+      "bmi088_stale"
+    ]
+  },
+  "map_upload": {
+    "id": "454041912c6c4939b4862602d5de817b",
+    "filename": "field_home2.nvmp",
+    "map_id": "field_home2",
+    "state": "ready",
+    "sent_bytes": 9880,
+    "total_bytes": 9880,
+    "progress": 100,
+    "detail": "先验地图已加载（9880 B，2.2 s）；地图目标需给定初始位姿，雷达在后台辅助纠偏",
+    "started_at": "2026-11-04T01:33:52.966771+00:00",
+    "completed_at": "2026-11-04T01:33:55.166924+00:00"
+  },
+  "services": "active\nactive\n",
+  "recent_run_evidence": {
+    "20261104_092750": {
+      "start_300_at_s": 11.4779,
+      "first_pitch30_at_s": 12.5764,
+      "max_wheel_body_mps": 0.62,
+      "max_wheel_at_s": 16.7614,
+      "command_at_max_wheel": 0.0,
+      "pitch_at_max_wheel": 42.09901311287078,
+      "no_repeated_motion_test": true
+    },
+    "20261104_092830": {
+      "start_300_at_s": 9.1315,
+      "first_pitch30_at_s": null,
+      "max_wheel_body_mps": 0.195,
+      "max_wheel_at_s": 9.5801,
+      "command_at_max_wheel": 0.300048828125,
+      "pitch_at_max_wheel": 12.865650390996795,
+      "no_repeated_motion_test": true
+    }
+  },
+  "inference_limit": "Recent fall followed reaching0.30m/s, but timing correlation does not establish cruise speed as the sole cause; second run includes control-telemetry disconnect. No claim0.20m/s is physically validated."
+}

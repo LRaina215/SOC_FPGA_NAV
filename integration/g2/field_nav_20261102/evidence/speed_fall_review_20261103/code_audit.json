@@ -1,0 +1,48 @@
+{
+  "stage": "source_audit_complete_recent_fall_curves_pending_network",
+  "observed_ACTIVE": "nav_fw_searchmap_s2_yaw3_20261103.bin",
+  "source": "D:\\tools\\search_map_s2_fix_20261103\\fw",
+  "recordings_identified": [
+    "20261103_231031",
+    "20261103_231256",
+    "20261103_231418"
+  ],
+  "recording_metadata_read": true,
+  "recent_full_curves_retrieved": false,
+  "confirmed_code": {
+    "navigation_planning_period_ms": 100,
+    "cruise_mps": 0.3,
+    "near_goal_corner_min_mps": 0.15,
+    "near_speed_formula_mmps": "clamp(0.6 * min(goal_distance_mm,look_distance_mm),150,300)",
+    "accel_step_mps_per_period": 0.03,
+    "search_track_decel_step_mps_per_period": 0.03,
+    "goto_decel_step_mps_per_period": 0.05,
+    "search_track_turn_cap_radps": 0.4,
+    "goto_turn_radps": 1.0,
+    "goto_turn_near_radps": 0.4,
+    "turn_enter_exit_deg": [
+      15,
+      5
+    ],
+    "angular_slew_in_C": false,
+    "post_smoothing_rejection": "Final motion check can replace the shaped command with zero; v_prev is then reset to zero, so the next acceleration starts from zero.",
+    "command_lease_slew": "STEP_V_Q12=41 each1ms, approximately0.010m/s each1ms; nominal0.3-to-zero around30ms, excluding explicit ESTOP which zeros immediately.",
+    "controller_architecture": "Nav target -> SAFE/lease -> learned4500 balance policy using IMU/encoders -> wheel velocity targets -> existing10ms wheel PID",
+    "reverse_distinction": "Negative wheel targets can be balance compensation even with nonnegative navigation forward command."
+  },
+  "working_hypothesis": "Repeated final-check zeroing plus low-speed restarts and stop/turn transitions are incompatible with the reported steady-motion-only stability; latest fall causality is not yet established.",
+  "not_claimed": [
+    "No claim that the latest falls have the same mechanism as13:29",
+    "No claim that every zero command is from a software collision rejection",
+    "No proof yet whether the latest failures preceded command drops or followed them"
+  ],
+  "runtime_changes": false,
+  "new_tests": false,
+  "motion_commands_sent": false,
+  "checked_at": "2026-11-03T23:28:11.286435+08:00",
+  "network_status": "RK became Tailscale-offline again; repeated SSH and LAN reads failed after recording index was retrieved. User confirmed reconnect once; no recent curve data retrieved.",
+  "baseline_speed_constants": "Cruise, near speed, accel/decel increments and turn limits match the16:20 locfix2 source. Goal tolerance and active-reobservation sequence changed later; equal constants do not guarantee equal command timing.",
+  "telemetry_status_active_bit": 128,
+  "superseded_by": "../speed_transition_20261103/report.json",
+  "correction": "Full logs now retrieved. Collision-zero initiating-cause hypothesis not supported for these three falls; safety_guard also ramps upstream of command_lease. See board-time evidence in superseding report."
+}

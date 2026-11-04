@@ -1,0 +1,11 @@
+构建 app=nav, -Os, LTO=on
+WARNING automatic stack analysis incomplete; using direct-call bound 1392B (re-check indirect jumps)
+栈预留 6KiB，静态界 1392B（IRQ关闭，保留至少一倍余量）
+D:\tools\motion_repair_20261103\delivery_candidate\fw\nav\nav_task.c:767:9: warning: unused variable 'need_motion' [-Wunused-variable]
+D:\tools\motion_repair_20261103\delivery_candidate\fw\nav\nav_task.c:766:13: warning: unused variable 'scan_gy' [-Wunused-variable]
+D:\tools\motion_repair_20261103\delivery_candidate\fw\nav\nav_task.c:765:13: warning: unused variable 'scan_gx' [-Wunused-variable]
+lto-wrapper.exe: warning: using serial compilation of 2 LTRANS jobs
+D:/tools/xpack-riscv-none-elf-gcc-15.2.0-1/bin/../lib/gcc/riscv-none-elf/15.2.0/../../../../riscv-none-elf/bin/ld.exe: warning: D:\tools\motion_repair_20261103\delivery_candidate\rv32_delivery\nav_fw.elf has a LOAD segment with RWX permissions
+text	   data	    bss	    dec	    hex	filename
+  54442	      0	  70348	 124790	  1e776	D:\tools\motion_repair_20261103\delivery_candidate\rv32_delivery\nav_fw.elf
+镜像 54444 字节，.bss 70348 字节，RAM 128 KB

@@ -1,0 +1,72 @@
+{
+  "stage": "loaded_banner_verified_ACTIVE_synced_map_ready",
+  "prepared_at": "2026-11-04T08:43:09.601266+08:00",
+  "baseline": "strictturn / Nov  4 2026 08:25:52 / current RK ACTIVE at read-only inspection",
+  "firmware": {
+    "path": "D:\\tools\\swing_unlock_20261104\\nav_fw_swingunlock_yaw3_20261104.bin",
+    "banner": "Nov  4 2026 08:41:55",
+    "bytes": 58688,
+    "ram_kib": 136,
+    "bss_bytes": 70712,
+    "stack_kib": 6
+  },
+  "changed_files": [
+    "nav/nav_task.c",
+    "nav/nav_task.h"
+  ],
+  "changes": [
+    "Remove the new3-sample body-vx<-100mm/s persistent navigation latch: normal balance corrections no longer latch the task",
+    "Remove the added20deg persistent navigation latch and SEARCH/TRACK inheritance/reset plumbing; delete the obsolete reverse counter and phase5 branch",
+    "The speed outlet no longer assigns ST_BLOCKED: normal data/attitude and turn/translation handovers remain non-latching, with their original conditions",
+    "Existing independent collision veto, explicit emergency stop, map/path blockage and obstacle reobservation conditions remain unchanged"
+  ],
+  "unchanged": [
+    "global search/target selection",
+    "planning and original goals",
+    "obstacle clearing thresholds and35s duration",
+    "forward/turn speed settings and ramps",
+    "balance/PID",
+    "ultrasonic RTL",
+    "map",
+    "camera",
+    "bridge/web"
+  ],
+  "clear_counter_zero_explanation": "In the latest long interval speed_phase5 zeroed commands before the nonzero final motion check. Paths were mostly valid; the cumulative3/2 failures were NO_MAP, not HAZARD. There is no logged obstacle rejection proving that the age/count/height observation eligibility thresholds caused the zero counter.",
+  "validation": "User authorized deployment after fresh support/motor-off confirmation. Existing loader and actual boot banner checked, then ACTIVE/services/map/idle read. No simulation, replay, navigation motion, hash checks or additional tests.",
+  "deployed": true,
+  "ACTIVE_changed": true,
+  "Flash_changed": false,
+  "candidate_scope": "This patch is based on the actual newer strictturn source, not the earlier flatbody candidate; it does not import that separate clearing patch.",
+  "loaded_at": "2026-11-04T08:44:56.795205+08:00",
+  "active_backup": "/home/robomaster/fpga_bench/fw/ACTIVE.before_swingunlock_20261104_084449",
+  "actual_banner": "Nov  4 2026 08:41:55",
+  "motion_goal_sent": false,
+  "post_status": {
+    "nav_link": "online",
+    "control_link": "online",
+    "fpga_mode": "idle",
+    "fpga_state": "idle",
+    "map_loaded": true,
+    "cmd_vx_mps": 0.0,
+    "cmd_wz_radps": 0.0,
+    "control_faults": [
+      "policy_fault:1",
+      "bmi088_error:4",
+      "bmi088_stale"
+    ]
+  },
+  "map_upload": {
+    "id": "b31982825574478ca9714e8c715ce6ae",
+    "filename": "field_home2.nvmp",
+    "map_id": "field_home2",
+    "state": "ready",
+    "sent_bytes": 9880,
+    "total_bytes": 9880,
+    "progress": 100,
+    "detail": "先验地图已加载（9880 B，2.8 s）；地图目标需给定初始位姿，雷达在后台辅助纠偏",
+    "started_at": "2026-11-04T00:44:58.009498+00:00",
+    "completed_at": "2026-11-04T00:45:00.809272+00:00"
+  },
+  "services": "active\nactive\n",
+  "physical_supported_and_motor_off_confirmed": true
+}

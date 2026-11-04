@@ -1,0 +1,27 @@
+{
+  "ready_for_supported_drive_off_loading": true,
+  "programmed": true,
+  "bitstream": "D:\\tools\\g2_clear_ultrasonic_pnr99_20261104.fs",
+  "firmware": "D:\\tools\\clear_pipeline_20261104\\nav_fw_clearpipeline_yaw3_20261104.bin",
+  "firmware_banner": "Nov  4 2026 05:02:41",
+  "RAM_KiB": 136,
+  "ultrasonic_base": "PNR94 / K_ultrasonic_noreset_syn5",
+  "bridge_delta": "D:\\tools\\clear_pipeline_20261104\\bridge_delta.json",
+  "bridge_patch": "D:\\Desktop\\SOC FPGA\\nav\\integration\\g2\\field_nav_20261102\\evidence\\clear_pipeline_20261104\\bridge_delta.patch",
+  "critical_pairing": "New136KiB firmware requires this compatible136KiB bitstream. Do not select ACTIVE on old128KiB hardware.",
+  "physical_load_scope": "PNR99 Flash program and verify, configuration from Flash, compatible UART firmware load/readback, ACTIVE and bridge delta applied, map restored. No motion goal.",
+  "load_sequence": [
+    "With fresh support and motor-drive-off state, stop keeper before ending any old task to prevent concurrent firmware reload.",
+    "Preserve ACTIVE and bridge backups; stop bridge before direct UART access.",
+    "Load compatible bitstream; apply only context-bound bridge delta; select matching ACTIVE and use existing firmware loader.",
+    "Check actual firmware banner, hardware RAM/RCV1 capability, map READY, services and idle/zero commands. No autonomous motion goal."
+  ],
+  "stage": "deployed",
+  "Flash_verified": true,
+  "ACTIVE_updated": true,
+  "bridge_updated": true,
+  "map_ready": true,
+  "deployed_at": "2026-11-04T07:46:21.787265+08:00",
+  "actual_RAM_KiB": 136,
+  "runtime_banner": "Nov  4 2026 05:02:41"
+}

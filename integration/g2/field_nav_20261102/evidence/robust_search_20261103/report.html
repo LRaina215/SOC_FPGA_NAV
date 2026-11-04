@@ -1,0 +1,25 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>目标探索：MuJoCo 修改前后对比</title>
+<style>body{font:16px/1.65 system-ui;max-width:1120px;margin:40px auto;padding:0 24px;color:#202938;background:#f5f7fb}table{border-collapse:collapse;width:100%;background:white}td,th{padding:12px;border:1px solid #d8dfe9;text-align:left}video{width:100%;background:#111}a{color:#145dba}.note{background:#fff1cf;padding:16px}code{background:#e8edf5;padding:2px 5px}</style>
+<p class="note"><strong>BOARD-INPUT AUDIT: this suite cannot certify the vehicle fix.</strong> Old IMU protocol, missing edge filter and incorrect EMA HAL decode invalidate its board equivalence. <a href="../motion_input_audit_20261103/report.html">Corrected baseline and failed candidate</a>.</p><h1>目标探索：MuJoCo 修改前后对比</h1>
+<p><b>未部署实车。</b>沿用 locfix3 的 IMU＋编码器前端、雷达辅助纠偏，无图寻物不要求先验配准。六类场景、每类一个固定种子成对验证；另做实测零指令节奏＋RTL匹配耗时回放。补测只针对实现变化和失败项，没有做参数大扫。</p>
+<p class="note"><b>结论：</b>候选在六类中完成五类，均无碰撞。历史错格案例旧版60秒未完成，候选26.8秒完成；真实80mm障碍旧版8.5秒碰撞，候选避碰但60秒未完成。候选并非全面更快，也没有全部通过。</p>
+<p class="note"><b>录像复核更正：</b>历史错格案例不能记为“清障验证通过”。候选只累计清除3条高度记录，在第10秒、第20秒仍有4个原注入致命格；两版后来都出现全部注入格转为未知的情况，不能将任务完成或离开近车统计区域归因于新清除算法。命中格坐标只用于诊断，没有接入清除/绕行；本案例最终检查仅拒绝一次。旧录像青叉是保留的窗口坐标，滚图后不保证仍指原世界位置。未做同一候选清除开/关的单变量对照，其他门限、速度和任务改动混杂，不能证明任务改善由清除造成。详见<a href="ghost_clear_audit.json">逐格复核</a>。</p>
+<table><tr><th>场景</th><th>修改前</th><th>候选</th><th>录像</th></tr><tr><td>当前场地＋三角支撑</td><td>16.4s 完成</td><td>22.8s 完成</td><td><a href="videos/home_before_after.mp4">对比录像</a></td></tr><tr><td>持续摇摆</td><td>23.6s 完成</td><td>20.6s 完成</td><td><a href="videos/sway_before_after.mp4">对比录像</a></td></tr><tr><td>0.8秒间歇零指令</td><td>21.6s 完成</td><td>33.2s 完成</td><td><a href="videos/gaps_before_after.mp4">对比录像</a></td></tr><tr><td>近区历史错格残留</td><td>60s 内未完成；无碰撞</td><td>26.8s 完成</td><td><a href="videos/ghost_before_after.mp4">对比录像</a></td></tr><tr><td>80mm真实低障碍</td><td>8.5s 碰撞，停止仿真</td><td>60s 内未完成；无碰撞</td><td><a href="videos/real_before_after.mp4">对比录像</a></td></tr><tr><td>目标第22秒出现</td><td>60s 内未完成；无碰撞</td><td>24.0s 完成</td><td><a href="videos/occlusion_before_after.mp4">对比录像</a></td></tr><tr><td>实测指令节奏＋RTL匹配时序</td><td>14.8s 完成</td><td>33.6s 完成</td><td><a href="videos/timed_replay_gaps_before_after.mp4">对比录像</a></td></tr></table>
+<p>时间是从仿真开始计时，任务在第4秒下发；完成后的约5秒观察尾段不计入完成时刻。低障碍案例是未完成，不算成功。目标第22秒才出现的案例不是对真实遮挡材质的完整复现。</p>
+<h2>重点录像：近区历史错格</h2><video controls preload="metadata" src="videos/ghost_before_after.mp4"></video>
+<p>左：旧版，右：候选。粉色是按场景几何评估的近车错误致命格；灰色是未知，黄色是膨胀区，红色是真实或错误致命格。白圈为采集中心附近215mm名义包络，青叉是最近一次命中格。录像从保存的物理状态重放，没有重跑策略或人为指定行驶轨迹。</p>
+<h2>做了哪些修改</h2><ul>
+<li>SEARCH 遇最终足迹拒绝同样报告受阻；持续拒绝后有界换探索目标，惩罚约15秒后可重试。卡住进展结合净编码器位移，避免只靠定位跳动或摇摆刷新。</li>
+<li>目标三维坐标使用采图时刻的 pitch/roll/yaw；正常静态物体丢失后，增加一次12秒内的最后位置重访及朝向观察，不重发旧检测、不凭记忆宣布找到。</li>
+<li>控制异常请求零速、保留任务、冻结等待期间超时；持续健康且平衡重新启用后恢复。急停、用户取消和暂停不会自动恢复。网页增加等待控制恢复标签。</li>
+<li>发现实际平地模式台阶门限100mm，80mm障碍会被放过；候选改为20mm保守拒绝门限，不宣称机器人实际越障能力就是20mm。未知区域限制到60mm/s并重新检查最终命令。</li>
+<li>清除原型：只有连续不同观测帧的有效射线能穿过旧高度证据，才将该证据作废为未知。5×5像素最小量程做前景遮挡约束；缺测、重复同一帧、前景命中均不能清。近区保留规则没有简单关闭。</li></ul>
+<h2>实车参数与仿真边界</h2><p>车体27×33cm、检查半径215mm；XT-M60为160×60、10Hz、径向测距，使用项目LUT/SDK射线参数。雷达平移(123,0,150)mm，yaw/pitch/roll=(3°,2.1°,3°)。修正了旧宿主安装参数接口会把yaw/roll清零的问题，修改前后均使用同一正确安装。</p>
+<p>相机使用实机读取的640×480内参、彩色注册深度、畸变模型及11月3日静态安装标定：xyz=(-0.080694,-0.021109,0.293637)m，pitch/yaw/roll=(-1.763606,2.559597,0.629786)°。输入渲染RGB-D与像素框，经过现有深度定位、颜色、跟踪、网桥、真实C固件。检测框来自分割图加概率模型，<b>不是实机RKNN检测验收</b>。相机噪声、丢像素、量程和USB延迟仍有假设；没有模拟全部材质多径，也没有新增在线读取设备参数。</p>
+<p>实测健康控制段俯仰RMS约4.30°、峰值12.15°；仿真RMS约3.7–4.4°、峰值约7.83°，量级接近，未覆盖实测峰值。0.35N外力是假设扰动。额外回放使用实测15–55秒段4001个100Hz命令电平样本，其中约29.3%双轴为零；它是零指令门控，<b>不是抓到的串口丢包时刻</b>。匹配耗时按RTL周期模型/50MHz变化。</p>
+<p>三帧原始异常距离没有自然形成持续错格；为验证“已经残留”的情况，另明确注入15个近区旧高度槽（120mm）。因此本轮证明的是构造故障下的恢复改进，不能倒推实测16:21的拦停一定由假障碍造成。候选假致命格峰值也没有全面下降，收紧门限后该峰值可以上升；应结合任务完成、持续时间及真实障碍保护一起判断。</p>
+<p class="note">清除算法目前是离线参考模型原型，<b>尚未实现为RTL</b>，不能只烧候选固件就得到同样清除效果。数字PID＋未标定电机模型在0.38秒失稳，未被隐藏或调大扭矩掩盖；正式对比使用现有可运行的训练执行器近似，策略为浮点、机构为开链，因此不等同完整实车平衡系统。真实低障碍绕行后目标恢复仍未通过。</p>
+<h2>检查与交付</h2><p>8项控制恢复/里程计策略检查、7项已有搜索/暂停/停止检查通过；4项清除证据检查通过。固定世界点在±12°俯仰、±6°横滚的15个姿态中，水平L1最大坐标误差由159mm降至3mm，这是离散算术检查，不是实机精度。</p>
+<p>宿主DLL编译成功。RISC-V ELF链接成功，text53784B、BSS70268B、预留栈6144B后余876B；完整静态栈界分析仍未闭合，发布门禁未通过，未生成发布BIN。没有烧录、替换ACTIVE、重启RK服务或下发车辆运动。</p>
+<p><a href="results.json">逐案例指标</a> · <a href="checks.json">检查记录</a> · <a href="video_check.json">录像首尾可读检查</a> · <a href="source/candidate.patch">基于locfix3的候选固件补丁</a> · <a href="provenance.json">冻结源码与原始数据位置</a></p>
+<p>搜索任务结果以网桥任务完成记录为准；底层通用metrics的GOTO终点评分器不用于本次搜索，另标search_mission_outcome，保留原评分避免混淆。原始日志没有障碍命中栅格，实测根因仍不能仅凭这轮仿真定案。</p></html>

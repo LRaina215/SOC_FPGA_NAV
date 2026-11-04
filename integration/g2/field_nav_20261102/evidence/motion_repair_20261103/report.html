@@ -1,0 +1,47 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>摇摆、零速断续与假障碍恢复：离线修复对照</title>
+<style>body{font:16px/1.7 system-ui,"Microsoft YaHei",sans-serif;max-width:1120px;margin:32px auto;padding:0 20px;color:#18222d;background:#f7f9fb}h1{font-size:28px}h2{margin-top:36px}video,img{width:100%;background:#19202a;border-radius:8px}table{border-collapse:collapse;width:100%;background:white}th,td{border:1px solid #ccd4dc;padding:10px;text-align:left}code{overflow-wrap:anywhere}a{color:#00658c}.good{background:#e3f4e9;border-left:4px solid #268459;padding:16px}.note{background:#fff1d9;padding:16px}small{color:#586674}</style>
+<h1>摇摆、指令断续与假障碍：已完成一组同源算法修复验证</h1>
+<p class="good">相同初始运行在 13.186 秒生成同样的两格假障碍。修复后，实际 C 足迹拒绝触发换位重扫；33.664 秒，两格旧高度被新地面观测更新，随后在 45.22 秒完成寻物。旧版 65 秒未完成。三组运行均无碰撞。<strong>没有部署实车、RK、ACTIVE 或 Flash。</strong></p>
+<p class="note">这是一个有明确假设的离线压力用例通过，不是实车全部工况验收。实际日志没有保存当时被拒栅格，因此不能断言本模型就是 16:21 实测故障的唯一成因。</p>
+<h2>前后对比录像</h2><p>左：实际 locfix3 C 基线；右：主动重观测修复。2 倍播放，画面时钟为仿真时间。白框始终追踪连续地形坐标 A=(32,2)、B=(33,2)，不沿用滚动窗口旧下标。粉色只用于离线评分，不输入导航。</p>
+<video controls preload="metadata" poster="before_after_33.8s.png" src="before_after.mp4"></video>
+<p>建议看 13–14 秒的生成与拒绝、13.51 秒开始的换位、33.664 秒的地面更新，以及 45.22 秒后的任务结果。旧版随后能离开该区域，但没有重新确认原两格是地面；不能把它离开统计区域或转为未知当作清除。</p>
+<table><tr><th>指标</th><th>旧版</th><th>修复版</th></tr>
+<tr><td>首次两格假障碍</td><td colspan="2">13.186 秒；A 高度 135 mm，B 高度 160 mm；13.501 秒最终运动检查命中 A</td></tr>
+<tr><td>A 首次非致命</td><td>25.807 秒：代价 253，旧高度仍 135 mm，年龄 127</td><td>33.664 秒：代价 5，新高度 18 mm，年龄 1、计数 15</td></tr>
+<tr><td>B 首次非致命</td><td>26.796 秒：过期为未知，旧高度 172 mm，计数 0</td><td>33.664 秒：代价 7，新高度 19 mm，年龄 1、计数 15</td></tr>
+<tr><td>新观测发生位置</td><td>没有主动复核</td><td>两格相对窗口中心为 (6,5)、(7,5)，都在近区保留半径 12 格内</td></tr>
+<tr><td>65 秒内任务</td><td>未完成；最接近瓶子约 0.40 m 后又离开</td><td>45.22 秒完成；结束距瓶子约 1.06 m</td></tr>
+<tr><td>碰撞 / 显式射线删除</td><td>0 / 0</td><td>0 / 0</td></tr></table>
+<p>修复没有使所有假障碍消失，也没有证明清除总是更快：39 秒附近仍有两格瞬态假障碍，随后分别在 0.588 / 0.877 秒后由新观测降为非致命。20.478 秒的主动复核仍偏慢；它的有效性在于重新获得地面证据、恢复任务，而不是单纯压低计数。</p>
+<img src="cell_history.png" alt="两格高度、年龄与观测计数逐帧历史">
+<h2>修了什么，为什么能恢复</h2>
+<ol><li>把实际最终足迹检查命中的连续格用于恢复决策。满足旧高度条件时，记住该格并进入有时限的主动重观测；SEARCH 同样报告受阻。</li>
+<li>先原地转向，再以前进方式到距当前点约 25 cm 的观察位置，最后转回查看被拒格。没有给导航增加倒车。所有动作仍经过原有速度整形和最终完整足迹检查，不能穿过已知障碍。</li>
+<li>只有命中格重新得到新鲜观测（年龄 ≤2、计数 ≥4），且高度上下界均在当前地面 ±30 mm 内，才计为复核成功。旧高度由已有 FPGA EMA 正常吸收地面点更新，没有直接清格、写自由空间或凭空补地面。</li>
+<li>单次观察最长 35 秒，之后退出并冷却，超时不会冒充清除成功。对静态瓶子/杯子保留有界重访站位，转头后允许重新找回目标；没有伪造新鲜检测或提前宣布找到。</li>
+<li>进展检测同时要求净编码器行程，防止仅靠摇摆位移或定位修正刷新“正在前进”。取消、急停、新目标、重设位姿可打断恢复；hold/缺地图优先于恢复动作。</li></ol>
+<p>录像中真正起作用的是<strong>主动重观测 + 原有高程更新</strong>。保留的实验射线作废分支默认关闭，显式删除为 0；新增原始像素/条件作废 RTL 原型未用于这组通过结果，交付修复不要求更换位流。</p>
+<h2>真实障碍检查</h2><p>右侧把 0.8 m 门洞用厚 0.10 m、高 0.30 m 的真实箱体封住。左侧是相同修复版的开放门洞参考，不是这堵障碍的旧版对照。修复版在封堵场景 65 秒未完成任务，也未碰撞或穿越；车轴中心最前到 x≈0.997 m，障碍近面 x=1.45 m。</p>
+<video controls preload="metadata" poster="true_barrier_20.0s.png" src="true_barrier.mp4"></video>
+<p>此封堵场景由规划/可见性检查持续阻挡，未触发主动重观测（启动次数 0）。它验证保留障碍约束及不强行穿行，<strong>不能单独证明在所有真实障碍上启动恢复都能安全完成</strong>。八项控制入口检查通过，范围见 <a href="control_checks.json">原始结果</a>；从零前进速度启动恢复状态，未覆盖行驶中制动距离，并非八轮实车运动测试。</p>
+<h2>同源性与传感器参数</h2>
+<p>环境：<code>D:\Anaconda\envs\mujoco\python.exe</code> / MuJoCo 3.2.7。导航冻结自实际 <code>fw_locfix3_20261103</code>；原有探索、A*、局部规划、足迹检查与姿态历史查询均执行实际 C。host HAL 连接的是原始深度→边缘滤波→C 内参 LUT→变换→EMA→trav_v3 的板上参考链，不用理想障碍栅格替代导航输入。13.501 秒前两版地图数据完全一致，随后行为才分叉。</p>
+<p>上一轮已逐位核对：240 组 BMI088 融合输出；实板感知 RTL 连续 8 帧、35,238 条滤波输出、131,072 格代价。它们是组件核对，不等于完整 CPU/总线/控制 RTL 闭环。旧版薄纸板评分曾被网格点采样漏掉，本轮已改为连续几何距离，包含整格对角线与额外 10 cm 容差；该真值仅用于评分。</p>
+<table><tr><th>参数</th><th>本轮使用 / 证据边界</th></tr>
+<tr><td>车体</td><td>前后 27 cm、左右 33 cm；圆形外接安全半径 215 mm</td></tr>
+<tr><td>XT-M60</td><td>160×60、10 Hz 径向深度；本机旧 SDK 云恢复内参 fx=79.944214、fy=82.731255、cx=79.881515、cy=26.922453，含五参数畸变；安装 (123,0,150) mm，偏航 3°、俯仰 2.1°、横滚 3°</td></tr>
+<tr><td>深度相机</td><td>640×480，厂家注册深度/彩色 K：fx=fy=543.467407、cx=316.355194、cy=242.648560；采用 11-03 标定外参 xyz=(-0.080694,-0.021109,0.293637)m，pitch/yaw/roll=(-1.763606,2.559597,0.629786)°；5 Hz 代理检测器，非实际 YOLO 推理</td></tr>
+<tr><td>IMU / 时序</td><td>BMI088 真实运动加速度/角速度→实板整数融合→0x5B/0x5C 量化和 UART 时序；没有直接喂真实姿态。BMI 物理杠杆臂尚未量测</td></tr>
+<tr><td>运动与指令</td><td>1.5 N、0.8 Hz 纵向扰动为声明的敏感性参数；复用实测 15–55 秒的 100 Hz 零速片段，双轴为零约 29.3%。这是命令电平门控，不是已测串口丢包</td></tr>
+<tr><td>ToF 运动误差</td><td>四相关采样桶按相邻 6.4 ms 的物理位姿生成，12 MHz，相位混合后加 12 mm 径向噪声；没有直接写假障碍。6.4 ms / 采样顺序是压力模型假设，<strong>并非已确认 XT-M60 私有 HDR 算法或实测误差幅度</strong></td></tr>
+<tr><td>地形门限</td><td>两版相同：step=100、rough=150、rise=200 mm，EMA shift=3，cnt=4，age=60，keep=12，膨胀半径=4 格；没有为通过而放宽门限</td></tr></table>
+<p>场景是扩展模拟走廊，含三角支撑（等腰边约 30 cm、底边约 45 cm）；不是对当前房间的新测绘。动力模型仍是 original4500 训练执行器近似、质量约 2.17 kg，不是已辨识实车电机/固定点平衡控制全链。材料多径、反射率和实际曝光时序未标定，因此不能据此保证实车不再出现假障碍。</p>
+<p>相位混合建模参考 <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/chr_mpi_cvpr_15.pdf">Microsoft Research 的 AMCW ToF 研究</a>；该论文不提供 XT-M60 的器件误差模型。</p>
+<h2>源码、构建与复现</h2>
+<p><a href="candidate_fw.zip">完整冻结 C 源码</a> · <a href="board_source.patch">相对实际板上源码的差异</a> · <a href="source_manifest.json">路径与变更清单</a> · <a href="results.json">逐项结果</a> · <a href="build_profile.json">编译与门限配置</a> · <a href="rv32_build.log">RV32 构建记录</a></p>
+<p>RV32 链接成功：text=54,442 B、BSS=70,348 B，原有 6,144 B 栈保留，静态 RAM 余量仅约 132 B。为容纳修复，compact telemetry 只省略 scan/look/tmax 的详细诊断行并增加 obs 行，不改变算法。完整间接调用栈界尚未闭合；当前脚本仅检查到直接调用路径 1,392 B，不能写成完整栈证明。未执行板上时限/负载验收，尚不作为实车发布批准。</p>
+<p>最后一次整理只共用完全相同的格中心换算和精简控制台输出。交付源码重新运行 65 秒后，与录像所用版本的全部地图数组、物理 qpos 逐项完全一致（不是哈希校验）。</p>
+<p>项目入口：<code>nav/sim/closed_loop/prepare_motion_repair.py</code>、<code>motion_sensor_baseline.py</code>、<code>check_motion_repair_controls.py</code>、<code>motion_repair_video.py</code>、<code>motion_repair_report.py</code>。原始 650 帧深度、100 Hz 输入、每次融合的高度/年龄/代价保存在 source_manifest 指向的目录；此页保留小型结果 JSON。</p>
+<p>先前失败迭代没有作为通过依据：只加时间补偿/射线删除没有完成清障；400 mm 观察位移、20 秒时限曾因转向来不及而超时。最终采用 250 mm / 35 秒，实际通过结果如上。没有重跑六场景大矩阵或 SHA 校验。</p>
+</html>

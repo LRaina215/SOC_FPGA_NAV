@@ -1,5 +1,7 @@
 # 实机搭建与测试手册
 
+**2026-11-04使用入口：** 当前交付为PNR100/136KiB，已写入Flash；RK最后ACTIVE为地图2radius35，不能用下文10月的“当前推荐”导航独立镜像替代。启动、版本查询、SRAM/Flash区别、本地网页8000、遥控0键/LED7和回退见[阶段交接](project_handover_20261104.md)。旧命令器件B、固定USB位置和早期LCD尺寸均保留原阶段；现共同构建按C版本，下载先扫描实际线缆/器件。
+
 本手册介绍开发环境、导航独立台架的构建与下载、外设接入和故障排查。每节列出操作步骤与通过标准，适用于分模块调试。
 
 共同轮腿工程的操作入口为[落地调试与建图指南](ground_debug_and_mapping_20261027.md)。本页独立导航位流使用单独的顶层、引脚和旧版地图工具；连接整车线束时，应采用共同工程配套的 CST、固件与 NVMP v3 工具。
@@ -210,7 +212,7 @@ $PY tools/board_init.py COM11 --no-safe --mount-z 155
 | `--no-safe` | 速度输出保持 0 | 底盘接入并架空测试（第 6.6 节）之前一直加上 |
 
 通过标准：每一行都显示 `OK`，最后打印"初始化完成"。先用 `--dry-run` 可以只看要写哪些值、不连板子。
-按了复位键 S0 或者重新下载 / 断电后，都要重新运行一次。
+按了复位键（PNR79 起为 S1 / S2）或者重新下载 / 断电后，都要重新运行一次。
 
 `board_init.py` 目前只写 `LIDAR_CTRL`、`IMU_BAUD_DIV`、`MATCH_MOUNT_Z`、`SAFE_LIM_V/W`、`SAFE_CTRL`。速度斜坡 `SAFE_LIM_A`、输出节拍 `SAFE_TICK_US`、
 看门狗 `SAFE_WD_US`、外部急停使能 `SAFE_EXT_MASK` 保持复位值（每节拍 2 mm/s / 3 mrad/s、1 ms、200 ms、全关）；底盘接入时要按底盘能力设置（[chassis_review.md](../5_teams/chassis_review.md) 第 3.4 节），

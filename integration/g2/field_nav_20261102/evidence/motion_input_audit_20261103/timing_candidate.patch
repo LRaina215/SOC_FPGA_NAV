@@ -1,0 +1,44 @@
+--- baseline/app/nav_app.c
++++ candidate/app/nav_app.c
+@@ -1,3 +1,12 @@
++/* Packet arrival to effective exposure delay. Zero preserves the board
++ * baseline. Set only from a measured sensor/transport profile; simulation may
++ * use a declared sensitivity value. Pose queries still fail closed. */
++#ifndef APP_LIDAR_SENSOR_DELAY_US
++#define APP_LIDAR_SENSOR_DELAY_US 0
++#endif
++#if APP_LIDAR_SENSOR_DELAY_US < 0 || APP_LIDAR_SENSOR_DELAY_US > 150000
++#error APP_LIDAR_SENSOR_DELAY_US_outside_supported_history
++#endif
+ #include "nav_search_checkpoint.h"
+ #include "nav_app.h"
+ #include "hal.h"
+@@ -478,13 +487,16 @@
+      * 突变还没被检测到，这一帧就会带着旧姿态融合 */
+     bool att_ready = false;
+     /* 上一帧的匹配未结束时不提交新帧（点缓冲还在用） */
+-    if (!g_app.pm_pend && !g_app.pm_run && hal_lidar_waiting(&ft))
+-        att_ready = !nt->pose.have_att || (int32_t)(nt->pose.imu_t_us - ft) >= 0 || (uint32_t)(now - ft) > 100000;
++    uint32_t exposure_us = 0;
++    if (!g_app.pm_pend && !g_app.pm_run && hal_lidar_waiting(&ft)) {
++        exposure_us = ft - (uint32_t)APP_LIDAR_SENSOR_DELAY_US;
++        att_ready = !nt->pose.have_att || (int32_t)(nt->pose.imu_t_us - exposure_us) >= 0 || (uint32_t)(now - ft) > 100000;
++    }
+     if (att_ready) {
+         uint32_t t_frame = hal_time_us();
+         nav_pose_t at;
+         int32_t r[3][3], tt[3];
+-        pose_query_t query = pose_at(&nt->pose, ft, &at);
++        pose_query_t query = pose_at(&nt->pose, exposure_us, &at);
+         if (!pose_query_valid(query)) {
+             g_app.n_time_skip++;
+             if (query >= POSE_ATT_EMPTY) g_app.n_tq_att++; else g_app.n_tq_odo++;
+@@ -500,7 +512,7 @@
+          * 提交空高度带（zmin > zmax）——帧被消费、不写图、不提结构点，地形扫描照常进行 */
+         /* 11-01：平衡车站立时一直晃，姿态新息动辄超过 1.5°，原来"突变前后 200 ms 的帧一律不用"会让匹配和建图整段停摆
+          * （定位质量冻结不变）。现在这类帧照常做定位匹配，只是不写进高程图（finish_fusion 里拦），避免假台阶堵路。 */
+-        s_frame_unsettled = pose_att_unsettled(&nt->pose, ft, 200000);
++        s_frame_unsettled = pose_att_unsettled(&nt->pose, exposure_us, 200000);
+         bool skip = !pose_query_valid(query) || (!APP_FLAT_FRAMES && s_frame_unsettled);
+         /* 原地转向时一帧 100 ms 里车就转了 6–7°，点云带拖影，跟踪窗只有 ±1.4°：转向中和刚停的帧不匹配也不建图，
+          * 航向这段只靠陀螺；转完头几帧放宽角度窗再接上 */

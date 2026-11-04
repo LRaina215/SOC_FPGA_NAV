@@ -1,0 +1,43 @@
+--- before/nav/nav_task.c
++++ after/nav/nav_task.c
+@@ -703,16 +703,17 @@
+     return false;
+ }
+ 
+-/* Condition SEARCH references only. Wheel/fore-aft oscillation is not a
++/* Condition SEARCH/GOTO turn transitions. Wheel/fore-aft oscillation is not a
+  * prerequisite for starting motion: requiring it to vanish stranded this
+  * balancing chassis. Retain fresh feedback, yaw ramp-out before translation,
+  * large-tilt suppression, and the independent final collision veto. */
+ void nav_task_speed_reference(nav_task_t *nt,uint32_t now)
+ {
+-    if(nt->mode!=NAV_MODE_SEARCH) {nt->speed_phase=nt->speed_quiet=0;return;}
++    bool search=nt->mode==NAV_MODE_SEARCH;
++    if(!search && nt->mode!=NAV_MODE_GOTO) {nt->speed_phase=nt->speed_quiet=0;return;}
+     bool att=nt->pose.have_att && (uint32_t)(now-nt->pose.imu_t_us)<100000;
+     int pitch=nav_abs32((int16_t)nt->pose.cur.pitch);
+-    if(att && pitch>ANGLE_FROM_CDEG(2000)) {
++    if(search && att && pitch>ANGLE_FROM_CDEG(2000)) {
+         nt->speed_phase=4;nt->speed_quiet=0;nt->cmd=(nav_cmd_t){0};return;
+     }
+     bool fresh=nt->pose.have_odo && (uint32_t)(now-nt->pose.last_odo_us)<100000 &&
+--- before/nav/nav_task.h
++++ after/nav/nav_task.h
+@@ -128,7 +128,7 @@
+     bool revisit_goal;
+     uint32_t revisit_until_us;
+     uint8_t        last_mfail;       /* 最近一次足迹检查不过的结果码 */
+-    uint8_t speed_phase, speed_quiet; /* SEARCH速度切换：0行进1待数据2转向3待角速度回落4倾角超限 */
++    uint8_t speed_phase, speed_quiet; /* SEARCH/GOTO切换：0行进1待数据2转向3待角速度回落4SEARCH倾角超限 */
+     int16_t speed_w_prev; /* 上次最终下发角速度；规划器自己的prev_wz可能已被覆盖 */
+ } nav_task_t;
+ 
+@@ -145,7 +145,7 @@
+ void nav_task_plan_work(nav_task_t *nt);
+ /* 生成状态报文内容 */
+ void nav_task_status(const nav_task_t *nt, proto_status_t *s, uint32_t now_us);
+-/* 仅整形SEARCH速度参考，必须先于最终足迹检查。 */
++/* 整形SEARCH/GOTO速度参考，必须先于最终足迹检查。 */
+ void nav_task_speed_reference(nav_task_t *nt, uint32_t now_us);
+ 
+ /* 坐标换算工具 */

@@ -1,0 +1,36 @@
+{
+  "stage": "read_only_diagnosis_partial_ground_recheck_but_no_goal_resumption",
+  "session": "20261104_120621",
+  "start": "2026-11-04T12:06:21+08:00",
+  "end": "2026-11-04T12:08:02+08:00",
+  "firmware": "swingunlock / Nov  4 2026 08:41:55, restored12:04:22; live layers ON",
+  "telemetry_samples": 10077,
+  "sequence_gaps": 0,
+  "facts": [
+    "12:06:51 final footprint check first reports HAZARD4;01/NO_MAP and speed fault latch are not this episode",
+    "12:06:53 first observer starts for fine42,1;12:07:24 ground outcome2 completes it after31s",
+    "12:07:29 second observer starts for fine42,4,150mm from the first selected cell; it remains active when the run ends, timeout counter0",
+    "Both selected fine cells have cost0 in the actual field_home2 prior. They are runtime elevation-layer blocks, not prior-map occupied cells",
+    "Final counters:2observations started,1ground completion,0timeouts,309ray revalidation frames,0successful ray proofs,0ray invalidations,67motion HAZARD refusals",
+    "First observation35..66s has positive forward command for only0.06s, max0.03m/s; repeatedly refused viewpoint motion largely becomes turning/waiting",
+    "Control timestamps66..93s after first completion contain2700samples: forward_q12 stays0 throughout. Thus ground-completion is not evidence the original navigation resumed",
+    "Original goal(850,-930)mm stays unchanged throughout the GOTO portion"
+  ],
+  "conclusion": "The clearing flow is enabled and once passed a fresh-ground recheck, but did not deliver a usable passage or resume forward navigation. Ray deletion had zero demonstrated effect in this run.",
+  "inferences": [
+    "Given the user-confirmed clear flat floor and free prior cells, runtime misclassification/projection error is suspected; logs alone cannot distinguish height generation error from map-pose misprojection"
+  ],
+  "unverified": [
+    "Source of the abnormal elevation: raw depth/cloud, low height and groundZ were not recorded",
+    "Why no ray proof succeeded: eligibility/projection/missing-depth/foreground veto counters are not in this firmware console"
+  ],
+  "code_risk_not_proven_this_run": "Ray proof expands the old prism down to lo-20mm and requires all bounding rays beyond its farthest corner. If its lower extent includes the real floor, floor returns can veto clearing; lo/ground/veto data are missing to confirm this here.",
+  "repair_focus": [
+    "Do not equate one-cell ground completion with resuming the original route",
+    "Viewpoint commands are repeatedly vetoed while clearing; fix that cycle without bypassing independent real-obstacle checks",
+    "Expose the already-existing ray veto counters before assigning a specific failure cause"
+  ],
+  "firmware_or_parameters_changed": false,
+  "motion_goal_sent": false,
+  "additional_tests_run": false
+}

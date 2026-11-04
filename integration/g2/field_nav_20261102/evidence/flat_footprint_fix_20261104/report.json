@@ -1,0 +1,48 @@
+{
+  "stage": "candidate_built_and_targeted_replay_passed_NOT_DEPLOYED",
+  "field_session": "20261104_075938",
+  "field_floor": "User explicitly confirms flat floor; raw height entries are not measured physical step heights",
+  "confirmed": [
+    "At firmware52s the saved lethal fine cell31,6 lies wholly inside the body footprint at the estimated pose1566,425,yaw0.3deg; actual prior cost is0",
+    "The unchanged final motion guard rejects that body-internal lethal cell; clearing its runtime entry removes that veto in actual C",
+    "Phase2 continuously retargets a nearby world cell as the balance vehicle drifts; old C replay issues14 late turn commands on recorded57..86s poses",
+    "Rotation skips valid height fusion; revalidation frame counter freezes during the recorded spinning periods"
+  ],
+  "not_confirmed": "Origin of the erroneous raw elevation values: no full lo/ground/raw point capture is available in this run. Self-return, projection/attitude error and retained history are hypotheses, not findings.",
+  "changes": [
+    "Clear only complete cells within the270x330mm physical body, with10mm interior inset and fresh pose/flat prior constraints; compare tag/stamp/count before invalidating elevation; mark fine cost UNKNOWN, never fabricate ground",
+    "Release global dynamic evidence and implicated retry hint only for an entire coarse cell within the body; preserve static prior walls and outside obstacles",
+    "Observer latches heading once on reaching its view position, uses existing1.0/0.4rad/s coarse/fine turn and5deg exit, then waits without bearing reacquisition; orientation phase bounded10s, overall35s unchanged",
+    "Separate footprint-clear outcome4 and counters; log raw low height, poseZ and ray projection/missing/foreground veto counts"
+  ],
+  "unchanged": [
+    "global search target selection",
+    "original task goal and waypoints",
+    "normal forward/turn speed configuration",
+    "balance controller/PID",
+    "ultrasonic RTL",
+    "map files",
+    "RK bridge",
+    "Flash"
+  ],
+  "changed_source_files": [
+    "app/main.c",
+    "drv/map_revalidate_fpga.c",
+    "nav/gmap.c",
+    "nav/gmap.h",
+    "nav/map_revalidate.h",
+    "nav/nav_task.c",
+    "nav/nav_task.h",
+    "nav/obstacle_recovery.c",
+    "test/map_revalidate_py.c"
+  ],
+  "firmware": "D:\\tools\\flat_footprint_fix_20261104\\nav_fw_flatbody_yaw3_20261104.bin",
+  "binary_bytes": 60132,
+  "ram_kib": 136,
+  "bss_bytes": 70720,
+  "stack_reserve_bytes": 6144,
+  "complete_static_stack_bound_bytes": 1520,
+  "ram_remaining_after_stack_bytes": 2268,
+  "validation_scope": "Actual firmware C using recorded poses and synthetic cost fixtures. Task-flow regression, not balance-dynamics simulation or real vehicle acceptance.",
+  "on_vehicle_still": "PNR99 + nav_fw_clearpipeline_yaw3_20261104.bin, banner05:02:41; this candidate has NOT changed ACTIVE or services"
+}

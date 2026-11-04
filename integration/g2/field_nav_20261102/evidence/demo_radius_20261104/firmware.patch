@@ -1,0 +1,60 @@
+--- a/fw/nav/nav_task.c
++++ b/fw/nav/nav_task.c
+@@ -783,6 +783,28 @@
+     nt->cmd.vx=wanted_v;nt->cmd.vy=0;nt->cmd.wz=wanted_w;
+ }
+ 
++/* Map 2 demo searches visit an area while passing through, even if a
++ * temporary observation manoeuvre was started for the previous leg. */
++#define DEMO_SEARCH_RADIUS_MM 350
++static void select_demo_leg(nav_task_t *nt,uint32_t now)
++{
++    static const int16_t route[][2]={{-110,-1220},{830,580},{2290,550},{2300,-930},{1150,-930}};
++    const nav_pose_t *p=&nt->pose.cur;
++    int dx=route[nt->demo_index][0]-p->x,dy=route[nt->demo_index][1]-p->y;
++    if ((int64_t)dx*dx+(int64_t)dy*dy<=DEMO_SEARCH_RADIUS_MM*DEMO_SEARCH_RADIUS_MM) {
++        nt->demo_index=(nt->demo_index+1)%(sizeof(route)/sizeof(route[0]));
++        if (nt->recheck_phase) {
++            nt->recheck_phase=0;nt->observe_outcome=0;nt->observe_cooldown=now+5000000u;
++        }
++        nt->path_valid=false;nt->path.n=0;nt->entry_active=false;nt->entry_cursor=0;
++        nt->recovering=false;nt->prog_x=p->x;nt->prog_y=p->y;
++        nt->prog_t_us=nt->search_t_us=now;nt->progress_travel_um=nt->pose.travel_um;
++        astar_cancel();nt->bg_done=false;
++    }
++    nt->goal_x=route[nt->demo_index][0];nt->goal_y=route[nt->demo_index][1];
++    nt->search_goal_valid=true;
++}
++
+ static void task_step_local(nav_task_t *nt, uint32_t now)
+ {
+     nt->search_work_done=false;
+@@ -817,6 +839,8 @@
+         nt->prog_t_us=now;nt->last_ok_us=now;nt->cmd_source=CMD_HOLD;
+         goto send_checked; /* 首张记忆图完成后再规划，避免发布全未知初图路线。 */
+     }
++    if (nt->mode==NAV_MODE_SEARCH && nt->demo_map && nt->gm.has_prior && !target_fresh(&nt->tgt,now))
++        select_demo_leg(nt,now);
+     if (nt->recheck_phase && (nt->mode==NAV_MODE_SEARCH || nt->mode==NAV_MODE_TRACK || nt->mode==NAV_MODE_GOTO) &&
+         obstacle_observe_step(nt, now)) goto send_checked;
+     if(nt->mode==NAV_MODE_TRACK && !target_alive(&nt->tgt,now)) {
+@@ -963,17 +987,10 @@
+ 
+     case NAV_MODE_SEARCH:
+         if (nt->demo_map && nt->gm.has_prior) {
+-            /* Screen annotations 1..5, in field_home2 map coordinates (mm). */
+-            static const int16_t route[][2]={{-110,-1220},{830,580},{2290,550},{2300,-930},{1150,-930}};
+             if (target_fresh(&nt->tgt,now)) {nav_task_set_mode(nt,NAV_MODE_TRACK);break;}
+-            nt->goal_x=route[nt->demo_index][0];nt->goal_y=route[nt->demo_index][1];
+-            nt->search_goal_valid=true;
++            drive_to(nt,now,nt->goal_x,nt->goal_y,DEMO_SEARCH_RADIUS_MM);
+             nt->state=ST_SEARCHING;
+-            if (drive_to(nt,now,nt->goal_x,nt->goal_y,150)) {
+-                nt->demo_index=(nt->demo_index+1)%(sizeof(route)/sizeof(route[0]));
+-                nt->search_goal_valid=false;nt->path_valid=false;nt->path.n=0;
+-                astar_cancel();nt->bg_done=false;
+-            } else if ((uint32_t)(now-nt->last_ok_us)>nt->cfg.blocked_us) nt->state=ST_BLOCKED;
++            if ((uint32_t)(now-nt->last_ok_us)>nt->cfg.blocked_us) nt->state=ST_BLOCKED;
+             break;
+         }
+         if(nt->revisit_goal && (int32_t)(now-nt->revisit_until_us)>=0) {nt->revisit_goal=false;nt->search_goal_valid=false;}

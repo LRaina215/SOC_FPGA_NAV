@@ -1,0 +1,79 @@
+{
+  "stage": "loaded_banner_verified_ACTIVE_synced_map_ready",
+  "firmware": {
+    "path": "D:\\tools\\swing_unlock_20261104\\nav_fw_swingunlock_yaw3_20261104.bin",
+    "banner": "Nov  4 2026 08:41:55",
+    "bytes": 58688,
+    "ram_kib": 136,
+    "bss_bytes": 70712,
+    "stack_kib": 6
+  },
+  "action": "Restore realtime obstacle and complete clearing flow by loading the existing PNR100 swingunlock firmware, with no recompilation",
+  "restored": [
+    "live obstacle evidence in global planning",
+    "live5cm elevation footprint rejection",
+    "virtual retry blocks",
+    "viewpoint reobservation and ray clearing; original goal retained"
+  ],
+  "preserved": [
+    "lidar acquisition and auxiliary localization",
+    "forward command0.30m/s",
+    "previous removal of false motion lock",
+    "turning and ramps",
+    "prior map",
+    "balance/PID",
+    "ultrasonic hardware",
+    "bridge/keeper code"
+  ],
+  "Flash": "Already PNR100 containing the identical08:41:55 swingunlock firmware; no Flash write required",
+  "validation": "Existing released image only, normal loader/banner/map checks on deployment; no new compilation/simulation/movement/hash tests",
+  "limitation": "Feature restoration requested by user, not a claim that the earlier false-obstacle/reobservation performance issues were fixed",
+  "deployed": true,
+  "Flash_changed": false,
+  "ACTIVE_changed": true,
+  "loaded_at": "2026-11-04T12:04:22.582014+08:00",
+  "active_backup": "/home/robomaster/fpga_bench/fw/ACTIVE.before_restore_live_20261104_120415",
+  "post_status": {
+    "nav_link": "online",
+    "control_link": "online",
+    "fpga_mode": "idle",
+    "fpga_state": "idle",
+    "map_loaded": true,
+    "lidar_ok": true,
+    "loc_state": "mapless",
+    "loc_quality": null,
+    "cmd_vx_mps": 0.0,
+    "cmd_wz_radps": 0.0,
+    "control_faults": [
+      "policy_fault:1",
+      "bmi088_error:4",
+      "bmi088_stale"
+    ]
+  },
+  "post_task": {
+    "task_id": "fpga-idle",
+    "task_type": "placeholder",
+    "state": "idle",
+    "progress": 0,
+    "source": "fpga_bridge",
+    "phase": "idle",
+    "current_waypoint_id": null,
+    "waypoint_index": null,
+    "waypoint_count": null,
+    "detail": "等待任务。",
+    "updated_at": "2026-11-04T04:04:45.117070+00:00"
+  },
+  "map_upload": {
+    "id": "c00f390900664846b019edd7a53ec02c",
+    "filename": "field_home2.nvmp",
+    "map_id": "field_home2",
+    "state": "ready",
+    "sent_bytes": 9880,
+    "total_bytes": 9880,
+    "progress": 100,
+    "detail": "先验地图已加载（9880 B，1.1 s）；地图目标需给定初始位姿，雷达在后台辅助纠偏",
+    "started_at": "2026-11-04T04:04:23.791960+00:00",
+    "completed_at": "2026-11-04T04:04:24.881438+00:00"
+  },
+  "services": "active\nactive\n"
+}

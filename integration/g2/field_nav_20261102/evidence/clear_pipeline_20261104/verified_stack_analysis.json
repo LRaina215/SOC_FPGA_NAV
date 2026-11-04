@@ -1,0 +1,96 @@
+{
+  "complete": true,
+  "static_bound_bytes": 1504,
+  "direct_call_bound_bytes": 1504,
+  "path": [
+    "main",
+    "nav_app_poll",
+    "task_step_local.constprop.0",
+    "explore_frontier.constprop.0",
+    "nav_app_search_checkpoint",
+    "apply_host_link_lock.isra.0",
+    "nav_task_set_mode.constprop.0",
+    "local_frame_point",
+    "rotate",
+    "guard_sin"
+  ],
+  "resolved_switches": [
+    {
+      "function": "drain_host_messages",
+      "table": ".L1232",
+      "targets": [
+        ".L1235",
+        ".L1234",
+        ".L1233",
+        ".L1231"
+      ]
+    },
+    {
+      "function": "nav_app_poll",
+      "table": ".L2263",
+      "targets": [
+        ".L2267",
+        ".L2266",
+        ".L2265",
+        ".L2264",
+        ".L2262"
+      ]
+    }
+  ],
+  "unresolved_indirect": [],
+  "nonstatic_frames": [],
+  "unresolved_sp_writes": [],
+  "irq_disabled": true,
+  "stack_reserved_bytes": 6144,
+  "largest_frames": [
+    [
+      "nav_app_poll",
+      448
+    ],
+    [
+      "drain_host_messages",
+      400
+    ],
+    [
+      "finish_fusion",
+      336
+    ],
+    [
+      "task_step_local.constprop.0",
+      320
+    ],
+    [
+      "nav_app_search_checkpoint",
+      288
+    ],
+    [
+      "waypoint_visible.constprop.0",
+      240
+    ],
+    [
+      "send_tcp.constprop.0",
+      224
+    ],
+    [
+      "fx_rot_zyx",
+      192
+    ]
+  ],
+  "scope": "linked image, no IRQ/recursion/heap; tail calls conservatively nested; board watermark still pending",
+  "irq_source": "F:\\nav_integration_g2_20261023\\K_clear_pipeline_syn8\\nav\\rtl\\soc\\nav_soc.v",
+  "additional_switch_proof": {
+    "function": "drain_host_messages",
+    "table": ".L1232",
+    "base_register": "s4",
+    "index_bound": [
+      0,
+      3
+    ],
+    "targets": [
+      ".L1235",
+      ".L1234",
+      ".L1233",
+      ".L1231"
+    ]
+  }
+}

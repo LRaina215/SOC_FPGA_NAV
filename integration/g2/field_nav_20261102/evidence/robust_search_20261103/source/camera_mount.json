@@ -1,0 +1,156 @@
+{
+  "method": "OpenCV SQPnP + LM, known body-frame checkerboard locations",
+  "mount": {
+    "xyz_m": [
+      -0.08069392192973056,
+      -0.021109113718037552,
+      0.29363658982788043
+    ],
+    "pitch_yaw_roll_deg": [
+      -1.7636059801764803,
+      2.559596761765821,
+      0.629785790610259
+    ]
+  },
+  "reprojection_rms_px": 0.6018526175246751,
+  "reprojection_max_px": 1.4168125207840219,
+  "per_position_rms_px": [
+    0.47632677977178084,
+    0.7053835448285218
+  ],
+  "observations": [
+    {
+      "directory": "D:\\tools\\camera_extrinsic_20261103\\20261103_153403_1982583497477",
+      "frames_with_35_corners": 10,
+      "corner_repeatability_rms_px": 0.026096178218722343
+    },
+    {
+      "directory": "D:\\tools\\camera_extrinsic_20261103\\20261103_153849_2268168287986",
+      "frames_with_35_corners": 10,
+      "corner_repeatability_rms_px": 0.08991540968418121
+    }
+  ],
+  "reference": {
+    "sdk_distortion_order_verified": true,
+    "height_note": "Reported near-ground lower edge represented by 5mm; tablet bezel is additional unmeasured systematic height uncertainty.",
+    "body_reference": "wheel-axis midpoint projected to floor; level fixed reference stance",
+    "sessions": [
+      {
+        "directory": "D:\\tools\\camera_extrinsic_20261103\\20261103_153403_1982583497477",
+        "distance_m": 1.2,
+        "pattern_bottom_m": 0.005
+      },
+      {
+        "directory": "D:\\tools\\camera_extrinsic_20261103\\20261103_153849_2268168287986",
+        "distance_m": 0.8,
+        "pattern_bottom_m": 0.005
+      }
+    ],
+    "distortion_order": "legacy_opencv_order",
+    "distortion_order_source": "https://github.com/orbbec/ros_astra_camera/blob/main/include/openni2/OniCTypes.h#L88-L94"
+  },
+  "applied": true,
+  "deployed_mount_csv": "-0.080694,-0.021109,0.293637,-1.763606,2.559597,0.629786",
+  "limits": [
+    "Only two measured static board positions; not a dynamic following acceptance.",
+    "Height uses an assumed 5mm active-pattern bottom; tablet bezel is an additional unknown offset.",
+    "Tape/centering/level/perpendicularity and factory intrinsics dominate systematic accuracy."
+  ],
+  "depth_crosscheck": [
+    {
+      "distance_m": 1.2,
+      "samples": 350,
+      "old": {
+        "mean_xyz_error_mm": [
+          160.7114285714286,
+          -39.9054937654412,
+          -105.38569113380109
+        ],
+        "rms_xyz_mm": [
+          160.88582464415126,
+          39.91004194368825,
+          105.39587071473969
+        ],
+        "horizontal_rms_mm": 165.76205844334677
+      },
+      "new": {
+        "mean_xyz_error_mm": [
+          18.635221569451488,
+          0.39652823375347684,
+          -2.9772157393990732
+        ],
+        "rms_xyz_mm": [
+          19.383694190848626,
+          0.6145755755469764,
+          3.1449691775261908
+        ],
+        "horizontal_rms_mm": 19.393434549413826
+      }
+    },
+    {
+      "distance_m": 0.8,
+      "samples": 350,
+      "old": {
+        "mean_xyz_error_mm": [
+          150.34571428571454,
+          -21.499805116350775,
+          -92.44607233175984
+        ],
+        "rms_xyz_mm": [
+          150.5445259241074,
+          21.52078245191127,
+          92.45963273130226
+        ],
+        "horizontal_rms_mm": 152.074976123808
+      },
+      "new": {
+        "mean_xyz_error_mm": [
+          7.626245901853966,
+          0.3752491740318491,
+          -1.6886943164257422
+        ],
+        "rms_xyz_mm": [
+          9.39779317488391,
+          0.9323196491738373,
+          1.9862017674612897
+        ],
+        "horizontal_rms_mm": 9.44392590431174
+      }
+    }
+  ],
+  "deployment": {
+    "stamp": "20261103_154503",
+    "runtime_verified": true,
+    "runtime": {
+      "pid": 24996,
+      "mount": "-0.080694,-0.021109,0.293637,-1.763606,2.559597,0.629786",
+      "status_pid": 24996,
+      "status_age_s": 0.19754981994628906,
+      "detect_fps": 5.0
+    },
+    "installed_files_match": {
+      "yuntuo/perception/geometry.py": true,
+      "yuntuo/perception/pipeline.py": true,
+      "yuntuo/perception/sources.py": true,
+      "yuntuo/perception/node.py": true,
+      "yuntuo/perception/calibration_capture.py": true,
+      "scripts/run_yuntuo_perception.sh": true
+    },
+    "startup_script_fixed": true,
+    "motion_commands_sent": false,
+    "firmware_changed": false,
+    "map_or_keeper_changed": false
+  },
+  "validation": {
+    "raw_rgb_depth_frames": 20,
+    "frames_with_all_35_corners": 20,
+    "distortion_bearing_assertion": "passed",
+    "pytest_run": "not completed: local cv2 environment lacks pytest, pytest environment lacks cv2; no packages installed",
+    "vehicle_motion_test": false
+  },
+  "source_authorities": [
+    "https://docs.opencv.org/4.12.0/d5/d1f/calib3d_solvePnP.html",
+    "https://github.com/orbbec/ros_astra_camera/blob/main/include/openni2/OniCTypes.h#L88-L94"
+  ],
+  "evidence_directory": "D:\\tools\\camera_extrinsic_20261103"
+}
